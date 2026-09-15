@@ -11,6 +11,9 @@ import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+const resolveBlockHref = (id: string) => `${basePath}/docs/blocks/${id}`;
+
 const descriptionParser = unified().use(remarkParse).use(remarkGfm);
 const parseMarkdown = (markdown: string) => descriptionParser.parse(markdown).children;
 
@@ -47,7 +50,7 @@ export const components = defineDocs({
           [remarkArgTypes, { docsDefaults }],
           [remarkExamples, { target: 'components', onDependency: addMdxDependency, parseMarkdown }],
           remarkRawLoader,
-          remarkBlocks,
+          [remarkBlocks, { resolveBlockHref }],
           ...v
         ]
       })(env)
@@ -67,7 +70,7 @@ export const blocks = defineDocs({
     },
     mdxOptions: (env) =>
       applyMdxPreset({
-        remarkPlugins: (v) => [remarkStripLeadingHeading, remarkBlocks, ...v]
+        remarkPlugins: (v) => [remarkStripLeadingHeading, [remarkBlocks, { resolveBlockHref }], ...v]
       })(env)
   },
   meta: {

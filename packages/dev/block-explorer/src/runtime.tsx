@@ -1,19 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import {
-  Box,
-  Flex,
-  Icon,
-  ListBox,
-  ListBoxItem,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  type TabsProps
-} from '@godaddy/antares';
+import { Box, Flex, Icon, LinkButton, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';
 import { BlockFileTree } from './block-file-tree.tsx';
 import { BlockSourcePanel } from './block-source-panel.tsx';
 import { BlockToolbar } from './block-toolbar.tsx';
@@ -69,24 +57,25 @@ export interface BlockLinksProps {
  */
 export function BlockLinks({ blocks }: BlockLinksProps) {
   return (
-    <ListBox aria-label="Related blocks" selectionMode="none">
+    <Flex as="nav" aria-label="Related blocks" direction="column" gap="xs">
       {blocks.map(function renderBlockLink(block: BlockLinkItem) {
         return (
-          <ListBoxItem
+          <LinkButton
             key={block.id}
-            id={block.id}
             href={block.href}
             target={block.target}
-            textValue={block.title}
-            alignItems="center"
-            justifyContent="space-between"
+            // React Aria filters `target`; assign it on the anchor to preserve the host-provided browsing context.
+            ref={function setBlockTarget(element: HTMLAnchorElement | null) {
+              if (element) element.target = block.target ?? '';
+            }}
+            variant="minimal"
           >
             {block.title}
             <Icon icon="chevron-right" />
-          </ListBoxItem>
+          </LinkButton>
         );
       })}
-    </ListBox>
+    </Flex>
   );
 }
 
@@ -112,40 +101,36 @@ export function BlockExplorer({ block, children, codeRenderer }: BlockExplorerPr
 
   return (
     <Box className={styles.root}>
-      <Tabs
-        selectedKey={view}
-        onSelectionChange={function handleViewChange(key: Parameters<NonNullable<TabsProps['onSelectionChange']>>[0]) {
-          setView(key as BlockView);
-        }}
-      >
-        <BlockToolbar description={block.description}>
-          <TabList aria-label={`${block.title} view`}>
-            <Tab id="preview">Preview</Tab>
-            <Tab id="code">Code</Tab>
-          </TabList>
-        </BlockToolbar>
-        <TabPanels>
-          <TabPanel id="preview">
-            <Box className={styles.previewSurface} padding="2xl" rounding="md" elevation="card">
-              {children}
-            </Box>
-          </TabPanel>
-          <TabPanel id="code">
-            <Box className={styles.codeSurface} rounding="md" elevation="card">
-              <Flex className={styles.codeLayout} alignItems="stretch">
-                <BlockFileTree
-                  tree={tree}
-                  activePath={activeFile?.path}
-                  onFileSelect={function handleFileSelect(path: string) {
-                    setActivePath(path);
-                  }}
-                />
-                {activeFile ? <BlockSourcePanel file={activeFile} codeRenderer={codeRenderer} /> : null}
-              </Flex>
-            </Box>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+      <BlockToolbar description={block.description}>
+        <SegmentedController
+          aria-label={`${block.title} view`}
+          value={view}
+          onSelectionChange={function handleViewChange(value: string) {
+            setView(value as BlockView);
+          }}
+        >
+          <SegmentedControllerItem value="preview">Preview</SegmentedControllerItem>
+          <SegmentedControllerItem value="code">Code</SegmentedControllerItem>
+        </SegmentedController>
+      </BlockToolbar>
+      {view === 'preview' ? (
+        <Box className={styles.previewSurface} padding="2xl" rounding="md" elevation="card">
+          {children}
+        </Box>
+      ) : (
+        <Box className={styles.codeSurface} rounding="md" elevation="card">
+          <Flex className={styles.codeLayout} alignItems="stretch">
+            <BlockFileTree
+              tree={tree}
+              activePath={activeFile?.path}
+              onFileSelect={function handleFileSelect(path: string) {
+                setActivePath(path);
+              }}
+            />
+            {activeFile ? <BlockSourcePanel file={activeFile} codeRenderer={codeRenderer} /> : null}
+          </Flex>
+        </Box>
+      )}
     </Box>
   );
 }

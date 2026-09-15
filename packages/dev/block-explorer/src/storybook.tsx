@@ -44,7 +44,7 @@ export function generateBlocksPlugin(readmeRegex: RegExp = README_FILE_REGEX): P
         const blockLink = {
           id: manifest.id,
           title: manifest.title,
-          href: `/?path=/docs/blocks-${manifest.id}--overview`,
+          href: `./?path=/docs/blocks-${manifest.id}--overview`,
           target: '_top'
         };
         const expanded = source.replace(marker, `<BlockLinks blocks={${JSON.stringify([blockLink])}} />`);

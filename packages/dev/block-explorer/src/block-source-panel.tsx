@@ -1,4 +1,4 @@
-import { useState, type ComponentType } from 'react';
+import { useEffect, useRef, useState, type ComponentType } from 'react';
 import { Box, Button, Flex, Icon, Text } from '@godaddy/antares';
 import type { BlockCodeRendererProps, BlockFile } from './types.ts';
 import styles from './runtime.module.css';
@@ -19,6 +19,19 @@ export interface BlockSourcePanelProps {
  */
 export function BlockSourcePanel({ file, codeRenderer: CodeRenderer = PlainCode }: BlockSourcePanelProps) {
   const [copied, setCopied] = useState(false);
+  const resetCopiedTimeout = useRef<number | undefined>(undefined);
+
+  useEffect(
+    function resetCopiedWhenFileChanges() {
+      setCopied(false);
+      if (resetCopiedTimeout.current !== undefined) window.clearTimeout(resetCopiedTimeout.current);
+
+      return function clearCopiedTimeout() {
+        if (resetCopiedTimeout.current !== undefined) window.clearTimeout(resetCopiedTimeout.current);
+      };
+    },
+    [file.path]
+  );
 
   return (
     <Flex direction="column" className={styles.sourcePanel} flex="1 1 auto">
@@ -41,8 +54,10 @@ export function BlockSourcePanel({ file, codeRenderer: CodeRenderer = PlainCode 
             try {
               await navigator.clipboard.writeText(file.source);
               setCopied(true);
-              window.setTimeout(function resetCopied() {
+              if (resetCopiedTimeout.current !== undefined) window.clearTimeout(resetCopiedTimeout.current);
+              resetCopiedTimeout.current = window.setTimeout(function resetCopied() {
                 setCopied(false);
+                resetCopiedTimeout.current = undefined;
               }, 1500);
             } catch {
               setCopied(false);

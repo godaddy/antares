@@ -3,13 +3,18 @@ import { describe, expect, it, vi } from 'vitest';
 import { generateBlocksPlugin, viteFinal } from '../src/storybook.tsx';
 
 const fixtureReadme = resolve(import.meta.dirname, 'fixtures/block/README.mdx');
+const noMarkerReadme = resolve(import.meta.dirname, 'fixtures/no-marker/README.mdx');
+const componentReadme = resolve(import.meta.dirname, 'fixtures/package/components/example/README.mdx');
+const importedReadme = resolve(import.meta.dirname, 'fixtures/package/components/imported/README.mdx');
+const invalidBlockReadme = resolve(import.meta.dirname, 'fixtures/invalid-block/README.mdx');
+const invalidLinkReadme = resolve(import.meta.dirname, 'fixtures/invalid-link/README.mdx');
 
 describe('Storybook block explorer plugin', function storybookPluginTests() {
   it('skips non-README files and MDX without a block marker', async function skipsUnrelatedFiles() {
     const plugin = generateBlocksPlugin();
 
-    await expect(runTransform(plugin, '<BlockLink id="fixture-block" />', '/tmp/guide.mdx')).resolves.toBeNull();
-    await expect(runTransform(plugin, '# Fixture block', fixtureReadme)).resolves.toBeNull();
+    await expect(runTransform(plugin, '# Guide', '/tmp/guide.mdx')).resolves.toBeNull();
+    await expect(runTransform(plugin, '# Fixture without a block marker', noMarkerReadme)).resolves.toBeNull();
   });
 
   it('expands BlockLink with the Storybook overview route and watch files', async function expandsBlockLink() {
@@ -18,6 +23,7 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
     const result = await runTransform(plugin, '<BlockLink id="fixture-block" />', fixtureReadme, addWatchFile);
 
     expect(result).toContain('<BlockLinks blocks={');
+    expect(result).toContain('./?path=/docs/blocks-fixture-block--overview');
     expect(result).toContain('blocks-fixture-block--overview');
     expect(result).toContain('target":"_top"');
     expect(result).toContain("import { BlockLinks } from '@bento/block-explorer/runtime';");
@@ -27,31 +33,34 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
   });
 
   it('expands Block after frontmatter and injects missing Storybook imports', async function expandsBlock() {
-    const source = '---\ntitle: Fixture block\n---\n<Block id="fixture-block" of={Stories.Preview} />';
-    const result = await runTransform(generateBlocksPlugin(), source, fixtureReadme);
+    const result = await runTransform(
+      generateBlocksPlugin(),
+      '---\ntitle: Example component\n---\n<Block id="fixture-block" of={Stories.Preview} />',
+      componentReadme
+    );
 
-    expect(result).toContain('---\ntitle: Fixture block\n---\nimport { StorybookBlockExplorer }');
+    expect(result).toContain('---\ntitle: Example component\n---\nimport { StorybookBlockExplorer }');
     expect(result).toContain('<StorybookBlockExplorer block={');
     expect(result).toContain('<Story of={Stories.Preview} inline />');
     expect(result).toContain("import { Story } from '@storybook/addon-docs/blocks';");
   });
 
   it('does not duplicate imports that the README already provides', async function preservesExistingImports() {
-    const source = [
-      "import { BlockLinks } from '@bento/block-explorer/runtime';",
-      '<BlockLink id="fixture-block" />'
-    ].join('\n');
-    const result = await runTransform(generateBlocksPlugin(), source, fixtureReadme);
+    const result = await runTransform(
+      generateBlocksPlugin(),
+      'import { BlockLinks } from \'@bento/block-explorer/runtime\';\n\n<BlockLink id="fixture-block" />',
+      importedReadme
+    );
 
     expect(result?.match(/import \{ BlockLinks \}/g)).toHaveLength(1);
   });
 
   it('reports missing marker attributes with the README path', async function reportsInvalidMarkers() {
-    await expect(runTransform(generateBlocksPlugin(), '<Block id="fixture-block" />', fixtureReadme)).rejects.toThrow(
-      `${fixtureReadme}: <Block> requires id="..." and of={Stories.Preview}.`
-    );
-    await expect(runTransform(generateBlocksPlugin(), '<BlockLink />', fixtureReadme)).rejects.toThrow(
-      `${fixtureReadme}: <BlockLink> requires id="...".`
+    await expect(
+      runTransform(generateBlocksPlugin(), '<Block id="fixture-block" />', invalidBlockReadme)
+    ).rejects.toThrow(`${invalidBlockReadme}: <Block> requires id="..." and of={Stories.Preview}.`);
+    await expect(runTransform(generateBlocksPlugin(), '<BlockLink />', invalidLinkReadme)).rejects.toThrow(
+      `${invalidLinkReadme}: <BlockLink> requires id="...".`
     );
   });
 

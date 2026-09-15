@@ -1,2 +1,2 @@
 export * from './node.ts';
-export { remarkBlocks } from './remark-blocks.ts';
+export { remarkBlocks, type RemarkBlocksOptions } from './remark-blocks.ts';

@@ -56,7 +56,7 @@ describe('site', function siteTests() {
   });
 
   describe('#getDocsPageTree', function getDocsPageTreeTests() {
-    it('inserts Blocks immediately after the docs home page', function insertsBlocksAfterHome() {
+    it('inserts Blocks immediately after the Components root page', function insertsBlocksAfterComponents() {
       getPageTree.mockReturnValue({
         children: [
           { type: 'page', name: 'Welcome', url: '/docs' },
@@ -68,13 +68,95 @@ describe('site', function siteTests() {
 
       assume(tree.children.map((node) => ('url' in node ? node.url : undefined))).deep.equals([
         '/docs',
-        '/docs/blocks',
-        '/docs/components'
+        '/docs/components',
+        '/docs/blocks'
       ]);
     });
 
-    it('places Blocks first when the docs home page is absent', function placesBlocksWithoutHome() {
+    it('places Blocks after Components when the docs home page is absent', function placesBlocksWithoutHome() {
       getPageTree.mockReturnValue({ children: [{ type: 'page', name: 'Components', url: '/docs/components' }] });
+
+      const tree = getDocsPageTree();
+
+      assume(tree.children.map((node) => ('url' in node ? node.url : undefined))).deep.equals([
+        '/docs/components',
+        '/docs/blocks'
+      ]);
+      assume(tree.children[1]).deep.equals({
+        $id: 'antares-blocks-index',
+        type: 'page',
+        name: 'Blocks',
+        url: '/docs/blocks'
+      });
+    });
+
+    it('recognizes a Components-named page root', function recognizesNamedPageRoot() {
+      getPageTree.mockReturnValue({ children: [{ type: 'page', name: 'Components', url: '/docs/other' }] });
+
+      const tree = getDocsPageTree();
+
+      assume(tree.children.map((node) => ('url' in node ? node.url : undefined))).deep.equals([
+        '/docs/other',
+        '/docs/blocks'
+      ]);
+    });
+
+    it('recognizes generated Components folder roots', function recognizesFolderRoots() {
+      getPageTree.mockReturnValue({
+        children: [
+          { type: 'separator', name: 'Other' },
+          { type: 'folder', name: 'Other', root: false, children: [] },
+          { type: 'folder', name: null, root: true, children: [] },
+          { type: 'folder', name: 'Components', root: true, children: [] }
+        ]
+      });
+
+      const tree = getDocsPageTree();
+
+      assume(tree.children[4]).deep.equals({
+        $id: 'antares-blocks-index',
+        type: 'page',
+        name: 'Blocks',
+        url: '/docs/blocks'
+      });
+    });
+
+    it('recognizes a Components folder by its index URL', function recognizesFolderIndex() {
+      getPageTree.mockReturnValue({
+        children: [
+          {
+            type: 'folder',
+            name: 'Component library',
+            root: false,
+            index: { type: 'page', name: 'Components', url: '/docs/components' },
+            children: []
+          }
+        ]
+      });
+
+      const tree = getDocsPageTree();
+
+      assume(tree.children[1]).deep.equals({
+        $id: 'antares-blocks-index',
+        type: 'page',
+        name: 'Blocks',
+        url: '/docs/blocks'
+      });
+    });
+
+    it('falls back after Welcome when Components is unavailable', function fallsBackAfterWelcome() {
+      getPageTree.mockReturnValue({ children: [{ type: 'page', name: 'Welcome', url: '/docs' }] });
+
+      const tree = getDocsPageTree();
+
+      assume(tree.children.map((node) => ('url' in node ? node.url : undefined))).deep.equals([
+        '/docs',
+        '/docs/blocks'
+      ]);
+    });
+
+    it('falls back to the beginning when Welcome and Components are unavailable', function fallsBackToBeginning() {
+      getPageTree.mockReturnValue({ children: [] });
 
       const tree = getDocsPageTree();
 

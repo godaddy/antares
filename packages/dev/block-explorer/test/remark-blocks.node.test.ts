@@ -61,11 +61,19 @@ describe('remarkBlocks', function remarkBlocksTests() {
     ]);
   });
 
+  it('uses the host resolver for BlockLink URLs', async function resolvesHostLinks() {
+    const { tree } = await transform('<BlockLink id="fixture-block" />', (id) => `/antares/docs/blocks/${id}`);
+    const links = tree.children[0] as AnyNode;
+    const blocks = JSON.parse(getExpressionValue(links, 'blocks'));
+
+    expect(blocks[0].href).toBe('/antares/docs/blocks/fixture-block');
+  });
+
   it('leaves the tree unchanged when the file has no path', async function skipsPathlessFiles() {
     const tree = { type: 'root', children: [{ type: 'paragraph', children: [] }] } as AnyTree;
     const file = new VFile({ value: '<Block id="fixture-block" of={Stories.Preview} />' });
 
-    await remarkBlocks()(tree as never, file as never);
+    await remarkBlocks({ resolveBlockHref: (id) => `/docs/blocks/${id}` })(tree as never, file as never);
 
     expect(tree.children).toHaveLength(1);
     expect(tree.children[0]).toMatchObject({ type: 'paragraph' });
@@ -85,8 +93,8 @@ describe('remarkBlocks', function remarkBlocksTests() {
   });
 });
 
-async function transform(markdown: string) {
-  const processor = unified().use(remarkParse).use(remarkMdx).use(remarkBlocks);
+async function transform(markdown: string, resolveBlockHref = (id: string) => `/docs/blocks/${id}`) {
+  const processor = unified().use(remarkParse).use(remarkMdx).use(remarkBlocks, { resolveBlockHref });
   const file = new VFile({ path: fixtureReadme, value: markdown });
   const addDependency = vi.fn();
   Object.assign(file.data, { _compiler: { addDependency } });

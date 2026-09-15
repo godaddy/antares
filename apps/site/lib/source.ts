@@ -46,8 +46,8 @@ export const blocksSource = loader(toBlocksSource(), {
 });
 
 /**
- * Adds the Blocks page immediately after the existing documentation home page
- * without changing the generated Site navigation hierarchy.
+ * Adds the Blocks page immediately after the Components root page or folder,
+ * keeping the generated documentation hierarchy intact.
  */
 export function getDocsPageTree(): PageTree.Root {
   const tree = source.getPageTree();
@@ -58,13 +58,24 @@ export function getDocsPageTree(): PageTree.Root {
     url: '/docs/blocks'
   };
 
+  const componentsIndex = tree.children.findIndex(isComponentsRoot);
   const welcomeIndex = tree.children.findIndex((node) => node.type === 'page' && node.url === '/docs');
-  const insertionIndex = welcomeIndex >= 0 ? welcomeIndex + 1 : 0;
+  const insertionIndex = componentsIndex >= 0 ? componentsIndex + 1 : welcomeIndex >= 0 ? welcomeIndex + 1 : 0;
 
   return {
     ...tree,
     children: [...tree.children.slice(0, insertionIndex), blocksPage, ...tree.children.slice(insertionIndex)]
   };
+}
+
+function isComponentsRoot(node: PageTree.Node) {
+  if (node.type === 'page') return node.url === '/docs/components' || node.name === 'Components';
+  if (node.type !== 'folder') return false;
+
+  return (
+    node.index?.url === '/docs/components' ||
+    (node.root === true && typeof node.name === 'string' && node.name.toLowerCase() === 'components')
+  );
 }
 
 export function getPageImage(page: InferPageType<typeof source>) {

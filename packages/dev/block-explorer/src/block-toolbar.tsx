@@ -6,14 +6,14 @@ export interface BlockToolbarProps {
   /** Short explanation of the block's purpose. */
   description?: string;
 
-  /** Preview/code tab controls. */
+  /** Preview/code view controls. */
   children: ReactNode;
 }
 
 /**
- * Places the view tabs and the block purpose on one quiet documentation row.
+ * Places the view controls and the block purpose on one quiet documentation row.
  *
- * @param props - Tabs and the optional short block description.
+ * @param props - View controls and the optional short block description.
  */
 export function BlockToolbar({ description, children }: BlockToolbarProps) {
   return (

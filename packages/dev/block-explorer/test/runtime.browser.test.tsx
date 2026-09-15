@@ -21,11 +21,11 @@ describe('block explorer runtime', function runtimeTests() {
       </BlockExplorer>
     );
 
-    await expect.element(getByRole('tab', { name: 'Preview' })).toBeVisible();
+    await expect.element(getByRole('radio', { name: 'Preview' })).toBeVisible();
     await expect.element(getByRole('heading', { name: 'Fixture block' })).not.toBeInTheDocument();
-    await expect.element(getByRole('tab', { name: 'Code' })).toBeVisible();
+    await expect.element(getByRole('radio', { name: 'Code' })).toBeVisible();
 
-    await userEvent.click(getByRole('tab', { name: 'Code' }));
+    await userEvent.click(getByRole('radio', { name: 'Code' }));
     await expect.element(getByTestId('source-file')).toHaveTextContent('index.tsx');
     const activeFileButton = getByRole('button', { name: 'index.tsx', exact: true });
     await expect.element(activeFileButton).toHaveAttribute('aria-current', 'page');
@@ -43,7 +43,7 @@ describe('block explorer runtime', function runtimeTests() {
       </BlockExplorer>
     );
 
-    await userEvent.click(getByRole('tab', { name: 'Code' }));
+    await userEvent.click(getByRole('radio', { name: 'Code' }));
     const folderButton = getByRole('button', { name: 'styles', exact: true });
     const fileButton = getByRole('button', { name: 'theme.css', exact: true });
 
@@ -69,7 +69,7 @@ describe('block explorer runtime', function runtimeTests() {
       </BlockExplorer>
     );
 
-    await userEvent.click(getByRole('tab', { name: 'Code' }));
+    await userEvent.click(getByRole('radio', { name: 'Code' }));
     const copyButton = getByRole('button', { name: 'Copy index.tsx' });
     await userEvent.click(copyButton);
     expect(writeText).toHaveBeenCalledWith(fixtureManifest.files[0]?.source);
@@ -82,9 +82,30 @@ describe('block explorer runtime', function runtimeTests() {
         <div>Preview content</div>
       </BlockExplorer>
     );
-    await userEvent.click(getByRole('tab', { name: 'Code' }));
+    await userEvent.click(getByRole('radio', { name: 'Code' }));
     await userEvent.click(copyButton);
     await expect.element(copyButton).not.toHaveTextContent('Copied');
+  });
+
+  it('resets copy feedback when selecting another source file', async function resetsCopyFeedback() {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText }
+    });
+
+    const { getByRole } = await render(
+      <BlockExplorer block={fixtureManifest}>
+        <div>Preview content</div>
+      </BlockExplorer>
+    );
+
+    await userEvent.click(getByRole('radio', { name: 'Code' }));
+    await userEvent.click(getByRole('button', { name: 'Copy index.tsx' }));
+    await expect.element(getByRole('button', { name: 'Copied index.tsx' })).toHaveTextContent('Copied');
+
+    await userEvent.click(getByRole('button', { name: 'theme.css', exact: true }));
+    await expect.element(getByRole('button', { name: 'Copy styles/theme.css' })).toHaveTextContent('Copy');
   });
 
   it('renders related blocks as host-provided links', async function rendersRelatedBlocks() {
@@ -93,7 +114,7 @@ describe('block explorer runtime', function runtimeTests() {
         blocks={[{ id: 'fixture-block', title: 'Fixture block', href: '/docs/blocks/fixture-block', target: '_top' }]}
       />
     );
-    const link = getByRole('option', { name: 'Fixture block' });
+    const link = getByRole('link', { name: 'Fixture block' });
 
     await expect.element(link).toBeVisible();
     expect(link.element().getAttribute('href')).toBe('/docs/blocks/fixture-block');
@@ -107,7 +128,7 @@ describe('block explorer runtime', function runtimeTests() {
       </BlockExplorer>
     );
 
-    await userEvent.click(getByRole('tab', { name: 'Code' }));
+    await userEvent.click(getByRole('radio', { name: 'Code' }));
     await expect.element(getByRole('navigation', { name: 'Block files' })).toBeVisible();
     await expect.element(getByRole('button', { name: /Copy/ })).not.toBeInTheDocument();
   });

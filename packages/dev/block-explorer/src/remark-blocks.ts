@@ -14,10 +14,15 @@ interface MdNode {
   [key: string]: unknown;
 }
 
+export interface RemarkBlocksOptions {
+  /** Resolves a block overview URL for the current documentation host. */
+  resolveBlockHref: (blockId: string) => string;
+}
+
 /**
  * Expands the build-time `<Block>` and `<BlockLink>` markers in Fumadocs MDX.
  */
-export function remarkBlocks() {
+export function remarkBlocks({ resolveBlockHref }: RemarkBlocksOptions) {
   return async function transform(tree: Root, file: RemarkFile): Promise<void> {
     if (!file.path) return;
 
@@ -38,7 +43,7 @@ export function remarkBlocks() {
     }) {
       return node.type === 'mdxJsxFlowElement' && node.name === 'BlockLink';
     });
-    if (linkIndex !== -1) await replaceBlockLink(tree, file, linkIndex);
+    if (linkIndex !== -1) await replaceBlockLink(tree, file, linkIndex, resolveBlockHref);
   };
 }
 
@@ -58,7 +63,12 @@ async function replaceExplorer(tree: Root, file: RemarkFile, index: number) {
   tree.children[index] = renderSiteBlock(manifest, ofExpression) as (typeof tree.children)[number];
 }
 
-async function replaceBlockLink(tree: Root, file: RemarkFile, index: number) {
+async function replaceBlockLink(
+  tree: Root,
+  file: RemarkFile,
+  index: number,
+  resolveBlockHref: RemarkBlocksOptions['resolveBlockHref']
+) {
   const marker = tree.children[index] as unknown as MdxJsxFlowElement;
   const id = getStringAttribute(marker, 'id');
 
@@ -68,7 +78,7 @@ async function replaceBlockLink(tree: Root, file: RemarkFile, index: number) {
   const manifest = await loadBlockManifest(blockDirectory);
   addManifestDependencies(file, blockDirectory, manifest);
 
-  tree.children[index] = renderSiteBlockLink(manifest) as (typeof tree.children)[number];
+  tree.children[index] = renderSiteBlockLink(manifest, resolveBlockHref) as (typeof tree.children)[number];
 }
 
 function addManifestDependencies(
@@ -96,11 +106,14 @@ function renderSiteBlock(manifest: Awaited<ReturnType<typeof loadBlockManifest>>
   };
 }
 
-function renderSiteBlockLink(manifest: Awaited<ReturnType<typeof loadBlockManifest>>): MdNode {
+function renderSiteBlockLink(
+  manifest: Awaited<ReturnType<typeof loadBlockManifest>>,
+  resolveBlockHref: RemarkBlocksOptions['resolveBlockHref']
+): MdNode {
   const block = {
     id: manifest.id,
     title: manifest.title,
-    href: `/docs/blocks/${manifest.id}`
+    href: resolveBlockHref(manifest.id)
   };
 
   return {
