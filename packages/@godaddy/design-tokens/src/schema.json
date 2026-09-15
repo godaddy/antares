@@ -24,7 +24,156 @@
         "oneOf": [{ "type": "boolean" }, { "type": "string" }]
       },
       "$extensions": {
-        "type": "object"
+        "type": "object",
+        "properties": {
+          "com.godaddy.classname": {
+            "type": "object",
+            "properties": {
+              "property": {
+                "oneOf": [
+                  { "type": "string" },
+                  { "type": "array", "items": { "type": "string" } }
+                ]
+              }
+            }
+          },
+          "com.godaddy.clamp": {
+            "type": "object",
+            "description": "Fluid responsive value. Attaches to $type: dimension. $value is the static fallback.",
+            "required": ["min", "preferred", "max"],
+            "properties": {
+              "min": {
+                "type": "string",
+                "description": "Minimum value — alias or static dimension"
+              },
+              "preferred": {
+                "type": "string",
+                "description": "Preferred value — CSS expression, may contain aliases"
+              },
+              "max": {
+                "type": "string",
+                "description": "Maximum value — alias or static dimension"
+              }
+            },
+            "additionalProperties": false
+          },
+          "com.godaddy.gradient": {
+            "type": "object",
+            "description": "Gradient definition. Attaches to $type: color. $value is a flat color fallback.",
+            "required": ["function", "stops"],
+            "properties": {
+              "function": {
+                "type": "string",
+                "enum": ["linear-gradient", "radial-gradient", "conic-gradient"]
+              },
+              "angle": {
+                "type": "string",
+                "description": "Direction angle for linear-gradient (e.g. '135deg', 'to right')"
+              },
+              "shape": {
+                "type": "string",
+                "description": "Shape for radial-gradient (e.g. 'circle', 'ellipse')"
+              },
+              "position": {
+                "type": "string",
+                "description": "Center position for radial/conic gradient"
+              },
+              "from": {
+                "type": "string",
+                "description": "Starting angle for conic-gradient"
+              },
+              "stops": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["color", "position"],
+                  "properties": {
+                    "color": {
+                      "type": "string",
+                      "description": "Color value — alias or static color"
+                    },
+                    "position": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1,
+                      "description": "Position as a number between 0 and 1"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "minItems": 2
+              }
+            },
+            "additionalProperties": false
+          },
+          "com.godaddy.scale": {
+            "type": "object",
+            "description": "Mathematical scale membership. Attaches to $type: dimension. Build overwrites $value with computed result.",
+            "required": ["base", "ratio", "step"],
+            "properties": {
+              "base": {
+                "type": "string",
+                "description": "Base value — alias or static dimension"
+              },
+              "ratio": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Scale ratio (e.g. 1.25 for major third)"
+              },
+              "step": {
+                "type": "integer",
+                "description": "Step in progression (0 = base, positive = larger, negative = smaller)"
+              }
+            },
+            "additionalProperties": false
+          },
+          "com.godaddy.color-mix": {
+            "type": "object",
+            "description": "Programmatic color blending. Attaches to $type: color. Build overwrites $value with computed blend.",
+            "required": ["colorSpace", "color1", "color2"],
+            "properties": {
+              "colorSpace": {
+                "type": "string",
+                "description": "CSS color space for interpolation (e.g. 'oklch', 'srgb')"
+              },
+              "color1": {
+                "type": "object",
+                "required": ["value", "percentage"],
+                "properties": {
+                  "value": {
+                    "type": "string",
+                    "description": "Color value — alias or static color"
+                  },
+                  "percentage": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "description": "Percentage of this color in the mix"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "color2": {
+                "type": "object",
+                "required": ["value", "percentage"],
+                "properties": {
+                  "value": {
+                    "type": "string",
+                    "description": "Color value — alias or static color"
+                  },
+                  "percentage": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "description": "Percentage of this color in the mix"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        }
       }
     }
   }
