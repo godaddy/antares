@@ -1,0 +1,11 @@
+{
+  "id": "sign-in-form",
+  "title": "Sign-in form",
+  "description": "A simple Antares sign-in experience.",
+  "files": [
+    "index.tsx",
+    "components/sign-in-form.tsx",
+    "components/sign-in-fields.tsx",
+    "data/copy.ts"
+  ]
+}
