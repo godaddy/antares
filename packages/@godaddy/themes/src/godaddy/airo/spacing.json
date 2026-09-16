@@ -81,27 +81,27 @@
   },
   "size-space-xs": {
     "$type": "dimension",
-    "$value": "4px"
+    "$value": "{size-space-020}"
   },
   "size-space-sm": {
     "$type": "dimension",
-    "$value": "8px"
+    "$value": "{size-space-030}"
   },
   "size-space-md": {
     "$type": "dimension",
-    "$value": "16px"
+    "$value": "{size-space-050}"
   },
   "size-space-lg": {
     "$type": "dimension",
-    "$value": "24px"
+    "$value": "{size-space-070}"
   },
   "size-space-xl": {
     "$type": "dimension",
-    "$value": "32px"
+    "$value": "{size-space-090}"
   },
   "size-space-2xl": {
     "$type": "dimension",
-    "$value": "48px"
+    "$value": "{size-space-120}"
   },
   "size-radius-xs": {
     "$type": "dimension",
