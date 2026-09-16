@@ -81,11 +81,11 @@
   },
   "size-space-xs": {
     "$type": "dimension",
-    "$value": "{size-space-020}"
+    "$value": "{size-space-010}"
   },
   "size-space-sm": {
     "$type": "dimension",
-    "$value": "{size-space-030}"
+    "$value": "{size-space-020}"
   },
   "size-space-md": {
     "$type": "dimension",
@@ -97,11 +97,11 @@
   },
   "size-space-xl": {
     "$type": "dimension",
-    "$value": "{size-space-090}"
+    "$value": "{size-space-100}"
   },
   "size-space-2xl": {
     "$type": "dimension",
-    "$value": "{size-space-120}"
+    "$value": "{size-space-160}"
   },
   "size-radius-xs": {
     "$type": "dimension",
