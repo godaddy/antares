@@ -3,6 +3,9 @@ set -e
 
 npx lint-staged
 
+echo "🔍 Validating Antares registry schema..."
+npm run registry:validate
+
 echo "🔍 Checking package.json formatting..."
 npm run format:package
 

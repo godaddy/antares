@@ -22,6 +22,8 @@ const config: StorybookConfig = {
     '../../../packages/@godaddy/antares/README.mdx',
     '../../../packages/@godaddy/antares/components/**/*.mdx',
     '../../../packages/@godaddy/antares/components/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../../packages/@godaddy/antares/blocks/**/*.mdx',
+    '../../../packages/@godaddy/antares/blocks/**/*.stories.@(js|jsx|mjs|ts|tsx)',
 
     // Documentation (PDRs, Architecture, etc.) - excluding templates
     '../../../docs/**/!(*TEMPLATE)*.mdx'
@@ -46,6 +48,7 @@ const config: StorybookConfig = {
       name: '@bento/storybook-addon-helpers',
       options: { docsDefaults }
     },
+    '@bento/block-explorer/storybook',
     join(__dirname, './addons/internal-stories/preset.ts')
   ],
 
@@ -98,7 +101,7 @@ const config: StorybookConfig = {
     };
 
     // Packages that are in dev/ folder but still use @bento namespace
-    const devPackages = ['storybook-addon-helpers', 'environment'];
+    const devPackages = ['storybook-addon-helpers', 'environment', 'block-explorer'];
 
     return mergeConfig(config, {
       // Set base path for GitHub Pages subpath deployment
@@ -136,6 +139,18 @@ const config: StorybookConfig = {
           {
             find: /^@bento\/storybook-addon-helpers\/runtime$/,
             replacement: resolve(__dirname, '../../../packages/dev/storybook-addon-helpers/src/runtime.ts')
+          },
+          {
+            find: /^@bento\/block-explorer\/runtime$/,
+            replacement: resolve(__dirname, '../../../packages/dev/block-explorer/src/runtime.tsx')
+          },
+          {
+            find: /^@bento\/block-explorer\/storybook$/,
+            replacement: resolve(__dirname, '../../../packages/dev/block-explorer/src/storybook.tsx')
+          },
+          {
+            find: /^@bento\/block-explorer\/storybook-runtime$/,
+            replacement: resolve(__dirname, '../../../packages/dev/block-explorer/src/storybook-runtime.tsx')
           },
           // Regular @bento packages
           {
