@@ -342,7 +342,7 @@ Background and migration detail. None of it is needed to follow the proposal.
 
 ### The vocabulary
 
-`@godaddy/design-tokens` (`src/tokens.yml`) and `@godaddy/themes` (`src/godaddy/airo/typography.json`) define
+`@godaddy/design-tokens` (`src/tokens.yml`) defines
 three roles, each with four properties and a six-step size ramp, named `--font-{role}-{property}` and
 `--font-{role}-size-{tier}`.
 
