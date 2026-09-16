@@ -770,6 +770,15 @@ size-space-030:
         - gap
 size-space-040:
   $type: dimension
+  $value: "14px"
+  $description: "Compact control padding a step below the base 16px unit, for dense buttons and inputs."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-050:
+  $type: dimension
   $value: "16px"
   $description: "Standard card padding and default gap between sibling blocks in a layout."
   $extensions:
@@ -777,7 +786,7 @@ size-space-040:
       property:
         - padding
         - gap
-size-space-050:
+size-space-060:
   $type: dimension
   $value: "20px"
   $description: "Roomier padding inside modules that need more air than the default compact tier."
@@ -786,7 +795,7 @@ size-space-050:
       property:
         - padding
         - gap
-size-space-060:
+size-space-070:
   $type: dimension
   $value: "24px"
   $description: "Spacing between sections within a page and between form fieldsets."
@@ -795,7 +804,16 @@ size-space-060:
       property:
         - padding
         - gap
-size-space-070:
+size-space-080:
+  $type: dimension
+  $value: "28px"
+  $description: "Generous padding between grouped controls and the container that surrounds them."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-090:
   $type: dimension
   $value: "32px"
   $description: "Separation between major regions on a single screen or viewport."
@@ -804,7 +822,7 @@ size-space-070:
       property:
         - padding
         - gap
-size-space-080:
+size-space-100:
   $type: dimension
   $value: "40px"
   $description: "Vertical breathing room between stacked page sections."
@@ -813,7 +831,7 @@ size-space-080:
       property:
         - padding
         - gap
-size-space-090:
+size-space-120:
   $type: dimension
   $value: "48px"
   $description: "Large gutters for marketing layouts and spacious dashboards."
@@ -822,10 +840,28 @@ size-space-090:
       property:
         - padding
         - gap
-size-space-100:
+size-space-140:
+  $type: dimension
+  $value: "56px"
+  $description: "Expansive spacing between stacked content blocks on roomy layouts."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-160:
   $type: dimension
   $value: "64px"
   $description: "Hero sections, page mastheads, and major vertical breaks in long pages."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-180:
+  $type: dimension
+  $value: "72px"
+  $description: "Oversized vertical rhythm between editorial and landing-page sections."
   $extensions:
     com.godaddy.classname:
       property:
@@ -842,7 +878,7 @@ size-space-200:
         - gap
 size-space-300:
   $type: dimension
-  $value: "96px"
+  $value: "160px"
   $description: "Full-bleed section transitions and very open marketing compositions."
   $extensions:
     com.godaddy.classname:
@@ -851,7 +887,7 @@ size-space-300:
         - gap
 size-space-400:
   $type: dimension
-  $value: "128px"
+  $value: "240px"
   $description: "Outermost layout gutters on very wide breakpoints."
   $extensions:
     com.godaddy.classname:
@@ -860,8 +896,17 @@ size-space-400:
         - gap
 size-space-500:
   $type: dimension
-  $value: "160px"
+  $value: "320px"
   $description: "Campaign art direction, empty states, and other layouts that need maximum outer whitespace."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-600:
+  $type: dimension
+  $value: "400px"
+  $description: "Maximum outer whitespace for full-viewport hero and campaign compositions."
   $extensions:
     com.godaddy.classname:
       property:
