@@ -25,7 +25,8 @@
   opacity: 0;
 }
 
-:where([data-card]):where(:hover, :focus-visible) .indicator:where([data-visibility="auto"]),
+:where([data-card]):where(:hover, :has(:focus-visible), :has([data-focus-visible]))
+  .indicator:where([data-visibility="auto"]),
 .indicator:where([data-selected], [data-visibility="always"], [data-focus-visible]) {
   opacity: 1;
 }
@@ -49,7 +50,7 @@
 }
 
 @media (hover: none) {
-  .indicator:where([data-visibility="auto"]) {
+  .indicator:where([data-visibility="auto"]):where(:not([data-disabled], [data-readonly])) {
     opacity: 1;
   }
 }

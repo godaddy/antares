@@ -4,7 +4,6 @@ import {
   type CheckboxButtonProps as RACCheckboxButtonProps,
   CheckboxField as RACCheckboxField,
   type CheckboxFieldProps as RACCheckboxFieldProps,
-  type CheckboxFieldRenderProps,
   CheckboxGroup as RACCheckboxGroup,
   type CheckboxGroupProps as RACCheckboxGroupProps,
   type CheckboxGroupRenderProps as RACCheckboxGroupRenderProps,
@@ -13,7 +12,7 @@ import {
   useSlottedContext
 } from 'react-aria-components';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { Card, CardSelectionControlContext, splitCardLayoutProps } from '#components/card';
+import { Card, SelectionProvider } from '#components/card';
 import { GroupContext, type GroupProps } from '#components/structure';
 import { LabelContext } from '#components/label';
 import { Icon } from '#components/icon';
@@ -91,30 +90,29 @@ export const Checkbox = forwardRef<HTMLDivElement, CheckboxProps>(function Check
   const { children, as, href, onPress, ...rest } = props;
 
   if (as === Card) {
-    const { cardProps, fieldProps: remainingProps } = splitCardLayoutProps(rest);
-    const { className, style, ...fieldProps } = remainingProps;
-
     return (
-      <Flex {...fieldProps} as={RACCheckboxField} style={{ display: 'contents' }}>
-        {(renderProps: CheckboxFieldRenderProps) => (
-          <CardSelectionControlContext.Provider value="checkbox">
+      <Flex
+        padding="lg"
+        gap="lg"
+        direction="column"
+        {...rest}
+        ref={ref}
+        as={RACCheckboxField}
+        render={function renderCard(domProps, state) {
+          return (
             <Card
-              {...cardProps}
-              ref={ref}
-              className={
-                typeof className === 'function' ? className({ ...renderProps, defaultClassName: undefined }) : className
-              }
-              style={typeof style === 'function' ? style({ ...renderProps, defaultStyle: {} }) : style}
+              direction="row"
+              {...domProps}
               href={href}
               onPress={onPress}
-              data-card-selected={renderProps.isSelected || undefined}
+              data-card-selected={state.isSelected || undefined}
               aria-label={props['aria-label']}
               aria-labelledby={props['aria-labelledby']}
-            >
-              {children}
-            </Card>
-          </CardSelectionControlContext.Provider>
-        )}
+            />
+          );
+        }}
+      >
+        <SelectionProvider kind="checkbox">{children}</SelectionProvider>
       </Flex>
     );
   }

@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   Card,
-  CardContent,
+  Content,
   CardSelectionIndicator,
   Checkbox,
   CheckboxGroup,
   CornerActions,
   Group,
+  Link,
   Radio,
   RadioGroup,
   Text
@@ -14,14 +15,15 @@ import {
 
 /**
  * Internal review coverage for Card refs, layout props, render props, controlled groups, and
- * CardContent label precedence.
+ * shared region customization.
  * @ignore
  */
-export function PropsReviewExample() {
+export function CustomizationExample() {
   const checkboxCardRef = useRef<HTMLDivElement>(null);
   const radioCardRef = useRef<HTMLDivElement>(null);
-  const staticContentRef = useRef<HTMLAnchorElement>(null);
-  const linkedContentRef = useRef<HTMLAnchorElement>(null);
+  const staticContentRef = useRef<HTMLElement>(null);
+  const linkedContentRef = useRef<HTMLElement>(null);
+  const customLinkRef = useRef<HTMLAnchorElement>(null);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState<string[]>([]);
   const [checkboxChanges, setCheckboxChanges] = useState(0);
   const [selectedRadio, setSelectedRadio] = useState('');
@@ -39,7 +41,13 @@ export function PropsReviewExample() {
   }
 
   useEffect(function checkForwardedRefs() {
-    setRefsReady(staticContentRef.current?.tagName === 'DIV' && linkedContentRef.current?.tagName === 'A');
+    setRefsReady(
+      checkboxCardRef.current?.hasAttribute('data-card') === true &&
+        radioCardRef.current?.hasAttribute('data-card') === true &&
+        staticContentRef.current?.tagName === 'DIV' &&
+        linkedContentRef.current?.tagName === 'SECTION' &&
+        customLinkRef.current?.tagName === 'A'
+    );
   }, []);
 
   return (
@@ -59,6 +67,7 @@ export function PropsReviewExample() {
             }}
             padding="sm"
             gap="xs"
+            direction="row"
           >
             <Text>Checkbox props card</Text>
             <CornerActions>
@@ -94,25 +103,32 @@ export function PropsReviewExample() {
       </RadioGroup>
 
       <Card>
-        <CardContent ref={staticContentRef} data-testid="props-static-content">
+        <Content ref={staticContentRef} data-testid="props-static-content">
           Static content ref
-        </CardContent>
+        </Content>
       </Card>
-      <Card href="/props-review-linked">
-        <CardContent ref={linkedContentRef} data-testid="props-linked-content">
+      <Card href="/props-review-linked" aria-label="Linked content ref">
+        <Content as="section" padding="sm" gap="xs" ref={linkedContentRef} data-testid="props-linked-content">
           Linked content ref
-        </CardContent>
+        </Content>
       </Card>
       <Text data-testid="props-ref-status">{refsReady ? 'Refs ready' : 'Refs pending'}</Text>
 
-      <Card href="/props-review-default">
-        <CardContent>Default label content</CardContent>
+      <Card href="/props-review-context" aria-label="Primary destination">
+        <Content
+          aria-label="Independent content"
+          data-testid="custom-content"
+          padding="lg"
+          gap="sm"
+          style={{ overflow: 'auto' }}
+        >
+          Custom content
+        </Content>
       </Card>
-      <Card href="/props-review-context" aria-label="Context label">
-        <CardContent>Context label content</CardContent>
-      </Card>
-      <Card href="/props-review-local" aria-label="Context fallback">
-        <CardContent aria-label="Local label">Local label content</CardContent>
+      <Card>
+        <Content as={Link} href="#custom-content-link" ref={customLinkRef}>
+          Custom content link
+        </Content>
       </Card>
     </>
   );

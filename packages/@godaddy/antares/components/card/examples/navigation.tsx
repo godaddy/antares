@@ -1,13 +1,13 @@
-import { Button, Card, CardContent, Text } from '@godaddy/antares';
+import { Button, Card, Content, Text } from '@godaddy/antares';
 
-/** A Card with a native linked content region and an independent action. */
+/** A Card with a native background link and an independent action inside shared Content. */
 export function NavigationExample() {
   return (
     <Card href="/about" aria-label="About this product">
-      <CardContent>
+      <Content>
         <Text>About this product</Text>
-      </CardContent>
-      <Button>Save</Button>
+        <Button>Save</Button>
+      </Content>
     </Card>
   );
 }

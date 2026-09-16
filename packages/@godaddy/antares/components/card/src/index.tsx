@@ -1,19 +1,15 @@
-import { forwardRef, useContext, type MouseEvent, type MouseEventHandler, type ReactNode } from 'react';
-import { DEFAULT_SLOT, Provider as RACProvider, TextContext } from 'react-aria-components';
+import { forwardRef, useRef, type MouseEvent as ReactMouseEvent, type MouseEventHandler, type ReactNode } from 'react';
+import { Provider as RACProvider } from 'react-aria-components';
 import { Button, type ButtonProps } from '#components/button';
 import { Flex, type FlexProps } from '#components/layout/flex';
-import type { LinkProps } from '#components/link';
+import { Link, type LinkProps } from '#components/link';
+import { ContentContext, HeaderContext, FooterContext, CornerActionsContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
-import { CardContext } from './card-context.ts';
-
-export { CardContext } from './card-context.ts';
-export { CardContent, type CardContentProps } from './card-content.tsx';
-export { splitCardLayoutProps } from './card-layout.ts';
 
 export {
   CardSelectionIndicator,
-  CardSelectionControlContext,
+  SelectionProvider,
   type CardSelectionIndicatorProps
 } from './card-selection-indicator.tsx';
 
@@ -67,11 +63,10 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
     ...rest
   } = props;
   const hasPrimary = href != null || onPress != null;
-  const inheritedText = useContext(TextContext);
-  const inheritedSlots =
-    inheritedText && typeof inheritedText === 'object' && 'slots' in inheritedText ? inheritedText.slots : undefined;
+  const linkRef = useRef<HTMLAnchorElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  function handleClick(event: MouseEvent<HTMLDivElement>) {
+  function handleClick(event: ReactMouseEvent<HTMLDivElement>) {
     onClick?.(event);
     if (
       event.defaultPrevented ||
@@ -87,8 +82,17 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
       input?.click();
       return;
     }
-    const control = event.currentTarget.querySelector<HTMLElement>('[data-card-primary]');
-    control?.click();
+    if (isDisabled) return;
+    (href != null ? linkRef.current : buttonRef.current)?.dispatchEvent(
+      new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+        ctrlKey: event.ctrlKey,
+        metaKey: event.metaKey,
+        shiftKey: event.shiftKey,
+        altKey: event.altKey
+      })
+    );
   }
 
   return (
@@ -102,21 +106,46 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
       onClick={handleClick}
       data-card={hasPrimary ? 'interactive' : 'static'}
     >
-      {href == null && onPress != null ? (
+      {href != null ? (
+        <Link
+          href={href}
+          onPress={onPress}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledBy}
+          isDisabled={isDisabled}
+          ref={linkRef}
+          className={styles.link}
+        />
+      ) : onPress != null ? (
         <Button
           onPress={onPress}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}
           isDisabled={isDisabled}
-          data-card-primary
+          ref={buttonRef}
           className={styles.primary}
         />
       ) : null}
-      <CardContext.Provider value={{ href, onPress, ariaLabel, ariaLabelledBy, isDisabled }}>
-        <RACProvider values={[[TextContext, { slots: { ...inheritedSlots, [DEFAULT_SLOT]: {} } }]]}>
-          {children}
-        </RACProvider>
-      </CardContext.Provider>
+      <RACProvider
+        values={[
+          [
+            ContentContext,
+            {
+              as: 'div',
+              padding: '0',
+              inlinePadding: undefined,
+              blockPadding: undefined,
+              gap: 'lg',
+              style: { overflow: 'visible' }
+            }
+          ],
+          [HeaderContext, { padding: '0' }],
+          [FooterContext, { padding: '0', inlinePadding: undefined, blockPadding: undefined }],
+          [CornerActionsContext, { alignSelf: 'start' }]
+        ]}
+      >
+        {children}
+      </RACProvider>
     </Flex>
   );
 });

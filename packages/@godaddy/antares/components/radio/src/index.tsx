@@ -4,7 +4,6 @@ import {
   type RadioButtonProps as RACRadioButtonProps,
   RadioField as RACRadioField,
   type RadioFieldProps as RACRadioFieldProps,
-  type RadioFieldRenderProps,
   RadioGroup as RACRadioGroup,
   type RadioGroupProps as RACRadioGroupProps,
   type RadioGroupRenderProps as RACRadioGroupRenderProps,
@@ -14,7 +13,7 @@ import {
 } from 'react-aria-components';
 import { composeClassName } from '#utils/render-props.ts';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { Card, CardSelectionControlContext, splitCardLayoutProps } from '#components/card';
+import { Card, SelectionProvider } from '#components/card';
 import { LabelContext } from '#components/label';
 import { GroupContext, type GroupProps } from '#components/structure';
 import fieldStyles from '../../_internal/field-styles/index.module.css';
@@ -60,30 +59,29 @@ export const Radio = forwardRef<HTMLDivElement, RadioProps>(function Radio(
   ref
 ) {
   if (as === Card) {
-    const { cardProps, fieldProps: remainingProps } = splitCardLayoutProps(props);
-    const { className, style, ...fieldProps } = remainingProps;
-
     return (
-      <Flex {...fieldProps} as={RACRadioField} style={{ display: 'contents' }}>
-        {(renderProps: RadioFieldRenderProps) => (
-          <CardSelectionControlContext.Provider value="radio">
+      <Flex
+        padding="lg"
+        gap="lg"
+        direction="column"
+        {...props}
+        ref={ref}
+        as={RACRadioField}
+        render={function renderCard(domProps, state) {
+          return (
             <Card
-              {...cardProps}
-              ref={ref}
-              className={
-                typeof className === 'function' ? className({ ...renderProps, defaultClassName: undefined }) : className
-              }
-              style={typeof style === 'function' ? style({ ...renderProps, defaultStyle: {} }) : style}
+              direction="row"
+              {...domProps}
               href={href}
               onPress={onPress}
-              data-card-selected={renderProps.isSelected || undefined}
+              data-card-selected={state.isSelected || undefined}
               aria-label={props['aria-label']}
               aria-labelledby={props['aria-labelledby']}
-            >
-              {children}
-            </Card>
-          </CardSelectionControlContext.Provider>
-        )}
+            />
+          );
+        }}
+      >
+        <SelectionProvider kind="radio">{children}</SelectionProvider>
       </Flex>
     );
   }

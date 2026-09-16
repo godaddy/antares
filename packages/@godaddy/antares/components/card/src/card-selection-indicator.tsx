@@ -3,13 +3,27 @@ import {
   CheckboxButton as RACCheckboxButton,
   RadioButton as RACRadioButton,
   type CheckboxButtonRenderProps,
-  type RadioButtonRenderProps
+  type RadioButtonRenderProps,
+  DEFAULT_SLOT,
+  TextContext
 } from 'react-aria-components';
 import { Icon } from '#components/icon';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './card-selection-indicator.module.css';
 
-export const CardSelectionControlContext = createContext<'checkbox' | 'radio' | null>(null);
+const SelectionContext = createContext<'checkbox' | 'radio' | null>(null);
+
+/** Internal field wiring shared by Checkbox and Radio compositions. */
+export function SelectionProvider({ kind, children }: { kind: 'checkbox' | 'radio'; children: ReactNode }) {
+  const text = useContext(TextContext);
+  const slots = text && 'slots' in text ? text.slots : undefined;
+
+  return (
+    <SelectionContext.Provider value={kind}>
+      <TextContext.Provider value={{ slots: { ...slots, [DEFAULT_SLOT]: {} } }}>{children}</TextContext.Provider>
+    </SelectionContext.Provider>
+  );
+}
 
 export interface CardSelectionIndicatorProps extends HTMLAttributes<HTMLSpanElement> {
   /** Keep the indicator visible when the Card is not hovered or focused. */
@@ -19,7 +33,7 @@ export interface CardSelectionIndicatorProps extends HTMLAttributes<HTMLSpanElem
 /** A circular, explicitly placed visual for a Card's native selection control. */
 export const CardSelectionIndicator = forwardRef<HTMLSpanElement, CardSelectionIndicatorProps>(
   function CardSelectionIndicator({ className, visibility = 'auto', onClick, ...props }, ref) {
-    const control = useContext(CardSelectionControlContext);
+    const control = useContext(SelectionContext);
 
     const indicator = (state: CheckboxButtonRenderProps | RadioButtonRenderProps, extra?: ReactNode) => (
       <span

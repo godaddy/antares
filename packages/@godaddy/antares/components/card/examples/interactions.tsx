@@ -3,13 +3,14 @@ import {
   Box,
   Button,
   Card,
-  CardContent,
+  Content,
   CardSelectionIndicator,
   Checkbox,
   CornerActions,
   Menu,
   MenuItem,
   MenuTrigger,
+  Link,
   Radio,
   RadioGroup,
   Text
@@ -25,7 +26,7 @@ interface InteractionReviewProps {
 }
 
 /** @ignore */
-export function InteractionReviewExample({
+export function InteractionsExample({
   kind = 'checkbox',
   primary,
   isDisabled,
@@ -53,8 +54,8 @@ export function InteractionReviewExample({
   function contents(title: string) {
     const text = <Text>{title}: copy this text without changing selection.</Text>;
     return (
-      <>
-        {primary === 'navigation' ? <CardContent>{text}</CardContent> : text}
+      <Content>
+        {text}
         <CornerActions data-testid={`corner-${title}`} padding="sm">
           <Button onPress={act}>Independent {title}</Button>
           <CardSelectionIndicator visibility={visibility} data-testid={`indicator-${title}`} />
@@ -62,6 +63,9 @@ export function InteractionReviewExample({
         <Button isDisabled onPress={act}>
           Unavailable {title}
         </Button>
+        <Link href="#independent-destination" onPress={act}>
+          Independent link {title}
+        </Link>
         <MenuTrigger>
           <Button>Menu {title}</Button>
           <Menu aria-label={`Menu ${title}`} onAction={act}>
@@ -71,7 +75,7 @@ export function InteractionReviewExample({
         <Box contentEditable suppressContentEditableWarning data-testid={`editor-${title}`}>
           Editable {title}
         </Box>
-      </>
+      </Content>
     );
   }
 
