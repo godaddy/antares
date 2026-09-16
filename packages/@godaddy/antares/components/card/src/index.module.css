@@ -1,0 +1,56 @@
+.card {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  background: var(--color-surface-background-card, var(--ux-cao06b, #fff));
+  border: 1px solid var(--color-surface-border-card, var(--ux-97h3vl, #d4dbe0));
+  border-radius: var(--radius-surface-card, var(--ux-2jubes, 6px));
+  color: var(--color-surface-text-card, var(--ux-1leynsm, #111));
+}
+
+.card:where([data-card="interactive"]):where(:hover) {
+  border-color: var(--color-action-border-primary-hovered, var(--ux-bgke81, #444444));
+}
+
+.card:where(:has([data-focus-visible])) {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+}
+
+.card:where([data-card-selected]) {
+  border-color: var(--color-input-border-selected, var(--ux-77zzwv, #00a4a6));
+}
+
+.primary {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  pointer-events: none;
+}
+
+.content {
+  position: static;
+  color: inherit;
+  text-decoration: none;
+  user-select: text;
+  -webkit-user-drag: none;
+}
+
+.content::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+}
+
+.content:where([data-hovered]) {
+  color: var(--color-action-text-inline-hovered, var(--ux-1j87vvn, #1976d2));
+}
+
+.content:where([data-focus-visible]) {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+}

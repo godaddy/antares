@@ -1,0 +1,55 @@
+.control {
+  display: inline-flex;
+  align-items: center;
+}
+
+.indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  padding: 0;
+  border: 1px solid var(--color-input-border-default, var(--ux-by6mab, #767676));
+  border-radius: 50%;
+  background: var(--color-input-background-default, var(--ux-1nu8itt, #fff));
+  color: var(--color-input-border-selected, var(--ux-77zzwv, #00a4a6));
+}
+
+.indicator:where([data-selected], [data-indeterminate]) {
+  background: var(--color-input-background-default, var(--ux-1nu8itt, #fff));
+  border-color: var(--color-input-border-selected, var(--ux-77zzwv, #00a4a6));
+}
+
+.indicator:where([data-visibility="auto"]) {
+  opacity: 0;
+}
+
+:where([data-card]):where(:hover, :focus-visible) .indicator:where([data-visibility="auto"]),
+.indicator:where([data-selected], [data-visibility="always"], [data-focus-visible]) {
+  opacity: 1;
+}
+
+.control:where([data-disabled], [data-readonly]),
+.indicator:where([data-disabled], [data-readonly]) {
+  cursor: not-allowed;
+}
+
+.indicator:where([data-disabled], [data-readonly]) {
+  opacity: 0.4;
+}
+
+.checkmark {
+  opacity: 0;
+}
+
+.indicator:where([data-selected], [data-focus-visible]) > :where(.checkmark),
+:where([data-card]):where(:hover) .indicator:where([data-visibility="auto"]) > :where(.checkmark) {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .indicator:where([data-visibility="auto"]) {
+    opacity: 1;
+  }
+}

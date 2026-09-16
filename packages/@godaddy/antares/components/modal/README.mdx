@@ -39,6 +39,7 @@ npm install --save @godaddy/antares
 
 - Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
 - Pair every action button with `slot="close"` when it should dismiss the modal
+- Use `CornerActions` for an always-visible corner cluster; a direct `CloseButton` remains supported
 - Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
 
 ## Props
@@ -48,7 +49,9 @@ npm install --save @godaddy/antares
   <Button />
   <Modal>
     <Heading slot="title" />
-    <CloseButton />
+    <CornerActions>
+      <CloseButton />
+    </CornerActions>
     <Header />
     <Content />
     <Footer />

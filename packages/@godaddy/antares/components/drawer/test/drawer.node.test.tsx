@@ -8,6 +8,7 @@ import { NestedPopoverExample } from '../examples/nested-popover.tsx';
 import { NoEscapeDismissExample } from '../examples/no-escape-dismiss.tsx';
 import { FilteredDismissExample } from '../examples/filtered-dismiss.tsx';
 import { ScrollableExample } from '../examples/scrollable.tsx';
+import { CornerActionsExample } from '../examples/corner-actions.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Drawer', function drawerTests() {
@@ -69,6 +70,10 @@ describe('@godaddy/antares', function antares() {
 
     it('renders FilteredDismissExample', function filteredDismissExample() {
       expect(renderToString(<FilteredDismissExample />)).toMatchSnapshot();
+    });
+
+    it('renders CornerActionsExample', function cornerActionsExample() {
+      expect(renderToString(<CornerActionsExample />)).toMatchSnapshot();
     });
   });
 });

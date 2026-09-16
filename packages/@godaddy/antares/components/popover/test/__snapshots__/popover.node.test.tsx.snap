@@ -1,5 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`@godaddy/antares > #Popover > renders CornerActionsExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="text">Open popover with corner actions</span></button>"`;
+
 exports[`@godaddy/antares > #Popover > renders CustomAnchorExample 1`] = `"<div class="box flex" style="align-items:center;gap:var(--sp-sm)"><button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="text">Open Popover</span></button><div class="box" data-elevation="card">Popover will be positioned relative to me</div></div>"`;
 
 exports[`@godaddy/antares > #Popover > renders DefaultExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="text">Open popover</span></button>"`;

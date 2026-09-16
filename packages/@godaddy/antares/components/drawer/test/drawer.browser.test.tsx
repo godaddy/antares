@@ -10,6 +10,7 @@ import { FilteredDismissExample } from '../examples/filtered-dismiss.tsx';
 import { NestedPopoverExample } from '../examples/nested-popover.tsx';
 import { ScrollableExample } from '../examples/scrollable.tsx';
 import { LayerPropsExample } from '../examples/layer-props.tsx';
+import { CornerActionsExample } from '../examples/corner-actions.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Drawer', function drawerTests() {
@@ -72,6 +73,20 @@ describe('@godaddy/antares', function antares() {
       await getByRole('button', { name: 'Close' }).click();
       await vi.waitFor(async function close() {
         assume(getByRole('dialog').query()).equals(null);
+      });
+    });
+
+    it('closes a drawer from a CloseButton inside CornerActions', async function closeViaCornerActions() {
+      const { getByRole } = await render(<CornerActionsExample />);
+
+      await getByRole('button', { name: 'Open drawer with corner actions' }).click();
+      await vi.waitFor(async function open() {
+        assume(getByRole('dialog', { name: 'Corner actions drawer' }).query()).is.not.equal(null);
+      });
+
+      await getByRole('button', { name: 'Close' }).click();
+      await vi.waitFor(async function close() {
+        assume(getByRole('dialog', { name: 'Corner actions drawer' }).query()).equals(null);
       });
     });
 

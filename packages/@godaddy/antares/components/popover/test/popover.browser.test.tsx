@@ -3,6 +3,7 @@ import { CustomAnchorExample } from '../examples/custom-anchor.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { PlaygroundExample } from '../examples/popover-playground.tsx';
 import { LayerPropsExample } from '../examples/layer-props.tsx';
+import { CornerActionsExample } from '../examples/corner-actions.tsx';
 import { cdp, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
@@ -104,6 +105,20 @@ describe('@godaddy/antares', function antares() {
 
       await vi.waitFor(async function close() {
         assume(getByRole('dialog', { name: 'Popover title' }).query()).equals(null);
+      });
+    });
+
+    it('closes a popover from a CloseButton inside CornerActions', async function closeViaCornerActions() {
+      const { getByRole } = await render(<CornerActionsExample />);
+
+      await getByRole('button', { name: 'Open popover with corner actions' }).click();
+      await vi.waitFor(async function open() {
+        assume(getByRole('dialog', { name: 'Corner actions popover' }).query()).is.not.equal(null);
+      });
+
+      await getByRole('button', { name: 'Close' }).click();
+      await vi.waitFor(async function close() {
+        assume(getByRole('dialog', { name: 'Corner actions popover' }).query()).equals(null);
       });
     });
 

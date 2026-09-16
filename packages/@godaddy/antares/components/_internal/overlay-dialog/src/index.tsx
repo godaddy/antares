@@ -5,7 +5,13 @@ import {
   Provider as RACProvider
 } from 'react-aria-components';
 import { Grid, type GridOwnProps } from '#components/layout/grid';
-import { HeaderContext, ContentContext, FooterContext, ButtonGroupContext } from '#components/structure';
+import {
+  HeaderContext,
+  ContentContext,
+  FooterContext,
+  ButtonGroupContext,
+  CornerActionsContext
+} from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
@@ -36,7 +42,8 @@ export const OverlayDialog = forwardRef<HTMLElement, OverlayDialogProps>(functio
           [HeaderContext, { className: styles.header }],
           [ContentContext, { className: styles.content }],
           [FooterContext, { className: styles.footer }],
-          [ButtonGroupContext, { className: styles.buttons, justifyContent: 'end' }]
+          [ButtonGroupContext, { className: styles.buttons, justifyContent: 'end' }],
+          [CornerActionsContext, { className: styles.corner }]
         ]}
       >
         {children}

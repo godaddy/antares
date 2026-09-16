@@ -2,6 +2,8 @@
 
 exports[`@godaddy/antares > #Drawer > renders BottomSheetExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="text">Open bottom sheet</span></button>"`;
 
+exports[`@godaddy/antares > #Drawer > renders CornerActionsExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="text">Open drawer with corner actions</span></button>"`;
+
 exports[`@godaddy/antares > #Drawer > renders DefaultExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="text">Open drawer</span></button>"`;
 
 exports[`@godaddy/antares > #Drawer > renders FilteredDismissExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="text">Open</span></button>"`;

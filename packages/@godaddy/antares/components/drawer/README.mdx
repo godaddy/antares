@@ -45,15 +45,16 @@ npm install --save @godaddy/antares
 - Provide a `Heading slot="title"` or an `aria-label` so the dialog has an accessible name.
 - Use `isDismissable` to allow closing via backdrop click.
 - Don't nest drawers.
+- Use `CornerActions` for an always-visible corner cluster; direct `CloseButton` placement remains supported.
 
 ## Props
 
 ```tsx
 <Drawer placement="right">
-  <Header>
-    <Heading slot="title" />
+  <Heading slot="title" />
+  <CornerActions>
     <CloseButton />
-  </Header>
+  </CornerActions>
   <Content />
   {/* ... */}
 </Drawer>

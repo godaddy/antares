@@ -1,0 +1,18 @@
+.link {
+  color: var(--color-action-text-inline-default, var(--ux-2rqapw, #444444));
+  text-decoration: underline;
+}
+
+.link:where([data-hovered]:not([data-disabled])) {
+  color: var(--color-action-text-inline-hovered, var(--ux-1j87vvn, #1976d2));
+}
+
+.link:where([data-focus-visible]:not([data-disabled])) {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+}
+
+.link:where([data-disabled]) {
+  cursor: not-allowed;
+  opacity: 0.4;
+}

@@ -16,6 +16,7 @@ import * as Stories from './structure.stories.tsx';
 - **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
 - **`ButtonGroup`** — a cluster of related actions, typically inside a `Footer` (an end-aligned, wrapping row with `role="group"`).
 - **`Group`** — semantic grouping container for field item controls. A parent field injects the box chrome.
+- **`CornerActions`** - an always-visible structural row for actions placed at a surface corner.
 
 ## Hybrid styling
 
@@ -64,3 +65,10 @@ Each container works in two modes:
 ### Group
 
 <ArgTypes of={Stories.GroupProps} />
+
+### CornerActions
+
+`CornerActions` renders a plain `<div>` with no landmark role. It accepts the same layout props as
+`Flex`, so consumers control placement, wrapping, and reserved space around the actions.
+
+<ArgTypes of={Stories.CornerActionsProps} />

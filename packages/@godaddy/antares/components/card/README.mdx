@@ -1,0 +1,110 @@
+---
+title: Card
+description: A padded surface for composing media, content, actions, and selection.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './card.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+Card is a layout surface. Compose its contents with Antares layout and structure primitives. It
+supports text-only, media-only, and mixed compositions, while the consumer chooses media order,
+sizing, orientation, and responsive behavior.
+
+The default Card padding and gap are `lg`. Override them with the normal layout props. Full bleed
+media is composed with `padding="0"` and a separately padded content region; Card has no media
+bleed prop.
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Accessibility
+
+Cards are static surfaces by default. `href` adds a primary navigation destination and `onPress`
+adds a primary action. Always provide `aria-label` or `aria-labelledby` for a Card primary action:
+the internal action control has no visible label of its own and cannot derive its name from
+arbitrary Card body content.
+
+`Card href` uses an explicit `CardContent` region, which renders the real Antares `Link` around
+the primary non-interactive content. Keep independent buttons, links, menu triggers, form
+controls, and editable content as siblings outside `CardContent`. This preserves native link
+behavior and lets people select and copy text without an overlay intercepting it. Do not put
+interactive descendants inside the linked `CardContent`.
+
+Selection uses `Checkbox as={Card}` or `Radio as={Card}`. Place one `CardSelectionIndicator`
+explicitly, usually as the last item in `CornerActions`; it shares the enclosing control's state
+and does not create duplicate selection state. Checkbox and Radio retain their native selection,
+keyboard, form, and group semantics. If selection is disabled or read-only, only the selection
+control and its indicator are disabled; independent Card actions remain available.
+
+The indicator is automatically revealed on hover, focus within the Card, or selection, and remains
+available on touch devices. Use `visibility="always"` when the selected affordance should stay
+visible at rest. Hiding its visual does not remove the underlying selection control from keyboard
+or assistive-technology access.
+
+### CardSelectionIndicator
+
+Place `CardSelectionIndicator` inside `CornerActions` when a Checkbox or Radio is composed as a Card. It
+shares the native selection control's state and does not add a second keyboard focus stop.
+
+## Best Practices
+
+- Use `Image slot="media"` or a consumer-owned `Box slot="media"` for media. Card does not infer
+  media from arbitrary children.
+- Use `Flex`, `Grid`, `Box`, `Header`, `TextLockup`, and `ButtonGroup` to define the interior
+  layout. Keep enough width for long text and reserve CornerActions space explicitly.
+- For collections, give cards a shared grid or feed width, let the content region grow, and place
+  bottom actions after that growing region to align actions across equal-height cards.
+- Use a container query in the surrounding layout when a card should stack at its available width.
+  Card does not add automatic breakpoints or reorder children.
+- CornerActions is always visible. Use `gap`, wrapping, and explicit flexible text widths to avoid
+  collisions at narrow widths.
+
+## Troubleshooting
+
+### My linked Card contains a button or another link
+
+Move that independent control outside `CardContent` while keeping it inside the outer Card. A
+linked content region must contain non-interactive primary content only.
+
+### My media has unexpected padding
+
+Card defaults to `padding="lg"` and `gap="lg"`. Keep those defaults for inset media, or set
+`padding="0"` and add `Box padding="lg"` around mixed content for a full bleed composition.
+
+### Corner actions overlap long text
+
+Card does not measure arbitrary children. Compose a `Header` or `Flex` with an explicit flexible
+text region, `CornerActions`, and wrapping or a minimum text width appropriate for the container.
+
+## Props
+
+```tsx
+<Card>
+  <CardContent>
+    <Image slot="media" />
+    {/* ...primary non-interactive content... */}
+  </CardContent>
+  <CornerActions>
+    {/* ...independent actions or CardSelectionIndicator... */}
+  </CornerActions>
+  {/* ...other consumer-owned layout regions... */}
+</Card>
+```
+
+<ArgTypes of={Stories.Props} />
+
+<ArgTypes of={Stories.CardContentProps} />
+
+<ArgTypes of={Stories.CardSelectionIndicatorProps} />

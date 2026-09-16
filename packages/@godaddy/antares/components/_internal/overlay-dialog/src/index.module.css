@@ -41,3 +41,12 @@
 .buttons {
   grid-area: buttons;
 }
+
+.corner {
+  --_overlay-dialog-corner-margin: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
+  grid-area: close;
+  align-self: start;
+  justify-self: end;
+  margin-block-start: var(--_overlay-dialog-corner-margin);
+  margin-inline-end: var(--_overlay-dialog-corner-margin);
+}

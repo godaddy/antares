@@ -8,6 +8,7 @@ import { ScrollableExample } from '../examples/scrollable.tsx';
 import { PlaygroundExample } from '../examples/modal-playground.tsx';
 import { TriggerlessExample } from '../examples/triggerless.tsx';
 import { LayerPropsExample } from '../examples/layer-props.tsx';
+import { CornerActionsExample } from '../examples/corner-actions.tsx';
 
 /**
  * Simulate an interaction outside the dialog by dispatching a pointerdown + click on the
@@ -52,6 +53,39 @@ describe('@godaddy/antares', function packageTests() {
 
       await userEvent.click(page.getByRole('button', { name: 'Close' }));
       await expect.element(page.getByRole('dialog')).not.toBeInTheDocument();
+    });
+
+    it('closes a modal from a CloseButton inside CornerActions', async function closeViaCornerActions() {
+      await render(<CornerActionsExample />);
+
+      await userEvent.click(page.getByRole('button', { name: 'Open modal with corner actions' }));
+      await expect.element(page.getByRole('dialog', { name: 'Corner actions modal' })).toBeVisible();
+
+      await userEvent.click(page.getByRole('button', { name: 'Close' }));
+      await expect.element(page.getByRole('dialog', { name: 'Corner actions modal' })).not.toBeInTheDocument();
+    });
+
+    it('supports keyboard close and restores focus from CornerActions', async function keyboardCloseViaCornerActions() {
+      await render(<CornerActionsExample />);
+
+      const trigger = page.getByRole('button', { name: 'Open modal with corner actions' });
+      await userEvent.click(trigger);
+      await expect.element(page.getByRole('dialog', { name: 'Corner actions modal' })).toBeVisible();
+
+      await userEvent.keyboard('{Tab}');
+      await userEvent.keyboard('{Enter}');
+      await expect.element(page.getByRole('dialog', { name: 'Corner actions modal' })).not.toBeInTheDocument();
+      await expect.element(trigger).toHaveFocus();
+    });
+
+    it('dismisses a CornerActions modal with Escape', async function escapeViaCornerActions() {
+      await render(<CornerActionsExample />);
+
+      await userEvent.click(page.getByRole('button', { name: 'Open modal with corner actions' }));
+      await expect.element(page.getByRole('dialog', { name: 'Corner actions modal' })).toBeVisible();
+
+      await userEvent.keyboard('{Escape}');
+      await expect.element(page.getByRole('dialog', { name: 'Corner actions modal' })).not.toBeInTheDocument();
     });
 
     it('closes the modal via a footer action button', async function closeViaAction() {

@@ -1,9 +1,10 @@
-import type { ReactNode } from 'react';
+import { forwardRef, type ReactNode } from 'react';
 import {
   RadioButton as RACRadioButton,
   type RadioButtonProps as RACRadioButtonProps,
   RadioField as RACRadioField,
   type RadioFieldProps as RACRadioFieldProps,
+  type RadioFieldRenderProps,
   RadioGroup as RACRadioGroup,
   type RadioGroupProps as RACRadioGroupProps,
   type RadioGroupRenderProps as RACRadioGroupRenderProps,
@@ -13,6 +14,7 @@ import {
 } from 'react-aria-components';
 import { composeClassName } from '#utils/render-props.ts';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { Card, CardSelectionControlContext, splitCardLayoutProps } from '#components/card';
 import { LabelContext } from '#components/label';
 import { GroupContext, type GroupProps } from '#components/structure';
 import fieldStyles from '../../_internal/field-styles/index.module.css';
@@ -34,7 +36,9 @@ function RadioButton(props: RadioButtonProps) {
       as={RACRadioButton}
       className={composeClassName(className, styles.radio)}
     >
-      {children}
+      {function renderRadio(state) {
+        return typeof children === 'function' ? children(state) : children;
+      }}
     </Flex>
   );
 }
@@ -42,19 +46,57 @@ function RadioButton(props: RadioButtonProps) {
 export interface RadioProps extends Omit<RACRadioFieldProps, 'children'>, FlexOwnProps {
   /** Label text shown next to the indicator. */
   children?: ReactNode;
+
+  /** Primary navigation destination when composed as a Card. */
+  href?: string;
+
+  /** Primary action when composed as a Card. */
+  onPress?: (event: import('react-aria-components').PressEvent) => void;
 }
 
 /** Radio with an associated label. */
-export function Radio({ children, ...props }: RadioProps) {
+export const Radio = forwardRef<HTMLDivElement, RadioProps>(function Radio(
+  { children, as, href, onPress, ...props },
+  ref
+) {
+  if (as === Card) {
+    const { cardProps, fieldProps: remainingProps } = splitCardLayoutProps(props);
+    const { className, style, ...fieldProps } = remainingProps;
+
+    return (
+      <Flex {...fieldProps} as={RACRadioField} style={{ display: 'contents' }}>
+        {(renderProps: RadioFieldRenderProps) => (
+          <CardSelectionControlContext.Provider value="radio">
+            <Card
+              {...cardProps}
+              ref={ref}
+              className={
+                typeof className === 'function' ? className({ ...renderProps, defaultClassName: undefined }) : className
+              }
+              style={typeof style === 'function' ? style({ ...renderProps, defaultStyle: {} }) : style}
+              href={href}
+              onPress={onPress}
+              data-card-selected={renderProps.isSelected || undefined}
+              aria-label={props['aria-label']}
+              aria-labelledby={props['aria-labelledby']}
+            >
+              {children}
+            </Card>
+          </CardSelectionControlContext.Provider>
+        )}
+      </Flex>
+    );
+  }
+
   return (
-    <Flex {...props} as={RACRadioField}>
+    <Flex {...props} ref={ref} as={RACRadioField}>
       <RadioButton>
         <div className={styles.indicator} />
         {children}
       </RadioButton>
     </Flex>
   );
-}
+});
 
 /** Layout an item `Group` inherits. `presentation` keeps it out of the radiogroup's a11y tree. */
 function itemGroup(orientation: 'horizontal' | 'vertical'): GroupProps {

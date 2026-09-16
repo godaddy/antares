@@ -1,0 +1,41 @@
+---
+title: Link
+description: A native navigation link for inline text and composed surfaces.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './link.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+Link is built on a real anchor and preserves browser navigation and modifier-click behavior.
+It can be used inline inside `Text` without adding a layout wrapper.
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Accessibility
+
+- Keep a meaningful accessible label in the link text or with `aria-label`/`aria-labelledby`.
+- Keyboard users can focus links and activate them with Enter.
+- `isDisabled` exposes the disabled state to assistive technology and prevents activation.
+
+## Best Practices
+
+- Use native `target`, `rel`, and `download` props when their behavior matters.
+- `isExternal` defaults to `target="_blank"` and `rel="noopener noreferrer"`; supplied `target` and
+  `rel` values are preserved. Link does not add an external-link icon.
+
+## Props
+
+```tsx
+<Text>
+  Read more in our <Link href="/about" />.
+</Text>
+```
+
+<ArgTypes of={Stories.Props} />
