@@ -43,7 +43,6 @@ npm install --save @godaddy/antares
 - Pass an `aria-label` when anchoring with `triggerRef` instead of wrapping a `PopoverTrigger`,
   since there is no trigger to borrow the name from.
 - Popover width is determined by its content, and it's recommended to keep it under 400px.
-- Use `CornerActions` for an always-visible corner cluster; direct `CloseButton` placement remains supported.
 
 ## Props
 
@@ -52,9 +51,7 @@ npm install --save @godaddy/antares
   <Button />
   <Popover>
     <Heading slot="title" />
-    <CornerActions>
-      <CloseButton />
-    </CornerActions>
+    <CloseButton />
     <Content />
     {/* ... */}
   </Popover>

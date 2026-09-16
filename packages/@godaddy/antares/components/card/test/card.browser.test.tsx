@@ -1,10 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { cdp, page, userEvent } from 'vitest/browser';
-import { ActionExample } from '../examples/action.tsx';
+import { ActionsExample } from '../examples/actions.tsx';
 import { SelectionExample } from '../examples/selection.tsx';
-import { NavigationExample } from '../examples/navigation.tsx';
-import { CombinedExample } from '../examples/combined.tsx';
 import { InteractionsExample } from '../examples/interactions.tsx';
 import { resetHover } from '#test/utils/test-helpers.tsx';
 import { CustomizationExample } from '../examples/customization.tsx';
@@ -13,14 +11,40 @@ import { ContainerQueryExample } from '../examples/container-query.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Card', function cardTests() {
+    it('updates controlled standalone selection once from body and indicator', async function controlledSelection() {
+      const { getByRole, getByText, getByTestId } = await render(<SelectionExample />);
+      await userEvent.click(getByText('Selectable card content'));
+      await expect.element(getByRole('checkbox', { name: 'Select this card' })).toBeChecked();
+      await expect.element(getByText('Selection changes: 1')).toBeInTheDocument();
+      await userEvent.click(getByTestId('card-selection-indicator'));
+      await expect.element(getByRole('checkbox', { name: 'Select this card' })).not.toBeChecked();
+      await expect.element(getByText('Selection changes: 2')).toBeInTheDocument();
+    });
+
+    it.each([
+      'action',
+      'navigation'
+    ] as const)('disables the primary %s independently of selection', async function disabledPrimary(primary) {
+      const { getByRole, getByText, getByTestId } = await render(
+        <InteractionsExample primary={primary} isPrimaryDisabled />
+      );
+      await userEvent.click(getByText('One: copy this text without changing selection.'));
+      await expect.element(getByText('Primary activations: 0')).toBeInTheDocument();
+      await userEvent.click(getByTestId('indicator-One'));
+      await expect.element(getByRole('checkbox', { name: 'Option one' })).toBeChecked();
+      await userEvent.click(getByRole('button', { name: 'Independent One' }));
+      await expect.element(getByText('Independent activations: 1')).toBeInTheDocument();
+      await expect.element(getByText('Primary activations: 0')).toBeInTheDocument();
+    });
+
     it('dispatches the primary action from body activation', async function bodyAction() {
-      const { getByText } = await render(<ActionExample />);
+      const { getByText } = await render(<ActionsExample />);
       await userEvent.click(getByText('Open details'));
       await expect.element(getByText('Independent action (1)')).toBeInTheDocument();
     });
 
     it('keeps a nested action independent', async function nestedAction() {
-      const { getByRole, getByText } = await render(<ActionExample />);
+      const { getByRole, getByText } = await render(<ActionsExample />);
       await userEvent.click(getByRole('button', { name: /Independent action/ }));
       await expect.element(getByText('Independent action (10)')).toBeInTheDocument();
     });
@@ -40,13 +64,13 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('keeps the primary link native and sibling actions independent', async function nativeNavigation() {
-      const { getByRole } = await render(<NavigationExample />);
+      const { getByRole } = await render(<ActionsExample />);
       await expect.element(getByRole('link', { name: 'About this product' })).toHaveAttribute('href', '/about');
       await expect.element(getByRole('button', { name: 'Save' })).toBeInTheDocument();
     });
 
     it('keeps combined navigation and selection independent', async function combinedControls() {
-      const { getByRole, getByTestId } = await render(<CombinedExample />);
+      const { getByRole, getByTestId } = await render(<SelectionExample />);
       await expect.element(getByRole('link', { name: 'Select details' })).toHaveAttribute('href', '/details');
       const checkbox = getByRole('checkbox', { name: 'Select details' });
       await userEvent.click(getByTestId('combined-selection-indicator'));
@@ -62,8 +86,8 @@ async function moveMouse(x: number, y: number, type: string, button: 'left' | 'r
   };
   await session.send('Input.dispatchMouseEvent', {
     type,
-    x: x + (frame?.left ?? 0),
-    y: y + (frame?.top ?? 0),
+    x: x * (frame ? frame.width / window.innerWidth : 1) + (frame?.left ?? 0),
+    y: y * (frame ? frame.height / window.innerHeight : 1) + (frame?.top ?? 0),
     button,
     buttons: type === 'mouseReleased' ? 0 : button === 'left' ? 1 : button === 'right' ? 2 : 0,
     clickCount: type === 'mouseMoved' ? 0 : 1
@@ -92,8 +116,8 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('provides a native link context target over Card padding', async function backgroundLink() {
-      const { container } = await render(<NavigationExample />);
-      const card = container.querySelector<HTMLElement>('[data-card]');
+      const { container } = await render(<ActionsExample />);
+      const card = container.querySelector<HTMLAnchorElement>('a[href="/about"]')?.closest<HTMLElement>('[data-card]');
       expect(card).not.toBeNull();
       let destination: string | null = null;
       card!.addEventListener('contextmenu', function captureContext(event) {
@@ -108,21 +132,21 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('lets users drag-select body text without navigation', async function selectBodyText() {
-      const { container } = await render(<NavigationExample />);
+      const { container } = await render(<ActionsExample />);
       const link = container.querySelector<HTMLAnchorElement>('a[href="/about"]')!;
       let activations = 0;
       link.addEventListener('click', function preventTestNavigation(event) {
         if (window.getSelection()?.isCollapsed) activations++;
         event.preventDefault();
       });
-      await dragText(container.querySelector<HTMLElement>('[data-card] span')!);
+      await dragText(link.closest('[data-card]')!.querySelector<HTMLElement>('span')!);
       expect(window.getSelection()?.toString().length).toBeGreaterThan(3);
       expect(activations).toBe(0);
     });
 
     it('opens the native destination in another tab from a middle click', async function middleClick() {
-      const { container } = await render(<NavigationExample />);
-      const card = container.querySelector<HTMLElement>('[data-card]')!;
+      const { container } = await render(<ActionsExample />);
+      const card = container.querySelector<HTMLAnchorElement>('a[href="/about"]')!.closest<HTMLElement>('[data-card]')!;
       interface TargetInfo {
         targetId: string;
         url: string;
@@ -154,7 +178,7 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('does not press an action card while dragging its text', async function selectActionText() {
-      const { container, getByText } = await render(<ActionExample />);
+      const { container, getByText } = await render(<ActionsExample />);
       await dragText(container.querySelector<HTMLElement>('[data-card] > span')!);
       expect(window.getSelection()?.toString().length).toBeGreaterThan(3);
       await expect.element(getByText('Independent action (0)')).toBeInTheDocument();
@@ -288,7 +312,7 @@ describe('@godaddy/antares', function packageTests() {
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Card props', function cardProps() {
-    it('forwards Card refs and layout props through Checkbox and Radio', async function cardProps() {
+    it('forwards Card refs and layout props for checkbox and radio selection', async function cardProps() {
       const { container, getByRole, getByTestId } = await render(<CustomizationExample />);
       const checkboxCard = container.querySelector<HTMLElement>('.review-checkbox-card');
       const radioCard = container.querySelector<HTMLElement>('.review-radio-card');

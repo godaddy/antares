@@ -5,13 +5,11 @@ import {
   Card,
   Content,
   CardSelectionIndicator,
-  Checkbox,
   CornerActions,
   Menu,
   MenuItem,
   MenuTrigger,
-  Link,
-  Radio,
+  LinkButton,
   RadioGroup,
   Text
 } from '@godaddy/antares';
@@ -20,6 +18,7 @@ interface InteractionReviewProps {
   kind?: 'checkbox' | 'radio';
   primary?: 'action' | 'navigation';
   isDisabled?: boolean;
+  isPrimaryDisabled?: boolean;
   isReadOnly?: boolean;
   visibility?: 'auto' | 'always';
   defaultSelected?: boolean;
@@ -30,6 +29,7 @@ export function InteractionsExample({
   kind = 'checkbox',
   primary,
   isDisabled,
+  isPrimaryDisabled,
   isReadOnly,
   visibility = 'always',
   defaultSelected = false
@@ -63,9 +63,9 @@ export function InteractionsExample({
         <Button isDisabled onPress={act}>
           Unavailable {title}
         </Button>
-        <Link href="#independent-destination" onPress={act}>
+        <LinkButton href="#independent-destination" onPress={act}>
           Independent link {title}
-        </Link>
+        </LinkButton>
         <MenuTrigger>
           <Button>Menu {title}</Button>
           <Menu aria-label={`Menu ${title}`} onAction={act}>
@@ -80,6 +80,7 @@ export function InteractionsExample({
   }
 
   const primaryProps = {
+    isDisabled: isPrimaryDisabled,
     href: primary === 'navigation' ? '#card-review-target' : undefined,
     onPress: primary ? activate : undefined
   };
@@ -94,26 +95,26 @@ export function InteractionsExample({
           isDisabled={isDisabled}
           isReadOnly={isReadOnly}
         >
-          <Radio as={Card} value="one" aria-label="Option one" {...primaryProps}>
+          <Card selection="radio" value="one" aria-label="Option one" {...primaryProps}>
             {contents('One')}
-          </Radio>
-          <Radio as={Card} value="two" aria-label="Option two">
+          </Card>
+          <Card selection="radio" value="two" aria-label="Option two">
             {contents('Two')}
-          </Radio>
+          </Card>
         </RadioGroup>
       ) : (
-        <Checkbox
-          as={Card}
+        <Card
+          selection="checkbox"
           name="choice"
           value="one"
           aria-label="Option one"
           defaultSelected={defaultSelected}
-          isDisabled={isDisabled}
+          isSelectionDisabled={isDisabled}
           isReadOnly={isReadOnly}
           {...primaryProps}
         >
           {contents('One')}
-        </Checkbox>
+        </Card>
       )}
       <Button type="submit">Submit choices</Button>
       <Button type="reset">Reset choices</Button>

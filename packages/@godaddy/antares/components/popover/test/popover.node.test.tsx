@@ -3,7 +3,6 @@ import { WithCloseButtonExample } from '../examples/with-close-button.tsx';
 import { CustomAnchorExample } from '../examples/custom-anchor.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { PlaygroundExample } from '../examples/popover-playground.tsx';
-import { CornerActionsExample } from '../examples/corner-actions.tsx';
 import { renderToString } from 'react-dom/server';
 
 describe('@godaddy/antares', function antares() {
@@ -22,10 +21,6 @@ describe('@godaddy/antares', function antares() {
 
     it('renders PlaygroundExample', function playgroundExample() {
       expect(renderToString(<PlaygroundExample />)).toMatchSnapshot();
-    });
-
-    it('renders CornerActionsExample', function cornerActionsExample() {
-      expect(renderToString(<CornerActionsExample />)).toMatchSnapshot();
     });
   });
 });

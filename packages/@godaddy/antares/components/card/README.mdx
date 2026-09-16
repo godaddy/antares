@@ -46,11 +46,16 @@ Reuse Structure's `Content`, `Header`, `Footer`, and `CornerActions` to compose 
 supplies region defaults through their contexts: no additional region padding, `lg` content gap,
 and visible content overflow. Explicit region props override those defaults. `Content` supports
 `as` when a different element or component is needed.
-Selection uses `Checkbox as={Card}` or `Radio as={Card}`. Place one `CardSelectionIndicator`
-explicitly, usually as the last item in `CornerActions`; it shares the enclosing control's state
-and does not create duplicate selection state. Checkbox and Radio retain their native selection,
-keyboard, form, and group semantics. If selection is disabled or read-only, only the selection
-control and its indicator are disabled; independent Card actions remain available.
+Use `selection="checkbox"` or `selection="radio"` for selectable Cards. Place one
+`CardSelectionIndicator` explicitly, usually last in `CornerActions`. Card owns the selection
+composition and delegates state, keyboard handling, and native input behavior to React Aria.
+
+Checkbox Cards work standalone or inside the existing `CheckboxGroup`. Standalone selection uses
+`isSelected`, `defaultSelected`, and `onSelectionChange`; grouped state belongs to the group.
+Radio Cards require a `value` and the existing `RadioGroup`, which owns selection and arrow-key
+navigation. Use `isSelectionDisabled` to disable selection independently of primary or child
+actions. `isDisabled` disables only the Card's primary action. Set `isReadOnly` on a checkbox Card
+or on its group; radio read-only behavior belongs to `RadioGroup`.
 
 The indicator is automatically revealed on hover, focus within the Card, or selection, and remains
 available on touch devices. Use `visibility="always"` when the selected affordance should stay
@@ -59,7 +64,7 @@ or assistive-technology access.
 
 ### CardSelectionIndicator
 
-Place `CardSelectionIndicator` inside `CornerActions` when a Checkbox or Radio is composed as a Card. It
+Place `CardSelectionIndicator` inside `CornerActions` on a selectable Card. It
 shares the native selection control's state and does not add a second keyboard focus stop.
 
 ## Best Practices

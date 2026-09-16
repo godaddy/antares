@@ -1,4 +1,4 @@
-import { forwardRef, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import {
   RadioButton as RACRadioButton,
   type RadioButtonProps as RACRadioButtonProps,
@@ -13,7 +13,6 @@ import {
 } from 'react-aria-components';
 import { composeClassName } from '#utils/render-props.ts';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { Card, SelectionProvider } from '#components/card';
 import { LabelContext } from '#components/label';
 import { GroupContext, type GroupProps } from '#components/structure';
 import fieldStyles from '../../_internal/field-styles/index.module.css';
@@ -35,9 +34,7 @@ function RadioButton(props: RadioButtonProps) {
       as={RACRadioButton}
       className={composeClassName(className, styles.radio)}
     >
-      {function renderRadio(state) {
-        return typeof children === 'function' ? children(state) : children;
-      }}
+      {children}
     </Flex>
   );
 }
@@ -45,56 +42,19 @@ function RadioButton(props: RadioButtonProps) {
 export interface RadioProps extends Omit<RACRadioFieldProps, 'children'>, FlexOwnProps {
   /** Label text shown next to the indicator. */
   children?: ReactNode;
-
-  /** Primary navigation destination when composed as a Card. */
-  href?: string;
-
-  /** Primary action when composed as a Card. */
-  onPress?: (event: import('react-aria-components').PressEvent) => void;
 }
 
 /** Radio with an associated label. */
-export const Radio = forwardRef<HTMLDivElement, RadioProps>(function Radio(
-  { children, as, href, onPress, ...props },
-  ref
-) {
-  if (as === Card) {
-    return (
-      <Flex
-        padding="lg"
-        gap="lg"
-        direction="column"
-        {...props}
-        ref={ref}
-        as={RACRadioField}
-        render={function renderCard(domProps, state) {
-          return (
-            <Card
-              direction="row"
-              {...domProps}
-              href={href}
-              onPress={onPress}
-              data-card-selected={state.isSelected || undefined}
-              aria-label={props['aria-label']}
-              aria-labelledby={props['aria-labelledby']}
-            />
-          );
-        }}
-      >
-        <SelectionProvider kind="radio">{children}</SelectionProvider>
-      </Flex>
-    );
-  }
-
+export function Radio({ children, ...props }: RadioProps) {
   return (
-    <Flex {...props} ref={ref} as={RACRadioField}>
+    <Flex {...props} as={RACRadioField}>
       <RadioButton>
         <div className={styles.indicator} />
         {children}
       </RadioButton>
     </Flex>
   );
-});
+}
 
 /** Layout an item `Group` inherits. `presentation` keeps it out of the radiogroup's a11y tree. */
 function itemGroup(orientation: 'horizontal' | 'vertical'): GroupProps {

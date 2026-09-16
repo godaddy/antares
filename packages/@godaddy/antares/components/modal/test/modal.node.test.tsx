@@ -4,7 +4,6 @@ import { DefaultExample } from '../examples/default.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { ScrollableExample } from '../examples/scrollable.tsx';
 import { TriggerlessExample } from '../examples/triggerless.tsx';
-import { CornerActionsExample } from '../examples/corner-actions.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Modal', function modalTests() {
@@ -25,11 +24,6 @@ describe('@godaddy/antares', function packageTests() {
 
     it('renders TriggerlessExample', function triggerlessExample() {
       const html = renderToString(<TriggerlessExample />);
-      expect(html).toMatchSnapshot();
-    });
-
-    it('renders CornerActionsExample', function cornerActionsExample() {
-      const html = renderToString(<CornerActionsExample />);
       expect(html).toMatchSnapshot();
     });
   });

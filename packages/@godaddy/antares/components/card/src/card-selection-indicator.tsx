@@ -13,8 +13,8 @@ import styles from './card-selection-indicator.module.css';
 
 const SelectionContext = createContext<'checkbox' | 'radio' | null>(null);
 
-/** Internal field wiring shared by Checkbox and Radio compositions. */
-export function SelectionProvider({ kind, children }: { kind: 'checkbox' | 'radio'; children: ReactNode }) {
+/** Card-owned selection and text context, below the native field provider. */
+export function SelectionProvider({ kind, children }: { kind: 'checkbox' | 'radio' | null; children: ReactNode }) {
   const text = useContext(TextContext);
   const slots = text && 'slots' in text ? text.slots : undefined;
 

@@ -1,7 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`@godaddy/antares > #Link > renders interaction behavior 1`] = `"<div class="box flex column" style="align-items:start;gap:var(--sp-sm)"><a class="link" data-rac="" href="#activated" tabindex="0" data-react-aria-pressable="true">Activate link</a><span class="text">Not activated</span></div>"`;
-
-exports[`@godaddy/antares > #Link > renders link states and native overrides 1`] = `"<div class="box flex column" style="align-items:start;gap:var(--sp-sm)"><span class="text"><a class="link" data-rac="" href="https://example.com" target="_blank" rel="noopener noreferrer" tabindex="0" data-react-aria-pressable="true">External link</a></span><span class="text"><a class="link" data-rac="" href="https://example.com/report" target="_self" rel="author" download="report.pdf" tabindex="0" data-react-aria-pressable="true">External link with overrides</a></span><span class="link" data-rac="" href="/disabled" data-react-aria-pressable="true" role="link" aria-disabled="true" data-disabled="true">Disabled link</span></div>"`;
-
-exports[`@godaddy/antares > #Link > renders the default link 1`] = `"<span class="text">Read more in our <a class="link" data-rac="" href="/about" tabindex="0" data-react-aria-pressable="true">About page</a>.</span>"`;

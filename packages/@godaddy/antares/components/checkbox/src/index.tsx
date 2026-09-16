@@ -1,4 +1,4 @@
-import { forwardRef, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import {
   CheckboxButton as RACCheckboxButton,
   type CheckboxButtonProps as RACCheckboxButtonProps,
@@ -12,7 +12,6 @@ import {
   useSlottedContext
 } from 'react-aria-components';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { Card, SelectionProvider } from '#components/card';
 import { GroupContext, type GroupProps } from '#components/structure';
 import { LabelContext } from '#components/label';
 import { Icon } from '#components/icon';
@@ -65,9 +64,7 @@ function CheckboxButton(props: CheckboxButtonProps) {
 
   return (
     <Flex {...rest} as={RACCheckboxButton} className={composeClassName(className, styles.checkbox)}>
-      {function renderCheckbox(state) {
-        return typeof children === 'function' ? children(state) : children;
-      }}
+      {children}
     </Flex>
   );
 }
@@ -75,50 +72,16 @@ function CheckboxButton(props: CheckboxButtonProps) {
 export interface CheckboxProps extends Omit<RACCheckboxFieldProps, 'children'>, FlexOwnProps {
   /** Label text shown next to the indicator. */
   children?: ReactNode;
-
-  /** Primary navigation destination when composed as a Card. */
-  href?: string;
-
-  /** Primary action when composed as a Card. */
-  onPress?: (event: import('react-aria-components').PressEvent) => void;
 }
 
 /**
  * Checkbox with an associated label.
  */
-export const Checkbox = forwardRef<HTMLDivElement, CheckboxProps>(function Checkbox(props, ref) {
-  const { children, as, href, onPress, ...rest } = props;
-
-  if (as === Card) {
-    return (
-      <Flex
-        padding="lg"
-        gap="lg"
-        direction="column"
-        {...rest}
-        ref={ref}
-        as={RACCheckboxField}
-        render={function renderCard(domProps, state) {
-          return (
-            <Card
-              direction="row"
-              {...domProps}
-              href={href}
-              onPress={onPress}
-              data-card-selected={state.isSelected || undefined}
-              aria-label={props['aria-label']}
-              aria-labelledby={props['aria-labelledby']}
-            />
-          );
-        }}
-      >
-        <SelectionProvider kind="checkbox">{children}</SelectionProvider>
-      </Flex>
-    );
-  }
+export function Checkbox(props: CheckboxProps) {
+  const { children, ...rest } = props;
 
   return (
-    <Flex {...rest} ref={ref} as={RACCheckboxField}>
+    <Flex {...rest} as={RACCheckboxField}>
       <CheckboxButton>
         {function renderCheckbox({ isSelected, isIndeterminate }) {
           return (
@@ -131,7 +94,7 @@ export const Checkbox = forwardRef<HTMLDivElement, CheckboxProps>(function Check
       </CheckboxButton>
     </Flex>
   );
-});
+}
 
 /** Layout an item `Group` inherits. `presentation` keeps it out of the checkboxgroup's a11y tree. */
 function itemGroup(orientation: 'horizontal' | 'vertical'): GroupProps {

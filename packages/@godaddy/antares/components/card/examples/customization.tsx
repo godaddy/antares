@@ -3,12 +3,10 @@ import {
   Card,
   Content,
   CardSelectionIndicator,
-  Checkbox,
   CheckboxGroup,
   CornerActions,
   Group,
-  Link,
-  Radio,
+  LinkButton,
   RadioGroup,
   Text
 } from '@godaddy/antares';
@@ -54,8 +52,8 @@ export function CustomizationExample() {
     <>
       <CheckboxGroup value={selectedCheckboxes} onChange={handleCheckboxChange} aria-label="Review checkbox cards">
         <Group>
-          <Checkbox
-            as={Card}
+          <Card
+            selection="checkbox"
             ref={checkboxCardRef}
             value="checkbox-card"
             aria-label="Checkbox props card"
@@ -73,15 +71,15 @@ export function CustomizationExample() {
             <CornerActions>
               <CardSelectionIndicator data-testid="props-checkbox-indicator" visibility="always" />
             </CornerActions>
-          </Checkbox>
+          </Card>
         </Group>
       </CheckboxGroup>
       <Text>Checkbox changes: {checkboxChanges}</Text>
 
       <RadioGroup value={selectedRadio} onChange={handleRadioChange} aria-label="Review radio cards">
         <Group>
-          <Radio
-            as={Card}
+          <Card
+            selection="radio"
             ref={radioCardRef}
             value="radio-card"
             aria-label="Radio props card"
@@ -98,7 +96,7 @@ export function CustomizationExample() {
             <CornerActions>
               <CardSelectionIndicator data-testid="props-radio-indicator" visibility="always" />
             </CornerActions>
-          </Radio>
+          </Card>
         </Group>
       </RadioGroup>
 
@@ -126,7 +124,7 @@ export function CustomizationExample() {
         </Content>
       </Card>
       <Card>
-        <Content as={Link} href="#custom-content-link" ref={customLinkRef}>
+        <Content as={LinkButton} href="#custom-content-link" ref={customLinkRef}>
           Custom content link
         </Content>
       </Card>
