@@ -35,15 +35,16 @@ export function generateBlocksPlugin(readmeRegex: RegExp = README_FILE_REGEX): P
       }
 
       const blockDirectory = await resolveBlockDirectory(fileName, idValue);
-      const manifest = await loadBlockManifest(blockDirectory);
+      const description = marker.match(/\bdescription=(['"])(.*?)\1/)?.[2];
+
+      const manifest = await loadBlockManifest(blockDirectory, { id: idValue, description });
       this.addWatchFile(fileName);
-      this.addWatchFile(`${blockDirectory}/block.json`);
+      this.addWatchFile(`${blockDirectory}/README.mdx`);
       for (const blockFile of manifest.files) this.addWatchFile(`${blockDirectory}/${blockFile.path}`);
 
       if (markerName === 'BlockLink') {
         const blockLink = {
           id: manifest.id,
-          title: manifest.title,
           href: `./?path=/docs/blocks-${manifest.id}--overview`,
           target: '_top'
         };

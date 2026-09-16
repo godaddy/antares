@@ -23,8 +23,10 @@ interface AnyTree extends AnyNode {
 const fixtureReadme = resolve(import.meta.dirname, 'fixtures/block/README.mdx');
 
 describe('remarkBlocks', function remarkBlocksTests() {
-  it('expands a Block marker into a site explorer and registers curated files', async function expandsBlock() {
-    const { tree, addDependency } = await transform('<Block id="fixture-block" of={Stories.Preview} />');
+  it('expands a Block marker into a site explorer and registers discovered files', async function expandsBlock() {
+    const { tree, addDependency } = await transform(
+      '<Block id="fixture-block" description="Fixture description." of={Stories.Preview} />'
+    );
     const explorer = tree.children[0] as AnyNode;
 
     expect(explorer).toMatchObject({ type: 'mdxJsxFlowElement', name: 'SiteBlockExplorer' });
@@ -33,17 +35,37 @@ describe('remarkBlocks', function remarkBlocksTests() {
       name: 'Stories.Preview'
     });
     expect(JSON.parse(getExpressionValue(explorer, 'block'))).toMatchObject({
-      id: 'fixture-block'
+      id: 'fixture-block',
+      description: 'Fixture description.'
     });
     expect(
       addDependency.mock.calls.map(function getDependency([path]) {
         return path;
       })
     ).toEqual([
-      expect.stringContaining('block.json'),
+      expect.stringContaining('README.mdx'),
       expect.stringContaining('index.tsx'),
+      expect.stringContaining('nested/README.mdx'),
       expect.stringContaining('styles/theme.css')
     ]);
+  });
+
+  it('expands nested Block markers', async function expandsNestedBlock() {
+    const { tree } = await transform(
+      '<Wrapper><Entry><Block id="fixture-block" description="Fixture description." of={Stories.Preview} /></Entry></Wrapper>'
+    );
+    const catalog = tree.children[0] as AnyNode;
+    const entry = (catalog.children as AnyNode[])[0];
+
+    expect((entry.children as AnyNode[])[0]).toMatchObject({ name: 'SiteBlockExplorer' });
+  });
+
+  it('expands a Block marker without a description', async function expandsBlockWithoutDescription() {
+    const { tree } = await transform('<Block id="fixture-block" of={Stories.Preview} />');
+    const explorer = tree.children[0] as AnyNode;
+
+    expect(explorer).toMatchObject({ name: 'SiteBlockExplorer' });
+    expect(JSON.parse(getExpressionValue(explorer, 'block'))).not.toHaveProperty('description');
   });
 
   it('expands a BlockLink marker into a site link collection', async function expandsBlockLink() {
@@ -55,7 +77,6 @@ describe('remarkBlocks', function remarkBlocksTests() {
     expect(blocks).toEqual([
       {
         id: 'fixture-block',
-        title: 'Fixture block',
         href: '/docs/blocks/fixture-block'
       }
     ]);
@@ -80,10 +101,10 @@ describe('remarkBlocks', function remarkBlocksTests() {
   });
 
   it('reports the required attributes for a Block marker', async function requiresBlockAttributes() {
-    await expect(transform('<Block id="fixture-block" />')).rejects.toThrow(
+    await expect(transform('<Block of={Stories.Preview} />')).rejects.toThrow(
       '<Block> requires id="..." and of={Stories.Preview}'
     );
-    await expect(transform('<Block of={Stories.Preview} />')).rejects.toThrow(
+    await expect(transform('<Block id="fixture-block" description="Fixture description." />')).rejects.toThrow(
       '<Block> requires id="..." and of={Stories.Preview}'
     );
   });

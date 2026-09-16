@@ -28,14 +28,14 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
     expect(result).toContain('target":"_top"');
     expect(result).toContain("import { BlockLinks } from '@bento/block-explorer/runtime';");
     expect(addWatchFile).toHaveBeenCalledWith(fixtureReadme);
-    expect(addWatchFile).toHaveBeenCalledWith(expect.stringContaining('block.json'));
+    expect(addWatchFile).toHaveBeenCalledWith(expect.stringContaining('README.mdx'));
     expect(addWatchFile).toHaveBeenCalledWith(expect.stringContaining('styles/theme.css'));
   });
 
   it('expands Block after frontmatter and injects missing Storybook imports', async function expandsBlock() {
     const result = await runTransform(
       generateBlocksPlugin(),
-      '---\ntitle: Example component\n---\n<Block id="fixture-block" of={Stories.Preview} />',
+      '---\ntitle: Example component\n---\n<Block id="fixture-block" description="Fixture description." of={Stories.Preview} />',
       componentReadme
     );
 
@@ -43,6 +43,17 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
     expect(result).toContain('<StorybookBlockExplorer block={');
     expect(result).toContain('<Story of={Stories.Preview} inline />');
     expect(result).toContain("import { Story } from '@storybook/addon-docs/blocks';");
+  });
+
+  it('expands Block without a description', async function expandsBlockWithoutDescription() {
+    const result = await runTransform(
+      generateBlocksPlugin(),
+      '<Block id="fixture-block" of={Stories.Preview} />',
+      componentReadme
+    );
+
+    expect(result).toContain('<StorybookBlockExplorer block=');
+    expect(result).toContain('<Story of={Stories.Preview} inline />');
   });
 
   it('does not duplicate imports that the README already provides', async function preservesExistingImports() {

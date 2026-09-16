@@ -34,9 +34,6 @@ export interface BlockLinkItem {
   /** Stable block identifier. */
   readonly id: string;
 
-  /** Human-readable block title. */
-  readonly title: string;
-
   /** Host-specific overview URL. */
   readonly href: string;
 
@@ -70,7 +67,7 @@ export function BlockLinks({ blocks }: BlockLinksProps) {
             }}
             variant="minimal"
           >
-            {block.title}
+            {block.id}
             <Icon icon="chevron-right" />
           </LinkButton>
         );
@@ -80,7 +77,7 @@ export function BlockLinks({ blocks }: BlockLinksProps) {
 }
 
 /**
- * Displays a block preview and its curated source files in a shared Preview/Code surface.
+ * Displays a block preview and its discovered source files in a shared Preview/Code surface.
  * The host supplies the preview and syntax highlighter, while Antares owns the layout primitives.
  *
  * @param props - Block manifest, preview content, and optional syntax highlighter.
@@ -101,9 +98,9 @@ export function BlockExplorer({ block, children, codeRenderer }: BlockExplorerPr
 
   return (
     <Box className={styles.root}>
-      <BlockToolbar description={block.description}>
+      <BlockToolbar blockId={block.id} description={block.description} installCommand={block.installCommand}>
         <SegmentedController
-          aria-label={`${block.title} view`}
+          aria-label={`${block.id} view`}
           value={view}
           onSelectionChange={function handleViewChange(value: string) {
             setView(value as BlockView);
@@ -143,6 +140,8 @@ export type {
   BlockManifest,
   BlockLinkMarkerProps
 } from './types.ts';
+
+export { BlockInstallButton, type BlockInstallButtonProps } from './block-install-button.tsx';
 
 function getInitialPath(block: BlockExplorerProps['block']) {
   return block.files[0]?.path ?? '';

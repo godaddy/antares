@@ -5,7 +5,6 @@ import { BlockExplorer, BlockLinks, type BlockCodeRendererProps, type BlockManif
 
 const fixtureManifest: BlockManifest = {
   id: 'fixture-block',
-  title: 'Fixture block',
   description: 'A fixture used by the block explorer tests.',
   files: [
     { path: 'index.tsx', language: 'tsx', source: 'export function FixtureBlock() {\n  return null;\n}\n' },
@@ -22,7 +21,6 @@ describe('block explorer runtime', function runtimeTests() {
     );
 
     await expect.element(getByRole('radio', { name: 'Preview' })).toBeVisible();
-    await expect.element(getByRole('heading', { name: 'Fixture block' })).not.toBeInTheDocument();
     await expect.element(getByRole('radio', { name: 'Code' })).toBeVisible();
 
     await userEvent.click(getByRole('radio', { name: 'Code' }));
@@ -87,6 +85,27 @@ describe('block explorer runtime', function runtimeTests() {
     await expect.element(copyButton).not.toHaveTextContent('Copied');
   });
 
+  it('copies the block install command', async function copiesInstallCommand() {
+    const command = 'npx shadcn@latest add godaddy/antares/blocks/fixture-block';
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText }
+    });
+
+    const { getByRole } = await render(
+      <BlockExplorer block={{ ...fixtureManifest, installCommand: command }}>
+        <div>Preview content</div>
+      </BlockExplorer>
+    );
+
+    const installButton = getByRole('button', { name: 'Copy install command for fixture-block' });
+    await userEvent.click(installButton);
+
+    expect(writeText).toHaveBeenCalledWith(command);
+    await expect.element(getByRole('button', { name: 'Copied for fixture-block' })).toHaveTextContent('Copied');
+  });
+
   it('resets copy feedback when selecting another source file', async function resetsCopyFeedback() {
     const writeText = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, 'clipboard', {
@@ -110,11 +129,9 @@ describe('block explorer runtime', function runtimeTests() {
 
   it('renders related blocks as host-provided links', async function rendersRelatedBlocks() {
     const { getByRole } = await render(
-      <BlockLinks
-        blocks={[{ id: 'fixture-block', title: 'Fixture block', href: '/docs/blocks/fixture-block', target: '_top' }]}
-      />
+      <BlockLinks blocks={[{ id: 'fixture-block', href: '/docs/blocks/fixture-block', target: '_top' }]} />
     );
-    const link = getByRole('link', { name: 'Fixture block' });
+    const link = getByRole('link', { name: 'fixture-block' });
 
     await expect.element(link).toBeVisible();
     expect(link.element().getAttribute('href')).toBe('/docs/blocks/fixture-block');

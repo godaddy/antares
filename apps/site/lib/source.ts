@@ -24,7 +24,7 @@ function toBlocksSource() {
     ...raw,
     files: raw.files.map((file) => ({
       ...file,
-      path: file.path.replace(/\/README\.mdx$/, '.mdx')
+      path: file.path === 'README.mdx' ? 'index.mdx' : file.path.replace(/\/README\.mdx$/, '.mdx')
     })) as ReturnType<typeof blocks.toFumadocsSource>['files']
   };
 }

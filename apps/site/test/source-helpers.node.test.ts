@@ -14,7 +14,10 @@ vi.mock('fumadocs-mdx:collections/server', () => ({
   },
   blocks: {
     toFumadocsSource: () => ({
-      files: [{ path: 'sign-in-form/README.mdx', data: {}, type: 'page' }]
+      files: [
+        { path: 'README.mdx', data: {}, type: 'page' },
+        { path: 'sign-in-form/README.mdx', data: {}, type: 'page' }
+      ]
     })
   }
 }));

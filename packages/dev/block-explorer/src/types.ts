@@ -18,18 +18,18 @@ export interface BlockFile {
   readonly source: string;
 }
 
-/** Build-time metadata and source files for a block. */
+/** Build-time identity, description, and discovered source files for a block. */
 export interface BlockManifest {
   /** Stable identifier used by site and Storybook routes. */
   readonly id: string;
 
-  /** Human-readable block title. */
-  readonly title: string;
-
   /** Optional description shown by host documentation pages. */
   readonly description?: string;
 
-  /** Curated implementation files available in the explorer. */
+  /** Command copied by the Block Explorer's Install action. */
+  readonly installCommand?: string;
+
+  /** Implementation files discovered in the block directory. */
   readonly files: readonly BlockFile[];
 }
 
@@ -61,6 +61,9 @@ export interface BlockExplorerProps {
 export interface BlockMarkerProps {
   /** Block directory identifier. */
   readonly id: string;
+
+  /** Short explanation shown beside the Preview/Code tabs. */
+  readonly description?: string;
 
   /** Story export used as the preview. */
   readonly of?: unknown;

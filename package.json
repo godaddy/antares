@@ -16,10 +16,13 @@
     "postinstall": "npx playwright install --with-deps && npm run build",
     "prepare": "husky",
     "release": "npm run build && changeset publish",
+    "registry:build": "node scripts/build-registry.ts",
+    "registry:validate": "npx --yes shadcn@4.21.0 registry validate ./registry.json",
+    "scripts:test": "vitest run --config scripts/test/vitest.config.ts",
     "site": "nx run site:dev --no-tui",
     "site:build": "nx run site:build --no-tui",
     "storybook": "nx run docs:storybook --no-tui",
-    "test": "nx run-many -t test --no-tui",
+    "test": "npm run scripts:test && nx run-many -t test --no-tui",
     "test:visual": "nx run-many -t test:visual --no-tui",
     "test:visual:update": "nx run-many -t test:visual:update --no-tui",
     "typecheck": "nx run-many -t typecheck --no-tui",
@@ -63,7 +66,8 @@
     "tsdown": "^0.22.14",
     "typescript": "^6.0.3",
     "vite": "^8.0.14",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.11",
+    "yaml": "^2.9.0"
   },
   "devEngines": {
     "runtime": {

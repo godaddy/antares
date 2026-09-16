@@ -13,19 +13,12 @@ Each block provides a manifest and a preview story:
 import { Block } from '@bento/block-explorer/runtime';
 import * as Stories from './sign-in-form.stories.tsx';
 
-<Block id="sign-in-form" of={Stories.Preview} />
+<Block id="sign-in-form" description="A simple Antares sign-in experience." of={Stories.Preview} />
 ```
 
-```json
-// blocks/sign-in-form/block.json
-{
-  "id": "sign-in-form",
-  "title": "Sign-in form",
-  "files": ["index.tsx", "components/sign-in-form.tsx", "components/sign-in-fields.tsx", "data/copy.ts"]
-}
-```
+The `description` attribute is optional. Omit it when the block does not need explanatory text beside the Preview/Code controls.
 
-The `files` list is intentionally curated. It is the public implementation surface shown to documentation users; files are loaded at documentation build time and are never read from the browser filesystem.
+The explorer discovers every regular file in the block directory recursively. The root README and root `*.stories.tsx` files are documentation inputs and are omitted from the Code view; nested files are included. Files are loaded at documentation build time and are never read from the browser filesystem.
 
 ## Host integration
 

@@ -1,4 +1,4 @@
-import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
@@ -8,27 +8,41 @@ import { languageForPath, loadBlockManifest, resolveBlockDirectory } from '../sr
 const fixtureDirectory = resolve(dirname(fileURLToPath(import.meta.url)), 'fixtures/block');
 
 describe('block manifest utilities', function blockManifestUtilities() {
-  it('loads curated source files and infers their languages', async function loadsManifest() {
-    const manifest = await loadBlockManifest(fixtureDirectory);
+  it('discovers implementation files and uses marker metadata', async function loadsManifest() {
+    const manifest = await loadBlockManifest(fixtureDirectory, {
+      id: 'fixture-block',
+      description: 'A fixture used by the block explorer tests.'
+    });
 
     expect(manifest).toMatchObject({
       id: 'fixture-block',
-      title: 'Fixture block'
+      description: 'A fixture used by the block explorer tests.',
+      installCommand: 'npx shadcn@latest add godaddy/antares/blocks/fixture-block'
     });
+    expect(manifest).not.toHaveProperty('title');
     expect(manifest.files).toEqual([
       { path: 'index.tsx', language: 'tsx', source: 'export function FixtureBlock() {\n  return null;\n}\n' },
+      { path: 'nested/README.mdx', language: 'md', source: '# Nested README\n' },
       { path: 'styles/theme.css', language: 'css', source: ':root {\n  color: black;\n}\n' }
     ]);
   });
 
-  it('preserves manifest order and normalizes source line endings', async function normalizesSource() {
-    const manifest = await loadBlockManifest(fixtureDirectory);
+  it('reads a description from the block README when no override is provided', async function readsDescription() {
+    await withTemporaryBlock(async function assertDescription(directory) {
+      const manifest = await loadBlockManifest(directory, { id: 'temporary-block' });
+
+      expect(manifest.description).toBe('Temporary block description.');
+    });
+  });
+
+  it('preserves deterministic paths and normalizes source line endings', async function normalizesSource() {
+    const manifest = await loadBlockManifest(fixtureDirectory, { id: 'fixture-block' });
 
     expect(
       manifest.files.map(function getPath(file) {
         return file.path;
       })
-    ).toEqual(['index.tsx', 'styles/theme.css']);
+    ).toEqual(['index.tsx', 'nested/README.mdx', 'styles/theme.css']);
     expect(
       manifest.files.every(function hasUnixLineEndings(file) {
         return !file.source.includes('\r');
@@ -55,75 +69,35 @@ describe('block manifest utilities', function blockManifestUtilities() {
     );
   });
 
-  it('rejects metadata that omits required fields', async function rejectsInvalidMetadata() {
-    await withTemporaryManifest(
-      { id: 'invalid-block', title: 'Invalid block' },
-      async function assertInvalidManifest(directory) {
-        await expect(loadBlockManifest(directory)).rejects.toThrow('expected id, title, and files');
-      }
-    );
-  });
+  it('ignores directories while discovering regular source files', async function ignoresDirectories() {
+    await withTemporaryBlock(async function assertFiles(directory) {
+      await mkdir(resolve(directory, 'styles'));
+      const manifest = await loadBlockManifest(directory, { id: 'temporary-block' });
 
-  it('rejects manifest paths that leave the block directory', async function rejectsUnsafePaths() {
-    await withTemporaryManifest(
-      {
-        id: 'unsafe-block',
-        title: 'Unsafe block',
-        files: ['../index.tsx']
-      },
-      async function assertUnsafeManifest(directory) {
-        await expect(loadBlockManifest(directory)).rejects.toThrow('must stay inside the block directory');
-      }
-    );
-  });
-
-  it('rejects duplicate curated source files', async function rejectsDuplicateFiles() {
-    await withTemporaryManifest(
-      {
-        id: 'duplicate-block',
-        title: 'Duplicate block',
-        files: ['index.tsx', 'index.tsx']
-      },
-      async function assertDuplicateManifest(directory) {
-        await writeFile(resolve(directory, 'index.tsx'), 'export {}\n');
-        await expect(loadBlockManifest(directory)).rejects.toThrow('duplicate block file path');
-      }
-    );
-  });
-
-  it('rejects a curated directory instead of reading it as source', async function rejectsDirectories() {
-    await withTemporaryManifest(
-      {
-        id: 'directory-block',
-        title: 'Directory block',
-        files: ['styles']
-      },
-      async function assertDirectoryManifest(directory) {
-        await mkdir(resolve(directory, 'styles'));
-        await expect(loadBlockManifest(directory)).rejects.toThrow('block file is not a file');
-      }
-    );
+      expect(manifest.files.map((file) => file.path)).toEqual(['index.tsx']);
+    });
   });
 
   it('maps supported extensions to documentation languages', function mapsLanguages() {
     expect(languageForPath('component.tsx')).toBe('tsx');
     expect(languageForPath('data.ts')).toBe('ts');
     expect(languageForPath('styles.css')).toBe('css');
-    expect(languageForPath('block.json')).toBe('json');
+    expect(languageForPath('data.json')).toBe('json');
     expect(languageForPath('README.mdx')).toBe('md');
     expect(languageForPath('README')).toBe('md');
     expect(languageForPath('COMPONENT.TSX')).toBe('tsx');
   });
 });
 
-async function withTemporaryManifest(
-  metadata: Record<string, unknown>,
-  callback: (directory: string) => Promise<void>
-) {
+async function withTemporaryBlock(callback: (directory: string) => Promise<void>) {
   const directory = await mkdtemp(join(tmpdir(), 'block-explorer-'));
 
   try {
-    await writeFile(resolve(directory, 'block.json'), JSON.stringify(metadata));
+    await writeFile(
+      resolve(directory, 'README.mdx'),
+      '<Block id="temporary-block" description="Temporary block description." />\n'
+    );
+    await writeFile(resolve(directory, 'index.tsx'), 'export {}\n');
     await callback(directory);
   } finally {
     await rm(directory, { recursive: true, force: true });

@@ -11,6 +11,7 @@ interface RemarkFile {
 
 interface MdNode {
   type: string;
+  children?: MdNode[];
   [key: string]: unknown;
 }
 
@@ -26,30 +27,36 @@ export function remarkBlocks({ resolveBlockHref }: RemarkBlocksOptions) {
   return async function transform(tree: Root, file: RemarkFile): Promise<void> {
     if (!file.path) return;
 
-    const explorerIndex = tree.children.findIndex(function isBlockMarker(node: {
-      type?: string;
-      name?: string | null;
-    }) {
-      return node.type === 'mdxJsxFlowElement' && node.name === 'Block';
-    });
-    if (explorerIndex !== -1) {
-      await replaceExplorer(tree, file, explorerIndex);
-      return;
-    }
-
-    const linkIndex = tree.children.findIndex(function isBlockLinkMarker(node: {
-      type?: string;
-      name?: string | null;
-    }) {
-      return node.type === 'mdxJsxFlowElement' && node.name === 'BlockLink';
-    });
-    if (linkIndex !== -1) await replaceBlockLink(tree, file, linkIndex, resolveBlockHref);
+    await replaceMarkers(tree.children as unknown as MdNode[], file, resolveBlockHref);
   };
 }
 
-async function replaceExplorer(tree: Root, file: RemarkFile, index: number) {
-  const marker = tree.children[index] as unknown as MdxJsxFlowElement;
+async function replaceMarkers(
+  nodes: MdNode[],
+  file: RemarkFile,
+  resolveBlockHref: RemarkBlocksOptions['resolveBlockHref']
+) {
+  for (let index = 0; index < nodes.length; index += 1) {
+    const node = nodes[index];
+
+    if (node.type === 'mdxJsxFlowElement' && node.name === 'Block') {
+      await replaceExplorer(nodes, file, index);
+      continue;
+    }
+
+    if (node.type === 'mdxJsxFlowElement' && node.name === 'BlockLink') {
+      await replaceBlockLink(nodes, file, index, resolveBlockHref);
+      continue;
+    }
+
+    if (node.children) await replaceMarkers(node.children, file, resolveBlockHref);
+  }
+}
+
+async function replaceExplorer(nodes: MdNode[], file: RemarkFile, index: number) {
+  const marker = nodes[index] as unknown as MdxJsxFlowElement;
   const id = getStringAttribute(marker, 'id');
+  const description = getStringAttribute(marker, 'description');
   const ofExpression = getExpressionAttribute(marker, 'of');
 
   if (!id || !ofExpression) {
@@ -57,28 +64,28 @@ async function replaceExplorer(tree: Root, file: RemarkFile, index: number) {
   }
 
   const blockDirectory = await resolveBlockDirectory(file.path as string, id);
-  const manifest = await loadBlockManifest(blockDirectory);
+  const manifest = await loadBlockManifest(blockDirectory, { id, description });
   addManifestDependencies(file, blockDirectory, manifest);
 
-  tree.children[index] = renderSiteBlock(manifest, ofExpression) as (typeof tree.children)[number];
+  nodes[index] = renderSiteBlock(manifest, ofExpression);
 }
 
 async function replaceBlockLink(
-  tree: Root,
+  nodes: MdNode[],
   file: RemarkFile,
   index: number,
   resolveBlockHref: RemarkBlocksOptions['resolveBlockHref']
 ) {
-  const marker = tree.children[index] as unknown as MdxJsxFlowElement;
+  const marker = nodes[index] as unknown as MdxJsxFlowElement;
   const id = getStringAttribute(marker, 'id');
 
   if (!id) throw new Error(`${file.path}: <BlockLink> requires id="...".`);
 
   const blockDirectory = await resolveBlockDirectory(file.path as string, id);
-  const manifest = await loadBlockManifest(blockDirectory);
+  const manifest = await loadBlockManifest(blockDirectory, { id });
   addManifestDependencies(file, blockDirectory, manifest);
 
-  tree.children[index] = renderSiteBlockLink(manifest, resolveBlockHref) as (typeof tree.children)[number];
+  nodes[index] = renderSiteBlockLink(manifest, resolveBlockHref);
 }
 
 function addManifestDependencies(
@@ -86,7 +93,7 @@ function addManifestDependencies(
   blockDirectory: string,
   manifest: Awaited<ReturnType<typeof loadBlockManifest>>
 ) {
-  addMdxDependency(file, `${blockDirectory}/block.json`);
+  addMdxDependency(file, `${blockDirectory}/README.mdx`);
   for (const sourceFile of manifest.files) addMdxDependency(file, `${blockDirectory}/${sourceFile.path}`);
 }
 
@@ -112,7 +119,6 @@ function renderSiteBlockLink(
 ): MdNode {
   const block = {
     id: manifest.id,
-    title: manifest.title,
     href: resolveBlockHref(manifest.id)
   };
 
