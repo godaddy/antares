@@ -42,7 +42,7 @@
   --_chip-line-height: 1.375;
   --_chip-gap: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
   --_chip-block-padding: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
-  --_chip-inline-padding: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  --_chip-inline-padding: var(--size-space-050, calc(var(--ux-1sbfig8, 0.25rem) * 2));
   --_chip-remove-target: min(
     calc(var(--_chip-font-size) * var(--_chip-line-height) + var(--_chip-block-padding) * 2),
     38px
@@ -59,8 +59,8 @@
 
   &:where([data-size="lg"]) {
     --_chip-font-size: 1.125rem;
-    --_chip-block-padding: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
-    --_chip-inline-padding: var(--size-space-060, calc(var(--ux-1sbfig8, 0.25rem) * 3));
+    --_chip-block-padding: var(--size-space-050, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+    --_chip-inline-padding: var(--size-space-070, calc(var(--ux-1sbfig8, 0.25rem) * 3));
   }
 
   position: relative;
