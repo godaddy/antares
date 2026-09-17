@@ -615,18 +615,8 @@ A fully disabled calendar.
 
 <Meta of="Stories" name="Overview" />
 
-## Features [#features]
-
-Card is a layout surface. Compose its contents with Antares layout and structure primitives. It
-supports text-only, media-only, and mixed compositions, while the consumer chooses media order,
-sizing, orientation, and responsive behavior.
-
-The default Card padding and gap are `lg`. Override them with the normal layout props. Full bleed
-media is composed with `padding="0"` and a separately padded content region; Card has no media
-bleed prop.
-
-Card draws its own background, border, and text color. Setting `elevation` hands that chrome to
-`Box` instead, so a raised or overlay Card looks like every other surface at that elevation.
+Card is a layout surface. Default padding and gap are `lg`. `href` and `onPress` add a primary
+action. `selection` adds a checkbox or radio; place `CardSelectionIndicator` yourself.
 
 ## Installation [#installation]
 
@@ -651,117 +641,52 @@ Media can stand alone, follow the text, or be a custom Box. Clip only the media 
 
 <Story of="MediaExample" />
 
-<Source language="tsx" code="&#x22;import { Box, Card, Content, Grid, Heading, Image, Text } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 640 360%22%3E%3Crect width=%22640%22 height=%22360%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%22480%22 cy=%22110%22 r=%2270%22 fill=%22%234ecdc4%22/%3E%3Cpath d=%22M0 300 180 150l120 100 90-75 250 185H0z%22 fill=%22%230b3d91%22/%3E%3C/svg%3E';\n\nexport function MediaExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <Card>\n        <Image src={image} alt=\&#x22;Blue mountain landscape\&#x22; width=\&#x22;640\&#x22; height=\&#x22;360\&#x22; />\n        <Content gap=\&#x22;sm\&#x22;>\n          <Heading level={3}>Inset media</Heading>\n          <Text>The default Card padding keeps media inset.</Text>\n        </Content>\n      </Card>\n\n      <Card padding=\&#x22;0\&#x22; gap=\&#x22;0\&#x22;>\n        <Box style={{ overflow: 'hidden', borderStartStartRadius: 'inherit', borderStartEndRadius: 'inherit' }}>\n          <Image\n            src={image}\n            alt=\&#x22;Blue mountain landscape\&#x22;\n            width=\&#x22;640\&#x22;\n            height=\&#x22;360\&#x22;\n            style={{ display: 'block', width: '100%', height: 'auto' }}\n          />\n        </Box>\n        <Content padding=\&#x22;lg\&#x22; gap=\&#x22;sm\&#x22;>\n          <Heading level={3}>Full bleed media</Heading>\n          <Text>Content supplies its own padding beneath the edge-to-edge image.</Text>\n        </Content>\n      </Card>\n\n      <Card padding=\&#x22;0\&#x22; gap=\&#x22;0\&#x22;>\n        <Box style={{ overflow: 'hidden', borderRadius: 'inherit' }}>\n          <Image\n            src={image}\n            alt=\&#x22;A media-only card showing a blue mountain landscape\&#x22;\n            width=\&#x22;640\&#x22;\n            height=\&#x22;360\&#x22;\n            style={{ display: 'block', width: '100%', height: 'auto' }}\n          />\n        </Box>\n      </Card>\n\n      <Card>\n        <Content gap=\&#x22;sm\&#x22;>\n          <Heading level={3}>Custom media after content</Heading>\n          <Text>A plain Box can hold a gradient or illustration, before or after the text.</Text>\n        </Content>\n        <Box\n          style={{\n            aspectRatio: '16 / 9',\n            background: 'linear-gradient(135deg, #145fa9 0%, #4ecdc4 100%)',\n            borderRadius: 6\n          }}\n        />\n      </Card>\n    </Grid>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Box, Card, Content, Grid, Heading, Image, Text } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 640 360%22%3E%3Crect width=%22640%22 height=%22360%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%22480%22 cy=%22110%22 r=%2270%22 fill=%22%234ecdc4%22/%3E%3Cpath d=%22M0 300 180 150l120 100 90-75 250 185H0z%22 fill=%22%230b3d91%22/%3E%3C/svg%3E';\n\nconst mediaImageStyle = { display: 'block', width: '100%', height: 'auto' } as const;\n\nexport function MediaExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <Card>\n        <Image src={image} alt=\&#x22;Blue mountain landscape\&#x22; width=\&#x22;640\&#x22; height=\&#x22;360\&#x22; style={mediaImageStyle} />\n        <Content gap=\&#x22;sm\&#x22;>\n          <Heading level={3}>Inset media</Heading>\n          <Text>The default Card padding keeps media inset.</Text>\n        </Content>\n      </Card>\n\n      <Card padding=\&#x22;0\&#x22; gap=\&#x22;0\&#x22;>\n        <Box style={{ overflow: 'hidden', borderStartStartRadius: 'inherit', borderStartEndRadius: 'inherit' }}>\n          <Image src={image} alt=\&#x22;Blue mountain landscape\&#x22; width=\&#x22;640\&#x22; height=\&#x22;360\&#x22; style={mediaImageStyle} />\n        </Box>\n        <Content padding=\&#x22;lg\&#x22; gap=\&#x22;sm\&#x22;>\n          <Heading level={3}>Full bleed media</Heading>\n          <Text>Content supplies its own padding beneath the edge-to-edge image.</Text>\n        </Content>\n      </Card>\n\n      <Card padding=\&#x22;0\&#x22; gap=\&#x22;0\&#x22;>\n        <Box style={{ overflow: 'hidden', borderRadius: 'inherit' }}>\n          <Image\n            src={image}\n            alt=\&#x22;A media-only card showing a blue mountain landscape\&#x22;\n            width=\&#x22;640\&#x22;\n            height=\&#x22;360\&#x22;\n            style={mediaImageStyle}\n          />\n        </Box>\n      </Card>\n\n      <Card>\n        <Content gap=\&#x22;sm\&#x22;>\n          <Heading level={3}>Custom media after content</Heading>\n          <Text>A plain Box can hold a gradient or illustration, before or after the text.</Text>\n        </Content>\n        <Box\n          style={{\n            aspectRatio: '16 / 9',\n            background: 'linear-gradient(135deg, #145fa9 0%, #4ecdc4 100%)',\n            borderRadius: 6\n          }}\n        />\n      </Card>\n    </Grid>\n  );\n}&#x22;" />
 
 ### Actions and navigation [#actions-and-navigation]
 
-Use onPress for an action or href for navigation. Body text stays copyable and inner buttons act independently.
+Use onPress for an action or href for navigation. Nested buttons keep their own hits; the rest of
+the surface activates the Card.
 
 <Story of="ActionsExample" />
 
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Card, Content, Flex, Text } from '@godaddy/antares';\n\nexport function ActionsExample() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Card aria-label=\&#x22;Open details\&#x22; onPress={() => setCount((value) => value + 1)}>\n        <Text>Open details</Text>\n        <Button onPress={() => setCount((value) => value + 10)}>Independent action ({count})</Button>\n      </Card>\n      <Card href=\&#x22;/about\&#x22; aria-label=\&#x22;About this product\&#x22;>\n        <Content>\n          <Text>About this product</Text>\n          <Button>Save</Button>\n        </Content>\n      </Card>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Card, Content, CornerActions, Flex, Text } from '@godaddy/antares';\n\nexport function ActionsExample() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Card aria-label=\&#x22;Open details\&#x22; onPress={() => setCount((value) => value + 1)}>\n        <Text>Open details</Text>\n        <Button onPress={() => setCount((value) => value + 10)}>Independent action ({count})</Button>\n        <CornerActions>\n          <Button onPress={() => setCount((value) => value + 100)}>Corner action</Button>\n        </CornerActions>\n      </Card>\n      <Card href=\&#x22;/about\&#x22; aria-label=\&#x22;About this product\&#x22;>\n        <Content>\n          <Text>About this product</Text>\n          <Button>Save</Button>\n        </Content>\n        <CornerActions>\n          <Button>Share</Button>\n        </CornerActions>\n      </Card>\n    </Flex>\n  );\n}&#x22;" />
 
-### Selection [#selection]
+### Checkbox [#checkbox]
 
-Control a standalone checkbox, or let CheckboxGroup and RadioGroup own selection. Add href when
-the body should navigate and only the corner indicator should select, naming the two controls
-apart with selectionProps. Omit isSelected and onSelectionChange for uncontrolled standalone
-selection, optionally setting defaultSelected.
+Standalone checkbox Cards own their state. Grouped cards belong in CheckboxGroup. Pair href with
+selectionProps when the body navigates and the indicator selects.
 
-<Story of="SelectionExample" />
+<Story of="CheckboxExample" />
 
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Card,\n  CardSelectionIndicator,\n  CheckboxGroup,\n  Content,\n  CornerActions,\n  Flex,\n  RadioGroup,\n  Text\n} from '@godaddy/antares';\n\nexport function SelectionExample() {\n  const [selected, setSelected] = useState(false);\n  const [changes, setChanges] = useState(0);\n\n  function changeSelection(nextSelected: boolean) {\n    setSelected(nextSelected);\n    setChanges((count) => count + 1);\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Card\n        selection=\&#x22;checkbox\&#x22;\n        aria-label=\&#x22;Select this card\&#x22;\n        isSelected={selected}\n        onSelectionChange={changeSelection}\n      >\n        <Text>Selectable card content</Text>\n        <CornerActions>\n          <CardSelectionIndicator data-testid=\&#x22;card-selection-indicator\&#x22; visibility=\&#x22;always\&#x22; />\n        </CornerActions>\n      </Card>\n      <Text>Selection changes: {changes}</Text>\n\n      <CheckboxGroup aria-label=\&#x22;Select pages\&#x22;>\n        <Card selection=\&#x22;checkbox\&#x22; value=\&#x22;overview\&#x22; aria-label=\&#x22;Select overview\&#x22;>\n          <Text>Overview</Text>\n          <CornerActions>\n            <CardSelectionIndicator />\n          </CornerActions>\n        </Card>\n        <Card\n          selection=\&#x22;checkbox\&#x22;\n          href=\&#x22;/details\&#x22;\n          value=\&#x22;details\&#x22;\n          aria-label=\&#x22;Open details\&#x22;\n          selectionProps={{ 'aria-label': 'Select details' }}\n        >\n          <Content>\n            <Text slot=\&#x22;description\&#x22;>Open details</Text>\n          </Content>\n          <CornerActions>\n            <CardSelectionIndicator data-testid=\&#x22;combined-selection-indicator\&#x22; visibility=\&#x22;always\&#x22; />\n          </CornerActions>\n        </Card>\n      </CheckboxGroup>\n\n      <RadioGroup aria-label=\&#x22;Choose a plan\&#x22; defaultValue=\&#x22;starter\&#x22;>\n        {['starter', 'pro'].map(function plan(value) {\n          return (\n            <Card key={value} selection=\&#x22;radio\&#x22; value={value} aria-label={`${value} plan`}>\n              <Text>{value === 'starter' ? 'Starter plan' : 'Pro plan'}</Text>\n              <CornerActions>\n                <CardSelectionIndicator visibility=\&#x22;always\&#x22; />\n              </CornerActions>\n            </Card>\n          );\n        })}\n      </RadioGroup>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Card, CardSelectionIndicator, CheckboxGroup, Content, CornerActions, Flex, Text } from '@godaddy/antares';\n\nexport function CheckboxExample() {\n  const [selected, setSelected] = useState(false);\n  const [changes, setChanges] = useState(0);\n\n  function changeSelection(nextSelected: boolean) {\n    setSelected(nextSelected);\n    setChanges((count) => count + 1);\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Card\n        selection=\&#x22;checkbox\&#x22;\n        aria-label=\&#x22;Select this card\&#x22;\n        isSelected={selected}\n        onSelectionChange={changeSelection}\n      >\n        <Text>Selectable card content</Text>\n        <CornerActions>\n          <CardSelectionIndicator data-testid=\&#x22;card-selection-indicator\&#x22; />\n        </CornerActions>\n      </Card>\n      <Text>Selection changes: {changes}</Text>\n\n      <CheckboxGroup aria-label=\&#x22;Select pages\&#x22;>\n        <Card selection=\&#x22;checkbox\&#x22; value=\&#x22;overview\&#x22; aria-label=\&#x22;Select overview\&#x22;>\n          <Text>Overview</Text>\n          <CornerActions>\n            <CardSelectionIndicator />\n          </CornerActions>\n        </Card>\n        <Card\n          selection=\&#x22;checkbox\&#x22;\n          href=\&#x22;/details\&#x22;\n          value=\&#x22;details\&#x22;\n          aria-label=\&#x22;Open details\&#x22;\n          selectionProps={{ 'aria-label': 'Select details' }}\n        >\n          <Content>\n            <Text slot=\&#x22;description\&#x22;>Open details</Text>\n          </Content>\n          <CornerActions>\n            <CardSelectionIndicator data-testid=\&#x22;combined-selection-indicator\&#x22; />\n          </CornerActions>\n        </Card>\n      </CheckboxGroup>\n    </Flex>\n  );\n}&#x22;" />
 
-### Responsive layout [#responsive-layout]
+### Radio [#radio]
 
-Use a consumer container query to switch between vertical and horizontal layouts. The image
-fills narrow cards and takes 40% of the width when space allows.
+Radio Cards require a value and live in RadioGroup, which owns selection and arrow-key movement.
 
-<Story of="ContainerQueryExample" />
+<Story of="RadioExample" />
 
-<Source language="tsx" code="&#x22;import { Box, Card, Flex, Heading, Image, Text } from '@godaddy/antares';\nimport styles from './container-query.module.css';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 240%22%3E%3Crect width=%22320%22 height=%22240%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%22220%22 cy=%2270%22 r=%2250%22 fill=%22%234ecdc4%22/%3E%3C/svg%3E';\n\nexport function ContainerQueryExample() {\n  return (\n    <Box className={styles.container} data-testid=\&#x22;container-query-container\&#x22;>\n      <Card direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; className={styles.card} data-testid=\&#x22;container-query-card\&#x22;>\n        <Image\n          slot=\&#x22;media\&#x22;\n          src={image}\n          alt=\&#x22;Blue abstract landscape\&#x22;\n          width=\&#x22;320\&#x22;\n          height=\&#x22;240\&#x22;\n          data-testid=\&#x22;container-query-media\&#x22;\n        />\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; flexGrow={1} data-testid=\&#x22;container-query-content\&#x22;>\n          <Heading level={3}>Container-owned responsiveness</Heading>\n          <Text>The surrounding container decides when this composition stacks or becomes horizontal.</Text>\n        </Flex>\n      </Card>\n    </Box>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Card, CardSelectionIndicator, CornerActions, RadioGroup, Text } from '@godaddy/antares';\n\nexport function RadioExample() {\n  return (\n    <RadioGroup aria-label=\&#x22;Choose a plan\&#x22; defaultValue=\&#x22;starter\&#x22;>\n      <Card selection=\&#x22;radio\&#x22; value=\&#x22;starter\&#x22; aria-label=\&#x22;Starter plan\&#x22;>\n        <Text>Starter plan</Text>\n        <CornerActions>\n          <CardSelectionIndicator data-testid=\&#x22;radio-starter-indicator\&#x22; />\n        </CornerActions>\n      </Card>\n      <Card selection=\&#x22;radio\&#x22; value=\&#x22;pro\&#x22; aria-label=\&#x22;Pro plan\&#x22;>\n        <Text>Pro plan</Text>\n        <CornerActions>\n          <CardSelectionIndicator data-testid=\&#x22;radio-pro-indicator\&#x22; />\n        </CornerActions>\n      </Card>\n    </RadioGroup>\n  );\n}&#x22;" />
 
-### Collections [#collections]
+### Layout [#layout]
 
-Let Content grow to align bottom actions across equal-height cards. A wrapping Header reserves
-room for always-visible CornerActions, while TextLockup coordinates each card's text.
+Own responsiveness with a container query. In a collection, let Content grow so footer actions
+align, and wrap long titles beside CornerActions.
 
-<Story of="CollectionExample" />
+<Story of="LayoutExample" />
 
-<Source language="tsx" code="&#x22;import {\n  Button,\n  Card,\n  Content,\n  CornerActions,\n  Footer,\n  Grid,\n  Header,\n  Heading,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function CollectionExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;stretch\&#x22;>\n      {[\n        'Short description',\n        'A medium description gives this card more content.',\n        'A longer description demonstrates that each card can grow while its action stays aligned.'\n      ].map(function renderCard(description, index) {\n        return (\n          <Card key={description} gap=\&#x22;md\&#x22; data-testid={`collection-card-${index}`}>\n            <Header alignItems=\&#x22;start\&#x22; wrap=\&#x22;wrap\&#x22;>\n              <Heading level={3} style={{ minWidth: 0, flex: '1 1 10rem' }}>\n                {index === 2 ? 'A longer title that wraps beside the corner action' : `Card ${index + 1}`}\n              </Heading>\n              <CornerActions>\n                <Button variant=\&#x22;minimal\&#x22; aria-label={`More options for card ${index + 1}`}>\n                  ...\n                </Button>\n              </CornerActions>\n            </Header>\n            <Content flexGrow={1}>\n              <TextLockup>\n                <Text slot=\&#x22;eyebrow\&#x22;>Recommended</Text>\n                <Text slot=\&#x22;body\&#x22;>{description}</Text>\n              </TextLockup>\n            </Content>\n            <Footer justifyContent=\&#x22;end\&#x22;>\n              <Button data-testid={`collection-action-${index}`}>View details</Button>\n            </Footer>\n          </Card>\n        );\n      })}\n    </Grid>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import {\n  Box,\n  Button,\n  Card,\n  Content,\n  CornerActions,\n  Flex,\n  Footer,\n  Grid,\n  Header,\n  Heading,\n  Image,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\nimport styles from './layout.module.css';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 240%22%3E%3Crect width=%22320%22 height=%22240%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%22220%22 cy=%2270%22 r=%2250%22 fill=%22%234ecdc4%22/%3E%3C/svg%3E';\n\nexport function LayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <Box className={styles.container} data-testid=\&#x22;container-query-container\&#x22;>\n        <Card direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; className={styles.card} data-testid=\&#x22;container-query-card\&#x22;>\n          <Image\n            slot=\&#x22;media\&#x22;\n            src={image}\n            alt=\&#x22;Blue abstract landscape\&#x22;\n            width=\&#x22;320\&#x22;\n            height=\&#x22;240\&#x22;\n            data-testid=\&#x22;container-query-media\&#x22;\n          />\n          <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; flexGrow={1} data-testid=\&#x22;container-query-content\&#x22;>\n            <Heading level={3}>Container-owned responsiveness</Heading>\n            <Text>The surrounding container decides when this composition stacks or becomes horizontal.</Text>\n          </Flex>\n        </Card>\n      </Box>\n\n      <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;stretch\&#x22;>\n        {[\n          'Short description',\n          'A medium description gives this card more content.',\n          'A longer description demonstrates that each card can grow while its action stays aligned.'\n        ].map(function renderCard(description, index) {\n          return (\n            <Card key={description} gap=\&#x22;md\&#x22; data-testid={`collection-card-${index}`}>\n              <Header alignItems=\&#x22;start\&#x22; wrap=\&#x22;wrap\&#x22;>\n                <Heading level={3} style={{ minWidth: 0, flex: '1 1 10rem' }}>\n                  {index === 2 ? 'A longer title that wraps beside the corner action' : `Card ${index + 1}`}\n                </Heading>\n                <CornerActions>\n                  <Button variant=\&#x22;minimal\&#x22; aria-label={`More options for card ${index + 1}`}>\n                    ...\n                  </Button>\n                </CornerActions>\n              </Header>\n              <Content flexGrow={1}>\n                <TextLockup>\n                  <Text slot=\&#x22;eyebrow\&#x22;>Recommended</Text>\n                  <Text slot=\&#x22;body\&#x22;>{description}</Text>\n                </TextLockup>\n              </Content>\n              <Footer justifyContent=\&#x22;end\&#x22;>\n                <Button data-testid={`collection-action-${index}`}>View details</Button>\n              </Footer>\n            </Card>\n          );\n        })}\n      </Grid>\n    </Flex>\n  );\n}&#x22;" />
 
 ## Accessibility [#accessibility]
 
-Cards are static surfaces by default. `href` adds a primary navigation destination and `onPress`
-adds a primary action. Always provide `aria-label` or `aria-labelledby` for a Card primary action:
-the internal action control has no visible label of its own and cannot derive its name from
-arbitrary Card body content.
-
-`Card href` renders a real, named link behind the content. Clicking ordinary body content navigates;
-buttons, links, menus, editable content, and CornerActions keep their own behavior, including when
-nested inside `Content`. Text remains selectable and copyable. Native link menus and middle-click
-navigation are available on the Card background; ordinary body text is not itself a native link.
-The primary link is keyboard accessible without making the Card an interactive ancestor of its controls.
-
-Reuse Structure's `Content`, `Header`, `Footer`, and `CornerActions` to compose the interior. Card
-supplies region defaults through their contexts: no additional region padding, `lg` content gap,
-and visible content overflow. Explicit region props override those defaults. `Content` supports
-`as` when a different element or component is needed.
-Use `selection="checkbox"` or `selection="radio"` for selectable Cards. Place one
-`CardSelectionIndicator` explicitly, usually last in `CornerActions`. Card owns the selection
-composition and delegates state, keyboard handling, and native input behavior to React Aria.
-
-A Card with both a primary action and selection holds two controls, so name them separately: the
-Card's own `aria-label`/`aria-labelledby` names the primary action, and `selectionProps` carries the
-name for the selection control. Without it both controls answer to the same name.
-
-Checkbox Cards work standalone or inside the existing `CheckboxGroup`. Standalone selection uses
-`isSelected`, `defaultSelected`, and `onSelectionChange`; grouped state belongs to the group.
-Radio Cards require a `value` and the existing `RadioGroup`, which owns selection and arrow-key
-navigation. Use `isSelectionDisabled` to disable selection independently of primary or child
-actions. `isDisabled` disables only the Card's primary action. Set `isReadOnly` on a checkbox Card
-or on its group; radio read-only behavior belongs to `RadioGroup`.
-
-The indicator is automatically revealed on hover, focus within the Card, or selection, and remains
-available on touch devices. Use `visibility="always"` when the selected affordance should stay
-visible at rest. Hiding its visual does not remove the underlying selection control from keyboard
-or assistive-technology access.
-
-### CardSelectionIndicator [#cardselectionindicator]
-
-Place `CardSelectionIndicator` inside `CornerActions` on a selectable Card. It
-shares the native selection control's state and does not add a second keyboard focus stop.
-
-## Best Practices [#best-practices]
-
-* Compose media as an ordinary child, an `Image` or a consumer-owned `Box`. Card never reads a slot
-  or infers media, so its order, size, and orientation are yours. A `slot` or class on it is your own
-  styling hook, as the responsive example uses `[slot="media"]` in a container query.
-* Use `Flex`, `Grid`, `Box`, `Content`, `Header`, `Footer`, `TextLockup`, and `ButtonGroup` to define the interior
-  layout. Keep enough width for long text and reserve CornerActions space explicitly.
-* For collections, give cards a shared grid or feed width, let the content region grow, and place
-  bottom actions after that growing region to align actions across equal-height cards.
-* Use a container query in the surrounding layout when a card should stack at its available width.
-  Card does not add automatic breakpoints or reorder children.
-* CornerActions is always visible. Use `gap`, wrapping, and explicit flexible text widths to avoid
-  collisions at narrow widths.
-
-## Troubleshooting [#troubleshooting]
-
-### My linked Card contains a button or another link [#my-linked-card-contains-a-button-or-another-link]
-
-Keep it in the composed body, including inside `Content`. Independent controls do not activate
-the Card. Do not wrap those controls in your own anchor or button.
-
-### My media has unexpected padding [#my-media-has-unexpected-padding]
-
-Card defaults to `padding="lg"` and `gap="lg"`. Keep those defaults for inset media, or set
-`padding="0"` and add `Content padding="lg"` around mixed content for a full bleed composition.
-
-### Corner actions overlap long text [#corner-actions-overlap-long-text]
-
-Card does not measure arbitrary children. Compose a `Header` or `Flex` with an explicit flexible
-text region, `CornerActions`, and wrapping or a minimum text width appropriate for the container.
+* Name a primary action with `aria-label` or `aria-labelledby`. The stretched control has no visible
+  label of its own.
+* Name selection separately with `selectionProps` when the Card also has a primary action.
+* Nested buttons, links, labels, and fields keep their own behavior. Clicking body text activates
+  the Card; dragging text selects it.
+* `isDisabled` disables only the primary. `isSelectionDisabled` disables only selection. Radio
+  read-only belongs on `RadioGroup`.
 
 ## Props [#props]
 
@@ -769,16 +694,20 @@ text region, `CornerActions`, and wrapping or a minimum text width appropriate f
 <Card>
   <Image />
   <Content>
-    {/* ...text and independent controls... */}
+    {/* ... */}
   </Content>
   <CornerActions>
-    {/* ...independent actions or CardSelectionIndicator... */}
+    <CardSelectionIndicator />
+    {/* ... */}
   </CornerActions>
-  {/* ...other consumer-owned layout regions... */}
 </Card>
 ```
 
+### Card [#card]
+
 <PropTable />
+
+### CardSelectionIndicator [#cardselectionindicator]
 
 <PropTable />
 
@@ -2026,47 +1955,6 @@ FieldError renders when the field is invalid.
 <PropTable />
 
 
-# Heading
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders `h1`-`h6` from the `level` prop (default `3`).
-* `slot="title"` inside a `Modal` or `Dialog` sets the accessible name.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-`Heading` renders a semantic `h1`-`h6` element via the `level` prop.
-Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### Heading [#heading]
-
-<PropTable />
-
-
 # FileTrigger
 
 
@@ -2125,6 +2013,47 @@ Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow m
 ## Props [#props]
 
 ### FileTrigger [#filetrigger]
+
+<PropTable />
+
+
+# Heading
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders `h1`-`h6` from the `level` prop (default `3`).
+* `slot="title"` inside a `Modal` or `Dialog` sets the accessible name.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+`Heading` renders a semantic `h1`-`h6` element via the `level` prop.
+Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### Heading [#heading]
 
 <PropTable />
 
@@ -3047,85 +2976,6 @@ Nested menus via `SubmenuTrigger`.
 <PropTable />
 
 
-# MetricsLockup
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A metric with a title, info tooltip, value, and description.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { MetricsLockup, type MetricsLockupProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<MetricsLockupProps> = {}) {\n  return (\n    <MetricsLockup\n      title=\&#x22;Total Revenue\&#x22;\n      titleInfo=\&#x22;The total revenue across all products for the selected period.\&#x22;\n      data=\&#x22;$1,234.56\&#x22;\n      description=\&#x22;vs. last month\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
-
-### With Trend [#with-trend]
-
-Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
-
-<Story of="WithTrendExample" />
-
-<Source language="tsx" code="&#x22;import { MetricsLockup } from '@godaddy/antares';\n\nexport function WithTrendExample() {\n  return <MetricsLockup title=\&#x22;Conversion Rate\&#x22; data=\&#x22;42%\&#x22; description=\&#x22;+3.2% vs. last month\&#x22; trend=\&#x22;positive\&#x22; />;\n}&#x22;" />
-
-### Compact [#compact]
-
-Use the `compact` prop to render the metric value and description inline rather than stacked.
-
-<Story of="CompactExample" />
-
-<Source language="tsx" code="&#x22;import { MetricsLockup } from '@godaddy/antares';\n\nexport function CompactExample() {\n  return <MetricsLockup title=\&#x22;Sessions\&#x22; data=\&#x22;8,021\&#x22; description=\&#x22;-12% vs. last week\&#x22; trend=\&#x22;negative\&#x22; compact />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key    | Description                                                  |
-| ------ | ------------------------------------------------------------ |
-| Tab    | Moves focus to the info trigger button and shows the tooltip |
-| Escape | Closes the tooltip                                           |
-
-### ARIA [#aria]
-
-* The info trigger button uses `aria-label="More information"` to describe its purpose.
-* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
-* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
-
-## Best Practices [#best-practices]
-
-* Keep tooltip content concise and informative.
-* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
-* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
-* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
-
-## Props [#props]
-
-### MetricsLockup [#metricslockup]
-
-<PropTable />
-
-
 # Modal
 
 
@@ -3231,6 +3081,85 @@ row and the `ButtonGroup` stay pinned.
 <PropTable />
 
 ### ModalTrigger [#modaltrigger]
+
+<PropTable />
+
+
+# MetricsLockup
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A metric with a title, info tooltip, value, and description.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { MetricsLockup, type MetricsLockupProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<MetricsLockupProps> = {}) {\n  return (\n    <MetricsLockup\n      title=\&#x22;Total Revenue\&#x22;\n      titleInfo=\&#x22;The total revenue across all products for the selected period.\&#x22;\n      data=\&#x22;$1,234.56\&#x22;\n      description=\&#x22;vs. last month\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### With Trend [#with-trend]
+
+Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
+
+<Story of="WithTrendExample" />
+
+<Source language="tsx" code="&#x22;import { MetricsLockup } from '@godaddy/antares';\n\nexport function WithTrendExample() {\n  return <MetricsLockup title=\&#x22;Conversion Rate\&#x22; data=\&#x22;42%\&#x22; description=\&#x22;+3.2% vs. last month\&#x22; trend=\&#x22;positive\&#x22; />;\n}&#x22;" />
+
+### Compact [#compact]
+
+Use the `compact` prop to render the metric value and description inline rather than stacked.
+
+<Story of="CompactExample" />
+
+<Source language="tsx" code="&#x22;import { MetricsLockup } from '@godaddy/antares';\n\nexport function CompactExample() {\n  return <MetricsLockup title=\&#x22;Sessions\&#x22; data=\&#x22;8,021\&#x22; description=\&#x22;-12% vs. last week\&#x22; trend=\&#x22;negative\&#x22; compact />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key    | Description                                                  |
+| ------ | ------------------------------------------------------------ |
+| Tab    | Moves focus to the info trigger button and shows the tooltip |
+| Escape | Closes the tooltip                                           |
+
+### ARIA [#aria]
+
+* The info trigger button uses `aria-label="More information"` to describe its purpose.
+* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
+* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
+
+## Best Practices [#best-practices]
+
+* Keep tooltip content concise and informative.
+* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
+* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
+* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
+
+## Props [#props]
+
+### MetricsLockup [#metricslockup]
 
 <PropTable />
 
@@ -3372,81 +3301,6 @@ Compose with `children` to replace the stepper icons with your own content, such
 <PropTable />
 
 
-# Pagination
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DefaultExample() {\n  const [page, setPage] = useState(0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={5} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Pass `activeIndex` and `onChange` to control the active page externally.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={4} activeIndex={page} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Default Active [#default-active]
-
-Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
-
-<Story of="DefaultActiveExample" />
-
-<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function DefaultActiveExample() {\n  return <Pagination total={5} defaultActiveIndex={2} />;\n}&#x22;" />
-
-### With Limit [#with-limit]
-
-Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
-
-<Story of="WithLimitExample" />
-
-<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function WithLimitExample() {\n  return <Pagination total={10} limit={3} />;\n}&#x22;" />
-
-### onChange Event [#onchange-event]
-
-The `onChange` callback fires with the new page index whenever the user navigates.
-
-<Story of="OnChangeExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function OnChangeExample() {\n  const [onChangeValue, setOnChangeValue] = useState<number | undefined>(undefined);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={3} onChange={setOnChangeValue} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        onChange: {onChangeValue ?? 'none'}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### Pagination [#pagination]
-
-<PropTable />
-
-
 # Popover
 
 
@@ -3540,6 +3394,81 @@ also gives the dialog its accessible name.
 <PropTable />
 
 ### PopoverTrigger [#popovertrigger]
+
+<PropTable />
+
+
+# Pagination
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DefaultExample() {\n  const [page, setPage] = useState(0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={5} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Pass `activeIndex` and `onChange` to control the active page externally.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={4} activeIndex={page} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Default Active [#default-active]
+
+Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
+
+<Story of="DefaultActiveExample" />
+
+<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function DefaultActiveExample() {\n  return <Pagination total={5} defaultActiveIndex={2} />;\n}&#x22;" />
+
+### With Limit [#with-limit]
+
+Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
+
+<Story of="WithLimitExample" />
+
+<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function WithLimitExample() {\n  return <Pagination total={10} limit={3} />;\n}&#x22;" />
+
+### onChange Event [#onchange-event]
+
+The `onChange` callback fires with the new page index whenever the user navigates.
+
+<Story of="OnChangeExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function OnChangeExample() {\n  const [onChangeValue, setOnChangeValue] = useState<number | undefined>(undefined);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={3} onChange={setOnChangeValue} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        onChange: {onChangeValue ?? 'none'}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### Pagination [#pagination]
 
 <PropTable />
 
@@ -4120,196 +4049,6 @@ Always provide clear error messages:
 <PropTable />
 
 
-# RangeField
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Select one value or render one thumb for each value in an array
-* Supports controlled and uncontrolled values with typed change callbacks
-* Provides localized value output, endpoint labels, descriptions, and markers
-* Integrates with native forms, keyboard, pointer, and touch interaction through React Aria
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Minimal usage with a single value and min/max bounds.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} />;\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `onChange` for immediate updates and `onChangeEnd` for work that should run after interaction finishes.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState(50);\n  const [committedValue, setCommittedValue] = useState(50);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <RangeField<number>\n        aria-label=\&#x22;Volume\&#x22;\n        value={value}\n        onChange={setValue}\n        onChangeEnd={setCommittedValue}\n        step={10}\n      />\n      <p>Current value: {value}</p>\n      <p>Committed value: {committedValue}</p>\n    </Flex>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` when the value is visible but unavailable for interaction.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Volume\&#x22;\n      label=\&#x22;Volume\&#x22;\n      description=\&#x22;This is a description\&#x22;\n      minLabel=\&#x22;Low\&#x22;\n      maxLabel=\&#x22;High\&#x22;\n      defaultValue={50}\n      isDisabled\n    />\n  );\n}&#x22;" />
-
-### Labels [#labels]
-
-Combine an input label, value label, range labels, and helper text when users need additional context.
-
-<Story of="LabelsExample" />
-
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function LabelsExample() {\n  return (\n    <RangeField\n      label=\&#x22;Price limit\&#x22;\n      defaultValue={50}\n      formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n      valueLabel\n      minLabel=\&#x22;$0\&#x22;\n      maxLabel=\&#x22;$100\&#x22;\n      description=\&#x22;Choose the maximum price.\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Value Display [#value-display]
-
-Use `valueLabel` to show formatted values, static context, or output derived from the current slider state.
-
-<Story of="ValueDisplayExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\n\nexport function ValueDisplayExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <RangeField\n        label=\&#x22;Monthly budget\&#x22;\n        defaultValue={50}\n        formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n        valueLabel\n      />\n      <RangeField label=\&#x22;Storage quota\&#x22; defaultValue={50} valueLabel={<span>Recommended</span>} />\n      <RangeField\n        label=\&#x22;Volume\&#x22;\n        defaultValue={50}\n        valueLabel={function renderValue({ state }) {\n          return `Current: ${state.values[0]}%`;\n        }}\n      />\n    </Flex>\n  );\n}&#x22;" />
-
-### Markers [#markers]
-
-Use `markers` to expose a manageable set of discrete steps for a single value.
-
-<Story of="MarkersExample" />
-
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function MarkersExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} step={10} markers />;\n}&#x22;" />
-
-### Range [#range]
-
-Pass a `number[]` to render a range with two thumbs and step markers.
-
-<Story of="RangeExample" />
-
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Price range\&#x22;\n      defaultValue={[25, 75]}\n      thumbLabels={['Minimum price', 'Maximum price']}\n      minValue={0}\n      maxValue={100}\n      step={25}\n      markers\n    />\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Accessible names [#accessible-names]
-
-For a single value, prefer a visible `label`; use `aria-label` only when equivalent visible context already exists.
-
-For an array, provide one descriptive `thumbLabels` entry for every value. Entries are matched by index, so keep them aligned when values are added, removed, or reordered. Describe each thumb's purpose, such as `Lower warning threshold`, rather than its current number.
-
-`thumbNames` configures native form field names and does not provide accessible labels. Likewise, `valueLabel`, `minLabel`, and `maxLabel` are visual context rather than substitutes for accessible naming.
-
-### Keyboard interaction [#keyboard-interaction]
-
-Each thumb follows the React Aria slider keyboard model:
-
-* Tab and Shift+Tab move among thumbs and surrounding controls.
-* Arrow Right and Arrow Up increase the focused value by `step`.
-* Arrow Left and Arrow Down decrease the focused value by `step`.
-* Home and End move the focused thumb to its permitted bounds.
-* Page Up and Page Down make larger changes.
-
-Directional behavior follows the user's locale where appropriate. Pointer, touch, and keyboard interaction all use the same scale and constraints.
-
-Markers are decorative and hidden from the accessibility tree. Ensure the field label, thumb labels, bounds, step, and formatted values communicate all required information without relying on marker appearance.
-
-## Best Practices [#best-practices]
-
-* Use an array only when every entry has a clear, independently adjustable meaning.
-* Keep `value`, `thumbLabels`, and `thumbNames` aligned by index.
-* Use thumb labels that explain purpose instead of repeating the current number.
-* Keep array values in a stable semantic order. If crossing or reordering thumbs would make their meaning ambiguous, enforce the appropriate ordering in product state.
-* Avoid large value arrays. Every entry creates another focusable control, which increases keyboard effort and cognitive load.
-* Set meaningful `minValue`, `maxValue`, and `step` values. The scale should match the precision users actually need.
-* Use markers only when there are few enough steps to scan. Tiny steps across a large range can create an excessive number of DOM elements.
-* Use `formatOptions` for currency, percentages, measurements, and other locale-sensitive units so values display and announce their meaning.
-* Use `description` for persistent guidance and `isRequired` when a value is required.
-* Use `isDisabled` when the value should remain visible but unavailable for interaction.
-* Use `onChange` for lightweight immediate feedback and `onChangeEnd` for expensive requests, filtering, or calculations.
-* Use a text-entry control when exact numeric input is essential. A track is best for exploring or adjusting values within known bounds.
-
-## Props [#props]
-
-### RangeField [#rangefield]
-
-<PropTable />
-
-## Troubleshooting [#troubleshooting]
-
-### A thumb is missing a label or form value [#a-thumb-is-missing-a-label-or-form-value]
-
-Check the same index in `thumbLabels` and `thumbNames`. Each array entry renders a thumb, and its accessible label and form name are read from the corresponding positions. A form name does not replace an accessible label.
-
-### TypeScript reports the wrong callback value type [#typescript-reports-the-wrong-callback-value-type]
-
-Keep the controlled or default value and callback signatures consistent. When inference is unavailable, provide the generic explicitly: `<RangeField<number>>` for a scalar or `<RangeField<number[]>>` for an array.
-
-```tsx
-const [targets, setTargets] = useState<number[]>([20, 80]);
-
-<RangeField<number[]>
-  label="Target range"
-  value={targets}
-  onChange={setTargets}
-  thumbLabels={['Minimum target', 'Maximum target']}
-/>;
-```
-
-### The controlled thumbs do not move [#the-controlled-thumbs-do-not-move]
-
-The `value` prop is the source of truth. Update the scalar or array in `onChange` without changing its intended shape. For arrays, return a new array so application state observes the update.
-
-### Values snap unexpectedly [#values-snap-unexpectedly]
-
-Verify that `step` represents the intended interval from `minValue`. Every thumb snaps to valid positions on the same configured scale.
-
-### The final marker is missing [#the-final-marker-is-missing]
-
-Markers begin at `minValue` and appear at complete step positions. `maxValue` receives a marker only when the range is evenly divisible by `step`.
-
-### Markers are crowded or rendering is slow [#markers-are-crowded-or-rendering-is-slow]
-
-Increase `step` or omit `markers`. Large ranges with small steps can produce many decorative elements even when users cannot distinguish them visually.
-
-### The value or endpoint labels are blank [#the-value-or-endpoint-labels-are-blank]
-
-Enable automatic current-value output with `valueLabel={true}` or provide custom content. `minLabel` and `maxLabel` display only explicitly supplied content; neither defaults to a numeric bound or receives `formatOptions`.
-
-### Negative values do not behave as expected [#negative-values-do-not-behave-as-expected]
-
-Negative values are supported. Set a negative `minValue` and ensure every scalar or array value remains within the configured bounds.
-
-### The range configuration is invalid [#the-range-configuration-is-invalid]
-
-Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
-
-
 # SegmentedController
 
 
@@ -4710,6 +4449,196 @@ layout props to reserve room beside the surrounding content.
 `Flex`, so consumers control placement, wrapping, and reserved space around the actions.
 
 <PropTable />
+
+
+# RangeField
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Select one value or render one thumb for each value in an array
+* Supports controlled and uncontrolled values with typed change callbacks
+* Provides localized value output, endpoint labels, descriptions, and markers
+* Integrates with native forms, keyboard, pointer, and touch interaction through React Aria
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Minimal usage with a single value and min/max bounds.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} />;\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `onChange` for immediate updates and `onChangeEnd` for work that should run after interaction finishes.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState(50);\n  const [committedValue, setCommittedValue] = useState(50);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <RangeField<number>\n        aria-label=\&#x22;Volume\&#x22;\n        value={value}\n        onChange={setValue}\n        onChangeEnd={setCommittedValue}\n        step={10}\n      />\n      <p>Current value: {value}</p>\n      <p>Committed value: {committedValue}</p>\n    </Flex>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` when the value is visible but unavailable for interaction.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Volume\&#x22;\n      label=\&#x22;Volume\&#x22;\n      description=\&#x22;This is a description\&#x22;\n      minLabel=\&#x22;Low\&#x22;\n      maxLabel=\&#x22;High\&#x22;\n      defaultValue={50}\n      isDisabled\n    />\n  );\n}&#x22;" />
+
+### Labels [#labels]
+
+Combine an input label, value label, range labels, and helper text when users need additional context.
+
+<Story of="LabelsExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function LabelsExample() {\n  return (\n    <RangeField\n      label=\&#x22;Price limit\&#x22;\n      defaultValue={50}\n      formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n      valueLabel\n      minLabel=\&#x22;$0\&#x22;\n      maxLabel=\&#x22;$100\&#x22;\n      description=\&#x22;Choose the maximum price.\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Value Display [#value-display]
+
+Use `valueLabel` to show formatted values, static context, or output derived from the current slider state.
+
+<Story of="ValueDisplayExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\n\nexport function ValueDisplayExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <RangeField\n        label=\&#x22;Monthly budget\&#x22;\n        defaultValue={50}\n        formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n        valueLabel\n      />\n      <RangeField label=\&#x22;Storage quota\&#x22; defaultValue={50} valueLabel={<span>Recommended</span>} />\n      <RangeField\n        label=\&#x22;Volume\&#x22;\n        defaultValue={50}\n        valueLabel={function renderValue({ state }) {\n          return `Current: ${state.values[0]}%`;\n        }}\n      />\n    </Flex>\n  );\n}&#x22;" />
+
+### Markers [#markers]
+
+Use `markers` to expose a manageable set of discrete steps for a single value.
+
+<Story of="MarkersExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function MarkersExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} step={10} markers />;\n}&#x22;" />
+
+### Range [#range]
+
+Pass a `number[]` to render a range with two thumbs and step markers.
+
+<Story of="RangeExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Price range\&#x22;\n      defaultValue={[25, 75]}\n      thumbLabels={['Minimum price', 'Maximum price']}\n      minValue={0}\n      maxValue={100}\n      step={25}\n      markers\n    />\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Accessible names [#accessible-names]
+
+For a single value, prefer a visible `label`; use `aria-label` only when equivalent visible context already exists.
+
+For an array, provide one descriptive `thumbLabels` entry for every value. Entries are matched by index, so keep them aligned when values are added, removed, or reordered. Describe each thumb's purpose, such as `Lower warning threshold`, rather than its current number.
+
+`thumbNames` configures native form field names and does not provide accessible labels. Likewise, `valueLabel`, `minLabel`, and `maxLabel` are visual context rather than substitutes for accessible naming.
+
+### Keyboard interaction [#keyboard-interaction]
+
+Each thumb follows the React Aria slider keyboard model:
+
+* Tab and Shift+Tab move among thumbs and surrounding controls.
+* Arrow Right and Arrow Up increase the focused value by `step`.
+* Arrow Left and Arrow Down decrease the focused value by `step`.
+* Home and End move the focused thumb to its permitted bounds.
+* Page Up and Page Down make larger changes.
+
+Directional behavior follows the user's locale where appropriate. Pointer, touch, and keyboard interaction all use the same scale and constraints.
+
+Markers are decorative and hidden from the accessibility tree. Ensure the field label, thumb labels, bounds, step, and formatted values communicate all required information without relying on marker appearance.
+
+## Best Practices [#best-practices]
+
+* Use an array only when every entry has a clear, independently adjustable meaning.
+* Keep `value`, `thumbLabels`, and `thumbNames` aligned by index.
+* Use thumb labels that explain purpose instead of repeating the current number.
+* Keep array values in a stable semantic order. If crossing or reordering thumbs would make their meaning ambiguous, enforce the appropriate ordering in product state.
+* Avoid large value arrays. Every entry creates another focusable control, which increases keyboard effort and cognitive load.
+* Set meaningful `minValue`, `maxValue`, and `step` values. The scale should match the precision users actually need.
+* Use markers only when there are few enough steps to scan. Tiny steps across a large range can create an excessive number of DOM elements.
+* Use `formatOptions` for currency, percentages, measurements, and other locale-sensitive units so values display and announce their meaning.
+* Use `description` for persistent guidance and `isRequired` when a value is required.
+* Use `isDisabled` when the value should remain visible but unavailable for interaction.
+* Use `onChange` for lightweight immediate feedback and `onChangeEnd` for expensive requests, filtering, or calculations.
+* Use a text-entry control when exact numeric input is essential. A track is best for exploring or adjusting values within known bounds.
+
+## Props [#props]
+
+### RangeField [#rangefield]
+
+<PropTable />
+
+## Troubleshooting [#troubleshooting]
+
+### A thumb is missing a label or form value [#a-thumb-is-missing-a-label-or-form-value]
+
+Check the same index in `thumbLabels` and `thumbNames`. Each array entry renders a thumb, and its accessible label and form name are read from the corresponding positions. A form name does not replace an accessible label.
+
+### TypeScript reports the wrong callback value type [#typescript-reports-the-wrong-callback-value-type]
+
+Keep the controlled or default value and callback signatures consistent. When inference is unavailable, provide the generic explicitly: `<RangeField<number>>` for a scalar or `<RangeField<number[]>>` for an array.
+
+```tsx
+const [targets, setTargets] = useState<number[]>([20, 80]);
+
+<RangeField<number[]>
+  label="Target range"
+  value={targets}
+  onChange={setTargets}
+  thumbLabels={['Minimum target', 'Maximum target']}
+/>;
+```
+
+### The controlled thumbs do not move [#the-controlled-thumbs-do-not-move]
+
+The `value` prop is the source of truth. Update the scalar or array in `onChange` without changing its intended shape. For arrays, return a new array so application state observes the update.
+
+### Values snap unexpectedly [#values-snap-unexpectedly]
+
+Verify that `step` represents the intended interval from `minValue`. Every thumb snaps to valid positions on the same configured scale.
+
+### The final marker is missing [#the-final-marker-is-missing]
+
+Markers begin at `minValue` and appear at complete step positions. `maxValue` receives a marker only when the range is evenly divisible by `step`.
+
+### Markers are crowded or rendering is slow [#markers-are-crowded-or-rendering-is-slow]
+
+Increase `step` or omit `markers`. Large ranges with small steps can produce many decorative elements even when users cannot distinguish them visually.
+
+### The value or endpoint labels are blank [#the-value-or-endpoint-labels-are-blank]
+
+Enable automatic current-value output with `valueLabel={true}` or provide custom content. `minLabel` and `maxLabel` display only explicitly supplied content; neither defaults to a numeric bound or receives `formatOptions`.
+
+### Negative values do not behave as expected [#negative-values-do-not-behave-as-expected]
+
+Negative values are supported. Set a negative `minValue` and ensure every scalar or array value remains within the configured bounds.
+
+### The range configuration is invalid [#the-range-configuration-is-invalid]
+
+Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
 
 
 # Switch
@@ -5270,6 +5199,50 @@ Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowr
 <PropTable />
 
 
+# TextArea
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`TextArea` is the multiline control inside a field, not a field on its own. Prefer `TextField` as the parent; see that component for fuller examples.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+TextArea inside TextField.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Label, TextArea, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Comment</Label>\n      <TextArea placeholder=\&#x22;Enter your comment\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<TextField>
+  <Label>Comment</Label>
+  <TextArea placeholder="Enter your comment" />
+</TextField>
+```
+
+### TextArea [#textarea]
+
+<PropTable />
+
+
 # TextField
 
 
@@ -5404,50 +5377,6 @@ Compose a telephone number input paired with a country-code select.
 ```
 
 ### TextField [#textfield]
-
-<PropTable />
-
-
-# TextArea
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`TextArea` is the multiline control inside a field, not a field on its own. Prefer `TextField` as the parent; see that component for fuller examples.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-TextArea inside TextField.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Label, TextArea, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Comment</Label>\n      <TextArea placeholder=\&#x22;Enter your comment\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<TextField>
-  <Label>Comment</Label>
-  <TextArea placeholder="Enter your comment" />
-</TextField>
-```
-
-### TextArea [#textarea]
 
 <PropTable />
 
@@ -5973,81 +5902,6 @@ To position a tooltip relative to a different focusable element, use the `trigge
 <PropTable />
 
 
-# DonutChart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Story of="SingleSliceExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Story of="LegendLayoutExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Story of="SmallSlicesExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Story of="FormatValueExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### DonutChart [#donutchart]
-
-<PropTable />
-
-
 # Bar Chart
 
 
@@ -6249,6 +6103,81 @@ For better performance:
 ## Props [#props]
 
 ### BarChart [#barchart]
+
+<PropTable />
+
+
+# DonutChart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Story of="SingleSliceExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Story of="LegendLayoutExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Story of="SmallSlicesExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
+
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Story of="FormatValueExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### DonutChart [#donutchart]
 
 <PropTable />
 
