@@ -19,6 +19,9 @@ The default Card padding and gap are `lg`. Override them with the normal layout 
 media is composed with `padding="0"` and a separately padded content region; Card has no media
 bleed prop.
 
+Card draws its own background, border, and text color. Setting `elevation` hands that chrome to
+`Box` instead, so a raised or overlay Card looks like every other surface at that elevation.
+
 ## Installation
 
 ```bash
@@ -50,6 +53,10 @@ Use `selection="checkbox"` or `selection="radio"` for selectable Cards. Place on
 `CardSelectionIndicator` explicitly, usually last in `CornerActions`. Card owns the selection
 composition and delegates state, keyboard handling, and native input behavior to React Aria.
 
+A Card with both a primary action and selection holds two controls, so name them separately: the
+Card's own `aria-label`/`aria-labelledby` names the primary action, and `selectionProps` carries the
+name for the selection control. Without it both controls answer to the same name.
+
 Checkbox Cards work standalone or inside the existing `CheckboxGroup`. Standalone selection uses
 `isSelected`, `defaultSelected`, and `onSelectionChange`; grouped state belongs to the group.
 Radio Cards require a `value` and the existing `RadioGroup`, which owns selection and arrow-key
@@ -69,8 +76,9 @@ shares the native selection control's state and does not add a second keyboard f
 
 ## Best Practices
 
-- Use `Image slot="media"` or a consumer-owned `Box slot="media"` for media. Card does not infer
-  media from arbitrary children.
+- Compose media as an ordinary child, an `Image` or a consumer-owned `Box`. Card never reads a slot
+  or infers media, so its order, size, and orientation are yours. A `slot` or class on it is your own
+  styling hook, as the responsive example uses `[slot="media"]` in a container query.
 - Use `Flex`, `Grid`, `Box`, `Content`, `Header`, `Footer`, `TextLockup`, and `ButtonGroup` to define the interior
   layout. Keep enough width for long text and reserve CornerActions space explicitly.
 - For collections, give cards a shared grid or feed width, let the content region grow, and place
@@ -101,7 +109,7 @@ text region, `CornerActions`, and wrapping or a minimum text width appropriate f
 
 ```tsx
 <Card>
-  <Image slot="media" />
+  <Image />
   <Content>
     {/* ...text and independent controls... */}
   </Content>

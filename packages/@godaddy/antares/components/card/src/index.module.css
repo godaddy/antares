@@ -5,6 +5,7 @@
   border-radius: var(--radius-surface-card, var(--ux-2jubes, 6px));
 }
 
+/* A consumer-set elevation hands the surface chrome to Box. */
 .card:where(:not([data-elevation])) {
   background: var(--color-surface-background-card, var(--ux-cao06b, #fff));
   border: 1px solid var(--color-surface-border-card, var(--ux-97h3vl, #d4dbe0));
@@ -15,12 +16,13 @@
   border-color: var(--color-action-border-primary-hovered, var(--ux-bgke81, #444444));
 }
 
-.card:where(:has([data-focus-visible])) {
+/* Only Card's own primary and selection controls ring the surface. Composed controls ring themselves. */
+.card:where(:has(> :where(.link, .primary)[data-focus-visible], [data-card-selection-indicator][data-focus-visible])) {
   outline: 2px solid Highlight;
   outline-offset: 2px;
 }
 
-.card:where([data-card-selected]) {
+.card:where([data-card-selected], [data-card-indeterminate]) {
   border-color: var(--color-input-border-selected, var(--ux-77zzwv, #00a4a6));
 }
 

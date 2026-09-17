@@ -5,14 +5,14 @@ const image =
 
 /**
  * Use default padding for inset media, or zero padding with a padded Content for full bleed.
- * Media can stand alone, follow the text, or use a custom slotted Box. Clip only the media region.
+ * Media can stand alone, follow the text, or be a custom Box. Clip only the media region.
  * @order 2
  */
 export function MediaExample() {
   return (
     <Grid columns="repeat(auto-fit, minmax(min(100%, 16rem), 1fr))" gap="lg" alignItems="start">
       <Card>
-        <Image slot="media" src={image} alt="Blue mountain landscape" width="640" height="360" />
+        <Image src={image} alt="Blue mountain landscape" width="640" height="360" />
         <Content gap="sm">
           <Heading level={3}>Inset media</Heading>
           <Text>The default Card padding keeps media inset.</Text>
@@ -20,10 +20,7 @@ export function MediaExample() {
       </Card>
 
       <Card padding="0" gap="0">
-        <Box
-          slot="media"
-          style={{ overflow: 'hidden', borderStartStartRadius: 'inherit', borderStartEndRadius: 'inherit' }}
-        >
+        <Box style={{ overflow: 'hidden', borderStartStartRadius: 'inherit', borderStartEndRadius: 'inherit' }}>
           <Image
             src={image}
             alt="Blue mountain landscape"
@@ -39,7 +36,7 @@ export function MediaExample() {
       </Card>
 
       <Card padding="0" gap="0">
-        <Box slot="media" style={{ overflow: 'hidden', borderRadius: 'inherit' }}>
+        <Box style={{ overflow: 'hidden', borderRadius: 'inherit' }}>
           <Image
             src={image}
             alt="A media-only card showing a blue mountain landscape"
@@ -53,10 +50,9 @@ export function MediaExample() {
       <Card>
         <Content gap="sm">
           <Heading level={3}>Custom media after content</Heading>
-          <Text>A slotted Box can hold a gradient or illustration, before or after the text.</Text>
+          <Text>A plain Box can hold a gradient or illustration, before or after the text.</Text>
         </Content>
         <Box
-          slot="media"
           style={{
             aspectRatio: '16 / 9',
             background: 'linear-gradient(135deg, #145fa9 0%, #4ecdc4 100%)',

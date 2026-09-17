@@ -71,7 +71,7 @@ describe('@godaddy/antares', function packageTests() {
 
     it('keeps combined navigation and selection independent', async function combinedControls() {
       const { getByRole, getByTestId } = await render(<SelectionExample />);
-      await expect.element(getByRole('link', { name: 'Select details' })).toHaveAttribute('href', '/details');
+      await expect.element(getByRole('link', { name: 'Open details' })).toHaveAttribute('href', '/details');
       const checkbox = getByRole('checkbox', { name: 'Select details' });
       await userEvent.click(getByTestId('combined-selection-indicator'));
       await expect.element(checkbox).toBeChecked();
@@ -301,6 +301,42 @@ describe('@godaddy/antares', function packageTests() {
       expect(getComputedStyle(card).borderColor).not.toBe(initialBorder);
     });
 
+    it('selects a radio card from its body content', async function radioBodySelection() {
+      const { getByRole, getByText } = await render(<InteractionsExample kind="radio" />);
+      await userEvent.click(getByText('One: copy this text without changing selection.'));
+      await expect.element(getByRole('radio', { name: 'Option one' })).toBeChecked();
+    });
+
+    it('reveals and marks a mixed, required, invalid selection', async function mixedSelection() {
+      const { container, getByRole, getByTestId } = await render(
+        <InteractionsExample isIndeterminate isRequired isInvalid visibility="auto" />
+      );
+      const checkbox = getByRole('checkbox', { name: 'Option one' });
+      await expect.element(checkbox).toHaveAttribute('aria-invalid', 'true');
+      await expect.element(checkbox).toBeRequired();
+      const indicator = getByTestId('indicator-One');
+      await expect.element(indicator).toHaveAttribute('data-indeterminate', 'true');
+      expect(getComputedStyle(indicator.element()).opacity).toBe('1');
+      expect(container.querySelector('[data-card]')).toHaveAttribute('data-card-indeterminate', 'true');
+    });
+
+    it('rings the surface for its own controls only', async function focusRing() {
+      const { container } = await render(<InteractionsExample primary="navigation" />);
+      const card = container.querySelector<HTMLElement>('[data-card]')!;
+
+      await userEvent.tab();
+      expect(getComputedStyle(card).outlineStyle).toBe('solid');
+      await userEvent.tab();
+      expect(getComputedStyle(card).outlineStyle).toBe('none');
+      await userEvent.tab();
+      expect(getComputedStyle(card).outlineStyle).toBe('solid');
+    });
+
+    it('drops the interactive affordance from a disabled primary', async function disabledAffordance() {
+      const { container } = await render(<InteractionsExample primary="action" isPrimaryDisabled />);
+      expect(container.querySelector('[data-card]')).toHaveAttribute('data-card', 'static');
+    });
+
     it('keeps read-only selection unchanged from body and indicator clicks', async function readOnlySelection() {
       const { getByRole, getByText, getByTestId } = await render(<InteractionsExample isReadOnly />);
       await userEvent.click(getByText('One: copy this text without changing selection.'));
@@ -353,6 +389,14 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(getByRole('radio', { name: 'Radio props card' })).toBeChecked();
       expect(radioCard).toHaveClass('selected');
       expect(radioCard.style.borderColor).toBe('rgb(7, 8, 9)');
+    });
+
+    it('renders an indicator on a Card without selection', async function staticIndicator() {
+      const { getByTestId } = await render(<CustomizationExample />);
+      const indicator = getByTestId('props-static-indicator').element();
+
+      await expect.element(getByTestId('props-static-indicator')).toHaveAttribute('aria-hidden', 'true');
+      expect(indicator.closest('[data-card]')?.querySelector('[data-card-selection-control]')).toBeNull();
     });
 
     it('lets consumers override shared Content defaults independently of navigation', async function contentOverrides() {

@@ -12,8 +12,8 @@ import {
 } from '@godaddy/antares';
 
 /**
- * Internal review coverage for Card refs, layout props, render props, controlled groups, and
- * shared region customization.
+ * Internal review coverage for Card refs, layout props, render props, controlled groups, shared
+ * region customization, and an indicator on a Card without selection.
  * @ignore
  */
 export function CustomizationExample() {
@@ -127,6 +127,13 @@ export function CustomizationExample() {
         <Content as={LinkButton} href="#custom-content-link" ref={customLinkRef}>
           Custom content link
         </Content>
+      </Card>
+
+      <Card>
+        <Text>Card without selection</Text>
+        <CornerActions>
+          <CardSelectionIndicator data-testid="props-static-indicator" visibility="always" />
+        </CornerActions>
       </Card>
     </>
   );

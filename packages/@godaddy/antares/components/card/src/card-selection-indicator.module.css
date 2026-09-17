@@ -27,7 +27,7 @@
 
 :where([data-card]):where(:hover, :has(:focus-visible), :has([data-focus-visible]))
   .indicator:where([data-visibility="auto"]),
-.indicator:where([data-selected], [data-visibility="always"], [data-focus-visible]) {
+.indicator:where([data-selected], [data-indeterminate], [data-visibility="always"], [data-focus-visible]) {
   opacity: 1;
 }
 

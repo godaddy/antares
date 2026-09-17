@@ -12,8 +12,9 @@ import {
 
 /**
  * Control a standalone checkbox, or let CheckboxGroup and RadioGroup own selection. Add href when
- * the body should navigate and only the corner indicator should select. Omit isSelected and
- * onSelectionChange for uncontrolled standalone selection, optionally setting defaultSelected.
+ * the body should navigate and only the corner indicator should select, naming the two controls
+ * apart with selectionProps. Omit isSelected and onSelectionChange for uncontrolled standalone
+ * selection, optionally setting defaultSelected.
  * @order 4
  */
 export function SelectionExample() {
@@ -47,7 +48,13 @@ export function SelectionExample() {
             <CardSelectionIndicator />
           </CornerActions>
         </Card>
-        <Card selection="checkbox" href="/details" value="details" aria-label="Select details">
+        <Card
+          selection="checkbox"
+          href="/details"
+          value="details"
+          aria-label="Open details"
+          selectionProps={{ 'aria-label': 'Select details' }}
+        >
           <Content>
             <Text slot="description">Open details</Text>
           </Content>

@@ -20,6 +20,9 @@ interface InteractionReviewProps {
   isDisabled?: boolean;
   isPrimaryDisabled?: boolean;
   isReadOnly?: boolean;
+  isIndeterminate?: boolean;
+  isRequired?: boolean;
+  isInvalid?: boolean;
   visibility?: 'auto' | 'always';
   defaultSelected?: boolean;
 }
@@ -31,6 +34,9 @@ export function InteractionsExample({
   isDisabled,
   isPrimaryDisabled,
   isReadOnly,
+  isIndeterminate,
+  isRequired,
+  isInvalid,
   visibility = 'always',
   defaultSelected = false
 }: InteractionReviewProps) {
@@ -111,6 +117,9 @@ export function InteractionsExample({
           defaultSelected={defaultSelected}
           isSelectionDisabled={isDisabled}
           isReadOnly={isReadOnly}
+          isIndeterminate={isIndeterminate}
+          isRequired={isRequired}
+          isInvalid={isInvalid}
           {...primaryProps}
         >
           {contents('One')}

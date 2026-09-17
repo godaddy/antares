@@ -40,7 +40,7 @@ export interface CardProps extends Omit<FlexProps, 'as' | 'children' | 'onClick'
   /** Whether the primary action is disabled. */
   isDisabled?: boolean;
 
-  /** Observe clicks on the Card surface. */
+  /** Observe clicks on the Card surface. Call `preventDefault` to skip the primary action or selection. */
   onClick?: MouseEventHandler<HTMLDivElement>;
 
   /** Native selection behavior. Radio cards belong inside a RadioGroup. */
@@ -76,6 +76,9 @@ export interface CardProps extends Omit<FlexProps, 'as' | 'children' | 'onClick'
   /** Selection validation state. */
   isInvalid?: boolean;
 
+  /** Labels the selection control when it should not share the primary action's name. */
+  selectionProps?: Pick<RACCheckboxFieldProps, 'aria-label' | 'aria-labelledby' | 'aria-describedby'>;
+
   /** Surface classes, optionally derived from native selection state. */
   className?: RACCheckboxFieldProps['className'];
 
@@ -97,6 +100,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
     isIndeterminate,
     isRequired,
     isInvalid,
+    selectionProps,
     className,
     style,
     children,
@@ -106,6 +110,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
     onClick,
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
+    'aria-describedby': ariaDescribedBy,
     ...surfaceProps
   } = props;
   const inputRef = useRef<HTMLInputElement>(null);
@@ -122,7 +127,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
       isInteractiveTarget(event.target, event.currentTarget)
     )
       return;
-    if (typeof window !== 'undefined' && !window.getSelection()?.isCollapsed) return;
+    if (!window.getSelection()?.isCollapsed) return;
     if (!hasPrimary) {
       inputRef.current?.click();
       return;
@@ -164,8 +169,9 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
           )}
           style={typeof style === 'function' ? style({ ...selectionState, defaultStyle: {} }) : style}
           data-card-selected={selectionState.isSelected || undefined}
+          data-card-indeterminate={selectionState.isIndeterminate || undefined}
           onClick={handleClick}
-          data-card={hasPrimary ? 'interactive' : 'static'}
+          data-card={hasPrimary && !isDisabled ? 'interactive' : 'static'}
         >
           {href != null ? (
             <RACLink
@@ -218,7 +224,8 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
     isDisabled: isSelectionDisabled,
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
-    'aria-describedby': props['aria-describedby'],
+    'aria-describedby': ariaDescribedBy,
+    ...selectionProps,
     style: { display: 'contents' }
   };
 

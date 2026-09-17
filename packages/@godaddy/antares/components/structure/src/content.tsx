@@ -1,7 +1,7 @@
-import { createContext, forwardRef, type ElementType, type ReactNode } from 'react';
+import { createContext, forwardRef, type ElementType } from 'react';
 import { useContextProps, type ContextValue } from 'react-aria-components';
-import { Flex, type FlexProps } from '#components/layout/flex';
-import type { PolymorphicRef } from '#types/polymorphic-react.ts';
+import { Flex, type FlexOwnProps, type FlexProps } from '#components/layout/flex';
+import type { PolymorphicComponent, PolymorphicRef } from '#types/polymorphic-react.ts';
 import { composeStyle } from '#utils/render-props.ts';
 
 export type ContentProps<C extends ElementType = 'section'> = FlexProps<C>;
@@ -32,4 +32,4 @@ export const Content = forwardRef(function Content(props: ContentProps<ElementTy
       ref={ref}
     />
   );
-}) as <C extends ElementType = 'section'>(props: ContentProps<C> & { ref?: PolymorphicRef<C> }) => ReactNode;
+}) as PolymorphicComponent<FlexOwnProps, 'section'>;
