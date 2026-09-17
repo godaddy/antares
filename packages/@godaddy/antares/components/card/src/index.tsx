@@ -1,4 +1,4 @@
-import { forwardRef, type MouseEventHandler, type ReactNode } from 'react';
+import { forwardRef, useRef, type MouseEventHandler, type ReactNode, type Ref } from 'react';
 import {
   Provider as RACProvider,
   Link as RACLink,
@@ -14,6 +14,7 @@ import { Flex, type FlexProps } from '#components/layout/flex';
 import { ContentContext, HeaderContext, FooterContext, CornerActionsContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import { SelectionProvider } from './card-selection-indicator.tsx';
+import { useForwardedClick } from './use-forwarded-click.ts';
 import styles from './index.module.css';
 
 export {
@@ -115,6 +116,8 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
   } = props;
 
   const hasPrimary = href != null || onPress != null;
+  const primaryRef = useRef<HTMLElement>(null);
+  const forwardedClick = useForwardedClick(hasPrimary && !isDisabled, primaryRef);
 
   function renderSurface(state?: CheckboxFieldRenderProps | RadioFieldRenderProps) {
     const selectionState: CheckboxFieldRenderProps = {
@@ -142,10 +145,12 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
           data-card-selected={selectionState.isSelected || undefined}
           data-card-indeterminate={selectionState.isIndeterminate || undefined}
           onClick={onClick}
+          {...forwardedClick}
           data-card={hasPrimary && !isDisabled ? 'interactive' : 'static'}
         >
           {href != null ? (
             <RACLink
+              ref={primaryRef as Ref<HTMLAnchorElement>}
               href={href}
               onPress={onPress}
               aria-label={ariaLabel}
@@ -155,6 +160,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
             />
           ) : onPress != null ? (
             <Button
+              ref={primaryRef as Ref<HTMLButtonElement>}
               onPress={onPress}
               aria-label={ariaLabel}
               aria-labelledby={ariaLabelledBy}

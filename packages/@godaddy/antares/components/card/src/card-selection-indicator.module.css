@@ -17,18 +17,7 @@
 }
 
 .indicator:where([data-selected], [data-indeterminate]) {
-  background: var(--color-input-background-default, var(--ux-1nu8itt, #fff));
   border-color: var(--color-input-border-selected, var(--ux-77zzwv, #00a4a6));
-}
-
-.indicator:where([data-visibility="auto"]) {
-  opacity: 0;
-}
-
-:where([data-card]):where(:hover, :has(:focus-visible), :has([data-focus-visible]))
-  .indicator:where([data-visibility="auto"]),
-.indicator:where([data-selected], [data-indeterminate], [data-visibility="always"], [data-focus-visible]) {
-  opacity: 1;
 }
 
 .control:where([data-disabled], [data-readonly]),
@@ -44,13 +33,6 @@
   opacity: 0;
 }
 
-.indicator:where([data-selected], [data-focus-visible]) > :where(.checkmark),
-:where([data-card]):where(:hover) .indicator:where([data-visibility="auto"]) > :where(.checkmark) {
+.indicator:where([data-selected], [data-indeterminate]) > :where(.checkmark) {
   opacity: 1;
-}
-
-@media (hover: none) {
-  .indicator:where([data-visibility="auto"]):where(:not([data-disabled], [data-readonly])) {
-    opacity: 1;
-  }
 }

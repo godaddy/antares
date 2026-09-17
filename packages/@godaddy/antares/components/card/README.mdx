@@ -9,18 +9,8 @@ import * as Stories from './card.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-## Features
-
-Card is a layout surface. Compose its contents with Antares layout and structure primitives. It
-supports text-only, media-only, and mixed compositions, while the consumer chooses media order,
-sizing, orientation, and responsive behavior.
-
-The default Card padding and gap are `lg`. Override them with the normal layout props. Full bleed
-media is composed with `padding="0"` and a separately padded content region; Card has no media
-bleed prop.
-
-Card draws its own background, border, and text color. Setting `elevation` hands that chrome to
-`Box` instead, so a raised or overlay Card looks like every other surface at that elevation.
+Card is a layout surface. Default padding and gap are `lg`. `href` and `onPress` add a primary
+action. `selection` adds a checkbox or radio; place `CardSelectionIndicator` yourself.
 
 ## Installation
 
@@ -34,79 +24,13 @@ npm install @godaddy/antares
 
 ## Accessibility
 
-Cards are static surfaces by default. `href` adds a primary navigation destination and `onPress`
-adds a primary action. Always provide `aria-label` or `aria-labelledby` for a Card primary action:
-the internal action control has no visible label of its own and cannot derive its name from
-arbitrary Card body content.
-
-`Card href` stretches a real, named link behind the composed children. Card padding and gaps hit
-that link, so navigation, middle-click, and native link menus work there. Composed content sits
-above it, so nested buttons, links, menus, and editable regions keep their own behavior without
-being inside the primary control. The primary link is keyboard accessible without making the Card
-an interactive ancestor of its controls.
-
-Reuse Structure's `Content`, `Header`, `Footer`, and `CornerActions` to compose the interior. Card
-supplies region defaults through their contexts: no additional region padding, `lg` content gap,
-and visible content overflow. Explicit region props override those defaults. `Content` supports
-`as` when a different element or component is needed.
-
-Use `selection="checkbox"` or `selection="radio"` for selectable Cards. Place one
-`CardSelectionIndicator` explicitly, usually last in `CornerActions`. The indicator is the native
-selection control; body content does not toggle selection. Card owns the selection composition and
-delegates state, keyboard handling, and native input behavior to React Aria.
-
-A Card with both a primary action and selection holds two controls, so name them separately: the
-Card's own `aria-label`/`aria-labelledby` names the primary action, and `selectionProps` carries the
-name for the selection control. Without it both controls answer to the same name.
-
-Checkbox Cards work standalone or inside the existing `CheckboxGroup`. Standalone selection uses
-`isSelected`, `defaultSelected`, and `onSelectionChange`; grouped state belongs to the group.
-Radio Cards require a `value` and the existing `RadioGroup`, which owns selection and arrow-key
-navigation. Use `isSelectionDisabled` to disable selection independently of primary or child
-actions. `isDisabled` disables only the Card's primary action. Set `isReadOnly` on a checkbox Card
-or on its group; radio read-only behavior belongs to `RadioGroup`.
-
-The indicator is automatically revealed on hover, focus within the Card, or selection, and remains
-available on touch devices. Use `visibility="always"` when the selected affordance should stay
-visible at rest. Hiding its visual does not remove the underlying selection control from keyboard
-or assistive-technology access.
-
-### CardSelectionIndicator
-
-Place `CardSelectionIndicator` inside `CornerActions` on a selectable Card. It
-shares the native selection control's state and does not add a second keyboard focus stop.
-
-## Best Practices
-
-- Compose media as an ordinary child, an `Image` or a consumer-owned `Box`. Card never reads a slot
-  or infers media, so its order, size, and orientation are yours. A `slot` or class on it is your own
-  styling hook, as the responsive example uses `[slot="media"]` in a container query.
-- Use `Flex`, `Grid`, `Box`, `Content`, `Header`, `Footer`, `TextLockup`, and `ButtonGroup` to define the interior
-  layout. Keep enough width for long text and reserve CornerActions space explicitly.
-- For collections, give cards a shared grid or feed width, let the content region grow, and place
-  bottom actions after that growing region to align actions across equal-height cards.
-- Use a container query in the surrounding layout when a card should stack at its available width.
-  Card does not add automatic breakpoints or reorder children.
-- CornerActions is always visible. Use `gap`, wrapping, and explicit flexible text widths to avoid
-  collisions at narrow widths.
-
-## Troubleshooting
-
-### My linked Card contains a button or another link
-
-Keep it in the composed body, including inside `Content`. Nested controls are siblings of the
-primary link or button, not descendants of it, so they keep their own behavior. Do not wrap those
-controls in your own anchor or button.
-
-### My media has unexpected padding
-
-Card defaults to `padding="lg"` and `gap="lg"`. Keep those defaults for inset media, or set
-`padding="0"` and add `Content padding="lg"` around mixed content for a full bleed composition.
-
-### Corner actions overlap long text
-
-Card does not measure arbitrary children. Compose a `Header` or `Flex` with an explicit flexible
-text region, `CornerActions`, and wrapping or a minimum text width appropriate for the container.
+- Name a primary action with `aria-label` or `aria-labelledby`. The stretched control has no visible
+  label of its own.
+- Name selection separately with `selectionProps` when the Card also has a primary action.
+- Nested buttons, links, labels, and fields keep their own behavior. Clicking body text activates
+  the Card; dragging text selects it.
+- `isDisabled` disables only the primary. `isSelectionDisabled` disables only selection. Radio
+  read-only belongs on `RadioGroup`.
 
 ## Props
 
@@ -114,15 +38,16 @@ text region, `CornerActions`, and wrapping or a minimum text width appropriate f
 <Card>
   <Image />
   <Content>
-    {/* ...text and independent controls... */}
+    {/* ... */}
   </Content>
   <CornerActions>
     <CardSelectionIndicator />
-    {/* ...independent actions... */}
+    {/* ... */}
   </CornerActions>
-  {/* ...other consumer-owned layout regions... */}
 </Card>
 ```
+
+### Card
 
 <ArgTypes of={Stories.Props} />
 

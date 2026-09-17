@@ -25,14 +25,11 @@ export function SelectionProvider({ kind, children }: { kind: 'checkbox' | 'radi
   );
 }
 
-export interface CardSelectionIndicatorProps extends HTMLAttributes<HTMLSpanElement> {
-  /** Keep the indicator visible when the Card is not hovered or focused. */
-  visibility?: 'auto' | 'always';
-}
+export interface CardSelectionIndicatorProps extends HTMLAttributes<HTMLSpanElement> {}
 
 /** A circular, explicitly placed visual for a Card's native selection control. */
 export const CardSelectionIndicator = forwardRef<HTMLSpanElement, CardSelectionIndicatorProps>(
-  function CardSelectionIndicator({ className, visibility = 'auto', onClick, ...props }, ref) {
+  function CardSelectionIndicator({ className, onClick, ...props }, ref) {
     const control = useContext(SelectionContext);
 
     const indicator = (state: CheckboxButtonRenderProps | RadioButtonRenderProps, extra?: ReactNode) => (
@@ -46,7 +43,6 @@ export const CardSelectionIndicator = forwardRef<HTMLSpanElement, CardSelectionI
         data-disabled={state.isDisabled || undefined}
         data-readonly={state.isReadOnly || undefined}
         data-focus-visible={state.isFocusVisible || undefined}
-        data-visibility={visibility}
         className={composeClassName(className, styles.indicator)}
         onClick={onClick}
       >

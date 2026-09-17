@@ -2,17 +2,18 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { cdp, page, userEvent } from 'vitest/browser';
 import { ActionsExample } from '../examples/actions.tsx';
-import { SelectionExample } from '../examples/selection.tsx';
+import { CheckboxExample } from '../examples/checkbox.tsx';
 import { InteractionsExample } from '../examples/interactions.tsx';
 import { resetHover } from '#test/utils/test-helpers.tsx';
 import { CustomizationExample } from '../examples/customization.tsx';
-import { CollectionExample } from '../examples/collection.tsx';
-import { ContainerQueryExample } from '../examples/container-query.tsx';
+import { LayoutExample } from '../examples/layout.tsx';
+import { NestedExample } from '../examples/nested.tsx';
+import { RadioExample } from '../examples/radio.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Card', function cardTests() {
     it('updates controlled standalone selection once from the indicator', async function controlledSelection() {
-      const { getByRole, getByText, getByTestId } = await render(<SelectionExample />);
+      const { getByRole, getByText, getByTestId } = await render(<CheckboxExample />);
       await userEvent.click(getByTestId('card-selection-indicator'));
       await expect.element(getByRole('checkbox', { name: 'Select this card' })).toBeChecked();
       await expect.element(getByText('Selection changes: 1')).toBeInTheDocument();
@@ -52,14 +53,14 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('toggles its enclosing selection control from the indicator', async function toggleSelection() {
-      const { getByRole, getByTestId } = await render(<SelectionExample />);
+      const { getByRole, getByTestId } = await render(<CheckboxExample />);
       const card = getByRole('checkbox', { name: 'Select this card' });
       await userEvent.click(getByTestId('card-selection-indicator'));
       await expect.element(card).toBeChecked();
     });
 
     it('does not treat body content as the selection control', async function bodyIsNotSelection() {
-      const { getByRole, getByText } = await render(<SelectionExample />);
+      const { getByRole, getByText } = await render(<CheckboxExample />);
       await userEvent.click(getByText('Selectable card content'));
       await expect.element(getByRole('checkbox', { name: 'Select this card' })).not.toBeChecked();
     });
@@ -71,7 +72,7 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('keeps combined navigation and selection independent', async function combinedControls() {
-      const { getByRole, getByTestId } = await render(<SelectionExample />);
+      const { getByRole, getByTestId } = await render(<CheckboxExample />);
       await expect.element(getByRole('link', { name: 'Open details' })).toHaveAttribute('href', '/details');
       const checkbox = getByRole('checkbox', { name: 'Select details' });
       await userEvent.click(getByTestId('combined-selection-indicator'));
@@ -148,7 +149,9 @@ describe('@godaddy/antares', function packageTests() {
         activations++;
         event.preventDefault();
       });
-      await userEvent.click(getByRole('link', { name: 'About this product' }), { position: { x: 4, y: 4 } });
+      await moveMouse(textBox.left + 8, textBox.top + textBox.height / 2, 'mouseMoved');
+      await moveMouse(textBox.left + 8, textBox.top + textBox.height / 2, 'mousePressed', 'left');
+      await moveMouse(textBox.left + 8, textBox.top + textBox.height / 2, 'mouseReleased', 'left');
       expect(activations).toBe(1);
     });
 
@@ -186,7 +189,7 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('uses the native checkbox as the only selection keyboard stop', async function selectionKeyboard() {
-      const { getByRole } = await render(<SelectionExample />);
+      const { getByRole } = await render(<CheckboxExample />);
       const checkbox = getByRole('checkbox', { name: 'Select this card' });
       await userEvent.tab();
       await expect.element(checkbox).toHaveFocus();
@@ -223,9 +226,10 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.click(getByRole('link', { name: 'Option one' }), { position: { x: 4, y: 4 } });
       await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
       expect(location.hash).toBe('#card-review-target');
+      await userEvent.click(getByRole('button', { name: 'Body One' }));
       await userEvent.click(getByRole('button', { name: 'Independent One' }));
       await userEvent.click(getByRole('link', { name: 'Independent link One' }));
-      await expect.element(getByText('Independent activations: 2')).toBeInTheDocument();
+      await expect.element(getByText('Independent activations: 3')).toBeInTheDocument();
       await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
       expect(location.hash).toBe('#independent-destination');
       await expect.element(getByRole('checkbox', { name: 'Option one' })).not.toBeChecked();
@@ -238,7 +242,13 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.keyboard('{Enter}');
       await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
       await userEvent.tab();
+      await expect.element(getByRole('button', { name: 'Body One' })).toHaveFocus();
+      await userEvent.tab();
       await expect.element(getByRole('button', { name: 'Independent One' })).toHaveFocus();
+      await userEvent.tab();
+      await expect.element(getByRole('link', { name: 'Independent link One' })).toHaveFocus();
+      await userEvent.tab();
+      await expect.element(getByRole('button', { name: 'Menu One' })).toHaveFocus();
       await userEvent.tab();
       await expect.element(getByRole('checkbox', { name: 'Option one' })).toHaveFocus();
       await userEvent.keyboard(' ');
@@ -310,7 +320,7 @@ describe('@godaddy/antares', function packageTests() {
 
     it('reveals and marks a mixed, required, invalid selection', async function mixedSelection() {
       const { container, getByRole, getByTestId } = await render(
-        <InteractionsExample isIndeterminate isRequired isInvalid visibility="auto" />
+        <InteractionsExample isIndeterminate isRequired isInvalid />
       );
       const checkbox = getByRole('checkbox', { name: 'Option one' });
       await expect.element(checkbox).toHaveAttribute('aria-invalid', 'true');
@@ -330,6 +340,9 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.tab();
       expect(getComputedStyle(card).outlineStyle).toBe('none');
       await userEvent.tab();
+      await userEvent.tab();
+      await userEvent.tab();
+      await userEvent.tab();
       expect(getComputedStyle(card).outlineStyle).toBe('solid');
     });
 
@@ -343,6 +356,59 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.click(getByText('One: copy this text without changing selection.'));
       await userEvent.click(getByTestId('indicator-One'));
       await expect.element(getByRole('checkbox', { name: 'Option one' })).not.toBeChecked();
+    });
+
+    it('activates the primary from a click on body text', async function bodyTextActivates() {
+      const { getByText } = await render(<InteractionsExample primary="action" />);
+      await userEvent.click(getByText('One: copy this text without changing selection.'));
+      await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
+    });
+
+    it('does not activate the primary while dragging body text', async function dragTextDoesNotActivate() {
+      const { getByText } = await render(<InteractionsExample primary="action" />);
+      await dragText(getByText('One: copy this text without changing selection.').element() as HTMLElement);
+      expect(window.getSelection()?.toString().length).toBeGreaterThan(3);
+      await expect.element(getByText('Primary activations: 0')).toBeInTheDocument();
+    });
+
+    it('does not activate the primary from a held press on body text', async function heldPressDoesNotActivate() {
+      const { getByText } = await render(<InteractionsExample primary="action" />);
+      const text = getByText('One: copy this text without changing selection.').element() as HTMLElement;
+      const box = text.getBoundingClientRect();
+      const x = box.left + 8;
+      const y = box.top + box.height / 2;
+      await moveMouse(x, y, 'mouseMoved');
+      await moveMouse(x, y, 'mousePressed', 'left');
+      await new Promise(function waitForClickWindow(resolve) {
+        setTimeout(resolve, 250);
+      });
+      await moveMouse(x, y, 'mouseReleased', 'left');
+      await expect.element(getByText('Primary activations: 0')).toBeInTheDocument();
+    });
+
+    it('lets a nested label toggle its field without activating the Card', async function nestedFormLabel() {
+      const { getByText, getByTestId } = await render(<InteractionsExample primary="action" />);
+      await userEvent.click(getByText('Remember One'));
+      await expect.element(getByTestId('form-One')).toBeChecked();
+      await expect.element(getByText('Primary activations: 0')).toBeInTheDocument();
+      await expect.element(getByText('Independent activations: 0')).toBeInTheDocument();
+    });
+
+    it('keeps a nested Card primary independent of its parent', async function nestedCardPrimary() {
+      const { getByText } = await render(<NestedExample />);
+      await userEvent.click(getByText('Inner copy'));
+      await expect.element(getByText('Inner activations: 1')).toBeInTheDocument();
+      await expect.element(getByText('Outer activations: 0')).toBeInTheDocument();
+      await userEvent.click(getByText('Outer copy'));
+      await expect.element(getByText('Outer activations: 1')).toBeInTheDocument();
+      await expect.element(getByText('Inner activations: 1')).toBeInTheDocument();
+    });
+
+    it('selects a radio card from its published example', async function radioExample() {
+      const { getByRole, getByTestId } = await render(<RadioExample />);
+      await userEvent.click(getByTestId('radio-pro-indicator'));
+      await expect.element(getByRole('radio', { name: 'Pro plan' })).toBeChecked();
+      await expect.element(getByRole('radio', { name: 'Starter plan' })).not.toBeChecked();
     });
   });
 });
@@ -421,7 +487,7 @@ describe('@godaddy/antares', function packageTests() {
   describe('#Card layout', function cardLayoutTests() {
     it('stacks media in a narrow container', async function narrowContainer() {
       await page.viewport(420, 800);
-      const { getByTestId } = await render(<ContainerQueryExample />);
+      const { getByTestId } = await render(<LayoutExample />);
       const media = bounds(getByTestId('container-query-media').element());
       const content = bounds(getByTestId('container-query-content').element());
 
@@ -430,7 +496,7 @@ describe('@godaddy/antares', function packageTests() {
 
     it('places media beside content in a wide container', async function wideContainer() {
       await page.viewport(800, 800);
-      const { getByTestId } = await render(<ContainerQueryExample />);
+      const { getByTestId } = await render(<LayoutExample />);
       const media = bounds(getByTestId('container-query-media').element());
       const content = bounds(getByTestId('container-query-content').element());
 
@@ -439,7 +505,7 @@ describe('@godaddy/antares', function packageTests() {
 
     it('keeps collection actions aligned at the bottom of equal-height cards', async function alignedCollection() {
       await page.viewport(1000, 800);
-      const { getByTestId } = await render(<CollectionExample />);
+      const { getByTestId } = await render(<LayoutExample />);
       const cards = [0, 1, 2].map(function card(index) {
         return bounds(getByTestId(`collection-card-${index}`).element());
       });

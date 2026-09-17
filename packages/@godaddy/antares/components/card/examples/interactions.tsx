@@ -23,7 +23,6 @@ interface InteractionReviewProps {
   isIndeterminate?: boolean;
   isRequired?: boolean;
   isInvalid?: boolean;
-  visibility?: 'auto' | 'always';
   defaultSelected?: boolean;
 }
 
@@ -37,7 +36,6 @@ export function InteractionsExample({
   isIndeterminate,
   isRequired,
   isInvalid,
-  visibility = 'always',
   defaultSelected = false
 }: InteractionReviewProps) {
   const [presses, setPresses] = useState(0);
@@ -62,22 +60,24 @@ export function InteractionsExample({
     return (
       <Content>
         {text}
+        <Button onPress={act}>Body {title}</Button>
+        <label>
+          Remember {title}
+          <input type="checkbox" tabIndex={-1} data-testid={`form-${title}`} />
+        </label>
         <CornerActions data-testid={`corner-${title}`} padding="sm">
           <Button onPress={act}>Independent {title}</Button>
-          <CardSelectionIndicator visibility={visibility} data-testid={`indicator-${title}`} />
+          <LinkButton href="#independent-destination" onPress={act}>
+            Independent link {title}
+          </LinkButton>
+          <MenuTrigger>
+            <Button>Menu {title}</Button>
+            <Menu aria-label={`Menu ${title}`} onAction={act}>
+              <MenuItem id="nested">Menu action {title}</MenuItem>
+            </Menu>
+          </MenuTrigger>
+          <CardSelectionIndicator data-testid={`indicator-${title}`} />
         </CornerActions>
-        <Button isDisabled onPress={act}>
-          Unavailable {title}
-        </Button>
-        <LinkButton href="#independent-destination" onPress={act}>
-          Independent link {title}
-        </LinkButton>
-        <MenuTrigger>
-          <Button>Menu {title}</Button>
-          <Menu aria-label={`Menu ${title}`} onAction={act}>
-            <MenuItem id="nested">Menu action {title}</MenuItem>
-          </Menu>
-        </MenuTrigger>
         <Box contentEditable suppressContentEditableWarning data-testid={`editor-${title}`}>
           Editable {title}
         </Box>

@@ -69,7 +69,7 @@ export function CustomizationExample() {
           >
             <Text>Checkbox props card</Text>
             <CornerActions>
-              <CardSelectionIndicator data-testid="props-checkbox-indicator" visibility="always" />
+              <CardSelectionIndicator data-testid="props-checkbox-indicator" />
             </CornerActions>
           </Card>
         </Group>
@@ -94,7 +94,7 @@ export function CustomizationExample() {
           >
             <Text>Radio props card</Text>
             <CornerActions>
-              <CardSelectionIndicator data-testid="props-radio-indicator" visibility="always" />
+              <CardSelectionIndicator data-testid="props-radio-indicator" />
             </CornerActions>
           </Card>
         </Group>
@@ -132,7 +132,7 @@ export function CustomizationExample() {
       <Card>
         <Text>Card without selection</Text>
         <CornerActions>
-          <CardSelectionIndicator data-testid="props-static-indicator" visibility="always" />
+          <CardSelectionIndicator data-testid="props-static-indicator" />
         </CornerActions>
       </Card>
     </>

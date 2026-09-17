@@ -26,6 +26,7 @@
   border-color: var(--color-input-border-selected, var(--ux-77zzwv, #00a4a6));
 }
 
+/* Behind in-flow content so nested controls and overlays keep default stacking. Empty surface still hits it. */
 .link,
 .primary {
   position: absolute;

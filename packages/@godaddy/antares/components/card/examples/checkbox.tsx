@@ -1,23 +1,13 @@
 import { useState } from 'react';
-import {
-  Card,
-  CardSelectionIndicator,
-  CheckboxGroup,
-  Content,
-  CornerActions,
-  Flex,
-  RadioGroup,
-  Text
-} from '@godaddy/antares';
+import { Card, CardSelectionIndicator, CheckboxGroup, Content, CornerActions, Flex, Text } from '@godaddy/antares';
 
 /**
- * Control a standalone checkbox, or let CheckboxGroup and RadioGroup own selection. Add href when
- * the body should navigate and only the corner indicator should select, naming the two controls
- * apart with selectionProps. Omit isSelected and onSelectionChange for uncontrolled standalone
- * selection, optionally setting defaultSelected.
+ * Standalone checkbox Cards own their state. Grouped cards belong in CheckboxGroup. Pair href with
+ * selectionProps when the body navigates and the indicator selects.
+ * @title Checkbox
  * @order 4
  */
-export function SelectionExample() {
+export function CheckboxExample() {
   const [selected, setSelected] = useState(false);
   const [changes, setChanges] = useState(0);
 
@@ -36,7 +26,7 @@ export function SelectionExample() {
       >
         <Text>Selectable card content</Text>
         <CornerActions>
-          <CardSelectionIndicator data-testid="card-selection-indicator" visibility="always" />
+          <CardSelectionIndicator data-testid="card-selection-indicator" />
         </CornerActions>
       </Card>
       <Text>Selection changes: {changes}</Text>
@@ -59,23 +49,10 @@ export function SelectionExample() {
             <Text slot="description">Open details</Text>
           </Content>
           <CornerActions>
-            <CardSelectionIndicator data-testid="combined-selection-indicator" visibility="always" />
+            <CardSelectionIndicator data-testid="combined-selection-indicator" />
           </CornerActions>
         </Card>
       </CheckboxGroup>
-
-      <RadioGroup aria-label="Choose a plan" defaultValue="starter">
-        {['starter', 'pro'].map(function plan(value) {
-          return (
-            <Card key={value} selection="radio" value={value} aria-label={`${value} plan`}>
-              <Text>{value === 'starter' ? 'Starter plan' : 'Pro plan'}</Text>
-              <CornerActions>
-                <CardSelectionIndicator visibility="always" />
-              </CornerActions>
-            </Card>
-          );
-        })}
-      </RadioGroup>
     </Flex>
   );
 }
