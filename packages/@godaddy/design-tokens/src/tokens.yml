@@ -918,7 +918,7 @@ size-space-600:
 # --
 size-space-xs:
   $type: dimension
-  $value: "{size-space-010}"
+  $value: "4px"
   $description: "Tightest named spacing tier for dense UI, inline clusters, and compact padding."
   $extensions:
     com.godaddy.classname:
@@ -927,7 +927,7 @@ size-space-xs:
         - gap
 size-space-sm:
   $type: dimension
-  $value: "{size-space-020}"
+  $value: "8px"
   $description: "Compact padding and gaps inside dense components and small control groups."
   $extensions:
     com.godaddy.classname:
@@ -936,7 +936,7 @@ size-space-sm:
         - gap
 size-space-md:
   $type: dimension
-  $value: "{size-space-050}"
+  $value: "16px"
   $description: "Default comfortable spacing for most layouts, cards, and block gaps."
   $extensions:
     com.godaddy.classname:
@@ -945,7 +945,7 @@ size-space-md:
         - gap
 size-space-lg:
   $type: dimension
-  $value: "{size-space-070}"
+  $value: "24px"
   $description: "Section-level padding and separation between stacked blocks."
   $extensions:
     com.godaddy.classname:
@@ -954,7 +954,7 @@ size-space-lg:
         - gap
 size-space-xl:
   $type: dimension
-  $value: "{size-space-100}"
+  $value: "40px"
   $description: "Roomy whitespace between major UI groups on a single view."
   $extensions:
     com.godaddy.classname:
@@ -963,7 +963,7 @@ size-space-xl:
         - gap
 size-space-2xl:
   $type: dimension
-  $value: "{size-space-160}"
+  $value: "64px"
   $description: "Largest named spacing shortcut before the oversized numeric tiers; use for open marketing and dashboard layouts."
   $extensions:
     com.godaddy.classname:
