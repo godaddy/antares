@@ -1,25 +1,26 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { cdp, page, userEvent } from 'vitest/browser';
 import { ActionsExample } from '../examples/actions.tsx';
 import { CheckboxExample } from '../examples/checkbox.tsx';
 import { InteractionsExample } from '../examples/interactions.tsx';
-import { resetHover } from '#test/utils/test-helpers.tsx';
+import { LinkExample } from '../examples/link.tsx';
+import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
 import { CustomizationExample } from '../examples/customization.tsx';
 import { LayoutExample } from '../examples/layout.tsx';
 import { NestedExample } from '../examples/nested.tsx';
 import { RadioExample } from '../examples/radio.tsx';
 
 describe('@godaddy/antares', function packageTests() {
+  beforeAll(preloadTestIcons);
+
   describe('#Card', function cardTests() {
-    it('updates controlled standalone selection once from the indicator', async function controlledSelection() {
-      const { getByRole, getByText, getByTestId } = await render(<CheckboxExample />);
+    it('toggles standalone selection once from the indicator', async function standaloneSelection() {
+      const { getByRole, getByTestId } = await render(<CheckboxExample />);
       await userEvent.click(getByTestId('card-selection-indicator'));
-      await expect.element(getByRole('checkbox', { name: 'Select this card' })).toBeChecked();
-      await expect.element(getByText('Selection changes: 1')).toBeInTheDocument();
+      await expect.element(getByRole('checkbox', { name: 'Automatic renewal' })).toBeChecked();
       await userEvent.click(getByTestId('card-selection-indicator'));
-      await expect.element(getByRole('checkbox', { name: 'Select this card' })).not.toBeChecked();
-      await expect.element(getByText('Selection changes: 2')).toBeInTheDocument();
+      await expect.element(getByRole('checkbox', { name: 'Automatic renewal' })).not.toBeChecked();
     });
 
     it.each([
@@ -54,29 +55,20 @@ describe('@godaddy/antares', function packageTests() {
 
     it('toggles its enclosing selection control from the indicator', async function toggleSelection() {
       const { getByRole, getByTestId } = await render(<CheckboxExample />);
-      const card = getByRole('checkbox', { name: 'Select this card' });
+      const card = getByRole('checkbox', { name: 'Automatic renewal' });
       await userEvent.click(getByTestId('card-selection-indicator'));
       await expect.element(card).toBeChecked();
     });
 
-    it('does not treat body content as the selection control', async function bodyIsNotSelection() {
+    it('toggles selection from ordinary body content', async function bodyTogglesSelection() {
       const { getByRole, getByText } = await render(<CheckboxExample />);
-      await userEvent.click(getByText('Selectable card content'));
-      await expect.element(getByRole('checkbox', { name: 'Select this card' })).not.toBeChecked();
+      await userEvent.click(getByText('Keep this plan active when it expires.'));
+      await expect.element(getByRole('checkbox', { name: 'Automatic renewal' })).toBeChecked();
     });
 
-    it('keeps the primary link native and sibling actions independent', async function nativeNavigation() {
-      const { getByRole } = await render(<ActionsExample />);
-      await expect.element(getByRole('link', { name: 'About this product' })).toHaveAttribute('href', '/about');
-      await expect.element(getByRole('button', { name: 'Save' })).toBeInTheDocument();
-    });
-
-    it('keeps combined navigation and selection independent', async function combinedControls() {
-      const { getByRole, getByTestId } = await render(<CheckboxExample />);
-      await expect.element(getByRole('link', { name: 'Open details' })).toHaveAttribute('href', '/details');
-      const checkbox = getByRole('checkbox', { name: 'Select details' });
-      await userEvent.click(getByTestId('combined-selection-indicator'));
-      await expect.element(checkbox).toBeChecked();
+    it('keeps the primary link native', async function nativeNavigation() {
+      const { getByRole } = await render(<LinkExample />);
+      await expect.element(getByRole('link', { name: 'Link card' })).toHaveAttribute('href', '/');
     });
   });
 });
@@ -110,6 +102,7 @@ async function dragText(element: HTMLElement) {
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Card interactions', function interactions() {
+    beforeAll(preloadTestIcons);
     beforeEach(resetHover);
 
     afterEach(function clearSelection() {
@@ -118,8 +111,8 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('provides a native link context target over Card padding', async function backgroundLink() {
-      const { container } = await render(<ActionsExample />);
-      const card = container.querySelector<HTMLAnchorElement>('a[href="/about"]')?.closest<HTMLElement>('[data-card]');
+      const { container } = await render(<LinkExample />);
+      const card = container.querySelector<HTMLAnchorElement>('a[href="/"]')?.closest<HTMLElement>('[data-card]');
       expect(card).not.toBeNull();
       let destination: string | null = null;
       card!.addEventListener('contextmenu', function captureContext(event) {
@@ -130,34 +123,36 @@ describe('@godaddy/antares', function packageTests() {
       await moveMouse(bounds.left + 4, bounds.top + 4, 'mouseMoved');
       await moveMouse(bounds.left + 4, bounds.top + 4, 'mousePressed', 'right');
       await moveMouse(bounds.left + 4, bounds.top + 4, 'mouseReleased', 'right');
-      expect(destination).toBe('/about');
+      expect(destination).toBe('/');
     });
 
     it('stretches the native link over ordinary body content', async function bodyHitsLink() {
-      const { getByRole, getByText } = await render(<ActionsExample />);
-      const link = getByRole('link', { name: 'About this product' }).element() as HTMLElement;
-      const text = getByText('About this product').element() as HTMLElement;
+      const { container, getByRole } = await render(<LinkExample />);
+      const link = getByRole('link', { name: 'Link card' }).element() as HTMLElement;
+      const card = container.querySelector<HTMLElement>('[data-card]')!;
       const linkBox = link.getBoundingClientRect();
-      const textBox = text.getBoundingClientRect();
-      expect(linkBox.left).toBeLessThanOrEqual(textBox.left);
-      expect(linkBox.top).toBeLessThanOrEqual(textBox.top);
-      expect(linkBox.right).toBeGreaterThanOrEqual(textBox.right);
-      expect(linkBox.bottom).toBeGreaterThanOrEqual(textBox.bottom);
+      const cardBox = card.getBoundingClientRect();
+      expect(linkBox.left).toBeCloseTo(cardBox.left + card.clientLeft);
+      expect(linkBox.top).toBeCloseTo(cardBox.top + card.clientTop);
+      expect(linkBox.width).toBeCloseTo(card.clientWidth);
+      expect(linkBox.height).toBeCloseTo(card.clientHeight);
 
       let activations = 0;
       link.addEventListener('click', function preventTestNavigation(event) {
         activations++;
         event.preventDefault();
       });
-      await moveMouse(textBox.left + 8, textBox.top + textBox.height / 2, 'mouseMoved');
-      await moveMouse(textBox.left + 8, textBox.top + textBox.height / 2, 'mousePressed', 'left');
-      await moveMouse(textBox.left + 8, textBox.top + textBox.height / 2, 'mouseReleased', 'left');
+      const x = cardBox.left + cardBox.width / 2;
+      const y = cardBox.top + cardBox.height / 2;
+      await moveMouse(x, y, 'mouseMoved');
+      await moveMouse(x, y, 'mousePressed', 'left');
+      await moveMouse(x, y, 'mouseReleased', 'left');
       expect(activations).toBe(1);
     });
 
     it('opens the native destination in another tab from a middle click', async function middleClick() {
-      const { container } = await render(<ActionsExample />);
-      const card = container.querySelector<HTMLAnchorElement>('a[href="/about"]')!.closest<HTMLElement>('[data-card]')!;
+      const { container } = await render(<LinkExample />);
+      const card = container.querySelector<HTMLAnchorElement>('a[href="/"]')!.closest<HTMLElement>('[data-card]')!;
       interface TargetInfo {
         targetId: string;
         url: string;
@@ -169,7 +164,7 @@ describe('@godaddy/antares', function packageTests() {
       const initialIds = new Set(
         (await session.send('Target.getTargets')).targetInfos.map((target) => target.targetId)
       );
-      const destination = new URL('/about', location.href).href;
+      const destination = new URL('/', location.href).href;
       try {
         await userEvent.click(card, { button: 'middle', position: { x: 4, y: 4 } });
         await expect
@@ -190,7 +185,7 @@ describe('@godaddy/antares', function packageTests() {
 
     it('uses the native checkbox as the only selection keyboard stop', async function selectionKeyboard() {
       const { getByRole } = await render(<CheckboxExample />);
-      const checkbox = getByRole('checkbox', { name: 'Select this card' });
+      const checkbox = getByRole('checkbox', { name: 'Automatic renewal' });
       await userEvent.tab();
       await expect.element(checkbox).toHaveFocus();
       await userEvent.keyboard(' ');
@@ -312,10 +307,13 @@ describe('@godaddy/antares', function packageTests() {
       expect(getComputedStyle(card).borderColor).not.toBe(initialBorder);
     });
 
-    it('does not select a radio card from its body content', async function radioBodyIsNotSelection() {
-      const { getByRole, getByText } = await render(<InteractionsExample kind="radio" />);
-      await userEvent.click(getByText('One: copy this text without changing selection.'));
-      await expect.element(getByRole('radio', { name: 'Option one' })).not.toBeChecked();
+    it('selects a radio card from its body content', async function radioBodySelects() {
+      const { getByRole, getByText } = await render(<RadioExample />);
+      await userEvent.click(getByText('For getting started with a single project.'));
+      await expect.element(getByRole('radio', { name: 'Starter plan' })).toBeChecked();
+      await userEvent.click(getByText('For teams that need more room to grow.'));
+      await expect.element(getByRole('radio', { name: 'Pro plan' })).toBeChecked();
+      await expect.element(getByRole('radio', { name: 'Starter plan' })).not.toBeChecked();
     });
 
     it('reveals and marks a mixed, required, invalid selection', async function mixedSelection() {
@@ -415,6 +413,8 @@ describe('@godaddy/antares', function packageTests() {
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Card props', function cardProps() {
+    beforeAll(preloadTestIcons);
+
     it('forwards Card refs and layout props for checkbox and radio selection', async function cardProps() {
       const { container, getByRole, getByTestId } = await render(<CustomizationExample />);
       const checkboxCard = container.querySelector<HTMLElement>('.review-checkbox-card');
@@ -485,6 +485,8 @@ function bounds(element: Element) {
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Card layout', function cardLayoutTests() {
+    beforeAll(preloadTestIcons);
+
     it('stacks media in a narrow container', async function narrowContainer() {
       await page.viewport(420, 800);
       const { getByTestId } = await render(<LayoutExample />);
@@ -503,20 +505,15 @@ describe('@godaddy/antares', function packageTests() {
       expect(media.right).toBeLessThanOrEqual(content.left);
     });
 
-    it('keeps collection actions aligned at the bottom of equal-height cards', async function alignedCollection() {
+    it('lets collection cards keep their own height', async function intrinsicCollection() {
       await page.viewport(1000, 800);
       const { getByTestId } = await render(<LayoutExample />);
       const cards = [0, 1, 2].map(function card(index) {
         return bounds(getByTestId(`collection-card-${index}`).element());
       });
-      const actions = [0, 1, 2].map(function action(index) {
-        return bounds(getByTestId(`collection-action-${index}`).element());
-      });
 
-      expect(cards[0].height).toBeCloseTo(cards[1].height);
-      expect(cards[1].height).toBeCloseTo(cards[2].height);
-      expect(actions[0].bottom).toBeCloseTo(actions[1].bottom);
-      expect(actions[1].bottom).toBeCloseTo(actions[2].bottom);
+      expect(cards[0].height).toBeLessThan(cards[1].height);
+      expect(cards[1].height).toBeLessThan(cards[2].height);
     });
   });
 });

@@ -1,4 +1,12 @@
-import { forwardRef, useRef, type MouseEventHandler, type ReactNode, type Ref } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useRef,
+  type CSSProperties,
+  type MouseEventHandler,
+  type ReactNode,
+  type Ref
+} from 'react';
 import {
   Provider as RACProvider,
   Link as RACLink,
@@ -12,7 +20,8 @@ import {
 import { Button, type ButtonProps } from '#components/button';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { ContentContext, HeaderContext, FooterContext, CornerActionsContext } from '#components/structure';
-import { composeClassName } from '#utils/render-props.ts';
+import { composeClassName, composeStyle } from '#utils/render-props.ts';
+import { toSpacingVar } from '../../layout/tokens.ts';
 import { SelectionProvider } from './card-selection-indicator.tsx';
 import { useForwardedClick } from './use-forwarded-click.ts';
 import styles from './index.module.css';
@@ -117,7 +126,16 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
 
   const hasPrimary = href != null || onPress != null;
   const primaryRef = useRef<HTMLElement>(null);
-  const forwardedClick = useForwardedClick(hasPrimary && !isDisabled, primaryRef);
+  const forwardsPrimary = hasPrimary && !isDisabled;
+  const forwardsSelection = selection != null && !hasPrimary && !isSelectionDisabled && !isReadOnly;
+  const resolveForwardTarget = useCallback(
+    function resolveForwardTarget(card: HTMLDivElement) {
+      if (forwardsPrimary) return primaryRef.current;
+      return card.querySelector<HTMLElement>('[data-card-selection-control] input');
+    },
+    [forwardsPrimary]
+  );
+  const forwardedClick = useForwardedClick(forwardsPrimary || forwardsSelection, resolveForwardTarget);
 
   function renderSurface(state?: CheckboxFieldRenderProps | RadioFieldRenderProps) {
     const selectionState: CheckboxFieldRenderProps = {
@@ -141,12 +159,14 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
             typeof className === 'function' ? className({ ...selectionState, defaultClassName: undefined }) : className,
             styles.card
           )}
-          style={typeof style === 'function' ? style({ ...selectionState, defaultStyle: {} }) : style}
+          style={composeStyle(typeof style === 'function' ? style({ ...selectionState, defaultStyle: {} }) : style, {
+            ['--card-padding']: toSpacingVar(surfaceProps.padding) ?? 'var(--sp-lg)'
+          } as CSSProperties)}
           data-card-selected={selectionState.isSelected || undefined}
           data-card-indeterminate={selectionState.isIndeterminate || undefined}
           onClick={onClick}
           {...forwardedClick}
-          data-card={hasPrimary && !isDisabled ? 'interactive' : 'static'}
+          data-card={forwardsPrimary || forwardsSelection ? 'interactive' : 'static'}
         >
           {href != null ? (
             <RACLink
@@ -183,7 +203,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
               ],
               [HeaderContext, { padding: '0' }],
               [FooterContext, { padding: '0', inlinePadding: undefined, blockPadding: undefined }],
-              [CornerActionsContext, { alignSelf: 'start' }]
+              [CornerActionsContext, { flexShrink: 0 }]
             ]}
           >
             {children}

@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useRef, type PointerEvent, type RefObject } from 'react';
+import { useCallback, useEffect, useRef, type PointerEvent } from 'react';
 
 const NESTED_CONTROL =
-  'a, button, input, textarea, select, summary, label, [contenteditable]:not([contenteditable="false"])';
+  'a, button, input, textarea, select, summary, label, [contenteditable]:not([contenteditable="false"]), [data-corner-actions], [data-card-selection-control]';
 const CLICK_MS = 200;
 
 /**
- * Forwards a short, non-dragging press on non-interactive content to the stretched primary.
- * Nested controls and nested Cards keep the event. Empty surface hits the primary natively.
+ * Forwards a short, non-dragging press on non-interactive content to the Card's primary or selection
+ * control. Nested controls and nested Cards keep the event.
  */
-export function useForwardedClick(isEnabled: boolean, primaryRef: RefObject<HTMLElement | null>) {
+export function useForwardedClick(isEnabled: boolean, getTarget: (card: HTMLDivElement) => HTMLElement | null) {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(function clearTimeoutOnUnmount() {
@@ -30,18 +30,20 @@ export function useForwardedClick(isEnabled: boolean, primaryRef: RefObject<HTML
 
   const onPointerUp = useCallback(
     function forwardShortPress(event: PointerEvent<HTMLDivElement>) {
-      const primary = primaryRef.current;
       const target = event.target;
-      if (!isEnabled || !(target instanceof Element) || !primary || timeoutRef.current == null) return;
+      if (!isEnabled || !(target instanceof Element) || timeoutRef.current == null) return;
       if (window.getSelection()?.toString()) return;
       if (target.closest(NESTED_CONTROL)) return;
       if (target.closest('[data-card]') !== event.currentTarget) return;
 
+      const destination = getTarget(event.currentTarget);
+      if (!destination || destination === target || destination.contains(target)) return;
+
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
-      primary.click();
+      destination.click();
     },
-    [isEnabled, primaryRef]
+    [getTarget, isEnabled]
   );
 
   if (!isEnabled) return {};

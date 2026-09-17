@@ -14,19 +14,10 @@ import {
   Text
 } from '@godaddy/antares';
 
-interface InteractionReviewProps {
-  kind?: 'checkbox' | 'radio';
-  primary?: 'action' | 'navigation';
-  isDisabled?: boolean;
-  isPrimaryDisabled?: boolean;
-  isReadOnly?: boolean;
-  isIndeterminate?: boolean;
-  isRequired?: boolean;
-  isInvalid?: boolean;
-  defaultSelected?: boolean;
-}
-
-/** @ignore */
+/**
+ * Hidden fixture for primary action, selection, nested controls, and form behavior.
+ * @ignore
+ */
 export function InteractionsExample({
   kind = 'checkbox',
   primary,
@@ -37,7 +28,17 @@ export function InteractionsExample({
   isRequired,
   isInvalid,
   defaultSelected = false
-}: InteractionReviewProps) {
+}: {
+  kind?: 'checkbox' | 'radio';
+  primary?: 'action' | 'navigation';
+  isDisabled?: boolean;
+  isPrimaryDisabled?: boolean;
+  isReadOnly?: boolean;
+  isIndeterminate?: boolean;
+  isRequired?: boolean;
+  isInvalid?: boolean;
+  defaultSelected?: boolean;
+}) {
   const [presses, setPresses] = useState(0);
   const [actions, setActions] = useState(0);
   const [submission, setSubmission] = useState('none');
@@ -55,35 +56,32 @@ export function InteractionsExample({
     setSubmission(new FormData(event.currentTarget).getAll('choice').join(',') || 'empty');
   }
 
-  function contents(title: string) {
-    const text = <Text>{title}: copy this text without changing selection.</Text>;
-    return (
-      <Content>
-        {text}
-        <Button onPress={act}>Body {title}</Button>
-        <label>
-          Remember {title}
-          <input type="checkbox" tabIndex={-1} data-testid={`form-${title}`} />
-        </label>
-        <CornerActions data-testid={`corner-${title}`} padding="sm">
-          <Button onPress={act}>Independent {title}</Button>
-          <LinkButton href="#independent-destination" onPress={act}>
-            Independent link {title}
-          </LinkButton>
-          <MenuTrigger>
-            <Button>Menu {title}</Button>
-            <Menu aria-label={`Menu ${title}`} onAction={act}>
-              <MenuItem id="nested">Menu action {title}</MenuItem>
-            </Menu>
-          </MenuTrigger>
-          <CardSelectionIndicator data-testid={`indicator-${title}`} />
-        </CornerActions>
-        <Box contentEditable suppressContentEditableWarning data-testid={`editor-${title}`}>
-          Editable {title}
-        </Box>
-      </Content>
-    );
-  }
+  const interior = (
+    <Content>
+      <Text>One: copy this text without changing selection.</Text>
+      <Button onPress={act}>Body One</Button>
+      <label>
+        Remember One
+        <input type="checkbox" tabIndex={-1} data-testid="form-One" />
+      </label>
+      <CornerActions data-testid="corner-One" padding="sm">
+        <Button onPress={act}>Independent One</Button>
+        <LinkButton href="#independent-destination" onPress={act}>
+          Independent link One
+        </LinkButton>
+        <MenuTrigger>
+          <Button>Menu One</Button>
+          <Menu aria-label="Menu One" onAction={act}>
+            <MenuItem id="nested">Menu action One</MenuItem>
+          </Menu>
+        </MenuTrigger>
+        <CardSelectionIndicator data-testid="indicator-One" />
+      </CornerActions>
+      <Box contentEditable suppressContentEditableWarning data-testid="editor-One">
+        Editable One
+      </Box>
+    </Content>
+  );
 
   const primaryProps = {
     isDisabled: isPrimaryDisabled,
@@ -102,10 +100,13 @@ export function InteractionsExample({
           isReadOnly={isReadOnly}
         >
           <Card selection="radio" value="one" aria-label="Option one" {...primaryProps}>
-            {contents('One')}
+            {interior}
           </Card>
           <Card selection="radio" value="two" aria-label="Option two">
-            {contents('Two')}
+            Two
+            <CornerActions>
+              <CardSelectionIndicator data-testid="indicator-Two" />
+            </CornerActions>
           </Card>
         </RadioGroup>
       ) : (
@@ -122,7 +123,7 @@ export function InteractionsExample({
           isInvalid={isInvalid}
           {...primaryProps}
         >
-          {contents('One')}
+          {interior}
         </Card>
       )}
       <Button type="submit">Submit choices</Button>

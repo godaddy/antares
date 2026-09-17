@@ -9,8 +9,10 @@ import * as Stories from './card.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-Card is a layout surface. Default padding and gap are `lg`. `href` and `onPress` add a primary
-action. `selection` adds a checkbox or radio; place `CardSelectionIndicator` yourself.
+Card is a layout surface. Default padding and gap are `lg`. Direct `CornerActions` sit at the
+top-end. `href` and `onPress` add a primary action. `selection` adds a checkbox or radio; place
+`CardSelectionIndicator` yourself. Clicking the Card body toggles selection unless the Card also
+has a primary action.
 
 ## Installation
 
@@ -28,7 +30,7 @@ npm install @godaddy/antares
   label of its own.
 - Name selection separately with `selectionProps` when the Card also has a primary action.
 - Nested buttons, links, labels, and fields keep their own behavior. Clicking body text activates
-  the Card; dragging text selects it.
+  the Card (primary action, or selection when there is no primary); dragging text selects it.
 - `isDisabled` disables only the primary. `isSelectionDisabled` disables only selection. Radio
   read-only belongs on `RadioGroup`.
 
@@ -37,12 +39,13 @@ npm install @godaddy/antares
 ```tsx
 <Card>
   <Image />
-  <Content>
-    {/* ... */}
-  </Content>
+  <TextLockup>
+    <Tag slot="eyebrow" />
+    <Heading slot="title" />
+    <Text slot="body" />
+  </TextLockup>
   <CornerActions>
     <CardSelectionIndicator />
-    {/* ... */}
   </CornerActions>
 </Card>
 ```

@@ -1,4 +1,4 @@
-import { Card, Heading, Text } from '@godaddy/antares';
+import { Card, Heading, Tag, Text, TextLockup } from '@godaddy/antares';
 
 export interface PlaygroundExampleProps {
   /** Card heading. */
@@ -13,8 +13,15 @@ export function PlaygroundExample({
 }: PlaygroundExampleProps) {
   return (
     <Card>
-      <Heading level={3}>{heading}</Heading>
-      <Text>{description}</Text>
+      <TextLockup>
+        <Tag slot="eyebrow" emphasis="info">
+          Preview
+        </Tag>
+        <Heading slot="title" level={3}>
+          {heading}
+        </Heading>
+        <Text slot="body">{description}</Text>
+      </TextLockup>
     </Card>
   );
 }

@@ -13,6 +13,7 @@
 }
 
 .card:where([data-card="interactive"]):where(:hover) {
+  cursor: pointer;
   border-color: var(--color-action-border-primary-hovered, var(--ux-bgke81, #444444));
 }
 
@@ -24,6 +25,13 @@
 
 .card:where([data-card-selected], [data-card-indeterminate]) {
   border-color: var(--color-input-border-selected, var(--ux-77zzwv, #00a4a6));
+}
+
+/* Direct CornerActions sit in the padding box at the top-end. Nest them to keep them in flow. */
+.card > :where([data-corner-actions]) {
+  position: absolute;
+  inset-block-start: var(--card-padding, var(--sp-lg));
+  inset-inline-end: var(--card-padding, var(--sp-lg));
 }
 
 /* Behind in-flow content so nested controls and overlays keep default stacking. Empty surface still hits it. */
