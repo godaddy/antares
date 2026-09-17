@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, Card, Content, Flex, Text } from '@godaddy/antares';
 
 /**
- * Use onPress for an action or href for navigation. Body text stays copyable and inner buttons act independently.
+ * Use onPress for an action or href for navigation. Inner buttons sit above the stretched primary and act independently.
  * @title Actions and navigation
  * @order 3
  */

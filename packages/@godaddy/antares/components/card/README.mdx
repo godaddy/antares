@@ -39,19 +39,21 @@ adds a primary action. Always provide `aria-label` or `aria-labelledby` for a Ca
 the internal action control has no visible label of its own and cannot derive its name from
 arbitrary Card body content.
 
-`Card href` renders a real, named link behind the content. Clicking ordinary body content navigates;
-buttons, links, menus, editable content, and CornerActions keep their own behavior, including when
-nested inside `Content`. Text remains selectable and copyable. Native link menus and middle-click
-navigation are available on the Card background; ordinary body text is not itself a native link.
-The primary link is keyboard accessible without making the Card an interactive ancestor of its controls.
+`Card href` stretches a real, named link behind the composed children. Card padding and gaps hit
+that link, so navigation, middle-click, and native link menus work there. Composed content sits
+above it, so nested buttons, links, menus, and editable regions keep their own behavior without
+being inside the primary control. The primary link is keyboard accessible without making the Card
+an interactive ancestor of its controls.
 
 Reuse Structure's `Content`, `Header`, `Footer`, and `CornerActions` to compose the interior. Card
 supplies region defaults through their contexts: no additional region padding, `lg` content gap,
 and visible content overflow. Explicit region props override those defaults. `Content` supports
 `as` when a different element or component is needed.
+
 Use `selection="checkbox"` or `selection="radio"` for selectable Cards. Place one
-`CardSelectionIndicator` explicitly, usually last in `CornerActions`. Card owns the selection
-composition and delegates state, keyboard handling, and native input behavior to React Aria.
+`CardSelectionIndicator` explicitly, usually last in `CornerActions`. The indicator is the native
+selection control; body content does not toggle selection. Card owns the selection composition and
+delegates state, keyboard handling, and native input behavior to React Aria.
 
 A Card with both a primary action and selection holds two controls, so name them separately: the
 Card's own `aria-label`/`aria-labelledby` names the primary action, and `selectionProps` carries the
@@ -92,8 +94,9 @@ shares the native selection control's state and does not add a second keyboard f
 
 ### My linked Card contains a button or another link
 
-Keep it in the composed body, including inside `Content`. Independent controls do not activate
-the Card. Do not wrap those controls in your own anchor or button.
+Keep it in the composed body, including inside `Content`. Nested controls are siblings of the
+primary link or button, not descendants of it, so they keep their own behavior. Do not wrap those
+controls in your own anchor or button.
 
 ### My media has unexpected padding
 
@@ -114,12 +117,15 @@ text region, `CornerActions`, and wrapping or a minimum text width appropriate f
     {/* ...text and independent controls... */}
   </Content>
   <CornerActions>
-    {/* ...independent actions or CardSelectionIndicator... */}
+    <CardSelectionIndicator />
+    {/* ...independent actions... */}
   </CornerActions>
   {/* ...other consumer-owned layout regions... */}
 </Card>
 ```
 
 <ArgTypes of={Stories.Props} />
+
+### CardSelectionIndicator
 
 <ArgTypes of={Stories.CardSelectionIndicatorProps} />

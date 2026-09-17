@@ -1,4 +1,4 @@
-import { forwardRef, useRef, type MouseEvent as ReactMouseEvent, type MouseEventHandler, type ReactNode } from 'react';
+import { forwardRef, type MouseEventHandler, type ReactNode } from 'react';
 import {
   Provider as RACProvider,
   Link as RACLink,
@@ -40,7 +40,7 @@ export interface CardProps extends Omit<FlexProps, 'as' | 'children' | 'onClick'
   /** Whether the primary action is disabled. */
   isDisabled?: boolean;
 
-  /** Observe clicks on the Card surface. Call `preventDefault` to skip the primary action or selection. */
+  /** Observe clicks on the Card surface. Call `preventDefault` to skip native link navigation. */
   onClick?: MouseEventHandler<HTMLDivElement>;
 
   /** Native selection behavior. Radio cards belong inside a RadioGroup. */
@@ -113,37 +113,8 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
     'aria-describedby': ariaDescribedBy,
     ...surfaceProps
   } = props;
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const hasPrimary = href != null || onPress != null;
-  const linkRef = useRef<HTMLAnchorElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  function handleClick(event: ReactMouseEvent<HTMLDivElement>) {
-    onClick?.(event);
-    if (
-      event.defaultPrevented ||
-      (event.target instanceof Node && !event.currentTarget.contains(event.target)) ||
-      isInteractiveTarget(event.target, event.currentTarget)
-    )
-      return;
-    if (!window.getSelection()?.isCollapsed) return;
-    if (!hasPrimary) {
-      inputRef.current?.click();
-      return;
-    }
-    if (isDisabled) return;
-    (href != null ? linkRef.current : buttonRef.current)?.dispatchEvent(
-      new MouseEvent('click', {
-        bubbles: true,
-        cancelable: true,
-        ctrlKey: event.ctrlKey,
-        metaKey: event.metaKey,
-        shiftKey: event.shiftKey,
-        altKey: event.altKey
-      })
-    );
-  }
 
   function renderSurface(state?: CheckboxFieldRenderProps | RadioFieldRenderProps) {
     const selectionState: CheckboxFieldRenderProps = {
@@ -170,7 +141,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
           style={typeof style === 'function' ? style({ ...selectionState, defaultStyle: {} }) : style}
           data-card-selected={selectionState.isSelected || undefined}
           data-card-indeterminate={selectionState.isIndeterminate || undefined}
-          onClick={handleClick}
+          onClick={onClick}
           data-card={hasPrimary && !isDisabled ? 'interactive' : 'static'}
         >
           {href != null ? (
@@ -180,7 +151,6 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
               aria-label={ariaLabel}
               aria-labelledby={ariaLabelledBy}
               isDisabled={isDisabled}
-              ref={linkRef}
               className={styles.link}
             />
           ) : onPress != null ? (
@@ -189,7 +159,6 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
               aria-label={ariaLabel}
               aria-labelledby={ariaLabelledBy}
               isDisabled={isDisabled}
-              ref={buttonRef}
               className={styles.primary}
             />
           ) : null}
@@ -219,7 +188,6 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
   }
 
   const fieldProps = {
-    inputRef,
     value,
     isDisabled: isSelectionDisabled,
     'aria-label': ariaLabel,
@@ -256,16 +224,3 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
   }
   return renderSurface();
 });
-
-function isInteractiveTarget(target: EventTarget | null, currentCard: Element) {
-  if (!(target instanceof Element)) return false;
-
-  const owner = target.closest('[data-card]');
-  if (owner != null && owner !== currentCard) return true;
-
-  return Boolean(
-    target.closest(
-      'a,button,input,textarea,select,label,summary,audio,video,[tabindex],[role="button"],[role="link"],[contenteditable],[data-card-selection-indicator],[data-card-selection-control],[data-corner-actions]'
-    )
-  );
-}

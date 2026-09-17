@@ -26,19 +26,17 @@
   border-color: var(--color-input-border-selected, var(--ux-77zzwv, #00a4a6));
 }
 
+.link,
 .primary {
   position: absolute;
   inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+}
+
+.primary {
   opacity: 0;
   overflow: hidden;
   padding: 0;
   border: 0;
-  pointer-events: none;
-}
-
-.link {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  border-radius: inherit;
 }
