@@ -1,0 +1,1 @@
+._container_vnmes_1{max-width:48rem;container-type:inline-size}._card_vnmes_6{min-width:0}._card_vnmes_6 :where([slot=media]){object-fit:cover;width:100%}@container (width>=34rem){._card_vnmes_6{flex-direction:row}._card_vnmes_6 :where([slot=media]){flex:0 0 40%;width:40%}}
