@@ -128,6 +128,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
   const primaryRef = useRef<HTMLElement>(null);
   const forwardsPrimary = hasPrimary && !isDisabled;
   const forwardsSelection = selection != null && !hasPrimary && !isSelectionDisabled && !isReadOnly;
+  const forwardsSurface = (forwardsPrimary && href == null) || forwardsSelection;
   const resolveForwardTarget = useCallback(
     function resolveForwardTarget(card: HTMLDivElement) {
       if (forwardsPrimary) return primaryRef.current;
@@ -135,7 +136,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
     },
     [forwardsPrimary]
   );
-  const forwardedClick = useForwardedClick(forwardsPrimary || forwardsSelection, resolveForwardTarget);
+  const forwardedClick = useForwardedClick(forwardsSurface, resolveForwardTarget);
 
   function renderSurface(state?: CheckboxFieldRenderProps | RadioFieldRenderProps) {
     const selectionState: CheckboxFieldRenderProps = {

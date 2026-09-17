@@ -25,7 +25,10 @@ export function SelectionProvider({ kind, children }: { kind: 'checkbox' | 'radi
   );
 }
 
-export interface CardSelectionIndicatorProps extends HTMLAttributes<HTMLSpanElement> {}
+export interface CardSelectionIndicatorProps extends HTMLAttributes<HTMLSpanElement> {
+  /** Additional CSS class for the indicator. */
+  className?: string;
+}
 
 /** A circular, explicitly placed visual for a Card's native selection control. */
 export const CardSelectionIndicator = forwardRef<HTMLSpanElement, CardSelectionIndicatorProps>(

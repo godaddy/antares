@@ -36,10 +36,7 @@ export const OverlayDialog = forwardRef<HTMLElement, OverlayDialogProps>(functio
           [HeaderContext, { className: styles.header }],
           [ContentContext, { className: styles.content }],
           [FooterContext, { className: styles.footer }],
-          [
-            ButtonGroupContext,
-            { className: styles.buttons, justifyContent: 'end', inlinePadding: 'md', blockPadding: 'sm' }
-          ]
+          [ButtonGroupContext, { className: styles.buttons, justifyContent: 'end' }]
         ]}
       >
         {children}

@@ -34,16 +34,19 @@
   inset-inline-end: var(--card-padding, var(--sp-lg));
 }
 
-/* Behind in-flow content so nested controls and overlays keep default stacking. Empty surface still hits it. */
 .link,
 .primary {
   position: absolute;
   inset: 0;
-  z-index: -1;
   border-radius: inherit;
 }
 
+.card:where(:has(> .link)) {
+  user-select: none;
+}
+
 .primary {
+  z-index: -1;
   opacity: 0;
   overflow: hidden;
   padding: 0;

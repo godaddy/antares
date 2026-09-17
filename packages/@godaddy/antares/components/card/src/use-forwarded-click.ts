@@ -18,8 +18,8 @@ export function useForwardedClick(isEnabled: boolean, getTarget: (card: HTMLDivE
   }, []);
 
   const onPointerDown = useCallback(
-    function startClickWindow() {
-      if (!isEnabled) return;
+    function startClickWindow(event: PointerEvent<HTMLDivElement>) {
+      if (!isEnabled || event.button !== 0) return;
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(function expireClickWindow() {
         timeoutRef.current = null;
@@ -31,7 +31,7 @@ export function useForwardedClick(isEnabled: boolean, getTarget: (card: HTMLDivE
   const onPointerUp = useCallback(
     function forwardShortPress(event: PointerEvent<HTMLDivElement>) {
       const target = event.target;
-      if (!isEnabled || !(target instanceof Element) || timeoutRef.current == null) return;
+      if (!isEnabled || event.button !== 0 || !(target instanceof Element) || timeoutRef.current == null) return;
       if (window.getSelection()?.toString()) return;
       if (target.closest(NESTED_CONTROL)) return;
       if (target.closest('[data-card]') !== event.currentTarget) return;

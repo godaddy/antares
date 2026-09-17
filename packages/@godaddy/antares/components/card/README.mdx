@@ -29,8 +29,9 @@ npm install @godaddy/antares
 - Name a primary action with `aria-label` or `aria-labelledby`. The stretched control has no visible
   label of its own.
 - Name selection separately with `selectionProps` when the Card also has a primary action.
-- Nested buttons, links, labels, and fields keep their own behavior. Clicking body text activates
-  the Card (primary action, or selection when there is no primary); dragging text selects it.
+- `href` turns the Card into a native link. Modifier-click, middle-click, and "Open in new tab" work
+  on the surface. Body text is not selectable. Do not put CornerActions on an `href` Card. Clicking
+  body text on an `onPress` or selection Card activates it; dragging that text selects it.
 - `isDisabled` disables only the primary. `isSelectionDisabled` disables only selection. Radio
   read-only belongs on `RadioGroup`.
 
@@ -38,15 +39,17 @@ npm install @godaddy/antares
 
 ```tsx
 <Card>
+  <CornerActions>
+    <CardSelectionIndicator />
+  </CornerActions>
+
   <Image />
   <TextLockup>
     <Tag slot="eyebrow" />
     <Heading slot="title" />
     <Text slot="body" />
   </TextLockup>
-  <CornerActions>
-    <CardSelectionIndicator />
-  </CornerActions>
+  {/* ... */}
 </Card>
 ```
 

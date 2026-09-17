@@ -83,9 +83,19 @@ export function InteractionsExample({
     </Content>
   );
 
+  if (primary === 'navigation') {
+    return (
+      <>
+        <Card href="#card-review-target" onPress={activate} isDisabled={isPrimaryDisabled} aria-label="Option one">
+          <Text>One: copy this text without changing selection.</Text>
+        </Card>
+        <Text>Primary activations: {presses}</Text>
+      </>
+    );
+  }
+
   const primaryProps = {
     isDisabled: isPrimaryDisabled,
-    href: primary === 'navigation' ? '#card-review-target' : undefined,
     onPress: primary ? activate : undefined
   };
 

@@ -8,6 +8,7 @@ import { LinkExample } from '../examples/link.tsx';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
 import { CustomizationExample } from '../examples/customization.tsx';
 import { LayoutExample } from '../examples/layout.tsx';
+import { ModalExample } from '../examples/modal.tsx';
 import { NestedExample } from '../examples/nested.tsx';
 import { RadioExample } from '../examples/radio.tsx';
 
@@ -23,21 +24,22 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(getByRole('checkbox', { name: 'Automatic renewal' })).not.toBeChecked();
     });
 
-    it.each([
-      'action',
-      'navigation'
-    ] as const)('disables the primary %s independently of selection', async function disabledPrimary(primary) {
+    it('disables the primary action independently of selection', async function disabledPrimaryAction() {
       const { getByRole, getByText, getByTestId } = await render(
-        <InteractionsExample primary={primary} isPrimaryDisabled />
+        <InteractionsExample primary="action" isPrimaryDisabled />
       );
-      await expect
-        .element(getByRole(primary === 'navigation' ? 'link' : 'button', { name: 'Option one' }))
-        .toBeDisabled();
+      await expect.element(getByRole('button', { name: 'Option one' })).toBeDisabled();
       await expect.element(getByText('Primary activations: 0')).toBeInTheDocument();
       await userEvent.click(getByTestId('indicator-One'));
       await expect.element(getByRole('checkbox', { name: 'Option one' })).toBeChecked();
       await userEvent.click(getByRole('button', { name: 'Independent One' }));
       await expect.element(getByText('Independent activations: 1')).toBeInTheDocument();
+      await expect.element(getByText('Primary activations: 0')).toBeInTheDocument();
+    });
+
+    it('disables the primary link', async function disabledPrimaryLink() {
+      const { getByRole, getByText } = await render(<InteractionsExample primary="navigation" isPrimaryDisabled />);
+      await expect.element(getByRole('link', { name: 'Option one' })).toBeDisabled();
       await expect.element(getByText('Primary activations: 0')).toBeInTheDocument();
     });
 
@@ -51,6 +53,15 @@ describe('@godaddy/antares', function packageTests() {
       const { getByRole, getByText } = await render(<ActionsExample />);
       await userEvent.click(getByRole('button', { name: /Independent action/ }));
       await expect.element(getByText('Independent action (10)')).toBeInTheDocument();
+    });
+
+    it('opens a subscribe card inside a modal', async function subscribeModal() {
+      const { getByRole } = await render(<ModalExample />);
+      await userEvent.click(getByRole('button', { name: 'Subscribe' }));
+      await expect.element(getByRole('dialog', { name: 'Join our mailing list' })).toBeVisible();
+      await expect.element(getByRole('textbox', { name: 'Email' })).toBeVisible();
+      await userEvent.click(getByRole('button', { name: 'Cancel' }));
+      await expect.element(getByRole('dialog', { name: 'Join our mailing list' })).not.toBeInTheDocument();
     });
 
     it('toggles its enclosing selection control from the indicator', async function toggleSelection() {
@@ -73,7 +84,13 @@ describe('@godaddy/antares', function packageTests() {
   });
 });
 
-async function moveMouse(x: number, y: number, type: string, button: 'left' | 'right' | 'none' = 'none') {
+async function moveMouse(
+  x: number,
+  y: number,
+  type: string,
+  button: 'left' | 'right' | 'none' = 'none',
+  modifiers = 0
+) {
   const frame = (window.frameElement as HTMLElement | null)?.getBoundingClientRect();
   const session = cdp() as unknown as {
     send(method: string, params: Record<string, unknown>): Promise<unknown>;
@@ -84,6 +101,7 @@ async function moveMouse(x: number, y: number, type: string, button: 'left' | 'r
     y: y * (frame ? frame.height / window.innerHeight : 1) + (frame?.top ?? 0),
     button,
     buttons: type === 'mouseReleased' ? 0 : button === 'left' ? 1 : button === 'right' ? 2 : 0,
+    modifiers,
     clickCount: type === 'mouseMoved' ? 0 : 1
   });
 }
@@ -126,6 +144,24 @@ describe('@godaddy/antares', function packageTests() {
       expect(destination).toBe('/');
     });
 
+    it('provides a native link context target over body text', async function bodyLink() {
+      const { container, getByText } = await render(<LinkExample />);
+      const card = container.querySelector<HTMLElement>('[data-card]');
+      expect(card).not.toBeNull();
+      let destination: string | null = null;
+      card!.addEventListener('contextmenu', function captureContext(event) {
+        destination = (event.target as Element).closest('a')?.getAttribute('href') ?? null;
+        event.preventDefault();
+      });
+      const bounds = (getByText('This is a link card').element() as HTMLElement).getBoundingClientRect();
+      const x = bounds.left + bounds.width / 2;
+      const y = bounds.top + bounds.height / 2;
+      await moveMouse(x, y, 'mouseMoved');
+      await moveMouse(x, y, 'mousePressed', 'right');
+      await moveMouse(x, y, 'mouseReleased', 'right');
+      expect(destination).toBe('/');
+    });
+
     it('stretches the native link over ordinary body content', async function bodyHitsLink() {
       const { container, getByRole } = await render(<LinkExample />);
       const link = getByRole('link', { name: 'Link card' }).element() as HTMLElement;
@@ -148,6 +184,24 @@ describe('@godaddy/antares', function packageTests() {
       await moveMouse(x, y, 'mousePressed', 'left');
       await moveMouse(x, y, 'mouseReleased', 'left');
       expect(activations).toBe(1);
+    });
+
+    it('preserves modifier clicks on body text for the native link', async function modifierClick() {
+      const { getByRole, getByText } = await render(<LinkExample />);
+      const link = getByRole('link', { name: 'Link card' }).element() as HTMLElement;
+      let usedModifier = false;
+      link.addEventListener('click', function captureModifier(event) {
+        usedModifier = event.metaKey || event.ctrlKey;
+        event.preventDefault();
+      });
+      const bounds = (getByText('This is a link card').element() as HTMLElement).getBoundingClientRect();
+      const x = bounds.left + bounds.width / 2;
+      const y = bounds.top + bounds.height / 2;
+      const modifiers = /Mac|iPhone|iPad/.test(navigator.platform) ? 4 : 2;
+      await moveMouse(x, y, 'mouseMoved', 'none', modifiers);
+      await moveMouse(x, y, 'mousePressed', 'left', modifiers);
+      await moveMouse(x, y, 'mouseReleased', 'left', modifiers);
+      expect(usedModifier).toBe(true);
     });
 
     it('opens the native destination in another tab from a middle click', async function middleClick() {
@@ -206,48 +260,11 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
     });
 
-    it('keeps native navigation and checkbox selection independent', async function combinedNavigation() {
-      const { getByRole, getByText, getByTestId } = await render(<InteractionsExample primary="navigation" />);
-      await userEvent.click(getByRole('link', { name: 'Option one' }), { position: { x: 4, y: 4 } });
-      await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
-      await expect.element(getByRole('checkbox', { name: 'Option one' })).not.toBeChecked();
-      await userEvent.click(getByTestId('indicator-One'));
-      await expect.element(getByRole('checkbox', { name: 'Option one' })).toBeChecked();
-      await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
-    });
-
-    it('navigates from the stretched link while keeping inner buttons and links independent', async function composedNavigation() {
-      const { getByRole, getByText } = await render(<InteractionsExample primary="navigation" />);
-      await userEvent.click(getByRole('link', { name: 'Option one' }), { position: { x: 4, y: 4 } });
-      await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
-      expect(location.hash).toBe('#card-review-target');
-      await userEvent.click(getByRole('button', { name: 'Body One' }));
-      await userEvent.click(getByRole('button', { name: 'Independent One' }));
-      await userEvent.click(getByRole('link', { name: 'Independent link One' }));
-      await expect.element(getByText('Independent activations: 3')).toBeInTheDocument();
-      await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
-      expect(location.hash).toBe('#independent-destination');
-      await expect.element(getByRole('checkbox', { name: 'Option one' })).not.toBeChecked();
-    });
-
-    it('exposes primary navigation to the keyboard separately from selection', async function navigationKeyboard() {
+    it('activates primary navigation from the keyboard', async function navigationKeyboard() {
       const { getByRole, getByText } = await render(<InteractionsExample primary="navigation" />);
       await userEvent.tab();
       await expect.element(getByRole('link', { name: 'Option one' })).toHaveFocus();
       await userEvent.keyboard('{Enter}');
-      await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
-      await userEvent.tab();
-      await expect.element(getByRole('button', { name: 'Body One' })).toHaveFocus();
-      await userEvent.tab();
-      await expect.element(getByRole('button', { name: 'Independent One' })).toHaveFocus();
-      await userEvent.tab();
-      await expect.element(getByRole('link', { name: 'Independent link One' })).toHaveFocus();
-      await userEvent.tab();
-      await expect.element(getByRole('button', { name: 'Menu One' })).toHaveFocus();
-      await userEvent.tab();
-      await expect.element(getByRole('checkbox', { name: 'Option one' })).toHaveFocus();
-      await userEvent.keyboard(' ');
-      await expect.element(getByRole('checkbox', { name: 'Option one' })).toBeChecked();
       await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
     });
 
@@ -330,7 +347,7 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('rings the surface for its own controls only', async function focusRing() {
-      const { container } = await render(<InteractionsExample primary="navigation" />);
+      const { container } = await render(<InteractionsExample primary="action" />);
       const card = container.querySelector<HTMLElement>('[data-card]')!;
 
       await userEvent.tab();
