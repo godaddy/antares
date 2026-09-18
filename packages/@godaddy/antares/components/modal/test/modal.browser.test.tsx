@@ -2,6 +2,7 @@ import { describe, it, expect, beforeAll } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
+import { SizesExample } from '../examples/sizes.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { ScrollableExample } from '../examples/scrollable.tsx';
@@ -25,6 +26,34 @@ function interactOutside(dialog: Element) {
 describe('@godaddy/antares', function packageTests() {
   describe('#Modal', function modalTests() {
     beforeAll(preloadTestIcons);
+
+    it('resets the size scope across portals and preserves accessible title ownership', async function scopes() {
+      const { container } = await render(<SizesExample />);
+      for (const [size, pixels, titlePixels] of [
+        ['default', '16px', '24px'],
+        ['sm', '14px', '20px'],
+        ['lg', '18px', '30px']
+      ]) {
+        const trigger = page.getByRole('button', { name: `Open ${size} modal` });
+        expect(getComputedStyle(trigger.element()).fontSize).toBe('14px');
+        await trigger.click();
+        const dialog = page.getByRole('dialog', { name: `${size} modal`, exact: true });
+        await expect.element(dialog).toBeVisible();
+        expect(container.contains(dialog.element())).toBe(false);
+        expect(getComputedStyle(dialog.element()).fontSize).toBe(pixels);
+        expect(getComputedStyle(dialog.element().querySelector('[data-plain]')!).fontSize).toBe(pixels);
+        expect(getComputedStyle(page.getByText('Explicit body text', { exact: true }).element()).fontSize).toBe(pixels);
+        expect(getComputedStyle(page.getByRole('button', { name: 'Body action' }).element()).fontSize).toBe(pixels);
+        expect(
+          getComputedStyle(page.getByRole('heading', { name: `${size} modal`, exact: true }).element()).fontSize
+        ).toBe(titlePixels);
+        const titleId = dialog.element().getAttribute('aria-labelledby');
+        expect(document.querySelectorAll(`[id="${titleId}"]`)).toHaveLength(1);
+        expect(getComputedStyle(dialog.element().querySelector('[data-explicit-spacing]')!).paddingTop).toBe('32px');
+        await page.getByRole('button', { name: 'Done', exact: true }).click();
+        await expect.element(dialog).not.toBeInTheDocument();
+      }
+    });
 
     it('opens the modal on trigger click', async function openModal() {
       await render(<DefaultExample />);

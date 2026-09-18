@@ -22,8 +22,8 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(props
       direction="row"
       alignItems="center"
       justifyContent="space-between"
-      inlinePadding="md"
-      blockPadding="sm"
+      inlinePadding={props.padding === undefined ? 'md' : undefined}
+      blockPadding={props.padding === undefined ? 'sm' : undefined}
       gap="md"
       {...props}
       ref={ref}

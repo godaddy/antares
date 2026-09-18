@@ -20,6 +20,8 @@ describe('@godaddy/antares', function antares() {
 
       expect(container.querySelector('[slot="eyebrow"]')?.getAttribute('data-size')).toEqual('sm');
       await expect.element(getByRole('heading', { level: 4 })).toBeVisible();
+      expect(getComputedStyle(getByRole('heading', { level: 4 }).element()).fontSize).toBe('18px');
+      expect(getComputedStyle(container.querySelector('[slot="body"]')!).fontSize).toBe('12px');
     });
 
     it('keeps a nested button on its own type', async function nestedButton() {
@@ -31,11 +33,11 @@ describe('@godaddy/antares', function antares() {
       expect(getComputedStyle(label as Element).fontSize).toEqual(getComputedStyle(button).fontSize);
     });
 
-    it('steps the title down a tier in a narrow container', async function narrowTitle() {
+    it('keeps the named title tier in a narrow container', async function narrowTitle() {
       const { getByRole } = await render(<SelfContainedExample />);
 
-      // 2xl narrow drops to the xl tier: 1.875rem = 30px.
-      expect(getComputedStyle(getByRole('heading', { name: 'Narrow' }).element()).fontSize).toEqual('30px');
+      // The 2xl heading tier stays 2.25rem = 36px at every width.
+      expect(getComputedStyle(getByRole('heading', { name: 'Narrow' }).element()).fontSize).toEqual('36px');
     });
 
     it('does not inherit an outer lockup narrow title size', async function nestedNarrowTitle() {

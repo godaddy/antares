@@ -12,10 +12,12 @@ export function OverridesExample() {
       <Tag slot="eyebrow" size="sm">
         Explicit tag size
       </Tag>
-      <Heading slot="title" level={4}>
+      <Heading slot="title" level={4} size="sm">
         Explicit heading level
       </Heading>
-      <Text slot="body">Body text.</Text>
+      <Text slot="body" size="xs" emphasis="critical">
+        Body text.
+      </Text>
     </TextLockup>
   );
 }

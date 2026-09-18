@@ -4,6 +4,7 @@ import {
   type DialogProps as RACDialogProps,
   Provider as RACProvider
 } from 'react-aria-components';
+import type { InterfaceSize } from '#components/size-provider';
 import { Grid, type GridOwnProps } from '#components/layout/grid';
 import { HeaderContext, ContentContext, FooterContext, ButtonGroupContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
@@ -12,6 +13,9 @@ import styles from './index.module.css';
 export interface OverlayDialogProps
   extends Omit<GridOwnProps, 'as' | 'areas' | 'columns' | 'rows'>,
     Omit<RACDialogProps, 'children'> {
+  /** Optional coordinated region spacing. */
+  size?: InterfaceSize;
+
   /** The regions of the overlay, in any order. */
   children?: ReactNode;
 }
@@ -27,16 +31,17 @@ export interface OverlayDialogProps
  * @param props - {@link OverlayDialogProps}
  */
 export const OverlayDialog = forwardRef<HTMLElement, OverlayDialogProps>(function OverlayDialog(props, ref) {
-  const { className, children, ...rest } = props;
+  const { className, children, size, ...rest } = props;
+  const spacing = size ? { padding: size, gap: size } : {};
 
   return (
-    <Grid as={RACDialog} {...rest} ref={ref} className={composeClassName(className, styles.dialog)}>
+    <Grid as={RACDialog} data-size={size} {...rest} ref={ref} className={composeClassName(className, styles.dialog)}>
       <RACProvider
         values={[
-          [HeaderContext, { className: styles.header }],
-          [ContentContext, { className: styles.content }],
-          [FooterContext, { className: styles.footer }],
-          [ButtonGroupContext, { className: styles.buttons }]
+          [HeaderContext, { ...spacing, className: styles.header }],
+          [ContentContext, { ...spacing, className: styles.content }],
+          [FooterContext, { ...spacing, className: styles.footer }],
+          [ButtonGroupContext, { ...spacing, className: styles.buttons }]
         ]}
       >
         {children}

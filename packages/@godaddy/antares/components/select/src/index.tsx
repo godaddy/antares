@@ -57,7 +57,7 @@ function useInheritedControlSize(): 'sm' | 'md' | undefined {
   const control = context?.slots ? context.slots.control : context;
 
   // cva types a variant as nullable, but a field only ever publishes a size or nothing.
-  return control?.size ?? undefined;
+  return control?.size === 'lg' ? 'md' : (control?.size ?? undefined);
 }
 
 interface SelectBodyProps {

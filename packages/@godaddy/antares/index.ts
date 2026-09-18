@@ -8,6 +8,7 @@
 export * from './exports/Icon';
 export * from './exports/Button';
 export * from './exports/Text';
+export * from './exports/SizeProvider';
 export * from './exports/Heading';
 export * from './exports/Label';
 export * from './exports/Image';

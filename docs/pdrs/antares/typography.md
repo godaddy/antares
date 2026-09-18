@@ -1,479 +1,573 @@
-# Typography in Antares
+# Typography and coordinated sizing in Antares
 
-Status: **Proposed**
+Status: **Design direction agreed; implementation proposed**
 
-## Table of Contents
+## Proposed API
 
-- [Summary](#summary)
-- [Problem](#problem)
-- [Open decisions](#open-decisions)
-- [Proposal](#proposal)
-- [Reference](#reference): [vocabulary](#the-vocabulary), [prior art](#prior-art),
-  [out of scope](#out-of-scope), [audit](#audit),
-  [gaps](#where-this-proposal-is-likely-incomplete)
-
----
-
-## Summary
-
-Nothing owns typography in Antares. `Text` sets none. `Heading` sets no font size, so its sizes come from
-the browser. Every other component picks its own, drawing on nine legacy intent families and, in one case,
-on a stylesheet that only exists in Storybook. The theme already ships a complete type system, and two
-components use it.
-
-The theme also supplies the vocabulary, so this document does not invent one: three roles (`body`, `detail`,
-`heading`), each with a family, weight and line height, and each with a six-step size ramp from `xs` to
-`2xl`, published as `--font-{role}-{property}` and `--font-{role}-size-{tier}`. What is missing is
-ownership. Which code writes those tokens, and how they reach the parts of a composed component.
-
-### The resulting API
-
-One component per role. `size` is the only typography prop.
+Antares will coordinate typography, controls, and container spacing through a shared interface size.
+Set `size` on a participating container to establish defaults for its contents; set it on a child to
+override those defaults. Component names express the purpose of text, and heading levels express
+document structure independently of visual size.
 
 ```tsx
-<Text>Body copy at the md tier</Text>
-<Detail size="sm">Supporting copy</Detail>
-<Text as="p">Same type, a real paragraph</Text>
+// Future composition: Card is outside the initial pilot.
+<Card size="sm">
+  <TextLockup>
+    <Heading slot="title" level={2}>Billing</Heading>
+    <Text slot="body">Manage your payment methods.</Text>
+  </TextLockup>
+  <Button>Update payment method</Button>
+</Card>
 
-// Emphasis is the element, not a weight prop.
-<Text as="strong">overdue</Text>
+<Text>Body copy</Text>
+<Detail emphasis="passive">Supporting copy with an explicit color treatment</Detail>
+<Heading level={2} size="xl">A visually large section heading</Heading>
+<Text as="strong">Payment required</Text>
 
-// Heading: level picks the element, size picks the tier, size defaults from level.
-<Heading level={2}>Billing</Heading>             {/* h2, xl tier */}
-<Heading level={2} size="sm">Billing</Heading>   {/* both stated */}
-
-// A container supplies the defaults for the slots it defines. An explicit prop still wins.
-<Modal>
-  <Heading slot="title">Delete file?</Heading>   {/* h2 at the tier Modal picks */}
-</Modal>
-
-// Controls own their type, so a composed Text inherits instead of restyling.
-<Button size="sm">label</Button>
-<Button size="sm"><Text>label</Text></Button>    {/* indistinguishable */}
+<TextField size="sm">
+  <Label>Email</Label>
+  <Input />
+  <Detail slot="description">We'll send receipts here.</Detail>
+  <FieldError />
+</TextField>
 ```
 
-There is no `variant`, `weight`, `family`, `lineHeight` or `letterSpacing` prop. The role is the component,
-and the theme has no vocabulary for the rest.
+These examples describe the intended API, not capabilities already implemented. The first implementation
+will cover shared sizing infrastructure, Modal, TextLockup, Text, Detail, Heading, Label, Button, and
+TextField. Broader adoption follows visual review of that pilot.
 
-### The nine rules
+## Why this change
 
-| Rule                                                                                                               | In one line                                                                    |
-| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| 1. [`Text`, `Detail` and `Heading` own the type](#1-text-detail-and-heading-own-the-type)                          | the only place the role and tier decision is written, and they carry defaults  |
-| 2. [Containers inject defaults through slot context](#2-containers-inject-defaults-through-slot-context)           | a `Modal` decorates its `title` slot; an explicit prop on the child still wins |
-| 3. [Controls keep their type on the control element](#3-controls-keep-their-type-on-the-control-element)           | so a `1lh` `Icon` stays locked to its label; a composed `Text` emits nothing   |
-| 4. [Non-component surfaces declare their own chain](#4-surfaces-that-cannot-be-components-declare-their-own-chain) | `::placeholder`, SVG `<text>`, a native input's value: declared in CSS         |
-| 5. [Chains are `token → intent → literal`](#5-fallback-chains-sizes-stop-at-the-literal)                           | except sizes, which skip the intent, because intents have no size ramp         |
-| 6. [A component per role, `size` is the only prop](#6-a-component-per-role-size-is-the-only-prop)                  | no `variant`, `weight`, `family`, `lineHeight` or `letterSpacing`              |
-| 7. [Emphasis is semantic](#7-emphasis-is-semantic)                                                                 | `<Text as="strong">`, not a `weight` prop                                      |
-| 8. [`Heading`: `level` is semantics, `size` is visuals](#8-heading-level-is-semantics-size-is-visuals)             | independent axes, with a `level` → `size` default map                          |
-| 9. [Components resolve to a token](#9-components-resolve-to-a-token)                                               | snap off-ramp Figma values to the nearest tier, with the original in a comment |
+Typography currently has several owners. Text provides wrapping and truncation without a full typography
+treatment, Heading still depends on browser or application font sizes, TextLockup applies role tokens to
+its slots, and controls and fields declare their own styles. A consumer cannot choose a compact section
+and predict how its text, controls, and spacing will respond.
 
-Rules 1 to 3 are the substance and 4 to 9 follow from them. Rule 2 is the mechanism everything else
-assumes, and `Heading` does not support it today.
+The goal is a system that is easy to explain and compose:
 
-**Not addressed:** responsive type, colour, and a prose scope for consumers rendering markdown. See
-[Out of scope](#out-of-scope).
+- A container's `size` coordinates typography, default padding, and default gaps. Width and height
+  constraints remain separate.
+- Controls receive a complete size treatment: typography, padding, internal spacing, and appropriate
+  minimum dimensions. Changing only their label size is insufficient.
+- Explicit child props win. Nesting does not repeatedly shrink values.
+- Named component parts can have different treatments without changing unrelated content.
+- Existing tokens supply themeable values. They are a foundation, not a constraint against a needed
+  treatment or API change.
 
-## Problem
+## Public vocabulary
 
-Three questions have to be answered together, because answering one alone produces a system that cannot
-express what Figma specs.
+| Surface | Size scale | Meaning |
+| --- | --- | --- |
+| Participating containers and controls | `sm`, `md`, `lg` | Coordinated interface presentation, including type and default spacing |
+| Text, Detail, Heading, Label | `xs`, `sm`, `md`, `lg`, `xl`, `2xl` | A tier within the component's typography treatment |
+| TextLockup | `xs`, `sm`, `md`, `lg`, `xl`, `2xl` | Coordinated named text parts and directly paired accessories |
+| SizeProvider (working name) | `sm`, `md`, `lg` | Defaults for participating descendants, without a DOM wrapper |
 
-1. **Who owns a component's font styles?** The text components, or each component's own CSS?
-2. **How does a composed component tell its parts what to look like?** Without the caller having to
-   remember that a `Modal` title is an `h2` at one tier and a `Drawer` title another.
-3. **What is the public vocabulary?** The theme has already answered this one.
+Equal size names coordinate components; they do not require equal font sizes or identical dimensions.
+For example, body `md` and detail `md` use different token values. A component can map its interface size
+to different tiers for its title, label, input, and supporting text.
 
-Nothing here is constrained by the current implementations. Where a proposal implies a public API change,
-that is intended.
+### Text components
 
-## Open decisions
+| Component | Purpose | Default treatment |
+| --- | --- | --- |
+| `Text` | Body copy | Body typography, or the owning text surface's treatment when composed as its label |
+| `Detail` | Supporting copy, captions, metadata | Detail typography; no automatic muted color |
+| `Heading` | Semantic document heading | Heading typography; `level` chooses the element only |
+| `Label` | Names a form field | A distinct, themeable label treatment with a medium-weight default |
 
-**Which `ux.textTitle` value to snap.** The intent declares 1.375rem, but `alert` and `progress-steps` both
-divide it by 1.125 twice, so what renders is about 1.086rem. Snapping what renders gives `heading` `sm` and
-keeps today's appearance. Snapping the declared value ties `heading` `md` and `heading` `lg`, and either one
-grows `alert`'s title noticeably. The [audit](#audit) proposes `heading` `sm`. The call is whether to honour
-the declared value or the rendered one.
+Text and Detail share implementation and the existing text folder:
 
-**Two positions worth ratifying rather than accepting by default**, because no comparable library takes
-them: how strict [rule 6](#6-a-component-per-role-size-is-the-only-prop) is, and giving each role its own
-component. See [Prior art](#prior-art).
-
-## Proposal
-
-### 1. `Text`, `Detail` and `Heading` own the type
-
-They are the single place the role and tier decision is written, and they carry defaults, so they render
-real type instead of the browser's. Native elements stay valid, they are just unstyled.
-
-Two things sit outside them: controls, which keep type on the control element
-([rule 3](#3-controls-keep-their-type-on-the-control-element)), and surfaces that cannot be a component
-([rule 4](#4-surfaces-that-cannot-be-components-declare-their-own-chain)).
-
-### 2. Containers inject defaults through slot context
-
-A composed component provides the defaults for the slots it defines, and the caller overrides them with
-props. `components/_internal/overlay-dialog/src/index.tsx` already injects a `className` this way for
-`Header`, `Content` and `ButtonGroup`. Typography joins it. **Required behaviour**, in both directions:
-
-- A container-injected `level` or `size` reaches the element when the caller passes neither.
-- An explicit prop on the child overrides the injected value.
-- The dialog's accessible name still comes from its title. RAC's `Dialog` puts the generated title id in the
-  same `HeadingContext` a container would add typography to, so the container adds to that context rather
-  than providing a fresh one inside the dialog. Replacing it drops the id and breaks `aria-labelledby`
-  silently.
-
-`Heading` satisfies neither of the first two today. It always passes its own `level`, so the `level: 2` RAC's
-`Dialog` provides to `slot="title"` is thrown away. This is a precondition for everything else here, and all
-three behaviours want tests rather than assumptions about how RAC wires slots.
-
-**Named slots for containers, `DEFAULT_SLOT` only for leaf text surfaces.**
-
-| Surface                                  | Channel                              | Why                                                           |
-| ---------------------------------------- | ------------------------------------ | ------------------------------------------------------------- |
-| Controls (`Button`, `Tag`…) and `Avatar` | `DEFAULT_SLOT`                       | the whole subtree *is* one text surface; nothing to leak into |
-| `Modal`, `Drawer`, `Popover`             | named slots (`title`, `description`) | arbitrary body content; `DEFAULT_SLOT` would capture it       |
-| `Content`/`Header`/`Footer`              | flat context, as today               | each is a distinct named component appearing once             |
-
-RAC sets the precedent: `Dialog` provides `{ slots: { [DEFAULT_SLOT]: {}, title: {…} } }`, where the empty
-`DEFAULT_SLOT` is an escape valve so an unslotted `Heading` receives nothing. Requiring the slot is the
-cost, and the alternative silently restyles body content.
-
-### 3. Controls keep their type on the control element
-
-Every control (`Button` and `LinkButton`, `ToggleButton`, `Tag`, menu items) declares its type on the control
-element, and tells a composed `Text` to **emit no typography of its own, rather than injecting a size**,
-through the slot context of [rule 2](#2-containers-inject-defaults-through-slot-context). A `Text` that
-declares nothing inherits every font property from the control, `font-variation-settings` included, which the
-`font` shorthand would not cover.
-
-**The signal makes `Text` omit its type-bearing class**, rather than only withholding props: a declaration on
-the label beats a value inherited from the control at any specificity, so an empty context value stops being
-enough once `Text` carries defaults.
-
-**Where the type is declared and what it resolves to are separate questions.** A control that is its own box
-resolves to a tier on its role's ramp; one that is a word inside a run of text, `variant="inline"` on `Button`
-and `LinkButton`, resolves to `inherit`, because matching the text around it *is* its type. Both declare all
-four properties on the control element, so the `1lh` relationship below holds for either and the signal above
-applies unchanged to both.
-
-**The reason is `Icon`.** `components/icon/src/index.module.css` sizes it `width: 1lh; height: 1lh`, and
-`1lh` resolves from the icon's own inherited line height. As siblings, icon and label share the control's
-type, so the icon matches the label's line box. Move the label's type into a sibling wrapper and inheritance
-no longer reaches the icon, because it flows down and not sideways, and the two drift apart whenever the
-control's size changes. `toggle-button` hand-rolls the same relationship as `calc(font-size * line-height)`.
-
-**Three display surfaces need the same signal**, because each already renders a `Text` with an injected
-class that owns fluid type: `Avatar`'s monogram (`font-size: round(43.75cqw, 1px)`), and `gauge-chart` and
-`donut-chart`'s centre labels (`cqi`, [rule 9](#9-components-resolve-to-a-token)). Once `Text` carries
-defaults, those defaults compete with the injected class at the same `0-1-0`, so the signal is what keeps
-the fluid size.
-
-**Children are never auto-wrapped in a `Text`.** A control's children are mixed
-(`<Button><Icon />label</Button>`), so wrapping could only apply to some of them, and which ones would
-depend on child types. A wrapper element is still fine where CSS needs to select the label.
-
-**Line height stays on the control, because it sets the control's height.** A control's height is its text's
-line box plus its block padding. In a flex container, which `.button` already is, there is no strut, so
-either the `Text` is the only item and sets the height or a bare text child inherits the control's value.
-Two line heights never add up. The case to watch for is a **non-flex** container, where the parent's line
-height sets a minimum line box height above the child's, so every text surface is either a flex container or
-the container owns the line height.
-
-**No control sets `line-height: 1`.** It removes no stacking, and it makes a `1lh` `Icon` resolve to
-`1 × font-size`, smaller than the label's line box.
-
-### 4. Surfaces that cannot be components declare their own chain
-
-`::placeholder` is not an element, a chart's axis tick labels are SVG `<text>` rendered by visx, and a native
-`<input>`'s value needs the font on the input. These declare the chain in CSS, following
-[GU and Spacing, rule 5](./gu-spacing.md#5-per-component-implementation): the full chain, on the component's
-own root selector, `--_`-prefixed and component-named.
-
-```css
-.field {
-  --_field-input-font-size: var(--font-body-size-md, 1rem);
-  --_field-input-font-family: var(--font-body-family, var(--ux-pze30t, var(--ux-117cu43, system-ui, sans-serif)));
-  --_field-input-line-height: var(--font-body-line-height, var(--ux-1hhfdnd, var(--ux-mgbt9j, 1.5)));
-  --_field-input-font-weight: var(--font-body-weight, var(--ux-8n6y9x, normal));
-  --_field-input-font-variation: var(--font-body-variation, var(--ux-1i4pt2s, normal));
-}
+```text
+components/text/src/
+  index.tsx         public barrel
+  text.tsx          Text and Detail implementation
+  index.module.css shared styles
 ```
 
-Where a control's own `size` prop selects a tier, the variable takes the control's step names:
+Detail does not get a separate component directory. Text and Detail retain the existing element,
+alignment, wrapping, and truncation behavior. `Text as="p"` changes the element without selecting a
+different visual role. Label retains its form-label semantics and accessibility integration.
 
-```css
---_button-font-size-sm: var(--font-body-size-sm, 0.875rem);
---_button-font-size-md: var(--font-body-size-md, 1rem);
-```
+Purpose is visible in the component name. There is no `Text variant="detail"`; `role` remains the ARIA
+attribute. Typography does not expose `weight`, `family`, `lineHeight`, `letterSpacing`, or separate visual
+italic and underline controls. Treatments own their default font properties.
 
-These surfaces set the size and all four role properties explicitly. They do not `inherit`. This is the one
-place the mapping is duplicated, so the [Audit](#audit) is the thing to check when either side changes.
+### Feedback color and semantic emphasis
 
-### 5. Fallback chains: sizes stop at the literal
-
-**All four role properties chain `token → intent → literal`**, per
-[GU and Spacing](./gu-spacing.md#5-per-component-implementation) rule 1: family, weight, line height and
-variation. Every chain ends in a literal, so a declaration stays valid when neither the token nor the intent
-is defined.
-
-Which intent family each role maps to is the design decision here:
-
-| Role      | Intent family                          |
-| --------- | -------------------------------------- |
-| `detail`  | `ux.textCaption`                       |
-| `body`    | `ux.textBody`, then `ux.textParagraph` |
-| `heading` | `ux.textHeading`                       |
-
-`body` needs the second link because `ux.textBody` carries no legacy default, so one `var()` deep is not yet
-a real value. [Rule 4](#4-surfaces-that-cannot-be-components-declare-their-own-chain)'s `.field` block shows
-the resulting chain. Which `--ux-*` variable each role and property resolves to is a lookup in
-`.agents/skills/antares-components/references/token-intent-legacy-map.json`. A copy here would drift from
-it.
-
-**`font-variation-settings` is in the set.** It is the one property where an intent carries a value the token
-set does not: `ux.textHeading.fontVariation` is a real display axis while the `airo` token is `normal`, so
-leaving it out flattens every heading on an intent-only theme.
-
-**Sizes chain `token → literal`, with no intent link.** The tokens give each role six tiers; the intents give
-each role one font size, so nothing in the intents can mean "heading, lg". An intent-only theme gets the
-library's literal sizes and the correct family, weight and line height. `--font-weight-strong` and
-`--font-style-em` are the same case, since no intent carries either.
-
-### 6. A component per role, `size` is the only prop
-
-Three roles, so three components. Picking the component picks the role, and `<Detail>` is `Text` with a
-different role, sharing its implementation.
+Typography exposes `emphasis` using the existing feedback vocabulary:
 
 ```tsx
-// Text and Detail
-size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';  // default 'md' - a step on that role's ramp
+emphasis?: 'critical' | 'warning' | 'success' | 'info' | 'highlight'
+  | 'premium' | 'internal' | 'neutral' | 'passive';
 ```
 
-`align`, `as`, `maxLines` and `wrap` are unchanged on both. `Heading` covers the third role and adds `level`
-([rule 8](#8-heading-level-is-semantics-size-is-visuals)).
+`emphasis` selects color, not weight. When omitted, typography inherits the surrounding color. Choosing
+Detail alone does not make text muted, and choosing `neutral` is an explicit color choice rather than a
+synonym for omission. Components may supply contextual colors for their parts, such as validation text.
 
-**The role is not a prop.** `RACTextProps extends HTMLAttributes<HTMLElement>` declares `role?: AriaRole`, so
-that name is unavailable, and every alternative described a typeface rather than a role. Making the role the
-component removes the axis instead of renaming it, and leaves `size` as the only typography prop anywhere.
-The cost is one more export.
-
-**No `weight`, `family`, `lineHeight` or `letterSpacing` props.** The theme has no vocabulary for them
-beyond what the role sets, and exposing them one by one would let a caller build a fourth role the design
-system never defined.
-
-**`size` resolves to a class, not a data attribute.** `antares-components/SKILL.md` reserves data-attribute
-selectors for RAC state and requires every selector to compute to `0-1-0`, which `.text[data-size="lg"]` is
-not.
-
-**Opting out is not a cascade override.** A container that wants its label to inherit cannot ship a class
-that out-specifies `.detail`, because at `0-1-0` the winner is stylesheet order, which is a bundling accident
-between two component modules. It goes through the slot context instead, and the component applies no
-typography class at all:
+Use semantic `strong` and `em` elements for their corresponding treatments:
 
 ```tsx
-[TextContext, { typography: 'inherit' }]   // on DEFAULT_SLOT, from any control that owns its type
+<Text as="strong">Payment required</Text>
+<Detail as="em">Offer ends tomorrow</Detail>
+<Text emphasis="critical">Payment failed</Text>
 ```
 
-`typography` is private. It only ever arrives from a container, and a caller who passes `size` cancels it:
-`<Button><Text size="lg">…</Text></Button>` has said the label should differ from the control, so `Text`
-emits `body` `lg`. The path that inherits is the one with no props.
+The existing `--font-weight-strong` and `--font-style-em` tokens support these semantic treatments.
+There is no public weight prop. Label's medium weight belongs to its treatment, not to a new consumer
+override.
 
-### 7. Emphasis is semantic
+### Heading semantics
+
+`level` controls the `h1` through `h6` element. It never selects a visual size, including when `size` is
+omitted. Two otherwise equivalent Headings with different levels have the same typography.
+
+Resolve the level from an explicit prop, then the owning semantic context, then the existing standalone
+fallback of `3`. Resolve visual size separately through the rules below. A dialog can supply its title's
+semantic level and visual treatment independently. There is no level-to-size default map.
+
+## Size resolution and precedence
+
+### Interface size
+
+For an ordinary participating container or control, resolve size in this order:
+
+1. An explicit `size` on that component.
+2. A default supplied by the component that owns that part, if applicable.
+3. The nearest interface-size scope.
+4. Standalone `md`.
+
+A sized container supplies its resolved size to participating descendants. A nested container without an
+explicit size inherits the nearest scope. `sm` identifies a treatment; it is not a multiplier applied at
+each nesting level. A small container inside another small container stays small.
+
+An explicit control size affects the control and the parts it owns. It does not resize siblings or an
+overlay owned by a common ancestor. Modal is the deliberate reset boundary described below.
+
+### Typography and named parts
+
+Resolve each typography property independently:
+
+1. An explicit child prop for that property.
+2. The owning component's text-surface or named-slot treatment.
+3. The component's treatment at the inherited interface size.
+4. Its standalone treatment at `md`.
+
+Component and slot mappings are defaults, not forced styles. A medium Modal may, for example, map its
+title to heading `lg` while body text and controls remain `md`. This illustrates the rule; it is not final
+visual approval of that title mapping. Component documentation must state the eventual mappings.
+
+Unslotted content follows the general scope rather than a named part's defaults. An explicit `size`
+changes the child's typography tier; an explicit `emphasis` changes its color without resetting its size,
+weight, family, variation settings, or line height. Wrapping and truncation props do not change type.
+
+### Spacing and bounds
+
+A container maps its resolved size to its own default padding and gaps, including defaults supplied to
+its regions. Explicit spacing props override those defaults. Regions continue to own their padding where
+required by the composition model, including scrolling content.
+
+Box, Flex, and Grid pass size context through without reinterpreting their spacing props:
 
 ```tsx
-<Text as="strong">overdue</Text>
-<Text as="em">Cras probitas</Text>
+<Card size="sm">
+  <Flex gap="md">
+    <Button>Save</Button>
+    <Button>Cancel</Button>
+  </Flex>
+</Card>
 ```
 
-`--font-weight-strong` (`bolder`) and `--font-style-em` (`italic`) are bound to those elements. They are
-modifiers rather than a fourth role, since `bolder` is relative to the inherited weight, so one token
-composes with all three roles. Bold text that is not emphasis is a different role: a tier moves only the
-size, and the weight is whatever the role fixes.
+Both buttons are small. The explicit `gap="md"` remains the normal layout `md` gap. Global spacing and
+font token names keep their meanings. Container width, height, and maximum bounds remain independent
+of interface size.
 
-### 8. `Heading`: `level` is semantics, `size` is visuals
+## Scope boundaries
+
+### Modal starts an independent scope
+
+Modal defaults to `md`, even when its trigger appears inside a small container. `<Modal size="sm">`
+explicitly selects a small modal interior. The trigger keeps the surrounding size.
 
 ```tsx
-level?: 1 | 2 | 3 | 4 | 5 | 6;                    // proposed default 3 (2 today), or the level a container injects
-size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';  // default derived from level
+<SizeProvider size="sm">
+  <ModalTrigger>
+    <Button>Edit billing</Button>
+    <Modal>
+      <Heading slot="title">Billing</Heading>
+      <Content>
+        Default medium body text and controls.
+        <Button>Save</Button>
+      </Content>
+    </Modal>
+  </ModalTrigger>
+</SizeProvider>
 ```
 
-`level` picks the element and `size` picks the tier. They are independent, because page structure decides the
-outline while design decides the tier. A default map keeps the common case short:
+The reset belongs to Modal, not to whether React happens to render it in a portal. It applies to its
+body baseline, participating controls, spacing defaults, and named-part mappings.
 
-| `level` | 1     | 2    | 3    | 4    | 5    | 6    |
-| ------- | ----- | ---- | ---- | ---- | ---- | ---- |
-| `size`  | `2xl` | `xl` | `lg` | `md` | `sm` | `xs` |
+### Attached overlays share their interaction owner's size
 
-**The default level becomes `3`, but set it deliberately.** It is `2` today
-(`components/text/src/heading.tsx`), so this is a public API change. The default
-is there so a bare `Heading` renders without a browser font size, not because the component can work out
-where it belongs in the outline. It cannot, and it does not try. Defaulting low would have every unset
-`Heading` claim to be the page title or a top-level section, several per page, which flattens the outline for
-anyone navigating by level. Containers are the exception, because they know their own depth: `Modal` and
-`Drawer` inject `level={2}` for their title slot. React Spectrum v3 defaults to `3` for the same reason.
+The common owner establishes sizing for both the trigger and its attached content. This owner is
+MenuTrigger, PopoverTrigger, or the Select root, rather than the trigger Button itself.
 
-**Each container states its title's tier explicitly**, so an `h2` can look different in a `Modal` than in a
-`Drawer` without the element differing. Not `.modal h2 { … }`, because descendant element selectors leak into
-content, so a heading inside the modal body would pick up the title tier.
+```tsx
+<MenuTrigger size="lg">
+  <Button>Actions</Button>
+  <Menu>
+    <MenuItem>Duplicate</MenuItem>
+  </Menu>
+</MenuTrigger>
 
-`Heading` also gains the full chain, so its sizes stop coming from the browser and its `bolder` becomes the
-role's weight token.
+<MenuTrigger size="lg">
+  <Button size="sm">Actions</Button>
+  <Menu size="md">
+    <MenuItem>Duplicate</MenuItem>
+  </Menu>
+</MenuTrigger>
+```
 
-### 9. Components resolve to a token
+In the first example, the trigger and menu use large treatments. In the second, their explicit sizes
+override the owner's defaults independently. Changing only the Button would leave the Menu large.
+An owner without an explicit size uses its surrounding scope, then `md`.
 
-Where Figma specs a value that is a tier, the component writes that tier. Where it is not, the value snaps to
-the nearest tier, with a comment recording the original, rather than staying a literal. Otherwise the theme
-can no longer restyle the library.
+Size flows down through context. Do not inspect arbitrary sibling props or infer an owner's size from
+its trigger. React context reaches portals; the portaled surface must still apply its own CSS typography
+baseline because CSS inheritance follows the DOM tree.
 
-The exceptions are the container-relative sizes: `gauge-chart` and `donut-chart` size their labels in `cqi`
-so the type scales with the chart, and `avatar` sizes its monogram in `cqw`. No fixed tier can express those,
-so the declarations stay. All three already render the fluid size through a `Text` with an injected class, so
-once `Text` carries a default tier the two compete at `0-1-0` and stylesheet order decides. Keeping the fluid
-size therefore needs rule 3's signal, not a cascade override: the component sends "emit no typography"
-alongside its class, and the class declares the full chain for every property it owns.
+### TextLockup coordinates its own parts
 
----
+TextLockup resolves its size from an explicit prop, an owning component's default if present, the
+interface scope, then `md`. Its six-tier size coordinates its named eyebrow, title, and body parts and
+directly paired accessories. It does not create a new interface-size scope for unrelated controls.
 
-## Reference
+```tsx
+<Card size="sm">
+  <TextLockup size="xl">
+    <Tag slot="eyebrow">New</Tag>
+    <Heading slot="title" level={2}>More room to grow</Heading>
+    <Text slot="body">Choose the plan that fits your business.</Text>
+    <Button>Start</Button>
+  </TextLockup>
+</Card>
+```
 
-Background and migration detail. None of it is needed to follow the proposal.
+The named text parts use the lockup's `xl` treatments. The Button remains `sm`. Unslotted content stays
+on the surrounding defaults; an explicit size on a named child overrides that part's default.
 
-### The vocabulary
+The current text mapping uses the matching tier of detail for the eyebrow, heading for the title, and
+body for the body slot. It is the starting point for pilot review. Accessory mappings are separate:
 
-`@godaddy/design-tokens` (`src/tokens.yml`) defines
-three roles, each with four properties and a six-step size ramp, named `--font-{role}-{property}` and
-`--font-{role}-size-{tier}`.
+| Accessory | Starting mapping | Override |
+| --- | --- | --- |
+| Eyebrow Tag | Lockup `2xl`/`xl` -> Tag `lg`; `lg`/`md`/`sm` -> `md`; `xs` -> `sm` | Explicit Tag size wins |
+| Icon paired with a title or other text part | Follows that part's line height through `1lh` | Explicit supported accessory sizing wins |
 
-| Role      | Family                  | Line height | Weight   |
-| --------- | ----------------------- | ----------- | -------- |
-| `detail`  | `--font-detail-family`  | `1.4`       | `normal` |
-| `body`    | `--font-body-family`    | `1.5`       | `normal` |
-| `heading` | `--font-heading-family` | `1.25`      | `bold`   |
+The Tag mapping already exists. New accessory arrangements must document their mappings rather than
+silently treating every descendant as part of the lockup.
 
-| Tier  | `detail`  | `body`   | `heading` |
-| ----- | --------- | -------- | --------- |
-| `xs`  | 0.6875rem | 0.75rem  | 1rem      |
-| `sm`  | 0.75rem   | 0.875rem | 1.125rem  |
-| `md`  | 0.8125rem | 1rem     | 1.25rem   |
-| `lg`  | 0.875rem  | 1.125rem | 1.5rem    |
-| `xl`  | 1rem      | 1.25rem  | 1.875rem  |
-| `2xl` | 1.125rem  | 1.5rem   | 2.25rem   |
+Named typography sizes use the same token values at every container width. The existing automatic
+TextLockup title reduction below 520px for `sm` and `2xl` is removed when adopting this model. Responsive
+typography is later work, not an implicit adjustment to a named tier.
 
-Each role also has `--font-{role}-variation` for variable-font axes. Every tier above is one step of a
-shared 15-step `--font-size-{005…500}` scale, but components use the role tiers, not the raw scale.
+### Custom sections can provide defaults without a wrapper
 
-Four things about the ramp shape the proposal:
+A public provider lets consumers establish the same scope for custom compositions:
 
-- **A role is mostly a family, weight and line-height decision.** Tiers overlap in value, since `body-sm` and
-  `detail-lg` are both 0.875rem, so the role picks the treatment and the tier picks the step.
-- **The ramps are hand-picked, not geometric.** The `body` steps ratio 1.167, 1.143, 1.125, 1.111, 1.2, so a
-  size is never derived by multiplying a base by 1.125.
-- **There is no medium weight token and no letter-spacing token.** `ux.textLabel` and `ux.textAction` carry
-  `500`, and several components need it, so those surfaces keep a `500` literal until a token exists.
-- **Five steps are unreachable through a role**: `005` (0.625rem) and `200` to `500` (3rem to 6rem). A
-  component needing 3rem has no tier to snap to, which limits [rule 9](#9-components-resolve-to-a-token).
+```tsx
+<SizeProvider size="sm">
+  <Text>Compact copy</Text>
+  <Button>Save</Button>
+</SizeProvider>
+```
 
-### Prior art
+`SizeProvider` is the working name; the final export name remains to be confirmed during implementation.
+It renders no DOM element and supplies defaults to participating components. It cannot style bare text
+nodes or ordinary HTML wrappers by itself. Consumers needing a styled body surface use a participating
+container or apply the appropriate typography to their own surface.
 
-| Library               | Element                                           | Visual                                                        | Container injects?                       |
-| --------------------- | ------------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------- |
-| **Antares (this)**    | `Heading level`, `Text`/`Detail` `as`             | the component picks the role, `size` picks the tier           | yes, slot context                        |
-| **React Spectrum v3** | `Heading level` (default 3)                       | none at all                                                   | yes, `slot` (default `'heading'`)        |
-| **Spectrum 2**        | `Heading level`                                   | `styles` macro                                                | yes, own `HeadingContext` consumed first |
-| **MUI**               | `component` per call, `variantMapping` theme-wide | `variant`: `h1`-`h6`, `body1/2`, `caption`…                   | no                                       |
-| **Polaris**           | `as`, required                                    | `variant`, fused: `headingXs`…`heading2xl`, `bodyXs`…`bodyLg` | no                                       |
-| **Radix Themes**      | `as`, documented as purely semantic               | `size` 1-9, also line height **and letter spacing**           | no                                       |
-| **Chakra v3**         | style props                                       | `textStyle` presets or `fontSize`                             | no                                       |
+## Ownership of rendered typography
 
-**Separating the element from the visual is universal**, and MUI argues it on accessibility grounds: keep a
-valid heading hierarchy without being forced into a font size. So
-[rule 8](#8-heading-level-is-semantics-size-is-visuals) is standard practice.
+### Actual surfaces style bare text
 
-**Containers decorating a generic component is Spectrum's model**, and Antares has already picked it for
-structure, since `Content`, `Header`, `Footer` and `ButtonGroup` are decorated by `overlay-dialog`'s
-provider. The alternatives are a dedicated subcomponent per slot (MUI's `DialogTitle`, Radix's
-`Dialog.Title`) or leaving it to the caller (Polaris).
+Sized surfaces such as Modal and the eventual Card apply the body typography for their resolved scope
+on an actual DOM element. Bare text and text inside ordinary wrappers inherit this baseline. An explicit
+Text in that same body context receives the same body treatment.
 
-**Where this proposal is the outlier:**
+This uses normal CSS inheritance, not broad selectors over descendants. Native headings retain browser
+or application styling; use Heading for an Antares heading treatment. A container must not restyle every
+`h2`, `p`, or `span` in consumer content.
 
-- **Strictness.** Polaris exposes `fontWeight` and `tone`, Radix `weight` and `color`, Chakra everything.
-  Only Spectrum is as closed as [rule 6](#6-a-component-per-role-size-is-the-only-prop), and the token set
-  forces that rather than the proposal choosing it. Every other library offers a `medium` weight and several
-  components here need exactly that, which is an argument for asking for the token.
-- **A component per role.** Polaris (`headingMd`) and MUI (`h6`) fuse role and tier into one name. Splitting
-  them mirrors `--font-{role}-size-{tier}` exactly, so there is no second vocabulary to maintain, and
-  changing a size never means changing the purpose. It does allow combinations that duplicate each other,
-  since `body-sm` and `detail-lg` are both 0.875rem.
+### Controls own the label treatment
 
-Three things others have that this proposal does not, all worth considering later: Radix's **leading trim**,
-which is the real answer to "the control's box is taller than its text"; **letter spacing**, which our token
-set cannot express; and **tabular figures** (Polaris `numeric`), useful for `metrics-lockup`, charts and
-tables.
+These compositions must have identical typography:
 
-### Out of scope
+```tsx
+<Button>Save</Button>
+<Button><Text>Save</Text></Button>
+<Button><Text maxLines={1}>Save</Text></Button>
+```
 
-**Rendered markdown.** [shadcn/typeset](https://ui.shadcn.com/docs/typeset) is a CSS file activated by a
-wrapper class that styles `h1`/`p`/`ul`/`table` and expects components to opt out with `not-typeset`. It
-solves rendered markdown, not component internals, so it neither models this proposal nor competes with
-`Text`. A prose scope is separate, later work, and one technique is worth borrowing then: keep element-level
-defaults in `:where()` so a consumer's own class overrides them without `!important`.
+Controls apply their complete typography on the appropriate control surface and provide an internal
+default that lets a composed Text preserve that treatment. Adding Text for wrapping, truncation, or
+color must not reset the label to body defaults. This includes all font properties, including
+`font-variation-settings`, not just font size.
 
-**Responsive type.** The token ramp has no breakpoint behaviour and none is proposed here.
+Explicit overrides remain local to their property:
 
-**Colour.** `--color-text-*` tokens exist, and components reference legacy colour intents alongside their
-font declarations, but whether these components gain a colour axis is a separate decision.
+```tsx
+<Button><Text emphasis="critical">Save</Text></Button>
+<Button><Text size="lg">Save</Text></Button>
+```
 
-### Audit
+The first changes label color only. The second overrides the label's size tier without resizing the
+Button's padding or minimum dimensions, or resetting unrelated treatment properties. It is an explicit
+departure from the coordinated default.
 
-Every component stylesheet that declares or reads typography falls into one of these groups. The counts and
-values behind each row live in the code, not here, because they move: what this table fixes is the *kind* of
-change each group needs, and the fact that no stylesheet is outside it.
+Icons paired with control labels continue to follow line height. Put shared label typography on the
+surface from which both label and icon inherit; styling only a sibling label wrapper cannot coordinate
+the icon. Inline actions still need to match their surrounding text, and their component mapping must
+document that exception during adoption.
 
-| Group                              | Components                                                                                                                  | Why it has to change                                                                                                                                                                      |
-| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Typography missing or partial      | `Text`, `Heading`                                                                                                           | `Text` declares no font properties at all and `Heading` declares only a weight, so the primitives a consumer reaches for first are the two with no type                                   |
-| Sizes derived by ratio             | `alert`, `button`, `circular-progress`, `field`, `progress-steps`, `segmented-controller`, `switch`, `tag`, `toggle-button` | Multiplying a base by 1.125 assumes a geometric ramp; the real one is hand-picked, so derived sizes land off every tier                                                                   |
-| Legacy intents that resolve        | `menu`, `progress-bar`, `tabs`                                                                                              | Correct today, but pinned to one intent size per family, so a theme cannot move them to another tier                                                                                      |
-| Legacy intents that do not resolve | `alert`, `chart/axis-title`, `chart/legend`, `chart/tooltip`, `progress-steps`, `tag`                                       | Hashes absent from the intent map, and without a fallback the declaration is invalid at computed-value time. `tag` also writes an `inherit` fallback inside a `calc()`, which cannot work |
-| Type intents read for a box        | `calendar`                                                                                                                  | Sizes a cell from a font size and line height without setting either, so the box silently depends on the type system                                                                      |
-| Storybook-only variables           | `metrics-lockup`                                                                                                            | Its variables are defined only in the docs app, so the component has no typography in production                                                                                          |
-| Hardcoded sizes                    | `bar-chart`, `chart/legend`, `chart/tooltip`, `line-chart`, `range-field`, `switch`, `tabs`                                 | Literal sizes cannot be restyled by a theme                                                                                                                                               |
-| Hardcoded weights and leading      | `donut-chart`, `gauge-chart`, `tabs`                                                                                        | Role properties written as literals, so they miss the chain the role already defines                                                                                                      |
-| Weights with no token              | `field`, `gauge-chart`, `menu`, `range-field`, `segmented-controller`, `toggle-button`                                      | They need a medium weight, which the token set does not have, so these stay literal until it does                                                                                         |
-| Opts out via `inherit`             | `button`                                                                                                                    | Family, weight and leading are inherited on every variant, so a non-inline button's type depends on wherever it is mounted                                                                |
-| Container-relative sizes           | `avatar`, `donut-chart`, `gauge-chart`                                                                                      | Deliberately fluid, so they stay, but each competes with `Text`'s default tier at the same specificity ([rule 9](#9-components-resolve-to-a-token))                                       |
+Do not depend on stylesheet import order to suppress Text defaults. The internal treatment mechanism
+must preserve the owner-provided properties and apply only explicit overrides. Its exact context shape
+is an implementation detail, not a public typography opt-out API.
 
-Which role each legacy intent becomes is the migration's one design decision. The values behind it pick a
-token name, not a value: afterwards a component writes `--font-heading-size-sm` and the theme decides what
-that is.
+### Label and fields share one treatment
 
-| Intent family    | Becomes                                               | Weight today  |
-| ---------------- | ----------------------------------------------------- | ------------- |
-| `ux.textLabel`   | `detail` `lg`                                         | `500` literal |
-| `ux.textCaption` | `detail` `lg`                                         | `400`         |
-| `ux.textInput`   | `body` `md`                                           | `400`         |
-| `ux.textAction`  | `body` `md`                                           | `500` literal |
-| `ux.text`        | `body` `md`                                           | `400`         |
-| `ux.textTitle`   | `heading` `sm`, see [open decisions](#open-decisions) | `700`         |
-| `ux.textHeading` | `heading` `2xl`                                       | `700`         |
+Label remains visually distinct from Detail, including its medium-weight default. Fields consume that
+shared, themeable treatment instead of independently redefining its family, size, and weight. The pilot
+maps this treatment to existing label intents and font-size tokens; new tokens require separate approval.
 
-### Where this proposal is likely incomplete
+TextField coordinates the label, native input or textarea, supporting copy, validation text, owned
+controls, and default gaps. Those parts can use different typography tiers. Explicit child props still
+win, and input dimensions must account for padding, line height, and appropriate minimum sizes.
 
-Written from reading the library rather than building against it, so these are the places it is most likely
-to be wrong. Each is worth raising against this document rather than working around locally.
+The pilot must reconcile existing field-injected classes with the new Label and Text/Detail treatments.
+Keep field state and accessibility wiring, including required indicators and description/error
+associations. Native input values and placeholders need their typography on the input surface; adding a
+Text component around the field cannot style them.
 
-- **A text surface that fits none of rules 1 to 4.** The four categories are content, container slots,
-  control chrome, and non-component surfaces. A fifth would be a genuine finding.
-- **A container that needs to inject something other than `level`, `size` or a class.**
-- **A control whose height changes** after migrating.
-  [Rule 3](#3-controls-keep-their-type-on-the-control-element) predicts it should not, so a change means
-  either the strut case or a `1lh` coupling somewhere unexpected.
-- **Controls that have to match each other's height.** Line height cannot deliver that, since it derives
-  height from the text. It needs a `min-block-size` per tier, which this proposal does not settle.
-- **A visual difference the tier change does not explain**, especially in `tag`, `menu` and `field`, where
-  current values resolve through fallbacks rather than through any theme.
-- **A weight other than `normal`, `bold`, `bolder` or the `500` literal.** The token set has no vocabulary
-  for it, and neither does emphasis that has to differ per role.
-- **Anything here that contradicts the code**, which has moved since this was written.
+## Participation matrix
+
+This is the intended classification for adoption. Only the listed pilot components are in the first
+implementation. Later rows derive from the general rules; they do not imply that those components
+already participate or that their individual mappings have received visual approval. Each component's
+documentation must eventually state its category, consumed defaults, supplied defaults, overrides, and
+independent dimensions.
+
+### Pilot and core composition
+
+| Category / components | Consumes | Affects or provides | Boundary and exceptions |
+| --- | --- | --- | --- |
+| Wrapperless scope: SizeProvider | Explicit size, otherwise inherited scope or `md` | Interface-size defaults for participating descendants | No DOM baseline; final public name pending |
+| Independent surface: Modal | Explicit size or its own `md` default | Body baseline, interface scope, region spacing, named-part treatments | Resets ambient size; width and height constraints stay separate |
+| State owner: ModalTrigger | No shared modal sizing decision | Trigger continues in the surrounding scope | Modal owns its reset |
+| Typography: Text, Detail, Heading, Label | Explicit props, owner treatment, ambient size | Typography on their own elements | No interface scope; Heading level is semantic; Label has its own treatment |
+| Text composition: TextLockup | Six-tier size or inherited/default size | Named text parts and directly paired accessories | Passes ambient interface scope through to unrelated controls |
+| Action control: Button | Explicit, owner, or ambient interface size | Full control treatment and composed-label defaults | A child Text preserves the label treatment; local size does not resize siblings |
+| Field owner: TextField | Explicit, owner, or ambient interface size | Label, input, description/error, owned controls, default spacing | Part overrides remain local; accessibility contexts must survive |
+| Field parts: Input, TextArea, FieldError | TextField's owned-part treatment in the pilot | Native editing surface or validation text | Pilot support is required; broader standalone sizing adoption is separate |
+| Layout: Box, Flex, Grid | Pass-through only | Existing explicit layout props | No size reset and no reinterpretation of spacing tokens |
+| Regions: Header, Content, Footer, ButtonGroup, Group | Owning component's region defaults | Their own default spacing and layout | Pass interface scope through; explicit spacing wins |
+
+### Later component adoption
+
+| Category / components | Consumes | Affects or provides | Boundary and exceptions |
+| --- | --- | --- | --- |
+| Sized surface: Card | Explicit or ambient interface size | Body baseline, descendant scope, padding/gap and slot defaults | Future component in this worktree; outside the pilot; bounds separate |
+| Attached owners: MenuTrigger, PopoverTrigger, Select root, SubmenuTrigger | Explicit or ambient interface size | Defaults shared by trigger and attached overlay | Child overrides are independent; no upward inference from trigger props |
+| Attached surfaces: Menu, Popover, ListBox and their items | Owner defaults, explicit override, or ambient size | Surface typography, item/control treatments, default spacing | Apply baseline across portals; document individual part mappings |
+| Tooltip / TooltipTrigger | Shared interaction-owner rule | Tooltip text and default spacing | Exact size API and part mappings need adoption design; positioning is separate |
+| Drawer / InlineDrawer | Sized-surface rules as applicable | Body, regions, controls, named parts | Decide and document each scope boundary during adoption; Modal's reset is not automatically assigned to every drawer |
+| Other actions: LinkButton, CloseButton, ToggleButton, SegmentedController, Pagination | Explicit, owner, or ambient interface size | Full control and label treatments | Document inline-action treatment and internal control defaults |
+| Other fields: NumberField, DatePicker, RangeField, Checkbox, Radio, Switch and groups | Explicit, owner, or ambient interface size | Labels, inputs, supporting text, control geometry and gaps | Adopt complete control treatments; attached pickers share their owner size |
+| Calendar / RangeCalendar | Owner or ambient interface size, explicit overrides | Cell typography, interactive dimensions and internal controls | Exact cell and part mappings require review |
+| Compact text surfaces: Tag, Chip and related groups | Explicit, named-accessory, or ambient size | Their own type, padding, minimum dimensions, and paired icons | TextLockup's named accessory mapping takes precedence over ambient size |
+| Content composites: Alert, Tabs, ProgressSteps, MetricsLockup, DropZone, Carousel | General scope and owned-part defaults | Text treatments and participating controls; component-owned default spacing where applicable | Individual mappings and public size APIs require adoption review; media bounds stay separate |
+| Behavior-only wrappers: Pressable, FileTrigger | Pass-through only | Existing interaction behavior | Do not add typography or a size reset merely for wrapping children |
+
+### Independent dimensions and special text surfaces
+
+| Category / components | Consumes | Affects or provides | Boundary and exceptions |
+| --- | --- | --- | --- |
+| Text-paired Icon | Paired text's line height | Icon dimensions through `1lh` | Coordinate through the correct text surface; not a separate interface-size scope |
+| Avatar | Its own physical size API | Diameter and fitted monogram | Ambient interface size does not resize either; preserve geometry-relative monogram type |
+| CircularProgress, ProgressBar | Typography defaults for accompanying text when adopted | Label/value typography | Ring diameter and bar thickness remain independently controlled |
+| Image and other media | Explicit dimensions and layout constraints | Media geometry | No automatic resizing from interface scope |
+| BarChart, LineChart, DonutChart, GaugeChart and chart text helpers | Appropriate typography treatments for text during adoption | Axis labels, legends, tooltips, annotations and other text | Chart bounds stay independent; deliberately geometry-fitted center labels retain their sizing |
+| Native input values, placeholders, SVG text | Owning component's resolved part treatment | Font properties on the actual text surface | Cannot always be rendered through Text; share the same token vocabulary |
+
+Independent geometry is not an exemption from typography cleanup. Chart labels and indicator text still
+need deliberate ownership and themeable font properties. Preserve the special geometry-relative sizes
+used by Avatar monograms and fitted chart center labels without letting new Text defaults override them
+through stylesheet order.
+
+## Implementation responsibilities
+
+Three mechanisms have separate jobs:
+
+| Mechanism | Responsibility |
+| --- | --- |
+| React size context | Carry the chosen interface size through composition and portals; implement inheritance and deliberate resets |
+| Internal component and slot mappings | Turn size into default part treatments, control dimensions, padding, and gaps; preserve explicit overrides |
+| CSS tokens and surface inheritance | Supply actual themeable values and style bare text on real surfaces |
+
+Do not redefine global token names such as `--font-body-size-md` inside a small container. Select the
+appropriate token for the resolved treatment. A token continues to mean the same thing wherever it is
+read, so small scopes cannot accidentally change the meaning of an explicitly medium child.
+
+Keep mappings internal. This proposal does not commit to a public configurable recipe system or subtree
+theme API. Existing tokens plus internal component mappings are sufficient for the first implementation.
+
+### Context and accessibility
+
+Use named defaults for named parts, with an unslotted path that leaves arbitrary body content on the
+general scope. A leaf label surface can supply its treatment to composed Text without turning every
+nested composite into that label. Deliberately handle context ownership and shadowing.
+
+Preserve React Aria Components (RAC) accessibility context when adding visual defaults. RAC Dialog
+supplies the title id through HeadingContext; replacing that context can break `aria-labelledby`.
+Merge with the context in the correct ownership boundary, and preserve semantic levels, ids, refs,
+event handlers, field associations, and explicit child props. The same care applies to TextField's
+Label, Input, description, and error contexts.
+
+Resolve inherited values before applying standalone defaults. A default assigned too early, such as
+destructuring `size = 'md'` before reading context, must not mask an enclosing scope. Verify nested
+composites and portaled content rather than relying on assumed RAC merge behavior.
+
+### Tokens and CSS
+
+The existing body, detail, and heading roles provide family, size, line height, weight, and variation
+tokens. Reuse these treatments for text primitives, owned control surfaces, and non-component text
+surfaces without duplicating independent typography decisions.
+
+The pilot must use existing curated tokens and legacy intents. Changes to
+`packages/@godaddy/design-tokens` require separate curation and approval; they are outside this pilot.
+
+For role properties, retain the established token -> legacy intent -> literal fallback strategy where
+the intent represents the same treatment. Consult the repository's
+[token mapping](../../../.agents/skills/antares-components/references/token-intent-legacy-map.json)
+and [token guidance](../../../.agents/skills/antares-components/references/tokens.md). The body role may
+need both body and paragraph legacy fallbacks. Include `font-variation-settings`.
+
+Named font sizes resolve through role-size token -> literal. A legacy role's single font-size value
+cannot represent all six tiers. Do not derive the ramp by repeatedly multiplying or dividing a base.
+Label retains a distinct themeable treatment using existing label intents and the curated global
+font-size scale. Do not introduce an unapproved Label token family, silently map Label to Detail, or
+lose its medium weight.
+
+Use component-named private properties on the surface that consumes them. Follow the existing
+[spacing rules](./gu-spacing.md) for default padding and gaps, including valid fallbacks. Use classes
+for size treatments, keep selectors at the repository's low specificity, and reserve data-attribute
+selectors for RAC state. Avoid descendant element rules and stylesheet-order dependencies.
+
+## Current foundations and migration audit
+
+Verified against this worktree on 2026-09-18. Paths below are relative to
+`packages/@godaddy/antares/` unless stated otherwise. These are current-code observations, not evidence
+that the proposed inheritance system is already implemented.
+
+| Area | Current state | Adoption work |
+| --- | --- | --- |
+| `components/text/src/index.tsx` | Element selection, alignment, wrapping, truncation, RAC context; no full typography defaults | Add Text/Detail treatments, color emphasis, and owner-preserving composition in the shared folder |
+| `components/heading/src/index.tsx` | Leaves omitted level to RAC context, then fallback `3`; CSS sets weight but no font size | Preserve working semantic context; add visual size and treatment independently |
+| `components/label/src/index.tsx` and `components/_internal/field-styles/index.module.css` | Label wraps RACLabel; field CSS supplies label color, 0.875rem size and 500 weight; descriptions use 0.875rem/400 | Centralize Label treatment and reconcile field defaults with explicit typography overrides |
+| `components/text-lockup/src/` | Six sizes, named RAC contexts, Tag mapping, direct `md` default; title reductions below 520px for `sm` and `2xl` | Consume ambient sizing, preserve local ownership and child overrides, remove automatic responsive tier changes |
+| Button, TextField, Select, Menu, Switch, ToggleButton | Existing size APIs support `sm`/`md` | Add complete `lg` treatments and shared-size consumption during each component's rollout |
+| Tag, Chip, SegmentedController | Already expose `sm`/`md`/`lg` | Existing scales still need integration; matching names alone do not establish participation |
+| Modal and overlay composition | No coordinated Modal size prop; OverlayDialog supplies structural region contexts | Add Modal reset, body baseline, region/slot mappings, and preserve dialog accessibility |
+| Card | No component or export in this worktree | Keep as a future composition example; no Card implementation in the pilot |
+| Icon, Avatar, chart center labels | Icon uses `1lh`; Avatar and some chart labels use geometry-relative font sizes | Preserve intended relationships while preventing new text defaults from replacing fitted type |
+
+### Existing token ramps
+
+`packages/@godaddy/design-tokens/src/tokens.yml` defines these values. They are reference values, not
+new approval of every component mapping.
+
+| Tier | Body | Detail | Heading |
+| --- | --- | --- | --- |
+| `xs` | 0.75rem | 0.6875rem | 1rem |
+| `sm` | 0.875rem | 0.75rem | 1.125rem |
+| `md` | 1rem | 0.8125rem | 1.25rem |
+| `lg` | 1.125rem | 0.875rem | 1.5rem |
+| `xl` | 1.25rem | 1rem | 1.875rem |
+| `2xl` | 1.5rem | 1.125rem | 2.25rem |
+
+Body and Detail default to regular weight with line heights of 1.5 and 1.4. Heading defaults to bold
+with a line height of 1.25. All three expose family and variation tokens. There is currently no dedicated
+Label role or medium-weight token in this file.
+
+During later migration, audit each component's legacy intents, literal sizes, calculated sizes, and
+text-surface ownership against the actual code. Do not apply a blanket conversion such as label ->
+detail or automatically snap an old calculated value without visual review. Components with missing
+fallbacks or production styles tied to documentation-only variables need verification in their own
+adoption work.
+
+## Pilot and rollout
+
+The current change is documentation only. Implementation starts with a small, visually reviewed pilot:
+
+1. Shared size infrastructure and the public wrapperless provider.
+2. Text and Detail in the shared text implementation, plus Heading and Label.
+3. Button, including direct and wrapped label equivalence.
+4. TextField, including its Label, Input/TextArea, supporting text, FieldError, and owned controls.
+5. TextLockup and Modal, exercising named parts, inheritance, resets, and portals together.
+
+The pilot must demonstrate the following before broad adoption:
+
+| Scenario | Required result |
+| --- | --- |
+| Standalone components and inherited `sm`/`md`/`lg` | Predictable defaults and complete control sizing, including padding and minimum dimensions |
+| Nested providers and sized surfaces | Nearest scope wins; repeated `sm` nesting does not progressively shrink content |
+| Explicit child size, emphasis, and spacing | Only the corresponding default is overridden |
+| Bare text, ordinary wrappers, and Text on a sized surface | Matching body typography; wrapperless provider alone does not claim to style bare text |
+| Direct Button label and Text-wrapped label | Identical computed font properties, line height, icon relationship, and default control dimensions |
+| Text used only for color or truncation inside a control | Existing label treatment survives |
+| Heading level changes without size changes | Correct semantic elements with unchanged visual typography |
+| Named parts alongside unslotted content and nested composites | Part defaults stay local; explicit props and accessibility context survive |
+| TextLockup larger than its surrounding scope | Named text and paired accessories follow the lockup; unrelated controls keep the interface size |
+| Field label, input, supporting copy, error, and internal control | Shared Label treatment, coordinated hierarchy, working input and accessible associations |
+| Modal opened from a small scope, including a portal | Default medium interior; explicit small Modal works; trigger remains small |
+| Narrow and wide TextLockup surfaces | Named tiers retain the same token values; normal wrapping can still change |
+| Token theme, legacy-intent theme, and fallback rendering | Valid font declarations and preserved variable-font settings |
+| Existing Avatar and fitted chart text using Text | New defaults do not override geometry-relative sizes |
+
+Use representative compositions for visual review and targeted browser/SSR checks for context,
+accessibility, and computed-style contracts. Review actual small, medium, and large control dimensions,
+field hierarchy, and named-part mappings together. Do not treat the illustrative Modal title tier or
+current token ramps as approval of all resulting visuals.
+
+After pilot review, adopt the remaining components by category, documenting their mappings and testing
+their boundaries. Attached-overlay adoption must verify shared owner sizing, independent child
+overrides, and portals. Component documentation should make adoption status clear until the rollout is
+complete. Card remains outside the pilot; responsive sizing follows separately.
+
+### Details to settle through implementation and review
+
+- Final export name for the wrapperless provider.
+- Label mappings onto existing tokens and intents, preserving its distinct medium-weight treatment.
+- Exact per-size typography, padding, gap, and minimum-dimension mappings for pilot components.
+- Internal context composition that preserves owner treatments and RAC accessibility data.
+- Later components' individual mappings and unresolved boundaries, especially Drawer and InlineDrawer.
+
+These details do not reopen the agreed public roles, override rules, Modal reset, overlay ownership, or
+separation between interface size and physical media dimensions.
+
+## Comparative references and later work
+
+The references support individual parts of the design; none is claimed to implement this whole model.
+
+| Reference | Relevant precedent | Antares decision |
+| --- | --- | --- |
+| Uxcore2 Text and TextLockup (`packages/components/text/`, `packages/components/text-lockup/src/text-props.js`) | Category-based text, semantic strong treatment, feedback color, and per-part lockup mappings | Keep purpose in component names and named tiers; do not copy the numeric modular scale or visual use of `as` |
+| [Radix Card](https://github.com/radix-ui/themes/blob/main/packages/radix-ui-themes/src/components/card.css) | Size changes component padding and radius | Antares additionally coordinates participating descendant typography and controls |
+| [Radix Select](https://github.com/radix-ui/themes/blob/main/packages/radix-ui-themes/src/components/select.tsx) | Root context shares size with trigger and portaled content | Use the common interaction owner for attached overlays |
+| [Chakra Card recipe](https://github.com/chakra-ui/chakra-ui/blob/main/packages/react/src/theme/recipes/card.ts) and [docs](https://chakra-ui.com/docs/components/card) | Per-size container and named-part mappings | Use internal mappings; a public configurable recipe API is not required |
+| [Ant Design ConfigProvider](https://ant.design/components/config-provider) | Inherited component sizing | Provide a wrapperless size scope with explicitly documented participation |
+
+Responsive typography and a prose scope for rendered Markdown remain later work. This proposal does
+not add arbitrary font-style props, leading trim, tabular-figure controls, a public recipe system, or a
+subtree theme API. Feedback color through `emphasis` is included in this proposal.

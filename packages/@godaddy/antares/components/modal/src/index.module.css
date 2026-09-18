@@ -28,7 +28,7 @@
 .dialog {
   max-block-size: calc(100dvh - var(--sp-md) * 2);
   inline-size: calc(100dvw - var(--sp-md) * 2);
-  max-inline-size: 80ch;
+  max-inline-size: 48rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

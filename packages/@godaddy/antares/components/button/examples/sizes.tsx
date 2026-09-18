@@ -1,7 +1,7 @@
 import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';
 
 /**
- * Buttons come in small and medium sizes to fit different layout densities.
+ * Buttons come in small, medium, and large sizes to fit different layout densities.
  */
 export function SizesExample() {
   return (
@@ -28,6 +28,12 @@ export function SizesExample() {
       <LinkButton href="#" variant="primary">
         <Icon icon="star" />
         <Text>Link Medium</Text>
+      </LinkButton>
+      <Button variant="primary" size="lg">
+        Large
+      </Button>
+      <LinkButton href="#" variant="primary" size="lg">
+        Link Large
       </LinkButton>
     </Flex>
   );

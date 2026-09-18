@@ -1,11 +1,11 @@
 .text {
   overflow-wrap: break-word;
 
-  &[style*="--align"] {
+  &:where([style*="--align"]) {
     text-align: var(--align);
   }
 
-  &[style*="--max-lines"] {
+  &:where([style*="--max-lines"]) {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -18,7 +18,7 @@
     }
   }
 
-  &[style*="--wrap"] {
+  &:where([style*="--wrap"]) {
     text-wrap: var(--wrap);
   }
 }

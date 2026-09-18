@@ -12,6 +12,8 @@ import {
   TextContext as RACTextContext,
   useSlottedContext
 } from 'react-aria-components';
+import { TypographyContext, inheritedText } from '#components/_internal/typography';
+import { useSize } from '#components/size-provider';
 import { Icon } from '#components/icon';
 import { Text } from '#components/text';
 import { composeClassName } from '#utils/render-props.ts';
@@ -31,7 +33,8 @@ const buttonVariants = cva(styles.button, {
     },
     size: {
       sm: styles.sm,
-      md: styles.md
+      md: styles.md,
+      lg: styles.lg
     }
   },
   defaultVariants: {
@@ -53,7 +56,12 @@ function buttonLabel(children: React.ReactNode) {
   if (children === undefined) return children;
 
   return (
-    <RACProvider values={[[RACTextContext, {}]]}>
+    <RACProvider
+      values={[
+        [RACTextContext, {}],
+        [TypographyContext, inheritedText]
+      ]}
+    >
       {typeof children === 'string' ? <Text>{children}</Text> : children}
     </RACProvider>
   );
@@ -81,7 +89,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   const { variant, size, className, children, slot, ...rest } = props;
   const inherited = useSlottedContext(ButtonContext, slot) as ButtonPresentationProps | null | undefined;
   const resolvedVariant = variant ?? inherited?.variant;
-  const resolvedSize = size ?? inherited?.size;
+  const resolvedSize = useSize(size ?? inherited?.size);
 
   return (
     <RACButton
@@ -107,12 +115,13 @@ export interface LinkButtonProps extends BaseButtonProps<LinkButtonVariant>, Omi
  */
 export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(function LinkButton(props, ref) {
   const { variant, size, className, children, isExternal, ...rest } = props;
+  const resolvedSize = useSize(size);
 
   return (
     <RACLink
       {...rest}
       ref={ref}
-      className={composeClassName(className, buttonVariants({ variant, size }))}
+      className={composeClassName(className, buttonVariants({ variant, size: resolvedSize }))}
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
     >

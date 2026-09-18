@@ -59,33 +59,8 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    describe('#interior', function interior() {
-      const html = renderToString(<InteriorExample />);
-
-      it('fills the stepper faces under the field chrome', function faces() {
-        expect(html).toContain('data-icon="minus"');
-        expect(html).toContain('data-icon="plus"');
-        expect(html).toMatch(/<button[^>]*class="control button control sm"/);
-      });
-
-      it('keeps the stepper wiring React Aria published', function wiring() {
-        expect(html).toContain('aria-label="Decrease"');
-        expect(html).toMatch(/slot="increment" data-disabled="true"/);
-      });
-
-      it('lets a local prop beat the field default', function localWins() {
-        expect(html).toMatch(/<button[^>]*class="control button primary sm"[^>]*>\s*<span class="text">less/);
-      });
-
-      it('leaves an unslotted Button on the Button defaults', function defaultSlot() {
-        expect(html).toMatch(/<button class="button tertiary md"/);
-        expect(html).not.toMatch(/<button class="button tertiary sm"/);
-      });
-
-      it('disables a control button with the field, but not an unslotted one', function disabledControl() {
-        expect(html).toMatch(/<button[^>]*class="control button control md"[^>]*disabled=""/);
-        expect(html).toMatch(/<button class="button tertiary md"(?![^>]*disabled)/);
-      });
+    it('renders composed interiors with defaults and local overrides', function interior() {
+      expect(renderToString(<InteriorExample />)).toMatchSnapshot();
     });
   });
 });

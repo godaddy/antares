@@ -1,5 +1,7 @@
 import { forwardRef, type ReactNode } from 'react';
-import { DEFAULT_SLOT, HeadingContext, Provider as RACProvider, TextContext } from 'react-aria-components';
+import { DEFAULT_SLOT, HeadingContext, TextContext, Provider as RACProvider } from 'react-aria-components';
+import { TypographyContext } from '#components/_internal/typography';
+import { useSize } from '#components/size-provider';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { TagContext, type TagSize } from '#components/tag';
 import { composeClassName } from '#utils/render-props.ts';
@@ -61,7 +63,8 @@ export interface TextLockupProps extends Omit<FlexProps, 'as' | 'direction' | 'a
  * ```
  */
 export const TextLockup = forwardRef<HTMLDivElement, TextLockupProps>(function TextLockup(props, ref) {
-  const { size = 'md', align = 'start', legibleLines = true, className, children, ...rest } = props;
+  const inheritedSize = useSize();
+  const { size = inheritedSize, align = 'start', legibleLines = true, className, children, ...rest } = props;
 
   return (
     <Flex
@@ -76,21 +79,28 @@ export const TextLockup = forwardRef<HTMLDivElement, TextLockupProps>(function T
     >
       <RACProvider
         values={[
-          [HeadingContext, { slots: { [DEFAULT_SLOT]: {}, title: { className: styles.title } } }],
-          [
-            TextContext,
-            {
-              slots: {
-                [DEFAULT_SLOT]: {},
-                eyebrow: { className: styles.eyebrow },
-                body: { className: styles.body }
-              }
-            }
-          ],
+          [HeadingContext, { slots: { [DEFAULT_SLOT]: {}, title: {} } }],
+          [TextContext, { slots: { [DEFAULT_SLOT]: {}, eyebrow: {}, body: {} } }],
           [TagContext, { slots: { [DEFAULT_SLOT]: {}, eyebrow: { size: TAG_SIZE[size] } } }]
         ]}
       >
-        {children}
+        <TypographyContext.Provider
+          value={{
+            slots: {
+              eyebrow: {
+                body: { role: 'detail', size, className: styles.part },
+                detail: { size, className: styles.part }
+              },
+              title: { heading: { size, className: styles.part } },
+              body: {
+                body: { size, className: styles.part },
+                detail: { size, className: styles.part }
+              }
+            }
+          }}
+        >
+          {children}
+        </TypographyContext.Provider>
       </RACProvider>
     </Flex>
   );

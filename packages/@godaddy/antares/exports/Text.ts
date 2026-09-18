@@ -1,1 +1,1 @@
-export { Text, TextContext, type TextProps } from '#components/text';
+export { Text, Detail, TextContext, type TextProps, type DetailProps } from '#components/text';

@@ -7,6 +7,8 @@ import {
   DialogTrigger as RACDialogTrigger,
   type DialogTriggerProps as RACDialogTriggerProps
 } from 'react-aria-components';
+import { SizeProvider, type InterfaceSize } from '#components/size-provider';
+import { TypographyContext, typographyClassName } from '#components/_internal/typography';
 import { Flex } from '#components/layout/flex';
 import { OverlayDialog } from '#components/_internal/overlay-dialog';
 import { composeClassName } from '#utils/render-props.ts';
@@ -23,6 +25,9 @@ type ModalFlatKeys =
 type ModalLayerProps = Omit<RACModalOverlayProps, 'children' | ModalFlatKeys>;
 
 export interface ModalProps extends Omit<RACDialogProps, 'children'>, Pick<RACModalOverlayProps, ModalFlatKeys> {
+  /** Coordinated interior size. Starts a new scope, defaulting to md. */
+  size?: InterfaceSize;
+
   /**
    * Whether the modal can be dismissed by interacting outside it (clicking/pressing the
    * underlay). Escape closes the dialog unless `isKeyboardDismissDisabled` is set.
@@ -49,6 +54,7 @@ export interface ModalProps extends Omit<RACDialogProps, 'children'>, Pick<RACMo
 export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, ref) {
   const {
     className,
+    size = 'md',
     isOpen,
     defaultOpen,
     onOpenChange,
@@ -61,31 +67,38 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
     ...dialogProps
   } = props;
 
+  const titleSize = { sm: 'md', md: 'lg', lg: 'xl' } as const;
+
   return (
-    <Flex
-      as={RACModalOverlay}
-      isOpen={isOpen}
-      defaultOpen={defaultOpen}
-      onOpenChange={onOpenChange}
-      isDismissable={isDismissable}
-      isKeyboardDismissDisabled={isKeyboardDismissDisabled}
-      shouldCloseOnInteractOutside={shouldCloseOnInteractOutside}
-      padding="md"
-      {...overlayProps}
-      className={composeClassName(overlayProps?.className, styles.overlay)}
-    >
-      <Flex as={RACModal} {...containerProps} className={composeClassName(containerProps?.className, styles.modal)}>
-        <OverlayDialog
-          elevation="overlay"
-          rounding="xl"
-          {...dialogProps}
-          ref={ref}
-          className={composeClassName(className, styles.dialog)}
+    <SizeProvider size={size}>
+      <TypographyContext.Provider value={{ slots: { title: { heading: { size: titleSize[size] } } } }}>
+        <Flex
+          as={RACModalOverlay}
+          isOpen={isOpen}
+          defaultOpen={defaultOpen}
+          onOpenChange={onOpenChange}
+          isDismissable={isDismissable}
+          isKeyboardDismissDisabled={isKeyboardDismissDisabled}
+          shouldCloseOnInteractOutside={shouldCloseOnInteractOutside}
+          padding="md"
+          {...overlayProps}
+          className={composeClassName(overlayProps?.className, styles.overlay)}
         >
-          {children}
-        </OverlayDialog>
-      </Flex>
-    </Flex>
+          <Flex as={RACModal} {...containerProps} className={composeClassName(containerProps?.className, styles.modal)}>
+            <OverlayDialog
+              size={size}
+              elevation="overlay"
+              rounding="xl"
+              {...dialogProps}
+              ref={ref}
+              className={composeClassName(className, styles.dialog, typographyClassName('body', size))}
+            >
+              {children}
+            </OverlayDialog>
+          </Flex>
+        </Flex>
+      </TypographyContext.Provider>
+    </SizeProvider>
   );
 });
 

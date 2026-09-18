@@ -1,13 +1,14 @@
 'use client';
 import { PlaygroundExample } from './examples/text-playground.tsx';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { Text } from './src/index.tsx';
+import { Text, Detail } from './src/index.tsx';
 
 export default getMeta({
   title: 'components/Text'
 });
 
 export const Props = getComponentDocs(Text);
+export const DetailProps = getComponentDocs(Detail);
 
 export const Examples = getExamples('./examples');
 

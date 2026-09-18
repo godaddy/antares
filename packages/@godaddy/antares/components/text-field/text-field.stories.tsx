@@ -32,6 +32,6 @@ export const Playground = getStory(PlaygroundExample, {
     isInvalid: { control: 'boolean' },
     isRequired: { control: 'boolean' },
     multiline: { control: 'boolean' },
-    size: { control: 'select', options: ['sm', 'md'] }
+    size: { control: 'select', options: ['sm', 'md', 'lg'] }
   }
 });

@@ -11,7 +11,10 @@ import * as Stories from './heading.stories.tsx';
 
 ## Features
 
-- Renders `h1`-`h6` from the `level` prop (default `3`).
+- Renders `h1`-`h6` from the `level` prop, semantic context, then default `3`.
+- Typography participant: consumes slot defaults, then interface size, then standalone `md`.
+- `level` never changes visual size. Explicit six-tier `size` overrides the inherited tier.
+- `emphasis` changes color independently of typography.
 - `slot="title"` inside a `Modal` or `Dialog` sets the accessible name.
 
 ## Installation
@@ -23,6 +26,11 @@ npm install --save @godaddy/antares
 ## Examples
 
 <Examples of={Stories.Examples} />
+
+## Customization
+
+The `--font-heading-*` tokens control `family`, `weight`, `line-height`, `variation`, and
+`size-{xs,sm,md,lg,xl,2xl}`. Native HTML headings do not receive Antares typography.
 
 ## Props
 

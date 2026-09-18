@@ -30,7 +30,7 @@ export const Playground = getStory(PlaygroundExample, {
     },
     size: {
       control: 'radio',
-      options: ['sm', 'md'],
+      options: ['sm', 'md', 'lg'],
       description: 'Size of the button'
     },
     isDisabled: {
