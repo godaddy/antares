@@ -45,6 +45,10 @@ describe('@godaddy/antares', function packageTests() {
       expect(renderToString(<TypesExample />)).toMatchSnapshot();
     });
 
+    it('rejects a radio card without a value at runtime', function missingRadioValue() {
+      expect(() => renderToString(<TypesExample missingRadioValue />)).toThrowErrorMatchingSnapshot();
+    });
+
     it('renders inset, full bleed, standalone and custom media', function renderMedia() {
       expect(renderToString(<MediaExample />)).toMatchSnapshot();
     });

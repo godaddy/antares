@@ -115,16 +115,27 @@ interface CheckboxCardProps extends CardBaseProps {
   isInvalid?: boolean;
 }
 
-interface NonCheckboxCardProps extends CardBaseProps {
-  /** Enable native radio selection inside a RadioGroup, or omit for no selection. */
-  selection?: 'radio';
+interface RadioCardProps extends CardBaseProps {
+  /** Enable native radio selection inside a RadioGroup. */
+  selection: 'radio';
+
+  /** Selection value submitted by the RadioGroup. */
+  value: string;
 
   /** Radio validation belongs on RadioGroup. */
   isInvalid?: never;
 }
 
+interface NonSelectableCardProps extends CardBaseProps {
+  /** Omit for no selection. */
+  selection?: never;
+
+  /** Validation requires checkbox selection. */
+  isInvalid?: never;
+}
+
 /** Props for Card. Only checkbox selection accepts local validation state. */
-export type CardProps = CheckboxCardProps | NonCheckboxCardProps;
+export type CardProps = CheckboxCardProps | RadioCardProps | NonSelectableCardProps;
 
 function requireRadioValue(value: string | undefined) {
   if (value == null) throw new Error('Card with selection="radio" requires a value.');

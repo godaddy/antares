@@ -1,5 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`@godaddy/antares > #Card > rejects a radio card without a value at runtime 1`] = `[Error: Card with selection="radio" requires a value.]`;
+
 exports[`@godaddy/antares > #Card > renders a link card 1`] = `"<div data-card="interactive" class="box flex column card" style="padding:var(--sp-lg);gap:var(--sp-lg)"><a class="link" data-rac="" aria-label="Link card" href="/" tabindex="0" data-react-aria-pressable="true"></a>This is a link card</div>"`;
 
 exports[`@godaddy/antares > #Card > renders a text lockup composition 1`] = `"<div data-card="static" class="box flex column card" style="padding:var(--sp-lg);gap:var(--sp-lg)"><div data-size="md" data-align="start" data-legible-lines="" class="box flex column lockup" style="gap:var(--sp-sm)"><span slot="eyebrow" class="tag" data-emphasis="info" data-size="md" data-design="filled">New</span><h3 slot="title" class="title heading">A composed card</h3><span class="body text" slot="body">Cards provide a surface while consumers own the interior layout.</span></div></div>"`;
