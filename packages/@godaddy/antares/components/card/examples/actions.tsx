@@ -1,29 +1,66 @@
 import { useState } from 'react';
-import { Button, Card, CornerActions, Heading, Icon, Tag, Text, TextLockup } from '@godaddy/antares';
+import {
+  Button,
+  ButtonGroup,
+  Card,
+  Heading,
+  Input,
+  Label,
+  Modal,
+  Tag,
+  Text,
+  TextField,
+  TextLockup
+} from '@godaddy/antares';
 
 /**
- * Use onPress for an action. Nested buttons keep their own hits; the rest of the surface activates
- * the Card.
+ * `onPress` is the Card primary. Nested buttons keep their own hits, so Save does not open the
+ * Modal. Compose a Card inside the Modal when the action is a focused form.
  * @title Actions
  * @order 6
  */
 export function ActionsExample() {
-  const [count, setCount] = useState(0);
+  const [isOpen, setOpen] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   return (
-    <Card aria-label="Open details" onPress={() => setCount((value) => value + 1)}>
-      <CornerActions>
-        <Button aria-label="More options">
-          <Icon icon="ellipsis" />
-        </Button>
-      </CornerActions>
+    <>
+      <Card aria-label="Join mailing list" onPress={() => setOpen(true)}>
+        <TextLockup>
+          <Tag slot="eyebrow">Newsletter</Tag>
+          <Heading slot="title">Join our mailing list</Heading>
+          <Text slot="body">
+            Stay up to date on the latest trends. Press the Card to subscribe, or save it for later.
+          </Text>
+        </TextLockup>
 
-      <TextLockup>
-        <Tag slot="eyebrow">Action</Tag>
-        <Heading slot="title">Open details with onPress</Heading>
-        <Text slot="body">The rest of the surface activates the Card.</Text>
-      </TextLockup>
-      <Button onPress={() => setCount((value) => value + 10)}>Independent action ({count})</Button>
-    </Card>
+        <ButtonGroup justifyContent="end">
+          <Button variant="primary" onPress={() => setSaved(true)}>
+            {saved ? 'Saved' : 'Save'}
+          </Button>
+        </ButtonGroup>
+      </Card>
+
+      <Modal isOpen={isOpen} onOpenChange={setOpen} aria-label="Join our mailing list">
+        <Card>
+          <TextLockup>
+            <Heading slot="title">Join our mailing list</Heading>
+            <Text slot="body">The market is evolving. Stay up to date on the latest trends.</Text>
+          </TextLockup>
+
+          <TextField type="email">
+            <Label>Email</Label>
+            <Input placeholder="you@example.com" />
+          </TextField>
+
+          <ButtonGroup justifyContent="end">
+            <Button slot="close">Cancel</Button>
+            <Button slot="close" variant="primary">
+              Submit
+            </Button>
+          </ButtonGroup>
+        </Card>
+      </Modal>
+    </>
   );
 }

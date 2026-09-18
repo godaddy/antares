@@ -1,10 +1,10 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   Card,
   CornerActions,
   Flex,
-  Footer,
   Grid,
   Heading,
   Icon,
@@ -66,9 +66,9 @@ export function LayoutExample() {
                 <Text slot="body">{body}</Text>
               </TextLockup>
 
-              <Footer justifyContent="end">
+              <ButtonGroup justifyContent="end">
                 <Button variant="primary">View details</Button>
-              </Footer>
+              </ButtonGroup>
             </Card>
           );
         })}

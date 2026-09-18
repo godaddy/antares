@@ -8,7 +8,6 @@ import { LinkExample } from '../examples/link.tsx';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
 import { CustomizationExample } from '../examples/customization.tsx';
 import { LayoutExample } from '../examples/layout.tsx';
-import { ModalExample } from '../examples/modal.tsx';
 import { NestedExample } from '../examples/nested.tsx';
 import { RadioExample } from '../examples/radio.tsx';
 
@@ -44,22 +43,28 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('dispatches the primary action from body activation', async function bodyAction() {
-      const { getByRole, getByText } = await render(<ActionsExample />);
-      await userEvent.click(getByRole('button', { name: 'Open details' }), { position: { x: 4, y: 4 } });
-      await expect.element(getByText('Independent action (1)')).toBeInTheDocument();
+      const { getByRole } = await render(<ActionsExample />);
+      await userEvent.click(getByRole('button', { name: 'Join mailing list' }), { position: { x: 4, y: 4 } });
+      await expect.element(getByRole('dialog', { name: 'Join our mailing list' })).toBeVisible();
     });
 
     it('keeps a nested action independent', async function nestedAction() {
-      const { getByRole, getByText } = await render(<ActionsExample />);
-      await userEvent.click(getByRole('button', { name: /Independent action/ }));
-      await expect.element(getByText('Independent action (10)')).toBeInTheDocument();
+      const { getByRole } = await render(<ActionsExample />);
+      await userEvent.click(getByRole('button', { name: 'Save' }));
+      await expect.element(getByRole('button', { name: 'Saved' })).toBeInTheDocument();
+      await expect.element(getByRole('dialog', { name: 'Join our mailing list' })).not.toBeInTheDocument();
     });
 
     it('opens a subscribe card inside a modal', async function subscribeModal() {
-      const { getByRole } = await render(<ModalExample />);
-      await userEvent.click(getByRole('button', { name: 'Subscribe' }));
+      const { getByRole } = await render(<ActionsExample />);
+      await userEvent.click(getByRole('button', { name: 'Join mailing list' }), { position: { x: 4, y: 4 } });
       await expect.element(getByRole('dialog', { name: 'Join our mailing list' })).toBeVisible();
       await expect.element(getByRole('textbox', { name: 'Email' })).toBeVisible();
+
+      const actions = getByRole('button', { name: 'Cancel' }).element().closest('[role="group"]') as HTMLElement;
+      expect(parseFloat(getComputedStyle(actions).paddingTop)).toBe(0);
+      expect(parseFloat(getComputedStyle(actions).paddingLeft)).toBe(0);
+
       await userEvent.click(getByRole('button', { name: 'Cancel' }));
       await expect.element(getByRole('dialog', { name: 'Join our mailing list' })).not.toBeInTheDocument();
     });
@@ -446,8 +451,6 @@ describe('@godaddy/antares', function packageTests() {
       expect(radioCard?.style.gap).toBe('var(--sp-lg)');
       await expect.element(getByTestId('props-ref-status')).toHaveTextContent('Refs ready');
       await expect.element(getByRole('link', { name: 'Linked content ref' })).toBeInTheDocument();
-      expect(getByTestId('props-static-content').element().tagName).toBe('DIV');
-      expect(getByTestId('props-linked-content').element().tagName).toBe('SECTION');
       await userEvent.click(getByRole('link', { name: 'Custom content link' }));
       expect(location.hash).toBe('#custom-content-link');
       history.replaceState(null, '', `${location.pathname}${location.search}`);
@@ -481,17 +484,6 @@ describe('@godaddy/antares', function packageTests() {
 
       await expect.element(getByTestId('props-static-indicator')).toHaveAttribute('aria-hidden', 'true');
       expect(indicator.closest('[data-card]')?.querySelector('[data-card-selection-control]')).toBeNull();
-    });
-
-    it('lets consumers override shared Content defaults independently of navigation', async function contentOverrides() {
-      const { getByRole, getByTestId } = await render(<CustomizationExample />);
-      await expect.element(getByRole('link', { name: 'Primary destination' })).toBeInTheDocument();
-      const content = getByTestId('custom-content').element() as HTMLElement;
-      expect(content.style.padding).toBe('var(--sp-lg)');
-      expect(content.style.gap).toBe('var(--sp-sm)');
-      expect(getComputedStyle(content).overflow).toBe('auto');
-      expect(parseFloat(getComputedStyle(content).paddingTop)).toBeGreaterThan(0);
-      expect(parseFloat(getComputedStyle(content).paddingLeft)).toBeGreaterThan(0);
     });
   });
 });

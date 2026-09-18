@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Card,
-  Content,
   CardSelectionIndicator,
   CornerActions,
   Menu,
@@ -57,30 +56,30 @@ export function InteractionsExample({
   }
 
   const interior = (
-    <Content>
+    <>
       <Text>One: copy this text without changing selection.</Text>
       <Button onPress={act}>Body One</Button>
       <label>
         Remember One
         <input type="checkbox" tabIndex={-1} data-testid="form-One" />
       </label>
+      <Button onPress={act}>Independent One</Button>
+      <LinkButton href="#independent-destination" onPress={act}>
+        Independent link One
+      </LinkButton>
+      <MenuTrigger>
+        <Button>Menu One</Button>
+        <Menu aria-label="Menu One" onAction={act}>
+          <MenuItem id="nested">Menu action One</MenuItem>
+        </Menu>
+      </MenuTrigger>
       <CornerActions data-testid="corner-One" padding="sm">
-        <Button onPress={act}>Independent One</Button>
-        <LinkButton href="#independent-destination" onPress={act}>
-          Independent link One
-        </LinkButton>
-        <MenuTrigger>
-          <Button>Menu One</Button>
-          <Menu aria-label="Menu One" onAction={act}>
-            <MenuItem id="nested">Menu action One</MenuItem>
-          </Menu>
-        </MenuTrigger>
         <CardSelectionIndicator data-testid="indicator-One" />
       </CornerActions>
       <Box contentEditable suppressContentEditableWarning data-testid="editor-One">
         Editable One
       </Box>
-    </Content>
+    </>
   );
 
   if (primary === 'navigation') {

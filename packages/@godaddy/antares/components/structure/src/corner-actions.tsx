@@ -11,5 +11,16 @@ export const CornerActionsContext = createContext<ContextValue<CornerActionsProp
 export const CornerActions = forwardRef<HTMLDivElement, CornerActionsProps>(function CornerActions(props, ref) {
   [props, ref] = useContextProps(props, ref, CornerActionsContext);
 
-  return <Flex direction="row" alignItems="center" gap="sm" {...props} as="div" data-corner-actions="true" ref={ref} />;
+  return (
+    <Flex
+      direction="row"
+      alignItems="center"
+      gap="sm"
+      flexShrink={0}
+      {...props}
+      as="div"
+      data-corner-actions="true"
+      ref={ref}
+    />
+  );
 });

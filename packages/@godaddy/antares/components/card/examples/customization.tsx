@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   Card,
-  Content,
   CardSelectionIndicator,
   CheckboxGroup,
   CornerActions,
@@ -12,15 +11,13 @@ import {
 } from '@godaddy/antares';
 
 /**
- * Internal review coverage for Card refs, layout props, render props, controlled groups, shared
- * region customization, and an indicator on a Card without selection.
+ * Internal review coverage for Card refs, layout props, render props, controlled groups, and an
+ * indicator on a Card without selection.
  * @ignore
  */
 export function CustomizationExample() {
   const checkboxCardRef = useRef<HTMLDivElement>(null);
   const radioCardRef = useRef<HTMLDivElement>(null);
-  const staticContentRef = useRef<HTMLElement>(null);
-  const linkedContentRef = useRef<HTMLElement>(null);
   const customLinkRef = useRef<HTMLAnchorElement>(null);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState<string[]>([]);
   const [checkboxChanges, setCheckboxChanges] = useState(0);
@@ -42,8 +39,6 @@ export function CustomizationExample() {
     setRefsReady(
       checkboxCardRef.current?.hasAttribute('data-card') === true &&
         radioCardRef.current?.hasAttribute('data-card') === true &&
-        staticContentRef.current?.tagName === 'DIV' &&
-        linkedContentRef.current?.tagName === 'SECTION' &&
         customLinkRef.current?.tagName === 'A'
     );
   }, []);
@@ -100,33 +95,15 @@ export function CustomizationExample() {
         </Group>
       </RadioGroup>
 
-      <Card>
-        <Content ref={staticContentRef} data-testid="props-static-content">
-          Static content ref
-        </Content>
-      </Card>
       <Card href="/props-review-linked" aria-label="Linked content ref">
-        <Content as="section" padding="sm" gap="xs" ref={linkedContentRef} data-testid="props-linked-content">
-          Linked content ref
-        </Content>
+        Linked content ref
       </Card>
       <Text data-testid="props-ref-status">{refsReady ? 'Refs ready' : 'Refs pending'}</Text>
 
-      <Card href="/props-review-context" aria-label="Primary destination">
-        <Content
-          aria-label="Independent content"
-          data-testid="custom-content"
-          padding="lg"
-          gap="sm"
-          style={{ overflow: 'auto' }}
-        >
-          Custom content
-        </Content>
-      </Card>
       <Card>
-        <Content as={LinkButton} href="#custom-content-link" ref={customLinkRef}>
+        <LinkButton href="#custom-content-link" ref={customLinkRef}>
           Custom content link
-        </Content>
+        </LinkButton>
       </Card>
 
       <Card>

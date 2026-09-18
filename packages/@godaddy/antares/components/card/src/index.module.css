@@ -30,8 +30,10 @@
 /* Direct CornerActions sit in the padding box at the top-end. Nest them to keep them in flow. */
 .card > :where([data-corner-actions]) {
   position: absolute;
-  inset-block-start: var(--card-padding, var(--sp-lg));
-  inset-inline-end: var(--card-padding, var(--sp-lg));
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  padding-block-start: inherit;
+  padding-inline-end: inherit;
 }
 
 .link,

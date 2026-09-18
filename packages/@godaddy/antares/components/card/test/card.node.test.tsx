@@ -9,7 +9,7 @@ import { CheckboxExample } from '../examples/checkbox.tsx';
 import { RadioExample } from '../examples/radio.tsx';
 import { LayoutExample } from '../examples/layout.tsx';
 import { MediaExample } from '../examples/media.tsx';
-import { ModalExample } from '../examples/modal.tsx';
+import { Card } from '../src/index.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Card', function cardTests() {
@@ -49,8 +49,14 @@ describe('@godaddy/antares', function packageTests() {
       expect(renderToString(<LayoutExample />)).toMatchSnapshot();
     });
 
-    it('renders a subscribe card inside a modal', function renderModal() {
-      expect(renderToString(<ModalExample />)).toMatchSnapshot();
+    it('requires a value for radio selection', function requireRadioValue() {
+      expect(function renderRadioWithoutValue() {
+        renderToString(
+          <Card selection="radio" aria-label="Plan">
+            Plan
+          </Card>
+        );
+      }).toThrow('Card with selection="radio" requires a value.');
     });
   });
 });
