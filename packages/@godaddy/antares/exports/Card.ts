@@ -3,5 +3,6 @@ export {
   CardSelectionIndicator,
   type CardProps,
   type CardRenderProps,
-  type CardSelectionIndicatorProps
+  type CardSelectionIndicatorProps,
+  type CardSelectionIndicatorRenderProps
 } from '#components/card';

@@ -7,6 +7,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+.indicator:where(:not([data-custom])) {
   inline-size: 1.5rem;
   block-size: 1.5rem;
   padding: 0;
@@ -16,7 +19,7 @@
   color: var(--color-input-border-selected, var(--ux-77zzwv, #00a4a6));
 }
 
-.indicator:where([data-selected], [data-indeterminate]) {
+.indicator:where(:not([data-custom])):where([data-selected], [data-indeterminate]) {
   border-color: var(--color-input-border-selected, var(--ux-77zzwv, #00a4a6));
 }
 

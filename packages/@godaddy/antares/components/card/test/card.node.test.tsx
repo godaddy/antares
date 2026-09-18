@@ -10,6 +10,7 @@ import { RadioExample } from '../examples/radio.tsx';
 import { LayoutExample } from '../examples/layout.tsx';
 import { MediaExample } from '../examples/media.tsx';
 import { TypesExample } from '../examples/types.tsx';
+import { InteractionsExample } from '../examples/interactions.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Card', function cardTests() {
@@ -39,6 +40,14 @@ describe('@godaddy/antares', function packageTests() {
 
     it('renders grouped radio selection', function renderRadio() {
       expect(renderToString(<RadioExample />)).toMatchSnapshot();
+    });
+
+    it('renders static custom indicator content', function renderCustomIndicator() {
+      expect(renderToString(<InteractionsExample indicatorChildren="Select" />)).toMatchSnapshot();
+    });
+
+    it('allows an explicitly empty indicator', function renderEmptyIndicator() {
+      expect(renderToString(<InteractionsExample indicatorChildren={null} />)).toMatchSnapshot();
     });
 
     it('renders selection validation examples', function renderTypes() {

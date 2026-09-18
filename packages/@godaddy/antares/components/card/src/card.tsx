@@ -71,29 +71,8 @@ interface CardBaseProps extends CardLayoutProps {
   /** Selection value submitted by a form or group. Required for radio cards. */
   value?: string;
 
-  /** Form field name for a standalone checkbox card. Groups own their field name. */
-  name?: string;
-
-  /** Controlled standalone checkbox selection. Groups own grouped selection. */
-  isSelected?: boolean;
-
-  /** Initial selection for an uncontrolled standalone checkbox card. */
-  defaultSelected?: boolean;
-
-  /** Called when standalone checkbox selection changes. Groups own grouped changes. */
-  onSelectionChange?: RACCheckboxFieldProps['onChange'];
-
   /** Disable selection while keeping primary and child actions independent. */
   isSelectionDisabled?: boolean;
-
-  /** Make checkbox selection read-only. For radio cards, set this on RadioGroup. */
-  isReadOnly?: boolean;
-
-  /** Show a mixed selection state on a checkbox card. */
-  isIndeterminate?: boolean;
-
-  /** Require a standalone checkbox card to be selected for form submission. */
-  isRequired?: boolean;
 
   /** Labels the selection control when it should not share the primary action's name. */
   selectionProps?: Pick<RACCheckboxFieldProps, 'aria-label' | 'aria-labelledby' | 'aria-describedby'>;
@@ -107,34 +86,53 @@ interface CardBaseProps extends CardLayoutProps {
     | ((renderProps: CardRenderProps & { defaultStyle: CSSProperties }) => CSSProperties | undefined);
 }
 
-interface CheckboxCardProps extends CardBaseProps {
-  /** Enable native checkbox selection. */
-  selection: 'checkbox';
+interface CheckboxSelectionProps {
+  /** Form field name for a standalone checkbox card. Groups own their field name. */
+  name?: string;
+
+  /** Controlled standalone checkbox selection. Groups own grouped selection. */
+  isSelected?: boolean;
+
+  /** Initial selection for an uncontrolled standalone checkbox card. */
+  defaultSelected?: boolean;
+
+  /** Called when standalone checkbox selection changes. Groups own grouped changes. */
+  onSelectionChange?: RACCheckboxFieldProps['onChange'];
+
+  /** Make checkbox selection read-only. For radio cards, set this on RadioGroup. */
+  isReadOnly?: boolean;
+
+  /** Show a mixed selection state on a checkbox card. */
+  isIndeterminate?: boolean;
+
+  /** Require a standalone checkbox card to be selected for form submission. */
+  isRequired?: boolean;
 
   /** Checkbox selection validation state. */
   isInvalid?: boolean;
 }
 
-interface RadioCardProps extends CardBaseProps {
+type WithoutCheckboxSelectionProps = { [Key in keyof CheckboxSelectionProps]?: never };
+
+interface CheckboxCardProps extends CardBaseProps, CheckboxSelectionProps {
+  /** Enable native checkbox selection. */
+  selection: 'checkbox';
+}
+
+interface RadioCardProps extends CardBaseProps, WithoutCheckboxSelectionProps {
   /** Enable native radio selection inside a RadioGroup. */
   selection: 'radio';
 
   /** Selection value submitted by the RadioGroup. */
   value: string;
-
-  /** Radio validation belongs on RadioGroup. */
-  isInvalid?: never;
 }
 
-interface NonSelectableCardProps extends CardBaseProps {
+interface NonSelectableCardProps extends CardBaseProps, WithoutCheckboxSelectionProps {
   /** Omit for no selection. */
   selection?: never;
-
-  /** Validation requires checkbox selection. */
-  isInvalid?: never;
 }
 
-/** Props for Card. Only checkbox selection accepts local validation state. */
+/** Props for Card. Only checkbox selection accepts local selection and validation state. */
 export type CardProps = CheckboxCardProps | RadioCardProps | NonSelectableCardProps;
 
 function requireRadioValue(value: string | undefined) {

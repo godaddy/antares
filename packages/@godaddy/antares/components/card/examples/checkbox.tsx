@@ -13,6 +13,7 @@ import {
 
 /**
  * Standalone checkbox Cards own their state. Grouped cards belong in CheckboxGroup.
+ * Indicator children can render custom content from the current selection state.
  * @title Checkbox
  * @order 7
  */
@@ -28,7 +29,9 @@ export function CheckboxExample() {
             <Text slot="body">Keep this plan active when it expires.</Text>
           </TextLockup>
           <CornerActions>
-            <CardSelectionIndicator data-testid="card-selection-indicator" />
+            <CardSelectionIndicator data-testid="card-selection-indicator">
+              {({ isSelected }) => <Text>{isSelected ? 'true' : 'false'}</Text>}
+            </CardSelectionIndicator>
           </CornerActions>
         </Card>
       </Flex>
@@ -56,7 +59,9 @@ export function CheckboxExample() {
               <Text slot="body">Send from a mailbox at your domain.</Text>
             </TextLockup>
             <CornerActions>
-              <CardSelectionIndicator />
+              <CardSelectionIndicator>
+                {({ isSelected }) => <Text>{isSelected ? 'true' : 'false'}</Text>}
+              </CardSelectionIndicator>
             </CornerActions>
           </Card>
         </CheckboxGroup>

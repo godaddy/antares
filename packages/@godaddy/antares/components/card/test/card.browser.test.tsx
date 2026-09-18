@@ -74,34 +74,109 @@ describe('@godaddy/antares', function packageTests() {
     describe('selection', function selectionTests() {
       it('toggles standalone selection once from the indicator', async function standaloneSelection() {
         const { getByRole, getByTestId } = await render(<CheckboxExample />);
-        await userEvent.click(getByTestId('card-selection-indicator'));
+        const indicator = getByTestId('card-selection-indicator');
+        await expect.element(indicator).toHaveTextContent('false');
+        expect(getComputedStyle(indicator.element()).borderTopWidth).toBe('0px');
+        expect(getComputedStyle(indicator.element()).backgroundColor).toBe('rgba(0, 0, 0, 0)');
+        await userEvent.click(indicator);
         await expect.element(getByRole('checkbox', { name: 'Automatic renewal' })).toBeChecked();
-        await userEvent.click(getByTestId('card-selection-indicator'));
+        await expect.element(indicator).toHaveTextContent('true');
+        await userEvent.click(indicator);
         await expect.element(getByRole('checkbox', { name: 'Automatic renewal' })).not.toBeChecked();
+        await expect.element(indicator).toHaveTextContent('false');
       });
 
       it('toggles selection from ordinary body content', async function bodyTogglesSelection() {
-        const { getByRole, getByText } = await render(<CheckboxExample />);
+        const { getByRole, getByText, getByTestId } = await render(<CheckboxExample />);
         await userEvent.click(getByText('Keep this plan active when it expires.'));
         await expect.element(getByRole('checkbox', { name: 'Automatic renewal' })).toBeChecked();
+        await expect.element(getByTestId('card-selection-indicator')).toHaveTextContent('true');
       });
 
       it('uses the native checkbox as the only selection keyboard stop', async function selectionKeyboard() {
-        const { getByRole } = await render(<CheckboxExample />);
+        const { getByRole, getByTestId } = await render(<CheckboxExample />);
         const checkbox = getByRole('checkbox', { name: 'Automatic renewal' });
+        const indicator = getByTestId('card-selection-indicator');
         await userEvent.tab();
         await expect.element(checkbox).toHaveFocus();
+        expect(getComputedStyle(indicator.element().closest('[data-card]')!).outlineStyle).toBe('solid');
         await userEvent.keyboard(' ');
         await expect.element(checkbox).toBeChecked();
+        await expect.element(indicator).toHaveTextContent('true');
+      });
+
+      it('updates custom indicators in a checkbox group', async function groupedCustomIndicator() {
+        const { getByRole, getByText } = await render(<CheckboxExample />);
+        await userEvent.click(getByText('Send from a mailbox at your domain.'));
+        const email = getByRole('checkbox', { name: 'Professional email' });
+        await expect.element(email).toBeChecked();
+        await expect.element(getByRole('checkbox', { name: 'Domain privacy' })).toBeChecked();
+        const indicator = email.element().closest('[data-card]')!.querySelector('[data-card-selection-indicator]')!;
+        expect(indicator).toHaveTextContent('true');
+        await userEvent.click(indicator);
+        await expect.element(email).not.toBeChecked();
+        expect(indicator).toHaveTextContent('false');
+      });
+
+      it.each([
+        { kind: 'checkbox', isDisabled: true, isReadOnly: false },
+        { kind: 'checkbox', isDisabled: false, isReadOnly: true },
+        { kind: 'radio', isDisabled: true, isReadOnly: false },
+        { kind: 'radio', isDisabled: false, isReadOnly: true }
+      ] as const)('preserves custom $kind restrictions: disabled=$isDisabled, readOnly=$isReadOnly', async function restrictedCustomIndicator(props) {
+        const { getByRole, getByTestId } = await render(
+          <InteractionsExample
+            {...props}
+            indicatorChildren={({ isDisabled, isReadOnly }) =>
+              isDisabled ? 'Unavailable' : isReadOnly ? 'Read only' : 'Available'
+            }
+          />
+        );
+        const indicator = getByTestId('indicator-One');
+        await expect.element(indicator).toHaveTextContent(props.isDisabled ? 'Unavailable' : 'Read only');
+        expect(getComputedStyle(indicator.element()).opacity).toBe('0.4');
+        await userEvent.click(indicator, { force: true });
+        await expect.element(getByRole(props.kind, { name: 'Option one' })).not.toBeChecked();
+      });
+
+      it('exposes mixed and keyboard focus state to custom content', async function customIndicatorState() {
+        const { getByRole, getByTestId } = await render(
+          <InteractionsExample
+            isIndeterminate
+            indicatorChildren={({ isIndeterminate, isFocusVisible }) =>
+              `${isIndeterminate ? 'mixed' : 'unmixed'} ${isFocusVisible ? 'focused' : 'unfocused'}`
+            }
+          />
+        );
+        const indicator = getByTestId('indicator-One');
+        await expect.element(indicator).toHaveTextContent('mixed unfocused');
+        await userEvent.click(indicator);
+        await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
+        await userEvent.tab();
+        await expect.element(getByRole('checkbox', { name: 'Option one' })).toHaveFocus();
+        await expect.element(indicator).toHaveTextContent('mixed focused');
+      });
+
+      it('selects from static custom content', async function staticCustomIndicator() {
+        const { getByRole, getByTestId } = await render(<InteractionsExample indicatorChildren="Select" />);
+        const indicator = getByTestId('indicator-One');
+        await expect.element(indicator).toHaveTextContent('Select');
+        await userEvent.click(indicator);
+        await expect.element(getByRole('checkbox', { name: 'Option one' })).toBeChecked();
       });
 
       it('retains radio arrow navigation and single selection', async function radioKeyboard() {
-        const { getByRole, getByTestId } = await render(<InteractionsExample kind="radio" />);
+        const { getByRole, getByTestId } = await render(
+          <InteractionsExample kind="radio" indicatorChildren={({ isSelected }) => String(isSelected)} />
+        );
+        await expect.element(getByTestId('indicator-One')).toHaveTextContent('false');
         await userEvent.click(getByTestId('indicator-One'));
+        await expect.element(getByTestId('indicator-One')).toHaveTextContent('true');
         await userEvent.keyboard('{ArrowRight}');
         await expect.element(getByRole('radio', { name: 'Option two' })).toBeChecked();
         await expect.element(getByRole('radio', { name: 'Option two' })).toHaveFocus();
         await expect.element(getByRole('radio', { name: 'Option one' })).not.toBeChecked();
+        await expect.element(getByTestId('indicator-One')).toHaveTextContent('false');
         await userEvent.click(getByTestId('indicator-Two'));
         await expect.element(getByRole('radio', { name: 'Option two' })).toBeChecked();
       });

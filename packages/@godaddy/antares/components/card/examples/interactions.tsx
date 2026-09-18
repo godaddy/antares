@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   CardSelectionIndicator,
+  type CardSelectionIndicatorProps,
   CornerActions,
   Menu,
   MenuItem,
@@ -28,7 +29,8 @@ export function InteractionsExample({
   isInvalid,
   defaultSelected = false,
   focusable,
-  media
+  media,
+  indicatorChildren
 }: {
   kind?: 'checkbox' | 'radio';
   primary?: 'action' | 'navigation';
@@ -41,6 +43,7 @@ export function InteractionsExample({
   defaultSelected?: boolean;
   focusable?: 'card' | 'ancestor';
   media?: 'audio' | 'video';
+  indicatorChildren?: CardSelectionIndicatorProps['children'];
 }) {
   const [presses, setPresses] = useState(0);
   const [actions, setActions] = useState(0);
@@ -78,7 +81,7 @@ export function InteractionsExample({
         </Menu>
       </MenuTrigger>
       <CornerActions data-testid="corner-One" padding="sm">
-        <CardSelectionIndicator data-testid="indicator-One" />
+        <CardSelectionIndicator data-testid="indicator-One">{indicatorChildren}</CardSelectionIndicator>
       </CornerActions>
       <Box contentEditable suppressContentEditableWarning data-testid="editor-One">
         Editable One
