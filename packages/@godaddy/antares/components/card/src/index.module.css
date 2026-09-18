@@ -18,7 +18,10 @@
 }
 
 /* Only Card's own primary and selection controls ring the surface. Composed controls ring themselves. */
-.card:where(:has(> :where(.link, .primary)[data-focus-visible], [data-card-selection-indicator][data-focus-visible])) {
+.card:where(:has(> :where(.link, .primary)[data-focus-visible])),
+.card:where(:has([data-card-selection-indicator][data-focus-visible])):where(
+  :not(:has([data-card] [data-card-selection-indicator][data-focus-visible]))
+) {
   outline: 2px solid Highlight;
   outline-offset: 2px;
 }

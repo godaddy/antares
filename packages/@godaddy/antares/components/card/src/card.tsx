@@ -130,7 +130,6 @@ interface CardSurfaceProps {
   style?: CardProps['style'];
   surfaceProps: CardLayoutProps;
   children?: ReactNode;
-  onClick?: MouseEventHandler<HTMLDivElement>;
   forwardedClick: ReturnType<typeof useForwardedClick>;
   isInteractive: boolean;
   href?: RACLinkProps['href'];
@@ -138,6 +137,7 @@ interface CardSurfaceProps {
   isDisabled?: boolean;
   ariaLabel?: string;
   ariaLabelledBy?: string;
+  ariaDescribedBy?: string;
   primaryRef: RefObject<HTMLElement | null>;
 }
 
@@ -162,7 +162,6 @@ const CardSurface = forwardRef<HTMLDivElement, CardSurfaceProps>(function CardSu
     style,
     surfaceProps,
     children,
-    onClick,
     forwardedClick,
     isInteractive,
     href,
@@ -170,6 +169,7 @@ const CardSurface = forwardRef<HTMLDivElement, CardSurfaceProps>(function CardSu
     isDisabled,
     ariaLabel,
     ariaLabelledBy,
+    ariaDescribedBy,
     primaryRef
   },
   ref
@@ -188,7 +188,6 @@ const CardSurface = forwardRef<HTMLDivElement, CardSurfaceProps>(function CardSu
         style={resolveStyle(style, selectionState)}
         data-card-selected={selectionState.isSelected || undefined}
         data-card-indeterminate={selectionState.isIndeterminate || undefined}
-        onClick={onClick}
         {...forwardedClick}
         data-card={isInteractive ? 'interactive' : 'static'}
       >
@@ -199,6 +198,7 @@ const CardSurface = forwardRef<HTMLDivElement, CardSurfaceProps>(function CardSu
             onPress={onPress}
             aria-label={ariaLabel}
             aria-labelledby={ariaLabelledBy}
+            aria-describedby={ariaDescribedBy}
             isDisabled={isDisabled}
             className={styles.link}
           />
@@ -208,6 +208,7 @@ const CardSurface = forwardRef<HTMLDivElement, CardSurfaceProps>(function CardSu
             onPress={onPress}
             aria-label={ariaLabel}
             aria-labelledby={ariaLabelledBy}
+            aria-describedby={ariaDescribedBy}
             isDisabled={isDisabled}
             className={styles.primary}
           />
@@ -261,7 +262,13 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
     [forwardsPrimary]
   );
 
-  const forwardedClick = useForwardedClick(forwardsSurface, resolveForwardTarget);
+  const forwardedClick = useForwardedClick(forwardsSurface, resolveForwardTarget, {
+    onClick,
+    onPointerDown: surfaceProps.onPointerDown,
+    onPointerMove: surfaceProps.onPointerMove,
+    onPointerUp: surfaceProps.onPointerUp,
+    onPointerCancel: surfaceProps.onPointerCancel
+  });
 
   const surface = (state?: Partial<CardRenderProps>) => (
     <CardSurface
@@ -271,7 +278,6 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
       className={className}
       style={style}
       surfaceProps={surfaceProps}
-      onClick={onClick}
       forwardedClick={forwardedClick}
       isInteractive={isInteractive}
       href={href}
@@ -279,17 +285,19 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
       isDisabled={isDisabled}
       ariaLabel={ariaLabel}
       ariaLabelledBy={ariaLabelledBy}
+      ariaDescribedBy={ariaDescribedBy}
       primaryRef={primaryRef}
     >
       {children}
     </CardSurface>
   );
 
+  const hasSelectionName = selectionProps?.['aria-label'] != null || selectionProps?.['aria-labelledby'] != null;
   const fieldProps = {
     value,
     isDisabled: isSelectionDisabled,
-    'aria-label': ariaLabel,
-    'aria-labelledby': ariaLabelledBy,
+    'aria-label': hasSelectionName ? undefined : ariaLabel,
+    'aria-labelledby': hasSelectionName ? undefined : ariaLabelledBy,
     'aria-describedby': ariaDescribedBy,
     ...selectionProps,
     style: { display: 'contents' }

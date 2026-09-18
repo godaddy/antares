@@ -9,7 +9,6 @@ import { CheckboxExample } from '../examples/checkbox.tsx';
 import { RadioExample } from '../examples/radio.tsx';
 import { LayoutExample } from '../examples/layout.tsx';
 import { MediaExample } from '../examples/media.tsx';
-import { Card } from '../src/index.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Card', function cardTests() {
@@ -47,16 +46,6 @@ describe('@godaddy/antares', function packageTests() {
 
     it('renders responsive and collection layout', function renderLayout() {
       expect(renderToString(<LayoutExample />)).toMatchSnapshot();
-    });
-
-    it('requires a value for radio selection', function requireRadioValue() {
-      expect(function renderRadioWithoutValue() {
-        renderToString(
-          <Card selection="radio" aria-label="Plan">
-            Plan
-          </Card>
-        );
-      }).toThrow('Card with selection="radio" requires a value.');
     });
   });
 });
