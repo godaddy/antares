@@ -14,7 +14,7 @@ import * as Stories from './structure.stories.tsx';
 - **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
 - **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
 - **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
-- **`ButtonGroup`** — a cluster of related actions, typically inside a `Footer` (an end-aligned, wrapping row with `role="group"`).
+- **`ButtonGroup`** - a cluster of related actions (a wrapping row with `role="group"`). Overlay parents like `Modal` adopt it with end alignment and padding.
 - **`Group`** — semantic grouping container for field item controls. A parent field injects the box chrome.
 - **`CornerActions`** - an always-visible structural row for actions placed at a surface corner.
 
@@ -30,21 +30,6 @@ Each container works in two modes:
 <Examples of={Stories.Examples} />
 
 ## Props
-
-`Content`, `Header`, `Footer`, and `ButtonGroup` each accept all `Flex` layout props.
-
-```tsx
-<Header>
-  <Heading slot="title" />
-  <CloseButton />
-</Header>
-<Content />
-<Footer>
-  <ButtonGroup>
-    <Button />
-  </ButtonGroup>
-</Footer>
-```
 
 ### Content
 
@@ -67,8 +52,5 @@ Each container works in two modes:
 <ArgTypes of={Stories.GroupProps} />
 
 ### CornerActions
-
-`CornerActions` renders a plain `<div>` with no landmark role. It accepts the same layout props as
-`Flex`, so consumers control placement, wrapping, and reserved space around the actions.
 
 <ArgTypes of={Stories.CornerActionsProps} />

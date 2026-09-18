@@ -1,13 +1,12 @@
-import { createContext, forwardRef, type ElementType } from 'react';
+import { createContext, forwardRef } from 'react';
 import { useContextProps, type ContextValue } from 'react-aria-components';
-import { Flex, type FlexOwnProps, type FlexProps } from '#components/layout/flex';
-import type { PolymorphicComponent, PolymorphicRef } from '#types/polymorphic-react.ts';
+import { Flex, type FlexProps } from '#components/layout/flex';
 import { composeStyle } from '#utils/render-props.ts';
 
-export type ContentProps<C extends ElementType = 'section'> = FlexProps<C>;
+export interface ContentProps extends FlexProps {}
 
 /** Lets a parent style/space every `Content` it renders. Optional. */
-export const ContentContext = createContext<ContextValue<ContentProps<ElementType>, HTMLElement>>(null);
+export const ContentContext = createContext<ContextValue<ContentProps, HTMLElement>>(null);
 
 /**
  * Generic content region: the primary body of a composed component.
@@ -15,7 +14,7 @@ export const ContentContext = createContext<ContextValue<ContentProps<ElementTyp
  *
  * @param props - {@link ContentProps}
  */
-export const Content = forwardRef(function Content(props: ContentProps<ElementType>, ref: PolymorphicRef<ElementType>) {
+export const Content = forwardRef<HTMLElement, ContentProps>(function Content(props, ref) {
   [props, ref] = useContextProps(props, ref, ContentContext);
   const { style: styleProps, ...rest } = props;
 
@@ -32,4 +31,4 @@ export const Content = forwardRef(function Content(props: ContentProps<ElementTy
       ref={ref}
     />
   );
-}) as PolymorphicComponent<FlexOwnProps, 'section'>;
+});
