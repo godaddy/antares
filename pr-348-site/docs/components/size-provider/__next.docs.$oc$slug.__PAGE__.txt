@@ -1,0 +1,159 @@
+1:"$Sreact.fragment"
+2:I[838538,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js","/antares/pr-348-site/_next/static/chunks/0hu4gvz3svft_.js","/antares/pr-348-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-348-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-348-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-348-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-348-site/_next/static/chunks/2k9m_6ta6xp02.js","/antares/pr-348-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-348-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-348-site/_next/static/chunks/3xv61ienf8846.js"],"DocsPage"]
+3:I[838538,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js","/antares/pr-348-site/_next/static/chunks/0hu4gvz3svft_.js","/antares/pr-348-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-348-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-348-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-348-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-348-site/_next/static/chunks/2k9m_6ta6xp02.js","/antares/pr-348-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-348-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-348-site/_next/static/chunks/3xv61ienf8846.js"],"DocsTitle"]
+4:I[838538,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js","/antares/pr-348-site/_next/static/chunks/0hu4gvz3svft_.js","/antares/pr-348-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-348-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-348-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-348-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-348-site/_next/static/chunks/2k9m_6ta6xp02.js","/antares/pr-348-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-348-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-348-site/_next/static/chunks/3xv61ienf8846.js"],"DocsDescription"]
+5:I[748747,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js","/antares/pr-348-site/_next/static/chunks/0hu4gvz3svft_.js","/antares/pr-348-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-348-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-348-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-348-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-348-site/_next/static/chunks/2k9m_6ta6xp02.js","/antares/pr-348-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-348-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-348-site/_next/static/chunks/3xv61ienf8846.js"],"LLMCopyButton"]
+6:I[748747,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js","/antares/pr-348-site/_next/static/chunks/0hu4gvz3svft_.js","/antares/pr-348-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-348-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-348-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-348-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-348-site/_next/static/chunks/2k9m_6ta6xp02.js","/antares/pr-348-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-348-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-348-site/_next/static/chunks/3xv61ienf8846.js"],"ViewOptions"]
+7:I[838538,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js","/antares/pr-348-site/_next/static/chunks/0hu4gvz3svft_.js","/antares/pr-348-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-348-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-348-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-348-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-348-site/_next/static/chunks/2k9m_6ta6xp02.js","/antares/pr-348-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-348-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-348-site/_next/static/chunks/3xv61ienf8846.js"],"DocsBody"]
+8:I[836838,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js","/antares/pr-348-site/_next/static/chunks/0hu4gvz3svft_.js","/antares/pr-348-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-348-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-348-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-348-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-348-site/_next/static/chunks/2k9m_6ta6xp02.js","/antares/pr-348-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-348-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-348-site/_next/static/chunks/3xv61ienf8846.js"],"Heading"]
+9:I[403113,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js","/antares/pr-348-site/_next/static/chunks/0hu4gvz3svft_.js","/antares/pr-348-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-348-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-348-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-348-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-348-site/_next/static/chunks/2k9m_6ta6xp02.js","/antares/pr-348-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-348-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-348-site/_next/static/chunks/3xv61ienf8846.js"],"StoryRenderer"]
+a:I[364516,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js","/antares/pr-348-site/_next/static/chunks/0hu4gvz3svft_.js","/antares/pr-348-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-348-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-348-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-348-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-348-site/_next/static/chunks/2k9m_6ta6xp02.js","/antares/pr-348-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-348-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-348-site/_next/static/chunks/3xv61ienf8846.js"],"DefaultExample"]
+b:I[156905,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js","/antares/pr-348-site/_next/static/chunks/0hu4gvz3svft_.js","/antares/pr-348-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-348-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-348-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-348-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-348-site/_next/static/chunks/2k9m_6ta6xp02.js","/antares/pr-348-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-348-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-348-site/_next/static/chunks/3xv61ienf8846.js"],"DynamicCodeBlock"]
+c:I[21663,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js","/antares/pr-348-site/_next/static/chunks/0hu4gvz3svft_.js","/antares/pr-348-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-348-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-348-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-348-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-348-site/_next/static/chunks/2k9m_6ta6xp02.js","/antares/pr-348-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-348-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-348-site/_next/static/chunks/3xv61ienf8846.js"],"PilotExample"]
+d:T99b,import {
+  Button,
+  Detail,
+  FieldError,
+  Flex,
+  Group,
+  Heading,
+  Input,
+  Label,
+  SizeProvider,
+  Tag,
+  Text,
+  TextField,
+  TextLockup
+} from '@godaddy/antares';
+
+export function PilotExample() {
+  return (
+    <Flex gap="xl" wrap="wrap">
+      {(['sm', 'md', 'lg'] as const).map((size) => (
+        <section key={size} data-scope={size} style={{ flex: '1 1 18rem', minWidth: 0 }}>
+          <SizeProvider size={size}>
+            <Flex direction="column" gap="md" data-spacing="explicit">
+              <Heading level={2}>{size} section</Heading>
+              <Heading level={4}>{size} subsection</Heading>
+              <Text>Body {size}</Text>
+              <Detail>Detail {size}</Detail>
+              <Label>Standalone label {size}</Label>
+              <Flex gap="sm" wrap="wrap">
+                <Button>Direct {size}</Button>
+                <Button>
+                  <Text>Wrapped {size}</Text>
+                </Button>
+                <Button>
+                  <Text emphasis="critical" maxLines={1}>
+                    Color {size}
+                  </Text>
+                </Button>
+                <Button>
+                  <Text size="xl">Large label {size}</Text>
+                </Button>
+                <Button size="lg">Explicit {size}</Button>
+              </Flex>
+              <SizeProvider>
+                <SizeProvider size={size}>
+                  <Button>Nested {size}</Button>
+                </SizeProvider>
+              </SizeProvider>
+              <TextField isInvalid defaultValue="hello@example.com">
+                <Label>Email {size}</Label>
+                <Group>
+                  <Input />
+                  <Button slot="control">Clear {size}</Button>
+                </Group>
+                <Detail slot="description">Receipts {size}</Detail>
+                <FieldError>Invalid email {size}</FieldError>
+              </TextField>
+              <TextLockup size="xl">
+                <Tag slot="eyebrow">New {size}</Tag>
+                <Heading slot="title">Lockup {size}</Heading>
+                <Text slot="body">Lockup body {size}</Text>
+                <Text>Unslotted {size}</Text>
+                <Button>Lockup action {size}</Button>
+                <TextLockup>
+                  <Heading slot="title">Nested lockup {size}</Heading>
+                </TextLockup>
+              </TextLockup>
+            </Flex>
+          </SizeProvider>
+        </section>
+      ))}
+    </Flex>
+  );
+}18:X
+1d:X
+1d:C
+0:{"buildId":"LyCd8OJArFdzV2-d1B2_4","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"toc":[{"depth":2,"url":"#features","title":"Features"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#default","title":"Default"},{"depth":3,"url":"#pilot","title":"Pilot"},{"depth":3,"url":"#themes","title":"Themes"},{"depth":2,"url":"#props","title":"Props"}],"footer":{"enabled":true},"children":[["$","$L3",null,{"children":"SizeProvider"}],["$","$L4",null,{"className":"mb-0","children":"Wrapperless size defaults for participating typography and controls."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L5",null,{"markdownUrl":"/docs/components/size-provider.mdx"}],["$","$L6",null,{"markdownUrl":"/docs/components/size-provider.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/size-provider/README.mdx"}]]}],["$","$L7",null,{"children":[null,"\n",["$","$L8",null,{"as":"h2","id":"features","children":"Features"}],"\n",["$","ul",null,{"children":["\n",["$","li",null,{"children":["Provides ",["$","code",null,{"children":"sm"}],", ",["$","code",null,{"children":"md"}],", or ",["$","code",null,{"children":"lg"}]," through React context, including portals."]}],"\n",["$","li",null,{"children":"Explicit child sizes win. Nested providers inherit when size is omitted."}],"\n",["$","li",null,{"children":"Adds no DOM wrapper and cannot style bare text."}],"\n",["$","li",null,{"children":"Participating components: Text, Detail, Heading, Label, Button and its presets,\nTextField, TextLockup, and Modal. Other components have not adopted coordinated sizing."}],"\n",["$","li",null,{"children":["Modal starts its own ",["$","code",null,{"children":"md"}]," scope. TextLockup coordinates named text without resizing controls."]}],"\n",["$","li",null,{"children":"Box, Flex, and Grid pass context through; their explicit spacing keeps its usual meaning."}],"\n"]}],"\n",["$","$L8",null,{"as":"h2","id":"examples","children":"Examples"}],"\n",["$","$L8",null,{"as":"h3","id":"default","children":"Default"}],"\n",["$","p",null,{"children":"A wrapperless scope coordinates participating text and controls."}],"\n",["$","$L9",null,{"component":"$a"}],"\n",["$","$Lb",null,{"lang":"tsx","code":"import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SizeProvider size=\"sm\">\n      <Flex direction=\"column\" gap=\"md\">\n        <Heading level={2}>Account settings</Heading>\n        <Text>Manage the details of your account.</Text>\n        <Detail>Supporting copy inherits the same color.</Detail>\n        <Button>Save changes</Button>\n      </Flex>\n    </SizeProvider>\n  );\n}"}],"\n",["$","$L8",null,{"as":"h3","id":"pilot","children":"Pilot"}],"\n",["$","p",null,{"children":"Compare the provisional pilot mappings and their explicit overrides."}],"\n",["$","$L9",null,{"component":"$c"}],"\n",["$","$Lb",null,{"lang":"tsx","code":"$d"}],"\n","$Le","\n","$Lf","\n","$L10","\n","$L11","\n","$L12","\n","$L13"]}]]}],["$L14","$L15"],"$L16"]}],"isPartial":"$@17","staleTime":"$18","varyParams":null},{"rsc":"$L19","isPartial":"$@1a","staleTime":"$18","varyParams":null},{"rsc":"$L1b","isPartial":"$@1c","staleTime":"$18","varyParams":"$1d"}],"isUpgradeableISRFallback":false,"a":"$@1e","rootVaryParams":null,"needsRuntimeRequest":"$@1f"}
+20:I[416073,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js","/antares/pr-348-site/_next/static/chunks/0hu4gvz3svft_.js","/antares/pr-348-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-348-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-348-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-348-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-348-site/_next/static/chunks/2k9m_6ta6xp02.js","/antares/pr-348-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-348-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-348-site/_next/static/chunks/3xv61ienf8846.js"],"ThemesExample"]
+22:I[403299,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js","/antares/pr-348-site/_next/static/chunks/0hu4gvz3svft_.js","/antares/pr-348-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-348-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-348-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-348-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-348-site/_next/static/chunks/2k9m_6ta6xp02.js","/antares/pr-348-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-348-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-348-site/_next/static/chunks/3xv61ienf8846.js"],"PropTableClient"]
+23:I[897367,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js"],"OutletBoundary"]
+24:"$Sreact.suspense"
+26:I[897367,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js"],"ViewportBoundary"]
+27:I[897367,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js"],"MetadataBoundary"]
+28:I[339756,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js"],"default"]
+29:I[837457,["/antares/pr-348-site/_next/static/chunks/0l9hbpaue9ub6.js","/antares/pr-348-site/_next/static/chunks/06_3we-3fsbtm.js"],"default"]
+e:["$","$L8",null,{"as":"h3","id":"themes","children":"Themes"}]
+f:["$","p",null,{"children":"Token and legacy themes keep their font settings through composed labels."}]
+10:["$","$L9",null,{"component":"$20"}]
+21:T555,import type { CSSProperties } from 'react';
+import { Avatar, Button, Detail, Flex, Heading, Label, SizeProvider, Text } from '@godaddy/antares';
+
+export function ThemesExample() {
+  const themes = {
+    tokens: {
+      '--font-body-family': 'monospace',
+      '--font-body-size-sm': '17px',
+      '--font-body-variation': '"wght" 450',
+      '--ux-j40yyd': '600',
+      '--ux-jw5s9j': '1.75',
+      '--font-size-020': '15px',
+      '--color-feedback-critical-text': 'rgb(100, 20, 30)'
+    },
+    legacy: {
+      '--ux-117cu43': 'monospace',
+      '--ux-gfnupv': 'monospace',
+      '--ux-ndnsbo': '"wght" 475',
+      '--ux-j40yyd': '600',
+      '--ux-jw5s9j': '1.75',
+      '--ux-1fhc073': 'rgb(110, 20, 30)'
+    }
+  };
+  return (
+    <Flex direction="column" gap="lg">
+      {Object.entries(themes).map(([name, style]) => (
+        <section key={name} data-theme={name} style={style as CSSProperties}>
+          <SizeProvider size="sm">
+            <Heading>{name} theme</Heading>
+            <Text>Body {name}</Text>
+            <Detail>Supporting {name}</Detail>
+            <Label>Label {name}</Label>
+            <Button>
+              <Text emphasis="critical">Themed {name}</Text>
+            </Button>
+            <Avatar size="lg">
+              <Text>JR</Text>
+            </Avatar>
+          </SizeProvider>
+        </section>
+      ))}
+    </Flex>
+  );
+}11:["$","$Lb",null,{"lang":"tsx","code":"$21"}]
+12:["$","$L8",null,{"as":"h2","id":"props","children":"Props"}]
+13:["$","$L22",null,{"entries":[{"name":"size","type":"InterfaceSize","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Defaults for participating descendants. Inherits when omitted."}]],"required":false},{"name":"children","type":"ReactNode","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Content to receive the size defaults. No wrapper is rendered."}]],"required":false}],"categories":{}}]
+14:["$","script","script-0",{"src":"/antares/pr-348-site/_next/static/chunks/0kwv-w3yo6vff.js","async":true}]
+15:["$","script","script-1",{"src":"/antares/pr-348-site/_next/static/chunks/3xv61ienf8846.js","async":true}]
+16:["$","$L23",null,{"children":["$","$24",null,{"name":"Next.MetadataOutlet","children":"$@25"}]}]
+19:["$","$1","h",{"children":[null,["$","$L26",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L27",null,{"children":["$","$24",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"SizeProvider"}],["$","meta","1",{"name":"description","content":"Wrapperless size defaults for participating typography and controls."}],["$","meta","2",{"property":"og:title","content":"SizeProvider"}],["$","meta","3",{"property":"og:description","content":"Wrapperless size defaults for participating typography and controls."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/components/size-provider/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"SizeProvider"}],["$","meta","7",{"name":"twitter:description","content":"Wrapperless size defaults for participating typography and controls."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/components/size-provider/image.png"}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}]
+1b:["$","$1","c",{"children":[null,["$","$L28",null,{"parallelRouterKey":"children","template":["$","$L29",null,{}]}]]}]
+1f:true
+25:null
+18:300
+18:C
+1e:0
+1a:"$undefined"
+1c:"$undefined"
+17:"$undefined"
