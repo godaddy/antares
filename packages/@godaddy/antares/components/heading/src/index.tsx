@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
-import { cx } from 'cva';
+import { useTypography, type TypographyProps } from '#components/_internal/typography';
+import { composeClassName } from '#utils/render-props.ts';
 import {
   Heading as RACHeading,
   HeadingContext as RACHeadingContext,
@@ -9,7 +10,7 @@ import styles from './index.module.css';
 
 export const HeadingContext = RACHeadingContext;
 
-export interface HeadingProps extends Omit<RACHeadingProps, 'className'> {
+export interface HeadingProps extends Omit<RACHeadingProps, 'className'>, TypographyProps {
   /**
    * The heading level, rendered as the matching `h1`-`h6` element.
    * Falls back to the level a container provides, then to `3`.
@@ -37,8 +38,9 @@ export interface HeadingProps extends Omit<RACHeadingProps, 'className'> {
  * ```
  */
 export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(function Heading(props, ref) {
-  const { className, ...rest } = props;
+  const { className, size, emphasis, ...rest } = props;
+  const typography = useTypography('heading', props);
 
   // `level` stays absent when unset so RACHeading resolves it from context, then its own default.
-  return <RACHeading {...rest} ref={ref} className={cx(styles.heading, className)} />;
+  return <RACHeading {...rest} ref={ref} className={composeClassName(className, styles.heading, typography)} />;
 });

@@ -1,0 +1,33 @@
+.field {
+  --_text-field-font-size: var(--font-body-size-md, var(--ux-oc0naw, 1rem));
+  --_text-field-padding: var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  --_text-field-min-size: 2.5rem;
+}
+
+.field:where([data-size="sm"]) {
+  --_text-field-font-size: var(--font-body-size-sm, 0.875rem);
+  --_text-field-padding: var(--size-space-010, var(--ux-1sbfig8, 0.25rem));
+  --_text-field-min-size: 2rem;
+}
+
+.field:where([data-size="lg"]) {
+  --_text-field-font-size: var(--font-body-size-lg, 1.125rem);
+  --_text-field-padding: var(--size-space-030, calc(var(--ux-1sbfig8, 0.25rem) * 3));
+  --_text-field-min-size: 3rem;
+}
+
+/* This field owns input typography, independently of the legacy shared chrome. */
+.input,
+.surface {
+  font-family: var(--font-body-family, var(--ux-9wtaa3, sans-serif));
+  font-size: var(--_text-field-font-size);
+  font-weight: var(--font-body-weight, var(--ux-3z6ccd, normal));
+  font-variation-settings: var(--font-body-variation, var(--ux-e727t8, normal));
+  line-height: var(--ux-hm1ty7, 1.375);
+}
+
+.input {
+  padding: var(--_text-field-padding);
+  min-block-size: var(--_text-field-min-size);
+  box-sizing: border-box;
+}

@@ -1,4 +1,5 @@
 .dialog {
+  --_overlay-dialog-title-padding: var(--size-space-md, calc(var(--ux-1sbfig8, 0.25rem) * 2));
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-rows: auto auto minmax(0, 1fr) auto auto;
   grid-template-areas:
@@ -15,8 +16,8 @@
 
 .dialog > :where([slot="title"]) {
   grid-area: title;
-  padding-block-start: var(--sp-md);
-  padding-inline-start: var(--sp-md);
+  padding-block-start: var(--_overlay-dialog-title-padding);
+  padding-inline-start: var(--_overlay-dialog-title-padding);
 }
 
 .dialog > :where([slot="close"]) {
@@ -41,6 +42,17 @@
 .dialog > :where(.buttons) {
   grid-area: buttons;
   justify-content: end;
+}
+
+.dialog:where(:not([data-size])) > :where(.buttons) {
   padding-inline: var(--sp-md);
   padding-block: var(--sp-sm);
+}
+
+.dialog:where([data-size="sm"]) {
+  --_overlay-dialog-title-padding: var(--size-space-sm, var(--ux-1sbfig8, 0.25rem));
+}
+
+.dialog:where([data-size="lg"]) {
+  --_overlay-dialog-title-padding: var(--size-space-lg, calc(var(--ux-1sbfig8, 0.25rem) * 3));
 }

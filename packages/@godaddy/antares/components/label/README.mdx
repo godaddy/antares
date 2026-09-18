@@ -12,6 +12,8 @@ import * as Stories from './label.stories.tsx';
 ## Features
 
 - Associates the visible name with the field control.
+- Typography participant: consumes field defaults, then interface size, then standalone `md`.
+- Uses a distinct medium-weight treatment. Explicit `size` and `emphasis` override independently.
 - Field CSS adds the required asterisk when the field root is `isRequired`. That is not a Label prop.
 
 ## Installation
@@ -23,6 +25,16 @@ npm install --save @godaddy/antares
 ## Examples
 
 <Examples of={Stories.Examples} />
+
+## Customization
+
+Label retains the existing label intents for family (`--ux-15ks663`), weight (`--ux-aarlu5`),
+line height (`--ux-h93mi7`), and variation (`--ux-1qg0ofw`). Default weight is 500 and line height
+is 1.375. TextField uses this same treatment for its Label.
+
+The six sizes map to existing global font-size tokens: `xs` -> `--font-size-010`, `sm` -> `020`,
+`md` -> `040`, `lg` -> `050`, `xl` -> `060`, and `2xl` -> `070`. Their fallback values are
+0.6875, 0.75, 0.875, 1, 1.125, and 1.25rem; `md` also retains the `--ux-16aixzc` fallback.
 
 ## Props
 

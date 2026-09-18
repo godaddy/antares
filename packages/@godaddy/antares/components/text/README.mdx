@@ -8,7 +8,14 @@ import * as Stories from './text.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-The `Text` component prepares content with a few properties.
+## Features
+
+- `Text` supplies body typography; `Detail` supplies supporting-copy typography.
+- Both consume interface size and owning slot defaults. Explicit `size` and `emphasis` win independently.
+- Six tiers: `xs`, `sm`, `md`, `lg`, `xl`, and `2xl`. Standalone defaults to `md`.
+- `emphasis` changes feedback color; omission inherits color, including on Detail.
+- `as="strong"` and `as="em"` provide semantic emphasis. There is no weight prop.
+- Inside Button, Text preserves the full label treatment; wrapping, truncation, or color do not reset fonts.
 
 ## Installation
 
@@ -20,8 +27,20 @@ npm install --save @godaddy/antares
 
 <Examples of={Stories.Examples} />
 
+## Customization
+
+Body and Detail read the `--font-body-*` and `--font-detail-*` token families: `family`,
+`weight`, `line-height`, `variation`, and `size-{xs,sm,md,lg,xl,2xl}`. Tokens select
+values without changing the meaning of a tier in smaller scopes. Feedback colors use existing
+`--color-feedback-{emphasis}-text` tokens where available, with legacy-intent and literal fallbacks.
+Premium, internal, and neutral use their existing legacy feedback intents directly.
+
 ## Props
 
 ### Text
 
 <ArgTypes of={Stories.Props} />
+
+### Detail
+
+<ArgTypes of={Stories.DetailProps} />

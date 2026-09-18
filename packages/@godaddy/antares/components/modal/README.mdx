@@ -41,6 +41,22 @@ npm install --save @godaddy/antares
 - Pair every action button with `slot="close"` when it should dismiss the modal
 - Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
 
+## Sizing and typography
+
+Modal starts an independent interface scope: `md` by default, even when its trigger is small.
+Explicit `size="sm"` or `size="lg"` sizes the interior, including portaled content. The dialog surface
+applies body typography to bare text and ordinary wrappers; native headings keep their own styles.
+
+| Modal size | Body / controls | Title Heading tier | Region padding / gap |
+| --- | --- | --- | --- |
+| `sm` | `sm` | `md` | `sm` |
+| `md` | `md` | `lg` | `md` |
+| `lg` | `lg` | `xl` | `lg` |
+
+These are pilot mappings for visual review. Explicit child typography and region spacing props win.
+Width and height bounds remain independent of interface size; maximum default width is 48rem.
+The title's semantic level and accessible ID continue to come from React Aria.
+
 ## Props
 
 ```tsx

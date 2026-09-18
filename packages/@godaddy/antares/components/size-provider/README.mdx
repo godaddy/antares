@@ -1,0 +1,28 @@
+---
+title: SizeProvider
+description: Wrapperless size defaults for participating typography and controls.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './size-provider.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Provides `sm`, `md`, or `lg` through React context, including portals.
+- Explicit child sizes win. Nested providers inherit when size is omitted.
+- Adds no DOM wrapper and cannot style bare text.
+- Participating components: Text, Detail, Heading, Label, Button and its presets,
+  TextField, TextLockup, and Modal. Other components have not adopted coordinated sizing.
+- Modal starts its own `md` scope. TextLockup coordinates named text without resizing controls.
+- Box, Flex, and Grid pass context through; their explicit spacing keeps its usual meaning.
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Props
+
+<ArgTypes of={Stories.Props} />

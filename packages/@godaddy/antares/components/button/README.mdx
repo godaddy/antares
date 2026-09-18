@@ -26,6 +26,28 @@ npm install --save @godaddy/antares
 
 <Examples of={Stories.Examples} />
 
+## Sizing and typography
+
+Button, LinkButton, and CloseButton consume explicit or owner size, then interface size, then `md`.
+Their resolved size affects their own treatment; siblings keep their defaults. Wrapped Text labels
+inherit every font property. Explicit Text `size` changes only its font size, and `emphasis` only color.
+
+| Size | Body tier | Block / inline padding | Minimum height |
+| --- | --- | --- | --- |
+| `sm` | `sm` | 1 / 2 GU | 2rem |
+| `md` | `md` | 2 / 3 GU | 2.5rem |
+| `lg` | `lg` | 3 / 4 GU | 3rem |
+
+These are pilot mappings for visual review. Control/trigger variants use block padding on both axes;
+icon-only buttons use it on both axes and have the same minimum width as height. Inline actions inherit
+the surrounding typography with zero padding and no minimum height. Icons follow the label line height.
+
+## Customization
+
+Buttons use body family, size, and variation tokens, plus existing action intents for weight
+(`--ux-j40yyd`) and line height (`--ux-jw5s9j`).
+There is no public weight prop.
+
 ## Props
 
 ### Button

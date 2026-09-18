@@ -23,8 +23,8 @@ export const Content = forwardRef<HTMLElement, ContentProps>(function Content(pr
       direction="column"
       gap="md"
       flex="1 1 auto"
-      inlinePadding="md"
-      blockPadding="sm"
+      inlinePadding={props.padding === undefined ? 'md' : undefined}
+      blockPadding={props.padding === undefined ? 'sm' : undefined}
       style={{ minBlockSize: 0, overflow: 'auto', ...styleProps }}
       {...rest}
       ref={ref}

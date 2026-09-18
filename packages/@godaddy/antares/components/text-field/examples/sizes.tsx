@@ -1,7 +1,7 @@
 import { Button, Flex, Group, Icon, Input, Label, TextField } from '@godaddy/antares';
 
 /**
- * Compare the supported `md` and `sm` visual sizes, plain and with an icon plus control button.
+ * Compare the supported `sm`, `md`, and `lg` visual sizes, plain and with an icon plus control button.
  * Set `size` on `TextField` so the input and `Button slot="control"` share the same size.
  * @title Sizes
  * @order 7
@@ -23,6 +23,10 @@ export function SizesExample() {
         <Group>
           <Flex as="span" alignItems="center" inlinePaddingStart="md">
             <Icon icon="star" />
+            <TextField size="lg">
+              <Label>Email (lg)</Label>
+              <Input placeholder="you@example.com" />
+            </TextField>
           </Flex>
           <Input placeholder="Email" />
           <Button aria-label="Verify email address" slot="control">
@@ -36,12 +40,20 @@ export function SizesExample() {
         <Group>
           <Flex as="span" alignItems="center" inlinePaddingStart="sm">
             <Icon icon="star" />
+            <TextField size="lg">
+              <Label>Email (lg)</Label>
+              <Input placeholder="you@example.com" />
+            </TextField>
           </Flex>
           <Input placeholder="Email" />
           <Button aria-label="Verify email address" slot="control">
             Verify
           </Button>
         </Group>
+      </TextField>
+      <TextField size="lg">
+        <Label>Email (lg)</Label>
+        <Input placeholder="you@example.com" />
       </TextField>
     </Flex>
   );

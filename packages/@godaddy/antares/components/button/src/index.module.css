@@ -16,10 +16,17 @@
   --button-space-md: var(--size-space-md, calc(var(--ux-1sbfig8, 0.25rem) * 2));
   --button-space-lg: var(--size-space-lg, calc(var(--ux-1sbfig8, 0.25rem) * 3));
 
-  font-family: inherit;
-  line-height: inherit;
-  font-weight: inherit;
-  font-size: inherit;
+  --_button-font-size: var(--font-body-size-md, var(--ux-cxbe8g, 1rem));
+  --_button-padding-block: var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  --_button-padding-inline: var(--size-space-030, calc(var(--ux-1sbfig8, 0.25rem) * 3));
+  --_button-min-size: 2.5rem;
+  font-family: var(--font-body-family, var(--ux-gfnupv, sans-serif));
+  line-height: var(--ux-jw5s9j, 1.375);
+  font-weight: var(--ux-j40yyd, 500);
+  font-variation-settings: var(--font-body-variation, var(--ux-ndnsbo, normal));
+  font-size: var(--_button-font-size);
+  box-sizing: border-box;
+  min-block-size: var(--_button-min-size);
   display: inline-flex;
   gap: var(--button-gap);
   align-items: center;
@@ -35,7 +42,7 @@
     opacity 150ms ease;
   cursor: pointer;
   border: none;
-  padding: 0;
+  padding: var(--_button-padding-block) var(--_button-padding-inline);
   margin: 0;
   background: var(--button-bg);
   border-color: var(--button-border);
@@ -66,7 +73,7 @@
   }
 
   &:where([data-disabled]),
-  &:disabled {
+  &:where(:disabled) {
     cursor: not-allowed;
     opacity: 0.4;
   }
@@ -170,53 +177,34 @@
     border-radius: var(--button-radius);
   }
 
-  /* sizes */
-
-  &:where(.sm:not(.inline, .control, .trigger)) {
-    font-size: var(--font-body-size-sm, calc(var(--ux-cxbe8g, 16px) / 1.125));
-    padding: var(--button-space-sm) var(--button-space-md);
-
-    /* only-icon buttons */
-    &:has(:where([data-icon]:only-child)) {
-      padding: var(--button-space-xs);
-
-      &.minimal {
-        padding: var(--button-space-xs);
-        margin: calc(var(--button-space-xs) * -1);
-      }
-    }
+  &:where(.sm) {
+    --_button-font-size: var(--font-body-size-sm, 0.875rem);
+    --_button-padding-block: var(--size-space-010, var(--ux-1sbfig8, 0.25rem));
+    --_button-padding-inline: var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+    --_button-min-size: 2rem;
   }
 
-  &:where(.md:not(.inline, .control, .trigger)) {
-    font-size: var(--font-body-size-md, var(--ux-cxbe8g, 16px));
-    padding: var(--button-space-md) var(--button-space-lg);
+  &:where(.lg) {
+    --_button-font-size: var(--font-body-size-lg, 1.125rem);
+    --_button-padding-block: var(--size-space-030, calc(var(--ux-1sbfig8, 0.25rem) * 3));
+    --_button-padding-inline: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 4));
+    --_button-min-size: 3rem;
+  }
 
-    /* only-icon buttons */
-    &:has(:where([data-icon]:only-child)) {
-      padding: var(--button-space-sm);
-
-      &.minimal {
-        padding: var(--button-space-xs);
-        margin: calc(var(--button-space-xs) * -1);
-      }
-    }
+  &:where(:has([data-icon]:only-child)) {
+    min-inline-size: var(--_button-min-size);
+    padding: var(--_button-padding-block);
   }
 
   &:where(.control, .trigger) {
-    --button-gap: var(--sp-sm, 0.25rem);
-    font-family: var(--ux-9wtaa3, sans-serif);
-    line-height: var(--ux-hm1ty7, 1.375);
-    font-size: var(--ux-oc0naw, 1rem);
-    padding: var(--button-space-md);
+    --button-gap: var(--size-space-010, var(--ux-1sbfig8, 0.25rem));
+    padding-inline: var(--_button-padding-block);
+  }
 
-    > :where([data-icon]) {
-      width: 1lh;
-      height: 1lh;
-    }
-
-    &:where(.sm) {
-      font-size: calc(1em / 1.125);
-      padding: var(--button-space-sm);
-    }
+  &:where(.inline) {
+    font: inherit;
+    font-variation-settings: inherit;
+    min-block-size: 0;
+    padding: 0;
   }
 }

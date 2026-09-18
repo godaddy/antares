@@ -1,0 +1,132 @@
+/* Defaults stay below owner classes, including geometry-fitted Avatar and chart text. */
+:where(.typography:not(.inherit)) {
+  font-family: var(--_typography-family);
+  font-size: var(--_typography-size);
+  font-weight: var(--_typography-weight);
+  line-height: var(--_typography-line-height);
+  font-variation-settings: var(--_typography-variation);
+}
+
+.explicitSize {
+  font-size: var(--_typography-size);
+}
+
+.typography:where(strong, b) {
+  font-weight: var(--font-weight-strong, bolder);
+}
+
+.typography:where(em, i) {
+  font-style: var(--font-style-em, italic);
+}
+
+.body {
+  --_typography-family: var(--font-body-family, var(--ux-pze30t, var(--ux-117cu43, sans-serif)));
+  --_typography-line-height: var(--font-body-line-height, var(--ux-1hhfdnd, var(--ux-mgbt9j, 1.5)));
+  --_typography-weight: var(--font-body-weight, var(--ux-8n6y9x, normal));
+  --_typography-variation: var(--font-body-variation, var(--ux-1i4pt2s, normal));
+  --_typography-xs: var(--font-body-size-xs, 0.75rem);
+  --_typography-sm: var(--font-body-size-sm, 0.875rem);
+  --_typography-md: var(--font-body-size-md, 1rem);
+  --_typography-lg: var(--font-body-size-lg, 1.125rem);
+  --_typography-xl: var(--font-body-size-xl, 1.25rem);
+  --_typography-2xl: var(--font-body-size-2xl, 1.5rem);
+}
+
+.detail {
+  --_typography-family: var(--font-detail-family, var(--ux-1gutwvn, sans-serif));
+  --_typography-line-height: var(--font-detail-line-height, var(--ux-1dje42v, 1.5));
+  --_typography-weight: var(--font-detail-weight, var(--ux-g9ierp, normal));
+  --_typography-variation: var(--font-detail-variation, var(--ux-tjt16c, normal));
+  --_typography-xs: var(--font-detail-size-xs, 0.6875rem);
+  --_typography-sm: var(--font-detail-size-sm, 0.75rem);
+  --_typography-md: var(--font-detail-size-md, 0.8125rem);
+  --_typography-lg: var(--font-detail-size-lg, 0.875rem);
+  --_typography-xl: var(--font-detail-size-xl, 1rem);
+  --_typography-2xl: var(--font-detail-size-2xl, 1.125rem);
+}
+
+.heading {
+  --_typography-family: var(--font-heading-family, var(--ux-shg991, sans-serif));
+  --_typography-line-height: var(--font-heading-line-height, var(--ux-p25s1t, 1.25));
+  --_typography-weight: var(--font-heading-weight, var(--ux-c539b7, bolder));
+  --_typography-variation: var(--font-heading-variation, var(--ux-1458mfm, "DSPL" 1));
+  --_typography-xs: var(--font-heading-size-xs, 1rem);
+  --_typography-sm: var(--font-heading-size-sm, 1.125rem);
+  --_typography-md: var(--font-heading-size-md, 1.25rem);
+  --_typography-lg: var(--font-heading-size-lg, 1.5rem);
+  --_typography-xl: var(--font-heading-size-xl, 1.875rem);
+  --_typography-2xl: var(--font-heading-size-2xl, 2.25rem);
+}
+
+.label {
+  --_typography-family: var(--ux-15ks663, sans-serif);
+  --_typography-line-height: var(--ux-h93mi7, 1.375);
+  --_typography-weight: var(--ux-aarlu5, 500);
+  --_typography-variation: var(--ux-1qg0ofw, normal);
+  --_typography-xs: var(--font-size-010, 0.6875rem);
+  --_typography-sm: var(--font-size-020, 0.75rem);
+  --_typography-md: var(--font-size-040, var(--ux-16aixzc, 0.875rem));
+  --_typography-lg: var(--font-size-050, 1rem);
+  --_typography-xl: var(--font-size-060, 1.125rem);
+  --_typography-2xl: var(--font-size-070, 1.25rem);
+}
+
+.xs {
+  --_typography-size: var(--_typography-xs);
+}
+
+.sm {
+  --_typography-size: var(--_typography-sm);
+}
+
+.md {
+  --_typography-size: var(--_typography-md);
+}
+
+.lg {
+  --_typography-size: var(--_typography-lg);
+}
+
+.xl {
+  --_typography-size: var(--_typography-xl);
+}
+
+.\32 xl {
+  --_typography-size: var(--_typography-2xl);
+}
+
+.critical {
+  color: var(--color-feedback-critical-text, var(--ux-1fhc073, #db1802));
+}
+
+.warning {
+  color: var(--color-feedback-warning-text, var(--ux-lv1r6m, #de7c00));
+}
+
+.success {
+  color: var(--color-feedback-success-text, var(--ux-1ep3kxj, #00a63f));
+}
+
+.info {
+  color: var(--color-feedback-info-text, var(--ux-1lpd00q, #145fa9));
+}
+
+.highlight {
+  color: var(--color-feedback-highlight-text, var(--ux-cuskv8, #09757a));
+}
+
+.premium {
+  color: var(--ux-143smq7, #e20087);
+}
+
+.internal {
+  color: var(--ux-1iwdp0z, #b4006c);
+}
+
+.neutral {
+  color: var(--ux-e1mf41, #145fa9);
+}
+
+.passive {
+  color: var(--color-feedback-passive-text, var(--ux-1m9ys0v, #767676));
+}

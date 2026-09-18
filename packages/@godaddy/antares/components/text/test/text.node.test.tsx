@@ -1,3 +1,4 @@
+import { TreatmentsExample } from '../examples/treatments.tsx';
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { DefaultExample } from '../examples/default.tsx';
@@ -9,6 +10,9 @@ import { EmptyTextExample } from '../examples/empty.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Text', function textTests() {
+    it('renders typography treatments', function treatments() {
+      expect(renderToString(<TreatmentsExample />)).toMatchSnapshot();
+    });
     it('renders the text example', function rendersText() {
       const result = renderToString(<DefaultExample />);
       expect(result).toMatchSnapshot();

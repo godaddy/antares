@@ -28,6 +28,23 @@ npm install --save @godaddy/antares
 
 <Examples of={Stories.Examples} />
 
+## Sizing and typography
+
+TextField consumes explicit size, then interface size, then `md`, and provides that size to its parts.
+Label uses the shared label treatment. Input, TextArea, and input-group icons share input typography.
+Descriptions accept Text or Detail; explicit child typography and layout props win.
+
+| Field size | Label / input tier | Supporting Detail tier | Input padding | Minimum input height | Gap |
+| --- | --- | --- | --- | --- | --- |
+| `sm` | `sm` | `md` | 1 GU | 2rem | `xs` |
+| `md` | `md` | `lg` | 2 GU | 2.5rem | `sm` |
+| `lg` | `lg` | `xl` | 3 GU | 3rem | `md` |
+
+These mappings are provisional for pilot review. Supporting text defaults to passive color; errors use
+critical color. Owned buttons inherit the field size. Select still supports only `sm`/`md`, so a Select
+composed into a large field uses its current medium treatment until its later adoption.
+Input `size` remains the native character-width attribute, independent of interface sizing.
+
 ## Props
 
 ```tsx
