@@ -1,1 +1,0 @@
-import{i as e}from"./preload-helper-ChRh7Ex_.js";import{n as t,r as n}from"./chunk-Y2CYZVJY-WbSB_Glh.js";function r(e,t){e.accDescr&&t.setAccDescription?.(e.accDescr),e.accTitle&&t.setAccTitle?.(e.accTitle),e.title&&t.setDiagramTitle?.(e.title)}var i=e((()=>{n(),t(r,`populateCommonDb`)}));export{r as n,i as t};
