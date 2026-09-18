@@ -26,18 +26,21 @@
   margin-inline-end: var(--sp-sm);
 }
 
-.header {
+.dialog > :where(.header) {
   grid-area: header;
 }
 
-.content {
+.dialog > :where(.content) {
   grid-area: content;
 }
 
-.footer {
+.dialog > :where(.footer) {
   grid-area: footer;
 }
 
-.buttons {
+.dialog > :where(.buttons) {
   grid-area: buttons;
+  justify-content: end;
+  padding-inline: var(--sp-md);
+  padding-block: var(--sp-sm);
 }
