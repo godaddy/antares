@@ -1,0 +1,59 @@
+.card {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  border-radius: var(--size-radius-lg, var(--ux-2jubes, 6px));
+}
+
+/* A consumer-set elevation hands the surface chrome to Box. */
+.card:where(:not([data-elevation])) {
+  background: var(--color-surface-background-card, var(--ux-cao06b, #fff));
+  border: 1px solid var(--color-surface-border-card, var(--ux-97h3vl, #d4dbe0));
+  color: var(--color-surface-text-card, var(--ux-1leynsm, #111));
+}
+
+.card:where([data-card="interactive"]):where(:hover) {
+  cursor: pointer;
+  border-color: var(--color-action-border-primary-hovered, var(--ux-bgke81, #444444));
+}
+
+/* Only Card's own primary and selection controls ring the surface. Composed controls ring themselves. */
+.card:where(:has(> :where(.link, .primary)[data-focus-visible])),
+.card:where(:has([data-card-selection-indicator][data-focus-visible])):where(
+  :not(:has([data-card] [data-card-selection-indicator][data-focus-visible]))
+) {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+}
+
+.card:where([data-card-selected], [data-card-indeterminate]) {
+  border-color: var(--color-input-border-selected, var(--ux-77zzwv, #00a4a6));
+}
+
+/* Direct CornerActions sit in the padding box at the top-end. Nest them to keep them in flow. */
+.card > :where([data-corner-actions]) {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  padding-block-start: inherit;
+  padding-inline-end: inherit;
+}
+
+.link,
+.primary {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.card:where(:has(> .link)) {
+  user-select: none;
+}
+
+.primary {
+  z-index: -1;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+}

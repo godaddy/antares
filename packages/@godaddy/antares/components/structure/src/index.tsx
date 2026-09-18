@@ -3,3 +3,4 @@ export { Header, HeaderContext, type HeaderProps } from './header.tsx';
 export { Footer, FooterContext, type FooterProps } from './footer.tsx';
 export { ButtonGroup, ButtonGroupContext, type ButtonGroupProps } from './button-group.tsx';
 export { Group, GroupContext, type GroupProps } from './group.tsx';
+export { CornerActions, CornerActionsContext, type CornerActionsProps } from './corner-actions.tsx';

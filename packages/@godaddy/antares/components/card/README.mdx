@@ -1,0 +1,68 @@
+---
+title: Card
+description: A padded surface for composing media, content, actions, and selection.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './card.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+Card is a layout surface. Default padding and gap are `lg`. Direct `CornerActions` sit at the
+top-end. `href` and `onPress` add a primary action. `selection` adds a checkbox or radio; place
+`CardSelectionIndicator` yourself. Clicking the Card body toggles selection unless the Card also
+has a primary action.
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Customization
+
+Pass non-interactive children or a selection-state render function to `CardSelectionIndicator`
+to replace its default circle and icon. See the Checkbox example. Native selection and keyboard
+behavior are preserved.
+
+## Accessibility
+
+- Name a primary action with `aria-label` or `aria-labelledby`. The stretched control has no visible
+  label of its own.
+- Name selection separately with `selectionProps` when the Card also has a primary action.
+- `href` turns the Card into a native link. Modifier-click, middle-click, and "Open in new tab" work
+  on the surface. Body text is not selectable. Do not put CornerActions on an `href` Card. Clicking
+  body text on an `onPress` or selection Card activates it; dragging that text selects it.
+- `isDisabled` disables only the primary. `isSelectionDisabled` disables only selection. Radio
+  read-only and validation state belong on `RadioGroup`.
+
+## Props
+
+```tsx
+<Card>
+  <CornerActions>
+    <CardSelectionIndicator />
+  </CornerActions>
+
+  <Image />
+  <TextLockup>
+    <Tag slot="eyebrow" />
+    <Heading slot="title" />
+    <Text slot="body" />
+  </TextLockup>
+  {/* ... */}
+</Card>
+```
+
+### Card
+
+<ArgTypes of={Stories.Props} />
+
+### CardSelectionIndicator
+
+<ArgTypes of={Stories.CardSelectionIndicatorProps} />
