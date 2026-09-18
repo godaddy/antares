@@ -23,6 +23,7 @@ export function SelectionProvider({ kind, children }: { kind: 'checkbox' | 'radi
   );
 }
 
+/** Props for the visual indicator of a Card's native selection control. */
 export interface CardSelectionIndicatorProps extends HTMLAttributes<HTMLSpanElement> {
   /** Additional CSS class for the indicator. */
   className?: string;

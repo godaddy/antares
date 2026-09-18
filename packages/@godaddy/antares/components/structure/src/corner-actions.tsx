@@ -2,6 +2,7 @@ import { createContext, forwardRef } from 'react';
 import { useContextProps, type ContextValue } from 'react-aria-components';
 import { Flex, type FlexProps } from '#components/layout/flex';
 
+/** Layout and HTML props for a composed surface's trailing actions region. */
 export interface CornerActionsProps extends Omit<FlexProps, 'as'> {}
 
 /** Lets a parent style/space every CornerActions region it renders. */
