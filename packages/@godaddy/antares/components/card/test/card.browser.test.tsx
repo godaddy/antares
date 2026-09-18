@@ -662,6 +662,32 @@ describe('@godaddy/antares', function packageTests() {
 
       it.each([
         'checkbox',
+        'radio',
+        'action'
+      ] as const)('moves keyboard focus to the %s control after a body click', async function bodyClickThenKeyboard(kind) {
+        const { getByRole, getByText, body } = await renderInteraction(kind);
+        await userEvent.click(body);
+        if (kind === 'action') {
+          await expect.element(getByRole('button', { name: 'Option one' })).toHaveFocus();
+          await userEvent.keyboard('{Enter}');
+          await expect.element(getByText('Primary activations: 2')).toBeInTheDocument();
+          return;
+        }
+
+        await expect.element(getByRole(kind, { name: 'Option one' })).toHaveFocus();
+        if (kind === 'checkbox') {
+          await userEvent.keyboard(' ');
+          await expect.element(getByRole('checkbox', { name: 'Option one' })).not.toBeChecked();
+          return;
+        }
+
+        await userEvent.keyboard('{ArrowRight}');
+        await expect.element(getByRole('radio', { name: 'Option two' })).toBeChecked();
+        await expect.element(getByRole('radio', { name: 'Option two' })).toHaveFocus();
+      });
+
+      it.each([
+        'checkbox',
         'action'
       ] as const)('responds to every repeated %s body click', async function repeatedClicks(kind) {
         const { getByRole, getByText, body } = await renderInteraction(kind);

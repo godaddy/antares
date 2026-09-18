@@ -33,6 +33,7 @@ export function useForwardedClick(
     if (!destination) return;
     forwardingRef.current = true;
     try {
+      destination.focus({ preventScroll: true });
       destination.click();
     } finally {
       forwardingRef.current = false;

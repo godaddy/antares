@@ -2,7 +2,7 @@
   position: relative;
   isolation: isolate;
   box-sizing: border-box;
-  border-radius: var(--radius-surface-card, var(--ux-2jubes, 6px));
+  border-radius: var(--size-radius-lg, var(--ux-2jubes, 6px));
 }
 
 /* A consumer-set elevation hands the surface chrome to Box. */
