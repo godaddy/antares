@@ -1,7 +1,6 @@
 import { createContext, forwardRef } from 'react';
 import { useContextProps, type ContextValue } from 'react-aria-components';
 import { Flex, type FlexProps } from '#components/layout/flex';
-import { composeStyle } from '#utils/render-props.ts';
 
 export interface ContentProps extends FlexProps {}
 
@@ -26,7 +25,7 @@ export const Content = forwardRef<HTMLElement, ContentProps>(function Content(pr
       flex="1 1 auto"
       inlinePadding="md"
       blockPadding="sm"
-      style={composeStyle(styleProps, { minBlockSize: 0, overflow: 'auto' })}
+      style={{ minBlockSize: 0, overflow: 'auto', ...styleProps }}
       {...rest}
       ref={ref}
     />

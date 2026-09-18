@@ -7,7 +7,11 @@ export interface CornerActionsProps extends Omit<FlexProps, 'as'> {}
 /** Lets a parent style/space every CornerActions region it renders. */
 export const CornerActionsContext = createContext<ContextValue<CornerActionsProps, HTMLDivElement>>(null);
 
-/** Always-visible trailing actions region for composed surfaces. */
+/**
+ * Always-visible trailing actions region for composed surfaces.
+ *
+ * @param props - {@link CornerActionsProps}
+ */
 export const CornerActions = forwardRef<HTMLDivElement, CornerActionsProps>(function CornerActions(props, ref) {
   [props, ref] = useContextProps(props, ref, CornerActionsContext);
 

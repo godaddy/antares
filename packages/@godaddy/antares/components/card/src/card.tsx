@@ -46,7 +46,7 @@ const IDLE_RENDER_PROPS: CardRenderProps = {
 
 type CardLayoutProps = Omit<FlexProps, 'as' | 'children' | 'onClick' | 'className' | 'style'>;
 
-export interface CardProps extends CardLayoutProps {
+interface CardBaseProps extends CardLayoutProps {
   /** Card contents. */
   children?: ReactNode;
 
@@ -67,9 +67,6 @@ export interface CardProps extends CardLayoutProps {
 
   /** Observe clicks on the Card surface. Call `preventDefault` to skip native link navigation. */
   onClick?: MouseEventHandler<HTMLDivElement>;
-
-  /** Native selection behavior. Radio cards belong inside a RadioGroup. */
-  selection?: 'checkbox' | 'radio';
 
   /** Selection value submitted by a form or group. Required for radio cards. */
   value?: string;
@@ -98,9 +95,6 @@ export interface CardProps extends CardLayoutProps {
   /** Require a standalone checkbox card to be selected for form submission. */
   isRequired?: boolean;
 
-  /** Selection validation state. */
-  isInvalid?: boolean;
-
   /** Labels the selection control when it should not share the primary action's name. */
   selectionProps?: Pick<RACCheckboxFieldProps, 'aria-label' | 'aria-labelledby' | 'aria-describedby'>;
 
@@ -112,6 +106,25 @@ export interface CardProps extends CardLayoutProps {
     | CSSProperties
     | ((renderProps: CardRenderProps & { defaultStyle: CSSProperties }) => CSSProperties | undefined);
 }
+
+interface CheckboxCardProps extends CardBaseProps {
+  /** Enable native checkbox selection. */
+  selection: 'checkbox';
+
+  /** Checkbox selection validation state. */
+  isInvalid?: boolean;
+}
+
+interface NonCheckboxCardProps extends CardBaseProps {
+  /** Enable native radio selection inside a RadioGroup, or omit for no selection. */
+  selection?: 'radio';
+
+  /** Radio validation belongs on RadioGroup. */
+  isInvalid?: never;
+}
+
+/** Props for Card. Only checkbox selection accepts local validation state. */
+export type CardProps = CheckboxCardProps | NonCheckboxCardProps;
 
 function requireRadioValue(value: string | undefined) {
   if (value == null) throw new Error('Card with selection="radio" requires a value.');
@@ -126,7 +139,11 @@ function resolveStyle(style: CardProps['style'], state: CardRenderProps) {
   return typeof style === 'function' ? style({ ...state, defaultStyle: {} }) : style;
 }
 
-/** A composed surface with optional primary action and native selection. */
+/**
+ * A composed surface with optional primary action and native selection.
+ *
+ * @param props - {@link CardProps}
+ */
 export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, ref) {
   const {
     selection,
@@ -160,7 +177,10 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
 
   function resolveForwardTarget(card: HTMLDivElement) {
     if (hasPrimary) return primaryRef.current;
-    return card.querySelector<HTMLElement>('[data-card-selection-control] input');
+    for (const input of card.querySelectorAll<HTMLInputElement>('[data-card-selection-control] input')) {
+      if (input.closest('[data-card]') === card) return input;
+    }
+    return null;
   }
 
   const forwardedClick = useForwardedClick(resolveForwardTarget, onClick);

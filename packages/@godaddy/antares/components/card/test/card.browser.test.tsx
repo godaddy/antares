@@ -454,6 +454,46 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(getByText('Outer activations: 1')).toBeInTheDocument();
         await expect.element(getByText('Inner activations: 1')).toBeInTheDocument();
       });
+
+      it('selects its own input when a nested Card precedes its indicator', async function nestedSelection() {
+        const { getByRole, getByText } = await render(<NestedExample selection="checkbox" />);
+        await userEvent.click(getByText('Outer copy'));
+        await expect.element(getByRole('checkbox', { name: 'Outer card' })).toBeChecked();
+        await expect.element(getByRole('checkbox', { name: 'Inner card' })).not.toBeChecked();
+        await userEvent.click(getByText('Inner copy'));
+        await expect.element(getByRole('checkbox', { name: 'Inner card' })).toBeChecked();
+        await expect.element(getByRole('checkbox', { name: 'Outer card' })).toBeChecked();
+      });
+
+      it('does not use a nested input when its own indicator is omitted', async function missingIndicator() {
+        const { getByRole, getByText } = await render(
+          <NestedExample selection="checkbox" showOuterIndicator={false} />
+        );
+        await userEvent.click(getByText('Outer copy'));
+        await expect.element(getByRole('checkbox', { name: 'Inner card' })).not.toBeChecked();
+      });
+
+      it.each([
+        { focusable: 'card', primary: undefined },
+        { focusable: 'ancestor', primary: undefined },
+        { focusable: 'card', primary: 'action' },
+        { focusable: 'ancestor', primary: 'action' }
+      ] as const)('forwards body clicks with a focusable $focusable and primary=$primary', async function focusableSurface(props) {
+        const { getByRole, getByText } = await render(<InteractionsExample {...props} />);
+        await userEvent.click(getByText('One: copy this text without changing selection.'));
+        if (props.primary) {
+          await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
+          await expect.element(getByRole('checkbox', { name: 'Option one' })).not.toBeChecked();
+        } else {
+          await expect.element(getByRole('checkbox', { name: 'Option one' })).toBeChecked();
+        }
+        await userEvent.click(getByRole('button', { name: 'Independent One' }));
+        await expect.element(getByText('Independent activations: 1')).toBeInTheDocument();
+        await expect.element(getByText(`Primary activations: ${props.primary ? 1 : 0}`)).toBeInTheDocument();
+        expect((getByRole('checkbox', { name: 'Option one' }).element() as HTMLInputElement).checked).toBe(
+          !props.primary
+        );
+      });
     });
 
     describe('pointer gestures', function pointerGestureTests() {

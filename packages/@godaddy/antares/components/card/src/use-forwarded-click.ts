@@ -4,12 +4,11 @@ const NESTED_CONTROL =
   'a, button, input, textarea, select, summary, label, [contenteditable]:not([contenteditable="false"]), [data-react-aria-pressable], [role="button"], [role="link"], [tabindex], [data-corner-actions], [data-card-selection-control]';
 
 function isSurfaceTarget(event: MouseEvent<HTMLDivElement>) {
-  const target = event.target;
-  return (
-    target instanceof Element &&
-    target.closest('[data-card]') === event.currentTarget &&
-    !target.closest(NESTED_CONTROL)
-  );
+  const { target, currentTarget } = event;
+  if (!(target instanceof Element) || target.closest('[data-card]') !== currentTarget) return false;
+
+  const control = target.closest(NESTED_CONTROL);
+  return !control || control === currentTarget || !currentTarget.contains(control);
 }
 
 /** Forwards surface clicks, leaving text selection and independent controls alone. */

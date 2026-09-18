@@ -36,7 +36,11 @@ interface IndicatorState {
   isFocusVisible?: boolean;
 }
 
-/** A circular, explicitly placed visual for a Card's native selection control. */
+/**
+ * A circular, explicitly placed visual for a Card's native selection control.
+ *
+ * @param props - {@link CardSelectionIndicatorProps}
+ */
 export const CardSelectionIndicator = forwardRef<HTMLSpanElement, CardSelectionIndicatorProps>(
   function CardSelectionIndicator({ className, ...props }, ref) {
     const control = useContext(SelectionContext);

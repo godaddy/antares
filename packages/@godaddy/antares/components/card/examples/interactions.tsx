@@ -26,7 +26,8 @@ export function InteractionsExample({
   isIndeterminate,
   isRequired,
   isInvalid,
-  defaultSelected = false
+  defaultSelected = false,
+  focusable
 }: {
   kind?: 'checkbox' | 'radio';
   primary?: 'action' | 'navigation';
@@ -37,6 +38,7 @@ export function InteractionsExample({
   isRequired?: boolean;
   isInvalid?: boolean;
   defaultSelected?: boolean;
+  focusable?: 'card' | 'ancestor';
 }) {
   const [presses, setPresses] = useState(0);
   const [actions, setActions] = useState(0);
@@ -95,11 +97,12 @@ export function InteractionsExample({
 
   const primaryProps = {
     isDisabled: isPrimaryDisabled,
-    onPress: primary ? activate : undefined
+    onPress: primary ? activate : undefined,
+    tabIndex: focusable === 'card' ? 0 : undefined
   };
 
   return (
-    <Box as="form" onSubmit={submit}>
+    <Box as="form" onSubmit={submit} tabIndex={focusable === 'ancestor' ? 0 : undefined}>
       {kind === 'radio' ? (
         <RadioGroup
           aria-label="Choose an option"
