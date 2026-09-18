@@ -9,6 +9,7 @@ import { CheckboxExample } from '../examples/checkbox.tsx';
 import { RadioExample } from '../examples/radio.tsx';
 import { LayoutExample } from '../examples/layout.tsx';
 import { MediaExample } from '../examples/media.tsx';
+import { TypesExample } from '../examples/types.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Card', function cardTests() {
@@ -38,6 +39,10 @@ describe('@godaddy/antares', function packageTests() {
 
     it('renders grouped radio selection', function renderRadio() {
       expect(renderToString(<RadioExample />)).toMatchSnapshot();
+    });
+
+    it('renders selection validation examples', function renderTypes() {
+      expect(renderToString(<TypesExample />)).toMatchSnapshot();
     });
 
     it('renders inset, full bleed, standalone and custom media', function renderMedia() {
