@@ -42,7 +42,7 @@ export function ActionsExample() {
       </Card>
 
       <Modal isOpen={isOpen} onOpenChange={setOpen} aria-label="Join our mailing list">
-        <Card>
+        <Card elevation="base">
           <TextLockup>
             <Heading slot="title">Join our mailing list</Heading>
             <Text slot="body">The market is evolving. Stay up to date on the latest trends.</Text>
