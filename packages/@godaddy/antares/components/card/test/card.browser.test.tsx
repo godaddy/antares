@@ -422,6 +422,33 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(getByRole('checkbox', { name: 'Option one' })).not.toBeChecked();
       });
 
+      it.each([
+        { kind: 'checkbox', media: 'audio' },
+        { kind: 'checkbox', media: 'video' },
+        { kind: 'radio', media: 'audio' },
+        { kind: 'radio', media: 'video' },
+        { kind: 'action', media: 'audio' },
+        { kind: 'action', media: 'video' }
+      ] as const)('keeps native $media controls independent of the $kind Card', async function nativeMediaControls({
+        kind,
+        media
+      }) {
+        const { getByLabelText, getByRole, getByText } = await render(
+          <InteractionsExample
+            kind={kind === 'radio' ? 'radio' : 'checkbox'}
+            primary={kind === 'action' ? 'action' : undefined}
+            media={media}
+          />
+        );
+        await userEvent.click(getByLabelText(media === 'audio' ? 'Audio preview' : 'Video preview'), {
+          position: { x: 1, y: 1 }
+        });
+        await expect.element(getByText('Primary activations: 0')).toBeInTheDocument();
+        await expect
+          .element(getByRole(kind === 'radio' ? 'radio' : 'checkbox', { name: 'Option one' }))
+          .not.toBeChecked();
+      });
+
       it('rings the surface for its own controls only', async function focusRing() {
         const { container } = await render(<InteractionsExample primary="action" />);
         const card = container.querySelector<HTMLElement>('[data-card]')!;

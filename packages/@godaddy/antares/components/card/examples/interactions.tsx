@@ -27,7 +27,8 @@ export function InteractionsExample({
   isRequired,
   isInvalid,
   defaultSelected = false,
-  focusable
+  focusable,
+  media
 }: {
   kind?: 'checkbox' | 'radio';
   primary?: 'action' | 'navigation';
@@ -39,6 +40,7 @@ export function InteractionsExample({
   isInvalid?: boolean;
   defaultSelected?: boolean;
   focusable?: 'card' | 'ancestor';
+  media?: 'audio' | 'video';
 }) {
   const [presses, setPresses] = useState(0);
   const [actions, setActions] = useState(0);
@@ -81,6 +83,12 @@ export function InteractionsExample({
       <Box contentEditable suppressContentEditableWarning data-testid="editor-One">
         Editable One
       </Box>
+      {media === 'audio' ? <audio controls aria-label="Audio preview" /> : null}
+      {media === 'video' ? (
+        <video controls aria-label="Video preview" width={300} height={150}>
+          <track kind="captions" />
+        </video>
+      ) : null}
     </>
   );
 

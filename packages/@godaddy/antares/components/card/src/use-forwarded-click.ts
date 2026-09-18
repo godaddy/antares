@@ -1,7 +1,7 @@
 import { useRef, type MouseEvent, type MouseEventHandler } from 'react';
 
 const NESTED_CONTROL =
-  'a, button, input, textarea, select, summary, label, [contenteditable]:not([contenteditable="false"]), [data-react-aria-pressable], [role="button"], [role="link"], [tabindex], [data-corner-actions], [data-card-selection-control]';
+  'a, button, input, textarea, select, summary, label, audio[controls], video[controls], [contenteditable]:not([contenteditable="false"]), [data-react-aria-pressable], [role="button"], [role="link"], [tabindex], [data-corner-actions], [data-card-selection-control]';
 
 function isSurfaceTarget(event: MouseEvent<HTMLDivElement>) {
   const { target, currentTarget } = event;
