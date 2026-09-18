@@ -2,8 +2,6 @@ import { createContext, forwardRef, useContext, type HTMLAttributes, type ReactN
 import {
   CheckboxButton as RACCheckboxButton,
   RadioButton as RACRadioButton,
-  type CheckboxButtonRenderProps,
-  type RadioButtonRenderProps,
   DEFAULT_SLOT,
   TextContext
 } from 'react-aria-components';
@@ -30,38 +28,46 @@ export interface CardSelectionIndicatorProps extends HTMLAttributes<HTMLSpanElem
   className?: string;
 }
 
+interface IndicatorState {
+  isSelected?: boolean;
+  isIndeterminate?: boolean;
+  isDisabled?: boolean;
+  isReadOnly?: boolean;
+  isFocusVisible?: boolean;
+}
+
 /** A circular, explicitly placed visual for a Card's native selection control. */
 export const CardSelectionIndicator = forwardRef<HTMLSpanElement, CardSelectionIndicatorProps>(
-  function CardSelectionIndicator({ className, onClick, ...props }, ref) {
+  function CardSelectionIndicator({ className, ...props }, ref) {
     const control = useContext(SelectionContext);
 
-    const indicator = (state: CheckboxButtonRenderProps | RadioButtonRenderProps, extra?: ReactNode) => (
-      <span
-        {...props}
-        ref={ref}
-        aria-hidden="true"
-        data-card-selection-indicator
-        data-selected={state.isSelected || undefined}
-        data-indeterminate={'isIndeterminate' in state && state.isIndeterminate ? true : undefined}
-        data-disabled={state.isDisabled || undefined}
-        data-readonly={state.isReadOnly || undefined}
-        data-focus-visible={state.isFocusVisible || undefined}
-        className={composeClassName(className, styles.indicator)}
-        onClick={onClick}
-      >
-        {extra ??
-          ('isIndeterminate' in state && state.isIndeterminate ? (
-            <Icon icon="minus" aria-hidden="true" />
-          ) : (
-            <Icon icon="checkmark" className={styles.checkmark} aria-hidden="true" />
-          ))}
-      </span>
-    );
+    function renderIndicator(state: IndicatorState = {}) {
+      return (
+        <span
+          {...props}
+          ref={ref}
+          aria-hidden="true"
+          data-card-selection-indicator
+          data-selected={state.isSelected || undefined}
+          data-indeterminate={state.isIndeterminate || undefined}
+          data-disabled={state.isDisabled || undefined}
+          data-readonly={state.isReadOnly || undefined}
+          data-focus-visible={state.isFocusVisible || undefined}
+          className={composeClassName(className, styles.indicator)}
+        >
+          <Icon
+            icon={state.isIndeterminate ? 'minus' : 'checkmark'}
+            className={state.isIndeterminate ? undefined : styles.checkmark}
+            aria-hidden="true"
+          />
+        </span>
+      );
+    }
 
     if (control === 'checkbox') {
       return (
         <RACCheckboxButton data-card-selection-control className={styles.control}>
-          {(state) => indicator(state)}
+          {renderIndicator}
         </RACCheckboxButton>
       );
     }
@@ -69,14 +75,11 @@ export const CardSelectionIndicator = forwardRef<HTMLSpanElement, CardSelectionI
     if (control === 'radio') {
       return (
         <RACRadioButton data-card-selection-control className={styles.control}>
-          {(state) => indicator(state)}
+          {renderIndicator}
         </RACRadioButton>
       );
     }
 
-    return indicator({
-      isSelected: false,
-      isIndeterminate: false
-    } as CheckboxButtonRenderProps);
+    return renderIndicator();
   }
 );

@@ -1,15 +1,5 @@
+import { forwardRef, useRef, type CSSProperties, type MouseEventHandler, type ReactNode, type Ref } from 'react';
 import {
-  forwardRef,
-  useCallback,
-  useRef,
-  type CSSProperties,
-  type MouseEventHandler,
-  type ReactNode,
-  type Ref,
-  type RefObject
-} from 'react';
-import {
-  Provider as RACProvider,
   Link as RACLink,
   type LinkProps as RACLinkProps,
   CheckboxField as RACCheckboxField,
@@ -35,7 +25,7 @@ export interface CardRenderProps {
   /** Whether selection is disabled. */
   isDisabled: boolean;
 
-  /** Whether checkbox selection is read-only. */
+  /** Whether selection is read-only. */
   isReadOnly: boolean;
 
   /** Whether the card is required. */
@@ -123,24 +113,6 @@ export interface CardProps extends CardLayoutProps {
     | ((renderProps: CardRenderProps & { defaultStyle: CSSProperties }) => CSSProperties | undefined);
 }
 
-interface CardSurfaceProps {
-  selection: 'checkbox' | 'radio' | null;
-  state?: Partial<CardRenderProps>;
-  className?: CardProps['className'];
-  style?: CardProps['style'];
-  surfaceProps: CardLayoutProps;
-  children?: ReactNode;
-  forwardedClick: ReturnType<typeof useForwardedClick>;
-  isInteractive: boolean;
-  href?: RACLinkProps['href'];
-  onPress?: ButtonProps['onPress'];
-  isDisabled?: boolean;
-  ariaLabel?: string;
-  ariaLabelledBy?: string;
-  ariaDescribedBy?: string;
-  primaryRef: RefObject<HTMLElement | null>;
-}
-
 function requireRadioValue(value: string | undefined) {
   if (value == null) throw new Error('Card with selection="radio" requires a value.');
   return value;
@@ -153,71 +125,6 @@ function resolveClassName(className: CardProps['className'], state: CardRenderPr
 function resolveStyle(style: CardProps['style'], state: CardRenderProps) {
   return typeof style === 'function' ? style({ ...state, defaultStyle: {} }) : style;
 }
-
-const CardSurface = forwardRef<HTMLDivElement, CardSurfaceProps>(function CardSurface(
-  {
-    selection,
-    state,
-    className,
-    style,
-    surfaceProps,
-    children,
-    forwardedClick,
-    isInteractive,
-    href,
-    onPress,
-    isDisabled,
-    ariaLabel,
-    ariaLabelledBy,
-    ariaDescribedBy,
-    primaryRef
-  },
-  ref
-) {
-  const selectionState = { ...IDLE_RENDER_PROPS, ...state };
-
-  return (
-    <SelectionProvider kind={selection}>
-      <Flex
-        padding="lg"
-        gap="lg"
-        direction="column"
-        {...surfaceProps}
-        ref={ref}
-        className={composeClassName(resolveClassName(className, selectionState), styles.card)}
-        style={resolveStyle(style, selectionState)}
-        data-card-selected={selectionState.isSelected || undefined}
-        data-card-indeterminate={selectionState.isIndeterminate || undefined}
-        {...forwardedClick}
-        data-card={isInteractive ? 'interactive' : 'static'}
-      >
-        {href != null ? (
-          <RACLink
-            ref={primaryRef as Ref<HTMLAnchorElement>}
-            href={href}
-            onPress={onPress}
-            aria-label={ariaLabel}
-            aria-labelledby={ariaLabelledBy}
-            aria-describedby={ariaDescribedBy}
-            isDisabled={isDisabled}
-            className={styles.link}
-          />
-        ) : onPress != null ? (
-          <Button
-            ref={primaryRef as Ref<HTMLButtonElement>}
-            onPress={onPress}
-            aria-label={ariaLabel}
-            aria-labelledby={ariaLabelledBy}
-            aria-describedby={ariaDescribedBy}
-            isDisabled={isDisabled}
-            className={styles.primary}
-          />
-        ) : null}
-        <RACProvider values={[[ButtonGroupContext, {}]]}>{children}</RACProvider>
-      </Flex>
-    </SelectionProvider>
-  );
-});
 
 /** A composed surface with optional primary action and native selection. */
 export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, ref) {
@@ -249,48 +156,63 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
 
   const hasPrimary = href != null || onPress != null;
   const primaryRef = useRef<HTMLElement>(null);
-  const forwardsPrimary = hasPrimary && !isDisabled;
-  const forwardsSelection = selection != null && !hasPrimary && !isSelectionDisabled && !isReadOnly;
-  const isInteractive = forwardsPrimary || forwardsSelection;
-  const forwardsSurface = (forwardsPrimary && href == null) || forwardsSelection;
+  const canActivatePrimary = hasPrimary && !isDisabled;
 
-  const resolveForwardTarget = useCallback(
-    function resolveForwardTarget(card: HTMLDivElement) {
-      if (forwardsPrimary) return primaryRef.current;
-      return card.querySelector<HTMLElement>('[data-card-selection-control] input');
-    },
-    [forwardsPrimary]
-  );
+  function resolveForwardTarget(card: HTMLDivElement) {
+    if (hasPrimary) return primaryRef.current;
+    return card.querySelector<HTMLElement>('[data-card-selection-control] input');
+  }
 
-  const forwardedClick = useForwardedClick(forwardsSurface, resolveForwardTarget, {
-    onClick,
-    onPointerDown: surfaceProps.onPointerDown,
-    onPointerMove: surfaceProps.onPointerMove,
-    onPointerUp: surfaceProps.onPointerUp,
-    onPointerCancel: surfaceProps.onPointerCancel
-  });
+  const forwardedClick = useForwardedClick(resolveForwardTarget, onClick);
 
-  const surface = (state?: Partial<CardRenderProps>) => (
-    <CardSurface
-      ref={ref}
-      selection={selection ?? null}
-      state={state}
-      className={className}
-      style={style}
-      surfaceProps={surfaceProps}
-      forwardedClick={forwardedClick}
-      isInteractive={isInteractive}
-      href={href}
-      onPress={onPress}
-      isDisabled={isDisabled}
-      ariaLabel={ariaLabel}
-      ariaLabelledBy={ariaLabelledBy}
-      ariaDescribedBy={ariaDescribedBy}
-      primaryRef={primaryRef}
-    >
-      {children}
-    </CardSurface>
-  );
+  function renderSurface(state?: Partial<CardRenderProps>) {
+    const selectionState = { ...IDLE_RENDER_PROPS, ...state };
+    const canSelect = selection != null && !hasPrimary && !selectionState.isDisabled && !selectionState.isReadOnly;
+    const isInteractive = canActivatePrimary || canSelect;
+    const shouldForwardClick = (canActivatePrimary && href == null) || canSelect;
+
+    return (
+      <SelectionProvider kind={selection ?? null}>
+        <Flex
+          padding="lg"
+          gap="lg"
+          direction="column"
+          {...surfaceProps}
+          ref={ref}
+          className={composeClassName(resolveClassName(className, selectionState), styles.card)}
+          style={resolveStyle(style, selectionState)}
+          data-card-selected={selectionState.isSelected || undefined}
+          data-card-indeterminate={selectionState.isIndeterminate || undefined}
+          onClick={shouldForwardClick ? forwardedClick : onClick}
+          data-card={isInteractive ? 'interactive' : 'static'}
+        >
+          {href != null ? (
+            <RACLink
+              ref={primaryRef as Ref<HTMLAnchorElement>}
+              href={href}
+              onPress={onPress}
+              aria-label={ariaLabel}
+              aria-labelledby={ariaLabelledBy}
+              aria-describedby={ariaDescribedBy}
+              isDisabled={isDisabled}
+              className={styles.link}
+            />
+          ) : onPress != null ? (
+            <Button
+              ref={primaryRef as Ref<HTMLButtonElement>}
+              onPress={onPress}
+              aria-label={ariaLabel}
+              aria-labelledby={ariaLabelledBy}
+              aria-describedby={ariaDescribedBy}
+              isDisabled={isDisabled}
+              className={styles.primary}
+            />
+          ) : null}
+          <ButtonGroupContext.Provider value={null}>{children}</ButtonGroupContext.Provider>
+        </Flex>
+      </SelectionProvider>
+    );
+  }
 
   const hasSelectionName = selectionProps?.['aria-label'] != null || selectionProps?.['aria-labelledby'] != null;
   const fieldProps = {
@@ -316,7 +238,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
         isRequired={isRequired}
         isInvalid={isInvalid}
       >
-        {surface}
+        {renderSurface}
       </RACCheckboxField>
     );
   }
@@ -324,10 +246,10 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
   if (selection === 'radio') {
     return (
       <RACRadioField {...fieldProps} value={requireRadioValue(value)}>
-        {surface}
+        {renderSurface}
       </RACRadioField>
     );
   }
 
-  return surface();
+  return renderSurface();
 });
