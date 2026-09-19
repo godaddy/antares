@@ -33,7 +33,8 @@ import {
   resolveLegendPosition,
   xAccessor as defaultXAccessor,
   yAccessor as defaultYAccessor,
-  getXLabelVerticalProps
+  getXLabelVerticalProps,
+  isValidColorIndex
 } from '../../utils.ts';
 import { useNormalizedSeries } from '#components/chart/_internal/use-normalized-series';
 import { buildScaleConfig } from './scale-config.ts';
@@ -370,8 +371,7 @@ export function LineChart<
     function getSeriesColors() {
       return series.map(function resolveColor(oneSeries, index) {
         const { colorIndex } = oneSeries;
-        const paletteIndex =
-          typeof colorIndex === 'number' && Number.isInteger(colorIndex) && colorIndex >= 0 ? colorIndex : index;
+        const paletteIndex = isValidColorIndex(colorIndex) ? colorIndex : index;
         return chartColorForIndex(paletteIndex);
       });
     },
