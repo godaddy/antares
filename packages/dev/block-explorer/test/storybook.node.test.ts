@@ -87,6 +87,36 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
     expect(result?.match(/import \{ BlockLinks \}/g)).toHaveLength(1);
   });
 
+  it('leaves fenced examples and MDX comments as documentation', async function ignoresDocumentedMarkers() {
+    const source = [
+      '```mdx',
+      '<Block id="fixture-block" of={Stories.Preview} />',
+      '<BlockLink id="fixture-block" />',
+      '```',
+      '',
+      '{/* <Block id="fixture-block" of={Stories.Preview} /> */}',
+      '',
+      'Use `<Block id="fixture-block" of={Stories.Preview} />` in docs.'
+    ].join('\n');
+
+    await expect(runTransform(generateBlocksPlugin(), source, componentReadme)).resolves.toBeNull();
+  });
+
+  it('expands live markers without rewriting documented examples', async function expandsOnlyLiveMarkers() {
+    const source = [
+      '```mdx',
+      '<Block id="missing-block" of={Stories.Preview} />',
+      '```',
+      '',
+      '<Block id="fixture-block" of={Stories.Preview} />'
+    ].join('\n');
+    const result = await runTransform(generateBlocksPlugin(), source, componentReadme);
+
+    expect(result).toContain('<Block id="missing-block" of={Stories.Preview} />');
+    expect(result).toContain('<StorybookBlockExplorer block={');
+    expect(result).not.toContain('<Block id="fixture-block"');
+  });
+
   it('reports missing marker attributes with the README path', async function reportsInvalidMarkers() {
     await expect(
       runTransform(generateBlocksPlugin(), '<Block id="fixture-block" />', invalidBlockReadme)

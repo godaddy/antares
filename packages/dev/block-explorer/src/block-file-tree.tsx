@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Button, Flex, Heading, Icon, Text } from '@godaddy/antares';
 import type { FileTreeNode } from './types.ts';
 import styles from './runtime.module.css';
@@ -48,6 +48,17 @@ function FileTreeNodeView({
   onFileSelect(path: string): void;
 }) {
   const [expanded, setExpanded] = useState(true);
+  const handleFolderPress = useCallback(function handleFolderPress() {
+    setExpanded(function toggleExpanded(value: boolean) {
+      return !value;
+    });
+  }, []);
+  const handleFilePress = useCallback(
+    function handleFilePress() {
+      onFileSelect(node.path);
+    },
+    [node.path, onFileSelect]
+  );
 
   if (node.type === 'folder') {
     return (
@@ -62,11 +73,7 @@ function FileTreeNodeView({
           gap="sm"
           inlinePaddingStart="sm"
           aria-expanded={expanded}
-          onPress={function handleFolderPress() {
-            setExpanded(function toggleExpanded(value: boolean) {
-              return !value;
-            });
-          }}
+          onPress={handleFolderPress}
         >
           <Icon icon={expanded ? 'chevron-down' : 'chevron-right'} width={16} height={16} />
           <Icon icon={expanded ? 'folder-open' : 'folder'} width={16} height={16} />
@@ -97,10 +104,8 @@ function FileTreeNodeView({
       justifyContent="flex-start"
       gap="sm"
       inlinePaddingStart="sm"
-      aria-current={activePath === node.path ? 'page' : undefined}
-      onPress={function handleFilePress() {
-        onFileSelect(node.path);
-      }}
+      aria-pressed={activePath === node.path}
+      onPress={handleFilePress}
     >
       <Icon icon="page" width={16} height={16} />
       <Text maxLines={1} wrap="nowrap">

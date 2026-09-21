@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Box, Flex, Icon, LinkButton, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';
 import { BlockFileTree } from './block-file-tree.tsx';
 import { BlockSourcePanel } from './block-source-panel.tsx';
@@ -56,24 +56,32 @@ export function BlockLinks({ blocks }: BlockLinksProps) {
   return (
     <Flex as="nav" aria-label="Related blocks" direction="column" gap="xs">
       {blocks.map(function renderBlockLink(block: BlockLinkItem) {
-        return (
-          <LinkButton
-            className={styles.blockLink}
-            key={block.id}
-            href={block.href}
-            target={block.target}
-            // React Aria filters `target`; assign it on the anchor to preserve the host-provided browsing context.
-            ref={function setBlockTarget(element: HTMLAnchorElement | null) {
-              if (element) element.target = block.target ?? '';
-            }}
-            variant="minimal"
-          >
-            {block.id}
-            <Icon icon="chevron-right" />
-          </LinkButton>
-        );
+        return <BlockLinkItemView key={block.id} block={block} />;
       })}
     </Flex>
+  );
+}
+
+function BlockLinkItemView({ block }: { block: BlockLinkItem }) {
+  const setBlockTarget = useCallback(
+    function setBlockTarget(element: HTMLAnchorElement | null) {
+      // React Aria filters `target`; assign it on the anchor to preserve the host-provided browsing context.
+      if (element) element.target = block.target ?? '';
+    },
+    [block.target]
+  );
+
+  return (
+    <LinkButton
+      className={styles.blockLink}
+      href={block.href}
+      target={block.target}
+      ref={setBlockTarget}
+      variant="minimal"
+    >
+      {block.id}
+      <Icon icon="chevron-right" />
+    </LinkButton>
   );
 }
 
@@ -92,21 +100,21 @@ export function BlockExplorer({ block, children, codeRenderer }: BlockExplorerPr
     },
     [block.files]
   );
-  const activeFile =
-    block.files.find(function findActiveFile(file: BlockFile) {
+  const findActiveFile = useCallback(
+    function findActiveFile(file: BlockFile) {
       return file.path === activePath;
-    }) ?? block.files[0];
+    },
+    [activePath]
+  );
+  const activeFile = block.files.find(findActiveFile) ?? block.files[0];
+  const handleViewChange = useCallback(function handleViewChange(value: string) {
+    setView(value as BlockView);
+  }, []);
 
   return (
     <Box className={styles.root}>
       <BlockToolbar blockId={block.id} description={block.description} installCommand={block.installCommand}>
-        <SegmentedController
-          aria-label={`${block.id} view`}
-          value={view}
-          onSelectionChange={function handleViewChange(value: string) {
-            setView(value as BlockView);
-          }}
-        >
+        <SegmentedController aria-label={`${block.id} view`} value={view} onSelectionChange={handleViewChange}>
           <SegmentedControllerItem value="preview">Preview</SegmentedControllerItem>
           <SegmentedControllerItem value="code">Code</SegmentedControllerItem>
         </SegmentedController>
@@ -118,14 +126,10 @@ export function BlockExplorer({ block, children, codeRenderer }: BlockExplorerPr
       ) : (
         <Box className={styles.codeSurface} rounding="md" elevation="card">
           <Flex className={styles.codeLayout} alignItems="stretch">
-            <BlockFileTree
-              tree={tree}
-              activePath={activeFile?.path}
-              onFileSelect={function handleFileSelect(path: string) {
-                setActivePath(path);
-              }}
-            />
-            {activeFile ? <BlockSourcePanel file={activeFile} codeRenderer={codeRenderer} /> : null}
+            <BlockFileTree tree={tree} activePath={activeFile?.path} onFileSelect={setActivePath} />
+            {activeFile ? (
+              <BlockSourcePanel key={`${block.id}:${activeFile.path}`} file={activeFile} codeRenderer={codeRenderer} />
+            ) : null}
           </Flex>
         </Box>
       )}

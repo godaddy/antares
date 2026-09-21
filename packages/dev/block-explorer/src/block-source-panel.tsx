@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ComponentType } from 'react';
+import { useCallback, useEffect, useRef, useState, type ComponentType } from 'react';
 import { Box, Button, Flex, Icon, Text } from '@godaddy/antares';
 import type { BlockCodeRendererProps, BlockFile } from './types.ts';
 import styles from './runtime.module.css';
@@ -40,6 +40,28 @@ export function BlockSourcePanel({ file, codeRenderer: CodeRenderer = PlainCode 
     [file.path]
   );
 
+  const copySource = useCallback(
+    async function copySource() {
+      if (resetCopiedTimeout.current !== undefined) {
+        window.clearTimeout(resetCopiedTimeout.current);
+        resetCopiedTimeout.current = undefined;
+      }
+      setCopyStatus('idle');
+
+      try {
+        await navigator.clipboard.writeText(file.source);
+        setCopyStatus('copied');
+        resetCopiedTimeout.current = window.setTimeout(function resetCopied() {
+          setCopyStatus('idle');
+          resetCopiedTimeout.current = undefined;
+        }, 1500);
+      } catch {
+        setCopyStatus('error');
+      }
+    },
+    [file.source]
+  );
+
   return (
     <Flex direction="column" className={styles.sourcePanel} flex="1 1 auto">
       <Flex
@@ -58,24 +80,7 @@ export function BlockSourcePanel({ file, codeRenderer: CodeRenderer = PlainCode 
             variant="minimal"
             size="sm"
             aria-label={`${copied ? 'Copied' : failed ? 'Retry copying' : 'Copy'} ${file.path}`}
-            onPress={async function copySource() {
-              if (resetCopiedTimeout.current !== undefined) {
-                window.clearTimeout(resetCopiedTimeout.current);
-                resetCopiedTimeout.current = undefined;
-              }
-              setCopyStatus('idle');
-
-              try {
-                await navigator.clipboard.writeText(file.source);
-                setCopyStatus('copied');
-                resetCopiedTimeout.current = window.setTimeout(function resetCopied() {
-                  setCopyStatus('idle');
-                  resetCopiedTimeout.current = undefined;
-                }, 1500);
-              } catch {
-                setCopyStatus('error');
-              }
-            }}
+            onPress={copySource}
           >
             <Icon icon={copied ? 'checkmark' : 'copy'} width={16} height={16} />
             <Text>{copied ? 'Copied' : failed ? 'Retry' : 'Copy'}</Text>

@@ -22,7 +22,10 @@
   ],
   "dependencies": {
     "estree-util-value-to-estree": "^3.5.0",
-    "mdast-util-mdx-jsx": "^3.2.0"
+    "mdast-util-mdx-jsx": "^3.2.0",
+    "remark-mdx": "^3.1.1",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.5"
   },
   "devDependencies": {
     "@godaddy/antares": "*",
@@ -32,9 +35,6 @@
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "mdast": "^3.0.0",
-    "remark-mdx": "^3.1.1",
-    "remark-parse": "^11.0.0",
-    "unified": "^11.0.5",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "storybook": "^10.5.7",

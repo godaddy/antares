@@ -27,7 +27,7 @@ describe('block explorer runtime', function runtimeTests() {
     await userEvent.click(getByRole('radio', { name: 'Code' }));
     await expect.element(getByTestId('source-file')).toHaveTextContent('index.tsx');
     const activeFileButton = getByRole('button', { name: 'index.tsx', exact: true });
-    await expect.element(activeFileButton).toHaveAttribute('aria-current', 'page');
+    await expect.element(activeFileButton).toHaveAttribute('aria-pressed', 'true');
 
     await userEvent.click(getByRole('button', { name: 'theme.css', exact: true }));
     await expect.element(getByTestId('source-file')).toHaveTextContent('styles/theme.css');

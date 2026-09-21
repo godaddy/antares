@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Flex, Icon, Text } from '@godaddy/antares';
 
 type CopyStatus = 'idle' | 'copied' | 'error';
@@ -25,30 +25,35 @@ export function BlockInstallButton({ blockId, command }: BlockInstallButtonProps
     };
   }, []);
 
+  const copyInstallCommand = useCallback(
+    async function copyInstallCommand() {
+      if (resetCopiedTimeout.current !== undefined) {
+        window.clearTimeout(resetCopiedTimeout.current);
+        resetCopiedTimeout.current = undefined;
+      }
+      setCopyStatus('idle');
+
+      try {
+        await navigator.clipboard.writeText(command);
+        setCopyStatus('copied');
+        resetCopiedTimeout.current = window.setTimeout(function resetCopiedState() {
+          setCopyStatus('idle');
+          resetCopiedTimeout.current = undefined;
+        }, 1500);
+      } catch {
+        setCopyStatus('error');
+      }
+    },
+    [command]
+  );
+
   return (
     <Flex alignItems="center" gap="sm">
       <Button
         variant="secondary"
         size="sm"
         aria-label={`${copied ? 'Copied' : failed ? 'Retry copying install command' : 'Copy install command'} for ${blockId}`}
-        onPress={async function copyInstallCommand() {
-          if (resetCopiedTimeout.current !== undefined) {
-            window.clearTimeout(resetCopiedTimeout.current);
-            resetCopiedTimeout.current = undefined;
-          }
-          setCopyStatus('idle');
-
-          try {
-            await navigator.clipboard.writeText(command);
-            setCopyStatus('copied');
-            resetCopiedTimeout.current = window.setTimeout(function resetCopiedState() {
-              setCopyStatus('idle');
-              resetCopiedTimeout.current = undefined;
-            }, 1500);
-          } catch {
-            setCopyStatus('error');
-          }
-        }}
+        onPress={copyInstallCommand}
       >
         <Icon icon={copied ? 'checkmark' : 'download'} width={16} height={16} />
         <Text>{copied ? 'Copied' : failed ? 'Retry' : 'Install'}</Text>
