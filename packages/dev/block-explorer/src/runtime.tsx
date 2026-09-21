@@ -58,6 +58,7 @@ export function BlockLinks({ blocks }: BlockLinksProps) {
       {blocks.map(function renderBlockLink(block: BlockLinkItem) {
         return (
           <LinkButton
+            className={styles.blockLink}
             key={block.id}
             href={block.href}
             target={block.target}

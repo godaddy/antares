@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -12,7 +12,7 @@ vi.mock('../../packages/dev/block-explorer/src/node.ts', () => ({
   loadBlockManifest
 }));
 
-import { buildRegistry, createRegistry } from '../build-registry.ts';
+import { buildRegistry, createRegistry, writeRegistryItems } from '../build-registry.ts';
 
 const temporaryDirectories: string[] = [];
 
@@ -155,6 +155,21 @@ describe('build-registry', function registryBuilderTests() {
     expect(source.endsWith('\n')).toBe(true);
     expect(source).toContain('"dependencies": ["@godaddy/antares"]');
     expect(JSON.parse(source)).toEqual(registry);
+  });
+
+  it('writes individual registry item files for hosted installation', async function writesRegistryItems() {
+    const blocksRoot = await createBlocksRoot([{ id: 'alpha', title: 'Alpha block' }]);
+    loadBlockManifest.mockResolvedValue({ files: [] });
+    const outputDirectory = await mkdtemp(join(tmpdir(), 'registry-items-'));
+
+    const registry = await createRegistry(blocksRoot);
+    await writeRegistryItems(registry, outputDirectory);
+
+    const source = await readFile(join(outputDirectory, 'blocks/alpha.json'), 'utf8');
+    expect(JSON.parse(source)).toEqual({
+      $schema: 'https://ui.shadcn.com/schema/registry-item.json',
+      ...registry.items[0]
+    });
   });
 
   it('does not write when registry creation fails', async function doesNotWriteAfterBuildFailure() {

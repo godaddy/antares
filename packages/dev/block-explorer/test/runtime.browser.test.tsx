@@ -136,6 +136,7 @@ describe('block explorer runtime', function runtimeTests() {
     await expect.element(link).toBeVisible();
     expect(link.element().getAttribute('href')).toBe('/docs/blocks/fixture-block');
     expect(link.element().getAttribute('target')).toBe('_top');
+    await expect.element(link).toHaveStyle('justify-content: space-between');
   });
 
   it('keeps the code view usable when a block has no source files', async function handlesEmptyManifest() {

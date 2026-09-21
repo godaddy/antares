@@ -4,7 +4,7 @@ import { Block, BlockLink } from '../src/runtime.tsx';
 
 describe('block explorer markers', function markerTests() {
   it('renders Block as a build-time no-op', function rendersBlockMarker() {
-    expect(renderToString(<Block id="fixture-block" description="Fixture description." />)).toBe('');
+    expect(renderToString(<Block id="fixture-block" description="Fixture description." of={null} />)).toBe('');
   });
 
   it('renders BlockLink as a build-time no-op', function rendersBlockLinkMarker() {

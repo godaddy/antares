@@ -56,6 +56,27 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
     expect(result).toContain('<Story of={Stories.Preview} inline />');
   });
 
+  it('expands every marker and accumulates imports and watch files', async function expandsMultipleMarkers() {
+    const addWatchFile = vi.fn();
+    const result = await runTransform(
+      generateBlocksPlugin(),
+      '<BlockLink id="fixture-block" />\n<Block id="fixture-block" of={Stories.Preview} />',
+      componentReadme,
+      addWatchFile
+    );
+
+    expect(result).not.toContain('<BlockLink id=');
+    expect(result).not.toContain('<Block id=');
+    expect(result).toContain('<BlockLinks blocks={');
+    expect(result).toContain('<StorybookBlockExplorer block={');
+    expect(result).toContain("import { BlockLinks } from '@bento/block-explorer/runtime';");
+    expect(result).toContain("import { StorybookBlockExplorer } from '@bento/block-explorer/storybook-runtime';");
+    expect(result).toContain("import { Story } from '@storybook/addon-docs/blocks';");
+    expect(addWatchFile).toHaveBeenCalledWith(componentReadme);
+    expect(addWatchFile).toHaveBeenCalledWith(expect.stringContaining('README.mdx'));
+    expect(addWatchFile).toHaveBeenCalledWith(expect.stringContaining('index.tsx'));
+  });
+
   it('does not duplicate imports that the README already provides', async function preservesExistingImports() {
     const result = await runTransform(
       generateBlocksPlugin(),

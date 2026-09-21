@@ -66,7 +66,7 @@ export interface BlockMarkerProps {
   readonly description?: string;
 
   /** Story export used as the preview. */
-  readonly of?: unknown;
+  readonly of: unknown;
 }
 
 /** Props for the build-time `<BlockLink>` marker. */

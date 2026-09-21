@@ -3,7 +3,7 @@ import type { Plugin } from 'vite';
 import { loadBlockManifest, resolveBlockDirectory } from './node.ts';
 
 const README_FILE_REGEX = /README\.mdx$/;
-const BLOCK_MARKER_REGEX = /<(Block|BlockLink)\b[\s\S]*?\/>/;
+const BLOCK_MARKER_REGEX = /<(Block|BlockLink)\b[\s\S]*?\/>/g;
 
 /** Adds block MDX expansion before Storybook's MDX loader runs. */
 export const viteFinal: StorybookConfig['viteFinal'] = async function viteFinal(config, _options) {
@@ -25,41 +25,51 @@ export function generateBlocksPlugin(readmeRegex: RegExp = README_FILE_REGEX): P
       const fileName = id.split('?')[0];
       if (!readmeRegex.test(fileName)) return null;
 
-      const marker = source.match(BLOCK_MARKER_REGEX)?.[0];
-      if (!marker) return null;
+      const markers = source.match(BLOCK_MARKER_REGEX);
+      if (!markers) return null;
 
-      const markerName = marker.match(/^<(Block|BlockLink)\b/)?.[1];
-      const idValue = marker.match(/\bid=["']([^"']+)["']/)?.[1];
-      if (!idValue) {
-        throw new Error(`${fileName}: <${markerName ?? 'Block'}> requires id="...".`);
+      let expanded = source;
+      const requiredImports = new Set<string>();
+      const watchFiles = new Set<string>([fileName]);
+
+      for (const marker of markers) {
+        const markerName = marker.match(/^<(Block|BlockLink)\b/)?.[1];
+        const idValue = marker.match(/\bid=["']([^"']+)["']/)?.[1];
+        if (!idValue) {
+          throw new Error(`${fileName}: <${markerName ?? 'Block'}> requires id="...".`);
+        }
+
+        const blockDirectory = await resolveBlockDirectory(fileName, idValue);
+        const description = marker.match(/\bdescription=(['"])(.*?)\1/)?.[2];
+        const manifest = await loadBlockManifest(blockDirectory, { id: idValue, description });
+
+        watchFiles.add(`${blockDirectory}/README.mdx`);
+        for (const blockFile of manifest.files) watchFiles.add(`${blockDirectory}/${blockFile.path}`);
+
+        if (markerName === 'BlockLink') {
+          const blockLink = {
+            id: manifest.id,
+            href: `./?path=/docs/blocks-${manifest.id}--overview`,
+            target: '_top'
+          };
+          expanded = expanded.replace(marker, `<BlockLinks blocks={${JSON.stringify([blockLink])}} />`);
+          requiredImports.add('BlockLinks');
+          continue;
+        }
+
+        const ofExpression = marker.match(/\bof=\{\s*([^}]+?)\s*\}/)?.[1]?.trim();
+        if (!ofExpression) {
+          throw new Error(`${fileName}: <Block> requires id="..." and of={Stories.Preview}.`);
+        }
+
+        const expandedBlock = `<StorybookBlockExplorer block={${JSON.stringify(manifest)}}><Story of={${ofExpression}} inline /></StorybookBlockExplorer>`;
+        expanded = expanded.replace(marker, expandedBlock);
+        requiredImports.add('StorybookBlockExplorer');
+        requiredImports.add('Story');
       }
 
-      const blockDirectory = await resolveBlockDirectory(fileName, idValue);
-      const description = marker.match(/\bdescription=(['"])(.*?)\1/)?.[2];
-
-      const manifest = await loadBlockManifest(blockDirectory, { id: idValue, description });
-      this.addWatchFile(fileName);
-      this.addWatchFile(`${blockDirectory}/README.mdx`);
-      for (const blockFile of manifest.files) this.addWatchFile(`${blockDirectory}/${blockFile.path}`);
-
-      if (markerName === 'BlockLink') {
-        const blockLink = {
-          id: manifest.id,
-          href: `./?path=/docs/blocks-${manifest.id}--overview`,
-          target: '_top'
-        };
-        const expanded = source.replace(marker, `<BlockLinks blocks={${JSON.stringify([blockLink])}} />`);
-        return ensureImports(expanded, ['BlockLinks']);
-      }
-
-      const ofExpression = marker.match(/\bof=\{\s*([^}]+?)\s*\}/)?.[1]?.trim();
-      if (!ofExpression) {
-        throw new Error(`${fileName}: <Block> requires id="..." and of={Stories.Preview}.`);
-      }
-
-      const expandedBlock = `<StorybookBlockExplorer block={${JSON.stringify(manifest)}}><Story of={${ofExpression}} inline /></StorybookBlockExplorer>`;
-      const expanded = source.replace(marker, expandedBlock);
-      return ensureImports(expanded, ['StorybookBlockExplorer', 'Story']);
+      for (const watchFile of watchFiles) this.addWatchFile(watchFile);
+      return ensureImports(expanded, [...requiredImports]);
     }
   };
 }

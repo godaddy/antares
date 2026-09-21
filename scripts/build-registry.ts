@@ -15,7 +15,7 @@
  * ```
  */
 
-import { readdir, readFile, stat, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from 'yaml';
@@ -54,6 +54,7 @@ export interface BuildRegistryOptions {
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const blocksDirectory = join(rootDirectory, 'packages/@godaddy/antares/blocks');
 const registryPath = join(blocksDirectory, 'registry.json');
+const publicRegistryDirectory = join(rootDirectory, 'apps/site/public/r');
 
 /**
  * Reads and validates the title used for a block registry item.
@@ -129,8 +130,40 @@ function serializeRegistry(registry: AntaresRegistry): string {
  * @returns A promise that resolves after the file is written.
  */
 const defaultRegistryWriter: RegistryWriter = async function writeRegistryFile(registryPath, source) {
+  await mkdir(dirname(registryPath), { recursive: true });
   await writeFile(registryPath, source, 'utf8');
 };
+
+/**
+ * Writes one registry item per file so shadcn can install a block from a
+ * preview or deployed site without needing to understand the aggregate
+ * registry envelope.
+ *
+ * @param registry - Aggregate registry containing the block items.
+ * @param outputDirectory - Directory that will contain one JSON file per item.
+ * @param writeRegistry - Optional writer used by tests and alternative hosts.
+ */
+export async function writeRegistryItems(
+  registry: AntaresRegistry,
+  outputDirectory: string,
+  writeRegistry: RegistryWriter = defaultRegistryWriter
+): Promise<void> {
+  await Promise.all(
+    registry.items.map(async function writeRegistryItem(item) {
+      const itemPath = join(outputDirectory, `${item.name}.json`);
+      const itemSource = JSON.stringify(
+        {
+          $schema: 'https://ui.shadcn.com/schema/registry-item.json',
+          ...item
+        },
+        null,
+        2
+      );
+
+      await writeRegistry(itemPath, `${itemSource}\n`);
+    })
+  );
+}
 
 /**
  * Builds the Antares blocks registry without writing to disk.
@@ -260,6 +293,7 @@ async function main() {
     blocksRoot: blocksDirectory,
     registryPath
   });
+  await writeRegistryItems(registry, publicRegistryDirectory);
 
   const fileCount = registry.items.reduce((total, item) => total + item.files.length, 0);
   console.log(
