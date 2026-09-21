@@ -3,6 +3,8 @@ import { Box, Button, Flex, Icon, Text } from '@godaddy/antares';
 import type { BlockCodeRendererProps, BlockFile } from './types.ts';
 import styles from './runtime.module.css';
 
+type CopyStatus = 'idle' | 'copied' | 'error';
+
 /** Props for the {@link BlockSourcePanel} component. */
 export interface BlockSourcePanelProps {
   /** Active source file. */
@@ -18,13 +20,18 @@ export interface BlockSourcePanelProps {
  * @param props - Selected file and optional host-specific code renderer.
  */
 export function BlockSourcePanel({ file, codeRenderer: CodeRenderer = PlainCode }: BlockSourcePanelProps) {
-  const [copied, setCopied] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle');
   const resetCopiedTimeout = useRef<number | undefined>(undefined);
+  const copied = copyStatus === 'copied';
+  const failed = copyStatus === 'error';
 
   useEffect(
     function resetCopiedWhenFileChanges() {
-      setCopied(false);
-      if (resetCopiedTimeout.current !== undefined) window.clearTimeout(resetCopiedTimeout.current);
+      setCopyStatus('idle');
+      if (resetCopiedTimeout.current !== undefined) {
+        window.clearTimeout(resetCopiedTimeout.current);
+        resetCopiedTimeout.current = undefined;
+      }
 
       return function clearCopiedTimeout() {
         if (resetCopiedTimeout.current !== undefined) window.clearTimeout(resetCopiedTimeout.current);
@@ -46,27 +53,37 @@ export function BlockSourcePanel({ file, codeRenderer: CodeRenderer = PlainCode 
         <Text maxLines={1} wrap="nowrap">
           {file.path}
         </Text>
-        <Button
-          variant="minimal"
-          size="sm"
-          aria-label={`${copied ? 'Copied' : 'Copy'} ${file.path}`}
-          onPress={async function copySource() {
-            try {
-              await navigator.clipboard.writeText(file.source);
-              setCopied(true);
-              if (resetCopiedTimeout.current !== undefined) window.clearTimeout(resetCopiedTimeout.current);
-              resetCopiedTimeout.current = window.setTimeout(function resetCopied() {
-                setCopied(false);
+        <Flex alignItems="center" gap="sm">
+          <Button
+            variant="minimal"
+            size="sm"
+            aria-label={`${copied ? 'Copied' : failed ? 'Retry copying' : 'Copy'} ${file.path}`}
+            onPress={async function copySource() {
+              if (resetCopiedTimeout.current !== undefined) {
+                window.clearTimeout(resetCopiedTimeout.current);
                 resetCopiedTimeout.current = undefined;
-              }, 1500);
-            } catch {
-              setCopied(false);
-            }
-          }}
-        >
-          <Icon icon={copied ? 'checkmark' : 'copy'} width={16} height={16} />
-          <Text>{copied ? 'Copied' : 'Copy'}</Text>
-        </Button>
+              }
+              setCopyStatus('idle');
+
+              try {
+                await navigator.clipboard.writeText(file.source);
+                setCopyStatus('copied');
+                resetCopiedTimeout.current = window.setTimeout(function resetCopied() {
+                  setCopyStatus('idle');
+                  resetCopiedTimeout.current = undefined;
+                }, 1500);
+              } catch {
+                setCopyStatus('error');
+              }
+            }}
+          >
+            <Icon icon={copied ? 'checkmark' : 'copy'} width={16} height={16} />
+            <Text>{copied ? 'Copied' : failed ? 'Retry' : 'Copy'}</Text>
+          </Button>
+          <Text role="status" aria-live="polite">
+            {failed ? `Could not copy ${file.path}.` : null}
+          </Text>
+        </Flex>
       </Flex>
       <Box className={styles.sourceContent} flex="1 1 auto" padding="md" elevation="base">
         <CodeRenderer code={file.source} language={file.language} filePath={file.path} />

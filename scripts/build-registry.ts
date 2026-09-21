@@ -54,7 +54,6 @@ export interface BuildRegistryOptions {
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const blocksDirectory = join(rootDirectory, 'packages/@godaddy/antares/blocks');
 const registryPath = join(blocksDirectory, 'registry.json');
-const publicRegistryDirectory = join(rootDirectory, 'apps/site/public/r');
 
 /**
  * Reads and validates the title used for a block registry item.
@@ -123,6 +122,17 @@ function serializeRegistry(registry: AntaresRegistry): string {
 }
 
 /**
+ * Distinguishes an absent registry file from filesystem failures that must
+ * stop generation to avoid silently publishing an incomplete registry.
+ *
+ * @param error - Error raised while inspecting a potential registry file.
+ * @returns Whether the requested file does not exist.
+ */
+function isMissingFileError(error: unknown): error is Error & { code: 'ENOENT' } {
+  return error instanceof Error && 'code' in error && error.code === 'ENOENT';
+}
+
+/**
  * Writes serialized registry content to disk using UTF-8 encoding.
  *
  * @param registryPath - Destination path for the registry file.
@@ -133,37 +143,6 @@ const defaultRegistryWriter: RegistryWriter = async function writeRegistryFile(r
   await mkdir(dirname(registryPath), { recursive: true });
   await writeFile(registryPath, source, 'utf8');
 };
-
-/**
- * Writes one registry item per file so shadcn can install a block from a
- * preview or deployed site without needing to understand the aggregate
- * registry envelope.
- *
- * @param registry - Aggregate registry containing the block items.
- * @param outputDirectory - Directory that will contain one JSON file per item.
- * @param writeRegistry - Optional writer used by tests and alternative hosts.
- */
-export async function writeRegistryItems(
-  registry: AntaresRegistry,
-  outputDirectory: string,
-  writeRegistry: RegistryWriter = defaultRegistryWriter
-): Promise<void> {
-  await Promise.all(
-    registry.items.map(async function writeRegistryItem(item) {
-      const itemPath = join(outputDirectory, `${item.name}.json`);
-      const itemSource = JSON.stringify(
-        {
-          $schema: 'https://ui.shadcn.com/schema/registry-item.json',
-          ...item
-        },
-        null,
-        2
-      );
-
-      await writeRegistry(itemPath, `${itemSource}\n`);
-    })
-  );
-}
 
 /**
  * Builds the Antares blocks registry without writing to disk.
@@ -203,8 +182,11 @@ export async function createRegistry(blocksRoot: string): Promise<AntaresRegistr
             try {
               const readme = await stat(join(blocksRoot, entry.name, 'README.mdx'));
               return readme.isFile() ? entry : null;
-            } catch {
-              return null;
+            } catch (error) {
+              if (isMissingFileError(error)) {
+                return null;
+              }
+              throw error;
             }
           }
         )
@@ -293,7 +275,6 @@ async function main() {
     blocksRoot: blocksDirectory,
     registryPath
   });
-  await writeRegistryItems(registry, publicRegistryDirectory);
 
   const fileCount = registry.items.reduce((total, item) => total + item.files.length, 0);
   console.log(

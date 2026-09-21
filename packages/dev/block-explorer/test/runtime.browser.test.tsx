@@ -61,7 +61,7 @@ describe('block explorer runtime', function runtimeTests() {
       value: { writeText }
     });
 
-    const { getByRole, rerender } = await render(
+    const { getByRole } = await render(
       <BlockExplorer block={fixtureManifest}>
         <div>Preview content</div>
       </BlockExplorer>
@@ -75,17 +75,12 @@ describe('block explorer runtime', function runtimeTests() {
     await expect.element(copiedButton).toHaveTextContent('Copied');
 
     writeText.mockRejectedValueOnce(new Error('Clipboard unavailable'));
-    await rerender(
-      <BlockExplorer block={fixtureManifest}>
-        <div>Preview content</div>
-      </BlockExplorer>
-    );
-    await userEvent.click(getByRole('radio', { name: 'Code' }));
-    await userEvent.click(copyButton);
-    await expect.element(copyButton).not.toHaveTextContent('Copied');
+    await userEvent.click(copiedButton);
+    await expect.element(getByRole('status')).toHaveTextContent('Could not copy index.tsx.');
+    await expect.element(getByRole('button', { name: 'Retry copying index.tsx' })).toHaveTextContent('Retry');
   });
 
-  it('copies the block install command', async function copiesInstallCommand() {
+  it('announces successful and failed install command copies', async function copiesInstallCommand() {
     const command = 'npx shadcn@latest add godaddy/antares/blocks/fixture-block';
     const writeText = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, 'clipboard', {
@@ -103,7 +98,15 @@ describe('block explorer runtime', function runtimeTests() {
     await userEvent.click(installButton);
 
     expect(writeText).toHaveBeenCalledWith(command);
-    await expect.element(getByRole('button', { name: 'Copied for fixture-block' })).toHaveTextContent('Copied');
+    const copiedButton = getByRole('button', { name: 'Copied for fixture-block' });
+    await expect.element(copiedButton).toHaveTextContent('Copied');
+
+    writeText.mockRejectedValueOnce(new Error('Clipboard unavailable'));
+    await userEvent.click(copiedButton);
+    await expect.element(getByRole('status')).toHaveTextContent('Could not copy install command.');
+    await expect
+      .element(getByRole('button', { name: 'Retry copying install command for fixture-block' }))
+      .toHaveTextContent('Retry');
   });
 
   it('resets copy feedback when selecting another source file', async function resetsCopyFeedback() {

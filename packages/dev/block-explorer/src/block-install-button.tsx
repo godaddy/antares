@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { Button, Icon, Text } from '@godaddy/antares';
+import { Button, Flex, Icon, Text } from '@godaddy/antares';
+
+type CopyStatus = 'idle' | 'copied' | 'error';
 
 /** Props for the block installation command action. */
 export interface BlockInstallButtonProps {
@@ -12,8 +14,10 @@ export interface BlockInstallButtonProps {
 
 /** Copies a block's shadcn installation command for the documentation consumer. */
 export function BlockInstallButton({ blockId, command }: BlockInstallButtonProps) {
-  const [copied, setCopied] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle');
   const resetCopiedTimeout = useRef<number | undefined>(undefined);
+  const copied = copyStatus === 'copied';
+  const failed = copyStatus === 'error';
 
   useEffect(function clearCopiedTimeoutOnUnmount() {
     return function clearTimeoutOnUnmount() {
@@ -22,26 +26,36 @@ export function BlockInstallButton({ blockId, command }: BlockInstallButtonProps
   }, []);
 
   return (
-    <Button
-      variant="secondary"
-      size="sm"
-      aria-label={`${copied ? 'Copied' : 'Copy install command'} for ${blockId}`}
-      onPress={async function copyInstallCommand() {
-        try {
-          await navigator.clipboard.writeText(command);
-          setCopied(true);
-          if (resetCopiedTimeout.current !== undefined) window.clearTimeout(resetCopiedTimeout.current);
-          resetCopiedTimeout.current = window.setTimeout(function resetCopiedState() {
-            setCopied(false);
+    <Flex alignItems="center" gap="sm">
+      <Button
+        variant="secondary"
+        size="sm"
+        aria-label={`${copied ? 'Copied' : failed ? 'Retry copying install command' : 'Copy install command'} for ${blockId}`}
+        onPress={async function copyInstallCommand() {
+          if (resetCopiedTimeout.current !== undefined) {
+            window.clearTimeout(resetCopiedTimeout.current);
             resetCopiedTimeout.current = undefined;
-          }, 1500);
-        } catch {
-          setCopied(false);
-        }
-      }}
-    >
-      <Icon icon={copied ? 'checkmark' : 'download'} width={16} height={16} />
-      <Text>{copied ? 'Copied' : 'Install'}</Text>
-    </Button>
+          }
+          setCopyStatus('idle');
+
+          try {
+            await navigator.clipboard.writeText(command);
+            setCopyStatus('copied');
+            resetCopiedTimeout.current = window.setTimeout(function resetCopiedState() {
+              setCopyStatus('idle');
+              resetCopiedTimeout.current = undefined;
+            }, 1500);
+          } catch {
+            setCopyStatus('error');
+          }
+        }}
+      >
+        <Icon icon={copied ? 'checkmark' : 'download'} width={16} height={16} />
+        <Text>{copied ? 'Copied' : failed ? 'Retry' : 'Install'}</Text>
+      </Button>
+      <Text role="status" aria-live="polite">
+        {failed ? 'Could not copy install command.' : null}
+      </Text>
+    </Flex>
   );
 }
