@@ -1,7 +1,7 @@
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { describe, expect, it } from 'vitest';
-import { SignInForm } from '../blocks/sign-in-form/index.tsx';
+import { SignInForm } from '../index.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#SignInForm', function signInFormTests() {

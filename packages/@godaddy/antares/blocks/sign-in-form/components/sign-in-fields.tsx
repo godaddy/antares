@@ -1,5 +1,5 @@
 import { Flex, Input, Label, TextField } from '@godaddy/antares';
-import { signInCopy } from '../data/copy.ts';
+import { signInCopy } from '../data/copy';
 
 /** Groups the accessible fields used by the sign-in form block. */
 export function SignInFields() {

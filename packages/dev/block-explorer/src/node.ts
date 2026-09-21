@@ -13,12 +13,14 @@ export interface BlockManifestOverrides {
 const BLOCK_MARKER_REGEX = /<(Block|BlockLink)\b[\s\S]*?\/>/;
 const ROOT_README_REGEX = /^README(?:\.[^/]*)?$/i;
 const ROOT_STORY_REGEX = /\.stories\.tsx$/i;
+const ROOT_TEST_DIRECTORY = 'test';
 
 /**
  * Reads a block manifest from its directory and discovers its source files.
  *
- * The root README and Storybook stories are documentation inputs rather than
- * implementation files, so they are omitted from the returned file list.
+ * The root README, Storybook stories, and root test directory are documentation
+ * or development inputs rather than implementation files, so they are omitted
+ * from the returned file list.
  *
  * @param blockDirectory - Directory containing the block README and sources.
  * @param overrides - Identity and description supplied by the active marker.
@@ -93,6 +95,7 @@ async function collectBlockFiles(directory: string, rootDirectory: string, files
   for (const entry of entries) {
     const absolutePath = join(directory, entry.name);
     if (entry.isDirectory()) {
+      if (directory === rootDirectory && entry.name === ROOT_TEST_DIRECTORY) continue;
       await collectBlockFiles(absolutePath, rootDirectory, files);
       continue;
     }

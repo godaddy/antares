@@ -78,6 +78,16 @@ describe('block manifest utilities', function blockManifestUtilities() {
     });
   });
 
+  it('omits the root test directory from block source files', async function omitsTests() {
+    await withTemporaryBlock(async function assertFiles(directory) {
+      await mkdir(resolve(directory, 'test'));
+      await writeFile(resolve(directory, 'test/block.node.test.tsx'), 'export {};\n');
+      const manifest = await loadBlockManifest(directory, { id: 'temporary-block' });
+
+      expect(manifest.files.map((file) => file.path)).toEqual(['index.tsx']);
+    });
+  });
+
   it('maps supported extensions to documentation languages', function mapsLanguages() {
     expect(languageForPath('component.tsx')).toBe('tsx');
     expect(languageForPath('data.ts')).toBe('ts');

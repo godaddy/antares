@@ -1,6 +1,6 @@
 import { renderToString } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import { SignInForm } from '../blocks/sign-in-form/index.tsx';
+import { SignInForm } from '../index.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#SignInForm', function signInFormTests() {

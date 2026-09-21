@@ -1,8 +1,8 @@
 'use client';
 
 import { Box, Button, Flex, Heading, Text } from '@godaddy/antares';
-import { signInCopy } from '../data/copy.ts';
-import { SignInFields } from './sign-in-fields.tsx';
+import { signInCopy } from '../data/copy';
+import { SignInFields } from './sign-in-fields';
 
 /** Presents the shared sign-in form composition used in block documentation. */
 export function SignInForm() {
