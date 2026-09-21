@@ -4,14 +4,31 @@ import remarkMdx from 'remark-mdx';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 
+const MDX_PARSER = unified().use(remarkParse).use(remarkMdx);
+
 interface MdNode {
   type: string;
   name?: string;
   children?: MdNode[];
+  data?: { estree?: EstreeNode };
   position?: {
     start?: { offset?: number };
     end?: { offset?: number };
   };
+}
+
+interface EstreeNode {
+  type: string;
+  importKind?: string;
+  source?: { value?: string };
+  specifiers?: EstreeSpecifier[];
+  body?: EstreeNode[];
+}
+
+interface EstreeSpecifier {
+  type: string;
+  importKind?: string;
+  local?: { name?: string };
 }
 
 /** A live `<Block>` or `<BlockLink>` flow element found in authored MDX. */
@@ -36,16 +53,35 @@ export interface BlockMarker {
 }
 
 /**
- * Collects live block markers from MDX structure so fenced examples and comments
- * are not treated as explorers.
+ * Parses authored MDX into a syntax tree.
  *
  * @param source - Authored MDX to inspect.
  */
-export function collectBlockMarkers(source: string): BlockMarker[] {
-  const tree = unified().use(remarkParse).use(remarkMdx).parse(source) as Root;
+export function parseBlockMdx(source: string): Root {
+  return MDX_PARSER.parse(source) as Root;
+}
+
+/**
+ * Collects live block markers from MDX structure so fenced examples and comments
+ * are not treated as explorers.
+ *
+ * @param tree - Parsed MDX tree.
+ */
+export function collectBlockMarkers(tree: Root): BlockMarker[] {
   const markers: BlockMarker[] = [];
   visitMarkers(tree as unknown as MdNode, markers);
   return markers;
+}
+
+/**
+ * True when the tree already binds `name` as a value import from `moduleId`.
+ *
+ * @param tree - Parsed MDX tree.
+ * @param name - Local binding to look for.
+ * @param moduleId - Module specifier the import must come from.
+ */
+export function hasNamedRuntimeImport(tree: Root, name: string, moduleId: string): boolean {
+  return (tree.children as unknown as MdNode[]).some((node) => declarationBindsRuntimeName(node, name, moduleId));
 }
 
 function visitMarkers(node: MdNode, markers: BlockMarker[]) {
@@ -70,6 +106,22 @@ function visitMarkers(node: MdNode, markers: BlockMarker[]) {
 
   if (!node.children) return;
   for (const child of node.children) visitMarkers(child, markers);
+}
+
+function declarationBindsRuntimeName(node: MdNode, name: string, moduleId: string): boolean {
+  if (node.type !== 'mdxjsEsm') return false;
+
+  for (const statement of node.data?.estree?.body ?? []) {
+    if (statement.type !== 'ImportDeclaration' || statement.importKind === 'type') continue;
+    if (statement.source?.value !== moduleId) continue;
+
+    for (const specifier of statement.specifiers ?? []) {
+      if (specifier.type !== 'ImportSpecifier' || specifier.importKind === 'type') continue;
+      if (specifier.local?.name === name) return true;
+    }
+  }
+
+  return false;
 }
 
 function getStringAttribute(node: MdxJsxFlowElement, name: string): string | undefined {

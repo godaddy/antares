@@ -77,14 +77,15 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
     expect(addWatchFile).toHaveBeenCalledWith(expect.stringContaining('index.tsx'));
   });
 
-  it('does not duplicate imports that the README already provides', async function preservesExistingImports() {
+  it('does not duplicate a Story import the README already provides', async function preservesExistingStoryImport() {
     const result = await runTransform(
       generateBlocksPlugin(),
-      'import { BlockLinks } from \'@bento/block-explorer/runtime\';\n\n<BlockLink id="fixture-block" />',
+      'import { Meta, Story } from \'@storybook/addon-docs/blocks\';\n\n<Block id="fixture-block" of={Stories.Preview} />',
       importedReadme
     );
 
-    expect(result?.match(/import \{ BlockLinks \}/g)).toHaveLength(1);
+    expect(result?.match(/import \{[^}]*\bStory\b[^}]*\}\s*from\s*'@storybook\/addon-docs\/blocks'/g)).toHaveLength(1);
+    expect(result).toContain("import { StorybookBlockExplorer } from '@bento/block-explorer/storybook-runtime';");
   });
 
   it('leaves fenced examples and MDX comments as documentation', async function ignoresDocumentedMarkers() {
