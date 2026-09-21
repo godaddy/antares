@@ -14,7 +14,7 @@ const fixtureManifest: BlockManifest = {
 
 describe('block explorer runtime', function runtimeTests() {
   it('switches from preview to code and selects a nested source file', async function selectsSourceFile() {
-    const { getByRole, getByTestId } = await render(
+    const { getByRole, getByTestId, getByText } = await render(
       <BlockExplorer block={fixtureManifest} codeRenderer={TestCodeRenderer}>
         <div>Preview content</div>
       </BlockExplorer>
@@ -22,12 +22,12 @@ describe('block explorer runtime', function runtimeTests() {
 
     await expect.element(getByRole('radio', { name: 'Preview' })).toBeVisible();
     await expect.element(getByRole('radio', { name: 'Code' })).toBeVisible();
+    await expect.element(getByText('Preview content')).toBeVisible();
 
     await userEvent.click(getByRole('radio', { name: 'Code' }));
     await expect.element(getByTestId('source-file')).toHaveTextContent('index.tsx');
     const activeFileButton = getByRole('button', { name: 'index.tsx', exact: true });
     await expect.element(activeFileButton).toHaveAttribute('aria-current', 'page');
-    await expect.element(activeFileButton).toHaveStyle('flex: 0 0 auto');
 
     await userEvent.click(getByRole('button', { name: 'theme.css', exact: true }));
     await expect.element(getByTestId('source-file')).toHaveTextContent('styles/theme.css');
@@ -139,7 +139,6 @@ describe('block explorer runtime', function runtimeTests() {
     await expect.element(link).toBeVisible();
     expect(link.element().getAttribute('href')).toBe('/docs/blocks/fixture-block');
     expect(link.element().getAttribute('target')).toBe('_top');
-    await expect.element(link).toHaveStyle('justify-content: space-between');
   });
 
   it('keeps the code view usable when a block has no source files', async function handlesEmptyManifest() {

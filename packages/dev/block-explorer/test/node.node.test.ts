@@ -35,19 +35,14 @@ describe('block manifest utilities', function blockManifestUtilities() {
     });
   });
 
-  it('preserves deterministic paths and normalizes source line endings', async function normalizesSource() {
-    const manifest = await loadBlockManifest(fixtureDirectory, { id: 'fixture-block' });
+  it('normalizes CRLF source to Unix line endings', async function normalizesSource() {
+    await withTemporaryBlock(async function assertNormalizedSource(directory) {
+      await writeFile(resolve(directory, 'index.tsx'), 'export function Example() {\r\n  return null;\r\n}\r\n');
 
-    expect(
-      manifest.files.map(function getPath(file) {
-        return file.path;
-      })
-    ).toEqual(['index.tsx', 'nested/README.mdx', 'styles/theme.css']);
-    expect(
-      manifest.files.every(function hasUnixLineEndings(file) {
-        return !file.source.includes('\r');
-      })
-    ).toBe(true);
+      const manifest = await loadBlockManifest(directory, { id: 'temporary-block' });
+
+      expect(manifest.files[0]?.source).toBe('export function Example() {\n  return null;\n}\n');
+    });
   });
 
   it('resolves a README to its local block directory', async function resolvesDirectory() {

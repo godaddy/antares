@@ -51,13 +51,20 @@ describe('remarkBlocks', function remarkBlocksTests() {
   });
 
   it('expands nested Block markers', async function expandsNestedBlock() {
-    const { tree } = await transform(
+    const { tree, addDependency } = await transform(
       '<Wrapper><Entry><Block id="fixture-block" description="Fixture description." of={Stories.Preview} /></Entry></Wrapper>'
     );
     const catalog = tree.children[0] as AnyNode;
     const entry = (catalog.children as AnyNode[])[0];
+    const explorer = (entry.children as AnyNode[])[0];
 
-    expect((entry.children as AnyNode[])[0]).toMatchObject({ name: 'SiteBlockExplorer' });
+    expect(explorer).toMatchObject({ name: 'SiteBlockExplorer' });
+    expect((explorer.children as AnyNode[])[0]).toMatchObject({ name: 'Stories.Preview' });
+    expect(JSON.parse(getExpressionValue(explorer, 'block'))).toMatchObject({
+      id: 'fixture-block',
+      description: 'Fixture description.'
+    });
+    expect(addDependency).toHaveBeenCalledWith(expect.stringContaining('index.tsx'));
   });
 
   it('expands a Block marker without a description', async function expandsBlockWithoutDescription() {
@@ -102,15 +109,15 @@ describe('remarkBlocks', function remarkBlocksTests() {
 
   it('reports the required attributes for a Block marker', async function requiresBlockAttributes() {
     await expect(transform('<Block of={Stories.Preview} />')).rejects.toThrow(
-      '<Block> requires id="..." and of={Stories.Preview}'
+      `${fixtureReadme}: <Block> requires id="..." and of={Stories.Preview}.`
     );
     await expect(transform('<Block id="fixture-block" description="Fixture description." />')).rejects.toThrow(
-      '<Block> requires id="..." and of={Stories.Preview}'
+      `${fixtureReadme}: <Block> requires id="..." and of={Stories.Preview}.`
     );
   });
 
   it('reports the required id for a BlockLink marker', async function requiresBlockLinkId() {
-    await expect(transform('<BlockLink />')).rejects.toThrow('<BlockLink> requires id="..."');
+    await expect(transform('<BlockLink />')).rejects.toThrow(`${fixtureReadme}: <BlockLink> requires id="...".`);
   });
 });
 

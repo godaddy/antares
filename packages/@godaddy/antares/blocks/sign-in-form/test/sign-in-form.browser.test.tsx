@@ -9,16 +9,17 @@ describe('@godaddy/antares', function packageTests() {
       const { getByLabelText, getByRole } = await render(<SignInForm />);
       const email = getByRole('textbox', { name: 'Email' });
       const password = getByLabelText('Password');
+      const submit = getByRole('button', { name: 'Sign in' });
 
       await expect.element(getByRole('heading', { name: 'Sign in to your account' })).toBeVisible();
       expect(email.element().getAttribute('type')).toBe('email');
       expect(email.element().hasAttribute('required')).toBe(true);
       expect(password.element().getAttribute('type')).toBe('password');
       expect(password.element().hasAttribute('required')).toBe(true);
+      expect(submit.element().getAttribute('type')).toBe('submit');
 
       await userEvent.fill(email, 'person@example.com');
       await userEvent.fill(password, 'correct horse battery staple');
-      await userEvent.click(getByRole('button', { name: 'Sign in' }));
 
       expect(email.element().getAttribute('value')).toBe('person@example.com');
       expect(password.element().getAttribute('value')).toBe('correct horse battery staple');

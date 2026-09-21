@@ -48,9 +48,6 @@ describe('build-registry', function registryBuilderTests() {
 
     const registry = await createRegistry(blocksRoot);
 
-    expect(typeof registry.$schema).toBe('string');
-    expect(typeof registry.name).toBe('string');
-    expect(Array.isArray(registry.items)).toBe(true);
     expect(registry).toMatchObject({
       $schema: 'https://ui.shadcn.com/schema/registry.json',
       name: 'antares-blocks'
@@ -62,7 +59,6 @@ describe('build-registry', function registryBuilderTests() {
       title: 'Alpha block',
       dependencies: ['@godaddy/antares']
     });
-    expect(Array.isArray(registry.items[0].dependencies)).toBe(true);
     expect(registry.items[0].files).toEqual([
       {
         path: 'alpha/components/view.TSX',

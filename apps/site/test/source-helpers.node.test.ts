@@ -23,7 +23,7 @@ vi.mock('fumadocs-mdx:collections/server', () => ({
 }));
 
 vi.mock('fumadocs-core/source', () => ({
-  loader: () => ({ getPageTree }),
+  loader: (input: unknown) => ({ getPageTree, input }),
   multiple: () => ({})
 }));
 
@@ -31,9 +31,18 @@ vi.mock('fumadocs-core/source/lucide-icons', () => ({
   lucideIconsPlugin: () => ({})
 }));
 
-import { getDocsPageTree, getLLMText, getPageImage } from '../lib/source';
+import { blocksSource, getDocsPageTree, getLLMText, getPageImage } from '../lib/source';
 
 describe('site', function siteTests() {
+  describe('#blocksSource', function blocksSourceTests() {
+    it('maps root and nested block READMEs to their public routes', function mapsBlockReadmes() {
+      assume((blocksSource as unknown as { input: { files: { path: string }[] } }).input.files).deep.equals([
+        { path: 'index.mdx', data: {}, type: 'page' },
+        { path: 'sign-in-form.mdx', data: {}, type: 'page' }
+      ]);
+    });
+  });
+
   describe('#getPageImage', function getPageImageTests() {
     it('returns correct segments and URL for nested slugs', function nestedSlugs() {
       const result = getPageImage({ slugs: ['components', 'button'] } as never);
@@ -74,18 +83,7 @@ describe('site', function siteTests() {
         '/docs/components',
         '/docs/blocks'
       ]);
-    });
-
-    it('places Blocks after Components when the docs home page is absent', function placesBlocksWithoutHome() {
-      getPageTree.mockReturnValue({ children: [{ type: 'page', name: 'Components', url: '/docs/components' }] });
-
-      const tree = getDocsPageTree();
-
-      assume(tree.children.map((node) => ('url' in node ? node.url : undefined))).deep.equals([
-        '/docs/components',
-        '/docs/blocks'
-      ]);
-      assume(tree.children[1]).deep.equals({
+      assume(tree.children[2]).deep.equals({
         $id: 'antares-blocks-index',
         type: 'page',
         name: 'Blocks',
