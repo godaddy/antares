@@ -155,6 +155,6 @@ function prependImports(source: string, lines: readonly string[], tree: Root): s
     (line) => line !== STORY_IMPORT || !hasNamedRuntimeImport(tree, 'Story', STORYBOOK_DOCS_MODULE)
   );
   if (imports.length === 0) return source;
-  const frontmatter = source.match(/^---\n[\s\S]*?\n---\n/)?.[0] ?? '';
+  const frontmatter = source.match(/^---\r?\n[\s\S]*?\r?\n---\r?\n/)?.[0] ?? '';
   return `${source.slice(0, frontmatter.length)}${imports.join('\n')}\n${source.slice(frontmatter.length)}`;
 }

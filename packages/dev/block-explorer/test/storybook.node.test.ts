@@ -32,14 +32,20 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
     expect(addWatchFile).toHaveBeenCalledWith(expect.stringContaining('styles/theme.css'));
   });
 
-  it('expands Block after frontmatter and injects missing Storybook imports', async function expandsBlock() {
+  it.each([
+    { format: 'LF', newline: '\n' },
+    { format: 'CRLF', newline: '\r\n' }
+  ])('expands Block after $format frontmatter and injects missing Storybook imports', async function expandsBlock({
+    newline
+  }) {
+    const frontmatter = ['---', 'title: Example component', '---', ''].join(newline);
     const result = await runTransform(
       generateBlocksPlugin(),
-      '---\ntitle: Example component\n---\n<Block id="fixture-block" description="Fixture description." of={Stories.Preview} />',
+      `${frontmatter}<Block id="fixture-block" description="Fixture description." of={Stories.Preview} />`,
       componentReadme
     );
 
-    expect(result).toContain('---\ntitle: Example component\n---\nimport { StorybookBlockExplorer }');
+    expect(result?.startsWith(`${frontmatter}import { StorybookBlockExplorer }`)).toBe(true);
     expect(result).toContain('<StorybookBlockExplorer block={');
     expect(result).toContain('<Story of={Stories.Preview} inline />');
     expect(result).toContain("import { Story } from '@storybook/addon-docs/blocks';");
