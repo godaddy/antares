@@ -698,263 +698,6 @@ The carousel follows the current **layout direction** (LTR or RTL). By default, 
 <PropTable />
 
 
-# Chip
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* `ChipGroup` + `ChipList` + `Chip` for grouped values, selection, keyboard navigation, and removal
-* Toggle Chips for selecting multiple peer filters
-* Removable Chips for user-added filters and input tokens
-* Shared `sm`, `md`, and `lg` sizes, with optional leading icons
-* `ChipButton` for menu filters and other actions with a Chip-like appearance
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Quick start [#quick-start]
-
-```tsx
-import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';
-
-<ChipGroup>
-  <Label>Location</Label>
-  <ChipList>
-    <Chip id="austin">Austin</Chip>
-    <Chip id="chicago">Chicago</Chip>
-    <Chip id="denver">Denver</Chip>
-  </ChipList>
-</ChipGroup>
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Start with a labeled group of related values. Add selection or removal when
-the group needs interactive behavior.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ChipGroup>\n      <Label>Location</Label>\n      <ChipList>\n        <Chip id=\&#x22;austin\&#x22;>Austin</Chip>\n        <Chip id=\&#x22;chicago\&#x22;>Chicago</Chip>\n        <Chip id=\&#x22;denver\&#x22;>Denver</Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
-
-### Toggle Chips [#toggle-chips]
-
-Use Toggle Chips for multiple peer filters. The Chip render prop supplies
-selection state for the checkmark, while `textValue` names composed content.
-
-<Story of="ToggleChipsExample" />
-
-<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function ToggleChipsExample() {\n  return (\n    <ChipGroup defaultSelectedKeys={['home']} selectionMode=\&#x22;multiple\&#x22;>\n      <Label>Amenities</Label>\n      <ChipList>\n        <Chip id=\&#x22;home\&#x22; textValue=\&#x22;Home\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Icon icon=\&#x22;home\&#x22; />\n              <Text>Home</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n        <Chip id=\&#x22;star\&#x22; textValue=\&#x22;Featured\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Icon icon=\&#x22;star\&#x22; />\n              <Text>Featured</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n        <Chip id=\&#x22;wifi\&#x22; textValue=\&#x22;Wifi\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Text>Wifi</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
-
-### Removable Chips [#removable-chips]
-
-Use Removable Chips for user-added filters and tokens. `ChipGroup` reports
-removed keys through `onRemove`; the owner updates its collection. A
-self-closing `Button` in the `remove` slot supplies each remove control.
-
-<Story of="RemovableChipsExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function RemovableChipsExample() {\n  const [filters, setFilters] = useState([\n    { id: 'austin', name: 'Austin', icon: 'map-pin' as const },\n    { id: 'active', name: 'Active' }\n  ]);\n\n  return (\n    <ChipGroup\n      onRemove={function handleRemove(keys) {\n        setFilters((current) => current.filter((item) => !keys.has(item.id)));\n      }}\n    >\n      <Label>Applied filters</Label>\n      <ChipList items={filters} renderEmptyState={() => 'No filters applied'}>\n        {(item) => (\n          <Chip id={item.id} textValue={item.name}>\n            {'icon' in item && item.icon ? <Icon icon={item.icon} /> : null}\n            <Text>{item.name}</Text>\n            <Button slot=\&#x22;remove\&#x22; />\n          </Chip>\n        )}\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
-
-### Controlled Selection [#controlled-selection]
-
-Use `selectedKeys` and `onSelectionChange` when another part of the page
-needs to own the selected filter state.
-
-<Story of="ControlledSelectionExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Chip, ChipGroup, ChipList, Label, Text } from '@godaddy/antares';\n\nconst options = [\n  { id: 'austin', name: 'Austin' },\n  { id: 'active', name: 'Active' },\n  { id: 'featured', name: 'Featured' }\n];\n\nexport function ControlledSelectionExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set(['austin']));\n\n  return (\n    <>\n      <ChipGroup\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={function handleSelectionChange(keys) {\n          setSelectedKeys(\n            keys === 'all' ? new Set(options.map((option) => option.id)) : new Set([...keys].map(String))\n          );\n        }}\n      >\n        <Label>Filters</Label>\n        <ChipList>\n          {options.map((option) => (\n            <Chip key={option.id} id={option.id}>\n              {option.name}\n            </Chip>\n          ))}\n        </ChipList>\n      </ChipGroup>\n      <Text>Selected: {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}</Text>\n    </>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Compare the supported `sm`, `md`, and `lg` sizes. Set `size` on `ChipGroup`
-so every Chip inherits one consistent size.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Flex, Label } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n      {sizes.map((size) => (\n        <ChipGroup key={size} size={size}>\n          <Label>Topics ({size})</Label>\n          <ChipList>\n            <Chip id=\&#x22;design\&#x22;>Design</Chip>\n            <Chip id=\&#x22;development\&#x22;>Development</Chip>\n            <Chip id=\&#x22;research\&#x22;>Research</Chip>\n          </ChipList>\n        </ChipGroup>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Disable individual options with `disabledKeys` when some values are unavailable.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <>\n      <ChipGroup selectionMode=\&#x22;multiple\&#x22; disabledKeys={['a', 'b']} defaultSelectedKeys={['a']}>\n        <Label>Unavailable options</Label>\n        <ChipList>\n          <Chip id=\&#x22;a\&#x22;>Disabled option</Chip>\n          <Chip id=\&#x22;b\&#x22; textValue=\&#x22;Also unavailable\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n            <Text>Also unavailable</Text>\n          </Chip>\n        </ChipList>\n      </ChipGroup>\n      <ChipGroup selectionMode=\&#x22;multiple\&#x22; disabledKeys={['off']} defaultSelectedKeys={['on']}>\n        <Label>Mixed availability</Label>\n        <ChipList>\n          <Chip id=\&#x22;on\&#x22;>Enabled</Chip>\n          <Chip id=\&#x22;off\&#x22;>Disabled option</Chip>\n        </ChipList>\n      </ChipGroup>\n    </>\n  );\n}&#x22;" />
-
-### Truncation [#truncation]
-
-By default, long labels truncate visually when space is constrained, while
-the complete accessible value remains available.
-
-<Story of="TruncationExample" />
-
-<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';\n\nexport function TruncationExample() {\n  return (\n    <ChipGroup>\n      <Label>Filters</Label>\n      <ChipList>\n        <Chip id=\&#x22;category\&#x22;>Category</Chip>\n        <Chip id=\&#x22;long\&#x22;>Discounted price up to $20,000</Chip>\n        <Chip id=\&#x22;status\&#x22;>Active</Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
-
-### Empty State [#empty-state]
-
-Give an empty collection useful guidance, then let the user add the first
-value. Removable items continue to be owned by the collection.
-
-<Story of="EmptyStateExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Chip, ChipGroup, ChipList, Flex, Text } from '@godaddy/antares';\n\nconst newsCategory = { id: 'news', name: 'News' };\n\nexport function EmptyStateExample() {\n  const [categories, setCategories] = useState<Set<typeof newsCategory>>(new Set());\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ChipGroup\n        aria-label=\&#x22;Categories\&#x22;\n        onRemove={function handleRemove(keys) {\n          setCategories((current) => new Set([...current].filter((category) => !keys.has(category.id))));\n        }}\n      >\n        <ChipList items={categories} renderEmptyState={() => 'No categories yet'}>\n          {(category) => (\n            <Chip id={category.id} textValue={category.name}>\n              {category.name}\n              <Button slot=\&#x22;remove\&#x22; />\n            </Chip>\n          )}\n        </ChipList>\n        <Text slot=\&#x22;description\&#x22;>Add a category to get started.</Text>\n      </ChipGroup>\n      <Button\n        onPress={function addCategory() {\n          setCategories((current) => new Set(current).add(newsCategory));\n        }}\n      >\n        Add category\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
-
-### Menu filter trigger [#menu-filter-trigger]
-
-Use `ChipButton` for Chip presentation without collection semantics.
-`MenuTrigger` continues to own open state, focus, and keyboard behavior.
-
-<Story of="MenuFilterTriggerExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ChipButton, Icon, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';\n\nexport function MenuFilterTriggerExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <MenuTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n      <ChipButton>\n        <Text>Location</Text>\n        <Icon icon=\&#x22;chevron-down\&#x22; flip={isOpen ? 'vertical' : undefined} />\n      </ChipButton>\n      <Menu aria-label=\&#x22;Location\&#x22;>\n        <MenuItem id=\&#x22;austin\&#x22;>Austin</MenuItem>\n        <MenuItem id=\&#x22;chicago\&#x22;>Chicago</MenuItem>\n        <MenuItem id=\&#x22;denver\&#x22;>Denver</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-### Content [#content]
-
-Use a string for a simple label. For icons or other composed content, wrap the
-visible label in `Text` and provide `textValue` for the accessible name. See
-**Toggle Chips** and **Removable Chips** above.
-
-### Selection and removal [#selection-and-removal]
-
-`ChipGroup` owns selection and removal behavior. Use a Chip render prop for
-state-dependent content, and `Button` with `slot="remove"` together with
-`onRemove` for removable items. See **Toggle Chips** and **Removable Chips**.
-
-### Layout and sizing [#layout-and-sizing]
-
-Set `size` on `ChipGroup` to keep a collection consistent. `ChipList` wraps by
-default and accepts layout props for custom arrangements. See **Sizes**.
-
-### Button composition [#button-composition]
-
-Use `ChipButton` when Chip presentation is needed without collection semantics.
-Compose it with components such as `MenuTrigger`; those components continue to
-own open state, focus, and keyboard behavior. See **Menu filter trigger**.
-
-## Accessibility [#accessibility]
-
-* Use `Label` or `aria-label` to name the `ChipGroup`; this names the collection,
-  not its individual Chips.
-* Give each Chip a visible label, `textValue`, or `aria-label`. Use `textValue`
-  when a Chip contains icons, composed content, or a render prop.
-* Use a descriptive group label so removal actions can be announced clearly.
-* Keep the visible label and the accessible value synchronized.
-* `ChipButton` is a real button and exposes menu state through `MenuTrigger`; provide an accessible name when the visible content is incomplete.
-
-## Best Practices [#best-practices]
-
-* Keep labels concise and let them truncate only when the available width requires it.
-* Prefer groups of three or more related values.
-* Keep one size per group.
-* Let `ChipList` wrap instead of forcing a single horizontal line.
-* Use removable Chips for user-added filters and tokens.
-* For menu filters, use `ChipButton` with `MenuTrigger` and provide the chevron explicitly.
-
-## Troubleshooting [#troubleshooting]
-
-### A ChipGroup has no accessible name [#a-chipgroup-has-no-accessible-name]
-
-Add a visible `Label` to the group or provide `aria-label`. For an individual Chip
-with composed content, provide a visible label, `textValue`, or `aria-label`.
-
-### The remove action does not update the UI [#the-remove-action-does-not-update-the-ui]
-
-Add `onRemove` to `ChipGroup` and remove the returned keys from the collection
-owned by your application.
-
-### A composed label is not truncating correctly [#a-composed-label-is-not-truncating-correctly]
-
-Keep the label in `Text`, preserve `textValue`, and constrain the available width
-of the surrounding layout. Truncation is visual; the complete accessible value
-should remain available.
-
-### The menu trigger does not look like a Chip [#the-menu-trigger-does-not-look-like-a-chip]
-
-Use `ChipButton` inside `MenuTrigger`, include the visible value, and add a
-trailing chevron to communicate that the control opens a menu.
-
-## Props [#props]
-
-```tsx
-<ChipGroup>
-  <Label />
-  <ChipList>
-    <Chip>
-      <Icon />
-      <Text />
-      <Button slot="remove" />
-    </Chip>
-  </ChipList>
-  <Text slot="description" />
-  <Text slot="errorMessage" />
-</ChipGroup>
-```
-
-For a menu trigger, the button and menu are composed as siblings inside
-`MenuTrigger`:
-
-```tsx
-<MenuTrigger>
-  <ChipButton>
-    <Text />
-    <Icon />
-  </ChipButton>
-  <Menu>
-    <MenuItem />
-    {/* ... */}
-  </Menu>
-</MenuTrigger>
-```
-
-### Chip [#chip]
-
-<PropTable />
-
-### ChipGroup [#chipgroup]
-
-<PropTable />
-
-### ChipList [#chiplist]
-
-<PropTable />
-
-### ChipButton [#chipbutton]
-
-<PropTable />
-
-
 # Checkbox
 
 
@@ -1289,6 +1032,263 @@ Always provide clear error messages and use appropriate validation states:
 <PropTable />
 
 ### CheckboxIndicator [#checkboxindicator]
+
+<PropTable />
+
+
+# Chip
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* `ChipGroup` + `ChipList` + `Chip` for grouped values, selection, keyboard navigation, and removal
+* Toggle Chips for selecting multiple peer filters
+* Removable Chips for user-added filters and input tokens
+* Shared `sm`, `md`, and `lg` sizes, with optional leading icons
+* `ChipButton` for menu filters and other actions with a Chip-like appearance
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Quick start [#quick-start]
+
+```tsx
+import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';
+
+<ChipGroup>
+  <Label>Location</Label>
+  <ChipList>
+    <Chip id="austin">Austin</Chip>
+    <Chip id="chicago">Chicago</Chip>
+    <Chip id="denver">Denver</Chip>
+  </ChipList>
+</ChipGroup>
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Start with a labeled group of related values. Add selection or removal when
+the group needs interactive behavior.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ChipGroup>\n      <Label>Location</Label>\n      <ChipList>\n        <Chip id=\&#x22;austin\&#x22;>Austin</Chip>\n        <Chip id=\&#x22;chicago\&#x22;>Chicago</Chip>\n        <Chip id=\&#x22;denver\&#x22;>Denver</Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
+
+### Toggle Chips [#toggle-chips]
+
+Use Toggle Chips for multiple peer filters. The Chip render prop supplies
+selection state for the checkmark, while `textValue` names composed content.
+
+<Story of="ToggleChipsExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function ToggleChipsExample() {\n  return (\n    <ChipGroup defaultSelectedKeys={['home']} selectionMode=\&#x22;multiple\&#x22;>\n      <Label>Amenities</Label>\n      <ChipList>\n        <Chip id=\&#x22;home\&#x22; textValue=\&#x22;Home\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Icon icon=\&#x22;home\&#x22; />\n              <Text>Home</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n        <Chip id=\&#x22;star\&#x22; textValue=\&#x22;Featured\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Icon icon=\&#x22;star\&#x22; />\n              <Text>Featured</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n        <Chip id=\&#x22;wifi\&#x22; textValue=\&#x22;Wifi\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Text>Wifi</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
+
+### Removable Chips [#removable-chips]
+
+Use Removable Chips for user-added filters and tokens. `ChipGroup` reports
+removed keys through `onRemove`; the owner updates its collection. A
+self-closing `Button` in the `remove` slot supplies each remove control.
+
+<Story of="RemovableChipsExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function RemovableChipsExample() {\n  const [filters, setFilters] = useState([\n    { id: 'austin', name: 'Austin', icon: 'map-pin' as const },\n    { id: 'active', name: 'Active' }\n  ]);\n\n  return (\n    <ChipGroup\n      onRemove={function handleRemove(keys) {\n        setFilters((current) => current.filter((item) => !keys.has(item.id)));\n      }}\n    >\n      <Label>Applied filters</Label>\n      <ChipList items={filters} renderEmptyState={() => 'No filters applied'}>\n        {(item) => (\n          <Chip id={item.id} textValue={item.name}>\n            {'icon' in item && item.icon ? <Icon icon={item.icon} /> : null}\n            <Text>{item.name}</Text>\n            <Button slot=\&#x22;remove\&#x22; />\n          </Chip>\n        )}\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
+
+### Controlled Selection [#controlled-selection]
+
+Use `selectedKeys` and `onSelectionChange` when another part of the page
+needs to own the selected filter state.
+
+<Story of="ControlledSelectionExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Chip, ChipGroup, ChipList, Label, Text } from '@godaddy/antares';\n\nconst options = [\n  { id: 'austin', name: 'Austin' },\n  { id: 'active', name: 'Active' },\n  { id: 'featured', name: 'Featured' }\n];\n\nexport function ControlledSelectionExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set(['austin']));\n\n  return (\n    <>\n      <ChipGroup\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={function handleSelectionChange(keys) {\n          setSelectedKeys(\n            keys === 'all' ? new Set(options.map((option) => option.id)) : new Set([...keys].map(String))\n          );\n        }}\n      >\n        <Label>Filters</Label>\n        <ChipList>\n          {options.map((option) => (\n            <Chip key={option.id} id={option.id}>\n              {option.name}\n            </Chip>\n          ))}\n        </ChipList>\n      </ChipGroup>\n      <Text>Selected: {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}</Text>\n    </>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Compare the supported `sm`, `md`, and `lg` sizes. Set `size` on `ChipGroup`
+so every Chip inherits one consistent size.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Flex, Label } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n      {sizes.map((size) => (\n        <ChipGroup key={size} size={size}>\n          <Label>Topics ({size})</Label>\n          <ChipList>\n            <Chip id=\&#x22;design\&#x22;>Design</Chip>\n            <Chip id=\&#x22;development\&#x22;>Development</Chip>\n            <Chip id=\&#x22;research\&#x22;>Research</Chip>\n          </ChipList>\n        </ChipGroup>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Disable individual options with `disabledKeys` when some values are unavailable.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <>\n      <ChipGroup selectionMode=\&#x22;multiple\&#x22; disabledKeys={['a', 'b']} defaultSelectedKeys={['a']}>\n        <Label>Unavailable options</Label>\n        <ChipList>\n          <Chip id=\&#x22;a\&#x22;>Disabled option</Chip>\n          <Chip id=\&#x22;b\&#x22; textValue=\&#x22;Also unavailable\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n            <Text>Also unavailable</Text>\n          </Chip>\n        </ChipList>\n      </ChipGroup>\n      <ChipGroup selectionMode=\&#x22;multiple\&#x22; disabledKeys={['off']} defaultSelectedKeys={['on']}>\n        <Label>Mixed availability</Label>\n        <ChipList>\n          <Chip id=\&#x22;on\&#x22;>Enabled</Chip>\n          <Chip id=\&#x22;off\&#x22;>Disabled option</Chip>\n        </ChipList>\n      </ChipGroup>\n    </>\n  );\n}&#x22;" />
+
+### Truncation [#truncation]
+
+By default, long labels truncate visually when space is constrained, while
+the complete accessible value remains available.
+
+<Story of="TruncationExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';\n\nexport function TruncationExample() {\n  return (\n    <ChipGroup>\n      <Label>Filters</Label>\n      <ChipList>\n        <Chip id=\&#x22;category\&#x22;>Category</Chip>\n        <Chip id=\&#x22;long\&#x22;>Discounted price up to $20,000</Chip>\n        <Chip id=\&#x22;status\&#x22;>Active</Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
+
+### Empty State [#empty-state]
+
+Give an empty collection useful guidance, then let the user add the first
+value. Removable items continue to be owned by the collection.
+
+<Story of="EmptyStateExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Chip, ChipGroup, ChipList, Flex, Text } from '@godaddy/antares';\n\nconst newsCategory = { id: 'news', name: 'News' };\n\nexport function EmptyStateExample() {\n  const [categories, setCategories] = useState<Set<typeof newsCategory>>(new Set());\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ChipGroup\n        aria-label=\&#x22;Categories\&#x22;\n        onRemove={function handleRemove(keys) {\n          setCategories((current) => new Set([...current].filter((category) => !keys.has(category.id))));\n        }}\n      >\n        <ChipList items={categories} renderEmptyState={() => 'No categories yet'}>\n          {(category) => (\n            <Chip id={category.id} textValue={category.name}>\n              {category.name}\n              <Button slot=\&#x22;remove\&#x22; />\n            </Chip>\n          )}\n        </ChipList>\n        <Text slot=\&#x22;description\&#x22;>Add a category to get started.</Text>\n      </ChipGroup>\n      <Button\n        onPress={function addCategory() {\n          setCategories((current) => new Set(current).add(newsCategory));\n        }}\n      >\n        Add category\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
+
+### Menu filter trigger [#menu-filter-trigger]
+
+Use `ChipButton` for Chip presentation without collection semantics.
+`MenuTrigger` continues to own open state, focus, and keyboard behavior.
+
+<Story of="MenuFilterTriggerExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ChipButton, Icon, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';\n\nexport function MenuFilterTriggerExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <MenuTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n      <ChipButton>\n        <Text>Location</Text>\n        <Icon icon=\&#x22;chevron-down\&#x22; flip={isOpen ? 'vertical' : undefined} />\n      </ChipButton>\n      <Menu aria-label=\&#x22;Location\&#x22;>\n        <MenuItem id=\&#x22;austin\&#x22;>Austin</MenuItem>\n        <MenuItem id=\&#x22;chicago\&#x22;>Chicago</MenuItem>\n        <MenuItem id=\&#x22;denver\&#x22;>Denver</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+### Content [#content]
+
+Use a string for a simple label. For icons or other composed content, wrap the
+visible label in `Text` and provide `textValue` for the accessible name. See
+**Toggle Chips** and **Removable Chips** above.
+
+### Selection and removal [#selection-and-removal]
+
+`ChipGroup` owns selection and removal behavior. Use a Chip render prop for
+state-dependent content, and `Button` with `slot="remove"` together with
+`onRemove` for removable items. See **Toggle Chips** and **Removable Chips**.
+
+### Layout and sizing [#layout-and-sizing]
+
+Set `size` on `ChipGroup` to keep a collection consistent. `ChipList` wraps by
+default and accepts layout props for custom arrangements. See **Sizes**.
+
+### Button composition [#button-composition]
+
+Use `ChipButton` when Chip presentation is needed without collection semantics.
+Compose it with components such as `MenuTrigger`; those components continue to
+own open state, focus, and keyboard behavior. See **Menu filter trigger**.
+
+## Accessibility [#accessibility]
+
+* Use `Label` or `aria-label` to name the `ChipGroup`; this names the collection,
+  not its individual Chips.
+* Give each Chip a visible label, `textValue`, or `aria-label`. Use `textValue`
+  when a Chip contains icons, composed content, or a render prop.
+* Use a descriptive group label so removal actions can be announced clearly.
+* Keep the visible label and the accessible value synchronized.
+* `ChipButton` is a real button and exposes menu state through `MenuTrigger`; provide an accessible name when the visible content is incomplete.
+
+## Best Practices [#best-practices]
+
+* Keep labels concise and let them truncate only when the available width requires it.
+* Prefer groups of three or more related values.
+* Keep one size per group.
+* Let `ChipList` wrap instead of forcing a single horizontal line.
+* Use removable Chips for user-added filters and tokens.
+* For menu filters, use `ChipButton` with `MenuTrigger` and provide the chevron explicitly.
+
+## Troubleshooting [#troubleshooting]
+
+### A ChipGroup has no accessible name [#a-chipgroup-has-no-accessible-name]
+
+Add a visible `Label` to the group or provide `aria-label`. For an individual Chip
+with composed content, provide a visible label, `textValue`, or `aria-label`.
+
+### The remove action does not update the UI [#the-remove-action-does-not-update-the-ui]
+
+Add `onRemove` to `ChipGroup` and remove the returned keys from the collection
+owned by your application.
+
+### A composed label is not truncating correctly [#a-composed-label-is-not-truncating-correctly]
+
+Keep the label in `Text`, preserve `textValue`, and constrain the available width
+of the surrounding layout. Truncation is visual; the complete accessible value
+should remain available.
+
+### The menu trigger does not look like a Chip [#the-menu-trigger-does-not-look-like-a-chip]
+
+Use `ChipButton` inside `MenuTrigger`, include the visible value, and add a
+trailing chevron to communicate that the control opens a menu.
+
+## Props [#props]
+
+```tsx
+<ChipGroup>
+  <Label />
+  <ChipList>
+    <Chip>
+      <Icon />
+      <Text />
+      <Button slot="remove" />
+    </Chip>
+  </ChipList>
+  <Text slot="description" />
+  <Text slot="errorMessage" />
+</ChipGroup>
+```
+
+For a menu trigger, the button and menu are composed as siblings inside
+`MenuTrigger`:
+
+```tsx
+<MenuTrigger>
+  <ChipButton>
+    <Text />
+    <Icon />
+  </ChipButton>
+  <Menu>
+    <MenuItem />
+    {/* ... */}
+  </Menu>
+</MenuTrigger>
+```
+
+### Chip [#chip]
+
+<PropTable />
+
+### ChipGroup [#chipgroup]
+
+<PropTable />
+
+### ChipList [#chiplist]
+
+<PropTable />
+
+### ChipButton [#chipbutton]
 
 <PropTable />
 
@@ -2351,6 +2351,53 @@ For performance optimization:
 3. **Minimize icon sets**: Only load icons that are actually used
 
 
+# Image
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders a native `<img>` and accepts all of its attributes
+* Inherits presentation and behavior when composed inside Antares components such as Avatar
+* Ships no default styles, loading state, or fallback so it stays predictable everywhere
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Render an image with alternative text and explicit dimensions.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+* Provide concise, meaningful `alt` text when the image conveys information.
+* Use `alt=""` for decorative images or images already described by adjacent text.
+* Set `width` and `height` when known to reserve space and reduce layout shift.
+
+## Props [#props]
+
+### Image [#image]
+
+<PropTable />
+
+
 # InlineDrawer
 
 
@@ -2447,53 +2494,6 @@ A rail whose content stays visible when collapsed is a composition, not a mode: 
 <PropTable />
 
 ### InlineDrawerPanel [#inlinedrawerpanel]
-
-<PropTable />
-
-
-# Image
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders a native `<img>` and accepts all of its attributes
-* Inherits presentation and behavior when composed inside Antares components such as Avatar
-* Ships no default styles, loading state, or fallback so it stays predictable everywhere
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Render an image with alternative text and explicit dimensions.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-* Provide concise, meaningful `alt` text when the image conveys information.
-* Use `alt=""` for decorative images or images already described by adjacent text.
-* Set `width` and `height` when known to reserve space and reduce layout shift.
-
-## Props [#props]
-
-### Image [#image]
 
 <PropTable />
 
@@ -3438,6 +3438,71 @@ Do not add `role="button"` to a native `<button>` or `<a>` unless you intentiona
 <PropTable />
 
 
+# ProgressBar
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A determinate progress bar with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
+
+### Statuses [#statuses]
+
+Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
+
+<Story of="StatusesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+
+## Props [#props]
+
+### ProgressBar [#progressbar]
+
+<PropTable />
+
+
 # ProgressSteps
 
 
@@ -3569,71 +3634,6 @@ Step numbers are shown by default; `hideStepNumbers` omits the "N. " prefix.
 <PropTable />
 
 ### ProgressStep [#progressstep]
-
-<PropTable />
-
-
-# ProgressBar
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A determinate progress bar with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
-
-### Statuses [#statuses]
-
-Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
-
-<Story of="StatusesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-
-## Props [#props]
-
-### ProgressBar [#progressbar]
 
 <PropTable />
 
@@ -4120,147 +4120,6 @@ Negative values are supported. Set a negative `minValue` and ensure every scalar
 Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
 
 
-# Select
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `SelectOptions`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
-* **Trigger and options**: An empty `Button slot="trigger"` renders the selected value and a chevron from the field. `SelectOptions` is the list in the popover the Select opens: it takes `ListBox` props (including `items` with a render function for a dynamic collection) plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `ListBox` yourself to replace the whole overlay
-* **Composed in another field**: Use `variant="control"` to sit inside another field's `Group`, as a country-code select beside a phone `Input`
-* **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
-* **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
-* **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Minimal usage with a `Label`, items, and a placeholder.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Label, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22;>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <Text slot=\&#x22;description\&#x22;>Select your favorite coffee</Text>\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Label, Select, SelectItem, SelectOptions, Text, type SelectKey } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<SelectKey | null>('latte');\n\n  return (\n    <>\n      <Select placeholder=\&#x22;Pick a drink\&#x22; value={value} onChange={setValue}>\n        <Label>Coffee</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n          <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n          <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Text>\n        <strong>Value:</strong> {String(value ?? '(none)')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Multiple [#multiple]
-
-Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
-
-<Story of="MultipleExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Label, Select, SelectItem, SelectOptions, Text, type SelectKey } from '@godaddy/antares';\n\nexport function MultipleExample() {\n  const [value, setValue] = useState<readonly SelectKey[]>(['latte', 'mocha']);\n\n  return (\n    <>\n      <Select placeholder=\&#x22;Pick one or more\&#x22; selectionMode=\&#x22;multiple\&#x22; value={value} onChange={setValue}>\n        <Label>Coffees you like</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n          <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n          <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Text>\n        <strong>Selected:</strong> {value.length === 0 ? '(none)' : value.join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Invalid [#invalid]
-
-Use `isInvalid` with a `FieldError` for validation feedback.
-
-<Story of="InvalidExample" />
-
-<Source language="tsx" code="&#x22;import { Button, FieldError, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22; isInvalid isRequired>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <FieldError>Please choose a drink</FieldError>\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` to prevent interaction.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Select defaultValue=\&#x22;latte\&#x22; isDisabled>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
-
-### Form [#form]
-
-Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
-
-<Story of="FormExample" />
-
-<Source language="tsx" code="&#x22;import { useState, type FormEvent } from 'react';\nimport { Box, Button, FieldError, Flex, Label, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function FormExample() {\n  const [submitted, setSubmitted] = useState<Record<string, string | string[]> | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const data = new FormData(event.currentTarget);\n    const entries: Record<string, string | string[]> = {};\n    for (const [key, value] of data.entries()) {\n      const stringValue = String(value);\n      const existing = entries[key];\n      if (existing === undefined) {\n        entries[key] = stringValue;\n      } else if (Array.isArray(existing)) {\n        entries[key] = [...existing, stringValue];\n      } else {\n        entries[key] = [existing, stringValue];\n      }\n    }\n    setSubmitted(entries);\n  }\n\n  return (\n    <Flex as=\&#x22;form\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; onSubmit={handleSubmit}>\n      <Select name=\&#x22;drink\&#x22; placeholder=\&#x22;Pick a drink\&#x22; isRequired>\n        <Label>Drink</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <FieldError>Please select an item in the list.</FieldError>\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Select name=\&#x22;extras\&#x22; placeholder=\&#x22;Pick any extras\&#x22; selectionMode=\&#x22;multiple\&#x22;>\n        <Label>Extras</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;oat-milk\&#x22;>Oat milk</SelectItem>\n          <SelectItem id=\&#x22;extra-shot\&#x22;>Extra shot</SelectItem>\n          <SelectItem id=\&#x22;vanilla\&#x22;>Vanilla syrup</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Flex gap=\&#x22;sm\&#x22;>\n        <Button type=\&#x22;submit\&#x22;>Submit</Button>\n        <Button type=\&#x22;reset\&#x22; variant=\&#x22;minimal\&#x22; onPress={() => setSubmitted(null)}>\n          Reset\n        </Button>\n      </Flex>\n      {submitted && (\n        <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; rounding=\&#x22;lg\&#x22;>\n          <Text>\n            <strong>Submitted:</strong> {JSON.stringify(submitted)}\n          </Text>\n        </Box>\n      )}\n    </Flex>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Compare the supported `md` and `sm` visual sizes.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Select placeholder=\&#x22;Pick a drink\&#x22;>\n        <Label>Coffee (md)</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Select placeholder=\&#x22;Pick a drink\&#x22; size=\&#x22;sm\&#x22;>\n        <Label>Coffee (sm)</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n    </Flex>\n  );\n}&#x22;" />
-
-### Composed [#composed]
-
-Write the trigger and the overlay yourself instead of composing `SelectOptions`, for full control
-over the popover and the list.
-
-<Story of="ComposedExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  FieldError,\n  Icon,\n  Label,\n  ListBox,\n  Popover,\n  Select,\n  SelectItem,\n  SelectValue,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22;>\n      <Label>Drink</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <SelectValue />\n        <Icon icon=\&#x22;chevron-down\&#x22; />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your favorite drink</Text>\n      <FieldError />\n      <Popover hideArrow>\n        <Content blockPadding=\&#x22;xs\&#x22; inlinePadding=\&#x22;0\&#x22;>\n          <ListBox>\n            <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n            <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n            <SelectItem id=\&#x22;tea\&#x22;>Tea</SelectItem>\n          </ListBox>\n        </Content>\n      </Popover>\n    </Select>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<Select>
-  <Label />
-  <Button slot="trigger" />
-  <Text slot="description" />
-  <SelectOptions>
-    <SelectItem />
-  </SelectOptions>
-  <FieldError />
-</Select>
-```
-
-### Select [#select]
-
-<PropTable />
-
-### SelectOptions [#selectoptions]
-
-<PropTable />
-
-### SelectValue [#selectvalue]
-
-<PropTable />
-
-### SelectItem [#selectitem]
-
-<PropTable />
-
-
 # SegmentedController
 
 
@@ -4687,6 +4546,147 @@ Use the interactive root data attributes for state-based customization. The trac
 <PropTable />
 
 
+# Select
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `SelectOptions`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
+* **Trigger and options**: An empty `Button slot="trigger"` renders the selected value and a chevron from the field. `SelectOptions` is the list in the popover the Select opens: it takes `ListBox` props (including `items` with a render function for a dynamic collection) plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `ListBox` yourself to replace the whole overlay
+* **Composed in another field**: Use `variant="control"` to sit inside another field's `Group`, as a country-code select beside a phone `Input`
+* **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
+* **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
+* **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Minimal usage with a `Label`, items, and a placeholder.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Label, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22;>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <Text slot=\&#x22;description\&#x22;>Select your favorite coffee</Text>\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Label, Select, SelectItem, SelectOptions, Text, type SelectKey } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<SelectKey | null>('latte');\n\n  return (\n    <>\n      <Select placeholder=\&#x22;Pick a drink\&#x22; value={value} onChange={setValue}>\n        <Label>Coffee</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n          <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n          <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Text>\n        <strong>Value:</strong> {String(value ?? '(none)')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Multiple [#multiple]
+
+Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
+
+<Story of="MultipleExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Label, Select, SelectItem, SelectOptions, Text, type SelectKey } from '@godaddy/antares';\n\nexport function MultipleExample() {\n  const [value, setValue] = useState<readonly SelectKey[]>(['latte', 'mocha']);\n\n  return (\n    <>\n      <Select placeholder=\&#x22;Pick one or more\&#x22; selectionMode=\&#x22;multiple\&#x22; value={value} onChange={setValue}>\n        <Label>Coffees you like</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n          <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n          <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Text>\n        <strong>Selected:</strong> {value.length === 0 ? '(none)' : value.join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with a `FieldError` for validation feedback.
+
+<Story of="InvalidExample" />
+
+<Source language="tsx" code="&#x22;import { Button, FieldError, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22; isInvalid isRequired>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <FieldError>Please choose a drink</FieldError>\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent interaction.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Select defaultValue=\&#x22;latte\&#x22; isDisabled>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
+
+### Form [#form]
+
+Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
+
+<Story of="FormExample" />
+
+<Source language="tsx" code="&#x22;import { useState, type FormEvent } from 'react';\nimport { Box, Button, FieldError, Flex, Label, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function FormExample() {\n  const [submitted, setSubmitted] = useState<Record<string, string | string[]> | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const data = new FormData(event.currentTarget);\n    const entries: Record<string, string | string[]> = {};\n    for (const [key, value] of data.entries()) {\n      const stringValue = String(value);\n      const existing = entries[key];\n      if (existing === undefined) {\n        entries[key] = stringValue;\n      } else if (Array.isArray(existing)) {\n        entries[key] = [...existing, stringValue];\n      } else {\n        entries[key] = [existing, stringValue];\n      }\n    }\n    setSubmitted(entries);\n  }\n\n  return (\n    <Flex as=\&#x22;form\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; onSubmit={handleSubmit}>\n      <Select name=\&#x22;drink\&#x22; placeholder=\&#x22;Pick a drink\&#x22; isRequired>\n        <Label>Drink</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <FieldError>Please select an item in the list.</FieldError>\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Select name=\&#x22;extras\&#x22; placeholder=\&#x22;Pick any extras\&#x22; selectionMode=\&#x22;multiple\&#x22;>\n        <Label>Extras</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;oat-milk\&#x22;>Oat milk</SelectItem>\n          <SelectItem id=\&#x22;extra-shot\&#x22;>Extra shot</SelectItem>\n          <SelectItem id=\&#x22;vanilla\&#x22;>Vanilla syrup</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Flex gap=\&#x22;sm\&#x22;>\n        <Button type=\&#x22;submit\&#x22;>Submit</Button>\n        <Button type=\&#x22;reset\&#x22; variant=\&#x22;minimal\&#x22; onPress={() => setSubmitted(null)}>\n          Reset\n        </Button>\n      </Flex>\n      {submitted && (\n        <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; rounding=\&#x22;lg\&#x22;>\n          <Text>\n            <strong>Submitted:</strong> {JSON.stringify(submitted)}\n          </Text>\n        </Box>\n      )}\n    </Flex>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Compare the supported `md` and `sm` visual sizes.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Select placeholder=\&#x22;Pick a drink\&#x22;>\n        <Label>Coffee (md)</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Select placeholder=\&#x22;Pick a drink\&#x22; size=\&#x22;sm\&#x22;>\n        <Label>Coffee (sm)</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n    </Flex>\n  );\n}&#x22;" />
+
+### Composed [#composed]
+
+Write the trigger and the overlay yourself instead of composing `SelectOptions`, for full control
+over the popover and the list.
+
+<Story of="ComposedExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  FieldError,\n  Icon,\n  Label,\n  ListBox,\n  Popover,\n  Select,\n  SelectItem,\n  SelectValue,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22;>\n      <Label>Drink</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <SelectValue />\n        <Icon icon=\&#x22;chevron-down\&#x22; />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your favorite drink</Text>\n      <FieldError />\n      <Popover hideArrow>\n        <Content blockPadding=\&#x22;xs\&#x22; inlinePadding=\&#x22;0\&#x22;>\n          <ListBox>\n            <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n            <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n            <SelectItem id=\&#x22;tea\&#x22;>Tea</SelectItem>\n          </ListBox>\n        </Content>\n      </Popover>\n    </Select>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<Select>
+  <Label />
+  <Button slot="trigger" />
+  <Text slot="description" />
+  <SelectOptions>
+    <SelectItem />
+  </SelectOptions>
+  <FieldError />
+</Select>
+```
+
+### Select [#select]
+
+<PropTable />
+
+### SelectOptions [#selectoptions]
+
+<PropTable />
+
+### SelectValue [#selectvalue]
+
+<PropTable />
+
+### SelectItem [#selectitem]
+
+<PropTable />
+
+
 # Tabs
 
 
@@ -4834,83 +4834,6 @@ Use `TabList`'s `containerProps` to customize the outer tab list shell, such as 
 <PropTable />
 
 
-# Text
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-The `Text` component prepares content with a few properties.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic text content.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function DefaultExample(args: TextProps) {\n  return <Text {...args}>Hello, world!</Text>;\n}&#x22;" />
-
-### As [#as]
-
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
-
-<Story of="AsExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AsExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;marquee\&#x22;>\n      A scrolling marquee\n    </Text>\n  );\n}&#x22;" />
-
-### Align [#align]
-
-Setting the `align` prop allows you to change the alignment of the text. Choose from `start`, `center`, `end`, or `justify`; the logical keywords support RTL languages.
-
-<Story of="AlignExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AlignExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;p\&#x22; align=\&#x22;center\&#x22;>\n      Text is aligned to the center\n    </Text>\n  );\n}&#x22;" />
-
-### Max Lines [#max-lines]
-
-Setting the `maxLines` prop limits the number of displayed lines using an ellipsis.
-
-<Story of="MaxLinesExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function MaxLinesExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; maxLines={2}>\n        This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod\n        tempor incididunt ut labore et dolore magna aliqua.\n      </Text>\n    </div>\n  );\n}&#x22;" />
-
-### Wrap [#wrap]
-
-Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
-
-<Story of="WrapExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function WrapExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; wrap=\&#x22;pretty\&#x22;>\n        Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and\n        legibility. Because counting characters and balancing them across multiple lines is computationally expensive,\n        this value is only supported for blocks of text spanning a limited number of lines\n      </Text>\n    </div>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### Text [#text]
-
-<PropTable />
-
-
 # Tag
 
 
@@ -5042,6 +4965,83 @@ The colored dot is decorative and invisible to screen readers. The text label mu
 ## Props [#props]
 
 ### Tag [#tag]
+
+<PropTable />
+
+
+# Text
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic text content.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function DefaultExample(args: TextProps) {\n  return <Text {...args}>Hello, world!</Text>;\n}&#x22;" />
+
+### As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Story of="AsExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AsExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;marquee\&#x22;>\n      A scrolling marquee\n    </Text>\n  );\n}&#x22;" />
+
+### Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. Choose from `start`, `center`, `end`, or `justify`; the logical keywords support RTL languages.
+
+<Story of="AlignExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AlignExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;p\&#x22; align=\&#x22;center\&#x22;>\n      Text is aligned to the center\n    </Text>\n  );\n}&#x22;" />
+
+### Max Lines [#max-lines]
+
+Setting the `maxLines` prop limits the number of displayed lines using an ellipsis.
+
+<Story of="MaxLinesExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function MaxLinesExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; maxLines={2}>\n        This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod\n        tempor incididunt ut labore et dolore magna aliqua.\n      </Text>\n    </div>\n  );\n}&#x22;" />
+
+### Wrap [#wrap]
+
+Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+<Story of="WrapExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function WrapExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; wrap=\&#x22;pretty\&#x22;>\n        Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and\n        legibility. Because counting characters and balancing them across multiple lines is computationally expensive,\n        this value is only supported for blocks of text spanning a limited number of lines\n      </Text>\n    </div>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### Text [#text]
 
 <PropTable />
 
@@ -5753,6 +5753,211 @@ To position a tooltip relative to a different focusable element, use the `trigge
 <PropTable />
 
 
+# Bar Chart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Single and multi-series support**: Display one or multiple data series with grouped bars
+* **Vertical and horizontal orientations**: Choose the best layout for your data and use case
+* **Responsive behavior**: Auto-sizing with horizontal scrolling for many data points, sticky axes
+* **Design system alignment**: 8px border radius, 12px bar width (1.5 GU), consistent spacing
+* **Interactive tooltips**: Hover to see exact values, with smart positioning and scroll-awareness
+* **Customizable axes**: Control gridlines, tick marks, axis titles, and tick formatting
+* **Custom domains**: Set explicit x and y ranges for controlled scales across multiple charts
+* **RTL support*&#x2A;: Full right-to-left layout support for international audiences &#x2A;(in development)*
+* **Accessibility ready**: Keyboard navigation, screen reader support, and semantic HTML
+* **TypeScript support**: Fully typed with comprehensive prop interfaces
+* **VisX integration**: Leverages VisX primitives for scales, axes, shapes, and responsive layout
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+You give the chart a `series` array plus `xAccessor` and `yAccessor` so it knows which field is the category and which is the value - this is the everyday setup for one set of vertical bars.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function DefaultExample(props: any) {\n  const series = [\n    {\n      id: 'new-york-series',\n      name: 'New York',\n      data: cityTemperature.slice(0, 10)\n    }\n  ];\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.date}\n      yAccessor={(d: any) => d['New York']}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Multi-series [#multi-series]
+
+Pass more than one entry in `series` and the bars group by category, with a legend naming each series. Use it when the comparison between series matters as much as the values themselves.
+
+<Story of="MultiSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function MultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city, index) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.x}\n      yAccessor={(d: any) => d.y}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      yDomain={[0, 100]}\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Horizontal single series [#horizontal-single-series]
+
+`orientation="horizontal"` swaps the axes: categories run down the side and values across the bottom. Reach for it when the labels are long or the chart is really a ranking.
+
+<Story of="HorizontalSingleSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets, type Exoplanets } from '@visx/mock-data';\n\nconst largestExoplanets = [...allExoplanets.filter((d) => d.distance && d.distance > 0)]\n  .sort((a, b) => b.radius - a.radius)\n  .slice(0, 30);\n\nconst series = [{ id: 'radius', name: 'Radius', data: largestExoplanets }];\n\nexport function HorizontalSingleSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: Exoplanets) => d.radius}\n      yAccessor={(d: Exoplanets) => d.name}\n      xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n      yAxisTitle=\&#x22;Exoplanet\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Horizontal multi-series [#horizontal-multi-series]
+
+Grouped bars work horizontally too. With many categories the chart scrolls vertically, which is usually easier on a phone than scrolling sideways.
+
+<Story of="HorizontalMultiSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets } from '@visx/mock-data';\n\ninterface ExoplanetSurveyPoint {\n  name: string;\n  value: number;\n}\n\n// Take 90 real exoplanets and use the first 15 names as the shared category axis.\n// Each series maps a different group of 15 planets' radius onto those same category names,\n// demonstrating multi-series grouped bars with real exoplanet data.\nconst trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);\nconst categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);\n\nfunction toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {\n  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));\n}\n\nconst series = [\n  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },\n  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },\n  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },\n  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }\n];\n\nexport function HorizontalMultiSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: ExoplanetSurveyPoint) => d.value}\n      yAccessor={(d: ExoplanetSurveyPoint) => d.name}\n      xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n      yAxisTitle=\&#x22;Exoplanet\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Custom domain [#custom-domain]
+
+`xDomain` and `yDomain` pin down exactly which categories and value range to draw. Here category `F` has no data and still gets an empty slot, and the Y range stays `[0, 40]` even though the largest bar is 30 - handy when several charts need to share a scale.
+
+<Story of="CustomDomainExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function CustomDomainExample() {\n  const data = [\n    { category: 'A', value: 10 },\n    { category: 'B', value: 20 },\n    { category: 'C', value: 15 },\n    { category: 'D', value: 30 },\n    { category: 'E', value: 5 }\n  ];\n  // Example: set xDomain and yDomain explicitly\n  const xDomain = ['A', 'B', 'D', 'E', 'F', 'C']; // F will show as empty slot\n  const yDomain: [number, number] = [0, 40];\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sample Series',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: string; value: number }) => d.category}\n      yAccessor={(d: { category: string; value: number }) => d.value}\n      height={400}\n      width={600}\n      xAxisTitle=\&#x22;Category\&#x22;\n      yAxisTitle=\&#x22;Value\&#x22;\n      xDomain={xDomain}\n      yDomain={yDomain}\n    />\n  );\n}&#x22;" />
+
+### Formatted tick marks [#formatted-tick-marks]
+
+`xTickFormat` and `yTickFormat` shape the axis labels - abbreviated dates on one axis, thousands separators on the other. The functions receive the raw accessor value, so they also cover currency, units, or percentages.
+
+<Story of="FormattedTickMarksExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function FormattedTickMarksExample() {\n  // Example data with Date categories\n  const data = [\n    { category: new Date(2024, 0, 1), value: 1000 }, // Jan 1\n    { category: new Date(2024, 1, 15), value: 2500 }, // Feb 15\n    { category: new Date(2024, 2, 10), value: 1750 }, // Mar 10\n    { category: new Date(2024, 3, 5), value: 3000 }, // Apr 5\n    { category: new Date(2024, 4, 20), value: 1250 } // May 20\n  ];\n\n  // Format x-axis as abbreviated month and day\n  function formatDateTick(value: Date | string | number) {\n    if (value instanceof Date) {\n      return value.toLocaleString('en-US', { month: 'short', day: 'numeric' });\n    }\n    return String(value);\n  }\n\n  // Format y-axis as comma-separated number\n  function formatNumberWithCommas(value: number | string | Date) {\n    if (typeof value === 'number') {\n      return value.toLocaleString();\n    }\n    return String(value);\n  }\n\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sales',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: Date; value: number }) => d.category}\n      yAccessor={(d: { category: Date; value: number }) => d.value}\n      height={600}\n      width={600}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Sales Amount\&#x22;\n      xTickFormat={formatDateTick}\n      yTickFormat={formatNumberWithCommas}\n    />\n  );\n}&#x22;" />
+
+### RTL multi-series [#rtl-multi-series]
+
+The chart follows the current layout direction, which is normally detected from the browser or system settings. In right-to-left it mirrors the axes, bars, and labels; this example forces RTL so you can see it in a left-to-right page. RTL support is still being refined - axis rendering and tick spacing in particular.
+
+<Story of="RTLMultiSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\nexport function RTLMultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        xAccessor={(d: any) => d.x}\n        yAccessor={(d: any) => d.y}\n        xAxisTitle=\&#x22;Date\&#x22;\n        yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}&#x22;" />
+
+### RTL horizontal multi-series [#rtl-horizontal-multi-series]
+
+Horizontal grouped bars in a right-to-left layout: bars grow from the right edge and the category axis moves to the right side.
+
+<Story of="RTLHorizontalMultiSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets } from '@visx/mock-data';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\ninterface ExoplanetSurveyPoint {\n  name: string;\n  value: number;\n}\n\nconst trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);\nconst categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);\n\nfunction toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {\n  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));\n}\n\nconst series = [\n  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },\n  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },\n  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },\n  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }\n];\n\nexport function RTLHorizontalMultiSeriesExample(props: any) {\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        orientation=\&#x22;horizontal\&#x22;\n        xAccessor={(d: ExoplanetSurveyPoint) => d.value}\n        yAccessor={(d: ExoplanetSurveyPoint) => d.name}\n        xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n        yAxisTitle=\&#x22;Exoplanet\&#x22;\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        xGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}&#x22;" />
+
+## Design System Alignment [#design-system-alignment]
+
+### Spacing and Sizing [#spacing-and-sizing]
+
+* **Bar width**: 12px (1.5 grid units)
+* **Bar padding** (multi-series): 4px between bars within a group
+* **Group gap**: Minimum 24px between bar groups
+* **Border radius**: 8px on all bars
+* **Margins**: 20px top/right, 60px bottom/left for axes and labels
+
+### Responsive Behavior [#responsive-behavior]
+
+* **Auto-sizing**: Uses VisX's `useParentSize` hook to adapt to container width
+* **Horizontal scrolling**: When data points exceed available width, the chart becomes horizontally scrollable
+* **Sticky y-axis**: The y-axis remains visible during horizontal scroll
+* **Minimum spacing**: Group gaps never fall below 24px, triggering scroll instead
+
+## Accessibility [#accessibility]
+
+* **Keyboard navigation**: Bar groups are keyboard accessible with `tabIndex={0}` and `role="group"`
+* **Screen reader support**: Semantic HTML structure with proper ARIA attributes
+* **Tooltips**: Show on both hover and focus for keyboard users
+
+## Performance Considerations [#performance-considerations]
+
+### Rendering Strategy [#rendering-strategy]
+
+The component uses VisX primitives for optimal SVG rendering:
+
+* **Scales**: VisX's `scaleBand` and `scaleLinear` for efficient coordinate mapping
+* **Grouped rendering**: Bars are rendered in SVG `<Group>` elements for logical organization
+* **Responsive sizing**: `useParentSize` hook provides efficient resize detection with debouncing (15ms)
+
+### Scrolling Strategy [#scrolling-strategy]
+
+* **Vertical charts**: Horizontal scrolling when many data points exceed container width
+* **Horizontal charts**: Vertical scrolling when many categories exceed container height
+* **Sticky axes**: Positioned absolutely to remain visible during scroll
+
+### Recommendations [#recommendations]
+
+* For charts with **many data points** (>20), consider enabling horizontal scroll (default behavior)
+* For **horizontal bar charts**, vertical scrolling is more mobile-friendly than horizontal
+* Use **custom domains** to maintain consistent scales across multiple charts
+* **Tooltips** use absolute positioning and scroll-aware calculations for accurate placement
+
+## Development Status [#development-status]
+
+The BarChart component is in active development. Current focus areas:
+
+* ✅ Single and multi-series support
+* ✅ Vertical and horizontal orientations
+* ✅ Responsive behavior with sticky axes
+* ✅ Interactive tooltips
+* ✅ Custom domains
+* ✅ Design system alignment
+* 🚧 RTL compatibility (axis rendering and spacing refinement)
+* 🚧 Tick mark positioning improvements
+* 🚧 Additional customization options (tick formatting, axis configuration)
+
+## Troubleshooting [#troubleshooting]
+
+### Bars Not Showing [#bars-not-showing]
+
+If bars are not visible:
+
+1. **Check data**: Ensure `series` array has data and `xAccessor`/`yAccessor` return valid values
+2. **Check domains**: Verify `yDomain` (if set) includes your data values
+3. **Check dimensions**: Ensure container has non-zero width and height
+
+### Tooltip Positioning Issues [#tooltip-positioning-issues]
+
+If tooltips appear in the wrong location:
+
+1. **Check scroll position**: The component accounts for horizontal scroll automatically
+2. **Check container**: Ensure the chart container is not transformed or positioned in a complex layout
+3. **Verify event targets**: Tooltips use mouse event coordinates and bar group positions
+
+### Performance Issues [#performance-issues]
+
+For better performance:
+
+1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
+2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
+3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
+
+## Props [#props]
+
+### BarChart [#barchart]
+
+<PropTable />
+
+
 # DonutChart
 
 
@@ -6333,211 +6538,6 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 <PropTable />
 
 
-# Bar Chart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Single and multi-series support**: Display one or multiple data series with grouped bars
-* **Vertical and horizontal orientations**: Choose the best layout for your data and use case
-* **Responsive behavior**: Auto-sizing with horizontal scrolling for many data points, sticky axes
-* **Design system alignment**: 8px border radius, 12px bar width (1.5 GU), consistent spacing
-* **Interactive tooltips**: Hover to see exact values, with smart positioning and scroll-awareness
-* **Customizable axes**: Control gridlines, tick marks, axis titles, and tick formatting
-* **Custom domains**: Set explicit x and y ranges for controlled scales across multiple charts
-* **RTL support*&#x2A;: Full right-to-left layout support for international audiences &#x2A;(in development)*
-* **Accessibility ready**: Keyboard navigation, screen reader support, and semantic HTML
-* **TypeScript support**: Fully typed with comprehensive prop interfaces
-* **VisX integration**: Leverages VisX primitives for scales, axes, shapes, and responsive layout
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-You give the chart a `series` array plus `xAccessor` and `yAccessor` so it knows which field is the category and which is the value - this is the everyday setup for one set of vertical bars.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function DefaultExample(props: any) {\n  const series = [\n    {\n      id: 'new-york-series',\n      name: 'New York',\n      data: cityTemperature.slice(0, 10)\n    }\n  ];\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.date}\n      yAccessor={(d: any) => d['New York']}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
-
-### Multi-series [#multi-series]
-
-Pass more than one entry in `series` and the bars group by category, with a legend naming each series. Use it when the comparison between series matters as much as the values themselves.
-
-<Story of="MultiSeriesExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function MultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city, index) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.x}\n      yAccessor={(d: any) => d.y}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      yDomain={[0, 100]}\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      {...props}\n    />\n  );\n}&#x22;" />
-
-### Horizontal single series [#horizontal-single-series]
-
-`orientation="horizontal"` swaps the axes: categories run down the side and values across the bottom. Reach for it when the labels are long or the chart is really a ranking.
-
-<Story of="HorizontalSingleSeriesExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets, type Exoplanets } from '@visx/mock-data';\n\nconst largestExoplanets = [...allExoplanets.filter((d) => d.distance && d.distance > 0)]\n  .sort((a, b) => b.radius - a.radius)\n  .slice(0, 30);\n\nconst series = [{ id: 'radius', name: 'Radius', data: largestExoplanets }];\n\nexport function HorizontalSingleSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: Exoplanets) => d.radius}\n      yAccessor={(d: Exoplanets) => d.name}\n      xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n      yAxisTitle=\&#x22;Exoplanet\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
-
-### Horizontal multi-series [#horizontal-multi-series]
-
-Grouped bars work horizontally too. With many categories the chart scrolls vertically, which is usually easier on a phone than scrolling sideways.
-
-<Story of="HorizontalMultiSeriesExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets } from '@visx/mock-data';\n\ninterface ExoplanetSurveyPoint {\n  name: string;\n  value: number;\n}\n\n// Take 90 real exoplanets and use the first 15 names as the shared category axis.\n// Each series maps a different group of 15 planets' radius onto those same category names,\n// demonstrating multi-series grouped bars with real exoplanet data.\nconst trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);\nconst categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);\n\nfunction toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {\n  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));\n}\n\nconst series = [\n  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },\n  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },\n  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },\n  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }\n];\n\nexport function HorizontalMultiSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: ExoplanetSurveyPoint) => d.value}\n      yAccessor={(d: ExoplanetSurveyPoint) => d.name}\n      xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n      yAxisTitle=\&#x22;Exoplanet\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
-
-### Custom domain [#custom-domain]
-
-`xDomain` and `yDomain` pin down exactly which categories and value range to draw. Here category `F` has no data and still gets an empty slot, and the Y range stays `[0, 40]` even though the largest bar is 30 - handy when several charts need to share a scale.
-
-<Story of="CustomDomainExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function CustomDomainExample() {\n  const data = [\n    { category: 'A', value: 10 },\n    { category: 'B', value: 20 },\n    { category: 'C', value: 15 },\n    { category: 'D', value: 30 },\n    { category: 'E', value: 5 }\n  ];\n  // Example: set xDomain and yDomain explicitly\n  const xDomain = ['A', 'B', 'D', 'E', 'F', 'C']; // F will show as empty slot\n  const yDomain: [number, number] = [0, 40];\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sample Series',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: string; value: number }) => d.category}\n      yAccessor={(d: { category: string; value: number }) => d.value}\n      height={400}\n      width={600}\n      xAxisTitle=\&#x22;Category\&#x22;\n      yAxisTitle=\&#x22;Value\&#x22;\n      xDomain={xDomain}\n      yDomain={yDomain}\n    />\n  );\n}&#x22;" />
-
-### Formatted tick marks [#formatted-tick-marks]
-
-`xTickFormat` and `yTickFormat` shape the axis labels - abbreviated dates on one axis, thousands separators on the other. The functions receive the raw accessor value, so they also cover currency, units, or percentages.
-
-<Story of="FormattedTickMarksExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function FormattedTickMarksExample() {\n  // Example data with Date categories\n  const data = [\n    { category: new Date(2024, 0, 1), value: 1000 }, // Jan 1\n    { category: new Date(2024, 1, 15), value: 2500 }, // Feb 15\n    { category: new Date(2024, 2, 10), value: 1750 }, // Mar 10\n    { category: new Date(2024, 3, 5), value: 3000 }, // Apr 5\n    { category: new Date(2024, 4, 20), value: 1250 } // May 20\n  ];\n\n  // Format x-axis as abbreviated month and day\n  function formatDateTick(value: Date | string | number) {\n    if (value instanceof Date) {\n      return value.toLocaleString('en-US', { month: 'short', day: 'numeric' });\n    }\n    return String(value);\n  }\n\n  // Format y-axis as comma-separated number\n  function formatNumberWithCommas(value: number | string | Date) {\n    if (typeof value === 'number') {\n      return value.toLocaleString();\n    }\n    return String(value);\n  }\n\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sales',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: Date; value: number }) => d.category}\n      yAccessor={(d: { category: Date; value: number }) => d.value}\n      height={600}\n      width={600}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Sales Amount\&#x22;\n      xTickFormat={formatDateTick}\n      yTickFormat={formatNumberWithCommas}\n    />\n  );\n}&#x22;" />
-
-### RTL multi-series [#rtl-multi-series]
-
-The chart follows the current layout direction, which is normally detected from the browser or system settings. In right-to-left it mirrors the axes, bars, and labels; this example forces RTL so you can see it in a left-to-right page. RTL support is still being refined - axis rendering and tick spacing in particular.
-
-<Story of="RTLMultiSeriesExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\nexport function RTLMultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        xAccessor={(d: any) => d.x}\n        yAccessor={(d: any) => d.y}\n        xAxisTitle=\&#x22;Date\&#x22;\n        yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}&#x22;" />
-
-### RTL horizontal multi-series [#rtl-horizontal-multi-series]
-
-Horizontal grouped bars in a right-to-left layout: bars grow from the right edge and the category axis moves to the right side.
-
-<Story of="RTLHorizontalMultiSeriesExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets } from '@visx/mock-data';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\ninterface ExoplanetSurveyPoint {\n  name: string;\n  value: number;\n}\n\nconst trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);\nconst categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);\n\nfunction toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {\n  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));\n}\n\nconst series = [\n  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },\n  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },\n  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },\n  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }\n];\n\nexport function RTLHorizontalMultiSeriesExample(props: any) {\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        orientation=\&#x22;horizontal\&#x22;\n        xAccessor={(d: ExoplanetSurveyPoint) => d.value}\n        yAccessor={(d: ExoplanetSurveyPoint) => d.name}\n        xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n        yAxisTitle=\&#x22;Exoplanet\&#x22;\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        xGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}&#x22;" />
-
-## Design System Alignment [#design-system-alignment]
-
-### Spacing and Sizing [#spacing-and-sizing]
-
-* **Bar width**: 12px (1.5 grid units)
-* **Bar padding** (multi-series): 4px between bars within a group
-* **Group gap**: Minimum 24px between bar groups
-* **Border radius**: 8px on all bars
-* **Margins**: 20px top/right, 60px bottom/left for axes and labels
-
-### Responsive Behavior [#responsive-behavior]
-
-* **Auto-sizing**: Uses VisX's `useParentSize` hook to adapt to container width
-* **Horizontal scrolling**: When data points exceed available width, the chart becomes horizontally scrollable
-* **Sticky y-axis**: The y-axis remains visible during horizontal scroll
-* **Minimum spacing**: Group gaps never fall below 24px, triggering scroll instead
-
-## Accessibility [#accessibility]
-
-* **Keyboard navigation**: Bar groups are keyboard accessible with `tabIndex={0}` and `role="group"`
-* **Screen reader support**: Semantic HTML structure with proper ARIA attributes
-* **Tooltips**: Show on both hover and focus for keyboard users
-
-## Performance Considerations [#performance-considerations]
-
-### Rendering Strategy [#rendering-strategy]
-
-The component uses VisX primitives for optimal SVG rendering:
-
-* **Scales**: VisX's `scaleBand` and `scaleLinear` for efficient coordinate mapping
-* **Grouped rendering**: Bars are rendered in SVG `<Group>` elements for logical organization
-* **Responsive sizing**: `useParentSize` hook provides efficient resize detection with debouncing (15ms)
-
-### Scrolling Strategy [#scrolling-strategy]
-
-* **Vertical charts**: Horizontal scrolling when many data points exceed container width
-* **Horizontal charts**: Vertical scrolling when many categories exceed container height
-* **Sticky axes**: Positioned absolutely to remain visible during scroll
-
-### Recommendations [#recommendations]
-
-* For charts with **many data points** (>20), consider enabling horizontal scroll (default behavior)
-* For **horizontal bar charts**, vertical scrolling is more mobile-friendly than horizontal
-* Use **custom domains** to maintain consistent scales across multiple charts
-* **Tooltips** use absolute positioning and scroll-aware calculations for accurate placement
-
-## Development Status [#development-status]
-
-The BarChart component is in active development. Current focus areas:
-
-* ✅ Single and multi-series support
-* ✅ Vertical and horizontal orientations
-* ✅ Responsive behavior with sticky axes
-* ✅ Interactive tooltips
-* ✅ Custom domains
-* ✅ Design system alignment
-* 🚧 RTL compatibility (axis rendering and spacing refinement)
-* 🚧 Tick mark positioning improvements
-* 🚧 Additional customization options (tick formatting, axis configuration)
-
-## Troubleshooting [#troubleshooting]
-
-### Bars Not Showing [#bars-not-showing]
-
-If bars are not visible:
-
-1. **Check data**: Ensure `series` array has data and `xAccessor`/`yAccessor` return valid values
-2. **Check domains**: Verify `yDomain` (if set) includes your data values
-3. **Check dimensions**: Ensure container has non-zero width and height
-
-### Tooltip Positioning Issues [#tooltip-positioning-issues]
-
-If tooltips appear in the wrong location:
-
-1. **Check scroll position**: The component accounts for horizontal scroll automatically
-2. **Check container**: Ensure the chart container is not transformed or positioned in a complex layout
-3. **Verify event targets**: Tooltips use mouse event coordinates and bar group positions
-
-### Performance Issues [#performance-issues]
-
-For better performance:
-
-1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
-2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
-3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
-
-## Props [#props]
-
-### BarChart [#barchart]
-
-<PropTable />
-
-
 # Box
 
 
@@ -6642,6 +6642,124 @@ All spacing, elevation, and rounding values are derived from the theme. If no th
 ## Props [#props]
 
 ### Box [#box]
+
+<PropTable />
+
+
+# Grid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic 3-column grid layout with gap.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex, type GridProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: GridProps) {\n  return (\n    <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; {...props}>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 1\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 2\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 3\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 4\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 5\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Columns [#columns]
+
+The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+
+<Story of="ColumnsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ColumnsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: repeat(2, 1fr)</Flex>\n        <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: 1fr 2fr 1fr</Flex>\n        <Grid columns=\&#x22;1fr 2fr 1fr\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Wide\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: auto 1fr auto</Flex>\n        <Grid columns=\&#x22;auto 1fr auto\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Flexible\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Gap [#gap]
+
+The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="GapExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function GapExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: md</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;md\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xl</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xl\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>rowGap: lg, columnGap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rowGap=\&#x22;lg\&#x22; columnGap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 5\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 6\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Named Areas [#named-areas]
+
+Use `areas` to define named grid regions. Children use the `gridArea` prop for placement.
+
+<Story of="AreasExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AreasExample() {\n  return (\n    <Grid\n      areas={['header header header', 'sidebar main main', 'footer footer footer']}\n      columns=\&#x22;200px 1fr 1fr\&#x22;\n      rows=\&#x22;auto 1fr auto\&#x22;\n      gap=\&#x22;sm\&#x22;\n      style={{ height: '300px' }}\n    >\n      <Flex gridArea=\&#x22;header\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Header\n      </Flex>\n      <Flex gridArea=\&#x22;sidebar\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#d0d0d0' }}>\n        Sidebar\n      </Flex>\n      <Flex gridArea=\&#x22;main\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Main Content\n      </Flex>\n      <Flex gridArea=\&#x22;footer\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Footer\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Responsive Grid [#responsive-grid]
+
+Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+
+<Story of="ResponsiveExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ResponsiveExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fill, minmax(150px, 1fr))\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 1\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 2\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 3\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 4\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 5\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Alignment [#alignment]
+
+Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+
+<Story of="AlignmentExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: center</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>alignItems: center (with fixed row height)</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;100px\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: end, alignItems: end</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;80px\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;end\&#x22; alignItems=\&#x22;end\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Form [#form]
+
+A common two-column form pattern with auto-sized label column.
+
+<Story of="FormExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <Grid columns=\&#x22;auto 1fr\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;center\&#x22; style={{ width: '400px' }}>\n      <Flex as=\&#x22;label\&#x22;>Name</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Email</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Message</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Textarea placeholder\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+## RTL Support [#rtl-support]
+
+Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
+
+## Grid vs Flex [#grid-vs-flex]
+
+| Use Case                   | Recommended      |
+| -------------------------- | ---------------- |
+| Single row/column of items | Flex             |
+| Two-dimensional layouts    | Grid             |
+| Named layout regions       | Grid             |
+| Auto-wrapping cards        | Grid (auto-fill) |
+| Navigation bars            | Flex             |
+| Form layouts               | Grid             |
+
+## Props [#props]
+
+### Grid [#grid]
 
 <PropTable />
 
@@ -6762,123 +6880,5 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 ## Props [#props]
 
 ### Flex [#flex]
-
-<PropTable />
-
-
-# Grid
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
-
-**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Scale Sizes [#scale-sizes]
-
-We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic 3-column grid layout with gap.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex, type GridProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: GridProps) {\n  return (\n    <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; {...props}>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 1\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 2\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 3\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 4\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 5\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Columns [#columns]
-
-The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
-
-<Story of="ColumnsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ColumnsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: repeat(2, 1fr)</Flex>\n        <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: 1fr 2fr 1fr</Flex>\n        <Grid columns=\&#x22;1fr 2fr 1fr\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Wide\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: auto 1fr auto</Flex>\n        <Grid columns=\&#x22;auto 1fr auto\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Flexible\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Gap [#gap]
-
-The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
-
-<Story of="GapExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function GapExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: md</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;md\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xl</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xl\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>rowGap: lg, columnGap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rowGap=\&#x22;lg\&#x22; columnGap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 5\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 6\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Named Areas [#named-areas]
-
-Use `areas` to define named grid regions. Children use the `gridArea` prop for placement.
-
-<Story of="AreasExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AreasExample() {\n  return (\n    <Grid\n      areas={['header header header', 'sidebar main main', 'footer footer footer']}\n      columns=\&#x22;200px 1fr 1fr\&#x22;\n      rows=\&#x22;auto 1fr auto\&#x22;\n      gap=\&#x22;sm\&#x22;\n      style={{ height: '300px' }}\n    >\n      <Flex gridArea=\&#x22;header\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Header\n      </Flex>\n      <Flex gridArea=\&#x22;sidebar\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#d0d0d0' }}>\n        Sidebar\n      </Flex>\n      <Flex gridArea=\&#x22;main\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Main Content\n      </Flex>\n      <Flex gridArea=\&#x22;footer\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Footer\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Responsive Grid [#responsive-grid]
-
-Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
-
-<Story of="ResponsiveExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ResponsiveExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fill, minmax(150px, 1fr))\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 1\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 2\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 3\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 4\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 5\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Alignment [#alignment]
-
-Use `justifyItems` and `alignItems` to control default alignment of all grid children.
-
-<Story of="AlignmentExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: center</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>alignItems: center (with fixed row height)</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;100px\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: end, alignItems: end</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;80px\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;end\&#x22; alignItems=\&#x22;end\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Form [#form]
-
-A common two-column form pattern with auto-sized label column.
-
-<Story of="FormExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <Grid columns=\&#x22;auto 1fr\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;center\&#x22; style={{ width: '400px' }}>\n      <Flex as=\&#x22;label\&#x22;>Name</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Email</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Message</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Textarea placeholder\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-## RTL Support [#rtl-support]
-
-Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
-
-## Grid vs Flex [#grid-vs-flex]
-
-| Use Case                   | Recommended      |
-| -------------------------- | ---------------- |
-| Single row/column of items | Flex             |
-| Two-dimensional layouts    | Grid             |
-| Named layout regions       | Grid             |
-| Auto-wrapping cards        | Grid (auto-fill) |
-| Navigation bars            | Flex             |
-| Form layouts               | Grid             |
-
-## Props [#props]
-
-### Grid [#grid]
 
 <PropTable />
