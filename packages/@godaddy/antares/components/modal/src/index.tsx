@@ -9,6 +9,7 @@ import {
 } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
 import { OverlayDialog } from '#components/_internal/overlay-dialog';
+import type { InterfaceSize } from '#components/size-scope';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
@@ -23,6 +24,9 @@ type ModalFlatKeys =
 type ModalLayerProps = Omit<RACModalOverlayProps, 'children' | ModalFlatKeys>;
 
 export interface ModalProps extends Omit<RACDialogProps, 'children'>, Pick<RACModalOverlayProps, ModalFlatKeys> {
+  /** Size of the modal's interior. Follows the size scope around the trigger when omitted. */
+  size?: InterfaceSize;
+
   /**
    * Whether the modal can be dismissed by interacting outside it (clicking/pressing the
    * underlay). Escape closes the dialog unless `isKeyboardDismissDisabled` is set.

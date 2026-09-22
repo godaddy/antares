@@ -1,6 +1,6 @@
 ---
 title: Text
-description: Text component for displaying and formatting text content with alignment and truncation options
+description: Body copy and supporting detail, with size, emphasis, alignment, and truncation options
 ---
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import { Examples } from '@bento/storybook-addon-helpers/runtime';
@@ -8,7 +8,17 @@ import * as Stories from './text.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-The `Text` component prepares content with a few properties.
+`Text` is body copy and `Detail` is supporting copy: captions, metadata, and hints.
+
+## Features
+
+- Without `size`, `Text` inherits every font property from what surrounds it: a
+  [SizeScope](../size-scope/README.mdx), a control, or a named part. So
+  `<Button><Text>Save</Text></Button>` looks exactly like `<Button>Save</Button>`.
+- `Detail` applies the detail role at the size scope's tier.
+- `size` picks a step on the component's own ramp (`xs` to `2xl`) and changes only the font size.
+- `emphasis` picks a feedback color and changes only the color.
+- For semantic emphasis, render `as="strong"` or `as="em"`.
 
 ## Installation
 
@@ -25,3 +35,7 @@ npm install --save @godaddy/antares
 ### Text
 
 <ArgTypes of={Stories.Props} />
+
+### Detail
+
+<ArgTypes of={Stories.DetailProps} />

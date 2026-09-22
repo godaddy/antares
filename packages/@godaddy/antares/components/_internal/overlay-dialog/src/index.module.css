@@ -15,15 +15,19 @@
 
 .dialog > :where([slot="title"]) {
   grid-area: title;
-  padding-block-start: var(--sp-md);
-  padding-inline-start: var(--sp-md);
+  padding-block-start: var(--_size-padding, var(--sp-md));
+  padding-inline-start: var(--_size-padding, var(--sp-md));
+}
+
+.titleTier {
+  --_type-slot-size: var(--_size-title, var(--font-heading-size-lg, 1.5rem));
 }
 
 .dialog > :where([slot="close"]) {
   grid-area: close;
   align-self: start;
-  margin-block-start: var(--sp-sm);
-  margin-inline-end: var(--sp-sm);
+  margin-block-start: var(--_size-gap, var(--sp-sm));
+  margin-inline-end: var(--_size-gap, var(--sp-sm));
 }
 
 .dialog > :where(.header) {
@@ -41,6 +45,6 @@
 .dialog > :where(.buttons) {
   grid-area: buttons;
   justify-content: end;
-  padding-inline: var(--sp-md);
-  padding-block: var(--sp-sm);
+  padding-inline: var(--_size-padding, var(--sp-md));
+  padding-block: var(--_size-gap, var(--sp-sm));
 }

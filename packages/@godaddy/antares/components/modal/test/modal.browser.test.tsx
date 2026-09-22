@@ -8,6 +8,8 @@ import { ScrollableExample } from '../examples/scrollable.tsx';
 import { PlaygroundExample } from '../examples/modal-playground.tsx';
 import { TriggerlessExample } from '../examples/triggerless.tsx';
 import { LayerPropsExample } from '../examples/layer-props.tsx';
+import { SizeExample } from '../examples/size.tsx';
+import { WithTextLockupExample } from '../examples/with-text-lockup.tsx';
 
 /**
  * Simulate an interaction outside the dialog by dispatching a pointerdown + click on the
@@ -42,6 +44,33 @@ describe('@godaddy/antares', function packageTests() {
       // The accessible name comes from <Heading slot="title">, proving the RAC
       // HeadingContext wiring flows through our Heading preset.
       await expect.element(page.getByRole('dialog', { name: 'Delete file?' })).toBeVisible();
+    });
+
+    it('sizes its interior with an explicit size', async function explicitSize() {
+      await render(<SizeExample />);
+
+      await userEvent.click(page.getByRole('button', { name: 'Open small modal' }));
+
+      const dialog = page.getByRole('dialog', { name: 'Rename file' });
+      await expect.element(dialog).toBeVisible();
+      expect(getComputedStyle(dialog.getByRole('button', { name: 'Rename' }).element()).fontSize).toEqual('14px');
+      expect(getComputedStyle(dialog.getByRole('heading').element()).fontSize).toEqual('20px');
+    });
+
+    it('keeps its own title when a TextLockup in the content has one', async function lockupTitle() {
+      await render(<WithTextLockupExample />);
+
+      await userEvent.click(page.getByRole('button', { name: 'Compare plans' }));
+
+      const dialog = page.getByRole('dialog', { name: 'Compare plans' });
+      await expect.element(dialog).toBeVisible();
+
+      // The modal title takes the md title tier (24px); the lockup title keeps its sm tier (18px).
+      const title = dialog.getByRole('heading', { name: 'Compare plans' }).element();
+      const lockupTitle = dialog.getByRole('heading', { name: 'Unlimited seats' }).element();
+      expect(getComputedStyle(title).fontSize).toEqual('24px');
+      expect(getComputedStyle(lockupTitle).fontSize).toEqual('18px');
+      expect(dialog.element().getAttribute('aria-labelledby')).toEqual(title.id);
     });
 
     it('closes the modal via the CloseButton', async function closeViaButton() {

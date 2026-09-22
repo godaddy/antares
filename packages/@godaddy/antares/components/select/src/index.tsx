@@ -12,12 +12,14 @@ import {
   composeRenderProps,
   useSlottedContext
 } from 'react-aria-components';
+import { surfaceClassName } from '#components/_internal/typography';
 import { ButtonContext, type ButtonProps } from '#components/button';
 import { Icon } from '#components/icon';
 import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { ListBox, ListBoxItem, type ListBoxItemProps, type ListBoxProps } from '#components/listbox';
 import { Popover, type PopoverProps } from '#components/popover';
+import { DeclaredSize, sizeScaleClassName, type InterfaceSize } from '#components/size-scope';
 import { Content, GroupContext, type GroupProps } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import fieldStyles from '../../_internal/field-styles/index.module.css';
@@ -41,8 +43,8 @@ const TRIGGER_FACE = <TriggerFace />;
 export interface SelectProps<T, M extends SelectionMode = 'single'>
   extends Omit<RACSelectProps<T, M>, 'children' | 'size' | 'items'>,
     Omit<FlexOwnProps, 'as' | 'className'> {
-  /** Visual size of the trigger. @default 'md' */
-  size?: 'sm' | 'md';
+  /** Size of the field and its options. Follows the size scope when omitted. */
+  size?: InterfaceSize;
 
   /** Complete field, or a control inside another field's Group. @default 'default' */
   variant?: 'default' | 'control';
@@ -52,7 +54,7 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
 }
 
 /** The control size an enclosing field published, whether or not it slots its buttons. */
-function useInheritedControlSize(): 'sm' | 'md' | undefined {
+function useInheritedControlSize(): InterfaceSize | undefined {
   const context = useContext(ButtonContext) as (ButtonProps & { slots?: Record<string, ButtonProps> }) | null;
   const control = context?.slots ? context.slots.control : context;
 
@@ -68,7 +70,7 @@ interface SelectBodyProps {
   group?: GroupProps;
 
   /** Visual size of the trigger. */
-  size?: 'sm' | 'md';
+  size?: InterfaceSize;
 
   /** Whether the field is disabled. */
   isDisabled?: boolean;
@@ -115,32 +117,38 @@ type SelectRootProps<T, M extends SelectionMode> = Omit<SelectProps<T, M>, 'vari
 
 /** A Select that is a field of its own: a column whose trigger carries the box chrome. */
 function FieldSelect<T extends object, M extends SelectionMode>(props: SelectRootProps<T, M>) {
-  const { children, size, className, gap = 'sm', isDisabled, ...racProps } = props;
+  const { children, size, className, gap = 'var(--_size-gap, var(--sp-sm))', isDisabled, ...racProps } = props;
 
   return (
-    <Flex
-      direction="column"
-      gap={gap}
-      {...racProps}
-      isDisabled={isDisabled}
-      as={RACSelect as typeof RACSelect<T, M>}
-      data-interior="box"
-      data-size={size}
-      className={composeClassName(className, fieldStyles.field, styles.select)}
-    >
-      {composeRenderProps(children, function body(node) {
-        return (
-          <SelectBody
-            size={size}
-            isDisabled={isDisabled}
-            trigger={{ variant: 'trigger', size, className: fieldStyles.trigger }}
-            group={{ isDisabled, className: fieldStyles.group }}
-          >
-            {node}
-          </SelectBody>
-        );
-      })}
-    </Flex>
+    <DeclaredSize size={size}>
+      <Flex
+        direction="column"
+        gap={gap}
+        {...racProps}
+        isDisabled={isDisabled}
+        as={RACSelect as typeof RACSelect<T, M>}
+        data-interior="box"
+        className={composeClassName(
+          className,
+          fieldStyles.field,
+          styles.select,
+          surfaceClassName,
+          sizeScaleClassName(size)
+        )}
+      >
+        {composeRenderProps(children, function body(node) {
+          return (
+            <SelectBody
+              isDisabled={isDisabled}
+              trigger={{ variant: 'trigger', className: fieldStyles.trigger }}
+              group={{ isDisabled, className: fieldStyles.group }}
+            >
+              {node}
+            </SelectBody>
+          );
+        })}
+      </Flex>
+    </DeclaredSize>
   );
 }
 
@@ -156,23 +164,25 @@ function ControlSelect<T extends object, M extends SelectionMode>(props: SelectR
   const controlSize = size ?? inheritedSize;
 
   return (
-    <RACSelect
-      {...(racProps as RACSelectProps<T, M>)}
-      isDisabled={controlDisabled}
-      className={composeClassName(className, styles.select)}
-    >
-      {composeRenderProps(children, function body(node) {
-        return (
-          <SelectBody
-            size={controlSize}
-            isDisabled={controlDisabled}
-            trigger={{ variant: 'control', size: controlSize, className: fieldStyles.control }}
-          >
-            {node}
-          </SelectBody>
-        );
-      })}
-    </RACSelect>
+    <DeclaredSize size={controlSize}>
+      <RACSelect
+        {...(racProps as RACSelectProps<T, M>)}
+        isDisabled={controlDisabled}
+        className={composeClassName(className, styles.select)}
+      >
+        {composeRenderProps(children, function body(node) {
+          return (
+            <SelectBody
+              size={controlSize}
+              isDisabled={controlDisabled}
+              trigger={{ variant: 'control', size: controlSize, className: fieldStyles.control }}
+            >
+              {node}
+            </SelectBody>
+          );
+        })}
+      </RACSelect>
+    </DeclaredSize>
   );
 }
 

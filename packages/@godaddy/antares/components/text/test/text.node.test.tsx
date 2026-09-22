@@ -6,6 +6,9 @@ import { AsExample } from '../examples/as.tsx';
 import { MaxLinesExample } from '../examples/max-lines.tsx';
 import { WrapExample } from '../examples/wrap.tsx';
 import { EmptyTextExample } from '../examples/empty.tsx';
+import { SizesExample } from '../examples/sizes.tsx';
+import { EmphasisExample } from '../examples/emphasis.tsx';
+import { DetailExample } from '../examples/detail.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Text', function textTests() {
@@ -37,6 +40,18 @@ describe('@godaddy/antares', function antares() {
     it('renders empty Text with span element', function emptyChildren() {
       const result = renderToString(<EmptyTextExample />);
       expect(result).toMatchSnapshot();
+    });
+
+    it('renders the sizes example', function rendersSizes() {
+      expect(renderToString(<SizesExample />)).toMatchSnapshot();
+    });
+
+    it('renders the emphasis example', function rendersEmphasis() {
+      expect(renderToString(<EmphasisExample />)).toMatchSnapshot();
+    });
+
+    it('renders the detail example', function rendersDetail() {
+      expect(renderToString(<DetailExample />)).toMatchSnapshot();
     });
   });
 });

@@ -44,13 +44,13 @@ describe('@godaddy/antares', function antares() {
       const html = renderToString(<InteriorExample />);
 
       it('fills the trigger face with the trigger chrome', function trigger() {
-        expect(html).toMatch(/<button[^>]*class="trigger button trigger md"/);
+        expect(html).toMatch(/<button[^>]*class="trigger button trigger"/);
         expect(html).toContain('data-icon="calendar"');
       });
 
       it('disables the trigger and a control button with the field', function disabledControl() {
-        expect(html).toMatch(/<button[^>]*class="trigger button trigger md"[^>]*disabled=""/);
-        expect(html).toMatch(/<button[^>]*class="control button control md"[^>]*disabled=""/);
+        expect(html).toMatch(/<button[^>]*class="trigger button trigger"[^>]*disabled=""/);
+        expect(html).toMatch(/<button[^>]*class="control button control"[^>]*disabled=""/);
       });
     });
   });

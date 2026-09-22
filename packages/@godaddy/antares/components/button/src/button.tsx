@@ -31,12 +31,12 @@ const buttonVariants = cva(styles.button, {
     },
     size: {
       sm: styles.sm,
-      md: styles.md
+      md: styles.md,
+      lg: styles.lg
     }
   },
   defaultVariants: {
-    variant: 'tertiary',
-    size: 'md'
+    variant: 'tertiary'
   }
 });
 
@@ -63,7 +63,7 @@ interface BaseButtonProps<V extends ButtonVariant = ButtonVariant> {
   /** The variant of the button. */
   variant?: V;
 
-  /** The size of the button. */
+  /** The size of the button. Follows the size scope when omitted. */
   size?: ButtonVariantProps['size'];
 
   /** The content of the button. */

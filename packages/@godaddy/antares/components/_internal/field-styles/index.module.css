@@ -14,17 +14,29 @@
   content: none;
 }
 
+/* Label owns its typography; the field supplies the part color, which an explicit emphasis overrides. */
 .label {
-  color: var(--ux-1glcx6s, #2b2b2b);
-  font-size: var(--ux-16aixzc, 0.875rem);
-  font-family: var(--ux-15ks663, sans-serif);
-  font-weight: var(--ux-aarlu5, 500);
+  --_type-slot-color: var(--ux-1glcx6s, #2b2b2b);
 }
 
+/*
+ * A description is muted body copy at the field's description tier. The whole treatment, ramp
+ * included, is set here, so a `Text` and a `Detail` in the slot render the same.
+ */
 .field > :where([slot="description"]) {
-  color: var(--ux-1m9ys0v, #767676);
-  font-size: var(--ux-p4h24g, 0.875rem);
-  font-weight: var(--ux-g9ierp, 400);
+  --_type-xs: var(--font-body-size-xs, 0.75rem);
+  --_type-sm: var(--font-body-size-sm, 0.875rem);
+  --_type-md: var(--font-body-size-md, 1rem);
+  --_type-lg: var(--font-body-size-lg, 1.125rem);
+  --_type-xl: var(--font-body-size-xl, 1.25rem);
+  --_type-2xl: var(--font-body-size-2xl, 1.5rem);
+  --_type-slot-color: var(--ux-1m9ys0v, #767676);
+  --_type-slot-size: var(--_size-label, var(--ux-p4h24g, 0.875rem));
+
+  font-family: var(--font-body-family, var(--ux-pze30t, var(--ux-117cu43, sans-serif)));
+  font-weight: var(--font-body-weight, var(--ux-8n6y9x, 400));
+  font-variation-settings: var(--font-body-variation, var(--ux-1i4pt2s, normal));
+  line-height: var(--font-body-line-height, var(--ux-1hhfdnd, var(--ux-mgbt9j, 1.5)));
 }
 
 .input,
@@ -33,9 +45,9 @@
   border: none;
   font-family: var(--ux-9wtaa3, sans-serif);
   line-height: var(--ux-hm1ty7, 1.375);
-  font-size: var(--ux-oc0naw, 1rem);
+  font-size: var(--_size-control-font, var(--ux-oc0naw, 1rem));
   color: var(--_field-input-fg);
-  padding: var(--sp-md);
+  padding: var(--_size-control-padding-block, var(--sp-md)) var(--sp-md);
   text-align: start;
   min-width: 0;
   max-width: 100%;
@@ -91,6 +103,7 @@
   flex: 1;
 }
 
+/* Fields that have not adopted the size scale yet. */
 .field:where([data-size="sm"]) > :where(.input, .textarea),
 .field:where([data-size="sm"]) > :where(.group) > :where(.input, .textarea) {
   font-size: calc(1em / 1.125);

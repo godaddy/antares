@@ -1,0 +1,33 @@
+---
+title: SizeScope
+description: Sizes a section, so the text, controls, and default spacing inside it follow one size.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './size-scope.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- `sm`, `md`, or `lg` for everything inside: text, controls, and default spacing.
+- The nearest scope wins, and nested scopes replace the size rather than compounding it.
+- A component's own `size` prop wins for that component only.
+- Overlays opened inside, such as Modal and Select options, open at the scope's size even though
+  they render in a portal.
+- Renders a real element (`div` by default, or `as`), so bare text and ordinary HTML follow it too.
+  It is not a layout component; compose `Flex` or `Grid` inside it.
+- Without any scope, components use `md`. Render one at the app root to give unsized text its body
+  typography.
+- Adopted so far by Text, Detail, Heading, Label, Button, TextField, TextLockup, Select, Modal,
+  Drawer, and Popover. Layout spacing props keep their meaning: `gap="md"` is the layout `md` gap
+  in any scope.
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Props
+
+<ArgTypes of={Stories.Props} />

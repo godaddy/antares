@@ -33,7 +33,7 @@ their copy, and a heading's level is independent of its visual size.
   <TextField>
     <Label>Email</Label>
     <Input />
-    <Detail slot="description">We'll send receipts here.</Detail>
+    <Text slot="description">We'll send receipts here.</Text>
   </TextField>
 
   <Button>Update payment method</Button>
@@ -164,7 +164,13 @@ replaces the context. The class sets the part's slot value in the [precedence ch
 so an explicit prop on the part still wins.
 
 - **TextField** is a scope. Its label, input, description, and error read the scale, and the field maps them
-  to tiers of their own.
+  to tiers of their own: the description and error use the label tier. The description value comes from
+  the rule every field shares for its `slot="description"` child, so fields that have not adopted the scale
+  keep their current look.
+
+A named part sets its whole treatment, ramp included, so the component that fills it does not change the
+result: `Text slot="description"` and `Detail slot="description"` render the same. `Text` is the canonical
+form, and `Detail` is for supporting copy that no part styles, such as captions and metadata.
 - **Modal, Drawer, and Popover** give their `title` slot the scale's title tier, one heading step above the
   body tier.
 - **TextLockup** with a `size` sets the text entries of the scale on its element, so every text part inside,
@@ -180,8 +186,8 @@ Modal its own `<Heading slot="title">`.
 
 Portaled content is outside its trigger's DOM, so CSS inheritance cannot reach it. React context carries the
 declared size of the nearest scope, and every portaled surface (Modal, Drawer, Popover, Tooltip) re-applies
-the same scope class on its root. Menu, Select, and DatePicker render through Popover, so they get this for
-free.
+the same scope class on its root. Modal, Drawer, and Popover share one dialog shell that does this. Menu,
+Select, and DatePicker render through Popover, so they get this for free.
 
 An owner's explicit `size` is the declared size for its overlay:
 
@@ -210,12 +216,14 @@ One stylesheet defines the scale. Each size class sets these variables:
 | `--_size-title` | heading `md` | heading `lg` | heading `xl` |
 | `--_size-label` | label `sm` | label `md` | label `lg` |
 | `--_size-control-font` | body `sm` | body `md` | body `lg` |
-| `--_size-control-height` | 2rem | 2.5rem | 3rem |
 | `--_size-control-padding-block`, `-inline` | `010`, `020` | `020`, `030` | `030`, `040` |
-| `--_size-padding`, `--_size-gap` | `sm` | `md` | `lg` |
+| `--_size-padding` | `sm` | `md` | `lg` |
+| `--_size-gap` | `xs` | `sm` | `md` |
 
 Text sizes and spacing reference the existing tokens with their legacy-intent and literal fallbacks. The
-control entries are the current Button values. Every value is a pilot starting point for visual review.
+control entries are the current Button values. The spacing entries reproduce today's `md` defaults: region
+padding is `md` and field gaps and block padding are `sm`. Every value is a pilot starting point for visual
+review.
 
 `--_size-control-font` is separate from `--_size-body` so that a TextLockup's text size never reaches the
 controls inside it.
@@ -231,13 +239,19 @@ first. Each source writes its own variable, so no two classes set the same prope
 stylesheet order never matters:
 
 ```css
-.heading {
-  font-size: var(--_heading-size, var(--_heading-slot-size, var(--_size-heading, var(--font-heading-size-md, 1.25rem))));
+:where(.heading) {
+  font-size: var(--_type-size, var(--_type-slot-size, var(--_size-heading, var(--_type-md))));
 }
 ```
 
-An explicit `size` sets `--_heading-size`, the owner's part class sets `--_heading-slot-size`, and the scope
-sets `--_size-heading`. Explicit spacing props already win because Box writes them as inline styles.
+An explicit `size` sets `--_type-size`, the owner's part class sets `--_type-slot-size`, and the scope sets
+`--_size-heading`. `emphasis` and part colors use the same pair for `color`. The precedence variables are
+registered with `@property` and `inherits: false`, so an explicit size never reaches nested text. The scale
+variables inherit, which is how a scope reaches its descendants.
+
+Text component defaults sit in `:where()`, at zero specificity, so an owner's part class and a caller's
+`className` always win over them. Explicit spacing props already win because Box writes them as inline
+styles.
 
 ### What stays in React
 

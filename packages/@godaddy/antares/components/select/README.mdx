@@ -17,6 +17,7 @@ import * as Stories from './select.stories.tsx';
 - **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
 - **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
 - **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
+- **Sizes**: The field is a [size scope](../size-scope/README.mdx). `size` (`sm`, `md`, `lg`) sets the label, trigger, and options, which open at the same size even though they render in a portal. Without it, the Select follows the surrounding scope
 - **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
 - **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
 

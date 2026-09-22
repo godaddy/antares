@@ -1,0 +1,162 @@
+/*
+ * Precedence values live on the element that sets them. An explicit prop writes `--_type-size` or
+ * `--_type-color`, an owner's part writes the `-slot-` pair, and neither inherits into nested text.
+ */
+@property --_type-size {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --_type-slot-size {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --_type-color {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --_type-slot-color {
+  syntax: "*";
+  inherits: false;
+}
+
+/* Defaults stay at zero specificity, so an owner's part class or a caller's className wins. */
+:where(.type) {
+  color: var(--_type-color, var(--_type-slot-color, currentColor));
+}
+
+:where(.type):where(strong, b) {
+  font-weight: var(--font-weight-strong, bolder);
+}
+
+:where(.type):where(em, i) {
+  font-style: var(--font-style-em, italic);
+}
+
+/* Body copy inherits every font property; only an explicit or part size replaces its size. */
+:where(.typeText) {
+  --_type-xs: var(--font-body-size-xs, 0.75rem);
+  --_type-sm: var(--font-body-size-sm, 0.875rem);
+  --_type-md: var(--font-body-size-md, 1rem);
+  --_type-lg: var(--font-body-size-lg, 1.125rem);
+  --_type-xl: var(--font-body-size-xl, 1.25rem);
+  --_type-2xl: var(--font-body-size-2xl, 1.5rem);
+
+  font-size: var(--_type-size, var(--_type-slot-size, 1em));
+}
+
+:where(.typeDetail) {
+  --_type-xs: var(--font-detail-size-xs, 0.6875rem);
+  --_type-sm: var(--font-detail-size-sm, 0.75rem);
+  --_type-md: var(--font-detail-size-md, 0.8125rem);
+  --_type-lg: var(--font-detail-size-lg, 0.875rem);
+  --_type-xl: var(--font-detail-size-xl, 1rem);
+  --_type-2xl: var(--font-detail-size-2xl, 1.125rem);
+
+  font-family: var(--font-detail-family, var(--ux-1gutwvn, sans-serif));
+  font-size: var(--_type-size, var(--_type-slot-size, var(--_size-detail, var(--_type-md))));
+  font-weight: var(--font-detail-weight, var(--ux-g9ierp, 400));
+  font-variation-settings: var(--font-detail-variation, var(--ux-tjt16c, normal));
+  line-height: var(--font-detail-line-height, var(--ux-1dje42v, 1.5));
+}
+
+:where(.typeHeading) {
+  --_type-xs: var(--font-heading-size-xs, 1rem);
+  --_type-sm: var(--font-heading-size-sm, 1.125rem);
+  --_type-md: var(--font-heading-size-md, 1.25rem);
+  --_type-lg: var(--font-heading-size-lg, 1.5rem);
+  --_type-xl: var(--font-heading-size-xl, 1.875rem);
+  --_type-2xl: var(--font-heading-size-2xl, 2.25rem);
+
+  font-family: var(--font-heading-family, var(--ux-shg991, sans-serif));
+  font-size: var(--_type-size, var(--_type-slot-size, var(--_size-heading, var(--_type-md))));
+  font-weight: var(--font-heading-weight, var(--ux-c539b7, bolder));
+  font-variation-settings: var(--font-heading-variation, var(--ux-1458mfm, "DSPL" 1));
+  line-height: var(--font-heading-line-height, var(--ux-p25s1t, 1.25));
+}
+
+/* No label role exists in the tokens yet, so the ramp is the global font-size scale. */
+:where(.typeLabel) {
+  --_type-xs: var(--font-size-010, 0.6875rem);
+  --_type-sm: var(--font-size-020, 0.75rem);
+  --_type-md: var(--font-size-040, var(--ux-16aixzc, 0.875rem));
+  --_type-lg: var(--font-size-050, 1rem);
+  --_type-xl: var(--font-size-060, 1.125rem);
+  --_type-2xl: var(--font-size-070, 1.25rem);
+
+  font-family: var(--ux-15ks663, sans-serif);
+  font-size: var(--_type-size, var(--_type-slot-size, var(--_size-label, var(--_type-md))));
+  font-weight: var(--ux-aarlu5, 500);
+  font-variation-settings: var(--ux-1qg0ofw, normal);
+}
+
+/* Body typography for a surface: the text a scope's own element and its bare text use. */
+:where(.typeSurface) {
+  font-family: var(--font-body-family, var(--ux-pze30t, var(--ux-117cu43, sans-serif)));
+  font-size: var(--_size-body, var(--font-body-size-md, 1rem));
+  font-weight: var(--font-body-weight, var(--ux-8n6y9x, 400));
+  font-variation-settings: var(--font-body-variation, var(--ux-1i4pt2s, normal));
+  line-height: var(--font-body-line-height, var(--ux-1hhfdnd, var(--ux-mgbt9j, 1.5)));
+}
+
+:where(.typeXs) {
+  --_type-size: var(--_type-xs);
+}
+
+:where(.typeSm) {
+  --_type-size: var(--_type-sm);
+}
+
+:where(.typeMd) {
+  --_type-size: var(--_type-md);
+}
+
+:where(.typeLg) {
+  --_type-size: var(--_type-lg);
+}
+
+:where(.typeXl) {
+  --_type-size: var(--_type-xl);
+}
+
+:where(.type2xl) {
+  --_type-size: var(--_type-2xl);
+}
+
+:where(.typeCritical) {
+  --_type-color: var(--color-feedback-critical-text, var(--ux-1fhc073, #db1802));
+}
+
+:where(.typeWarning) {
+  --_type-color: var(--color-feedback-warning-text, var(--ux-lv1r6m, #de7c00));
+}
+
+:where(.typeSuccess) {
+  --_type-color: var(--color-feedback-success-text, var(--ux-1ep3kxj, #00a63f));
+}
+
+:where(.typeInfo) {
+  --_type-color: var(--color-feedback-info-text, var(--ux-1lpd00q, #145fa9));
+}
+
+:where(.typeHighlight) {
+  --_type-color: var(--color-feedback-highlight-text, var(--ux-cuskv8, #09757a));
+}
+
+:where(.typePremium) {
+  --_type-color: var(--ux-143smq7, #e20087);
+}
+
+:where(.typeInternal) {
+  --_type-color: var(--ux-1iwdp0z, #b4006c);
+}
+
+:where(.typeNeutral) {
+  --_type-color: var(--ux-e1mf41, #145fa9);
+}
+
+:where(.typePassive) {
+  --_type-color: var(--color-feedback-passive-text, var(--ux-1m9ys0v, #767676));
+}
