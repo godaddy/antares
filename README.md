@@ -103,12 +103,18 @@ Examples should be placed in each package's `examples` folder as individual comp
 
 ### Antares block registry
 
-When adding or removing files in an Antares block, regenerate and validate the install registry:
+The registry makes blocks installable as source files that you can adapt in your
+application. Regenerate it when blocks, their titles, or their implementation file
+lists change:
 
 ```sh
 npm run registry:build
 npm run registry:validate
 ```
+
+Review and commit the generated registry with the source changes. Validation
+checks its schema; keeping its entries current remains the contributor's
+responsibility.
 
 ## Development
 

@@ -154,6 +154,7 @@ describe('block explorer runtime', function runtimeTests() {
   });
 });
 
+/** Exposes the selected file and language for browser assertions. */
 function TestCodeRenderer({ code, filePath, language }: BlockCodeRendererProps) {
   return (
     <pre data-testid="source-file" data-language={language}>

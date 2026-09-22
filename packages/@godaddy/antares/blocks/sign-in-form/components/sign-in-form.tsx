@@ -4,7 +4,15 @@ import { Box, Button, Flex, Heading, Text } from '@godaddy/antares';
 import { signInCopy } from '../data/copy';
 import { SignInFields } from './sign-in-fields';
 
-/** Presents the shared sign-in form composition used in block documentation. */
+/**
+ * Provides a sign-in form composition to copy and adapt. Submission is prevented
+ * until the consuming application supplies its authentication behavior.
+ *
+ * @example
+ * ```tsx
+ * <SignInForm />
+ * ```
+ */
 export function SignInForm() {
   return (
     <Flex justifyContent="center">

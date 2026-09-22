@@ -145,6 +145,37 @@ describe('build-registry', function registryBuilderTests() {
     await expect(createRegistry(blocksRoot)).rejects.toBe(manifestError);
   });
 
+  it.each([
+    '\n',
+    '\r\n'
+  ])('reads a multiline YAML title containing JSX with %j endings', async function readsYamlTitle(newline) {
+    const blocksRoot = await createBlocksRoot([
+      {
+        id: 'alpha',
+        readme: [
+          '---',
+          'title: >-',
+          '  A <Block id="documented-example" />',
+          '---',
+          '',
+          '<Block id="alpha" of={Stories.Preview} />'
+        ].join(newline)
+      }
+    ]);
+    loadBlockManifest.mockResolvedValue({ files: [] });
+    const registry = await createRegistry(blocksRoot);
+    expect(registry.items[0].title).toBe('A <Block id="documented-example" />');
+  });
+
+  it('rejects malformed MDX before writing a registry', async function rejectsInvalidMdx() {
+    const blocksRoot = await createBlocksRoot([{ id: 'broken', readme: '---\ntitle: Broken\n---\n<Block' }]);
+    const writeRegistry = vi.fn<RegistryWriter>();
+    await expect(
+      buildRegistry({ blocksRoot, registryPath: '/tmp/unused-registry.json', writeRegistry })
+    ).rejects.toThrow(join(blocksRoot, 'broken', 'README.mdx'));
+    expect(writeRegistry).not.toHaveBeenCalled();
+  });
+
   it('writes serialized JSON through the injected registry writer', async function writesRegistry() {
     const blocksRoot = await createBlocksRoot([{ id: 'alpha', title: 'Alpha block' }]);
     loadBlockManifest.mockResolvedValue({ files: [] });
@@ -202,6 +233,7 @@ interface TemporaryBlock {
   readme?: string;
 }
 
+/** Creates temporary block directories registered for cleanup after each test. */
 async function createBlocksRoot(blocks: TemporaryBlock[] = []) {
   const blocksRoot = await mkdtemp(join(tmpdir(), 'registry-builder-'));
   temporaryDirectories.push(blocksRoot);
@@ -211,6 +243,7 @@ async function createBlocksRoot(blocks: TemporaryBlock[] = []) {
   return blocksRoot;
 }
 
+/** Writes either authored MDX or the minimal title metadata for a fixture block. */
 async function writeBlock(blocksRoot: string, block: TemporaryBlock) {
   const blockDirectory = join(blocksRoot, block.id);
   await mkdir(blockDirectory, { recursive: true });

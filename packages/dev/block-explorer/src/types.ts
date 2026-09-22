@@ -77,16 +77,28 @@ export interface BlockLinkMarkerProps {
 
 /** A folder node in the explorer's source tree. */
 export interface FileTreeFolderNode {
+  /** Identifies a folder with nested entries. */
   readonly type: 'folder';
+
+  /** Folder name displayed in the source tree. */
   readonly name: string;
+
+  /** Folder path relative to the block directory. */
   readonly path: string;
+
+  /** Nested folders and files. */
   readonly children: readonly FileTreeNode[];
 }
 
 /** A file node in the explorer's source tree. */
 export interface FileTreeFileNode {
+  /** Identifies a selectable source file. */
   readonly type: 'file';
+
+  /** File name displayed in the source tree. */
   readonly name: string;
+
+  /** File path relative to the block directory. */
   readonly path: string;
 }
 

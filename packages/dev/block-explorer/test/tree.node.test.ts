@@ -31,6 +31,7 @@ describe('createFileTree', function createFileTreeTests() {
   });
 
   it('rejects a file and folder that collide at the same path', function rejectsCollisions() {
+    /** Creates a file that conflicts with a parent folder. */
     function createCollidingTree() {
       return createFileTree([
         { path: 'components', language: 'ts', source: '' },
@@ -42,6 +43,7 @@ describe('createFileTree', function createFileTreeTests() {
   });
 
   it('rejects duplicate file paths', function rejectsDuplicateFiles() {
+    /** Supplies duplicate file paths to exercise collision handling. */
     function createDuplicateTree() {
       return createFileTree([
         { path: 'index.tsx', language: 'tsx', source: '' },
@@ -53,6 +55,7 @@ describe('createFileTree', function createFileTreeTests() {
   });
 
   it('rejects paths that contain no file name', function rejectsEmptyPath() {
+    /** Supplies a path with no usable file name. */
     function createEmptyPathTree() {
       return createFileTree([{ path: '/', language: 'md', source: '' }]);
     }

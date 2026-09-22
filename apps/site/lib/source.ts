@@ -18,6 +18,11 @@ function toComponentsSource() {
   };
 }
 
+/**
+ * Maps the catalog README to the index route and block READMEs to their slugs.
+ *
+ * @returns A Fumadocs source with paths relative to `/docs/blocks`.
+ */
 function toBlocksSource() {
   const raw = blocks.toFumadocsSource();
   return {
@@ -48,6 +53,8 @@ export const blocksSource = loader(toBlocksSource(), {
 /**
  * Adds the Blocks page immediately after the Components root page or folder,
  * keeping the generated documentation hierarchy intact.
+ *
+ * @returns A page tree containing the Blocks entry without changing the source tree.
  */
 export function getDocsPageTree(): PageTree.Root {
   const tree = source.getPageTree();
@@ -68,6 +75,12 @@ export function getDocsPageTree(): PageTree.Root {
   };
 }
 
+/**
+ * Recognizes the Components entry across the supported page-tree shapes.
+ *
+ * @param node - Navigation node to inspect.
+ * @returns Whether the node represents the Components root page or folder.
+ */
 function isComponentsRoot(node: PageTree.Node) {
   if (node.type === 'page') return node.url === '/docs/components' || node.name === 'Components';
   if (node.type !== 'folder') return false;

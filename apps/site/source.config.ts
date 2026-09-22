@@ -12,6 +12,12 @@ import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+/**
+ * Keeps related-block links within the deployed site's base path.
+ *
+ * @param id - Block directory identifier.
+ * @returns The block overview URL, including the deployment base path.
+ */
 const resolveBlockHref = (id: string) => `${basePath}/docs/blocks/${id}`;
 
 const descriptionParser = unified().use(remarkParse).use(remarkGfm);

@@ -2,6 +2,7 @@ import { resolve } from 'node:path';
 import { unified } from 'unified';
 import remarkMdx from 'remark-mdx';
 import remarkParse from 'remark-parse';
+import remarkFrontmatter from 'remark-frontmatter';
 import { VFile } from 'vfile';
 import { describe, expect, it, vi } from 'vitest';
 import { remarkBlocks } from '../src/remark-blocks.ts';
@@ -97,6 +98,35 @@ describe('remarkBlocks', function remarkBlocksTests() {
     expect(blocks[0].href).toBe('/antares/docs/blocks/fixture-block');
   });
 
+  it('expands only live markers and reads multiline attributes', async function expandsAuthoredMarkers() {
+    const { tree, addDependency } = await transform(
+      [
+        '---',
+        'title: >-',
+        '  <Block id="missing-block" />',
+        '---',
+        '',
+        '```mdx',
+        '<Block id="missing-block" />',
+        '```',
+        '',
+        '{/* <Block id="missing-block" /> */}',
+        '',
+        '<Block',
+        '  id = "fixture-block"',
+        '  description = "Live description"',
+        '  of={Stories.Preview}',
+        '/>'
+      ].join('\n')
+    );
+    const explorer = tree.children.at(-1) as AnyNode;
+    expect(tree.children[0]).toMatchObject({ type: 'yaml' });
+    expect(tree.children[1]).toMatchObject({ type: 'code', value: '<Block id="missing-block" />' });
+    expect(explorer).toMatchObject({ name: 'SiteBlockExplorer' });
+    expect(JSON.parse(getExpressionValue(explorer, 'block'))).toMatchObject({ description: 'Live description' });
+    expect(addDependency).toHaveBeenCalledWith(expect.stringContaining('index.tsx'));
+  });
+
   it('leaves the tree unchanged when the file has no path', async function skipsPathlessFiles() {
     const tree = { type: 'root', children: [{ type: 'paragraph', children: [] }] } as AnyTree;
     const file = new VFile({ value: '<Block id="fixture-block" of={Stories.Preview} />' });
@@ -121,8 +151,13 @@ describe('remarkBlocks', function remarkBlocksTests() {
   });
 });
 
+/** Runs the site transformer with a dependency-tracking MDX compiler context. */
 async function transform(markdown: string, resolveBlockHref = (id: string) => `/docs/blocks/${id}`) {
-  const processor = unified().use(remarkParse).use(remarkMdx).use(remarkBlocks, { resolveBlockHref });
+  const processor = unified()
+    .use(remarkParse)
+    .use(remarkFrontmatter)
+    .use(remarkMdx)
+    .use(remarkBlocks, { resolveBlockHref });
   const file = new VFile({ path: fixtureReadme, value: markdown });
   const addDependency = vi.fn();
   Object.assign(file.data, { _compiler: { addDependency } });
@@ -133,12 +168,14 @@ async function transform(markdown: string, resolveBlockHref = (id: string) => `/
   };
 }
 
+/** Finds a generated attribute by name. */
 function getAttribute(node: AnyNode, name: string) {
   return node.attributes?.find(function findAttribute(attribute) {
     return attribute.name === name;
   });
 }
 
+/** Reads the serialized value carried by a generated expression attribute. */
 function getExpressionValue(node: AnyNode, name: string) {
   const value = getAttribute(node, name)?.value;
   if (!value || typeof value !== 'object') throw new Error(`Missing expression attribute: ${name}`);

@@ -79,6 +79,12 @@ const config: StorybookConfig = {
     ).join('\n    ')}
     <style>${GDSHERPA_FONT_FACE_CSS}</style>`,
 
+  /**
+   * Resolves documentation packages to source and supplies shared build-time configuration.
+   *
+   * @param config - Storybook's Vite configuration.
+   * @returns The merged configuration with workspace aliases and shared build constants.
+   */
   async viteFinal(config: UserConfig) {
     const versionMatch = packageJson.version.match(/^(\d+)\.(\d+)\.(\d+)/)?.slice(1) ?? ['0', '0', '0'];
 

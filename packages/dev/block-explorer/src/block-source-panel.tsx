@@ -17,7 +17,7 @@ export interface BlockSourcePanelProps {
 /**
  * Displays the selected source file and delegates syntax highlighting to the host.
  *
- * @param props - Selected file and optional host-specific code renderer.
+ * @param props - {@link BlockSourcePanelProps}
  */
 export function BlockSourcePanel({ file, codeRenderer: CodeRenderer = PlainCode }: BlockSourcePanelProps) {
   const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle');
@@ -97,7 +97,11 @@ export function BlockSourcePanel({ file, codeRenderer: CodeRenderer = PlainCode 
   );
 }
 
-/** Minimal code renderer used when the host does not provide syntax highlighting. */
+/**
+ * Displays plain source when the host does not provide syntax highlighting.
+ *
+ * @param props - {@link BlockCodeRendererProps}
+ */
 function PlainCode({ code }: BlockCodeRendererProps) {
   return (
     <Box as="pre">

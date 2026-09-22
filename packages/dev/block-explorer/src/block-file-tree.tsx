@@ -16,9 +16,9 @@ export interface BlockFileTreeProps {
 }
 
 /**
- * Renders the navigable file tree for a block's curated source files.
+ * Renders the navigable file tree for a block's discovered source files.
  *
- * @param props - Tree data and the callback used to select a source file.
+ * @param props - {@link BlockFileTreeProps}
  */
 export function BlockFileTree({ tree, activePath, onFileSelect }: BlockFileTreeProps) {
   return (
@@ -38,6 +38,7 @@ export function BlockFileTree({ tree, activePath, onFileSelect }: BlockFileTreeP
   );
 }
 
+/** Renders a selectable file or an independently collapsible folder. */
 function FileTreeNodeView({
   node,
   activePath,

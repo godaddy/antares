@@ -18,9 +18,9 @@ export interface BlockToolbarProps {
 }
 
 /**
- * Places the view controls and the block purpose on one quiet documentation row.
+ * Groups the view controls, optional Install action, and block description.
  *
- * @param props - View controls and the optional short block description.
+ * @param props - {@link BlockToolbarProps}
  */
 export function BlockToolbar({ description, installCommand, blockId, children }: BlockToolbarProps) {
   return (

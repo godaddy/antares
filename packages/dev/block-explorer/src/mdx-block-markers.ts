@@ -1,10 +1,11 @@
 import type { MdxJsxAttribute, MdxJsxExpressionAttribute, MdxJsxFlowElement } from 'mdast-util-mdx-jsx';
-import type { Root } from 'mdast';
+import type { Root, Yaml } from 'mdast';
+import remarkFrontmatter from 'remark-frontmatter';
 import remarkMdx from 'remark-mdx';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 
-const MDX_PARSER = unified().use(remarkParse).use(remarkMdx);
+const MDX_PARSER = unified().use(remarkParse).use(remarkFrontmatter).use(remarkMdx);
 
 interface MdNode {
   type: string;
@@ -53,19 +54,39 @@ export interface BlockMarker {
 }
 
 /**
- * Parses authored MDX into a syntax tree.
+ * Parses authored MDX, including frontmatter, without evaluating its expressions.
  *
- * @param source - Authored MDX to inspect.
+ * @param source - MDX source to parse.
+ * @param filePath - Optional path included in parse errors.
+ * @returns The MDX syntax tree with original source positions.
+ * @throws If the source contains invalid MDX.
  */
-export function parseBlockMdx(source: string): Root {
-  return MDX_PARSER.parse(source) as Root;
+export function parseBlockMdx(source: string, filePath?: string): Root {
+  try {
+    return MDX_PARSER.parse(source) as Root;
+  } catch (error) {
+    if (!filePath) throw error;
+    throw new Error(`${filePath}: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
+  }
 }
 
 /**
- * Collects live block markers from MDX structure so fenced examples and comments
- * are not treated as explorers.
+ * Finds YAML frontmatter without matching delimiters inside authored content.
  *
  * @param tree - Parsed MDX tree.
+ * @returns The leading YAML node with its source positions, or `undefined` when absent.
+ */
+export function getYamlFrontmatter(tree: Root): Yaml | undefined {
+  const node = tree.children[0];
+  return node?.type === 'yaml' ? node : undefined;
+}
+
+/**
+ * Collects live block markers, excluding fenced examples, inline code, and comments.
+ *
+ * @param tree - Parsed MDX tree with source positions.
+ * @returns Markers in source order, each with its attributes and replacement offsets.
+ * @throws If a marker has no source offsets.
  */
 export function collectBlockMarkers(tree: Root): BlockMarker[] {
   const markers: BlockMarker[] = [];
@@ -74,16 +95,23 @@ export function collectBlockMarkers(tree: Root): BlockMarker[] {
 }
 
 /**
- * True when the tree already binds `name` as a value import from `moduleId`.
+ * Checks whether the tree already binds a runtime import under the required local name.
  *
- * @param tree - Parsed MDX tree.
- * @param name - Local binding to look for.
- * @param moduleId - Module specifier the import must come from.
+ * @param tree - Parsed MDX tree containing import declarations.
+ * @param name - Local binding required by generated JSX.
+ * @param moduleId - Module that must supply the binding.
+ * @returns Whether a named value import supplies the binding; type imports are ignored.
  */
 export function hasNamedRuntimeImport(tree: Root, name: string, moduleId: string): boolean {
   return (tree.children as unknown as MdNode[]).some((node) => declarationBindsRuntimeName(node, name, moduleId));
 }
 
+/**
+ * Walks MDX elements in source order, treating each marker as one replacement.
+ *
+ * @param node - Current node in the traversal.
+ * @param markers - Accumulator receiving live markers and their source offsets.
+ */
 function visitMarkers(node: MdNode, markers: BlockMarker[]) {
   if (node.type === 'mdxJsxFlowElement' && (node.name === 'Block' || node.name === 'BlockLink')) {
     const start = node.position?.start?.offset;
@@ -108,6 +136,14 @@ function visitMarkers(node: MdNode, markers: BlockMarker[]) {
   for (const child of node.children) visitMarkers(child, markers);
 }
 
+/**
+ * Inspects actual import declarations, excluding type imports and other modules.
+ *
+ * @param node - MDX node that may contain an ESTree import declaration.
+ * @param name - Required local binding.
+ * @param moduleId - Expected source module.
+ * @returns Whether the node declares the named runtime binding.
+ */
 function declarationBindsRuntimeName(node: MdNode, name: string, moduleId: string): boolean {
   if (node.type !== 'mdxjsEsm') return false;
 
@@ -124,18 +160,39 @@ function declarationBindsRuntimeName(node: MdNode, name: string, moduleId: strin
   return false;
 }
 
-function getStringAttribute(node: MdxJsxFlowElement, name: string): string | undefined {
+/**
+ * Reads a literal JSX string without evaluating expressions or spreads.
+ *
+ * @param node - JSX element containing the attribute.
+ * @param name - Explicit attribute name to look up.
+ * @returns The string value, or `undefined` for absent or non-string attributes.
+ */
+export function getStringAttribute(node: MdxJsxFlowElement, name: string): string | undefined {
   const attribute = findNamedAttribute(node, name);
   return typeof attribute?.value === 'string' ? attribute.value : undefined;
 }
 
-function getExpressionAttribute(node: MdxJsxFlowElement, name: string): string | undefined {
+/**
+ * Reads an authored JSX expression for the host compiler to evaluate.
+ *
+ * @param node - JSX element containing the attribute.
+ * @param name - Explicit attribute name to look up.
+ * @returns Trimmed expression source, or `undefined` for absent or non-expression attributes.
+ */
+export function getExpressionAttribute(node: MdxJsxFlowElement, name: string): string | undefined {
   const attribute = findNamedAttribute(node, name);
   const value = attribute?.value;
   if (!value || typeof value === 'string' || value.type !== 'mdxJsxAttributeValueExpression') return undefined;
   return value.value?.trim();
 }
 
+/**
+ * Finds an explicit attribute, ignoring spread expressions.
+ *
+ * @param node - JSX element to inspect.
+ * @param name - Attribute name to match.
+ * @returns The first matching attribute, or `undefined` when absent.
+ */
 function findNamedAttribute(node: MdxJsxFlowElement, name: string): MdxJsxAttribute | undefined {
   for (const attribute of node.attributes as (MdxJsxAttribute | MdxJsxExpressionAttribute)[]) {
     if (attribute.type === 'mdxJsxAttribute' && attribute.name === name) return attribute;

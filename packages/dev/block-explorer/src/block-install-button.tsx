@@ -3,7 +3,7 @@ import { Button, Flex, Icon, Text } from '@godaddy/antares';
 
 type CopyStatus = 'idle' | 'copied' | 'error';
 
-/** Props for the block installation command action. */
+/** Props for the {@link BlockInstallButton} component. */
 export interface BlockInstallButtonProps {
   /** Block identifier used by the accessible label. */
   readonly blockId: string;
@@ -12,7 +12,11 @@ export interface BlockInstallButtonProps {
   readonly command: string;
 }
 
-/** Copies a block's shadcn installation command for the documentation consumer. */
+/**
+ * Copies a block's installation command, with feedback and a retry action on failure.
+ *
+ * @param props - {@link BlockInstallButtonProps}
+ */
 export function BlockInstallButton({ blockId, command }: BlockInstallButtonProps) {
   const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle');
   const resetCopiedTimeout = useRef<number | undefined>(undefined);

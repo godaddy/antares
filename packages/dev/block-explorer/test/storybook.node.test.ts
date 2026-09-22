@@ -1,4 +1,6 @@
 import { resolve } from 'node:path';
+import { compile } from '@mdx-js/mdx';
+import remarkFrontmatter from 'remark-frontmatter';
 import { describe, expect, it, vi } from 'vitest';
 import { generateBlocksPlugin, viteFinal } from '../src/storybook.tsx';
 
@@ -60,6 +62,7 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
 
     expect(result).toContain('<StorybookBlockExplorer block=');
     expect(result).toContain('<Story of={Stories.Preview} inline />');
+    await expect(compile(result)).resolves.toBeDefined();
   });
 
   it('expands every marker and accumulates imports and watch files', async function expandsMultipleMarkers() {
@@ -92,6 +95,53 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
 
     expect(result?.match(/import \{[^}]*\bStory\b[^}]*\}\s*from\s*'@storybook\/addon-docs\/blocks'/g)).toHaveLength(1);
     expect(result).toContain("import { StorybookBlockExplorer } from '@bento/block-explorer/storybook-runtime';");
+  });
+
+  it.each([
+    "import { BlockLinks } from '@bento/block-explorer/runtime';",
+    "import { StorybookBlockExplorer } from '@bento/block-explorer/storybook-runtime';",
+    "import { Meta, Story } from '@storybook/addon-docs/blocks';",
+    [
+      "import { Block, BlockLinks } from '@bento/block-explorer/runtime';",
+      "import { StorybookBlockExplorer } from '@bento/block-explorer/storybook-runtime';",
+      "import { Meta, Story } from '@storybook/addon-docs/blocks';"
+    ].join('\n'),
+    [
+      "import { BlockLinks as RelatedBlocks } from '@bento/block-explorer/runtime';",
+      "import { StorybookBlockExplorer as Explorer } from '@bento/block-explorer/storybook-runtime';",
+      "import { Story as PreviewStory } from '@storybook/addon-docs/blocks';"
+    ].join('\n')
+  ])('compiles expanded MDX with existing runtime imports: %s', async function compilesExistingImports(imports) {
+    const result = await runTransform(
+      generateBlocksPlugin(),
+      [
+        imports,
+        '',
+        '<BlockLink id="fixture-block" />',
+        '',
+        '<Block id="fixture-block" of={Stories.Preview} />',
+        '',
+        '<BlockLink id="fixture-block" />'
+      ].join('\n'),
+      importedReadme
+    );
+
+    expect(result).toContain('<BlockLinks blocks=');
+    expect(result).toContain('<StorybookBlockExplorer block=');
+    await expect(compile(result)).resolves.toBeDefined();
+  });
+
+  it.each(['\n', '\r\n'])('preserves YAML containing JSX with %j line endings', async function preservesYaml(newline) {
+    const frontmatter = ['---', 'title: >-', '  <Block id="not-a-live-block" />', '---', ''].join(newline);
+    const result = await runTransform(
+      generateBlocksPlugin(),
+      `${frontmatter}<Block id="fixture-block" of={Stories.Preview} />`,
+      componentReadme
+    );
+
+    expect(result?.startsWith(frontmatter)).toBe(true);
+    expect(result).toContain('<Block id="not-a-live-block" />');
+    await expect(compile(result, { remarkPlugins: [remarkFrontmatter] })).resolves.toBeDefined();
   });
 
   it('leaves fenced examples and MDX comments as documentation', async function ignoresDocumentedMarkers() {
@@ -144,6 +194,7 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
   });
 });
 
+/** Invokes the Vite transform with an observable dependency-registration context. */
 async function runTransform(
   plugin: ReturnType<typeof generateBlocksPlugin>,
   source: string,

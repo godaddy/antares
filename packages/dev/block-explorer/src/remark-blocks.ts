@@ -1,6 +1,7 @@
 import { valueToEstree } from 'estree-util-value-to-estree';
-import type { MdxJsxAttribute, MdxJsxExpressionAttribute, MdxJsxFlowElement } from 'mdast-util-mdx-jsx';
+import type { MdxJsxFlowElement } from 'mdast-util-mdx-jsx';
 import type { Root } from 'mdast';
+import { getExpressionAttribute, getStringAttribute } from './mdx-block-markers.ts';
 import { addMdxDependency } from './remark-utils.ts';
 import { loadBlockManifest, resolveBlockDirectory } from './node.ts';
 
@@ -15,6 +16,7 @@ interface MdNode {
   [key: string]: unknown;
 }
 
+/** Host configuration for {@link remarkBlocks}. */
 export interface RemarkBlocksOptions {
   /** Resolves a block overview URL for the current documentation host. */
   resolveBlockHref: (blockId: string) => string;
@@ -22,8 +24,12 @@ export interface RemarkBlocksOptions {
 
 /**
  * Expands the build-time `<Block>` and `<BlockLink>` markers in Fumadocs MDX.
+ *
+ * @param options - {@link RemarkBlocksOptions}
+ * @returns An async remark transformer that replaces markers and tracks source dependencies.
  */
 export function remarkBlocks({ resolveBlockHref }: RemarkBlocksOptions) {
+  /** Replaces live markers only when their source README can be resolved. */
   return async function transform(tree: Root, file: RemarkFile): Promise<void> {
     if (!file.path) return;
 
@@ -31,6 +37,13 @@ export function remarkBlocks({ resolveBlockHref }: RemarkBlocksOptions) {
   };
 }
 
+/**
+ * Recursively replaces block elements without traversing generated replacements.
+ *
+ * @param nodes - Sibling nodes to update in place.
+ * @param file - Source README and its compiler data.
+ * @param resolveBlockHref - Host resolver for block overview URLs.
+ */
 async function replaceMarkers(
   nodes: MdNode[],
   file: RemarkFile,
@@ -53,6 +66,13 @@ async function replaceMarkers(
   }
 }
 
+/**
+ * Loads the requested block and replaces its marker with the site explorer.
+ *
+ * @param nodes - Sibling nodes containing the marker.
+ * @param file - Source README used to resolve the block.
+ * @param index - Marker position to replace in the array.
+ */
 async function replaceExplorer(nodes: MdNode[], file: RemarkFile, index: number) {
   const marker = nodes[index] as unknown as MdxJsxFlowElement;
   const id = getStringAttribute(marker, 'id');
@@ -70,6 +90,14 @@ async function replaceExplorer(nodes: MdNode[], file: RemarkFile, index: number)
   nodes[index] = renderSiteBlock(manifest, ofExpression);
 }
 
+/**
+ * Replaces a block reference with a link resolved by the documentation host.
+ *
+ * @param nodes - Sibling nodes containing the marker.
+ * @param file - Source README used to resolve the block.
+ * @param index - Marker position to replace in the array.
+ * @param resolveBlockHref - Host resolver for the overview URL.
+ */
 async function replaceBlockLink(
   nodes: MdNode[],
   file: RemarkFile,
@@ -88,6 +116,13 @@ async function replaceBlockLink(
   nodes[index] = renderSiteBlockLink(manifest, resolveBlockHref);
 }
 
+/**
+ * Tracks README and source changes for documentation rebuilds.
+ *
+ * @param file - MDX file carrying the compiler's dependency tracker.
+ * @param blockDirectory - Block root used to resolve dependency paths.
+ * @param manifest - Discovered block source files.
+ */
 function addManifestDependencies(
   file: RemarkFile,
   blockDirectory: string,
@@ -97,6 +132,13 @@ function addManifestDependencies(
   for (const sourceFile of manifest.files) addMdxDependency(file, `${blockDirectory}/${sourceFile.path}`);
 }
 
+/**
+ * Builds the explorer node with the authored preview component.
+ *
+ * @param manifest - Block metadata and source files to embed.
+ * @param ofExpression - Authored preview component reference.
+ * @returns The explorer JSX node containing the preview.
+ */
 function renderSiteBlock(manifest: Awaited<ReturnType<typeof loadBlockManifest>>, ofExpression: string): MdNode {
   return {
     type: 'mdxJsxFlowElement',
@@ -113,6 +155,13 @@ function renderSiteBlock(manifest: Awaited<ReturnType<typeof loadBlockManifest>>
   };
 }
 
+/**
+ * Builds the related-block navigation node using the host's URL.
+ *
+ * @param manifest - Manifest identifying the referenced block.
+ * @param resolveBlockHref - Host resolver for the overview URL.
+ * @returns A JSX node rendering the related-block link.
+ */
 function renderSiteBlockLink(
   manifest: Awaited<ReturnType<typeof loadBlockManifest>>,
   resolveBlockHref: RemarkBlocksOptions['resolveBlockHref']
@@ -130,26 +179,14 @@ function renderSiteBlockLink(
   };
 }
 
-function getStringAttribute(node: MdxJsxFlowElement, name: string): string | undefined {
-  const attribute = findNamedAttribute(node, name);
-  return typeof attribute?.value === 'string' ? attribute.value : undefined;
-}
-
-function getExpressionAttribute(node: MdxJsxFlowElement, name: string): string | undefined {
-  const attribute = findNamedAttribute(node, name);
-  const value = attribute?.value;
-  if (!value || typeof value === 'string' || value.type !== 'mdxJsxAttributeValueExpression') return undefined;
-  return value.value?.trim();
-}
-
-function findNamedAttribute(node: MdxJsxFlowElement, name: string): MdxJsxAttribute | undefined {
-  for (const attribute of node.attributes as (MdxJsxAttribute | MdxJsxExpressionAttribute)[]) {
-    if (attribute.type === 'mdxJsxAttribute' && attribute.name === name) return attribute;
-  }
-
-  return undefined;
-}
-
+/**
+ * Attaches an ESTree expression so MDX compilers preserve generated attribute values.
+ *
+ * @param name - Generated JSX attribute name.
+ * @param expression - ESTree value consumed by the MDX compiler.
+ * @param value - Source representation of the expression.
+ * @returns A JSX expression attribute containing both source and ESTree data.
+ */
 function expressionAttribute(name: string, expression: unknown, value: string): MdNode {
   return {
     type: 'mdxJsxAttribute',

@@ -19,6 +19,7 @@ import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from 'yaml';
+import { getYamlFrontmatter, parseBlockMdx } from '../packages/dev/block-explorer/src/mdx-block-markers.ts';
 import { loadBlockManifest } from '../packages/dev/block-explorer/src/node.ts';
 
 type RegistryFileType = 'registry:component' | 'registry:file' | 'registry:style';
@@ -37,17 +38,36 @@ interface RegistryItem {
   files: RegistryFile[];
 }
 
+/** Block registry consumed by the shadcn CLI. */
 export interface AntaresRegistry {
+  /** URL of the shadcn registry schema. */
   $schema: string;
+
+  /** Registry identifier. */
   name: string;
+
+  /** Installable blocks discovered in the source directory. */
   items: RegistryItem[];
 }
 
+/**
+ * Persists serialized registry data or captures it for a caller.
+ *
+ * @param registryPath - Requested output path.
+ * @param source - Formatted registry JSON with a trailing newline.
+ * @returns A promise that resolves once the output has been handled.
+ */
 export type RegistryWriter = (registryPath: string, source: string) => Promise<void>;
 
+/** Inputs and optional output writer for {@link buildRegistry}. */
 export interface BuildRegistryOptions {
+  /** Root directory containing block folders. */
   blocksRoot: string;
+
+  /** Destination for the generated registry JSON. */
   registryPath: string;
+
+  /** Custom output writer; defaults to writing UTF-8 to the filesystem. */
   writeRegistry?: RegistryWriter;
 }
 
@@ -56,11 +76,11 @@ const blocksDirectory = join(rootDirectory, 'packages/@godaddy/antares/blocks');
 const registryPath = join(blocksDirectory, 'registry.json');
 
 /**
- * Reads and validates the title used for a block registry item.
+ * Reads the required non-empty YAML title from a block README.
  *
- * @param blockDirectory - Directory containing the block README.
- * @returns The trimmed `title` value from the README frontmatter.
- * @throws If the README is missing, has invalid frontmatter, or has no usable title.
+ * @param blockDirectory - Directory containing `README.mdx`.
+ * @returns The trimmed frontmatter title.
+ * @throws If the README, frontmatter, or title is missing or invalid.
  */
 async function readBlockTitle(blockDirectory: string): Promise<string> {
   const readmePath = join(blockDirectory, 'README.mdx');
@@ -75,12 +95,12 @@ async function readBlockTitle(blockDirectory: string): Promise<string> {
     throw error;
   }
 
-  const frontmatterMatch = source.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
-  if (!frontmatterMatch) throw new Error(`${readmePath}: missing YAML frontmatter.`);
+  const yaml = getYamlFrontmatter(parseBlockMdx(source, readmePath));
+  if (!yaml) throw new Error(`${readmePath}: missing YAML frontmatter.`);
 
   let frontmatter: { title?: unknown } | null;
   try {
-    frontmatter = parse(frontmatterMatch[1]) as { title?: unknown } | null;
+    frontmatter = parse(yaml.value) as { title?: unknown } | null;
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     throw new Error(`${readmePath}: invalid YAML frontmatter: ${message}`);
@@ -93,13 +113,10 @@ async function readBlockTitle(blockDirectory: string): Promise<string> {
 }
 
 /**
- * Maps a discovered source path to the registry file category understood by shadcn.
+ * Classifies source files for installation by the shadcn CLI.
  *
- * @param filePath - Relative path returned by the block manifest.
- * @returns The registry category for the file extension.
- *
- * @example
- * getFileType('styles/theme.css'); // 'registry:style'
+ * @param filePath - Discovered source file path.
+ * @returns Styles for CSS, components for TypeScript, or generic files for other extensions.
  */
 function getFileType(filePath: string): RegistryFileType {
   const extension = filePath.toLowerCase().slice(filePath.lastIndexOf('.'));
@@ -110,10 +127,10 @@ function getFileType(filePath: string): RegistryFileType {
 }
 
 /**
- * Serializes a registry using the repository's stable, review-friendly formatting.
+ * Serializes registry data with compact single-item dependency arrays.
  *
  * @param registry - Registry data to serialize.
- * @returns Pretty-printed JSON ending with a newline.
+ * @returns Indented JSON with a trailing newline.
  */
 function serializeRegistry(registry: AntaresRegistry): string {
   const formatted = JSON.stringify(registry, null, 2).replace(/("dependencies": )\[\n\s+("[^"]+")\n\s+\]/g, '$1[$2]');
@@ -122,22 +139,20 @@ function serializeRegistry(registry: AntaresRegistry): string {
 }
 
 /**
- * Distinguishes an absent registry file from filesystem failures that must
- * stop generation to avoid silently publishing an incomplete registry.
+ * Distinguishes absent READMEs from filesystem failures that must stop discovery.
  *
- * @param error - Error raised while inspecting a potential registry file.
- * @returns Whether the requested file does not exist.
+ * @param error - Filesystem failure to inspect.
+ * @returns Whether the error is `ENOENT`.
  */
 function isMissingFileError(error: unknown): error is Error & { code: 'ENOENT' } {
   return error instanceof Error && 'code' in error && error.code === 'ENOENT';
 }
 
 /**
- * Writes serialized registry content to disk using UTF-8 encoding.
+ * Creates the destination directory and writes the registry as UTF-8.
  *
- * @param registryPath - Destination path for the registry file.
- * @param source - Serialized registry content.
- * @returns A promise that resolves after the file is written.
+ * @param registryPath - Destination file path.
+ * @param source - Serialized registry JSON.
  */
 const defaultRegistryWriter: RegistryWriter = async function writeRegistryFile(registryPath, source) {
   await mkdir(dirname(registryPath), { recursive: true });
@@ -145,25 +160,11 @@ const defaultRegistryWriter: RegistryWriter = async function writeRegistryFile(r
 };
 
 /**
- * Builds the Antares blocks registry without writing to disk.
+ * Discovers blocks and validates their metadata without writing to disk.
  *
- * @param blocksRoot - Directory containing one subdirectory per block.
- * @returns The generated registry data.
- * @throws If block discovery, README validation, or manifest loading fails.
- *
- * @example
- * const registry = await createRegistry('packages/@godaddy/antares/blocks');
- * // {
- * //   "$schema": "https://ui.shadcn.com/schema/registry.json",
- * //   "name": "antares-blocks",
- * //   "items": [{
- * //     "name": "blocks/sign-in-form",
- * //     "type": "registry:block",
- * //     "title": "Sign-in form",
- * //     "dependencies": ["@godaddy/antares"],
- * //     "files": []
- * //   }]
- * // }
+ * @param blocksRoot - Root directory containing block folders.
+ * @returns Registry data with items sorted by name.
+ * @throws If block metadata is invalid or a filesystem error prevents discovery.
  */
 export async function createRegistry(blocksRoot: string): Promise<AntaresRegistry> {
   const entries = await readdir(blocksRoot, { withFileTypes: true });
@@ -172,12 +173,7 @@ export async function createRegistry(blocksRoot: string): Promise<AntaresRegistr
       entries
         .filter((entry) => entry.isDirectory())
         .map(
-          /**
-           * Keeps directories that contain a regular block README.
-           *
-           * @param entry - Directory entry discovered under the blocks root.
-           * @returns The entry when it represents a block, otherwise `null`.
-           */
+          /** Keeps directories containing a regular block README. */
           async function findBlockDirectory(entry) {
             try {
               const readme = await stat(join(blocksRoot, entry.name, 'README.mdx'));
@@ -197,12 +193,7 @@ export async function createRegistry(blocksRoot: string): Promise<AntaresRegistr
 
   const items = await Promise.all(
     blockDirectories.map(
-      /**
-       * Converts one block manifest into a registry item.
-       *
-       * @param entry - Directory entry for the block being converted.
-       * @returns The registry item generated for the block.
-       */
+      /** Combines README metadata and discovered files into an installable registry item. */
       async function createRegistryItem(entry): Promise<RegistryItem> {
         const blockDirectory = join(blocksRoot, entry.name);
         const title = await readBlockTitle(blockDirectory);
@@ -214,12 +205,7 @@ export async function createRegistry(blocksRoot: string): Promise<AntaresRegistr
           title,
           dependencies: ['@godaddy/antares'],
           files: manifest.files.map(
-            /**
-             * Converts one manifest file into a shadcn registry file entry.
-             *
-             * @param file - File discovered by the block manifest.
-             * @returns The registry path, category, and installation target.
-             */
+            /** Maps a discovered file to its repository path, registry category, and installation target. */
             function createRegistryFile(file) {
               return {
                 path: `${entry.name}/${file.path}`,
@@ -241,17 +227,11 @@ export async function createRegistry(blocksRoot: string): Promise<AntaresRegistr
 }
 
 /**
- * Builds and writes a registry using an injectable writer.
+ * Builds the registry before writing it; an optional writer can capture or redirect the output.
  *
- * The default writer updates the repository registry file. Callers can provide
- * another writer to capture the serialized output or route it elsewhere.
- *
- * @param options - Paths, package version, and optional output writer.
- * @param options.blocksRoot - Directory containing one subdirectory per block.
- * @param options.registryPath - Destination path supplied to the writer.
- * @param options.writeRegistry - Optional writer replacing the filesystem writer.
- * @returns The generated registry data after it has been written.
- * @throws If registry creation or writing fails.
+ * @param options - {@link BuildRegistryOptions}
+ * @returns The registry after the writer completes successfully.
+ * @throws If discovery, metadata validation, or writing fails.
  */
 export async function buildRegistry({
   blocksRoot,
@@ -265,11 +245,7 @@ export async function buildRegistry({
   return registry;
 }
 
-/**
- * Runs the command-line registry build using the repository's canonical paths.
- *
- * @returns A promise that resolves after the registry is written and summarized.
- */
+/** Builds the canonical repository registry and prints the resulting block and file counts. */
 async function main() {
   const registry = await buildRegistry({
     blocksRoot: blocksDirectory,
@@ -284,9 +260,9 @@ async function main() {
 }
 
 /**
- * Reports a command-line build failure and marks the process as unsuccessful.
+ * Reports generation failures and marks the command as unsuccessful.
  *
- * @param error - Failure thrown while building or writing the registry.
+ * @param error - Rejection from registry generation or writing.
  */
 function reportRegistryBuildError(error: unknown): void {
   console.error(error instanceof Error ? error.message : String(error));

@@ -18,7 +18,9 @@ type MutableNode = MutableFolder | MutableFile;
 /**
  * Builds a deterministic nested tree from the manifest's relative file paths.
  *
- * @param files - Curated source files from a block manifest.
+ * @param files - Discovered source files from a block manifest.
+ * @returns A nested tree sorted by name, with folders before files.
+ * @throws If a path is empty or collides with another file or folder.
  */
 export function createFileTree(files: readonly BlockFile[]): readonly FileTreeNode[] {
   const root = new Map<string, MutableNode>();
@@ -60,6 +62,12 @@ export function createFileTree(files: readonly BlockFile[]): readonly FileTreeNo
   return sortNodes([...root.values()]);
 }
 
+/**
+ * Recursively orders folders before files, sorting each group by name.
+ *
+ * @param nodes - Unsorted nodes collected from manifest paths.
+ * @returns Nodes with folder maps converted to sorted child arrays.
+ */
 function sortNodes(nodes: readonly MutableNode[]): readonly FileTreeNode[] {
   return [...nodes]
     .sort(function compareNodes(a, b) {

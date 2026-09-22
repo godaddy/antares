@@ -12,7 +12,12 @@ import styles from './runtime.module.css';
 /**
  * Build-time MDX marker. The host compiler replaces it with an explorer.
  *
- * @param props - Marker attributes consumed by the documentation compiler.
+ * @example
+ * ```tsx
+ * <Block id="sign-in-form" of={Stories.Preview} />
+ * ```
+ *
+ * @param props - {@link BlockMarkerProps}
  */
 export function Block(props: BlockMarkerProps): null {
   void props;
@@ -22,7 +27,12 @@ export function Block(props: BlockMarkerProps): null {
 /**
  * Build-time marker for a compact link to a block overview page.
  *
- * @param props - Marker attributes consumed by the documentation compiler.
+ * @example
+ * ```tsx
+ * <BlockLink id="sign-in-form" />
+ * ```
+ *
+ * @param props - {@link BlockLinkMarkerProps}
  */
 export function BlockLink(props: BlockLinkMarkerProps): null {
   void props;
@@ -50,7 +60,7 @@ export interface BlockLinksProps {
 /**
  * Renders related blocks as a compact Antares list of links.
  *
- * @param props - Related block links to display.
+ * @param props - {@link BlockLinksProps}
  */
 export function BlockLinks({ blocks }: BlockLinksProps) {
   return (
@@ -62,6 +72,7 @@ export function BlockLinks({ blocks }: BlockLinksProps) {
   );
 }
 
+/** Renders a block link while preserving the host's browsing context. */
 function BlockLinkItemView({ block }: { block: BlockLinkItem }) {
   const setBlockTarget = useCallback(
     function setBlockTarget(element: HTMLAnchorElement | null) {
@@ -89,7 +100,14 @@ function BlockLinkItemView({ block }: { block: BlockLinkItem }) {
  * Displays a block preview and its discovered source files in a shared Preview/Code surface.
  * The host supplies the preview and syntax highlighter, while Antares owns the layout primitives.
  *
- * @param props - Block manifest, preview content, and optional syntax highlighter.
+ * @example
+ * ```tsx
+ * <BlockExplorer block={manifest}>
+ *   <SignInForm />
+ * </BlockExplorer>
+ * ```
+ *
+ * @param props - {@link BlockExplorerProps}
  */
 export function BlockExplorer({ block, children, codeRenderer }: BlockExplorerProps) {
   const [view, setView] = useState<BlockView>('preview');
@@ -148,6 +166,12 @@ export type {
 
 export { BlockInstallButton, type BlockInstallButtonProps } from './block-install-button.tsx';
 
+/**
+ * Selects the file shown when opening the Code view.
+ *
+ * @param block - Manifest for the active block.
+ * @returns The first file's path, or an empty string when there are no files.
+ */
 function getInitialPath(block: BlockExplorerProps['block']) {
   return block.files[0]?.path ?? '';
 }

@@ -1,7 +1,13 @@
 import type { Root } from 'mdast';
 import type { StorybookConfig } from '@storybook/react-vite';
 import type { Plugin } from 'vite';
-import { collectBlockMarkers, hasNamedRuntimeImport, parseBlockMdx, type BlockMarker } from './mdx-block-markers.ts';
+import {
+  collectBlockMarkers,
+  getYamlFrontmatter,
+  hasNamedRuntimeImport,
+  parseBlockMdx,
+  type BlockMarker
+} from './mdx-block-markers.ts';
 import { loadBlockManifest, resolveBlockDirectory } from './node.ts';
 
 const README_FILE_REGEX = /README\.mdx$/;
@@ -27,7 +33,13 @@ interface Expansion {
   watchFiles: readonly string[];
 }
 
-/** Adds block MDX expansion before Storybook's MDX loader runs. */
+/**
+ * Adds block MDX expansion before Storybook's MDX loader runs.
+ *
+ * @param config - Storybook's Vite configuration, updated in place.
+ * @param _options - Storybook preset context; unused by this adapter.
+ * @returns The configuration with the block pre-transform registered first.
+ */
 export const viteFinal: StorybookConfig['viteFinal'] = async function viteFinal(config, _options) {
   config.plugins ??= [];
   config.plugins.unshift(generateBlocksPlugin());
@@ -35,19 +47,21 @@ export const viteFinal: StorybookConfig['viteFinal'] = async function viteFinal(
 };
 
 /**
- * Creates the Vite transform that expands block markers in Storybook MDX.
+ * Creates a pre-transform for block markers in matching README files.
  *
- * @param readmeRegex - File-name matcher used to limit the transform to documentation files.
+ * @param readmeRegex - File-path filter; defaults to paths ending in `README.mdx`.
+ * @returns A Vite plugin that expands markers and watches their source dependencies.
  */
 export function generateBlocksPlugin(readmeRegex: RegExp = README_FILE_REGEX): Plugin {
   return {
     name: 'block-explorer-mdx',
     enforce: 'pre',
+    /** Expands authored markers before MDX compilation and registers their dependencies. */
     async transform(source, id) {
       const fileName = id.split('?')[0];
       if (!readmeRegex.test(fileName)) return null;
 
-      const tree = parseBlockMdx(source);
+      const tree = parseBlockMdx(source, fileName);
       const markers = collectBlockMarkers(tree);
       if (markers.length === 0) return null;
 
@@ -67,13 +81,12 @@ export function generateBlocksPlugin(readmeRegex: RegExp = README_FILE_REGEX): P
 }
 
 /**
- * Resolves each live block marker into its generated MDX and dependencies.
+ * Expands live markers, caching manifests only for the duration of this transform.
  *
- * Manifests are cached for the duration of this transform so repeated markers
- * for the same block do not rediscover the same files.
- *
- * @param fileName - Absolute path to the README being transformed.
- * @param markers - Live block markers collected from the MDX AST.
+ * @param fileName - Source README used to resolve blocks and report errors.
+ * @param markers - Live markers in source order.
+ * @returns Replacements with their required runtime imports and watched files.
+ * @throws If a marker is incomplete or its block cannot be loaded.
  */
 async function expandMarkers(fileName: string, markers: readonly BlockMarker[]): Promise<Expansion[]> {
   const manifestCache = new Map<string, Awaited<ReturnType<typeof loadBlockManifest>>>();
@@ -130,10 +143,11 @@ async function expandMarkers(fileName: string, markers: readonly BlockMarker[]):
 }
 
 /**
- * Applies marker replacements from right to left so source offsets remain valid.
+ * Applies replacements from right to left to preserve original source offsets.
  *
  * @param source - Original MDX source.
- * @param expansions - Marker replacements generated from the source.
+ * @param expansions - Replacements ordered by their original source positions.
+ * @returns MDX source with all markers replaced.
  */
 function applyReplacements(source: string, expansions: readonly Expansion[]): string {
   let expanded = source;
@@ -144,17 +158,29 @@ function applyReplacements(source: string, expansions: readonly Expansion[]): st
 }
 
 /**
- * Adds required imports after frontmatter while avoiding duplicate Story imports.
+ * Inserts missing runtime imports after frontmatter without rewriting authored content.
  *
- * @param source - Transformed MDX source.
- * @param lines - Import lines required by the generated replacements.
- * @param tree - Original MDX AST used to inspect existing runtime imports.
+ * @param source - MDX source after marker expansion.
+ * @param lines - Import statements required by the generated replacements.
+ * @param tree - Original MDX tree used to locate frontmatter and existing imports.
+ * @returns Source containing each required import, separated from MDX content by a blank line.
  */
 function prependImports(source: string, lines: readonly string[], tree: Root): string {
-  const imports = [...new Set(lines)].filter(
-    (line) => line !== STORY_IMPORT || !hasNamedRuntimeImport(tree, 'Story', STORYBOOK_DOCS_MODULE)
-  );
+  const requiredImports = [
+    [STORY_IMPORT, 'Story', STORYBOOK_DOCS_MODULE],
+    [BLOCK_LINK_IMPORT, 'BlockLinks', '@bento/block-explorer/runtime'],
+    [BLOCK_EXPLORER_IMPORT, 'StorybookBlockExplorer', '@bento/block-explorer/storybook-runtime']
+  ] as const;
+  const imports = [...new Set(lines)].filter(function isMissingImport(line) {
+    const required = requiredImports.find(([statement]) => statement === line);
+    return !required || !hasNamedRuntimeImport(tree, required[1], required[2]);
+  });
   if (imports.length === 0) return source;
-  const frontmatter = source.match(/^---\r?\n[\s\S]*?\r?\n---\r?\n/)?.[0] ?? '';
-  return `${source.slice(0, frontmatter.length)}${imports.join('\n')}\n${source.slice(frontmatter.length)}`;
+  const frontmatter = getYamlFrontmatter(tree);
+  let offset = frontmatter?.position?.end.offset ?? 0;
+  if (frontmatter) {
+    if (source[offset] === '\r') offset += 1;
+    if (source[offset] === '\n') offset += 1;
+  }
+  return `${source.slice(0, offset)}${imports.join('\n')}\n\n${source.slice(offset)}`;
 }
