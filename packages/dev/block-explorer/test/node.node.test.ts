@@ -149,6 +149,29 @@ describe('block manifest utilities', function blockManifestUtilities() {
     await expect(resolveBlockDirectory(readmePath, 'fixture-block')).resolves.toBe(blockDirectory);
   });
 
+  it.each([
+    '',
+    '.',
+    '..',
+    '../../blocks/fixture-block',
+    'nested/block',
+    'nested\\block',
+    '/absolute/block',
+    'invalid block',
+    'SignInForm',
+    'sign_in_form',
+    '-block',
+    'block-',
+    'block--name',
+    'block\n'
+  ])('rejects invalid block id %j', async function rejectsInvalidBlockId(id) {
+    const readmePath = resolve(fixtureDirectory, '../package/components/example/README.mdx');
+
+    await expect(resolveBlockDirectory(readmePath, id)).rejects.toThrow(
+      `${readmePath}: invalid block id ${JSON.stringify(id)}. Expected lowercase kebab-case, such as "sign-in-form".`
+    );
+  });
+
   it('reports an unresolved block id with the source README path', async function rejectsUnknownBlock() {
     await expect(resolveBlockDirectory(resolve(fixtureDirectory, 'README.mdx'), 'missing-block')).rejects.toThrow(
       `${fixtureDirectory}/README.mdx: unable to resolve block "missing-block".`

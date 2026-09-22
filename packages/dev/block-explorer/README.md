@@ -29,6 +29,8 @@ import { BlockLink } from '@bento/block-explorer/runtime';
 
 `BlockLink` requires a literal string `id` and provides navigation to a related block.
 
+Both markers require lowercase kebab-case identifiers, such as `sign-in-form`.
+
 ## Source browsing
 
 The source view lets readers navigate and copy implementation files. Discovery

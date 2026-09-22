@@ -12,6 +12,7 @@ export interface BlockManifestOverrides {
   readonly description?: string;
 }
 
+const BLOCK_ID_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ROOT_README_REGEX = /^README(?:\.[^/]*)?$/i;
 const ROOT_STORY_REGEX = /\.stories\.tsx$/i;
 const ROOT_TEST_DIRECTORY = 'test';
@@ -46,11 +47,17 @@ export async function loadBlockManifest(
  * Resolves sibling or package blocks, then a local README that defines the requested id.
  *
  * @param readmePath - Path of the README containing the block marker.
- * @param id - Block identifier from the marker.
+ * @param id - Lowercase kebab-case block identifier from the marker.
  * @returns The first matching block directory.
- * @throws If the block cannot be resolved or a filesystem or MDX error prevents lookup.
+ * @throws If the id is invalid, the block cannot be resolved, or lookup fails.
  */
 export async function resolveBlockDirectory(readmePath: string, id: string): Promise<string> {
+  if (!BLOCK_ID_REGEX.test(id)) {
+    throw new Error(
+      `${readmePath}: invalid block id ${JSON.stringify(id)}. Expected lowercase kebab-case, such as "sign-in-form".`
+    );
+  }
+
   const readmeDirectory = dirname(readmePath);
   const siblingCandidate = join(readmeDirectory, id);
   if (await isBlockDirectory(siblingCandidate)) return siblingCandidate;
