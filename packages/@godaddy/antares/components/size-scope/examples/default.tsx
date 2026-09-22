@@ -2,7 +2,7 @@ import { Button, Flex, Heading, Input, Label, SizeScope, Text, TextField, TextLo
 
 /**
  * A scope sizes everything inside it: text, controls, and default spacing. A component's own
- * `size` still wins, here on the second button.
+ * `size` still wins.
  * @order 1
  */
 export function DefaultExample() {

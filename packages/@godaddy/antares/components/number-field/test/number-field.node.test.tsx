@@ -65,7 +65,7 @@ describe('@godaddy/antares', function antares() {
       it('fills the stepper faces under the field chrome', function faces() {
         expect(html).toContain('data-icon="minus"');
         expect(html).toContain('data-icon="plus"');
-        expect(html).toMatch(/<button[^>]*class="control button control sm"/);
+        expect(html).toMatch(/<button[^>]*class="control button control"/);
       });
 
       it('keeps the stepper wiring React Aria published', function wiring() {
@@ -75,7 +75,7 @@ describe('@godaddy/antares', function antares() {
 
       it('lets a local prop beat the field default', function localWins() {
         expect(html).toMatch(
-          /<button[^>]*class="control button primary sm"[^>]*>\s*<span class="text type typeText">less/
+          /<button[^>]*class="control button primary"[^>]*>\s*<span class="text type typeText">less/
         );
       });
 

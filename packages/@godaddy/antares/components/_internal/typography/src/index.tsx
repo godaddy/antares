@@ -59,13 +59,13 @@ export function typographyClassName(role: TypographyRole, { size, emphasis }: Ty
   return cx(styles.type, ROLE[role], size && SIZE[size], emphasis && EMPHASIS[emphasis]);
 }
 
-/**
- * The treatment of a role, for an owner's part. On a `Text` it replaces the body treatment it
- * would otherwise inherit, including the ramp an explicit `size` reads.
- */
+/** A role's treatment, for an owner's part. */
 export function roleClassName(role: Exclude<TypographyRole, 'text'>) {
   return ROLE[role];
 }
 
-/** Body typography for a scope's own element, which bare text inside it inherits. */
+/** Body typography for a scope's element. */
 export const surfaceClassName = styles.typeSurface;
+
+/** The body treatment, for an owner's part. */
+export const bodyPartClassName = styles.typeBody;

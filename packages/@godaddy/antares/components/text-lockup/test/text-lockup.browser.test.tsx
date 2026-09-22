@@ -34,14 +34,12 @@ describe('@godaddy/antares', function antares() {
     it('keeps its tier in a narrow container', async function narrowTitle() {
       const { getByRole } = await render(<SelfContainedExample />);
 
-      // 2xl heading tier: 2.25rem = 36px.
       expect(getComputedStyle(getByRole('heading', { name: 'Narrow' }).element()).fontSize).toEqual('36px');
     });
 
     it('replaces an outer lockup tier rather than scaling it', async function nestedTier() {
       const { getByRole } = await render(<SelfContainedExample />);
 
-      // md heading tier: 1.25rem = 20px.
       expect(getComputedStyle(getByRole('heading', { name: 'Inner' }).element()).fontSize).toEqual('20px');
     });
 
@@ -64,7 +62,6 @@ describe('@godaddy/antares', function antares() {
       const { getByText } = await render(<SelfContainedExample />);
       const unslotted = getComputedStyle(getByText('Bare paragraph').element()).fontSize;
 
-      // The 2xl body tier: 1.5rem = 24px, the same as the slotted sibling.
       expect(unslotted).toEqual('24px');
       expect(unslotted).toEqual(getComputedStyle(getByText('Body paragraph').element()).fontSize);
       expect(unslotted).not.toEqual(getComputedStyle(getByText('Outside every lockup').element()).fontSize);

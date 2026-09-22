@@ -8,6 +8,7 @@ import { FormatOptionsExample } from '../examples/format-options';
 import { HideStepperExample } from '../examples/hide-stepper';
 import { InvalidExample } from '../examples/invalid';
 import { ValueScaleExample } from '../examples/value-scale';
+import { SizesExample } from '../examples/sizes';
 import { TextSteppersExample } from '../examples/text-steppers';
 import { waitForSelector } from '#test/utils/wait-for-selector.ts';
 
@@ -123,6 +124,20 @@ describe('@godaddy/antares', function antares() {
 
         await decrementButton.click();
         assume(locator.getByRole('textbox', { name: 'Quantity' }).element().getAttribute('value')).equals('10');
+      });
+    });
+
+    describe('#size', function size() {
+      it('sizes the input and steppers together from the field size', async function sizes() {
+        const { locator } = await render(<SizesExample />);
+
+        for (const name of ['sm', 'md', 'lg']) {
+          const input = locator.getByRole('textbox', { name: `Quantity (${name})` }).element();
+          const stepper = locator.getByRole('button', { name: `Increase Quantity (${name})` }).element();
+
+          assume(getComputedStyle(stepper).fontSize).equals(getComputedStyle(input).fontSize);
+          assume(getComputedStyle(stepper).paddingBlockStart).equals(getComputedStyle(input).paddingBlockStart);
+        }
       });
     });
   });

@@ -10,7 +10,8 @@ feat: add SizeScope and coordinated typography sizes
   `emphasis` color. Without `size`, `Text` inherits and the others take the scope's tier. A heading's
   `level` never changes its size.
 - `Button` and `LinkButton` add `size="lg"` and follow the scope when `size` is omitted.
-- `TextField` and `Select` add `size="lg"` and act as scopes for their parts; `TextField` no longer sets
+- `TextField`, `NumberField`, `Select`, `DatePicker`, and `DateRangePicker` add `size="lg"` and act as
+  scopes for their parts, overlays included; `TextField`, `NumberField`, and the pickers no longer set
   `data-size`.
 - `Modal` adds `size`. Modal, Drawer, and Popover follow the scope around their trigger, and their
   `slot="title"` heading takes the title tier.

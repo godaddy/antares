@@ -1,7 +1,7 @@
 import { forwardRef, type ReactNode } from 'react';
 import { cx } from 'cva';
 import { DEFAULT_SLOT, HeadingContext, Provider as RACProvider, TextContext } from 'react-aria-components';
-import { roleClassName, surfaceClassName } from '#components/_internal/typography';
+import { bodyPartClassName, roleClassName, surfaceClassName } from '#components/_internal/typography';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { TagContext, type TagSize } from '#components/tag';
 import { composeClassName } from '#utils/render-props.ts';
@@ -24,11 +24,7 @@ const TAG_SIZE: Record<TextLockupSize, TagSize> = {
  * Props for the {@link TextLockup} component.
  */
 export interface TextLockupProps extends Omit<FlexProps, 'as' | 'direction' | 'alignItems'> {
-  /**
-   * The coordinated type size of the lockup. Each part reads this tier on its own role
-   * ramp: the eyebrow on `detail`, the title on `heading`, the body on `body`. Follows the
-   * size scope when omitted. Controls inside keep the scope's size either way.
-   */
+  /** Type size of every part, each on its own role ramp. Follows the size scope when omitted. */
   size?: TextLockupSize;
 
   /** How the parts are aligned within the lockup. @default 'start' */
@@ -48,8 +44,7 @@ export interface TextLockupProps extends Omit<FlexProps, 'as' | 'direction' | 'a
  * Stacks an optional eyebrow, a title and body text as one coordinated type group.
  *
  * The lockup positions and type-sets the parts; the consumer supplies them. Each part names its
- * role with a slot (`eyebrow`, `title`, `body`), so the eyebrow can be plain text or a `Tag`, and
- * the title can be any heading level. Unslotted text follows the lockup's size too.
+ * role with a slot (`eyebrow`, `title`, `body`).
  *
  * @param props - {@link TextLockupProps}
  *
@@ -85,7 +80,7 @@ export const TextLockup = forwardRef<HTMLDivElement, TextLockupProps>(function T
               slots: {
                 [DEFAULT_SLOT]: {},
                 eyebrow: { className: cx(styles.part, roleClassName('detail')) },
-                body: { className: styles.part }
+                body: { className: cx(styles.part, bodyPartClassName) }
               }
             }
           ],

@@ -8,6 +8,8 @@ function style(element: Element) {
   return getComputedStyle(element);
 }
 
+const smControl = '14.2222px';
+
 function box(element: Element) {
   const { width, height } = element.getBoundingClientRect();
   return { width, height };
@@ -20,7 +22,7 @@ describe('@godaddy/antares', function antares() {
 
       expect(style(getByTestId('unscoped').element()).fontSize).toEqual('16px');
       expect(style(getByTestId('unscoped').element()).paddingBlockStart).toEqual('8px');
-      expect(style(getByTestId('sm').element()).fontSize).toEqual('14px');
+      expect(style(getByTestId('sm').element()).fontSize).toEqual(smControl);
       expect(style(getByTestId('sm').element()).paddingBlockStart).toEqual('4px');
       expect(style(getByTestId('lg').element()).fontSize).toEqual('18px');
       expect(style(getByTestId('lg').element()).paddingBlockStart).toEqual('12px');
@@ -29,14 +31,31 @@ describe('@godaddy/antares', function antares() {
     it('replaces the size in a nested scope rather than compounding it', async function nested() {
       const { getByTestId } = await render(<ScenariosExample />);
 
-      expect(style(getByTestId('sm-in-sm').element()).fontSize).toEqual('14px');
+      expect(style(getByTestId('sm-in-sm').element()).fontSize).toEqual(smControl);
     });
 
     it('lets an explicit size win for that component only', async function explicit() {
       const { getByTestId } = await render(<ScenariosExample />);
 
       expect(style(getByTestId('explicit-md').element()).fontSize).toEqual('16px');
-      expect(style(getByTestId('sm').element()).fontSize).toEqual('14px');
+      expect(style(getByTestId('sm').element()).fontSize).toEqual(smControl);
+    });
+
+    it('sizes every part of a field from its explicit size inside a scope', async function explicitField() {
+      const { getByRole, getByText } = await render(<ScenariosExample />);
+      const input = getByRole('textbox', { name: 'Seats' }).element();
+      const stepper = getByRole('button', { name: 'Increase Seats' }).element();
+      const trigger = getByRole('button', { name: /Start date/ });
+
+      expect(style(input).fontSize).toEqual('16px');
+      expect(style(stepper).fontSize).toEqual('16px');
+      expect(style(stepper).paddingBlockStart).toEqual(style(input).paddingBlockStart);
+      expect(style(trigger.element()).fontSize).toEqual('16px');
+      expect(style(getByText('Start date', { exact: true }).element()).fontSize).toEqual('14px');
+
+      await userEvent.click(trigger);
+      await expect.element(getByRole('dialog')).toBeVisible();
+      expect(style(getByRole('dialog').element()).fontSize).toEqual('16px');
     });
 
     it('gives bare text, a plain element, and Text the same typography', async function bareText() {
@@ -57,6 +76,20 @@ describe('@godaddy/antares', function antares() {
       expect(style(getByTestId('label').element()).fontSize).toEqual('12px');
       expect(style(getByTestId('label').element()).fontWeight).toEqual('500');
       expect(style(getByRole('heading', { name: 'Level two' }).element()).fontSize).toEqual('18px');
+    });
+
+    it('keeps semantic emphasis over the role weight', async function strong() {
+      const { getByTestId } = await render(<ScenariosExample />);
+      const weight = (id: string) => Number(style(getByTestId(id).element()).fontWeight);
+
+      expect(weight('strong-detail')).toBeGreaterThan(weight('detail'));
+    });
+
+    it('follows a legacy font size in the scope as an explicit size does', async function legacyFont() {
+      const { getByTestId } = await render(<ScenariosExample />);
+
+      expect(style(getByTestId('legacy-scoped').element()).fontSize).toEqual('22.5px');
+      expect(style(getByTestId('legacy-explicit').element()).fontSize).toEqual('22.5px');
     });
 
     it('keeps a composed Text identical to a bare button label', async function composed() {
@@ -107,7 +140,8 @@ describe('@godaddy/antares', function antares() {
       const { getByTestId } = await render(<ScenariosExample />);
       const pairs = [
         ['description', 'detail-description'],
-        ['explicit-description', 'explicit-detail-description']
+        ['explicit-description', 'explicit-detail-description'],
+        ['lockup-body', 'lockup-detail-body']
       ];
 
       for (const [text, detail] of pairs) {
@@ -123,7 +157,7 @@ describe('@godaddy/antares', function antares() {
       const { getByTestId, getByRole } = await render(<ScenariosExample />);
 
       expect(style(getByRole('heading', { name: 'Lockup title' }).element()).fontSize).toEqual('30px');
-      expect(style(getByTestId('lockup-button').element()).fontSize).toEqual('14px');
+      expect(style(getByTestId('lockup-button').element()).fontSize).toEqual(smControl);
     });
 
     it('opens a modal at the size of the scope around its trigger', async function modal() {
@@ -132,8 +166,7 @@ describe('@godaddy/antares', function antares() {
 
       const dialog = getByRole('dialog', { name: 'Edit plan' });
       await expect.element(dialog).toBeVisible();
-      expect(style(dialog.getByRole('button', { name: 'Save' }).element()).fontSize).toEqual('14px');
-      // The sm title tier is the heading md step: 1.25rem = 20px.
+      expect(style(dialog.getByRole('button', { name: 'Save' }).element()).fontSize).toEqual(smControl);
       expect(style(dialog.getByRole('heading', { name: 'Edit plan' }).element()).fontSize).toEqual('20px');
     });
 

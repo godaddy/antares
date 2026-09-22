@@ -9,10 +9,7 @@ export type ScaleSize = 'sm' | 'md' | 'lg';
 
 const DeclaredSizeContext = createContext<ScaleSize | undefined>(undefined);
 
-/**
- * The size a portaled surface applies: its own explicit size, otherwise the nearest one declared
- * above it in React. CSS inheritance cannot cross a portal, so the surface re-applies it.
- */
+/** The explicit size, otherwise the nearest declared one. For surfaces rendered in a portal. */
 export function useDeclaredSize(size?: ScaleSize): ScaleSize | undefined {
   const declared = useContext(DeclaredSizeContext);
   return size ?? declared;
@@ -24,38 +21,37 @@ const SCALE: Record<ScaleSize, string> = {
   lg: styles.scaleLg
 };
 
-/** Class that sets the size scale on an element. Nothing when no size is declared. */
+/** Class that sets the size scale on an element. */
 export function sizeScaleClassName(size?: ScaleSize) {
   return size && SCALE[size];
 }
 
-export interface DeclaredSizeProps {
-  /** Size to publish. When omitted, the enclosing declared size passes through. */
+export interface DeclaredSizeProviderProps {
+  /** Size to publish. Passes the enclosing size through when omitted. */
   size?: ScaleSize;
 
   children?: ReactNode;
 }
 
-/** Publishes an explicit size to portaled descendants. */
-export function DeclaredSize({ size, children }: DeclaredSizeProps) {
+/** Publishes a size to portaled descendants. Sets no CSS; pair it with `sizeScaleClassName`. */
+export function DeclaredSizeProvider({ size, children }: DeclaredSizeProviderProps) {
   const resolved = useDeclaredSize(size);
   return <DeclaredSizeContext.Provider value={resolved}>{children}</DeclaredSizeContext.Provider>;
 }
 
 export interface SizeScopeOwnProps {
-  /** Size of everything inside. Inherits the enclosing size when omitted. */
+  /** Size of everything inside. Inherits when omitted. */
   size?: ScaleSize;
 
   /** Content to size. */
   children?: ReactNode;
 }
 
-/** Polymorphic SizeScope props. `as` picks the element to render. @default 'div' */
+/** SizeScope props. `as` picks the element. @default 'div' */
 export type SizeScopeProps<C extends ElementType = 'div'> = PolymorphicProps<C, SizeScopeOwnProps>;
 
 /**
- * Sizes a section. Text, controls, and default spacing inside it follow `size`, including content
- * rendered in a portal. A component's own `size` prop still wins for that component.
+ * Sizes the text, controls, and default spacing inside it, portaled content included.
  *
  * @example
  * ```tsx
@@ -72,7 +68,7 @@ export const SizeScope = forwardRef(function SizeScope(
   const { size, as: Component = 'div', className, children, ...rest } = props;
 
   return (
-    <DeclaredSize size={size}>
+    <DeclaredSizeProvider size={size}>
       <Component
         {...rest}
         ref={ref}
@@ -80,6 +76,6 @@ export const SizeScope = forwardRef(function SizeScope(
       >
         {children}
       </Component>
-    </DeclaredSize>
+    </DeclaredSizeProvider>
   );
 }) as PolymorphicComponent<SizeScopeOwnProps>;

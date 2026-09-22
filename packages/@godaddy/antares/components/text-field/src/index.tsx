@@ -12,7 +12,7 @@ import { ButtonContext, type ButtonProps } from '#components/button';
 import { InputContext } from '#components/input';
 import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { DeclaredSize, sizeScaleClassName, type ScaleSize } from '#components/size-scope';
+import { DeclaredSizeProvider, sizeScaleClassName, type ScaleSize } from '#components/size-scope';
 import { GroupContext } from '#components/structure';
 import { TextAreaContext } from '#components/text-area';
 import { composeClassName } from '#utils/render-props.ts';
@@ -28,7 +28,7 @@ export interface TextFieldProps extends Omit<RACTextFieldProps, 'size'>, Omit<Fl
   /** Current value (controlled). */
   value?: string;
 
-  /** Size of the field and every part it owns. Follows the size scope when omitted. */
+  /** Size of the field and everything inside it. Follows the size scope when omitted. */
   size?: ScaleSize;
 
   /** Name of the input element, used when submitting a form. */
@@ -85,7 +85,6 @@ function TextFieldBody({ isDisabled, children }: TextFieldBodyProps) {
 
 /**
  * Text input field. Compose `Label`, `Input`/`TextArea`, optional `Group`, description, and `FieldError`.
- * The field is a size scope: its parts, and any control composed inside, follow its `size`.
  *
  * @example
  * ```tsx
@@ -101,7 +100,7 @@ export function TextField(props: TextFieldProps) {
   const { children, size, gap = 'var(--_size-gap, var(--sp-sm))', className, isDisabled, ...rest } = props;
 
   return (
-    <DeclaredSize size={size}>
+    <DeclaredSizeProvider size={size}>
       <Flex
         direction="column"
         gap={gap}
@@ -115,6 +114,6 @@ export function TextField(props: TextFieldProps) {
           return <TextFieldBody isDisabled={isDisabled}>{node}</TextFieldBody>;
         })}
       </Flex>
-    </DeclaredSize>
+    </DeclaredSizeProvider>
   );
 }

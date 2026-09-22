@@ -1,7 +1,3 @@
-/*
- * Precedence values live on the element that sets them. An explicit prop writes `--_type-size` or
- * `--_type-color`, an owner's part writes the `-slot-` pair, and neither inherits into nested text.
- */
 @property --_type-size {
   syntax: "*";
   inherits: false;
@@ -22,20 +18,10 @@
   inherits: false;
 }
 
-/* Defaults stay at zero specificity, so an owner's part class or a caller's className wins. */
 :where(.type) {
   color: var(--_type-color, var(--_type-slot-color, currentColor));
 }
 
-:where(.type):where(strong, b) {
-  font-weight: var(--font-weight-strong, bolder);
-}
-
-:where(.type):where(em, i) {
-  font-style: var(--font-style-em, italic);
-}
-
-/* Body copy inherits every font property; only an explicit or part size replaces its size. */
 :where(.typeText) {
   --_type-xs: var(--font-body-size-xs, 0.75rem);
   --_type-sm: var(--font-body-size-sm, 0.875rem);
@@ -77,7 +63,6 @@
   line-height: var(--font-heading-line-height, var(--ux-p25s1t, 1.25));
 }
 
-/* No label role exists in the tokens yet, so the ramp is the global font-size scale. */
 :where(.typeLabel) {
   --_type-xs: var(--font-size-010, 0.6875rem);
   --_type-sm: var(--font-size-020, 0.75rem);
@@ -92,13 +77,34 @@
   font-variation-settings: var(--ux-1qg0ofw, normal);
 }
 
-/* Body typography for a surface: the text a scope's own element and its bare text use. */
-:where(.typeSurface) {
+/* Everything below overrides the roles above at equal specificity, so order matters. */
+:where(.typeBody) {
+  --_type-xs: var(--font-body-size-xs, 0.75rem);
+  --_type-sm: var(--font-body-size-sm, 0.875rem);
+  --_type-md: var(--font-body-size-md, 1rem);
+  --_type-lg: var(--font-body-size-lg, 1.125rem);
+  --_type-xl: var(--font-body-size-xl, 1.25rem);
+  --_type-2xl: var(--font-body-size-2xl, 1.5rem);
+  --_type-slot-size: var(--_size-body, var(--_type-md));
+}
+
+:where(.typeSurface, .typeBody) {
   font-family: var(--font-body-family, var(--ux-pze30t, var(--ux-117cu43, sans-serif)));
-  font-size: var(--_size-body, var(--font-body-size-md, 1rem));
   font-weight: var(--font-body-weight, var(--ux-8n6y9x, 400));
   font-variation-settings: var(--font-body-variation, var(--ux-1i4pt2s, normal));
   line-height: var(--font-body-line-height, var(--ux-1hhfdnd, var(--ux-mgbt9j, 1.5)));
+}
+
+:where(.typeSurface) {
+  font-size: var(--_size-body, var(--font-body-size-md, 1rem));
+}
+
+:where(.type):where(strong, b) {
+  font-weight: var(--font-weight-strong, bolder);
+}
+
+:where(.type):where(em, i) {
+  font-style: var(--font-style-em, italic);
 }
 
 :where(.typeXs) {

@@ -14,15 +14,10 @@
   content: none;
 }
 
-/* Label owns its typography; the field supplies the part color, which an explicit emphasis overrides. */
 .label {
   --_type-slot-color: var(--ux-1glcx6s, #2b2b2b);
 }
 
-/*
- * A description is muted body copy at the field's description tier. The whole treatment, ramp
- * included, is set here, so a `Text` and a `Detail` in the slot render the same.
- */
 .field > :where([slot="description"]) {
   --_type-xs: var(--font-body-size-xs, 0.75rem);
   --_type-sm: var(--font-body-size-sm, 0.875rem);
@@ -101,13 +96,6 @@
 
 .group > :where(.input, .textarea) {
   flex: 1;
-}
-
-/* Fields that have not adopted the size scale yet. */
-.field:where([data-size="sm"]) > :where(.input, .textarea),
-.field:where([data-size="sm"]) > :where(.group) > :where(.input, .textarea) {
-  font-size: calc(1em / 1.125);
-  padding-block: var(--sp-sm);
 }
 
 .group {

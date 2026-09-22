@@ -3,8 +3,8 @@ import { Button, Flex, Group, Icon, Input, Label, Text, TextField } from '@godad
 const SIZES = ['sm', 'md', 'lg'] as const;
 
 /**
- * `size` sets the label, input, description, and any control composed inside, here a
- * `Button slot="control"`. Without it, the field follows the surrounding size scope.
+ * `size` sets the label, input, description, and any control composed inside. Without it, the
+ * field follows the surrounding size scope.
  * @title Sizes
  * @order 7
  */

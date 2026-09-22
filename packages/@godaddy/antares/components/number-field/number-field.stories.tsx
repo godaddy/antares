@@ -31,6 +31,6 @@ export const Playground = getStory(PlaygroundExample, {
     isDisabled: { control: 'boolean', description: 'Disable the input' },
     isInvalid: { control: 'boolean', description: 'Show invalid state' },
     isRequired: { control: 'boolean', description: 'Mark as required' },
-    size: { control: 'select', options: ['sm', 'md'], description: 'Visual size' }
+    size: { control: 'select', options: ['sm', 'md', 'lg'], description: 'Size of the field and its parts' }
   }
 });

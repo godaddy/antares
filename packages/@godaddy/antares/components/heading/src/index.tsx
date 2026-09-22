@@ -12,7 +12,7 @@ export const HeadingContext = RACHeadingContext;
 
 export interface HeadingProps extends Omit<RACHeadingProps, 'className'>, TypographyProps {
   /**
-   * The heading level, rendered as the matching `h1`-`h6` element. It never changes the visual size.
+   * Heading level (`h1`-`h6`). Does not affect the size.
    * Falls back to the level a container provides, then to `3`.
    * @default 3
    */

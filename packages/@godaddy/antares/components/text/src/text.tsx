@@ -55,8 +55,7 @@ const TextElement = forwardRef<HTMLElement, TextElementProps>(function TextEleme
 });
 
 /**
- * Body copy. Without `size` it takes the typography of whatever surrounds it: a size scope, a
- * control, or a named part.
+ * Body copy. Without `size`, it takes the surrounding typography.
  *
  * @example
  * ```tsx
@@ -68,8 +67,7 @@ export const Text = forwardRef<HTMLElement, TextProps>(function Text(props, ref)
 });
 
 /**
- * Supporting copy, captions, and metadata, on the detail ramp. It is not muted by default; pass
- * `emphasis="passive"` for that.
+ * Supporting copy, such as captions and metadata.
  *
  * @example
  * ```tsx

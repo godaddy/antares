@@ -16,7 +16,6 @@
   text-align: center;
 }
 
-/* A sized lockup sets only the text entries of the size scale, so controls inside keep theirs. */
 .lockup:where([data-size="2xl"]) {
   --_size-body: var(--font-body-size-2xl, 1.5rem);
   --_size-detail: var(--font-detail-size-2xl, 1.125rem);

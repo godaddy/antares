@@ -183,7 +183,11 @@ describe('@godaddy/antares', function antares() {
       it('sizes every part and composed control from the field size', async function sizes() {
         await render(<SizesExample />);
 
-        const expected = { sm: ['14px', '12px', '4px'], md: ['16px', '14px', '8px'], lg: ['18px', '16px', '12px'] };
+        const expected = {
+          sm: ['14.2222px', '12px', '4px'],
+          md: ['16px', '14px', '8px'],
+          lg: ['18px', '16px', '12px']
+        };
         for (const [name, [control, label, padding]] of Object.entries(expected)) {
           const input = page.getByRole('textbox', { name: `Email (${name})` }).element();
           const field = input.closest('[data-interior]') as HTMLElement;

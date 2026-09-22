@@ -9,7 +9,7 @@ import {
 } from 'react-aria-components';
 import { surfaceClassName } from '#components/_internal/typography';
 import { Grid, type GridOwnProps } from '#components/layout/grid';
-import { DeclaredSize, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-scope';
+import { DeclaredSizeProvider, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-scope';
 import { HeaderContext, ContentContext, FooterContext, ButtonGroupContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
@@ -17,7 +17,7 @@ import styles from './index.module.css';
 export interface OverlayDialogProps
   extends Omit<GridOwnProps, 'as' | 'areas' | 'columns' | 'rows'>,
     Omit<RACDialogProps, 'children'> {
-  /** Size of the overlay's interior. Follows the declared size around the overlay when omitted. */
+  /** Size of the overlay's interior. Follows the size around the overlay when omitted. */
   size?: ScaleSize;
 
   /** The regions of the overlay, in any order. */
@@ -29,10 +29,7 @@ const gap = 'var(--_size-gap, var(--sp-sm))';
 
 type HeadingSlots = { slots: Record<string | symbol, RACHeadingProps> };
 
-/**
- * Wires the regions and adds the title tier to the heading that titles the dialog. It merges into
- * the title slot React Aria's Dialog publishes, which carries the id `aria-labelledby` points at.
- */
+/** Wires the regions, and merges the title tier into React Aria's title slot so its id survives. */
 function OverlayRegions({ children }: { children?: ReactNode }) {
   const { slots } = useContext(RACHeadingContext) as HeadingSlots;
   const title = { ...slots.title, className: cx(slots.title.className, styles.titleTier) };
@@ -60,8 +57,7 @@ function OverlayRegions({ children }: { children?: ReactNode }) {
  * contexts hand each region its `grid-area` class), so they live together here rather than being
  * copied into each overlay, where they could drift apart.
  *
- * It is a size scope. The dialog renders in a portal, outside the DOM it would inherit the size
- * scale from, so it re-applies the declared size and publishes it to overlays opened inside.
+ * It is a size scope, and re-applies the declared size across the portal.
  *
  * @param props - {@link OverlayDialogProps}
  */
@@ -70,7 +66,7 @@ export const OverlayDialog = forwardRef<HTMLElement, OverlayDialogProps>(functio
   const size = useDeclaredSize(sizeProp);
 
   return (
-    <DeclaredSize size={size}>
+    <DeclaredSizeProvider size={size}>
       <Grid
         as={RACDialog}
         {...rest}
@@ -79,6 +75,6 @@ export const OverlayDialog = forwardRef<HTMLElement, OverlayDialogProps>(functio
       >
         <OverlayRegions>{children}</OverlayRegions>
       </Grid>
-    </DeclaredSize>
+    </DeclaredSizeProvider>
   );
 });

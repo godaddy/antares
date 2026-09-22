@@ -33,7 +33,6 @@ describe('@godaddy/antares', function antares() {
     it('applies the detail role to Detail', async function detail() {
       const { getByText } = await render(<DetailExample />);
 
-      // The detail md tier: 0.8125rem = 13px.
       expect(getComputedStyle(getByText('Updated 2 hours ago').element()).fontSize).toEqual('13px');
     });
   });

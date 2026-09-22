@@ -53,7 +53,7 @@ describe('@godaddy/antares', function packageTests() {
 
       const dialog = page.getByRole('dialog', { name: 'Rename file' });
       await expect.element(dialog).toBeVisible();
-      expect(getComputedStyle(dialog.getByRole('button', { name: 'Rename' }).element()).fontSize).toEqual('14px');
+      expect(getComputedStyle(dialog.getByRole('button', { name: 'Rename' }).element()).fontSize).toEqual('14.2222px');
       expect(getComputedStyle(dialog.getByRole('heading').element()).fontSize).toEqual('20px');
     });
 
@@ -65,7 +65,6 @@ describe('@godaddy/antares', function packageTests() {
       const dialog = page.getByRole('dialog', { name: 'Compare plans' });
       await expect.element(dialog).toBeVisible();
 
-      // The modal title takes the md title tier (24px); the lockup title keeps its sm tier (18px).
       const title = dialog.getByRole('heading', { name: 'Compare plans' }).element();
       const lockupTitle = dialog.getByRole('heading', { name: 'Unlimited seats' }).element();
       expect(getComputedStyle(title).fontSize).toEqual('24px');

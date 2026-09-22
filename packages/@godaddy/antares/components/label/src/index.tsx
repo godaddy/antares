@@ -14,7 +14,7 @@ export interface LabelProps extends Omit<RACLabelProps, 'elementType'>, Typograp
   children?: RACLabelProps['children'];
 }
 
-/** Names a form field, in the label treatment: medium weight on the label ramp. */
+/** Names a form field. */
 export const Label = forwardRef<HTMLElement, LabelProps>(function Label(props, ref) {
   const { className, size, emphasis, ...rest } = props;
 

@@ -19,7 +19,7 @@ import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { ListBox, ListBoxItem, type ListBoxItemProps, type ListBoxProps } from '#components/listbox';
 import { Popover, type PopoverProps } from '#components/popover';
-import { DeclaredSize, sizeScaleClassName, type ScaleSize } from '#components/size-scope';
+import { DeclaredSizeProvider, sizeScaleClassName, type ScaleSize } from '#components/size-scope';
 import { Content, GroupContext, type GroupProps } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import fieldStyles from '../../_internal/field-styles/index.module.css';
@@ -120,7 +120,7 @@ function FieldSelect<T extends object, M extends SelectionMode>(props: SelectRoo
   const { children, size, className, gap = 'var(--_size-gap, var(--sp-sm))', isDisabled, ...racProps } = props;
 
   return (
-    <DeclaredSize size={size}>
+    <DeclaredSizeProvider size={size}>
       <Flex
         direction="column"
         gap={gap}
@@ -148,7 +148,7 @@ function FieldSelect<T extends object, M extends SelectionMode>(props: SelectRoo
           );
         })}
       </Flex>
-    </DeclaredSize>
+    </DeclaredSizeProvider>
   );
 }
 
@@ -164,7 +164,7 @@ function ControlSelect<T extends object, M extends SelectionMode>(props: SelectR
   const controlSize = size ?? inheritedSize;
 
   return (
-    <DeclaredSize size={controlSize}>
+    <DeclaredSizeProvider size={controlSize}>
       <RACSelect
         {...(racProps as RACSelectProps<T, M>)}
         isDisabled={controlDisabled}
@@ -182,7 +182,7 @@ function ControlSelect<T extends object, M extends SelectionMode>(props: SelectR
           );
         })}
       </RACSelect>
-    </DeclaredSize>
+    </DeclaredSizeProvider>
   );
 }
 

@@ -7,6 +7,7 @@ import { FormatOptionsExample } from '../examples/format-options.tsx';
 import { ComposedExample } from '../examples/composed.tsx';
 import { ComposedRangeExample } from '../examples/composed-range.tsx';
 import { InteriorExample } from '../examples/interior.tsx';
+import { SizesExample } from '../examples/sizes.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#DatePicker', function datePicker() {
@@ -32,6 +33,11 @@ describe('@godaddy/antares', function antares() {
 
     it('renders composed example', function composed() {
       const html = renderToString(<ComposedExample />);
+      expect(html).toMatchSnapshot();
+    });
+
+    it('renders sizes example', function sizes() {
+      const html = renderToString(<SizesExample />);
       expect(html).toMatchSnapshot();
     });
 
