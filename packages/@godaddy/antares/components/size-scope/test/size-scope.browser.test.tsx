@@ -149,5 +149,14 @@ describe('@godaddy/antares', function antares() {
       await expect.element(getByRole('option', { name: 'Europe' })).toBeVisible();
       expect(style(getByRole('option', { name: 'Europe' }).element()).fontSize).toEqual('18px');
     });
+
+    it('opens a tooltip at the size of the scope around its trigger', async function tooltip() {
+      const { getByRole } = await render(<OverlaysExample />);
+      await userEvent.hover(getByRole('button', { name: 'Help' }));
+
+      const tooltip = getByRole('tooltip');
+      await expect.element(tooltip).toBeVisible();
+      expect(style(tooltip.element()).fontSize).toEqual('14px');
+    });
   });
 });

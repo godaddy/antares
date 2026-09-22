@@ -11,7 +11,9 @@ import {
   SelectItem,
   SelectOptions,
   SizeScope,
-  Text
+  Text,
+  Tooltip,
+  TooltipTrigger
 } from '@godaddy/antares';
 
 /**
@@ -56,6 +58,11 @@ export function OverlaysExample() {
             </ButtonGroup>
           </Modal>
         </ModalTrigger>
+
+        <TooltipTrigger>
+          <Button>Help</Button>
+          <Tooltip>Billing questions</Tooltip>
+        </TooltipTrigger>
       </Flex>
     </SizeScope>
   );

@@ -141,7 +141,7 @@ identical to `<Button>Save</Button>`, and `<Button><Text emphasis="critical">Sav
 There is no `variant`, `weight`, `family`, `lineHeight`, or `letterSpacing` prop. Use `as="strong"` and
 `as="em"` for semantic emphasis; they use `--font-weight-strong` and `--font-style-em`.
 
-`emphasis` selects a feedback color, matching the prop on Tag, Alert, and Avatar:
+`emphasis` selects a feedback color, with the same values as Tag's `emphasis`; Alert's is a subset:
 
 ```tsx
 emphasis?: 'critical' | 'warning' | 'success' | 'info' | 'highlight' | 'premium' | 'internal' | 'neutral' | 'passive';
