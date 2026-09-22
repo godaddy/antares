@@ -12,7 +12,7 @@ import { ButtonContext, type ButtonProps } from '#components/button';
 import { InputContext } from '#components/input';
 import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { DeclaredSize, sizeScaleClassName, type InterfaceSize } from '#components/size-scope';
+import { DeclaredSize, sizeScaleClassName, type ScaleSize } from '#components/size-scope';
 import { GroupContext } from '#components/structure';
 import { TextAreaContext } from '#components/text-area';
 import { composeClassName } from '#utils/render-props.ts';
@@ -29,7 +29,7 @@ export interface TextFieldProps extends Omit<RACTextFieldProps, 'size'>, Omit<Fl
   value?: string;
 
   /** Size of the field and every part it owns. Follows the size scope when omitted. */
-  size?: InterfaceSize;
+  size?: ScaleSize;
 
   /** Name of the input element, used when submitting a form. */
   name?: string;

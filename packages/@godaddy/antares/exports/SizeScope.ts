@@ -1,1 +1,1 @@
-export { SizeScope, type SizeScopeProps, type InterfaceSize } from '#components/size-scope';
+export { SizeScope, type SizeScopeProps, type ScaleSize } from '#components/size-scope';

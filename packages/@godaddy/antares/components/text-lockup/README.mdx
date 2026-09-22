@@ -43,7 +43,7 @@ growing a prop for it.
 - **The body is `<Text slot="body">`**, once or as many times as the copy needs.
 - **An explicit prop on a child always wins** over what the lockup supplies. Pass
   `<Tag slot="eyebrow" size="sm">` to break the pairing, for instance.
-- **Controls keep the interface size.** A `Button` inside a lockup follows the surrounding
+- **Controls keep the scale size.** A `Button` inside a lockup follows the surrounding
   [size scope](../size-scope/README.mdx) or its own `size` prop, never the lockup's tier.
 - **`size` is the tier.** The eyebrow reads it on the `detail` ramp, the title on `heading`, and
   the body on `body`, so there is no table to memorize. Without `size`, the lockup follows the

@@ -9,7 +9,7 @@ import {
 } from 'react-aria-components';
 import { surfaceClassName } from '#components/_internal/typography';
 import { Grid, type GridOwnProps } from '#components/layout/grid';
-import { DeclaredSize, sizeScaleClassName, useDeclaredSize, type InterfaceSize } from '#components/size-scope';
+import { DeclaredSize, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-scope';
 import { HeaderContext, ContentContext, FooterContext, ButtonGroupContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
@@ -18,7 +18,7 @@ export interface OverlayDialogProps
   extends Omit<GridOwnProps, 'as' | 'areas' | 'columns' | 'rows'>,
     Omit<RACDialogProps, 'children'> {
   /** Size of the overlay's interior. Follows the declared size around the overlay when omitted. */
-  size?: InterfaceSize;
+  size?: ScaleSize;
 
   /** The regions of the overlay, in any order. */
   children?: ReactNode;

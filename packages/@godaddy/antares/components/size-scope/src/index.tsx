@@ -4,33 +4,33 @@ import { surfaceClassName } from '#components/_internal/typography';
 import styles from './index.module.css';
 
 /** Coordinated size of text, controls, and default spacing. */
-export type InterfaceSize = 'sm' | 'md' | 'lg';
+export type ScaleSize = 'sm' | 'md' | 'lg';
 
-const DeclaredSizeContext = createContext<InterfaceSize | undefined>(undefined);
+const DeclaredSizeContext = createContext<ScaleSize | undefined>(undefined);
 
 /**
  * The size a portaled surface applies: its own explicit size, otherwise the nearest one declared
  * above it in React. CSS inheritance cannot cross a portal, so the surface re-applies it.
  */
-export function useDeclaredSize(size?: InterfaceSize): InterfaceSize | undefined {
+export function useDeclaredSize(size?: ScaleSize): ScaleSize | undefined {
   const declared = useContext(DeclaredSizeContext);
   return size ?? declared;
 }
 
-const SCALE: Record<InterfaceSize, string> = {
+const SCALE: Record<ScaleSize, string> = {
   sm: styles.scaleSm,
   md: styles.scaleMd,
   lg: styles.scaleLg
 };
 
 /** Class that sets the size scale on an element. Nothing when no size is declared. */
-export function sizeScaleClassName(size?: InterfaceSize) {
+export function sizeScaleClassName(size?: ScaleSize) {
   return size && SCALE[size];
 }
 
 export interface DeclaredSizeProps {
   /** Size to publish. When omitted, the enclosing declared size passes through. */
-  size?: InterfaceSize;
+  size?: ScaleSize;
 
   children?: ReactNode;
 }
@@ -43,7 +43,7 @@ export function DeclaredSize({ size, children }: DeclaredSizeProps) {
 
 export interface SizeScopeProps extends HTMLAttributes<HTMLElement> {
   /** Size of everything inside. Inherits the enclosing size when omitted. */
-  size?: InterfaceSize;
+  size?: ScaleSize;
 
   /** HTML element to render. @default 'div' */
   as?: string;

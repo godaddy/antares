@@ -1,4 +1,4 @@
-# Typography and interface size in Antares
+# Typography and the size scale in Antares
 
 Status: **Proposed**
 
@@ -58,10 +58,10 @@ and spacing respond.
 
 ## The model
 
-### Interface size
+### The size scale
 
-Interface size has three values: `sm`, `md`, `lg`. A scope maps its size to a small set of private CSS
-custom properties, the **size scale**. Components read the scale and fall back to `md` values when no scope
+The **size scale** has three sizes: `sm`, `md`, `lg`, typed as `ScaleSize`. A scope maps its size to a
+small set of private CSS custom properties. Components read them and fall back to `md` values when no scope
 is present.
 
 Because custom properties inherit through the DOM, the cascade implements the rules:
@@ -89,7 +89,7 @@ explicit tier is fixed across scopes, so a size that should change with the scre
 | Kind | Components | Behavior |
 | --- | --- | --- |
 | Scope | `SizeScope`, Modal, Drawer, InlineDrawer, TextField and other field owners, the future Card | Sets the whole size scale and body typography on its own element |
-| Text scope | `TextLockup` | Sets only the text entries of the scale, so controls inside keep the surrounding interface size |
+| Text scope | `TextLockup` | Sets only the text entries of the scale, so controls inside keep the surrounding scale size |
 | Follows | Buttons, Tag, Chip, Select, Menu, Popover, Tooltip, and the rest | Reads the scale, or uses its own explicit `size` |
 | Independent | Box, Flex, Grid, Avatar, media, chart geometry | Ignores the scale |
 
@@ -174,7 +174,7 @@ form, and `Detail` is for supporting copy that no part styles, such as captions 
 - **Modal, Drawer, and Popover** give their `title` slot the scale's title tier, one heading step above the
   body tier.
 - **TextLockup** with a `size` sets the text entries of the scale on its element, so every text part inside,
-  slotted or not, uses that tier. Buttons inside it keep the interface size. Without `size` it follows the scope.
+  slotted or not, uses that tier. Buttons inside it keep the scale size. Without `size` it follows the scope.
   Its named parts keep their existing slots, including the eyebrow Tag mapping. A tier keeps the same size
   at every container width, so the automatic narrow-width title reduction for `sm` and `2xl` is removed;
   [responsive values](#responsive-sizes) replace it.
@@ -204,7 +204,7 @@ An owner's explicit `size` is the declared size for its overlay:
 
 ## Mechanism
 
-### The size scale
+### Scale variables
 
 One stylesheet defines the scale. Each size class sets these variables:
 

@@ -19,7 +19,7 @@ import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { ListBox, ListBoxItem, type ListBoxItemProps, type ListBoxProps } from '#components/listbox';
 import { Popover, type PopoverProps } from '#components/popover';
-import { DeclaredSize, sizeScaleClassName, type InterfaceSize } from '#components/size-scope';
+import { DeclaredSize, sizeScaleClassName, type ScaleSize } from '#components/size-scope';
 import { Content, GroupContext, type GroupProps } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import fieldStyles from '../../_internal/field-styles/index.module.css';
@@ -44,7 +44,7 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
   extends Omit<RACSelectProps<T, M>, 'children' | 'size' | 'items'>,
     Omit<FlexOwnProps, 'as' | 'className'> {
   /** Size of the field and its options. Follows the size scope when omitted. */
-  size?: InterfaceSize;
+  size?: ScaleSize;
 
   /** Complete field, or a control inside another field's Group. @default 'default' */
   variant?: 'default' | 'control';
@@ -54,7 +54,7 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
 }
 
 /** The control size an enclosing field published, whether or not it slots its buttons. */
-function useInheritedControlSize(): InterfaceSize | undefined {
+function useInheritedControlSize(): ScaleSize | undefined {
   const context = useContext(ButtonContext) as (ButtonProps & { slots?: Record<string, ButtonProps> }) | null;
   const control = context?.slots ? context.slots.control : context;
 
@@ -70,7 +70,7 @@ interface SelectBodyProps {
   group?: GroupProps;
 
   /** Visual size of the trigger. */
-  size?: InterfaceSize;
+  size?: ScaleSize;
 
   /** Whether the field is disabled. */
   isDisabled?: boolean;
