@@ -6,7 +6,7 @@ import { Icon } from '#components/icon';
 import { Flex } from '#components/layout/flex';
 import { Text } from '#components/text';
 import styles from './index.module.css';
-import { inheritPartClassName } from '#components/_internal/typography';
+import { partClassName } from '#components/_internal/typography';
 
 const emphasisIcons: Record<AlertEmphasis, string> = {
   critical: 'alert',
@@ -103,7 +103,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props
         <Flex className={styles.textAndActionWrapper} alignItems="center" wrap="wrap">
           <Flex direction="column" className={styles.text}>
             {title && (
-              <Text as="div" className={cx(styles.title, inheritPartClassName)}>
+              <Text as="div" className={cx(styles.title, partClassName('inherit'))}>
                 {onClose ? float : null}
                 {title}
               </Text>

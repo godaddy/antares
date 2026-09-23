@@ -43,7 +43,7 @@ export interface TooltipProps extends RACTooltipProps {
  */
 export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(props, ref) {
   const { className, children, hideArrow, ...rest } = props;
-  const typography = useTypographyClassName('text', {});
+  const typography = useTypographyClassName('text');
 
   return (
     <Flex

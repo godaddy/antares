@@ -62,7 +62,7 @@ interface CheckboxButtonProps extends Omit<RACCheckboxButtonProps, 'className' |
 
 function CheckboxButton(props: CheckboxButtonProps) {
   const { className, children, ...rest } = props;
-  const typography = useTypographyClassName('text', {});
+  const typography = useTypographyClassName('text');
 
   return (
     <Flex {...rest} as={RACCheckboxButton} className={composeClassName(className, styles.checkbox, typography)}>

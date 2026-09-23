@@ -24,7 +24,7 @@ import { Text } from '#components/text';
 import { Icon } from '#components/icon';
 import { CheckboxIndicator } from '#components/checkbox';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { inheritPartClassName } from '#components/_internal/typography';
+import { partClassName } from '#components/_internal/typography';
 
 export interface MenuTriggerProps extends Omit<RACMenuTriggerProps, 'children'> {
   /** Additional props forwarded to the underlying `Popover`. */
@@ -132,7 +132,7 @@ export function MenuItem({ icon, children, className, ...props }: MenuItemProps)
           ) : null}
           {icon == null ? null : icon}
           {typeof children === 'string' ? (
-            <Text className={cx(styles.label, inheritPartClassName)}>{children}</Text>
+            <Text className={cx(styles.label, partClassName('inherit'))}>{children}</Text>
           ) : (
             children
           )}

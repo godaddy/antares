@@ -26,7 +26,7 @@ interface RadioButtonProps extends Omit<RACRadioButtonProps, 'className' | 'chil
 
 function RadioButton(props: RadioButtonProps) {
   const { className, children, ...rest } = props;
-  const typography = useTypographyClassName('text', {});
+  const typography = useTypographyClassName('text');
 
   return (
     <Flex

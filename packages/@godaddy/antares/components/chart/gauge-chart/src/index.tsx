@@ -5,7 +5,7 @@ import { Grid, type GridProps } from '#components/layout/grid';
 import { Text } from '#components/text';
 import { chartArcGapAngleDeg } from '../../utils.ts';
 import styles from './index.module.css';
-import { inheritPartClassName } from '#components/_internal/typography';
+import { partClassName } from '#components/_internal/typography';
 
 // Avoid useLayoutEffect SSR warnings; use it in the browser so gap angle updates before paint.
 const canUseDOM = typeof window !== 'undefined';
@@ -147,21 +147,21 @@ export function GaugeChart(props: GaugeChartProps) {
     >
       <Grid ref={gaugeRef} className={styles.gauge}>
         <Flex className={styles.content} direction="column" alignItems="center" justifyContent="end">
-          <Text className={cx(styles.value, inheritPartClassName)}>{label}</Text>
+          <Text className={cx(styles.value, partClassName('inherit'))}>{label}</Text>
         </Flex>
       </Grid>
       {rangeLabel && (
-        <Text className={cx(styles.rangeLabel, inheritPartClassName)} data-range-label="min">
+        <Text className={cx(styles.rangeLabel, partClassName('inherit'))} data-range-label="min">
           {rangeLabel.min}
         </Text>
       )}
       {subLabel && (
-        <Text className={cx(styles.subLabel, inheritPartClassName)} align="center">
+        <Text className={cx(styles.subLabel, partClassName('inherit'))} align="center">
           {subLabel}
         </Text>
       )}
       {rangeLabel && (
-        <Text className={cx(styles.rangeLabel, inheritPartClassName)} data-range-label="max">
+        <Text className={cx(styles.rangeLabel, partClassName('inherit'))} data-range-label="max">
           {rangeLabel.max}
         </Text>
       )}

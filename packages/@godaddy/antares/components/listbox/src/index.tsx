@@ -44,7 +44,7 @@ export interface ListBoxItemProps extends RACListBoxItemProps, FlexOwnProps {}
  */
 export function ListBoxItem(props: ListBoxItemProps) {
   const { textValue, children, className, ...rest } = props;
-  const typography = useTypographyClassName('text', {});
+  const typography = useTypographyClassName('text');
 
   return (
     <Flex

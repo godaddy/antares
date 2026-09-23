@@ -7,7 +7,7 @@ import { Text } from '#components/text';
 import { Flex } from '#components/layout/flex';
 import { composeClassName } from '#utils/render-props.ts';
 import { cx } from 'cva';
-import { inheritPartClassName } from '#components/_internal/typography';
+import { partClassName } from '#components/_internal/typography';
 
 export interface ProgressBarProps extends Omit<RACProgressBarProps, 'children' | 'isIndeterminate'> {
   /** Visible label text rendered above the track. */
@@ -63,12 +63,12 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(function
           {label ? (
             <Flex justifyContent="space-between" alignItems="baseline">
               <Label className={styles.label}>{label}</Label>
-              {valueText ? <Text className={cx(styles.valueLabel, inheritPartClassName)}>{valueText}</Text> : null}
+              {valueText ? <Text className={cx(styles.valueLabel, partClassName('inherit'))}>{valueText}</Text> : null}
             </Flex>
           ) : null}
           <div className={styles.track} style={{ '--progress-bar-progress': `${percentage ?? 0}%` } as CSSProperties} />
           {helperText ? (
-            <Text id={helperTextId} className={cx(styles.helperText, inheritPartClassName)}>
+            <Text id={helperTextId} className={cx(styles.helperText, partClassName('inherit'))}>
               {helperText}
             </Text>
           ) : null}

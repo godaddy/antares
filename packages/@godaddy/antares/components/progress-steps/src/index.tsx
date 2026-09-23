@@ -5,7 +5,7 @@ import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Icon } from '#components/icon';
 import { Text } from '#components/text';
 import styles from './index.module.css';
-import { inheritPartClassName } from '#components/_internal/typography';
+import { partClassName } from '#components/_internal/typography';
 
 /** Completion status of an individual step. Controls the status icon. */
 export type ProgressStepStatus = 'none' | 'partial' | 'complete' | 'error';
@@ -153,7 +153,7 @@ export function ProgressStep(props: ProgressStepProps) {
   const content = (
     <>
       <Icon icon={statusIcon[status]} aria-hidden className={styles.icon} />
-      <Text className={cx(styles.title, inheritPartClassName)}>
+      <Text className={cx(styles.title, partClassName('inherit'))}>
         {stepNumber != null ? `${stepNumber}. ` : null}
         {children}
       </Text>

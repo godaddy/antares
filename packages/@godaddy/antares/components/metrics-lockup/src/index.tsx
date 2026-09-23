@@ -6,7 +6,7 @@ import { Icon } from '#components/icon';
 import { Tooltip, TooltipTrigger } from '#components/tooltip';
 import styles from './index.module.css';
 import { cx } from 'cva';
-import { inheritPartClassName } from '#components/_internal/typography';
+import { partClassName } from '#components/_internal/typography';
 
 export interface MetricsLockupProps extends Omit<FlexProps, 'direction' | 'gap'> {
   /** Title text displayed above the metric value. */
@@ -48,7 +48,7 @@ export const MetricsLockup = forwardRef<HTMLDivElement, MetricsLockupProps>(func
     <Flex ref={ref} direction="column" gap="sm" className={className} {...rest}>
       {title && (
         <Flex alignItems="center" gap="sm">
-          <Text as="span" className={cx(styles.title, inheritPartClassName)}>
+          <Text as="span" className={cx(styles.title, partClassName('inherit'))}>
             {title}
           </Text>
           {titleInfo && (
@@ -71,7 +71,7 @@ export const MetricsLockup = forwardRef<HTMLDivElement, MetricsLockupProps>(func
       {(data != null || description) && (
         <Flex direction={compact ? 'row' : 'column'} gap="sm" alignItems={compact ? 'center' : 'flex-start'}>
           {data != null && (
-            <Text as="span" className={cx(styles.data, inheritPartClassName)}>
+            <Text as="span" className={cx(styles.data, partClassName('inherit'))}>
               {data}
             </Text>
           )}
@@ -80,7 +80,7 @@ export const MetricsLockup = forwardRef<HTMLDivElement, MetricsLockupProps>(func
               {trend && (
                 <Icon icon={TREND_ICON[trend]} className={styles.trendIcon} data-trend={trend} aria-hidden="true" />
               )}
-              <Text as="span" className={cx(styles.description, inheritPartClassName)}>
+              <Text as="span" className={cx(styles.description, partClassName('inherit'))}>
                 {description}
               </Text>
             </Flex>

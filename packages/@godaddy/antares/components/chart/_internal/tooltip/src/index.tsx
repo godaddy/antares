@@ -10,7 +10,7 @@ import { yAccessor as defaultYAccessor } from '../../../utils.ts';
 import { cx } from 'cva';
 import styles from './index.module.css';
 import { SWATCH_DASH_ARRAY } from '#components/chart/_internal/legend';
-import { inheritPartClassName } from '#components/_internal/typography';
+import { partClassName } from '#components/_internal/typography';
 
 /**
  * Styled popover container shared by the built-in tooltip and any custom tooltip
@@ -23,7 +23,7 @@ export function TooltipContainer(props: { children: ReactNode; className?: strin
   const { children, className } = props;
   return (
     <Box padding="md" rounding="2xl" elevation="raised" className={cx(styles.tooltip, className)}>
-      <RACTextContext.Provider value={{ className: inheritPartClassName }}>{children}</RACTextContext.Provider>
+      <RACTextContext.Provider value={{ className: partClassName('inherit') }}>{children}</RACTextContext.Provider>
     </Box>
   );
 }

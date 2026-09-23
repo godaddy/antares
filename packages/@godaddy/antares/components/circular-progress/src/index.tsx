@@ -11,7 +11,7 @@ import { Flex } from '#components/layout/flex';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 import { cx } from 'cva';
-import { inheritPartClassName } from '#components/_internal/typography';
+import { partClassName } from '#components/_internal/typography';
 
 const VIEWBOX_SIZE = 100;
 const STROKE_WIDTH = 12.5;
@@ -101,7 +101,7 @@ export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps
               </div>
               {label ? <Label className={styles.label}>{label}</Label> : null}
               {helperText ? (
-                <Text id={helperTextId} className={cx(styles.helperText, inheritPartClassName)}>
+                <Text id={helperTextId} className={cx(styles.helperText, partClassName('inherit'))}>
                   {helperText}
                 </Text>
               ) : null}
