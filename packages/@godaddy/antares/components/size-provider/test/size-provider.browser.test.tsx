@@ -43,6 +43,15 @@ describe('@godaddy/antares', function antares() {
       expect(padding('token-sm')).toEqual('6px 10px');
     });
 
+    it('sizes a scoped LinkButton like a Button in the same scope', async function linkButtonTier() {
+      const { getByTestId } = await render(<ScenariosExample />);
+      const link = style(getByTestId('link-sm').element());
+      const button = style(getByTestId('sm').element());
+
+      expect(link.fontSize).toEqual(smControl);
+      expect(link.padding).toEqual(button.padding);
+    });
+
     it('replaces the size in a nested scope rather than compounding it', async function nested() {
       const { getByTestId } = await render(<ScenariosExample />);
 
@@ -261,6 +270,18 @@ describe('@godaddy/antares', function antares() {
       const dialog = getByRole('dialog');
       await expect.element(dialog).toBeVisible();
       expect(style(dayOf(dialog.element())).fontSize).toEqual(smControl);
+    });
+
+    it('opens a date range picker calendar at its explicit size inside a scope', async function rangeCalendar() {
+      const { getByRole } = await render(<OverlaysExample />);
+      const trigger = getByRole('button', { name: /Contract dates/ });
+
+      expect(style(trigger.element()).fontSize).toEqual('18px');
+      await userEvent.click(trigger);
+
+      const dialog = getByRole('dialog');
+      await expect.element(dialog).toBeVisible();
+      expect(style(dayOf(dialog.element())).fontSize).toEqual('18px');
     });
 
     it('opens a tooltip at the size of the scope around its trigger', async function tooltip() {

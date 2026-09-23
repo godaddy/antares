@@ -4,6 +4,8 @@ import {
   Content,
   DatePicker,
   DatePickerCalendar,
+  DateRangePicker,
+  DateRangePickerCalendar,
   Flex,
   Heading,
   Label,
@@ -50,6 +52,12 @@ export function OverlaysExample() {
           <Button slot="trigger" />
           <DatePickerCalendar />
         </DatePicker>
+
+        <DateRangePicker size="lg">
+          <Label>Contract dates</Label>
+          <Button slot="trigger" />
+          <DateRangePickerCalendar />
+        </DateRangePicker>
 
         <ModalTrigger>
           <Button variant="primary">Edit plan</Button>

@@ -10,6 +10,7 @@ import {
   Heading,
   Input,
   Label,
+  LinkButton,
   Menu,
   MenuItem,
   NumberField,
@@ -35,6 +36,9 @@ export function ScenariosExample() {
 
       <SizeProvider size="sm">
         <Button data-testid="sm">Save</Button>
+        <LinkButton href="#" data-testid="link-sm">
+          Save
+        </LinkButton>
         <SizeProvider size="sm">
           <Button data-testid="sm-in-sm">Save</Button>
         </SizeProvider>
