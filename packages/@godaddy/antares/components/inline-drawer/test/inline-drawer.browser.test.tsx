@@ -106,6 +106,21 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
+    it('pads an expanded nav link as a labeled link, not an icon-only one', async function sidebarLabel() {
+      const { getByRole, getByText } = await render(<SidebarNavExample />);
+      const link = getByRole('link', { name: 'Dashboard' }).element();
+      const iconOnlyPadding = getComputedStyle(link).padding;
+
+      await getByRole('button', { name: 'Menu' }).click();
+
+      await vi.waitFor(async function expanded() {
+        assume(getByText('Dashboard').query()).is.not.equal(null);
+      });
+
+      assume(getComputedStyle(link).padding).does.not.equal(iconOnlyPadding);
+      assume(getComputedStyle(link).margin).equals('0px');
+    });
+
     it('does not toggle when isDisabled', async function disabledNoToggle() {
       const { getByRole } = await render(<DisabledExample />);
 
