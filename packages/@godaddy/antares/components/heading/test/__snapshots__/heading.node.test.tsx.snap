@@ -2,4 +2,4 @@
 
 exports[`@godaddy/antares > #Heading > renders the default example 1`] = `"<div class="box flex column" style="gap:var(--sp-sm)"><h1 class="heading type typeHeading">Heading level 1</h1><h2 class="heading type typeHeading">Heading level 2</h2><h3 class="heading type typeHeading">Heading level 3</h3></div>"`;
 
-exports[`@godaddy/antares > #Heading > renders the sizes example 1`] = `"<div class="box flex column" style="gap:var(--sp-sm)"><h2 class="heading type typeHeading type2xl">Level 2, 2xl</h2><h2 class="heading type typeHeading typeSm">Level 2, sm</h2><h4 class="heading type typeHeading typeXl">Level 4, xl</h4><h4 class="heading type typeHeading">Level 4, inherited tier</h4></div>"`;
+exports[`@godaddy/antares > #Heading > renders the sizes example 1`] = `"<div class="box flex column" style="gap:var(--sp-sm)"><h2 class="heading type typeHeading type2xl">Level 2, 2xl</h2><h2 class="heading type typeHeading typeSm">Level 2, sm</h2><h4 class="heading type typeHeading typeXl">Level 4, xl</h4><h4 class="heading type typeHeading">Level 4, default tier</h4></div>"`;

@@ -1,4 +1,5 @@
 import { cx } from 'cva';
+import { sizeScaleClassName, useDeclaredSize } from '#components/size-scope';
 import styles from './index.module.css';
 
 /** A step on a text component's own ramp. */
@@ -42,6 +43,15 @@ const SIZE: Record<TypographySize, string> = {
   '2xl': styles.type2xl
 };
 
+const SLOT_SIZE: Record<TypographySize, string> = {
+  xs: styles.typeSlotXs,
+  sm: styles.typeSlotSm,
+  md: styles.typeSlotMd,
+  lg: styles.typeSlotLg,
+  xl: styles.typeSlotXl,
+  '2xl': styles.typeSlot2xl
+};
+
 const EMPHASIS: Record<TypographyEmphasis, string> = {
   critical: styles.typeCritical,
   warning: styles.typeWarning,
@@ -54,9 +64,10 @@ const EMPHASIS: Record<TypographyEmphasis, string> = {
   passive: styles.typePassive
 };
 
-/** Classes for a text component: its role, plus only the properties the caller set. */
-export function typographyClassName(role: TypographyRole, { size, emphasis }: TypographyProps) {
-  return cx(styles.type, ROLE[role], size && SIZE[size], emphasis && EMPHASIS[emphasis]);
+/** Classes for a text component: its role, the scope's size, and only the properties the caller set. */
+export function useTypographyClassName(role: TypographyRole, { size, emphasis }: TypographyProps) {
+  const scale = sizeScaleClassName(useDeclaredSize());
+  return cx(styles.type, ROLE[role], scale, size && SIZE[size], emphasis && EMPHASIS[emphasis]);
 }
 
 /** A role's treatment, for an owner's part. */
@@ -64,8 +75,13 @@ export function roleClassName(role: Exclude<TypographyRole, 'text'>) {
   return ROLE[role];
 }
 
-/** Body typography for a scope's element. */
-export const surfaceClassName = styles.typeSurface;
-
 /** The body treatment, for an owner's part. */
 export const bodyPartClassName = styles.typeBody;
+
+/** A part that takes its owner's typography, such as a control's label. */
+export const inheritPartClassName = styles.typeInherit;
+
+/** A part's tier on the ramp of the text that fills it. An explicit `size` still wins. */
+export function slotSizeClassName(size: TypographySize) {
+  return SLOT_SIZE[size];
+}

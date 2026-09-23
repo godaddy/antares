@@ -17,7 +17,7 @@ export function SizesExample() {
       <Heading level={4} size="xl">
         Level 4, xl
       </Heading>
-      <Heading level={4}>Level 4, inherited tier</Heading>
+      <Heading level={4}>Level 4, default tier</Heading>
     </Flex>
   );
 }

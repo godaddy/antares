@@ -12,14 +12,13 @@ import {
   composeRenderProps,
   useSlottedContext
 } from 'react-aria-components';
-import { surfaceClassName } from '#components/_internal/typography';
 import { ButtonContext, type ButtonProps } from '#components/button';
 import { Icon } from '#components/icon';
 import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { ListBox, ListBoxItem, type ListBoxItemProps, type ListBoxProps } from '#components/listbox';
 import { Popover, type PopoverProps } from '#components/popover';
-import { DeclaredSizeProvider, sizeScaleClassName, type ScaleSize } from '#components/size-scope';
+import { SizeScope, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-scope';
 import { Content, GroupContext, type GroupProps } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import fieldStyles from '../../_internal/field-styles/index.module.css';
@@ -118,9 +117,10 @@ type SelectRootProps<T, M extends SelectionMode> = Omit<SelectProps<T, M>, 'vari
 /** A Select that is a field of its own: a column whose trigger carries the box chrome. */
 function FieldSelect<T extends object, M extends SelectionMode>(props: SelectRootProps<T, M>) {
   const { children, size, className, gap = 'var(--_size-gap, var(--sp-sm))', isDisabled, ...racProps } = props;
+  const scale = useDeclaredSize(size);
 
   return (
-    <DeclaredSizeProvider size={size}>
+    <SizeScope size={size}>
       <Flex
         direction="column"
         gap={gap}
@@ -128,13 +128,7 @@ function FieldSelect<T extends object, M extends SelectionMode>(props: SelectRoo
         isDisabled={isDisabled}
         as={RACSelect as typeof RACSelect<T, M>}
         data-interior="box"
-        className={composeClassName(
-          className,
-          fieldStyles.field,
-          styles.select,
-          surfaceClassName,
-          sizeScaleClassName(size)
-        )}
+        className={composeClassName(className, fieldStyles.field, styles.select, sizeScaleClassName(scale))}
       >
         {composeRenderProps(children, function body(node) {
           return (
@@ -148,7 +142,7 @@ function FieldSelect<T extends object, M extends SelectionMode>(props: SelectRoo
           );
         })}
       </Flex>
-    </DeclaredSizeProvider>
+    </SizeScope>
   );
 }
 
@@ -164,7 +158,7 @@ function ControlSelect<T extends object, M extends SelectionMode>(props: SelectR
   const controlSize = size ?? inheritedSize;
 
   return (
-    <DeclaredSizeProvider size={controlSize}>
+    <SizeScope size={controlSize}>
       <RACSelect
         {...(racProps as RACSelectProps<T, M>)}
         isDisabled={controlDisabled}
@@ -182,7 +176,7 @@ function ControlSelect<T extends object, M extends SelectionMode>(props: SelectR
           );
         })}
       </RACSelect>
-    </DeclaredSizeProvider>
+    </SizeScope>
   );
 }
 

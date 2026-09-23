@@ -12,6 +12,7 @@ import {
   useSlottedContext
 } from 'react-aria-components';
 import { composeClassName } from '#utils/render-props.ts';
+import { useTypographyClassName } from '#components/_internal/typography';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { LabelContext } from '#components/label';
 import { GroupContext, type GroupProps } from '#components/structure';
@@ -25,6 +26,7 @@ interface RadioButtonProps extends Omit<RACRadioButtonProps, 'className' | 'chil
 
 function RadioButton(props: RadioButtonProps) {
   const { className, children, ...rest } = props;
+  const typography = useTypographyClassName('text', {});
 
   return (
     <Flex
@@ -32,7 +34,7 @@ function RadioButton(props: RadioButtonProps) {
       gap="sm"
       {...rest}
       as={RACRadioButton}
-      className={composeClassName(className, styles.radio)}
+      className={composeClassName(className, styles.radio, typography)}
     >
       {children}
     </Flex>

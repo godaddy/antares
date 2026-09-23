@@ -11,7 +11,7 @@ export function SizesExample() {
     <Flex direction="column" gap="lg">
       {SIZES.map(function section(size) {
         return (
-          <SizeScope key={size} size={size} as="section">
+          <SizeScope key={size} size={size}>
             <Flex direction="column" gap="sm" alignItems="start">
               <Heading>Size {size}</Heading>
               <Text>Body copy follows the scope.</Text>

@@ -7,12 +7,11 @@ import {
   composeRenderProps,
   useSlottedContext
 } from 'react-aria-components';
-import { surfaceClassName } from '#components/_internal/typography';
 import { ButtonContext, type ButtonProps } from '#components/button';
 import { InputContext } from '#components/input';
 import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { DeclaredSizeProvider, sizeScaleClassName, type ScaleSize } from '#components/size-scope';
+import { SizeScope, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-scope';
 import { GroupContext } from '#components/structure';
 import { TextAreaContext } from '#components/text-area';
 import { composeClassName } from '#utils/render-props.ts';
@@ -98,9 +97,10 @@ function TextFieldBody({ isDisabled, children }: TextFieldBodyProps) {
  */
 export function TextField(props: TextFieldProps) {
   const { children, size, gap = 'var(--_size-gap, var(--sp-sm))', className, isDisabled, ...rest } = props;
+  const scale = useDeclaredSize(size);
 
   return (
-    <DeclaredSizeProvider size={size}>
+    <SizeScope size={size}>
       <Flex
         direction="column"
         gap={gap}
@@ -108,12 +108,12 @@ export function TextField(props: TextFieldProps) {
         isDisabled={isDisabled}
         as={RACTextField}
         data-interior="box"
-        className={composeClassName(className, fieldStyles.field, surfaceClassName, sizeScaleClassName(size))}
+        className={composeClassName(className, fieldStyles.field, sizeScaleClassName(scale))}
       >
         {composeRenderProps(children, function body(node) {
           return <TextFieldBody isDisabled={isDisabled}>{node}</TextFieldBody>;
         })}
       </Flex>
-    </DeclaredSizeProvider>
+    </SizeScope>
   );
 }

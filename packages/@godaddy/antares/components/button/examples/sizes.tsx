@@ -18,7 +18,7 @@ export function SizesExample() {
 
       <Button variant="primary" size="sm">
         <Icon icon="star" />
-        Small
+        <Text>Small</Text>
       </Button>
 
       <LinkButton href="#" variant="primary" size="sm">
@@ -34,7 +34,7 @@ export function SizesExample() {
 
       <Button variant="primary">
         <Icon icon="star" />
-        Medium
+        <Text>Medium</Text>
       </Button>
 
       <LinkButton href="#" variant="primary">
@@ -52,7 +52,7 @@ export function SizesExample() {
 
       <Button variant="primary" size="lg">
         <Icon icon="star" />
-        Large
+        <Text>Large</Text>
       </Button>
 
       <LinkButton href="#" variant="primary" size="lg">

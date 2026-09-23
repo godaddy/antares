@@ -8,13 +8,12 @@ import {
   composeRenderProps,
   useSlottedContext
 } from 'react-aria-components';
-import { surfaceClassName } from '#components/_internal/typography';
 import { ButtonContext, type ButtonProps } from '#components/button';
 import { Icon } from '#components/icon';
 import { InputContext } from '#components/input';
 import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { DeclaredSizeProvider, sizeScaleClassName, type ScaleSize } from '#components/size-scope';
+import { SizeScope, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-scope';
 import { GroupContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import fieldStyles from '../../_internal/field-styles/index.module.css';
@@ -107,9 +106,10 @@ function NumberFieldBody({ isDisabled, children }: NumberFieldBodyProps) {
  */
 export function NumberField(props: NumberFieldProps) {
   const { children, size, gap = 'var(--_size-gap, var(--sp-sm))', className, isDisabled, ...rest } = props;
+  const scale = useDeclaredSize(size);
 
   return (
-    <DeclaredSizeProvider size={size}>
+    <SizeScope size={size}>
       <Flex
         direction="column"
         gap={gap}
@@ -117,12 +117,12 @@ export function NumberField(props: NumberFieldProps) {
         isDisabled={isDisabled}
         as={RACNumberField}
         data-interior="box"
-        className={composeClassName(className, fieldStyles.field, surfaceClassName, sizeScaleClassName(size))}
+        className={composeClassName(className, fieldStyles.field, sizeScaleClassName(scale))}
       >
         {composeRenderProps(children, function body(node) {
           return <NumberFieldBody isDisabled={isDisabled}>{node}</NumberFieldBody>;
         })}
       </Flex>
-    </DeclaredSizeProvider>
+    </SizeScope>
   );
 }

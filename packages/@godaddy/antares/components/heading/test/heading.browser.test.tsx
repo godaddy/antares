@@ -21,7 +21,7 @@ describe('@godaddy/antares', function antares() {
       expect(size('Level 2, 2xl')).toEqual('36px');
       expect(size('Level 2, sm')).toEqual('18px');
       expect(size('Level 4, xl')).toEqual('30px');
-      expect(size('Level 4, inherited tier')).toEqual('20px');
+      expect(size('Level 4, default tier')).toEqual('20px');
     });
   });
 });

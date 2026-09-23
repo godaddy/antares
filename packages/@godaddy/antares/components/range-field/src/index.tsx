@@ -29,6 +29,7 @@ import {
 } from 'react';
 import fieldStyles from '../../_internal/field-styles/index.module.css';
 import styles from './index.module.css';
+import { inheritPartClassName } from '#components/_internal/typography';
 
 const MAX_MARKER_COUNT = 1000;
 
@@ -189,7 +190,7 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
       />
       <RangeFieldLabels minLabel={minLabel} maxLabel={maxLabel} />
       {description != null ? (
-        <Text id={descriptionId} slot="description">
+        <Text id={descriptionId} className={inheritPartClassName} slot="description">
           {description}
         </Text>
       ) : null}

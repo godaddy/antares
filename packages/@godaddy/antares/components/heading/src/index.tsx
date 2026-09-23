@@ -4,7 +4,7 @@ import {
   HeadingContext as RACHeadingContext,
   type HeadingProps as RACHeadingProps
 } from 'react-aria-components';
-import { typographyClassName, type TypographyProps } from '#components/_internal/typography';
+import { useTypographyClassName, type TypographyProps } from '#components/_internal/typography';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
@@ -39,13 +39,8 @@ export interface HeadingProps extends Omit<RACHeadingProps, 'className'>, Typogr
  */
 export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(function Heading(props, ref) {
   const { className, size, emphasis, ...rest } = props;
+  const typography = useTypographyClassName('heading', { size, emphasis });
 
   // `level` stays absent when unset so RACHeading resolves it from context, then its own default.
-  return (
-    <RACHeading
-      {...rest}
-      ref={ref}
-      className={composeClassName(className, styles.heading, typographyClassName('heading', { size, emphasis }))}
-    />
-  );
+  return <RACHeading {...rest} ref={ref} className={composeClassName(className, styles.heading, typography)} />;
 });

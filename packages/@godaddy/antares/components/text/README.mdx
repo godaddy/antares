@@ -12,10 +12,11 @@ import * as Stories from './text.stories.tsx';
 
 ## Features
 
-- Without `size`, `Text` inherits every font property from what surrounds it: a
-  [SizeScope](../size-scope/README.mdx), a control, or a named part. So
+- `Text` applies the body role and `Detail` the detail role, each at the tier of the nearest
+  [SizeScope](../size-scope/README.mdx), or `md` outside any scope.
+- Inside a component's named part, such as a field description or a lockup body, the part sets the
+  treatment. Inside a control, the label keeps the control's type, so
   `<Button><Text>Save</Text></Button>` looks exactly like `<Button>Save</Button>`.
-- `Detail` applies the detail role at the size scope's tier.
 - `size` picks a step on the component's own ramp (`xs` to `2xl`) and changes only the font size.
 - `emphasis` picks a feedback color and changes only the color.
 - For semantic emphasis, render `as="strong"` or `as="em"`.

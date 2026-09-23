@@ -1,7 +1,7 @@
 import { forwardRef, type ReactNode } from 'react';
 import { cx } from 'cva';
 import { DEFAULT_SLOT, HeadingContext, Provider as RACProvider, TextContext } from 'react-aria-components';
-import { bodyPartClassName, roleClassName, surfaceClassName } from '#components/_internal/typography';
+import { bodyPartClassName, roleClassName, slotSizeClassName } from '#components/_internal/typography';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { TagContext, type TagSize } from '#components/tag';
 import { composeClassName } from '#utils/render-props.ts';
@@ -59,6 +59,7 @@ export interface TextLockupProps extends Omit<FlexProps, 'as' | 'direction' | 'a
  */
 export const TextLockup = forwardRef<HTMLDivElement, TextLockupProps>(function TextLockup(props, ref) {
   const { size, align = 'start', legibleLines = true, className, children, ...rest } = props;
+  const tier = size && slotSizeClassName(size);
 
   return (
     <Flex
@@ -66,21 +67,23 @@ export const TextLockup = forwardRef<HTMLDivElement, TextLockupProps>(function T
       {...rest}
       ref={ref}
       direction="column"
-      className={composeClassName(className, styles.lockup, surfaceClassName)}
-      data-size={size}
+      className={composeClassName(className, styles.lockup)}
       data-align={align}
       data-legible-lines={legibleLines ? '' : undefined}
     >
       <RACProvider
         values={[
-          [HeadingContext, { slots: { [DEFAULT_SLOT]: {}, title: { className: styles.part } } }],
+          [
+            HeadingContext,
+            { slots: { [DEFAULT_SLOT]: { className: tier }, title: { className: cx(styles.part, tier) } } }
+          ],
           [
             TextContext,
             {
               slots: {
-                [DEFAULT_SLOT]: {},
-                eyebrow: { className: cx(styles.part, roleClassName('detail')) },
-                body: { className: cx(styles.part, bodyPartClassName) }
+                [DEFAULT_SLOT]: { className: tier },
+                eyebrow: { className: cx(styles.part, roleClassName('detail'), tier) },
+                body: { className: cx(styles.part, bodyPartClassName, tier) }
               }
             }
           ],

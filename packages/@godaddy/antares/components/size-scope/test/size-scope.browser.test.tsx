@@ -77,15 +77,18 @@ describe('@godaddy/antares', function antares() {
       }
     });
 
-    it('gives bare text, a plain element, and Text the same typography', async function bareText() {
+    it('sizes Text but leaves plain HTML at the page typography', async function plainHtml() {
       const { getByTestId } = await render(<ScenariosExample />);
-      const bare = style(getByTestId('bare').element());
-      const text = style(getByTestId('text').element());
 
-      expect(text.fontSize).toEqual('14px');
-      for (const property of ['fontSize', 'fontFamily', 'fontWeight', 'lineHeight'] as const) {
-        expect(text[property]).toEqual(bare[property]);
-      }
+      expect(style(getByTestId('text').element()).fontSize).toEqual('14px');
+      expect(style(getByTestId('bare').element()).fontSize).toEqual(style(document.body).fontSize);
+    });
+
+    it('sizes the labels of checkboxes and radios', async function choiceLabels() {
+      const { getByText } = await render(<ScenariosExample />);
+
+      expect(style(getByText('Accept terms').element()).fontSize).toEqual('14px');
+      expect(style(getByText('Basic plan').element()).fontSize).toEqual('14px');
     });
 
     it('applies each role at the scope tier', async function roles() {

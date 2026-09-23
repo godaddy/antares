@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import {
   Button,
+  Checkbox,
   DatePicker,
   DatePickerCalendar,
   Detail,
@@ -10,6 +11,8 @@ import {
   Input,
   Label,
   NumberField,
+  Radio,
+  RadioGroup,
   Select,
   SelectItem,
   SelectOptions,
@@ -52,6 +55,10 @@ export function ScenariosExample() {
           Strong detail
         </Detail>
         <Label data-testid="label">Label text</Label>
+        <Checkbox>Accept terms</Checkbox>
+        <RadioGroup aria-label="Plan">
+          <Radio value="basic">Basic plan</Radio>
+        </RadioGroup>
 
         <Heading level={2}>Level two</Heading>
         <Heading level={4}>Level four</Heading>

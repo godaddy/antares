@@ -12,11 +12,11 @@ describe('@godaddy/antares', function antares() {
       expect(container.outerHTML).toContain('extra-classes');
     });
 
-    it('inherits its size unless one is set', async function sizes() {
-      const { getByText, container } = await render(<SizesExample />);
+    it('uses the md body tier outside a scope unless a size is set', async function sizes() {
+      const { getByText } = await render(<SizesExample />);
       const size = (text: string) => getComputedStyle(getByText(text).element()).fontSize;
 
-      expect(size('Inherited')).toEqual(getComputedStyle(container).fontSize);
+      expect(size('Default')).toEqual('16px');
       expect(size('Extra small')).toEqual('12px');
       expect(size('Medium')).toEqual('16px');
       expect(size('2x large')).toEqual('24px');

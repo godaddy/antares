@@ -12,7 +12,7 @@ exports[`@godaddy/antares > #Text > renders the emphasis example 1`] = `"<div cl
 
 exports[`@godaddy/antares > #Text > renders the maxLines example 1`] = `"<div style="width:300px;border:1px solid red"><p class="text type typeText" style="--max-lines:2">This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>"`;
 
-exports[`@godaddy/antares > #Text > renders the sizes example 1`] = `"<div class="box flex column" style="gap:var(--sp-sm)"><span class="text type typeText">Inherited</span><span class="text type typeText typeXs">Extra small</span><span class="text type typeText typeSm">Small</span><span class="text type typeText typeMd">Medium</span><span class="text type typeText typeLg">Large</span><span class="text type typeText typeXl">Extra large</span><span class="text type typeText type2xl">2x large</span></div>"`;
+exports[`@godaddy/antares > #Text > renders the sizes example 1`] = `"<div class="box flex column" style="gap:var(--sp-sm)"><span class="text type typeText">Default</span><span class="text type typeText typeXs">Extra small</span><span class="text type typeText typeSm">Small</span><span class="text type typeText typeMd">Medium</span><span class="text type typeText typeLg">Large</span><span class="text type typeText typeXl">Extra large</span><span class="text type typeText type2xl">2x large</span></div>"`;
 
 exports[`@godaddy/antares > #Text > renders the text example 1`] = `"<span class="text type typeText">Hello, world!</span>"`;
 

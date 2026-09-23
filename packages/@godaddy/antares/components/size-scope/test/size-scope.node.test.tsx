@@ -3,7 +3,7 @@ import { renderToString } from 'react-dom/server';
 import { DefaultExample } from '../examples/default.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 import { OverlaysExample } from '../examples/overlays.tsx';
-import { BareContentExample } from '../examples/bare-content.tsx';
+import { PlainHtmlExample } from '../examples/plain-html.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#SizeScope', function sizeScopeTests() {
@@ -19,8 +19,11 @@ describe('@godaddy/antares', function packageTests() {
       expect(renderToString(<OverlaysExample />)).toMatchSnapshot();
     });
 
-    it('renders BareContentExample', function bareContentExample() {
-      expect(renderToString(<BareContentExample />)).toMatchSnapshot();
+    it('renders no element of its own', function plainHtmlExample() {
+      const html = renderToString(<PlainHtmlExample />);
+
+      expect(html).toMatch(/^<p>/);
+      expect(html).toMatchSnapshot();
     });
   });
 });

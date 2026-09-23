@@ -74,9 +74,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('lets a local prop beat the field default', function localWins() {
-        expect(html).toMatch(
-          /<button[^>]*class="control button primary sm"[^>]*>\s*<span class="text type typeText">less/
-        );
+        expect(html).toMatch(/<button[^>]*class="control button primary sm"[^>]*>less</);
       });
 
       it('leaves an unslotted Button on the Button defaults at the field size', function defaultSlot() {

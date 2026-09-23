@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import { Text as RACText, TextContext as RACTextContext, type TextProps as RACTextProps } from 'react-aria-components';
-import { typographyClassName, type TypographyProps } from '#components/_internal/typography';
+import { useTypographyClassName, type TypographyProps } from '#components/_internal/typography';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
@@ -34,6 +34,7 @@ interface TextElementProps extends TextProps {
 
 const TextElement = forwardRef<HTMLElement, TextElementProps>(function TextElement(props, ref) {
   const { as, align, maxLines, wrap, className, slot, size, emphasis, treatment, ...rest } = props;
+  const typography = useTypographyClassName(treatment, { size, emphasis });
 
   const style = Object.assign({}, props.style, {
     '--align': align,
@@ -47,7 +48,7 @@ const TextElement = forwardRef<HTMLElement, TextElementProps>(function TextEleme
       {...(rest as Omit<RACTextProps, 'slot'>)}
       slot={slot as RACTextProps['slot']}
       ref={ref}
-      className={composeClassName(className, styles.text, typographyClassName(treatment, { size, emphasis }))}
+      className={composeClassName(className, styles.text, typography)}
       elementType={as}
       style={style}
     />
@@ -55,7 +56,7 @@ const TextElement = forwardRef<HTMLElement, TextElementProps>(function TextEleme
 });
 
 /**
- * Body copy. Without `size`, it takes the surrounding typography.
+ * Body copy. Without `size`, it takes the scope's body tier, or `md` outside any scope.
  *
  * @example
  * ```tsx

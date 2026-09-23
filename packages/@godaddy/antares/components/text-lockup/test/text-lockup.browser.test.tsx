@@ -25,10 +25,8 @@ describe('@godaddy/antares', function antares() {
     it('keeps a nested button on its own type', async function nestedButton() {
       const { getByRole } = await render(<WithActionsExample />);
       const button = getByRole('button', { name: 'Upgrade' }).element();
-      const label = button.querySelector('span');
 
-      expect(label).not.toBeNull();
-      expect(getComputedStyle(label as Element).fontSize).toEqual(getComputedStyle(button).fontSize);
+      expect(getComputedStyle(button).fontSize).toEqual('16px');
     });
 
     it('keeps its tier in a narrow container', async function narrowTitle() {

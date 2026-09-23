@@ -7,9 +7,8 @@ import {
   type HeadingProps as RACHeadingProps,
   Provider as RACProvider
 } from 'react-aria-components';
-import { surfaceClassName } from '#components/_internal/typography';
 import { Grid, type GridOwnProps } from '#components/layout/grid';
-import { DeclaredSizeProvider, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-scope';
+import { SizeScope, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-scope';
 import { HeaderContext, ContentContext, FooterContext, ButtonGroupContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
@@ -66,15 +65,15 @@ export const OverlayDialog = forwardRef<HTMLElement, OverlayDialogProps>(functio
   const size = useDeclaredSize(sizeProp);
 
   return (
-    <DeclaredSizeProvider size={size}>
+    <SizeScope size={size}>
       <Grid
         as={RACDialog}
         {...rest}
         ref={ref}
-        className={composeClassName(className, styles.dialog, surfaceClassName, sizeScaleClassName(size))}
+        className={composeClassName(className, styles.dialog, sizeScaleClassName(size))}
       >
         <OverlayRegions>{children}</OverlayRegions>
       </Grid>
-    </DeclaredSizeProvider>
+    </SizeScope>
   );
 });

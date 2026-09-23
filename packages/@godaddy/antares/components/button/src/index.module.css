@@ -48,7 +48,7 @@
     padding: var(--_button-padding-block) var(--_button-padding-inline);
 
     /* only-icon buttons */
-    &:has(:where([data-icon]:only-child)) {
+    &:has(> :where([data-icon]:only-child)) {
       padding: var(--_button-padding-block);
 
       &:where(.minimal) {

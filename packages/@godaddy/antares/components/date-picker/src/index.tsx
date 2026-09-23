@@ -17,14 +17,13 @@ import {
   useLocale,
   useSlottedContext
 } from 'react-aria-components';
-import { surfaceClassName } from '#components/_internal/typography';
 import { ButtonContext, type ButtonProps } from '#components/button';
 import { Calendar, type CalendarProps, RangeCalendar, type RangeCalendarProps } from '#components/calendar';
 import { Icon } from '#components/icon';
 import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Popover, type PopoverProps } from '#components/popover';
-import { DeclaredSizeProvider, sizeScaleClassName, type ScaleSize } from '#components/size-scope';
+import { SizeScope, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-scope';
 import { Content, GroupContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import fieldStyles from '../../_internal/field-styles/index.module.css';
@@ -151,10 +150,11 @@ export interface DatePickerProps
  */
 export function DatePicker(props: DatePickerProps) {
   const { children, size, formatOptions, placeholder, gap = SCALE_GAP, className, isDisabled, ...racProps } = props;
+  const scale = useDeclaredSize(size);
   const value = <DatePickerValue formatOptions={formatOptions} placeholder={placeholder} />;
 
   return (
-    <DeclaredSizeProvider size={size}>
+    <SizeScope size={size}>
       <Flex
         direction="column"
         gap={gap}
@@ -162,7 +162,7 @@ export function DatePicker(props: DatePickerProps) {
         isDisabled={isDisabled}
         as={RACDatePicker as typeof RACDatePicker<CalendarDate>}
         data-interior="box"
-        className={composeClassName(className, fieldStyles.field, surfaceClassName, sizeScaleClassName(size))}
+        className={composeClassName(className, fieldStyles.field, sizeScaleClassName(scale))}
       >
         {composeRenderProps(children, function body(node) {
           return (
@@ -172,7 +172,7 @@ export function DatePicker(props: DatePickerProps) {
           );
         })}
       </Flex>
-    </DeclaredSizeProvider>
+    </SizeScope>
   );
 }
 
@@ -205,10 +205,11 @@ export interface DateRangePickerProps
  */
 export function DateRangePicker(props: DateRangePickerProps) {
   const { children, size, formatOptions, placeholder, gap = SCALE_GAP, className, isDisabled, ...racProps } = props;
+  const scale = useDeclaredSize(size);
   const value = <DateRangePickerValue formatOptions={formatOptions} placeholder={placeholder} />;
 
   return (
-    <DeclaredSizeProvider size={size}>
+    <SizeScope size={size}>
       <Flex
         direction="column"
         gap={gap}
@@ -216,7 +217,7 @@ export function DateRangePicker(props: DateRangePickerProps) {
         isDisabled={isDisabled}
         as={RACDateRangePicker as typeof RACDateRangePicker<CalendarDate>}
         data-interior="box"
-        className={composeClassName(className, fieldStyles.field, surfaceClassName, sizeScaleClassName(size))}
+        className={composeClassName(className, fieldStyles.field, sizeScaleClassName(scale))}
       >
         {composeRenderProps(children, function body(node) {
           return (
@@ -226,7 +227,7 @@ export function DateRangePicker(props: DateRangePickerProps) {
           );
         })}
       </Flex>
-    </DeclaredSizeProvider>
+    </SizeScope>
   );
 }
 

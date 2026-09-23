@@ -6,9 +6,8 @@ import {
   type TooltipTriggerComponentProps as RACTooltipTriggerProps,
   OverlayArrow as RACOverlayArrow
 } from 'react-aria-components';
-import { surfaceClassName } from '#components/_internal/typography';
+import { useTypographyClassName } from '#components/_internal/typography';
 import { Flex } from '#components/layout/flex';
-import { sizeScaleClassName, useDeclaredSize } from '#components/size-scope';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
@@ -44,7 +43,7 @@ export interface TooltipProps extends RACTooltipProps {
  */
 export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(props, ref) {
   const { className, children, hideArrow, ...rest } = props;
-  const size = useDeclaredSize();
+  const typography = useTypographyClassName('text', {});
 
   return (
     <Flex
@@ -55,7 +54,7 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
       elevation="overlay"
       data-noarrow={hideArrow}
       {...rest}
-      className={composeClassName(className, styles.tooltip, surfaceClassName, sizeScaleClassName(size))}
+      className={composeClassName(className, styles.tooltip, typography)}
     >
       {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
       {children}

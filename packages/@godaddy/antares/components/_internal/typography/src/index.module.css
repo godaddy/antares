@@ -30,7 +30,7 @@
   --_type-xl: var(--font-body-size-xl, 1.25rem);
   --_type-2xl: var(--font-body-size-2xl, 1.5rem);
 
-  font-size: var(--_type-size, var(--_type-slot-size, 1em));
+  font-size: var(--_type-size, var(--_type-slot-size, var(--_size-body, var(--_type-md))));
 }
 
 :where(.typeDetail) {
@@ -88,15 +88,44 @@
   --_type-slot-size: var(--_size-body, var(--_type-md));
 }
 
-:where(.typeSurface, .typeBody) {
+:where(.typeText, .typeBody) {
   font-family: var(--font-body-family, var(--ux-pze30t, var(--ux-117cu43, sans-serif)));
   font-weight: var(--font-body-weight, var(--ux-8n6y9x, 400));
   font-variation-settings: var(--font-body-variation, var(--ux-1i4pt2s, normal));
   line-height: var(--font-body-line-height, var(--ux-1hhfdnd, var(--ux-mgbt9j, 1.5)));
 }
 
-:where(.typeSurface) {
-  font-size: var(--_size-body, var(--font-body-size-md, 1rem));
+:where(.typeInherit) {
+  --_type-slot-size: 1em;
+
+  font-family: inherit;
+  font-weight: inherit;
+  font-variation-settings: inherit;
+  line-height: inherit;
+}
+
+:where(.typeSlotXs) {
+  --_type-slot-size: var(--_type-xs);
+}
+
+:where(.typeSlotSm) {
+  --_type-slot-size: var(--_type-sm);
+}
+
+:where(.typeSlotMd) {
+  --_type-slot-size: var(--_type-md);
+}
+
+:where(.typeSlotLg) {
+  --_type-slot-size: var(--_type-lg);
+}
+
+:where(.typeSlotXl) {
+  --_type-slot-size: var(--_type-xl);
+}
+
+:where(.typeSlot2xl) {
+  --_type-slot-size: var(--_type-2xl);
 }
 
 :where(.type):where(strong, b) {

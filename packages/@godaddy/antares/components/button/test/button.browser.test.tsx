@@ -119,20 +119,14 @@ describe('@godaddy/antares', function antares() {
       // Control: Text outside the button takes the injected size, so the provider is live.
       expect(getComputedStyle(getByText('Outside the button').element()).fontSize).toEqual('40px');
 
-      for (const name of ['String label', 'Composed label']) {
-        const button = getByRole('button', { name }).element();
-        const label = button.querySelector('span');
+      for (const control of [
+        getByRole('button', { name: 'Composed label' }),
+        getByRole('link', { name: 'Composed link label' })
+      ]) {
+        const label = control.element().querySelector('span');
 
         expect(label).not.toBeNull();
-        expect(getComputedStyle(label as Element).fontSize).toEqual(getComputedStyle(button).fontSize);
-      }
-
-      for (const name of ['String link label', 'Composed link label']) {
-        const link = getByRole('link', { name }).element();
-        const label = link.querySelector('span');
-
-        expect(label).not.toBeNull();
-        expect(getComputedStyle(label as Element).fontSize).toEqual(getComputedStyle(link).fontSize);
+        expect(getComputedStyle(label as Element).fontSize).toEqual(getComputedStyle(control.element()).fontSize);
       }
     });
   });

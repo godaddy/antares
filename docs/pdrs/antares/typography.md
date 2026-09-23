@@ -56,15 +56,19 @@ The **size scale** has three sizes: `sm`, `md`, `lg` (`ScaleSize`). Three rules 
 1. **The nearest scope wins.** A scope sets the size of everything inside it, portaled content included.
    Scopes replace, never compound: `sm` inside `sm` is still `sm`.
 2. **An explicit `size` wins,** and only for the component that has it.
-3. **No scope means `md`.** The exception is `Text`, which always follows its surroundings.
+3. **No scope means `md`.**
+
+Only Antares components follow the scale. Bare text and plain HTML keep the page's typography; put copy in
+`Text` to size it.
 
 Components relate to the scale in one of these ways:
 
 | Kind | Components | Behavior |
 | --- | --- | --- |
-| Scope | `SizeScope`; `TextField`, `NumberField`, `Select`, `DatePicker`, `DateRangePicker`, and `Modal` with `size` | Sets the size for everything inside, and body typography on its own element |
+| Scope | `SizeScope`; `TextField`, `NumberField`, `Select`, `DatePicker`, `DateRangePicker`, and `Modal` with `size` | Sets the size for everything inside |
 | Text scope | `TextLockup` with `size` | Sizes only the text inside; controls keep the surrounding size |
-| Uses the scale's values | Text roles, field parts, overlay padding and titles | Read the scale's value for their role |
+| Uses the scale's values | `Text`, `Detail`, `Heading`, `Label`, field parts, overlay padding and titles | Read the scale's value for their role |
+| Own type | Button, Chip, Menu, Tooltip, ListBoxItem, Checkbox, Radio, Avatar, Alert title, charts, progress, and metrics components | Set their own type, so bare strings inside need no `Text`; a `Text` inside Button, Chip, Menu, or a chart takes that type |
 | Picks its own size | `Button`, `LinkButton` | Reads which size is in effect and applies its own definition of it |
 | Independent | Layout, Avatar, media, chart geometry, and components not yet adopted | Ignores the scale |
 
@@ -76,12 +80,12 @@ The expected behavior, one row per case.
 
 | Situation | Result |
 | --- | --- |
-| Bare text, a plain element, or `Text` without `size` | Inherits from its container: the scope's body size, or the page's font outside any scope |
-| `Detail`, `Heading`, `Label` without `size` | The scope's detail, heading, or label tier; `md` outside any scope |
+| `Text`, `Detail`, `Heading`, `Label` without `size` | The scope's body, detail, heading, or label tier; `md` outside any scope |
+| Bare text or a plain element | Unaffected; keeps the page's typography |
 | Heading `level` changes | Different element, same typography |
 | Explicit `size` on text | Applies to that element only; nested text still follows the scope |
 | `as="strong"`, `as="em"`, `<b>` | Keep their weight or style over the role's |
-| `Text` inside a Button | Identical to a bare label; `emphasis` and `maxLines` change only color and truncation |
+| `Text` inside a Button or a component with its own type | Identical to a bare label; `emphasis` and `maxLines` change only color and truncation |
 
 ### Named parts
 
@@ -111,6 +115,7 @@ The expected behavior, one row per case.
 | --- | --- |
 | Modal, Drawer, Popover, Tooltip, Select list, or DatePicker calendar | Opens at the size of the scope around its trigger |
 | Owner with explicit `size` | Its overlay uses that size |
+| Tooltip, list option, Checkbox, or Radio content | Body type at the scope's size, set on the component itself, so bare strings follow the scope |
 
 ### Themes
 
@@ -124,12 +129,8 @@ The expected behavior, one row per case.
 
 ### SizeScope
 
-Makes any section a scope. It renders a `div` by default; `as` picks another element, such as `span` around
-inline content. It renders a real element so bare text and plain HTML follow it. It is not a layout
-component; compose Flex or Grid inside it.
-
-Apps render a `SizeScope` at their root, so unsized text gets body typography. It also sizes a component that
-has no `size` prop:
+Makes any section a scope. It renders no element, so it never affects layout, and it sizes only Antares
+components inside it. It also sizes the text inside a component that has no `size` prop:
 
 ```tsx
 <SizeScope size="lg">
@@ -164,7 +165,8 @@ There is no `variant`, `weight`, `family`, `lineHeight`, or `letterSpacing` prop
 
 An owner styles its named parts, such as a field's description or a lockup's body, by adding a class to the
 part's existing React Aria context. It never replaces that context, so ids, levels, and field associations
-are kept.
+are kept. A component with its own type, such as Button or Chip, gives the `Text` inside it an inherit
+treatment, so the label keeps the component's type.
 
 TextLockup's `title` slot belongs to the lockup. It does not become the title of an enclosing Modal; give the
 Modal its own `<Heading slot="title">`.
@@ -173,7 +175,8 @@ Modal its own `<Heading slot="title">`.
 
 ### Scale variables
 
-A scope's size class sets private CSS variables that descendants read, each with an `md` fallback:
+Each component applies the class for the size in effect to its own element. The class sets private CSS
+variables that the element and its parts read, each with an `md` fallback:
 
 | Variable | `sm` | `md` | `lg` |
 | --- | --- | --- | --- |
@@ -198,13 +201,15 @@ A property with several sources reads them through one `var()` chain, most speci
 font-size: var(--_type-size, var(--_type-slot-size, var(--_size-heading, var(--_type-md))));
 ```
 
-An explicit `size` sets `--_type-size`, the owner's part class sets `--_type-slot-size`, and the scope sets
-`--_size-heading`. The first two don't inherit, so an explicit size never reaches nested text.
+An explicit `size` sets `--_type-size`, the owner's part class sets `--_type-slot-size`, and the size class
+sets `--_size-heading`. The first two don't inherit, so an explicit size never reaches nested text. Because
+every text component applies its own size class, a scale variable never leaks from an owner into nested
+text; owners that size their parts, such as TextLockup, do it with part classes.
 
 ### React's part
 
-- **Portals.** CSS can't reach portaled content, so context carries the scope's size and every overlay
-  re-applies the scope class on its root.
+- **Context.** `SizeScope` only provides the size through context. Components read it and apply the size
+  class on their own element, so portaled content needs no special handling.
 - **Button.** Reads the size in effect from the same context and applies its own size class.
 - **Parts.** Owners add part classes through React Aria contexts.
 
@@ -251,7 +256,8 @@ breakpoint tokens, which Antares does not have yet.
 - **Density only** ([Spectrum `scale`](https://react-spectrum.adobe.com/react-spectrum/Provider.html),
   Carbon, MUI). Scopes resize controls and spacing but not text, so a compact section would still need every
   text size set by hand.
-- **Wrapperless provider.** Adds no element, but cannot style bare text.
+- **Scope element.** A wrapper element would size bare text and plain HTML too, but it adds a DOM node,
+  makes `Text` behave unlike the other roles, and needs `as` or `display: contents` to stay out of layout.
 - **Explicit sizes on every overlay.** A small section would open medium menus and modals unless each one
   were sized by hand.
 

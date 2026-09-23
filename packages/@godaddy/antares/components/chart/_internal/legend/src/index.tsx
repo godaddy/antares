@@ -5,6 +5,7 @@ import { Flex, type FlexProps } from '#components/layout/flex';
 import { Box } from '#components/layout/box';
 import { Text } from '#components/text';
 import styles from './index.module.css';
+import { inheritPartClassName } from '#components/_internal/typography';
 
 /**
  * Legend display settings derived from the Series. */
@@ -95,7 +96,7 @@ function LegendItem(props: LegendItemProps) {
   return (
     <Flex role="listitem" direction="row" alignItems="center" gap="sm" className={styles.item}>
       <LegendSwatch variant={seriesItem.variant} color={seriesItem._resolvedColor} />
-      <Text>{seriesItem.name}</Text>
+      <Text className={inheritPartClassName}>{seriesItem.name}</Text>
     </Flex>
   );
 }
@@ -115,7 +116,7 @@ export function Legend(props: LegendProps) {
         className={cx(styles.root, className)}
         data-size={size}
       >
-        {label ? <Text className={styles.label}>{label}</Text> : null}
+        {label ? <Text className={cx(styles.label, inheritPartClassName)}>{label}</Text> : null}
         <Flex
           role="list"
           aria-label={label ?? 'Chart legend'}
