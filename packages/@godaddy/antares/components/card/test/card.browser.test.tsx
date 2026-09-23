@@ -134,7 +134,8 @@ describe('@godaddy/antares', function packageTests() {
         );
         const indicator = getByTestId('indicator-One');
         await expect.element(indicator).toHaveTextContent(props.isDisabled ? 'Unavailable' : 'Read only');
-        expect(getComputedStyle(indicator.element()).opacity).toBe('0.4');
+        const faded = props.isDisabled ? indicator.element().closest<HTMLElement>('[data-card]')! : indicator.element();
+        expect(getComputedStyle(faded).opacity).toBe('0.4');
         await userEvent.click(indicator, { force: true });
         await expect.element(getByRole(props.kind, { name: 'Option one' })).not.toBeChecked();
       });
@@ -197,7 +198,7 @@ describe('@godaddy/antares', function packageTests() {
         const card = container.querySelector<HTMLElement>('[data-card]')!;
         const initialBorder = getComputedStyle(card).borderColor;
         await userEvent.click(getByTestId('indicator-One'));
-        expect(getComputedStyle(card).borderColor).not.toBe(initialBorder);
+        expect(getComputedStyle(card).borderColor).toBe('rgb(9, 117, 122)');
       });
 
       it('selects a radio card from its body content', async function radioBodySelects() {

@@ -3,6 +3,11 @@
   align-items: center;
 }
 
+.control:where([data-focus-visible]),
+.control :where(input) {
+  outline: none;
+}
+
 .indicator {
   display: inline-flex;
   align-items: center;
@@ -13,10 +18,10 @@
   inline-size: 1.5rem;
   block-size: 1.5rem;
   padding: 0;
-  border: 1px solid var(--color-input-border-default, var(--ux-by6mab, #767676));
+  border: 1px solid var(--color-surface-border-card, var(--ux-97h3vl, #d4dbe0));
   border-radius: 50%;
   background: var(--color-input-background-default, var(--ux-1nu8itt, #fff));
-  color: var(--color-input-border-selected, var(--ux-77zzwv, #00a4a6));
+  color: var(--color-surface-text-card, var(--ux-1leynsm, #111));
 }
 
 .indicator:where(:not([data-custom])):where([data-selected], [data-indeterminate]) {
@@ -28,7 +33,7 @@
   cursor: not-allowed;
 }
 
-.indicator:where([data-disabled], [data-readonly]) {
+.indicator:where([data-readonly]) {
   opacity: 0.4;
 }
 

@@ -212,6 +212,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
           style={resolveStyle(style, selectionState)}
           data-card-selected={selectionState.isSelected || undefined}
           data-card-indeterminate={selectionState.isIndeterminate || undefined}
+          data-disabled={isDisabled || selectionState.isDisabled || undefined}
           onClick={shouldForwardClick ? forwardedClick : onClick}
           data-card={isInteractive ? 'interactive' : 'static'}
         >

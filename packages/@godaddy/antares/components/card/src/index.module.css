@@ -7,17 +7,18 @@
 
 /* A consumer-set elevation hands the surface chrome to Box. */
 .card:where(:not([data-elevation])) {
+  --_card-border: var(--color-surface-border-card, var(--ux-97h3vl, #d4dbe0));
   background: var(--color-surface-background-card, var(--ux-cao06b, #fff));
-  border: 1px solid var(--color-surface-border-card, var(--ux-97h3vl, #d4dbe0));
+  border: 1px solid var(--_card-border);
   color: var(--color-surface-text-card, var(--ux-1leynsm, #111));
 }
 
-.card:where([data-card="interactive"]):where(:hover) {
+.card:where([data-card="interactive"]:hover) {
   cursor: pointer;
-  border-color: var(--color-action-border-primary-hovered, var(--ux-bgke81, #444444));
+  box-shadow: 0 2px 8px rgba(17, 17, 17, 0.12);
 }
 
-/* Only Card's own primary and selection controls ring the surface. Composed controls ring themselves. */
+/* One ring on the surface. The stretched control and selection control do not draw their own. */
 .card:where(:has(> :where(.link, .primary)[data-focus-visible])),
 .card:where(:has([data-card-selection-indicator][data-focus-visible])):where(
   :not(:has([data-card] [data-card-selection-indicator][data-focus-visible]))
@@ -26,8 +27,15 @@
   outline-offset: 2px;
 }
 
+.card:where([data-card="interactive"]:active),
 .card:where([data-card-selected], [data-card-indeterminate]) {
-  border-color: var(--color-input-border-selected, var(--ux-77zzwv, #00a4a6));
+  --_card-border: var(--ux-8qoawt, #09757a);
+  border-color: var(--_card-border);
+}
+
+.card:where([data-disabled]) {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 /* Direct CornerActions sit in the padding box at the top-end. Nest them to keep them in flow. */
@@ -44,6 +52,11 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
+}
+
+.link:where([data-focus-visible]),
+.primary:where([data-focus-visible]) {
+  outline: none;
 }
 
 .card:where(:has(> .link)) {
