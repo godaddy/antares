@@ -1,6 +1,6 @@
 {
   "name": "@godaddy/design-tokens",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "The GoDaddy design tokens library",
   "type": "module",
   "scripts": {
