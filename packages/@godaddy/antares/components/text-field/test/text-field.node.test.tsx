@@ -56,7 +56,7 @@ describe('@godaddy/antares', function antares() {
       const html = renderToString(<InteriorExample />);
 
       it('styles the label and a composed Group', function parts() {
-        expect(html).toContain('<label class="label type typeLabel"');
+        expect(html).toContain('<label class="label type typeLabel scaleMd"');
         expect(html).toMatch(/class="box flex group"/);
       });
 

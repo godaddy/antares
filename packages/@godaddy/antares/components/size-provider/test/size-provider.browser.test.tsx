@@ -15,6 +15,12 @@ function box(element: Element) {
   return { width, height };
 }
 
+function dayOf(calendar: Element) {
+  return calendar.querySelector('[role="gridcell"] > *') as Element;
+}
+
+const typeProperties = ['fontSize', 'fontFamily', 'fontWeight', 'lineHeight'] as const;
+
 describe('@godaddy/antares', function antares() {
   describe('#SizeProvider', function sizeProviderTests() {
     it('sizes controls from the nearest scope, with md outside any scope', async function controls() {
@@ -65,6 +71,7 @@ describe('@godaddy/antares', function antares() {
       await userEvent.click(trigger);
       await expect.element(getByRole('dialog')).toBeVisible();
       expect(style(getByRole('dialog').element()).fontSize).toEqual('16px');
+      expect(style(dayOf(getByRole('dialog').element())).fontSize).toEqual('16px');
     });
 
     it("sizes a field's control and trigger buttons from the field, not the scope", async function fieldButtons() {
@@ -110,9 +117,14 @@ describe('@godaddy/antares', function antares() {
 
     it('sizes an unscoped field like md under a token theme', async function unscopedTokens() {
       const { getByRole } = await render(<ScenariosExample />);
+      const unscoped = style(getByRole('textbox', { name: 'Rooms' }).element());
+      const md = style(getByRole('textbox', { name: 'Guests' }).element());
 
-      expect(style(getByRole('textbox', { name: 'Rooms' }).element()).fontSize).toEqual('20px');
+      expect(unscoped.fontSize).toEqual('20px');
+      expect(unscoped.paddingBlockStart).toEqual('12px');
+      expect(unscoped.paddingBlockStart).toEqual(md.paddingBlockStart);
       expect(style(getByRole('button', { name: 'Increase Rooms' }).element()).fontSize).toEqual('20px');
+      expect(style(getByRole('button', { name: 'Increase Rooms' }).element()).paddingBlockStart).toEqual('12px');
     });
 
     it('follows a legacy font size in the scope as an explicit size does', async function legacyFont() {
@@ -129,7 +141,7 @@ describe('@godaddy/antares', function antares() {
       const label = composedButton.querySelector('span') as Element;
 
       expect(box(composedButton)).toEqual(box(plain));
-      for (const property of ['fontSize', 'fontFamily', 'fontWeight', 'lineHeight'] as const) {
+      for (const property of typeProperties) {
         expect(style(label)[property]).toEqual(style(plain)[property]);
       }
     });
@@ -171,7 +183,8 @@ describe('@godaddy/antares', function antares() {
       const pairs = [
         ['description', 'detail-description'],
         ['explicit-description', 'explicit-detail-description'],
-        ['lockup-body', 'lockup-detail-body']
+        ['lockup-body', 'lockup-detail-body'],
+        ['lockup-eyebrow', 'lockup-detail-eyebrow']
       ];
 
       for (const [text, detail] of pairs) {
@@ -181,6 +194,18 @@ describe('@godaddy/antares', function antares() {
           expect(detailStyle[property]).toEqual(textStyle[property]);
         }
       }
+    });
+
+    it('gives a Text label in a menu item the menu type, keeping it as the accessible name', async function menuLabel() {
+      const { getByRole } = await render(<ScenariosExample />);
+      const plain = getByRole('menuitem', { name: 'Rename' }).element().querySelector('span') as Element;
+      const item = getByRole('menuitem', { name: 'Duplicate' }).element();
+      const label = item.querySelector('span') as Element;
+
+      for (const property of typeProperties) {
+        expect(style(label)[property]).toEqual(style(plain)[property]);
+      }
+      expect(item.getAttribute('aria-labelledby')).toContain(label.id);
     });
 
     it('sizes the text of a lockup but not the controls inside it', async function lockup() {
@@ -211,6 +236,15 @@ describe('@godaddy/antares', function antares() {
       await userEvent.click(getByRole('button', { name: /Region/ }));
       await expect.element(getByRole('option', { name: 'Europe' })).toBeVisible();
       expect(style(getByRole('option', { name: 'Europe' }).element()).fontSize).toEqual('18px');
+    });
+
+    it('opens a date picker calendar at the size of the scope around its trigger', async function calendar() {
+      const { getByRole } = await render(<OverlaysExample />);
+      await userEvent.click(getByRole('button', { name: /Renewal date/ }));
+
+      const dialog = getByRole('dialog');
+      await expect.element(dialog).toBeVisible();
+      expect(style(dayOf(dialog.element())).fontSize).toEqual(smControl);
     });
 
     it('opens a tooltip at the size of the scope around its trigger', async function tooltip() {

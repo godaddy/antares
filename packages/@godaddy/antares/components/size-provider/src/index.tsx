@@ -18,9 +18,9 @@ const SCALE: Record<ScaleSize, string> = {
   lg: styles.scaleLg
 };
 
-/** Class that sets the size scale on a component's own element. */
+/** Class that sets the size scale on a component's own element, `md` outside any scope. */
 export function sizeScaleClassName(size?: ScaleSize) {
-  return size && SCALE[size];
+  return SCALE[size ?? 'md'];
 }
 
 export interface SizeProviderProps {

@@ -67,7 +67,7 @@ Components relate to the scale in one of these ways:
 | --- | --- | --- |
 | Scope | `SizeProvider`; `TextField`, `NumberField`, `Select`, `DatePicker`, `DateRangePicker`, and `Modal` with `size` | Sets the size for everything inside |
 | Text scope | `TextLockup` with `size` | Sizes only the text inside; controls keep the surrounding size |
-| Uses the scale's values | `Text`, `Detail`, `Heading`, `Label`, field parts, overlay padding and titles | Read the scale's value for their role |
+| Uses the scale's values | `Text`, `Detail`, `Heading`, `Label`, field parts, calendar dates, overlay padding and titles | Read the scale's value for their role |
 | Own type | Button, Chip, Menu, Tooltip, ListBoxItem, Checkbox, Radio, Avatar, Alert title, charts, progress, and metrics components | Set their own type, so bare strings inside need no `Text`; a `Text` inside Button, Chip, Menu, or a chart takes that type |
 | Picks its own size | `Button`, `LinkButton` | Reads which size is in effect and applies its own definition of it |
 | Independent | Layout, Avatar, media, chart geometry, and components not yet adopted | Ignores the scale |
@@ -175,8 +175,9 @@ Modal its own `<Heading slot="title">`.
 
 ### Scale variables
 
-Each component applies the class for the size in effect to its own element. The class sets private CSS
-variables that the element and its parts read, each with an `md` fallback:
+Each component applies the class for the size in effect to its own element, the `md` class outside any
+scope. The class sets private CSS variables that the element and its parts read. They have no fallbacks,
+so an unscoped component and one in an `md` scope read the same values:
 
 | Variable | `sm` | `md` | `lg` |
 | --- | --- | --- | --- |
@@ -186,7 +187,7 @@ variables that the element and its parts read, each with an `md` fallback:
 | `--_size-title` | heading `md` | heading `lg` | heading `xl` |
 | `--_size-label` | label `sm` | label `md` | label `lg` |
 | `--_size-control-font` | body `sm` | body `md` | body `lg` |
-| `--_size-control-padding-block` | space `010` | space `020` | space `030` |
+| `--_size-control-padding-block` | space `020` | space `040` | space `060` |
 | `--_size-padding` | space `sm` | space `md` | space `lg` |
 | `--_size-gap` | space `xs` | space `sm` | space `md` |
 
@@ -198,7 +199,7 @@ a TextLockup's text size never reaches the controls inside it.
 A property with several sources reads them through one `var()` chain, most specific first:
 
 ```css
-font-size: var(--_type-size, var(--_type-slot-size, var(--_size-heading, var(--_type-md))));
+font-size: var(--_type-size, var(--_type-slot-size, var(--_size-heading)));
 ```
 
 An explicit `size` sets `--_type-size`, the owner's part class sets `--_type-slot-size`, and the size class

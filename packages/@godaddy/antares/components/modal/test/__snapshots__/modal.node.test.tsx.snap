@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`@godaddy/antares > #Modal > renders ControlledExample 1`] = `"<div class="box flex column" style="align-items:start;gap:var(--sp-sm)"><button class="button primary" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_1H1_" data-react-aria-pressable="true">Open modal</button><span class="text type typeText">The modal is currently <!-- -->closed<!-- -->.</span><button class="button primary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_3_">Open from outside</button></div>"`;
+exports[`@godaddy/antares > #Modal > renders ControlledExample 1`] = `"<div class="box flex column" style="align-items:start;gap:var(--sp-sm)"><button class="button primary" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_1H1_" data-react-aria-pressable="true">Open modal</button><span class="text type typeText scaleMd">The modal is currently <!-- -->closed<!-- -->.</span><button class="button primary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_3_">Open from outside</button></div>"`;
 
 exports[`@godaddy/antares > #Modal > renders DefaultExample 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true">Open modal</button>"`;
 

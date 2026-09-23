@@ -32,7 +32,7 @@ import styles from './index.module.css';
 const DEFAULT_FORMAT: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
 const DEFAULT_DATE_PLACEHOLDER = 'Select a date';
 const DEFAULT_RANGE_PLACEHOLDER = 'Select dates';
-const SCALE_GAP = 'var(--_size-gap, var(--sp-sm))';
+const SCALE_GAP = 'var(--_size-gap)';
 
 interface PickerBodyProps {
   /** Whether the field is disabled. */

@@ -116,7 +116,7 @@ type SelectRootProps<T, M extends SelectionMode> = Omit<SelectProps<T, M>, 'vari
 
 /** A Select that is a field of its own: a column whose trigger carries the box chrome. */
 function FieldSelect<T extends object, M extends SelectionMode>(props: SelectRootProps<T, M>) {
-  const { children, size, className, gap = 'var(--_size-gap, var(--sp-sm))', isDisabled, ...racProps } = props;
+  const { children, size, className, gap = 'var(--_size-gap)', isDisabled, ...racProps } = props;
   const scale = useDeclaredSize(size);
 
   return (
@@ -156,13 +156,14 @@ function ControlSelect<T extends object, M extends SelectionMode>(props: SelectR
   const inheritedSize = useInheritedControlSize();
   const controlDisabled = isDisabled ?? inheritedGroup?.isDisabled;
   const controlSize = size ?? inheritedSize;
+  const scale = useDeclaredSize(controlSize);
 
   return (
     <SizeProvider size={controlSize}>
       <RACSelect
         {...(racProps as RACSelectProps<T, M>)}
         isDisabled={controlDisabled}
-        className={composeClassName(className, styles.select)}
+        className={composeClassName(className, styles.select, sizeScaleClassName(scale))}
       >
         {composeRenderProps(children, function body(node) {
           return (

@@ -2,6 +2,8 @@ import {
   Button,
   ButtonGroup,
   Content,
+  DatePicker,
+  DatePickerCalendar,
   Flex,
   Heading,
   Label,
@@ -42,6 +44,12 @@ export function OverlaysExample() {
             <SelectItem id="eu">Europe</SelectItem>
           </SelectOptions>
         </Select>
+
+        <DatePicker>
+          <Label>Renewal date</Label>
+          <Button slot="trigger" />
+          <DatePickerCalendar />
+        </DatePicker>
 
         <ModalTrigger>
           <Button variant="primary">Edit plan</Button>

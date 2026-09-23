@@ -149,8 +149,8 @@
 
   &:where(.control, .trigger) {
     --_button-gap: 0.25rem;
-    --_button-font-size: var(--_size-control-font, var(--font-body-size-md, var(--ux-cxbe8g, 16px)));
-    --_button-padding-block: var(--_size-control-padding-block, var(--_button-space-md));
+    --_button-font-size: var(--_size-control-font);
+    --_button-padding-block: var(--_size-control-padding-block);
     --_button-bg: var(--ux-1mh0ktr, #f5f5f5);
     --_button-bg-hovered: var(--ux-11rtwg8, #f5f5f5);
     --_button-bg-pressed: var(--ux-gdy377, #fff);

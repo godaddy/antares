@@ -23,8 +23,8 @@ export interface OverlayDialogProps
   children?: ReactNode;
 }
 
-const padding = 'var(--_size-padding, var(--sp-md))';
-const gap = 'var(--_size-gap, var(--sp-sm))';
+const padding = 'var(--_size-padding)';
+const gap = 'var(--_size-gap)';
 
 type HeadingSlots = { slots: Record<string | symbol, RACHeadingProps> };
 

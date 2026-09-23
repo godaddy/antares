@@ -105,7 +105,7 @@ function NumberFieldBody({ isDisabled, children }: NumberFieldBodyProps) {
  * ```
  */
 export function NumberField(props: NumberFieldProps) {
-  const { children, size, gap = 'var(--_size-gap, var(--sp-sm))', className, isDisabled, ...rest } = props;
+  const { children, size, gap = 'var(--_size-gap)', className, isDisabled, ...rest } = props;
   const scale = useDeclaredSize(size);
 
   return (

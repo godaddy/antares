@@ -10,6 +10,8 @@ import {
   Heading,
   Input,
   Label,
+  Menu,
+  MenuItem,
   NumberField,
   Radio,
   RadioGroup,
@@ -103,7 +105,16 @@ export function ScenariosExample() {
           </Detail>
         </TextField>
 
-        <TextLockup size="xl">
+        <TextLockup
+          size="xl"
+          style={{ '--font-detail-family': 'monospace', '--font-detail-line-height': '2' } as CSSProperties}
+        >
+          <Text slot="eyebrow" data-testid="lockup-eyebrow">
+            Lockup eyebrow
+          </Text>
+          <Detail slot="eyebrow" data-testid="lockup-detail-eyebrow">
+            Lockup eyebrow
+          </Detail>
           <Heading slot="title">Lockup title</Heading>
           <Text slot="body" data-testid="lockup-body">
             Lockup body
@@ -113,6 +124,13 @@ export function ScenariosExample() {
           </Detail>
           <Button data-testid="lockup-button">Lockup action</Button>
         </TextLockup>
+
+        <Menu aria-label="File actions">
+          <MenuItem>Rename</MenuItem>
+          <MenuItem textValue="Duplicate">
+            <Text>Duplicate</Text>
+          </MenuItem>
+        </Menu>
       </SizeProvider>
 
       <SizeProvider size="lg">
@@ -132,7 +150,7 @@ export function ScenariosExample() {
         </DatePicker>
       </SizeProvider>
 
-      <div style={{ '--font-body-size-md': '20px' } as CSSProperties}>
+      <div style={{ '--font-body-size-md': '20px', '--size-space-040': '12px' } as CSSProperties}>
         <NumberField>
           <Label>Rooms</Label>
           <Group>
@@ -141,6 +159,16 @@ export function ScenariosExample() {
             <Button slot="increment" />
           </Group>
         </NumberField>
+        <SizeProvider size="md">
+          <NumberField>
+            <Label>Guests</Label>
+            <Group>
+              <Button slot="decrement" />
+              <Input />
+              <Button slot="increment" />
+            </Group>
+          </NumberField>
+        </SizeProvider>
       </div>
 
       <div style={{ '--size-space-sm': '6px', '--size-space-md': '10px', '--size-space-lg': '14px' } as CSSProperties}>
