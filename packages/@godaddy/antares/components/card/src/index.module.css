@@ -13,9 +13,11 @@
   color: var(--color-surface-text-card, var(--ux-1leynsm, #111));
 }
 
-.card:where([data-card="interactive"]:hover) {
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(17, 17, 17, 0.12);
+@media (hover: hover) and (pointer: fine) {
+  .card:where([data-card="interactive"]:hover) {
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(17, 17, 17, 0.12);
+  }
 }
 
 /* One ring on the surface. The stretched control and selection control do not draw their own. */

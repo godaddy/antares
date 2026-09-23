@@ -38,7 +38,7 @@
 
 /* Also previews from its own Card when that Card has no primary action. */
 .indicator:where(:not([data-disabled], [data-readonly])) {
-  @media (hover: hover) {
+  @media (hover: hover) and (pointer: fine) {
     &:where(:hover),
     &:where([data-card="interactive"]:hover *):not(
         :where([data-card]:not(:hover), [data-card]:has(> [data-card-primary])) *
