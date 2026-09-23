@@ -327,132 +327,6 @@ When an Avatar triggers an action, compose it with `Pressable` so the Avatar kee
 <PropTable />
 
 
-# Calendar
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
-* Month dropdown plus a typeable year input in the header for fast navigation
-* Keyboard navigable and screen-reader announced
-* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
-* Date-only values via `@internationalized/date`'s `CalendarDate`
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Working with dates [#working-with-dates]
-
-`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
-
-```tsx
-import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
-import { Calendar } from '@godaddy/antares';
-
-<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
-<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
-```
-
-`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
-
-## Examples [#examples]
-
-### Default [#default]
-
-A single-date calendar.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function DefaultExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultFocusedValue={parseDate('2024-03-01')} />;\n}&#x22;" />
-
-### With value [#with-value]
-
-A calendar with a pre-selected date.
-
-<Story of="CalendarWithValueExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarWithValueExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} />;\n}&#x22;" />
-
-### Range [#range]
-
-Selecting a start and end date.
-
-<Story of="RangeCalendarExample" />
-
-<Source language="tsx" code="&#x22;import { RangeCalendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function RangeCalendarExample() {\n  return (\n    <RangeCalendar\n      aria-label=\&#x22;Trip dates\&#x22;\n      defaultValue={{ start: parseDate('2024-03-10'), end: parseDate('2024-03-15') }}\n    />\n  );\n}&#x22;" />
-
-### Min / Max [#min--max]
-
-Bounding selectable dates.
-
-<Story of="CalendarMinMaxExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarMinMaxExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Booking date\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      minValue={parseDate('2024-03-05')}\n      maxValue={parseDate('2024-03-25')}\n    />\n  );\n}&#x22;" />
-
-### Unavailable [#unavailable]
-
-Disabling scattered individual dates with `isDateUnavailable`.
-
-<Story of="CalendarUnavailableExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { isWeekend, parseDate } from '@godaddy/antares/date';\n\nexport function CalendarUnavailableExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Weekday only\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      isDateUnavailable={(date) => isWeekend(date, 'en-US')}\n    />\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-A fully disabled calendar.
-
-<Story of="CalendarDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@internationalized/date';\n\nexport function CalendarDisabledExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} isDisabled />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
-* Focus-visible outline; disabled days are not focusable
-* Out-of-month days render at reduced opacity and are not selectable
-
-## Best Practices [#best-practices]
-
-* Always provide an `aria-label` on standalone calendars.
-* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
-
-## Troubleshooting [#troubleshooting]
-
-* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
-
-## Props [#props]
-
-### Calendar [#calendar]
-
-<PropTable />
-
-### RangeCalendar [#rangecalendar]
-
-<PropTable />
-
-
 # Button
 
 
@@ -594,6 +468,132 @@ Buttons come in small, medium, and large sizes to fit different layout densities
 <PropTable />
 
 
+# Calendar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
+* Month dropdown plus a typeable year input in the header for fast navigation
+* Keyboard navigable and screen-reader announced
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+* Date-only values via `@internationalized/date`'s `CalendarDate`
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
+import { Calendar } from '@godaddy/antares';
+
+<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
+<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
+```
+
+`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
+
+## Examples [#examples]
+
+### Default [#default]
+
+A single-date calendar.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function DefaultExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultFocusedValue={parseDate('2024-03-01')} />;\n}&#x22;" />
+
+### With value [#with-value]
+
+A calendar with a pre-selected date.
+
+<Story of="CalendarWithValueExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarWithValueExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} />;\n}&#x22;" />
+
+### Range [#range]
+
+Selecting a start and end date.
+
+<Story of="RangeCalendarExample" />
+
+<Source language="tsx" code="&#x22;import { RangeCalendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function RangeCalendarExample() {\n  return (\n    <RangeCalendar\n      aria-label=\&#x22;Trip dates\&#x22;\n      defaultValue={{ start: parseDate('2024-03-10'), end: parseDate('2024-03-15') }}\n    />\n  );\n}&#x22;" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates.
+
+<Story of="CalendarMinMaxExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarMinMaxExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Booking date\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      minValue={parseDate('2024-03-05')}\n      maxValue={parseDate('2024-03-25')}\n    />\n  );\n}&#x22;" />
+
+### Unavailable [#unavailable]
+
+Disabling scattered individual dates with `isDateUnavailable`.
+
+<Story of="CalendarUnavailableExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { isWeekend, parseDate } from '@godaddy/antares/date';\n\nexport function CalendarUnavailableExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Weekday only\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      isDateUnavailable={(date) => isWeekend(date, 'en-US')}\n    />\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+A fully disabled calendar.
+
+<Story of="CalendarDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@internationalized/date';\n\nexport function CalendarDisabledExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} isDisabled />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
+* Focus-visible outline; disabled days are not focusable
+* Out-of-month days render at reduced opacity and are not selectable
+
+## Best Practices [#best-practices]
+
+* Always provide an `aria-label` on standalone calendars.
+* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
+
+## Troubleshooting [#troubleshooting]
+
+* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
+
+## Props [#props]
+
+### Calendar [#calendar]
+
+<PropTable />
+
+### RangeCalendar [#rangecalendar]
+
+<PropTable />
+
+
 # Carousel
 
 
@@ -695,6 +695,330 @@ The carousel follows the current **layout direction** (LTR or RTL). By default, 
 ## Props [#props]
 
 ### Carousel [#carousel]
+
+<PropTable />
+
+
+# Chip
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* `ChipGroup` + `ChipList` + `Chip` for grouped values, selection, keyboard navigation, and removal
+* Toggle Chips for selecting multiple peer filters
+* Removable Chips for user-added filters and input tokens
+* Shared `sm`, `md`, and `lg` sizes, with optional leading icons
+* `ChipButton` for menu filters and other actions with a Chip-like appearance
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Quick start [#quick-start]
+
+```tsx
+import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';
+
+<ChipGroup>
+  <Label>Location</Label>
+  <ChipList>
+    <Chip id="austin">Austin</Chip>
+    <Chip id="chicago">Chicago</Chip>
+    <Chip id="denver">Denver</Chip>
+  </ChipList>
+</ChipGroup>
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Start with a labeled group of related values. Add selection or removal when
+the group needs interactive behavior.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ChipGroup>\n      <Label>Location</Label>\n      <ChipList>\n        <Chip id=\&#x22;austin\&#x22;>Austin</Chip>\n        <Chip id=\&#x22;chicago\&#x22;>Chicago</Chip>\n        <Chip id=\&#x22;denver\&#x22;>Denver</Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
+
+### Toggle Chips [#toggle-chips]
+
+Use Toggle Chips for multiple peer filters. The Chip render prop supplies
+selection state for the checkmark, while `textValue` names composed content.
+
+<Story of="ToggleChipsExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function ToggleChipsExample() {\n  return (\n    <ChipGroup defaultSelectedKeys={['home']} selectionMode=\&#x22;multiple\&#x22;>\n      <Label>Amenities</Label>\n      <ChipList>\n        <Chip id=\&#x22;home\&#x22; textValue=\&#x22;Home\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Icon icon=\&#x22;home\&#x22; />\n              <Text>Home</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n        <Chip id=\&#x22;star\&#x22; textValue=\&#x22;Featured\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Icon icon=\&#x22;star\&#x22; />\n              <Text>Featured</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n        <Chip id=\&#x22;wifi\&#x22; textValue=\&#x22;Wifi\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Text>Wifi</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
+
+### Removable Chips [#removable-chips]
+
+Use Removable Chips for user-added filters and tokens. `ChipGroup` reports
+removed keys through `onRemove`; the owner updates its collection. A
+self-closing `Button` in the `remove` slot supplies each remove control.
+
+<Story of="RemovableChipsExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function RemovableChipsExample() {\n  const [filters, setFilters] = useState([\n    { id: 'austin', name: 'Austin', icon: 'map-pin' as const },\n    { id: 'active', name: 'Active' }\n  ]);\n\n  return (\n    <ChipGroup\n      onRemove={function handleRemove(keys) {\n        setFilters((current) => current.filter((item) => !keys.has(item.id)));\n      }}\n    >\n      <Label>Applied filters</Label>\n      <ChipList items={filters} renderEmptyState={() => 'No filters applied'}>\n        {(item) => (\n          <Chip id={item.id} textValue={item.name}>\n            {'icon' in item && item.icon ? <Icon icon={item.icon} /> : null}\n            <Text>{item.name}</Text>\n            <Button slot=\&#x22;remove\&#x22; />\n          </Chip>\n        )}\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
+
+### Controlled Selection [#controlled-selection]
+
+Use `selectedKeys` and `onSelectionChange` when another part of the page
+needs to own the selected filter state.
+
+<Story of="ControlledSelectionExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Chip, ChipGroup, ChipList, Label, Text } from '@godaddy/antares';\n\nconst options = [\n  { id: 'austin', name: 'Austin' },\n  { id: 'active', name: 'Active' },\n  { id: 'featured', name: 'Featured' }\n];\n\nexport function ControlledSelectionExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set(['austin']));\n\n  return (\n    <>\n      <ChipGroup\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={function handleSelectionChange(keys) {\n          setSelectedKeys(\n            keys === 'all' ? new Set(options.map((option) => option.id)) : new Set([...keys].map(String))\n          );\n        }}\n      >\n        <Label>Filters</Label>\n        <ChipList>\n          {options.map((option) => (\n            <Chip key={option.id} id={option.id}>\n              {option.name}\n            </Chip>\n          ))}\n        </ChipList>\n      </ChipGroup>\n      <Text>Selected: {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}</Text>\n    </>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Compare the supported `sm`, `md`, and `lg` sizes. Set `size` on `ChipGroup`
+so every Chip inherits one consistent size.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Flex, Label } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n      {sizes.map((size) => (\n        <ChipGroup key={size} size={size}>\n          <Label>Topics ({size})</Label>\n          <ChipList>\n            <Chip id=\&#x22;design\&#x22;>Design</Chip>\n            <Chip id=\&#x22;development\&#x22;>Development</Chip>\n            <Chip id=\&#x22;research\&#x22;>Research</Chip>\n          </ChipList>\n        </ChipGroup>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Disable individual options with `disabledKeys` when some values are unavailable.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <>\n      <ChipGroup selectionMode=\&#x22;multiple\&#x22; disabledKeys={['a', 'b']} defaultSelectedKeys={['a']}>\n        <Label>Unavailable options</Label>\n        <ChipList>\n          <Chip id=\&#x22;a\&#x22;>Disabled option</Chip>\n          <Chip id=\&#x22;b\&#x22; textValue=\&#x22;Also unavailable\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n            <Text>Also unavailable</Text>\n          </Chip>\n        </ChipList>\n      </ChipGroup>\n      <ChipGroup selectionMode=\&#x22;multiple\&#x22; disabledKeys={['off']} defaultSelectedKeys={['on']}>\n        <Label>Mixed availability</Label>\n        <ChipList>\n          <Chip id=\&#x22;on\&#x22;>Enabled</Chip>\n          <Chip id=\&#x22;off\&#x22;>Disabled option</Chip>\n        </ChipList>\n      </ChipGroup>\n    </>\n  );\n}&#x22;" />
+
+### Truncation [#truncation]
+
+By default, long labels truncate visually when space is constrained, while
+the complete accessible value remains available.
+
+<Story of="TruncationExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';\n\nexport function TruncationExample() {\n  return (\n    <ChipGroup>\n      <Label>Filters</Label>\n      <ChipList>\n        <Chip id=\&#x22;category\&#x22;>Category</Chip>\n        <Chip id=\&#x22;long\&#x22;>Discounted price up to $20,000</Chip>\n        <Chip id=\&#x22;status\&#x22;>Active</Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
+
+### Empty State [#empty-state]
+
+Give an empty collection useful guidance, then let the user add the first
+value. Removable items continue to be owned by the collection.
+
+<Story of="EmptyStateExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Chip, ChipGroup, ChipList, Flex, Text } from '@godaddy/antares';\n\nconst newsCategory = { id: 'news', name: 'News' };\n\nexport function EmptyStateExample() {\n  const [categories, setCategories] = useState<Set<typeof newsCategory>>(new Set());\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ChipGroup\n        aria-label=\&#x22;Categories\&#x22;\n        onRemove={function handleRemove(keys) {\n          setCategories((current) => new Set([...current].filter((category) => !keys.has(category.id))));\n        }}\n      >\n        <ChipList items={categories} renderEmptyState={() => 'No categories yet'}>\n          {(category) => (\n            <Chip id={category.id} textValue={category.name}>\n              {category.name}\n              <Button slot=\&#x22;remove\&#x22; />\n            </Chip>\n          )}\n        </ChipList>\n        <Text slot=\&#x22;description\&#x22;>Add a category to get started.</Text>\n      </ChipGroup>\n      <Button\n        onPress={function addCategory() {\n          setCategories((current) => new Set(current).add(newsCategory));\n        }}\n      >\n        Add category\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
+
+### Menu filter trigger [#menu-filter-trigger]
+
+Use `ChipButton` for Chip presentation without collection semantics.
+`MenuTrigger` continues to own open state, focus, and keyboard behavior.
+
+<Story of="MenuFilterTriggerExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ChipButton, Icon, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';\n\nexport function MenuFilterTriggerExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <MenuTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n      <ChipButton>\n        <Text>Location</Text>\n        <Icon icon=\&#x22;chevron-down\&#x22; flip={isOpen ? 'vertical' : undefined} />\n      </ChipButton>\n      <Menu aria-label=\&#x22;Location\&#x22;>\n        <MenuItem id=\&#x22;austin\&#x22;>Austin</MenuItem>\n        <MenuItem id=\&#x22;chicago\&#x22;>Chicago</MenuItem>\n        <MenuItem id=\&#x22;denver\&#x22;>Denver</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+### Content [#content]
+
+Use a string for a simple label. For icons or other composed content, wrap the
+visible label in `Text` and provide `textValue` for the accessible name. See
+**Toggle Chips** and **Removable Chips** above.
+
+### Selection and removal [#selection-and-removal]
+
+`ChipGroup` owns selection and removal behavior. Use a Chip render prop for
+state-dependent content, and `Button` with `slot="remove"` together with
+`onRemove` for removable items. See **Toggle Chips** and **Removable Chips**.
+
+### Layout and sizing [#layout-and-sizing]
+
+Set `size` on `ChipGroup` to keep a collection consistent. `ChipList` wraps by
+default and accepts layout props for custom arrangements. See **Sizes**.
+
+### Button composition [#button-composition]
+
+Use `ChipButton` when Chip presentation is needed without collection semantics.
+Compose it with components such as `MenuTrigger`; those components continue to
+own open state, focus, and keyboard behavior. See **Menu filter trigger**.
+
+## Accessibility [#accessibility]
+
+* Use `Label` or `aria-label` to name the `ChipGroup`; this names the collection,
+  not its individual Chips.
+* Give each Chip a visible label, `textValue`, or `aria-label`. Use `textValue`
+  when a Chip contains icons, composed content, or a render prop.
+* Use a descriptive group label so removal actions can be announced clearly.
+* Keep the visible label and the accessible value synchronized.
+* `ChipButton` is a real button and exposes menu state through `MenuTrigger`; provide an accessible name when the visible content is incomplete.
+
+## Best Practices [#best-practices]
+
+* Keep labels concise and let them truncate only when the available width requires it.
+* Prefer groups of three or more related values.
+* Keep one size per group.
+* Let `ChipList` wrap instead of forcing a single horizontal line.
+* Use removable Chips for user-added filters and tokens.
+* For menu filters, use `ChipButton` with `MenuTrigger` and provide the chevron explicitly.
+
+## Troubleshooting [#troubleshooting]
+
+### A ChipGroup has no accessible name [#a-chipgroup-has-no-accessible-name]
+
+Add a visible `Label` to the group or provide `aria-label`. For an individual Chip
+with composed content, provide a visible label, `textValue`, or `aria-label`.
+
+### The remove action does not update the UI [#the-remove-action-does-not-update-the-ui]
+
+Add `onRemove` to `ChipGroup` and remove the returned keys from the collection
+owned by your application.
+
+### A composed label is not truncating correctly [#a-composed-label-is-not-truncating-correctly]
+
+Keep the label in `Text`, preserve `textValue`, and constrain the available width
+of the surrounding layout. Truncation is visual; the complete accessible value
+should remain available.
+
+### The menu trigger does not look like a Chip [#the-menu-trigger-does-not-look-like-a-chip]
+
+Use `ChipButton` inside `MenuTrigger`, include the visible value, and add a
+trailing chevron to communicate that the control opens a menu.
+
+## Props [#props]
+
+```tsx
+<ChipGroup>
+  <Label />
+  <ChipList>
+    <Chip>
+      <Icon />
+      <Text />
+      <Button slot="remove" />
+    </Chip>
+  </ChipList>
+  <Text slot="description" />
+  <Text slot="errorMessage" />
+</ChipGroup>
+```
+
+For a menu trigger, the button and menu are composed as siblings inside
+`MenuTrigger`:
+
+```tsx
+<MenuTrigger>
+  <ChipButton>
+    <Text />
+    <Icon />
+  </ChipButton>
+  <Menu>
+    <MenuItem />
+    {/* ... */}
+  </Menu>
+</MenuTrigger>
+```
+
+### Chip [#chip]
+
+<PropTable />
+
+### ChipGroup [#chipgroup]
+
+<PropTable />
+
+### ChipList [#chiplist]
+
+<PropTable />
+
+### ChipButton [#chipbutton]
+
+<PropTable />
+
+
+# CircularProgress
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A basic determinate progress indicator with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+## Props [#props]
+
+### CircularProgress [#circularprogress]
 
 <PropTable />
 
@@ -1033,532 +1357,6 @@ Always provide clear error messages and use appropriate validation states:
 <PropTable />
 
 ### CheckboxIndicator [#checkboxindicator]
-
-<PropTable />
-
-
-# CircularProgress
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A basic determinate progress indicator with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
-
-<Story of="EmphasisExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value (clamped to 0–100)
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-* `aria-describedby` wires the `helperText` to the progressbar for screen readers
-* The decorative SVG and output text are hidden via `aria-hidden="true"`
-
-## Props [#props]
-
-### CircularProgress [#circularprogress]
-
-<PropTable />
-
-
-# Chip
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* `ChipGroup` + `ChipList` + `Chip` for grouped values, selection, keyboard navigation, and removal
-* Toggle Chips for selecting multiple peer filters
-* Removable Chips for user-added filters and input tokens
-* Shared `sm`, `md`, and `lg` sizes, with optional leading icons
-* `ChipButton` for menu filters and other actions with a Chip-like appearance
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Quick start [#quick-start]
-
-```tsx
-import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';
-
-<ChipGroup>
-  <Label>Location</Label>
-  <ChipList>
-    <Chip id="austin">Austin</Chip>
-    <Chip id="chicago">Chicago</Chip>
-    <Chip id="denver">Denver</Chip>
-  </ChipList>
-</ChipGroup>
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Start with a labeled group of related values. Add selection or removal when
-the group needs interactive behavior.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ChipGroup>\n      <Label>Location</Label>\n      <ChipList>\n        <Chip id=\&#x22;austin\&#x22;>Austin</Chip>\n        <Chip id=\&#x22;chicago\&#x22;>Chicago</Chip>\n        <Chip id=\&#x22;denver\&#x22;>Denver</Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
-
-### Toggle Chips [#toggle-chips]
-
-Use Toggle Chips for multiple peer filters. The Chip render prop supplies
-selection state for the checkmark, while `textValue` names composed content.
-
-<Story of="ToggleChipsExample" />
-
-<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function ToggleChipsExample() {\n  return (\n    <ChipGroup defaultSelectedKeys={['home']} selectionMode=\&#x22;multiple\&#x22;>\n      <Label>Amenities</Label>\n      <ChipList>\n        <Chip id=\&#x22;home\&#x22; textValue=\&#x22;Home\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Icon icon=\&#x22;home\&#x22; />\n              <Text>Home</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n        <Chip id=\&#x22;star\&#x22; textValue=\&#x22;Featured\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Icon icon=\&#x22;star\&#x22; />\n              <Text>Featured</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n        <Chip id=\&#x22;wifi\&#x22; textValue=\&#x22;Wifi\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Text>Wifi</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
-
-### Removable Chips [#removable-chips]
-
-Use Removable Chips for user-added filters and tokens. `ChipGroup` reports
-removed keys through `onRemove`; the owner updates its collection. A
-self-closing `Button` in the `remove` slot supplies each remove control.
-
-<Story of="RemovableChipsExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function RemovableChipsExample() {\n  const [filters, setFilters] = useState([\n    { id: 'austin', name: 'Austin', icon: 'map-pin' as const },\n    { id: 'active', name: 'Active' }\n  ]);\n\n  return (\n    <ChipGroup\n      onRemove={function handleRemove(keys) {\n        setFilters((current) => current.filter((item) => !keys.has(item.id)));\n      }}\n    >\n      <Label>Applied filters</Label>\n      <ChipList items={filters} renderEmptyState={() => 'No filters applied'}>\n        {(item) => (\n          <Chip id={item.id} textValue={item.name}>\n            {'icon' in item && item.icon ? <Icon icon={item.icon} /> : null}\n            <Text>{item.name}</Text>\n            <Button slot=\&#x22;remove\&#x22; />\n          </Chip>\n        )}\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
-
-### Controlled Selection [#controlled-selection]
-
-Use `selectedKeys` and `onSelectionChange` when another part of the page
-needs to own the selected filter state.
-
-<Story of="ControlledSelectionExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Chip, ChipGroup, ChipList, Label, Text } from '@godaddy/antares';\n\nconst options = [\n  { id: 'austin', name: 'Austin' },\n  { id: 'active', name: 'Active' },\n  { id: 'featured', name: 'Featured' }\n];\n\nexport function ControlledSelectionExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set(['austin']));\n\n  return (\n    <>\n      <ChipGroup\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={function handleSelectionChange(keys) {\n          setSelectedKeys(\n            keys === 'all' ? new Set(options.map((option) => option.id)) : new Set([...keys].map(String))\n          );\n        }}\n      >\n        <Label>Filters</Label>\n        <ChipList>\n          {options.map((option) => (\n            <Chip key={option.id} id={option.id}>\n              {option.name}\n            </Chip>\n          ))}\n        </ChipList>\n      </ChipGroup>\n      <Text>Selected: {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}</Text>\n    </>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Compare the supported `sm`, `md`, and `lg` sizes. Set `size` on `ChipGroup`
-so every Chip inherits one consistent size.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Flex, Label } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n      {sizes.map((size) => (\n        <ChipGroup key={size} size={size}>\n          <Label>Topics ({size})</Label>\n          <ChipList>\n            <Chip id=\&#x22;design\&#x22;>Design</Chip>\n            <Chip id=\&#x22;development\&#x22;>Development</Chip>\n            <Chip id=\&#x22;research\&#x22;>Research</Chip>\n          </ChipList>\n        </ChipGroup>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Disable individual options with `disabledKeys` when some values are unavailable.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <>\n      <ChipGroup selectionMode=\&#x22;multiple\&#x22; disabledKeys={['a', 'b']} defaultSelectedKeys={['a']}>\n        <Label>Unavailable options</Label>\n        <ChipList>\n          <Chip id=\&#x22;a\&#x22;>Disabled option</Chip>\n          <Chip id=\&#x22;b\&#x22; textValue=\&#x22;Also unavailable\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n            <Text>Also unavailable</Text>\n          </Chip>\n        </ChipList>\n      </ChipGroup>\n      <ChipGroup selectionMode=\&#x22;multiple\&#x22; disabledKeys={['off']} defaultSelectedKeys={['on']}>\n        <Label>Mixed availability</Label>\n        <ChipList>\n          <Chip id=\&#x22;on\&#x22;>Enabled</Chip>\n          <Chip id=\&#x22;off\&#x22;>Disabled option</Chip>\n        </ChipList>\n      </ChipGroup>\n    </>\n  );\n}&#x22;" />
-
-### Truncation [#truncation]
-
-By default, long labels truncate visually when space is constrained, while
-the complete accessible value remains available.
-
-<Story of="TruncationExample" />
-
-<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';\n\nexport function TruncationExample() {\n  return (\n    <ChipGroup>\n      <Label>Filters</Label>\n      <ChipList>\n        <Chip id=\&#x22;category\&#x22;>Category</Chip>\n        <Chip id=\&#x22;long\&#x22;>Discounted price up to $20,000</Chip>\n        <Chip id=\&#x22;status\&#x22;>Active</Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
-
-### Empty State [#empty-state]
-
-Give an empty collection useful guidance, then let the user add the first
-value. Removable items continue to be owned by the collection.
-
-<Story of="EmptyStateExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Chip, ChipGroup, ChipList, Flex, Text } from '@godaddy/antares';\n\nconst newsCategory = { id: 'news', name: 'News' };\n\nexport function EmptyStateExample() {\n  const [categories, setCategories] = useState<Set<typeof newsCategory>>(new Set());\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ChipGroup\n        aria-label=\&#x22;Categories\&#x22;\n        onRemove={function handleRemove(keys) {\n          setCategories((current) => new Set([...current].filter((category) => !keys.has(category.id))));\n        }}\n      >\n        <ChipList items={categories} renderEmptyState={() => 'No categories yet'}>\n          {(category) => (\n            <Chip id={category.id} textValue={category.name}>\n              {category.name}\n              <Button slot=\&#x22;remove\&#x22; />\n            </Chip>\n          )}\n        </ChipList>\n        <Text slot=\&#x22;description\&#x22;>Add a category to get started.</Text>\n      </ChipGroup>\n      <Button\n        onPress={function addCategory() {\n          setCategories((current) => new Set(current).add(newsCategory));\n        }}\n      >\n        Add category\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
-
-### Menu filter trigger [#menu-filter-trigger]
-
-Use `ChipButton` for Chip presentation without collection semantics.
-`MenuTrigger` continues to own open state, focus, and keyboard behavior.
-
-<Story of="MenuFilterTriggerExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ChipButton, Icon, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';\n\nexport function MenuFilterTriggerExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <MenuTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n      <ChipButton>\n        <Text>Location</Text>\n        <Icon icon=\&#x22;chevron-down\&#x22; flip={isOpen ? 'vertical' : undefined} />\n      </ChipButton>\n      <Menu aria-label=\&#x22;Location\&#x22;>\n        <MenuItem id=\&#x22;austin\&#x22;>Austin</MenuItem>\n        <MenuItem id=\&#x22;chicago\&#x22;>Chicago</MenuItem>\n        <MenuItem id=\&#x22;denver\&#x22;>Denver</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-### Content [#content]
-
-Use a string for a simple label. For icons or other composed content, wrap the
-visible label in `Text` and provide `textValue` for the accessible name. See
-**Toggle Chips** and **Removable Chips** above.
-
-### Selection and removal [#selection-and-removal]
-
-`ChipGroup` owns selection and removal behavior. Use a Chip render prop for
-state-dependent content, and `Button` with `slot="remove"` together with
-`onRemove` for removable items. See **Toggle Chips** and **Removable Chips**.
-
-### Layout and sizing [#layout-and-sizing]
-
-Set `size` on `ChipGroup` to keep a collection consistent. `ChipList` wraps by
-default and accepts layout props for custom arrangements. See **Sizes**.
-
-### Button composition [#button-composition]
-
-Use `ChipButton` when Chip presentation is needed without collection semantics.
-Compose it with components such as `MenuTrigger`; those components continue to
-own open state, focus, and keyboard behavior. See **Menu filter trigger**.
-
-## Accessibility [#accessibility]
-
-* Use `Label` or `aria-label` to name the `ChipGroup`; this names the collection,
-  not its individual Chips.
-* Give each Chip a visible label, `textValue`, or `aria-label`. Use `textValue`
-  when a Chip contains icons, composed content, or a render prop.
-* Use a descriptive group label so removal actions can be announced clearly.
-* Keep the visible label and the accessible value synchronized.
-* `ChipButton` is a real button and exposes menu state through `MenuTrigger`; provide an accessible name when the visible content is incomplete.
-
-## Best Practices [#best-practices]
-
-* Keep labels concise and let them truncate only when the available width requires it.
-* Prefer groups of three or more related values.
-* Keep one size per group.
-* Let `ChipList` wrap instead of forcing a single horizontal line.
-* Use removable Chips for user-added filters and tokens.
-* For menu filters, use `ChipButton` with `MenuTrigger` and provide the chevron explicitly.
-
-## Troubleshooting [#troubleshooting]
-
-### A ChipGroup has no accessible name [#a-chipgroup-has-no-accessible-name]
-
-Add a visible `Label` to the group or provide `aria-label`. For an individual Chip
-with composed content, provide a visible label, `textValue`, or `aria-label`.
-
-### The remove action does not update the UI [#the-remove-action-does-not-update-the-ui]
-
-Add `onRemove` to `ChipGroup` and remove the returned keys from the collection
-owned by your application.
-
-### A composed label is not truncating correctly [#a-composed-label-is-not-truncating-correctly]
-
-Keep the label in `Text`, preserve `textValue`, and constrain the available width
-of the surrounding layout. Truncation is visual; the complete accessible value
-should remain available.
-
-### The menu trigger does not look like a Chip [#the-menu-trigger-does-not-look-like-a-chip]
-
-Use `ChipButton` inside `MenuTrigger`, include the visible value, and add a
-trailing chevron to communicate that the control opens a menu.
-
-## Props [#props]
-
-```tsx
-<ChipGroup>
-  <Label />
-  <ChipList>
-    <Chip>
-      <Icon />
-      <Text />
-      <Button slot="remove" />
-    </Chip>
-  </ChipList>
-  <Text slot="description" />
-  <Text slot="errorMessage" />
-</ChipGroup>
-```
-
-For a menu trigger, the button and menu are composed as siblings inside
-`MenuTrigger`:
-
-```tsx
-<MenuTrigger>
-  <ChipButton>
-    <Text />
-    <Icon />
-  </ChipButton>
-  <Menu>
-    <MenuItem />
-    {/* ... */}
-  </Menu>
-</MenuTrigger>
-```
-
-### Chip [#chip]
-
-<PropTable />
-
-### ChipGroup [#chipgroup]
-
-<PropTable />
-
-### ChipList [#chiplist]
-
-<PropTable />
-
-### ChipButton [#chipbutton]
-
-<PropTable />
-
-
-# DatePicker
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `DatePickerCalendar`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in. `children` also accepts a function for picker state
-* **Trigger and calendar**: An empty `Button slot="trigger"` renders a calendar icon and the formatted value from the field. `DatePickerCalendar` (and `DateRangePickerCalendar`) is the calendar in the popover it opens: it takes `Calendar` props plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `Calendar` yourself to replace the whole overlay
-* `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
-* Built on React Aria - native form integration, validation, focus management, and screen-reader support
-* Label formatting via `formatOptions` / `placeholder` on the picker itself, or on `DatePickerValue` / `DateRangePickerValue` in a trigger you write
-* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Working with dates [#working-with-dates]
-
-Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
-
-```tsx
-import { parseDate } from '@godaddy/antares/date';
-import { DatePicker, Label } from '@godaddy/antares';
-
-function EventDatePicker() {
-  return (
-    <DatePicker defaultValue={parseDate('2024-03-15')}>
-      <Label>Event date</Label>
-    </DatePicker>
-  );
-}
-```
-
-Import date helpers from `@godaddy/antares/date` (a re-export of
-[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/)).
-Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user's locale.
-
-## Examples [#examples]
-
-### Default [#default]
-
-A single date picker with a `Label`.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DatePicker>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Range [#range]
-
-A start/end range picker.
-
-<Story of="RangeExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DateRangePicker, DateRangePickerCalendar, Label } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DateRangePickerCalendar />\n    </DateRangePicker>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Driving the value with `useState`.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { type CalendarDate, parseDate } from '@godaddy/antares/date';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<CalendarDate | null>(parseDate('2024-03-15'));\n\n  return (\n    <DatePicker value={value} onChange={setValue}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Format Options [#format-options]
-
-Controlling the trigger's label format via `formatOptions`.
-
-<Story of="FormatOptionsExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function FormatOptionsExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')} formatOptions={{ dateStyle: 'short' }}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Min / Max [#min--max]
-
-Bounding selectable dates with `minValue` / `maxValue`.
-
-<Story of="MinMaxExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function MinMaxExample() {\n  return (\n    <DatePicker minValue={parseDate('2024-03-05')} maxValue={parseDate('2024-03-25')}>\n      <Label>Booking date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### With error [#with-error]
-
-An invalid picker showing a validation message via `isInvalid` and a `FieldError`.
-
-<Story of="WithErrorExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, FieldError, Label } from '@godaddy/antares';\n\nexport function WithErrorExample() {\n  return (\n    <DatePicker isInvalid>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <FieldError>Please choose a date</FieldError>\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-A disabled picker via `isDisabled`.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DatePicker isDisabled>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Composed [#composed]
-
-Write the trigger and the overlay yourself instead of composing `DatePickerCalendar`, for full
-control over the popover and the calendar.
-
-<Story of="ComposedExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Calendar, Content, DatePicker, DatePickerValue, Icon, Label, Popover, Text } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function ComposedExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DatePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose the event date</Text>\n      <Popover hideArrow>\n        <Content>\n          <Calendar />\n        </Content>\n      </Popover>\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Composed range [#composed-range]
-
-Write a DateRangePicker's trigger and overlay from lower-level pieces the same way.
-
-<Story of="ComposedRangeExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  DateRangePicker,\n  DateRangePickerValue,\n  Icon,\n  Label,\n  Popover,\n  RangeCalendar,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedRangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DateRangePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your start and end dates</Text>\n      <Popover hideArrow>\n        <Content>\n          <RangeCalendar />\n        </Content>\n      </Popover>\n    </DateRangePicker>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<DatePicker>
-  <Label />
-  <Group>
-    <Button slot="trigger">
-      <DatePickerValue />
-    </Button>
-  </Group>
-  <Text slot="description" />
-  <Popover>
-    <Content>
-      <Calendar />
-    </Content>
-  </Popover>
-  <FieldError />
-</DatePicker>
-```
-
-```tsx
-<DateRangePicker>
-  <Label />
-  <Group>
-    <Button slot="trigger">
-      <DateRangePickerValue />
-    </Button>
-  </Group>
-  <Text slot="description" />
-  <Popover>
-    <Content>
-      <RangeCalendar />
-    </Content>
-  </Popover>
-  <FieldError />
-</DateRangePicker>
-```
-
-### DatePicker [#datepicker]
-
-<PropTable />
-
-### DateRangePicker [#daterangepicker]
-
-<PropTable />
-
-### DatePickerCalendar [#datepickercalendar]
-
-<PropTable />
-
-### DateRangePickerCalendar [#daterangepickercalendar]
-
-<PropTable />
-
-### DatePickerValue [#datepickervalue]
-
-<PropTable />
-
-### DateRangePickerValue [#daterangepickervalue]
 
 <PropTable />
 
@@ -2367,53 +2165,6 @@ For performance optimization:
 3. **Minimize icon sets**: Only load icons that are actually used
 
 
-# Image
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders a native `<img>` and accepts all of its attributes
-* Inherits presentation and behavior when composed inside Antares components such as Avatar
-* Ships no default styles, loading state, or fallback so it stays predictable everywhere
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Render an image with alternative text and explicit dimensions.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-* Provide concise, meaningful `alt` text when the image conveys information.
-* Use `alt=""` for decorative images or images already described by adjacent text.
-* Set `width` and `height` when known to reserve space and reduce layout shift.
-
-## Props [#props]
-
-### Image [#image]
-
-<PropTable />
-
-
 # InlineDrawer
 
 
@@ -2514,6 +2265,53 @@ A rail whose content stays visible when collapsed is a composition, not a mode: 
 <PropTable />
 
 
+# Image
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders a native `<img>` and accepts all of its attributes
+* Inherits presentation and behavior when composed inside Antares components such as Avatar
+* Ships no default styles, loading state, or fallback so it stays predictable everywhere
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Render an image with alternative text and explicit dimensions.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+* Provide concise, meaningful `alt` text when the image conveys information.
+* Use `alt=""` for decorative images or images already described by adjacent text.
+* Set `width` and `height` when known to reserve space and reduce layout shift.
+
+## Props [#props]
+
+### Image [#image]
+
+<PropTable />
+
+
 # Input
 
 
@@ -2596,6 +2394,220 @@ Label names a field. The required asterisk comes from Field CSS when the root is
 ## Props [#props]
 
 ### Label [#label]
+
+<PropTable />
+
+
+# DatePicker
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `DatePickerCalendar`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in. `children` also accepts a function for picker state
+* **Trigger and calendar**: An empty `Button slot="trigger"` renders a calendar icon and the formatted value from the field. `DatePickerCalendar` (and `DateRangePickerCalendar`) is the calendar in the popover it opens: it takes `Calendar` props plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `Calendar` yourself to replace the whole overlay
+* **Sizes**: Each picker is a [size scope](../size-scope/README.mdx). `size` (`sm`, `md`, `lg`) sets its label, trigger, description, error, and the calendar it opens; without it, the picker follows the surrounding scope
+* `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
+* Built on React Aria - native form integration, validation, focus management, and screen-reader support
+* Label formatting via `formatOptions` / `placeholder` on the picker itself, or on `DatePickerValue` / `DateRangePickerValue` in a trigger you write
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate } from '@godaddy/antares/date';
+import { DatePicker, Label } from '@godaddy/antares';
+
+function EventDatePicker() {
+  return (
+    <DatePicker defaultValue={parseDate('2024-03-15')}>
+      <Label>Event date</Label>
+    </DatePicker>
+  );
+}
+```
+
+Import date helpers from `@godaddy/antares/date` (a re-export of
+[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/)).
+Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user's locale.
+
+## Examples [#examples]
+
+### Default [#default]
+
+A single date picker with a `Label`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DatePicker>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Range [#range]
+
+A start/end range picker.
+
+<Story of="RangeExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DateRangePicker, DateRangePickerCalendar, Label } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DateRangePickerCalendar />\n    </DateRangePicker>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Driving the value with `useState`.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { type CalendarDate, parseDate } from '@godaddy/antares/date';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<CalendarDate | null>(parseDate('2024-03-15'));\n\n  return (\n    <DatePicker value={value} onChange={setValue}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Format Options [#format-options]
+
+Controlling the trigger's label format via `formatOptions`.
+
+<Story of="FormatOptionsExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function FormatOptionsExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')} formatOptions={{ dateStyle: 'short' }}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates with `minValue` / `maxValue`.
+
+<Story of="MinMaxExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function MinMaxExample() {\n  return (\n    <DatePicker minValue={parseDate('2024-03-05')} maxValue={parseDate('2024-03-25')}>\n      <Label>Booking date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### With error [#with-error]
+
+An invalid picker showing a validation message via `isInvalid` and a `FieldError`.
+
+<Story of="WithErrorExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, FieldError, Label } from '@godaddy/antares';\n\nexport function WithErrorExample() {\n  return (\n    <DatePicker isInvalid>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <FieldError>Please choose a date</FieldError>\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+A disabled picker via `isDisabled`.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DatePicker isDisabled>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Composed [#composed]
+
+Write the trigger and the overlay yourself instead of composing `DatePickerCalendar`, for full
+control over the popover and the calendar.
+
+<Story of="ComposedExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Calendar, Content, DatePicker, DatePickerValue, Icon, Label, Popover, Text } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function ComposedExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DatePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose the event date</Text>\n      <Popover hideArrow>\n        <Content>\n          <Calendar />\n        </Content>\n      </Popover>\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Composed range [#composed-range]
+
+Write a DateRangePicker's trigger and overlay from lower-level pieces the same way.
+
+<Story of="ComposedRangeExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  DateRangePicker,\n  DateRangePickerValue,\n  Icon,\n  Label,\n  Popover,\n  RangeCalendar,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedRangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DateRangePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your start and end dates</Text>\n      <Popover hideArrow>\n        <Content>\n          <RangeCalendar />\n        </Content>\n      </Popover>\n    </DateRangePicker>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+`size` sets the label, trigger, and calendar. Without it, the picker follows the surrounding
+size scope.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Flex, Label } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function picker(size) {\n        return (\n          <DatePicker key={size} size={size}>\n            <Label>Event date ({size})</Label>\n            <Button slot=\&#x22;trigger\&#x22; />\n            <DatePickerCalendar />\n          </DatePicker>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<DatePicker>
+  <Label />
+  <Group>
+    <Button slot="trigger">
+      <DatePickerValue />
+    </Button>
+  </Group>
+  <Text slot="description" />
+  <Popover>
+    <Content>
+      <Calendar />
+    </Content>
+  </Popover>
+  <FieldError />
+</DatePicker>
+```
+
+```tsx
+<DateRangePicker>
+  <Label />
+  <Group>
+    <Button slot="trigger">
+      <DateRangePickerValue />
+    </Button>
+  </Group>
+  <Text slot="description" />
+  <Popover>
+    <Content>
+      <RangeCalendar />
+    </Content>
+  </Popover>
+  <FieldError />
+</DateRangePicker>
+```
+
+### DatePicker [#datepicker]
+
+<PropTable />
+
+### DateRangePicker [#daterangepicker]
+
+<PropTable />
+
+### DatePickerCalendar [#datepickercalendar]
+
+<PropTable />
+
+### DateRangePickerCalendar [#daterangepickercalendar]
+
+<PropTable />
+
+### DatePickerValue [#datepickervalue]
+
+<PropTable />
+
+### DateRangePickerValue [#daterangepickervalue]
 
 <PropTable />
 
@@ -2954,6 +2966,145 @@ Use the `compact` prop to render the metric value and description inline rather 
 <PropTable />
 
 
+# NumberField
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Composable interior**: Compose `Label`, the control, `Text slot="description"`, and `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
+* **Steppers**: A stepper is a `Group` holding `Button slot="decrement"`, an `Input`, and `Button slot="increment"`. Left empty, each button takes its icon and `variant="control"` from the field, so no icon imports are needed. Compose a bare `Input` instead for a plain numeric input
+* **Sizes**: The field is a [size scope](../size-scope/README.mdx). `size` (`sm`, `md`, `lg`) sets its label, input, steppers, description, and error; without it, the field follows the surrounding scope
+* **Value scale**: `minValue`, `maxValue`, `step`, and `formatOptions` configure the numeric behavior
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Minimal usage with a `Label`, min/max, and stepper `Button`s.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, type NumberFieldProps } from '@godaddy/antares';\n\nexport function DefaultExample({ defaultValue = 0 }: Pick<NumberFieldProps, 'defaultValue'> = {}) {\n  return (\n    <NumberField defaultValue={defaultValue} minValue={0} maxValue={100}>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState(10);\n\n  return (\n    <>\n      <NumberField minValue={0} maxValue={100} value={value} onChange={setValue}>\n        <Label>Quantity</Label>\n        <Group>\n          <Button slot=\&#x22;decrement\&#x22; />\n          <Input />\n          <Button slot=\&#x22;increment\&#x22; />\n        </Group>\n      </NumberField>\n      <Text>\n        <strong>Value:</strong> {value ?? '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with a `FieldError` for validation feedback.
+
+<Story of="InvalidExample" />
+
+<Source language="tsx" code="&#x22;import { Button, FieldError, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <NumberField minValue={0} maxValue={100} isInvalid isRequired>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n      <FieldError>Please enter a value between 0 and 100</FieldError>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent input.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <NumberField defaultValue={42} minValue={0} maxValue={100} isDisabled>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Hide Stepper [#hide-stepper]
+
+Compose without stepper `Button`s for a plain numeric input.
+
+<Story of="HideStepperExample" />
+
+<Source language="tsx" code="&#x22;import { Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function HideStepperExample() {\n  return (\n    <NumberField minValue={0} maxValue={100}>\n      <Label>Quantity</Label>\n      <Input placeholder=\&#x22;0\&#x22; />\n      <Text slot=\&#x22;description\&#x22;>Enter a value between 0 and 100.</Text>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Value Scale [#value-scale]
+
+Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calculated from the minimum value.
+
+<Story of="ValueScaleExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function ValueScaleExample() {\n  return (\n    <NumberField minValue={2} maxValue={20} step={3}>\n      <Label>Step value</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>\n        Steps are from the minimum: minValue={'{2}'}, step={'{3}'} gives 2, 5, 8, 11, …\n      </Text>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Format options (numbering system) [#format-options-numbering-system]
+
+By default, NumberField displays the value using the numbering system for the user's locale. Use the `formatOptions` prop to override the numbering system by setting the Unicode numbering system locale extension.
+
+<Story of="FormatOptionsExample" />
+
+<Source language="tsx" code="&#x22;import { Input, Label, NumberField, Text } from '@godaddy/antares';\n\nconst devanagariFormatOptions = Intl.NumberFormat('hi-IN-u-nu-deva').resolvedOptions();\n\nexport function FormatOptionsExample() {\n  return (\n    <NumberField value={1024} formatOptions={devanagariFormatOptions}>\n      <Label>Number (Devanagari)</Label>\n      <Input />\n      <Text slot=\&#x22;description\&#x22;>\n        By default, NumberField uses the user's locale. Use formatOptions to override with a Unicode numbering system\n        locale extension (e.g. nu-deva).\n      </Text>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+`size` sets the label, input, and steppers. Without it, the field follows the surrounding size
+scope.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function field(size) {\n        return (\n          <NumberField key={size} minValue={0} maxValue={100} size={size}>\n            <Label>Quantity ({size})</Label>\n            <Group>\n              <Button slot=\&#x22;decrement\&#x22; />\n              <Input />\n              <Button slot=\&#x22;increment\&#x22; />\n            </Group>\n          </NumberField>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+
+### Text Steppers [#text-steppers]
+
+Compose with `children` to replace the stepper icons with your own content, such as text.
+
+<Story of="TextSteppersExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function TextSteppersExample() {\n  return (\n    <NumberField defaultValue={1} minValue={0}>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22;>decrement</Button>\n        <Input />\n        <Button slot=\&#x22;increment\&#x22;>increment</Button>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Use decrement and increment to change the value.</Text>\n    </NumberField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<NumberField>
+  <Label />
+  <Group>
+    <Button slot="decrement" />
+    <Input />
+    <Button slot="increment" />
+  </Group>
+  {/* or a bare <Input /> for a plain numeric input */}
+  <Text slot="description" />
+  <FieldError />
+</NumberField>
+```
+
+### NumberField [#numberfield]
+
+<PropTable />
+
+
 # Modal
 
 
@@ -3083,143 +3234,6 @@ the dialog.
 <PropTable />
 
 ### ModalTrigger [#modaltrigger]
-
-<PropTable />
-
-
-# NumberField
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Composable interior**: Compose `Label`, the control, `Text slot="description"`, and `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
-* **Steppers**: A stepper is a `Group` holding `Button slot="decrement"`, an `Input`, and `Button slot="increment"`. Left empty, each button takes its icon, `variant="control"`, and `size` from the field, so no icon imports are needed. Compose a bare `Input` instead for a plain numeric input
-* **Value scale**: `minValue`, `maxValue`, `step`, and `formatOptions` configure the numeric behavior
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Minimal usage with a `Label`, min/max, and stepper `Button`s.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, type NumberFieldProps } from '@godaddy/antares';\n\nexport function DefaultExample({ defaultValue = 0 }: Pick<NumberFieldProps, 'defaultValue'> = {}) {\n  return (\n    <NumberField defaultValue={defaultValue} minValue={0} maxValue={100}>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState(10);\n\n  return (\n    <>\n      <NumberField minValue={0} maxValue={100} value={value} onChange={setValue}>\n        <Label>Quantity</Label>\n        <Group>\n          <Button slot=\&#x22;decrement\&#x22; />\n          <Input />\n          <Button slot=\&#x22;increment\&#x22; />\n        </Group>\n      </NumberField>\n      <Text>\n        <strong>Value:</strong> {value ?? '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Invalid [#invalid]
-
-Use `isInvalid` with a `FieldError` for validation feedback.
-
-<Story of="InvalidExample" />
-
-<Source language="tsx" code="&#x22;import { Button, FieldError, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <NumberField minValue={0} maxValue={100} isInvalid isRequired>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n      <FieldError>Please enter a value between 0 and 100</FieldError>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` to prevent input.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <NumberField defaultValue={42} minValue={0} maxValue={100} isDisabled>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Hide Stepper [#hide-stepper]
-
-Compose without stepper `Button`s for a plain numeric input.
-
-<Story of="HideStepperExample" />
-
-<Source language="tsx" code="&#x22;import { Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function HideStepperExample() {\n  return (\n    <NumberField minValue={0} maxValue={100}>\n      <Label>Quantity</Label>\n      <Input placeholder=\&#x22;0\&#x22; />\n      <Text slot=\&#x22;description\&#x22;>Enter a value between 0 and 100.</Text>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Value Scale [#value-scale]
-
-Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calculated from the minimum value.
-
-<Story of="ValueScaleExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function ValueScaleExample() {\n  return (\n    <NumberField minValue={2} maxValue={20} step={3}>\n      <Label>Step value</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>\n        Steps are from the minimum: minValue={'{2}'}, step={'{3}'} gives 2, 5, 8, 11, …\n      </Text>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Format options (numbering system) [#format-options-numbering-system]
-
-By default, NumberField displays the value using the numbering system for the user's locale. Use the `formatOptions` prop to override the numbering system by setting the Unicode numbering system locale extension.
-
-<Story of="FormatOptionsExample" />
-
-<Source language="tsx" code="&#x22;import { Input, Label, NumberField, Text } from '@godaddy/antares';\n\nconst devanagariFormatOptions = Intl.NumberFormat('hi-IN-u-nu-deva').resolvedOptions();\n\nexport function FormatOptionsExample() {\n  return (\n    <NumberField value={1024} formatOptions={devanagariFormatOptions}>\n      <Label>Number (Devanagari)</Label>\n      <Input />\n      <Text slot=\&#x22;description\&#x22;>\n        By default, NumberField uses the user's locale. Use formatOptions to override with a Unicode numbering system\n        locale extension (e.g. nu-deva).\n      </Text>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Compare the supported `md` and `sm` visual sizes.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <NumberField minValue={0} maxValue={100}>\n        <Label>Quantity (md)</Label>\n        <Group>\n          <Button slot=\&#x22;decrement\&#x22; />\n          <Input />\n          <Button slot=\&#x22;increment\&#x22; />\n        </Group>\n      </NumberField>\n      <NumberField minValue={0} maxValue={100} size=\&#x22;sm\&#x22;>\n        <Label>Quantity (sm)</Label>\n        <Group>\n          <Button slot=\&#x22;decrement\&#x22; />\n          <Input />\n          <Button slot=\&#x22;increment\&#x22; />\n        </Group>\n      </NumberField>\n    </Flex>\n  );\n}&#x22;" />
-
-### Text Steppers [#text-steppers]
-
-Compose with `children` to replace the stepper icons with your own content, such as text.
-
-<Story of="TextSteppersExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function TextSteppersExample() {\n  return (\n    <NumberField defaultValue={1} minValue={0}>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22;>decrement</Button>\n        <Input />\n        <Button slot=\&#x22;increment\&#x22;>increment</Button>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Use decrement and increment to change the value.</Text>\n    </NumberField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<NumberField>
-  <Label />
-  <Group>
-    <Button slot="decrement" />
-    <Input />
-    <Button slot="increment" />
-  </Group>
-  {/* or a bare <Input /> for a plain numeric input */}
-  <Text slot="description" />
-  <FieldError />
-</NumberField>
-```
-
-### NumberField [#numberfield]
 
 <PropTable />
 
@@ -4497,7 +4511,7 @@ over the popover and the list.
 ### Default [#default]
 
 A scope sizes everything inside it: text, controls, and default spacing. A component's own
-`size` still wins, here on the second button.
+`size` still wins.
 
 <Story of="DefaultExample" />
 
@@ -4518,7 +4532,7 @@ portal. An explicit `size` on the owner sizes its overlay too.
 
 <Story of="OverlaysExample" />
 
-<Source language="tsx" code="&#x22;import {\n  Button,\n  ButtonGroup,\n  Content,\n  Flex,\n  Heading,\n  Label,\n  Modal,\n  ModalTrigger,\n  Select,\n  SelectItem,\n  SelectOptions,\n  SizeScope,\n  Text\n} from '@godaddy/antares';\n\nexport function OverlaysExample() {\n  return (\n    <SizeScope size=\&#x22;sm\&#x22;>\n      <Flex gap=\&#x22;md\&#x22; alignItems=\&#x22;end\&#x22; wrap=\&#x22;wrap\&#x22;>\n        <Select placeholder=\&#x22;Pick a plan\&#x22;>\n          <Label>Plan</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;basic\&#x22;>Basic</SelectItem>\n            <SelectItem id=\&#x22;pro\&#x22;>Pro</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <Select size=\&#x22;lg\&#x22; placeholder=\&#x22;Pick a region\&#x22;>\n          <Label>Region</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>United States</SelectItem>\n            <SelectItem id=\&#x22;eu\&#x22;>Europe</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <ModalTrigger>\n          <Button>Edit plan</Button>\n          <Modal>\n            <Heading slot=\&#x22;title\&#x22;>Edit plan</Heading>\n            <Content>\n              <Text>Changes apply at the next billing cycle.</Text>\n            </Content>\n            <ButtonGroup>\n              <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n              <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n                Save\n              </Button>\n            </ButtonGroup>\n          </Modal>\n        </ModalTrigger>\n      </Flex>\n    </SizeScope>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import {\n  Button,\n  ButtonGroup,\n  Content,\n  Flex,\n  Heading,\n  Label,\n  Modal,\n  ModalTrigger,\n  Select,\n  SelectItem,\n  SelectOptions,\n  SizeScope,\n  Text,\n  Tooltip,\n  TooltipTrigger\n} from '@godaddy/antares';\n\nexport function OverlaysExample() {\n  return (\n    <SizeScope size=\&#x22;sm\&#x22;>\n      <Flex gap=\&#x22;md\&#x22; alignItems=\&#x22;end\&#x22; wrap=\&#x22;wrap\&#x22;>\n        <Select placeholder=\&#x22;Pick a plan\&#x22;>\n          <Label>Plan</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;basic\&#x22;>Basic</SelectItem>\n            <SelectItem id=\&#x22;pro\&#x22;>Pro</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <Select size=\&#x22;lg\&#x22; placeholder=\&#x22;Pick a region\&#x22;>\n          <Label>Region</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>United States</SelectItem>\n            <SelectItem id=\&#x22;eu\&#x22;>Europe</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <ModalTrigger>\n          <Button>Edit plan</Button>\n          <Modal>\n            <Heading slot=\&#x22;title\&#x22;>Edit plan</Heading>\n            <Content>\n              <Text>Changes apply at the next billing cycle.</Text>\n            </Content>\n            <ButtonGroup>\n              <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n              <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n                Save\n              </Button>\n            </ButtonGroup>\n          </Modal>\n        </ModalTrigger>\n\n        <TooltipTrigger>\n          <Button>Help</Button>\n          <Tooltip>Billing questions</Tooltip>\n        </TooltipTrigger>\n      </Flex>\n    </SizeScope>\n  );\n}&#x22;" />
 
 ### Bare Content [#bare-content]
 
@@ -5352,8 +5366,8 @@ Compose a `TextArea` instead of an `Input` for multiline entry.
 
 ### Sizes [#sizes]
 
-`size` sets the label, input, description, and any control composed inside, here a
-`Button slot="control"`. Without it, the field follows the surrounding size scope.
+`size` sets the label, input, description, and any control composed inside. Without it, the
+field follows the surrounding size scope.
 
 <Story of="SizesExample" />
 
@@ -5445,9 +5459,8 @@ number of paragraphs; `size` sets the tier for all of them at once.
 
 ### Sizes [#sizes]
 
-`size` is the tier: the eyebrow reads it on the `detail` ramp, the title on `heading`,
-and the body on `body`. Use `2xl` for a page title, `xl` for a hero, `lg` for a section
-title, and `md` everywhere else. Without `size`, the lockup follows the size scope.
+`size` sets every part, each on its own role ramp. Without it, the lockup follows the size
+scope.
 
 <Story of="SizesExample" />
 
@@ -5505,7 +5518,7 @@ growing a prop for it.
 * **The body is `<Text slot="body">`**, once or as many times as the copy needs.
 * **An explicit prop on a child always wins** over what the lockup supplies. Pass
   `<Tag slot="eyebrow" size="sm">` to break the pairing, for instance.
-* **Controls keep the interface size.** A `Button` inside a lockup follows the surrounding
+* **Controls keep the scale size.** A `Button` inside a lockup follows the surrounding
   [size scope](../size-scope/README.mdx) or its own `size` prop, never the lockup's tier.
 * **`size` is the tier.** The eyebrow reads it on the `detail` ramp, the title on `heading`, and
   the body on `body`, so there is no table to memorize. Without `size`, the lockup follows the
@@ -5915,81 +5928,6 @@ To position a tooltip relative to a different focusable element, use the `trigge
 <PropTable />
 
 
-# DonutChart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Story of="SingleSliceExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Story of="LegendLayoutExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Story of="SmallSlicesExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Story of="FormatValueExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### DonutChart [#donutchart]
-
-<PropTable />
-
-
 # Bar Chart
 
 
@@ -6191,6 +6129,81 @@ For better performance:
 ## Props [#props]
 
 ### BarChart [#barchart]
+
+<PropTable />
+
+
+# DonutChart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Story of="SingleSliceExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Story of="LegendLayoutExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Story of="SmallSlicesExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
+
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Story of="FormatValueExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### DonutChart [#donutchart]
 
 <PropTable />
 
