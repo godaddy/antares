@@ -232,7 +232,6 @@ describe('@godaddy/antares', function packageTests() {
       it('gives the Card a selected appearance when its input changes', async function selectedSurface() {
         const { container, getByTestId } = await render(<InteractionsExample />);
         const card = container.querySelector<HTMLElement>('[data-card]')!;
-        const initialBorder = getComputedStyle(card).borderColor;
         await userEvent.click(getByTestId('indicator-One'));
         expect(getComputedStyle(card).borderColor).toBe('rgb(9, 117, 122)');
       });
