@@ -38,8 +38,9 @@ behavior are preserved.
 - On a Card without a primary action or selection, `aria-label`, `aria-labelledby`, and
   `aria-describedby` apply to the surface, for example with `role="region"`.
 - `href` turns the Card into a native link. Modifier-click, middle-click, and "Open in new tab" work
-  on the surface. Body text is not selectable. Do not put CornerActions on an `href` Card. Clicking
-  body text on an `onPress` or selection Card activates it; dragging that text selects it.
+  on the surface. Body text is not selectable. The link covers the whole Card, so do not put
+  CornerActions, buttons, inputs, selection, or other controls in an `href` Card. Clicking body text
+  on an `onPress` or selection Card activates it; dragging that text selects it.
 - `isDisabled` disables only the primary. `isSelectionDisabled` disables only selection. Radio
   read-only and validation state belong on `RadioGroup`.
 
