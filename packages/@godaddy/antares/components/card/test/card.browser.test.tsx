@@ -86,6 +86,42 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(indicator).toHaveTextContent('false');
       });
 
+      it('sizes the default indicator like its sibling corner actions', async function indicatorSize() {
+        const { getByRole } = await render(<CheckboxExample />);
+        const card = getByRole('checkbox', { name: 'Domain privacy' }).element().closest('[data-card]')!;
+        const button = bounds(card.querySelector('[data-corner-actions] button')!);
+        const indicator = bounds(card.querySelector('[data-card-selection-indicator]')!);
+        expect(indicator.height).toBe(button.height);
+        expect(indicator.width).toBe(indicator.height);
+      });
+
+      it('previews the checkmark while hovering a card that selects on press', async function indicatorHover() {
+        const { getByRole, getByText } = await render(<CheckboxExample />);
+        const privacy = getByRole('checkbox', { name: 'Domain privacy' });
+        const body = getByText('Hide your contact details from the public directory.');
+        const checkmark = privacy
+          .element()
+          .closest('[data-card]')!
+          .querySelector('[data-card-selection-indicator] > *')!;
+        const opacity = () => getComputedStyle(checkmark).opacity;
+        await expect.poll(opacity).toBe('1');
+        await userEvent.click(body);
+        await expect.element(privacy).not.toBeChecked();
+        await expect.poll(opacity).toBe('0.5');
+        await userEvent.unhover(body);
+        await expect.poll(opacity).toBe('0');
+      });
+
+      it('keeps the checkmark hidden while hovering a card with a primary action', async function primaryHover() {
+        const { getByTestId, getByText } = await render(<InteractionsExample primary="action" />);
+        const checkmark = getByTestId('indicator-One').element().firstElementChild!;
+        const opacity = () => getComputedStyle(checkmark).opacity;
+        await userEvent.hover(getByText('One: copy this text without changing selection.'));
+        await expect.poll(opacity).toBe('0');
+        await userEvent.hover(getByTestId('indicator-One'));
+        await expect.poll(opacity).toBe('0.5');
+      });
+
       it('toggles selection from ordinary body content', async function bodyTogglesSelection() {
         const { getByRole, getByText, getByTestId } = await render(<CheckboxExample />);
         await userEvent.click(getByText('Keep this plan active when it expires.'));

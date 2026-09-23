@@ -1,6 +1,7 @@
 .control {
   display: inline-flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .control:where([data-focus-visible]),
@@ -9,23 +10,57 @@
 }
 
 .indicator {
+  --_card-selection-indicator-padding: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
+  --_card-selection-indicator-background: var(--ux-1mh0ktr, #f5f5f5);
+  --_card-selection-indicator-border: var(--color-surface-border-card, var(--ux-97h3vl, #d4dbe0));
+  --_card-selection-indicator-check-opacity: 0;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 .indicator:where(:not([data-custom])) {
-  inline-size: 1.5rem;
-  block-size: 1.5rem;
-  padding: 0;
-  border: 1px solid var(--color-surface-border-card, var(--ux-97h3vl, #d4dbe0));
+  padding: var(--_card-selection-indicator-padding);
+  border: 1px solid var(--_card-selection-indicator-border);
   border-radius: 50%;
-  background: var(--color-input-background-default, var(--ux-1nu8itt, #fff));
+  background: var(--_card-selection-indicator-background);
   color: var(--color-surface-text-card, var(--ux-1leynsm, #111));
+  font-size: var(--font-body-size-md, var(--ux-cxbe8g, 16px));
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease;
 }
 
-.indicator:where(:not([data-custom])):where([data-selected], [data-indeterminate]) {
-  border-color: var(--color-input-border-selected, var(--ux-77zzwv, #00a4a6));
+.indicator:where([data-focus-visible]) {
+  --_card-selection-indicator-check-opacity: 0.5;
+}
+
+/* Also previews from its own Card when that Card has no primary action. */
+.indicator:where(:not([data-disabled], [data-readonly])) {
+  @media (hover: hover) {
+    &:where(:hover),
+    &:where([data-card="interactive"]:hover *):not(
+        :where([data-card]:not(:hover), [data-card]:has(> [data-card-primary])) *
+      ) {
+      --_card-selection-indicator-background: var(--ux-11rtwg8, #f5f5f5);
+      --_card-selection-indicator-check-opacity: 0.5;
+    }
+  }
+
+  &:where(:active),
+  &:where([data-card="interactive"]:active *):not(
+      :where([data-card]:not(:active), [data-card]:has(> [data-card-primary])) *
+    ) {
+    --_card-selection-indicator-background: var(--ux-gdy377, #fff);
+    --_card-selection-indicator-check-opacity: 0.5;
+  }
+}
+
+.indicator:where([data-selected], [data-indeterminate]) {
+  --_card-selection-indicator-background: var(--color-input-background-default, var(--ux-1nu8itt, #fff));
+  --_card-selection-indicator-border: var(--color-input-border-selected, var(--ux-77zzwv, #00a4a6));
+  --_card-selection-indicator-check-opacity: 1;
 }
 
 .control:where([data-disabled], [data-readonly]),
@@ -38,9 +73,6 @@
 }
 
 .checkmark {
-  opacity: 0;
-}
-
-.indicator:where([data-selected], [data-indeterminate]) > :where(.checkmark) {
-  opacity: 1;
+  opacity: var(--_card-selection-indicator-check-opacity);
+  transition: opacity 150ms ease;
 }

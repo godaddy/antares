@@ -225,6 +225,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
               aria-labelledby={ariaLabelledBy}
               aria-describedby={ariaDescribedBy}
               isDisabled={isDisabled}
+              data-card-primary
               className={styles.link}
             />
           ) : onPress != null ? (
@@ -235,6 +236,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
               aria-labelledby={ariaLabelledBy}
               aria-describedby={ariaDescribedBy}
               isDisabled={isDisabled}
+              data-card-primary
               className={styles.primary}
             />
           ) : null}
