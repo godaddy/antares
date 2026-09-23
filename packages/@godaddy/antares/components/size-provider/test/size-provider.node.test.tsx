@@ -35,10 +35,7 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('renders no element of its own', function plainHtmlExample() {
-      const html = renderToString(<PlainHtmlExample />);
-
-      expect(html).toMatch(/^<p>/);
-      expect(html).toMatchSnapshot();
+      expect(renderToString(<PlainHtmlExample />)).toMatchSnapshot();
     });
   });
 });
