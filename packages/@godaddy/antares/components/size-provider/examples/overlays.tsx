@@ -10,7 +10,7 @@ import {
   Select,
   SelectItem,
   SelectOptions,
-  SizeScope,
+  SizeProvider,
   Text,
   Tooltip,
   TooltipTrigger
@@ -23,7 +23,7 @@ import {
  */
 export function OverlaysExample() {
   return (
-    <SizeScope size="sm">
+    <SizeProvider size="sm">
       <Flex gap="md" alignItems="end" wrap="wrap">
         <Select placeholder="Pick a plan">
           <Label>Plan</Label>
@@ -64,6 +64,6 @@ export function OverlaysExample() {
           <Tooltip>Billing questions</Tooltip>
         </TooltipTrigger>
       </Flex>
-    </SizeScope>
+    </SizeProvider>
   );
 }

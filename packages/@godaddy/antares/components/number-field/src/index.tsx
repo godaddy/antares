@@ -13,7 +13,7 @@ import { Icon } from '#components/icon';
 import { InputContext } from '#components/input';
 import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { SizeScope, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-scope';
+import { SizeProvider, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-provider';
 import { GroupContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import fieldStyles from '../../_internal/field-styles/index.module.css';
@@ -109,7 +109,7 @@ export function NumberField(props: NumberFieldProps) {
   const scale = useDeclaredSize(size);
 
   return (
-    <SizeScope size={size}>
+    <SizeProvider size={size}>
       <Flex
         direction="column"
         gap={gap}
@@ -123,6 +123,6 @@ export function NumberField(props: NumberFieldProps) {
           return <NumberFieldBody isDisabled={isDisabled}>{node}</NumberFieldBody>;
         })}
       </Flex>
-    </SizeScope>
+    </SizeProvider>
   );
 }

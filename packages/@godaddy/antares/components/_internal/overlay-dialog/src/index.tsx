@@ -8,7 +8,7 @@ import {
   Provider as RACProvider
 } from 'react-aria-components';
 import { Grid, type GridOwnProps } from '#components/layout/grid';
-import { SizeScope, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-scope';
+import { SizeProvider, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-provider';
 import { HeaderContext, ContentContext, FooterContext, ButtonGroupContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
@@ -65,7 +65,7 @@ export const OverlayDialog = forwardRef<HTMLElement, OverlayDialogProps>(functio
   const size = useDeclaredSize(sizeProp);
 
   return (
-    <SizeScope size={size}>
+    <SizeProvider size={size}>
       <Grid
         as={RACDialog}
         {...rest}
@@ -74,6 +74,6 @@ export const OverlayDialog = forwardRef<HTMLElement, OverlayDialogProps>(functio
       >
         <OverlayRegions>{children}</OverlayRegions>
       </Grid>
-    </SizeScope>
+    </SizeProvider>
   );
 });

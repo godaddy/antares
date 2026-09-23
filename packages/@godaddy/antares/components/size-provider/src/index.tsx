@@ -23,7 +23,7 @@ export function sizeScaleClassName(size?: ScaleSize) {
   return size && SCALE[size];
 }
 
-export interface SizeScopeProps {
+export interface SizeProviderProps {
   /** Size of everything inside. Inherits when omitted. */
   size?: ScaleSize;
 
@@ -37,13 +37,13 @@ export interface SizeScopeProps {
  *
  * @example
  * ```tsx
- * <SizeScope size="sm">
+ * <SizeProvider size="sm">
  *   <Text>Compact copy</Text>
  *   <Button>Save</Button>
- * </SizeScope>
+ * </SizeProvider>
  * ```
  */
-export function SizeScope({ size, children }: SizeScopeProps) {
+export function SizeProvider({ size, children }: SizeProviderProps) {
   const resolved = useDeclaredSize(size);
   return <DeclaredSizeContext.Provider value={resolved}>{children}</DeclaredSizeContext.Provider>;
 }

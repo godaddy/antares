@@ -1,5 +1,5 @@
 import { cx } from 'cva';
-import { sizeScaleClassName, useDeclaredSize } from '#components/size-scope';
+import { sizeScaleClassName, useDeclaredSize } from '#components/size-provider';
 import styles from './index.module.css';
 
 /** A step on a text component's own ramp. */

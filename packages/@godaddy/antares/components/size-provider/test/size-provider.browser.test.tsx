@@ -16,7 +16,7 @@ function box(element: Element) {
 }
 
 describe('@godaddy/antares', function antares() {
-  describe('#SizeScope', function sizeScopeTests() {
+  describe('#SizeProvider', function sizeProviderTests() {
     it('sizes controls from the nearest scope, with md outside any scope', async function controls() {
       const { getByTestId } = await render(<ScenariosExample />);
 

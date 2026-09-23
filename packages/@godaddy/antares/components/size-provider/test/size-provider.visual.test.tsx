@@ -4,7 +4,7 @@ import { DefaultExample } from '../examples/default.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 
 describe('@godaddy/antares', function packageTests() {
-  describe('#SizeScope', function sizeScopeTests() {
+  describe('#SizeProvider', function sizeProviderTests() {
     it('default example', async function defaultRender() {
       const { container } = await render(<DefaultExample />);
       await expect(container).toMatchScreenshot('default');

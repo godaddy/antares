@@ -1,11 +1,11 @@
 'use client';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { SizeScope } from './src/index.tsx';
-import { PlaygroundExample } from './examples/size-scope-playground.tsx';
+import { SizeProvider } from './src/index.tsx';
+import { PlaygroundExample } from './examples/size-provider-playground.tsx';
 
-export default getMeta({ title: 'components/SizeScope' });
+export default getMeta({ title: 'components/SizeProvider' });
 
-export const Props = getComponentDocs(SizeScope);
+export const Props = getComponentDocs(SizeProvider);
 
 export const Examples = getExamples('./examples');
 

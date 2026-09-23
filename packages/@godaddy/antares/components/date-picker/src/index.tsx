@@ -23,7 +23,7 @@ import { Icon } from '#components/icon';
 import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Popover, type PopoverProps } from '#components/popover';
-import { SizeScope, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-scope';
+import { SizeProvider, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-provider';
 import { Content, GroupContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import fieldStyles from '../../_internal/field-styles/index.module.css';
@@ -154,7 +154,7 @@ export function DatePicker(props: DatePickerProps) {
   const value = <DatePickerValue formatOptions={formatOptions} placeholder={placeholder} />;
 
   return (
-    <SizeScope size={size}>
+    <SizeProvider size={size}>
       <Flex
         direction="column"
         gap={gap}
@@ -172,7 +172,7 @@ export function DatePicker(props: DatePickerProps) {
           );
         })}
       </Flex>
-    </SizeScope>
+    </SizeProvider>
   );
 }
 
@@ -209,7 +209,7 @@ export function DateRangePicker(props: DateRangePickerProps) {
   const value = <DateRangePickerValue formatOptions={formatOptions} placeholder={placeholder} />;
 
   return (
-    <SizeScope size={size}>
+    <SizeProvider size={size}>
       <Flex
         direction="column"
         gap={gap}
@@ -227,7 +227,7 @@ export function DateRangePicker(props: DateRangePickerProps) {
           );
         })}
       </Flex>
-    </SizeScope>
+    </SizeProvider>
   );
 }
 

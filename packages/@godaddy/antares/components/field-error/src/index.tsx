@@ -4,7 +4,7 @@ import {
   FieldErrorContext as RACFieldErrorContext,
   type FieldErrorProps as RACFieldErrorProps
 } from 'react-aria-components';
-import { sizeScaleClassName, useDeclaredSize } from '#components/size-scope';
+import { sizeScaleClassName, useDeclaredSize } from '#components/size-provider';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 

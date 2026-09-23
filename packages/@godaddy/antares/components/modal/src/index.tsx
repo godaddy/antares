@@ -9,7 +9,7 @@ import {
 } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
 import { OverlayDialog } from '#components/_internal/overlay-dialog';
-import type { ScaleSize } from '#components/size-scope';
+import type { ScaleSize } from '#components/size-provider';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 

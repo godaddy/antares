@@ -13,7 +13,7 @@ import {
 } from 'react-aria-components';
 import { partClassName } from '#components/_internal/typography';
 import { Icon } from '#components/icon';
-import { useDeclaredSize } from '#components/size-scope';
+import { useDeclaredSize } from '#components/size-provider';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 

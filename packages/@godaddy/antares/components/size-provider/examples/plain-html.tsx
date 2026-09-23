@@ -1,4 +1,4 @@
-import { SizeScope, Text } from '@godaddy/antares';
+import { SizeProvider, Text } from '@godaddy/antares';
 
 /**
  * A scope sizes Antares components only. Plain HTML keeps its own typography, so put copy in
@@ -7,9 +7,9 @@ import { SizeScope, Text } from '@godaddy/antares';
  */
 export function PlainHtmlExample() {
   return (
-    <SizeScope size="lg">
+    <SizeProvider size="lg">
       <p>A plain paragraph keeps the page's typography.</p>
       <Text>Text follows the scope.</Text>
-    </SizeScope>
+    </SizeProvider>
   );
 }

@@ -24,7 +24,7 @@ Setting `size` on a section resizes everything inside it: text, controls, and de
 their copy, and a heading's level is independent of its visual size.
 
 ```tsx
-<SizeScope size="sm">
+<SizeProvider size="sm">
   <TextLockup>
     <Heading slot="title" level={2}>Billing</Heading>
     <Text slot="body">Manage your payment methods.</Text>
@@ -38,7 +38,7 @@ their copy, and a heading's level is independent of its visual size.
 
   <Button>Update payment method</Button>
   <Button size="md">Contact support</Button>
-</SizeScope>
+</SizeProvider>
 ```
 
 Everything above is small except the second Button.
@@ -65,7 +65,7 @@ Components relate to the scale in one of these ways:
 
 | Kind | Components | Behavior |
 | --- | --- | --- |
-| Scope | `SizeScope`; `TextField`, `NumberField`, `Select`, `DatePicker`, `DateRangePicker`, and `Modal` with `size` | Sets the size for everything inside |
+| Scope | `SizeProvider`; `TextField`, `NumberField`, `Select`, `DatePicker`, `DateRangePicker`, and `Modal` with `size` | Sets the size for everything inside |
 | Text scope | `TextLockup` with `size` | Sizes only the text inside; controls keep the surrounding size |
 | Uses the scale's values | `Text`, `Detail`, `Heading`, `Label`, field parts, overlay padding and titles | Read the scale's value for their role |
 | Own type | Button, Chip, Menu, Tooltip, ListBoxItem, Checkbox, Radio, Avatar, Alert title, charts, progress, and metrics components | Set their own type, so bare strings inside need no `Text`; a `Text` inside Button, Chip, Menu, or a chart takes that type |
@@ -127,15 +127,15 @@ The expected behavior, one row per case.
 
 ## Components
 
-### SizeScope
+### SizeProvider
 
 Makes any section a scope. It renders no element, so it never affects layout, and it sizes only Antares
 components inside it. It also sizes the text inside a component that has no `size` prop:
 
 ```tsx
-<SizeScope size="lg">
+<SizeProvider size="lg">
   <Alert>...</Alert>
-</SizeScope>
+</SizeProvider>
 ```
 
 A component gets its own `size` prop only when it is commonly resized on its own, as Button is.
@@ -208,7 +208,7 @@ text; owners that size their parts, such as TextLockup, do it with part classes.
 
 ### React's part
 
-- **Context.** `SizeScope` only provides the size through context. Components read it and apply the size
+- **Context.** `SizeProvider` only provides the size through context. Components read it and apply the size
   class on their own element, so portaled content needs no special handling.
 - **Button.** Reads the size in effect from the same context and applies its own size class.
 - **Parts.** Owners add part classes through React Aria contexts.
@@ -240,7 +240,7 @@ The existing role ramps supply every text size. No change to `packages/@godaddy/
 Designed in, shipped later:
 
 ```tsx
-<SizeScope size={{ base: 'sm', md: 'md' }}>...</SizeScope>
+<SizeProvider size={{ base: 'sm', md: 'md' }}>...</SizeProvider>
 <Button size={{ base: 'lg', md: 'md' }}>Save</Button>
 ```
 

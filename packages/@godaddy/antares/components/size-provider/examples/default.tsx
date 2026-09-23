@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Input, Label, SizeScope, Text, TextField, TextLockup } from '@godaddy/antares';
+import { Button, Flex, Heading, Input, Label, SizeProvider, Text, TextField, TextLockup } from '@godaddy/antares';
 
 /**
  * A scope sizes everything inside it: text, controls, and default spacing. A component's own
@@ -7,7 +7,7 @@ import { Button, Flex, Heading, Input, Label, SizeScope, Text, TextField, TextLo
  */
 export function DefaultExample() {
   return (
-    <SizeScope size="sm">
+    <SizeProvider size="sm">
       <Flex direction="column" gap="md" alignItems="start">
         <TextLockup>
           <Heading slot="title" level={2}>
@@ -29,6 +29,6 @@ export function DefaultExample() {
           </Button>
         </Flex>
       </Flex>
-    </SizeScope>
+    </SizeProvider>
   );
 }

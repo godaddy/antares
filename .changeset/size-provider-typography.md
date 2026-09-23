@@ -2,9 +2,9 @@
 '@godaddy/antares': minor
 ---
 
-feat: add SizeScope and coordinated typography sizes
+feat: add SizeProvider and coordinated typography sizes
 
-- Add `SizeScope`: `size` (`sm`, `md`, `lg`) sizes the Antares text, controls, and spacing inside it,
+- Add `SizeProvider`: `size` (`sm`, `md`, `lg`) sizes the Antares text, controls, and spacing inside it,
   overlays included. It renders no element, and a component's own `size` still wins.
 - Add `Detail`. `Text`, `Detail`, `Heading`, and `Label` take a six-tier `size` and an `emphasis` color. A heading's `level` no longer changes its size.
 - `Text` without `size` uses the body tier (`md` outside a scope) instead of inheriting its surroundings.

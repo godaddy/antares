@@ -6,7 +6,7 @@ import { OverlaysExample } from '../examples/overlays.tsx';
 import { PlainHtmlExample } from '../examples/plain-html.tsx';
 
 describe('@godaddy/antares', function packageTests() {
-  describe('#SizeScope', function sizeScopeTests() {
+  describe('#SizeProvider', function sizeProviderTests() {
     it('renders DefaultExample', function defaultExample() {
       expect(renderToString(<DefaultExample />)).toMatchSnapshot();
     });

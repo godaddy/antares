@@ -12,7 +12,7 @@ import * as Stories from './heading.stories.tsx';
 ## Features
 
 - Renders `h1`-`h6` from the `level` prop (default `3`). The level never changes the visual size.
-- Without `size`, takes the heading tier of the surrounding [SizeScope](../size-scope/README.mdx).
+- Without `size`, takes the heading tier of the surrounding [SizeProvider](../size-provider/README.mdx).
   `size` picks a step on the heading ramp (`xs` to `2xl`).
 - `emphasis` picks a feedback color and changes only the color.
 - `slot="title"` inside a `Modal` or `Dialog` sets the accessible name, and takes the overlay's

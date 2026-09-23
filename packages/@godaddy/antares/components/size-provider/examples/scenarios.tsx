@@ -16,7 +16,7 @@ import {
   Select,
   SelectItem,
   SelectOptions,
-  SizeScope,
+  SizeProvider,
   Text,
   TextField,
   TextLockup
@@ -31,11 +31,11 @@ export function ScenariosExample() {
     <Flex direction="column" gap="lg" alignItems="start">
       <Button data-testid="unscoped">Save</Button>
 
-      <SizeScope size="sm">
+      <SizeProvider size="sm">
         <Button data-testid="sm">Save</Button>
-        <SizeScope size="sm">
+        <SizeProvider size="sm">
           <Button data-testid="sm-in-sm">Save</Button>
-        </SizeScope>
+        </SizeProvider>
         <Button data-testid="explicit-md" size="md">
           Save
         </Button>
@@ -113,9 +113,9 @@ export function ScenariosExample() {
           </Detail>
           <Button data-testid="lockup-button">Lockup action</Button>
         </TextLockup>
-      </SizeScope>
+      </SizeProvider>
 
-      <SizeScope size="lg">
+      <SizeProvider size="lg">
         <Button data-testid="lg">Save</Button>
         <NumberField size="md">
           <Label>Seats</Label>
@@ -130,7 +130,7 @@ export function ScenariosExample() {
           <Button slot="trigger" />
           <DatePickerCalendar />
         </DatePicker>
-      </SizeScope>
+      </SizeProvider>
 
       <div style={{ '--font-body-size-md': '20px' } as CSSProperties}>
         <NumberField>
@@ -148,13 +148,13 @@ export function ScenariosExample() {
         <Button data-testid="token-explicit-sm" size="sm">
           Save
         </Button>
-        <SizeScope size="md">
+        <SizeProvider size="md">
           <Button data-testid="token-md">Save</Button>
-        </SizeScope>
-        <SizeScope size="sm">
+        </SizeProvider>
+        <SizeProvider size="sm">
           <Button data-testid="token-sm">Save</Button>
-        </SizeScope>
-        <SizeScope size="lg">
+        </SizeProvider>
+        <SizeProvider size="lg">
           <TextField size="md">
             <Label>Phone number</Label>
             <Group>
@@ -168,16 +168,16 @@ export function ScenariosExample() {
               <Button slot="control">Verify</Button>
             </Group>
           </TextField>
-        </SizeScope>
+        </SizeProvider>
       </div>
 
       <div style={{ '--ux-cxbe8g': '20px' } as CSSProperties}>
-        <SizeScope size="lg">
+        <SizeProvider size="lg">
           <Button data-testid="legacy-scoped">Save</Button>
           <Button data-testid="legacy-explicit" size="lg">
             Save
           </Button>
-        </SizeScope>
+        </SizeProvider>
       </div>
     </Flex>
   );

@@ -11,7 +11,7 @@ import { ButtonContext, type ButtonProps } from '#components/button';
 import { InputContext } from '#components/input';
 import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { SizeScope, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-scope';
+import { SizeProvider, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-provider';
 import { GroupContext } from '#components/structure';
 import { TextAreaContext } from '#components/text-area';
 import { composeClassName } from '#utils/render-props.ts';
@@ -100,7 +100,7 @@ export function TextField(props: TextFieldProps) {
   const scale = useDeclaredSize(size);
 
   return (
-    <SizeScope size={size}>
+    <SizeProvider size={size}>
       <Flex
         direction="column"
         gap={gap}
@@ -114,6 +114,6 @@ export function TextField(props: TextFieldProps) {
           return <TextFieldBody isDisabled={isDisabled}>{node}</TextFieldBody>;
         })}
       </Flex>
-    </SizeScope>
+    </SizeProvider>
   );
 }

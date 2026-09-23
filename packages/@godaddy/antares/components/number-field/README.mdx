@@ -12,7 +12,7 @@ import * as Stories from './number-field.stories.tsx';
 
 - **Composable interior**: Compose `Label`, the control, `Text slot="description"`, and `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
 - **Steppers**: A stepper is a `Group` holding `Button slot="decrement"`, an `Input`, and `Button slot="increment"`. Left empty, each button takes its icon and `variant="control"` from the field, so no icon imports are needed. Compose a bare `Input` instead for a plain numeric input
-- **Sizes**: The field is a [size scope](../size-scope/README.mdx). `size` (`sm`, `md`, `lg`) sets its label, input, steppers, description, and error; without it, the field follows the surrounding scope
+- **Sizes**: The field is a [size scope](../size-provider/README.mdx). `size` (`sm`, `md`, `lg`) sets its label, input, steppers, description, and error; without it, the field follows the surrounding scope
 - **Value scale**: `minValue`, `maxValue`, `step`, and `formatOptions` configure the numeric behavior
 - **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
 - **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
