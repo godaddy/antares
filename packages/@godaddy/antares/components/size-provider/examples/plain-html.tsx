@@ -3,7 +3,7 @@ import { SizeProvider, Text } from '@godaddy/antares';
 /**
  * A scope sizes Antares components only. Plain HTML keeps its own typography, so put copy in
  * `Text` to follow the scope.
- * @order 4
+ * @order 7
  */
 export function PlainHtmlExample() {
   return (

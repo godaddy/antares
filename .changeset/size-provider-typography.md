@@ -11,8 +11,8 @@ feat: add SizeProvider and coordinated typography sizes
   Inside Button, Chip, Menu, and other components with their own type, it still matches their type.
   `Tooltip`, `ListBoxItem`, `Checkbox`, and `Radio` set body type at the scope's size.
 - `Button`, `LinkButton`, `TextField`, `NumberField`, `Select`, `DatePicker`, and `DateRangePicker` add
-  `size="lg"` and follow the scope. `TextField`, `NumberField`, the pickers, and `TextLockup` no longer set
-  `data-size`.
+  `size="lg"` and follow the scope. `TextField`, `NumberField`, `Select`, the pickers, and `TextLockup` no
+  longer set `data-size`.
 - `Calendar` and `RangeCalendar` follow the scope, so a picker's calendar dates open at the picker's size.
 - Button icons follow the label's line height, and icon-only Buttons are as tall as text Buttons.
 - `Modal` adds `size`. `TextLockup` follows the scope and no longer shrinks its title in narrow containers.

@@ -1,4 +1,4 @@
-import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup } from '@godaddy/antares';
+import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';
 
 /**
  * `size` sets the modal's text, controls, and spacing. Without it, the modal follows the size
@@ -12,7 +12,9 @@ export function SizeExample() {
       <Modal size="sm">
         <Heading slot="title">Rename file</Heading>
         <CloseButton />
-        <Content>The new name applies everywhere the file is shared.</Content>
+        <Content>
+          <Text>The new name applies everywhere the file is shared.</Text>
+        </Content>
         <ButtonGroup>
           <Button slot="close">Cancel</Button>
           <Button slot="close" variant="primary">

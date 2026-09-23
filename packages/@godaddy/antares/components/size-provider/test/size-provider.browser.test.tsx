@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
+import { ExplicitSizeExample } from '../examples/explicit-size.tsx';
+import { FormExample } from '../examples/form.tsx';
+import { NestedScopesExample } from '../examples/nested-scopes.tsx';
 import { OverlaysExample } from '../examples/overlays.tsx';
 import { ScenariosExample } from '../examples/scenarios.tsx';
 
@@ -17,6 +20,12 @@ function box(element: Element) {
 
 function dayOf(calendar: Element) {
   return calendar.querySelector('[role="gridcell"] > *') as Element;
+}
+
+function expectYearFits(calendar: Element) {
+  for (const year of calendar.querySelectorAll('input[aria-label="Year"]')) {
+    expect(year.scrollWidth).toBeLessThanOrEqual(year.clientWidth);
+  }
 }
 
 const typeProperties = ['fontSize', 'fontFamily', 'fontWeight', 'lineHeight'] as const;
@@ -240,6 +249,33 @@ describe('@godaddy/antares', function antares() {
       expect(style(getByTestId('lockup-button').element()).fontSize).toEqual(smControl);
     });
 
+    it('sizes every control in a scoped form alike', async function form() {
+      const { getByRole } = await render(<FormExample />);
+
+      for (const control of [
+        getByRole('textbox', { name: 'Full name' }),
+        getByRole('button', { name: /Country/ }),
+        getByRole('button', { name: 'Save' })
+      ]) {
+        expect(style(control.element()).fontSize).toEqual(smControl);
+      }
+    });
+
+    it('sizes an inner scope like the same size anywhere else', async function nestedScopes() {
+      const { getByRole } = await render(<NestedScopesExample />);
+
+      expect(style(getByRole('button', { name: 'Manage plan' }).element()).fontSize).toEqual('18px');
+      expect(style(getByRole('button', { name: 'Compare plans' }).element()).fontSize).toEqual(smControl);
+    });
+
+    it('sizes every part of an explicitly sized field', async function explicitSize() {
+      const { getByRole, getByText } = await render(<ExplicitSizeExample />);
+
+      expect(style(getByText('Follows the scope.').element()).fontSize).toEqual('12px');
+      expect(style(getByRole('textbox', { name: 'Domain name' }).element()).fontSize).toEqual('18px');
+      expect(style(getByText('Sized by the field.').element()).fontSize).toEqual('16px');
+    });
+
     it('opens a modal at the size of the scope around its trigger', async function modal() {
       const { getByRole } = await render(<OverlaysExample />);
       await userEvent.click(getByRole('button', { name: 'Edit plan' }));
@@ -270,6 +306,7 @@ describe('@godaddy/antares', function antares() {
       const dialog = getByRole('dialog');
       await expect.element(dialog).toBeVisible();
       expect(style(dayOf(dialog.element())).fontSize).toEqual(smControl);
+      expectYearFits(dialog.element());
     });
 
     it('opens a date range picker calendar at its explicit size inside a scope', async function rangeCalendar() {
@@ -282,6 +319,8 @@ describe('@godaddy/antares', function antares() {
       const dialog = getByRole('dialog');
       await expect.element(dialog).toBeVisible();
       expect(style(dayOf(dialog.element())).fontSize).toEqual('18px');
+
+      expectYearFits(dialog.element());
     });
 
     it('opens a tooltip at the size of the scope around its trigger', async function tooltip() {

@@ -11,7 +11,7 @@ import * as Stories from './modal.stories.tsx';
 
 `ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
 
-The modal is a [size scope](../size-provider/README.mdx). It opens at the size of the scope around its trigger, even though it renders in a portal, and `size` overrides that.
+The modal is a `SizeProvider`. It opens at the size of the scope around its trigger, even though it renders in a portal, and `size` overrides that.
 
 ## Installation
 

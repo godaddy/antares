@@ -23,7 +23,7 @@ import {
 /**
  * Overlays open at the size of the scope around their trigger, even though they render in a
  * portal. An explicit `size` on the owner sizes its overlay too.
- * @order 3
+ * @order 6
  */
 export function OverlaysExample() {
   return (

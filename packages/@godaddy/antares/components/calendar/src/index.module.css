@@ -14,6 +14,8 @@
 }
 
 .yearField {
+  font-family: var(--ux-9wtaa3, sans-serif);
+  font-size: var(--_size-input-font);
   max-width: calc(4ch + var(--_calendar-gu) * 4 + 2px);
 }
 
