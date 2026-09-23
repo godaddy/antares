@@ -1,5 +1,4 @@
-import type React from 'react';
-import { type Context, forwardRef } from 'react';
+import React, { type Context, forwardRef } from 'react';
 import { cva, type VariantProps } from 'cva';
 import {
   Button as RACButton,
@@ -45,19 +44,20 @@ type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 type ButtonVariant = ButtonVariantProps['variant'];
 type LinkButtonVariant = Exclude<ButtonVariant, 'control' | 'trigger'>;
 
+function textOrNode(child: React.ReactNode) {
+  return typeof child === 'string' || typeof child === 'number' ? <Text>{child}</Text> : child;
+}
+
 /**
  * The button's label region: shadows an ancestor's `TextContext` so the label keeps the button's
- * own type, and puts a bare string on a `Text`. Stays `undefined` when the caller passes no
- * children, so children a parent publishes per slot still reach the button.
+ * own type, and puts each bare string on a `Text` so CSS can tell an icon-only button apart.
+ * Stays `undefined` when the caller passes no children, so children a parent publishes per slot
+ * still reach the button.
  */
 function buttonLabel(children: React.ReactNode) {
   if (children === undefined) return children;
 
-  return (
-    <RACProvider values={[[RACTextContext, {}]]}>
-      {typeof children === 'string' ? <Text>{children}</Text> : children}
-    </RACProvider>
-  );
+  return <RACProvider values={[[RACTextContext, {}]]}>{React.Children.map(children, textOrNode)}</RACProvider>;
 }
 
 interface BaseButtonProps<V extends ButtonVariant = ButtonVariant> {

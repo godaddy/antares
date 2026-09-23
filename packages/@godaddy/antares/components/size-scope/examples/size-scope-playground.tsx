@@ -7,7 +7,7 @@ export function PlaygroundExample(props: SizeScopeProps) {
         <Heading>Account</Heading>
         <Text>Review your account settings.</Text>
         <Detail>Last updated 2 hours ago.</Detail>
-        <Button>Save</Button>
+        <Button variant="primary">Save</Button>
       </Flex>
     </SizeScope>
   );

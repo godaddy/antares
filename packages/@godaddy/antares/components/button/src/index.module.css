@@ -35,6 +35,11 @@
   border-color: var(--_button-border);
   color: var(--_button-text);
 
+  > :where([data-icon]) {
+    width: 1lh;
+    height: 1lh;
+  }
+
   &:where(:not(.inline, .control, .trigger)) {
     border-width: 1px;
     border-radius: var(--_button-radius);
@@ -44,7 +49,7 @@
 
     /* only-icon buttons */
     &:has(:where([data-icon]:only-child)) {
-      padding: calc(var(--_button-padding-block) / 2);
+      padding: var(--_button-padding-block);
 
       &:where(.minimal) {
         padding: var(--_button-space-xs);
@@ -157,11 +162,6 @@
     line-height: var(--ux-hm1ty7, 1.375);
     font-size: var(--_button-font-size);
     padding: var(--_button-padding-block);
-
-    > :where([data-icon]) {
-      width: 1lh;
-      height: 1lh;
-    }
   }
 
   &:where(.trigger) {

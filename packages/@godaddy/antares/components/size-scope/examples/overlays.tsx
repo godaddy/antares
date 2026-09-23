@@ -44,7 +44,7 @@ export function OverlaysExample() {
         </Select>
 
         <ModalTrigger>
-          <Button>Edit plan</Button>
+          <Button variant="primary">Edit plan</Button>
           <Modal>
             <Heading slot="title">Edit plan</Heading>
             <Content>
@@ -60,7 +60,7 @@ export function OverlaysExample() {
         </ModalTrigger>
 
         <TooltipTrigger>
-          <Button>Help</Button>
+          <Button variant="primary">Help</Button>
           <Tooltip>Billing questions</Tooltip>
         </TooltipTrigger>
       </Flex>

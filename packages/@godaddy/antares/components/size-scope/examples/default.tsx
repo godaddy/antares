@@ -22,9 +22,11 @@ export function DefaultExample() {
           <Text slot="description">We'll send receipts here.</Text>
         </TextField>
 
-        <Flex gap="sm">
-          <Button>Update payment method</Button>
-          <Button size="md">Contact support</Button>
+        <Flex gap="sm" alignItems="center">
+          <Button variant="primary">Update payment method</Button>
+          <Button variant="primary" size="md">
+            Contact support
+          </Button>
         </Flex>
       </Flex>
     </SizeScope>

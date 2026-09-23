@@ -6,6 +6,7 @@ import { CloseButton } from '@godaddy/antares';
 import { InlineExample } from '../examples/inline.tsx';
 import { IsolatedLabelExample } from '../examples/isolated-label.tsx';
 import { PrimaryExample } from '../examples/primary.tsx';
+import { SizesExample } from '../examples/sizes.tsx';
 import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
 
 describe('@godaddy/antares', function antares() {
@@ -98,6 +99,18 @@ describe('@godaddy/antares', function antares() {
     it('renders a CloseButton with the "Close" accessible name', async function closeButtonAccessibleName() {
       const { getByRole } = await render(<CloseButton />);
       await expect.element(getByRole('button', { name: 'Close' })).toBeVisible();
+    });
+
+    it('gives icon-only, text, and icon with text buttons the same height', async function iconHeights() {
+      const { getByRole } = await render(<SizesExample />);
+      const buttons = getByRole('button').elements();
+      const rect = (index: number) => (buttons[index] as Element).getBoundingClientRect();
+
+      for (const first of [0, 3, 6]) {
+        expect(rect(first).width).toEqual(rect(first).height);
+        expect(rect(first + 1).height).toEqual(rect(first).height);
+        expect(rect(first + 2).height).toEqual(rect(first).height);
+      }
     });
 
     it('shadows an ancestor TextContext so the label keeps the button type', async function isolatedLabel() {
