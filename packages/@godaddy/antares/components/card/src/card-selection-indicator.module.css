@@ -36,20 +36,15 @@
   --_card-selection-indicator-check-opacity: 0.5;
 }
 
-/* Also previews while its own Card is hovered or pressed, not a parent Card. */
-.indicator:where(:not([data-disabled], [data-readonly])) {
-  @media (hover: hover) and (pointer: fine) {
-    &:where(:hover),
-    &:where([data-card="interactive"]:hover *):not(:where([data-card]:not(:hover)) *) {
-      --_card-selection-indicator-background: var(--ux-11rtwg8, #f5f5f5);
-      --_card-selection-indicator-check-opacity: 0.5;
-    }
-  }
+/* Hover and press reflect the indicator's own Card. */
+.indicator:where([data-hovered]) {
+  --_card-selection-indicator-background: var(--ux-11rtwg8, #f5f5f5);
+  --_card-selection-indicator-check-opacity: 0.5;
+}
 
-  &:where([data-card][data-pressed] *):not(:where([data-card]:not([data-pressed])) *) {
-    --_card-selection-indicator-background: var(--ux-gdy377, #fff);
-    --_card-selection-indicator-check-opacity: 0.5;
-  }
+.indicator:where([data-pressed]) {
+  --_card-selection-indicator-background: var(--ux-gdy377, #fff);
+  --_card-selection-indicator-check-opacity: 0.5;
 }
 
 .indicator:where([data-selected]) {

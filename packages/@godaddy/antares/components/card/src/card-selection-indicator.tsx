@@ -9,15 +9,21 @@ import { Icon } from '#components/icon';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './card-selection-indicator.module.css';
 
-const SelectionContext = createContext<'checkbox' | 'radio' | null>(null);
+interface SelectionContextValue {
+  kind: 'checkbox' | 'radio' | null;
+  isHovered: boolean;
+  isPressed: boolean;
+}
 
-/** Card-owned selection and text context, below the native field provider. */
-export function SelectionProvider({ kind, children }: { kind: 'checkbox' | 'radio' | null; children: ReactNode }) {
+const SelectionContext = createContext<SelectionContextValue>({ kind: null, isHovered: false, isPressed: false });
+
+/** Card-owned selection, interaction, and text context, below the native field provider. */
+export function SelectionProvider({ children, ...value }: SelectionContextValue & { children: ReactNode }) {
   const text = useContext(TextContext);
   const slots = text && 'slots' in text ? text.slots : undefined;
 
   return (
-    <SelectionContext.Provider value={kind}>
+    <SelectionContext.Provider value={value}>
       <TextContext.Provider value={{ slots: { ...slots, [DEFAULT_SLOT]: {} } }}>{children}</TextContext.Provider>
     </SelectionContext.Provider>
   );
@@ -55,7 +61,7 @@ export interface CardSelectionIndicatorRenderProps {
  */
 export const CardSelectionIndicator = forwardRef<HTMLSpanElement, CardSelectionIndicatorProps>(
   function CardSelectionIndicator({ className, children, ...props }, ref) {
-    const control = useContext(SelectionContext);
+    const { kind: control, isHovered, isPressed } = useContext(SelectionContext);
     const isCustom = children !== undefined;
 
     function renderIndicator({
@@ -77,6 +83,8 @@ export const CardSelectionIndicator = forwardRef<HTMLSpanElement, CardSelectionI
           data-disabled={state.isDisabled || undefined}
           data-readonly={state.isReadOnly || undefined}
           data-focus-visible={state.isFocusVisible || undefined}
+          data-hovered={isHovered || undefined}
+          data-pressed={isPressed || undefined}
           className={composeClassName(className, styles.indicator)}
         >
           {isCustom ? (

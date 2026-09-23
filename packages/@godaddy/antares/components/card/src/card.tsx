@@ -1,5 +1,5 @@
 import { forwardRef, useRef, type MouseEventHandler, type ReactNode, type Ref } from 'react';
-import { mergeProps } from 'react-aria';
+import { mergeProps, useHover } from 'react-aria';
 import {
   Link as RACLink,
   type LinkProps as RACLinkProps,
@@ -136,25 +136,29 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
     }
     return null;
   }, onClick);
+  const hover = useHover({});
 
   function renderSurface(state: SurfaceState = {}) {
     const canSelect = selection != null && !state.isDisabled && !state.isReadOnly;
     const isInteractive = canActivatePrimary || canSelect;
     const shouldForwardClick = (canActivatePrimary && href == null) || canSelect;
+    const isHovered = isInteractive && hover.isHovered;
+    const isPressed = isInteractive && surfacePress.isPressed;
 
     return (
-      <SelectionProvider kind={selection ?? null}>
+      <SelectionProvider kind={selection ?? null} isHovered={isHovered} isPressed={isPressed}>
         <Flex
           padding="lg"
           gap="lg"
           direction="column"
-          {...(isInteractive ? mergeProps(surfaceProps, surfacePress.pressProps) : surfaceProps)}
+          {...mergeProps(surfaceProps, hover.hoverProps, isInteractive ? surfacePress.pressProps : null)}
           {...(hasPrimary || selection != null ? undefined : ariaProps)}
           ref={ref}
           className={composeClassName(className, styles.card)}
           data-card-selected={state.isSelected || undefined}
           data-disabled={isDisabled || state.isDisabled || undefined}
-          data-pressed={(isInteractive && surfacePress.isPressed) || undefined}
+          data-hovered={isHovered || undefined}
+          data-pressed={isPressed || undefined}
           onClick={shouldForwardClick ? surfacePress.onClick : onClick}
           data-card={isInteractive ? 'interactive' : 'static'}
         >

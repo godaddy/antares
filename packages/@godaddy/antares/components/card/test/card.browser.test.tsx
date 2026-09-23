@@ -23,6 +23,20 @@ async function renderInteraction(kind: 'checkbox' | 'radio' | 'action') {
   return { ...result, body: result.getByText('One: copy this text without changing selection.') };
 }
 
+function session() {
+  return cdp() as unknown as {
+    send(method: string, params: Record<string, unknown>): Promise<unknown>;
+  };
+}
+
+function pagePoint(x: number, y: number) {
+  const frame = (window.frameElement as HTMLElement | null)?.getBoundingClientRect();
+  return {
+    x: x * (frame ? frame.width / window.innerWidth : 1) + (frame?.left ?? 0),
+    y: y * (frame ? frame.height / window.innerHeight : 1) + (frame?.top ?? 0)
+  };
+}
+
 async function moveMouse(
   x: number,
   y: number,
@@ -30,14 +44,9 @@ async function moveMouse(
   button: 'left' | 'right' | 'none' = 'none',
   modifiers = 0
 ) {
-  const frame = (window.frameElement as HTMLElement | null)?.getBoundingClientRect();
-  const session = cdp() as unknown as {
-    send(method: string, params: Record<string, unknown>): Promise<unknown>;
-  };
-  await session.send('Input.dispatchMouseEvent', {
+  await session().send('Input.dispatchMouseEvent', {
     type,
-    x: x * (frame ? frame.width / window.innerWidth : 1) + (frame?.left ?? 0),
-    y: y * (frame ? frame.height / window.innerHeight : 1) + (frame?.top ?? 0),
+    ...pagePoint(x, y),
     button,
     buttons: type === 'mouseReleased' ? 0 : button === 'left' ? 1 : button === 'right' ? 2 : 0,
     modifiers,
@@ -657,6 +666,24 @@ describe('@godaddy/antares', function packageTests() {
         await dragText(getByText('One: copy this text without changing selection.').element() as HTMLElement);
         expect(window.getSelection()?.toString().length).toBeGreaterThan(3);
         await expect.element(getByRole(kind, { name: 'Option one' })).not.toBeChecked();
+      });
+
+      it('selects from a touch tap without leaving hover feedback', async function touchTap() {
+        const { getByRole, body } = await renderInteraction('checkbox');
+        const card = body.element().closest<HTMLElement>('[data-card]')!;
+        const box = bounds(body.element());
+        await session().send('Emulation.setTouchEmulationEnabled', { enabled: true });
+        try {
+          await session().send('Input.dispatchTouchEvent', {
+            type: 'touchStart',
+            touchPoints: [pagePoint(box.left + 8, box.top + box.height / 2)]
+          });
+          await session().send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+          await expect.element(getByRole('checkbox', { name: 'Option one' })).toBeChecked();
+          expect(card).not.toHaveAttribute('data-hovered');
+        } finally {
+          await session().send('Emulation.setTouchEmulationEnabled', { enabled: false });
+        }
       });
 
       it('does not activate the primary while dragging body text', async function dragTextDoesNotActivate() {
