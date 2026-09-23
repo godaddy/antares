@@ -182,151 +182,6 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 <PropTable />
 
 
-# Avatar
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Composable `Avatar`, `Image`, and `Text` parts
-* Circle and rounded-square shapes at four named sizes
-* Automatic image loading with a Text monogram fallback
-* Primary, subtle, and 15 categorical figure emphases
-* Avatar Button and Account Menu compositions built with Pressable
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use an Avatar with a one- or two-character monogram when no image is available.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Avatar>\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
-
-### Image [#image]
-
-Place Image before Text so the monogram is available while the image loads or if it fails.
-
-<Story of="ImageExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22%3E%3Crect width=%22128%22 height=%22128%22 fill=%22%2302242a%22/%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2251%22 fill=%22%2309757a%22/%3E%3Cpath d=%22M13 72c18-18 34-26 51-26s33 8 51 26v43H13z%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%2264%22 cy=%2253%22 r=%2220%22 fill=%22%23f5f7f8%22/%3E%3Cpath d=%22M35 106c4-17 15-26 29-26s25 9 29 26%22 fill=%22%23f5f7f8%22/%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2251%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-opacity=%22.35%22 stroke-width=%224%22/%3E%3C/svg%3E';\n\nexport function ImageExample() {\n  return (\n    <Avatar>\n      <Image src={image} alt=\&#x22;Uma Thurman\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
-
-### Image Fallback [#image-fallback]
-
-Include a Text fallback so an unavailable photo never leaves an empty identity marker.
-
-<Story of="ImageFallbackExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nexport function ImageFallbackExample() {\n  return (\n    <Avatar>\n      <Image src=\&#x22;/missing-avatar-image.png\&#x22; alt=\&#x22;\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
-
-### Shapes and sizes [#shapes-and-sizes]
-
-Use circular Avatars for people and square Avatars for organizations, workspaces, and accounts.
-
-<Story of="ShapesExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Flex, Text } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg', 'xl'] as const;\n\nexport function ShapesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Circle</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderCircle(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;circle\&#x22; size={size}>\n                <Text>UT</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Square</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderSquare(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;square\&#x22; size={size}>\n                <Text>AC</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Use primary or subtle for standard treatments, and a deterministic figure emphasis to categorize entities in a list.
-
-<Story of="EmphasisExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Flex, Text, type AvatarEmphasis } from '@godaddy/antares';\n\nconst emphases: AvatarEmphasis[] = [\n  'primary',\n  'subtle',\n  'figure0',\n  'figure1',\n  'figure2',\n  'figure3',\n  'figure4',\n  'figure5',\n  'figure6',\n  'figure7',\n  'figure8',\n  'figure9',\n  'figure10',\n  'figure11',\n  'figure12',\n  'figure13',\n  'figure14'\n];\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {emphases.map(function renderAvatar(emphasis, index) {\n        return (\n          <Avatar key={emphasis} emphasis={emphasis}>\n            <Text>{index < 2 ? emphasis.slice(0, 1).toUpperCase() : `${index - 2}`}</Text>\n          </Avatar>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
-
-### Avatar Button [#avatar-button]
-
-Use `Pressable` to add accessible interaction to an Avatar while preserving its shape.
-
-<Story of="AvatarButtonExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Pressable, Text } from '@godaddy/antares';\n\nexport function AvatarButtonExample() {\n  return (\n    <Pressable aria-label=\&#x22;Account\&#x22;>\n      <Avatar shape=\&#x22;circle\&#x22; role=\&#x22;button\&#x22;>\n        <Text>UT</Text>\n      </Avatar>\n    </Pressable>\n  );\n}&#x22;" />
-
-### Account Menu [#account-menu]
-
-Wrap an Avatar in a Pressable inside MenuTrigger for an account or profile menu.
-
-<Story of="AccountMenuExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Menu, MenuItem, MenuTrigger, Pressable, Text } from '@godaddy/antares';\n\nexport function AccountMenuExample() {\n  return (\n    <MenuTrigger>\n      <Pressable aria-label=\&#x22;Account menu\&#x22;>\n        <Avatar role=\&#x22;button\&#x22;>\n          <Text>UT</Text>\n        </Avatar>\n      </Pressable>\n      <Menu>\n        <MenuItem id=\&#x22;profile\&#x22;>Profile</MenuItem>\n        <MenuItem id=\&#x22;settings\&#x22;>Settings</MenuItem>\n        <MenuItem id=\&#x22;sign-out\&#x22;>Sign out</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-Use Image native image props for responsive image sources. Choose a deterministic `figure0` through `figure14` emphasis in lists that categorize multiple entities.
-
-When an Avatar triggers an action, compose it with `Pressable` so the Avatar keeps its own shape and receives the interaction behavior directly. Use this pattern for an Avatar Button, or place it inside `MenuTrigger` for an Account Menu:
-
-```tsx
-<Pressable aria-label="Account menu" onPress={openAccountMenu}>
-  <Avatar role="button">
-    <Text>UT</Text>
-  </Avatar>
-</Pressable>
-```
-
-## Accessibility [#accessibility]
-
-* Give Image meaningful `alt` text when the image conveys an identity.
-* Text remains available to assistive technology when no image loads.
-* Use `alt=""` on the Image and `aria-hidden="true"` on the Avatar when the entire avatar is purely decorative.
-* Give an Avatar Button or Account Menu an accessible name with `aria-label` or `aria-labelledby`.
-* When using `Pressable`, provide an interactive role for the non-semantic Avatar child.
-
-## Best Practices [#best-practices]
-
-* Use Avatar for informational identity; compose it with `Pressable` for an Avatar Button or Account Menu when it is independently actionable.
-* Use circle for people and square for businesses, workspaces, and accounts.
-* Keep monograms to one or two uppercase characters.
-* Use the same `figure*` emphasis for the same entity wherever it appears.
-
-## Troubleshooting [#troubleshooting]
-
-* If an image is unavailable because of a bad URL or CORS policy, Text remains visible.
-* Long Text content is clipped to the avatar shape; provide a one- or two-character monogram.
-* Figure colors repeat after 15 values; assign a deterministic figure emphasis in the consuming application.
-
-## Props [#props]
-
-```tsx
-<Avatar>
-  <Image />
-  <Text />
-</Avatar>
-```
-
-### Avatar [#avatar]
-
-<PropTable />
-
-
 # Button
 
 
@@ -720,9 +575,12 @@ behavior are preserved.
 * Name a primary action with `aria-label` or `aria-labelledby`. The stretched control has no visible
   label of its own.
 * Name selection separately with `selectionProps` when the Card also has a primary action.
+* On a Card without a primary action or selection, `aria-label`, `aria-labelledby`, and
+  `aria-describedby` apply to the surface, for example with `role="region"`.
 * `href` turns the Card into a native link. Modifier-click, middle-click, and "Open in new tab" work
-  on the surface. Body text is not selectable. Do not put CornerActions on an `href` Card. Clicking
-  body text on an `onPress` or selection Card activates it; dragging that text selects it.
+  on the surface. Body text is not selectable. The link covers the whole Card, so do not put
+  CornerActions, buttons, inputs, selection, or other controls in an `href` Card. Clicking body text
+  on an `onPress` or selection Card activates it; dragging that text selects it.
 * `isDisabled` disables only the primary. `isSelectionDisabled` disables only selection. Radio
   read-only and validation state belong on `RadioGroup`.
 
@@ -749,6 +607,151 @@ behavior are preserved.
 <PropTable />
 
 ### CardSelectionIndicator [#cardselectionindicator]
+
+<PropTable />
+
+
+# Avatar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Composable `Avatar`, `Image`, and `Text` parts
+* Circle and rounded-square shapes at four named sizes
+* Automatic image loading with a Text monogram fallback
+* Primary, subtle, and 15 categorical figure emphases
+* Avatar Button and Account Menu compositions built with Pressable
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use an Avatar with a one- or two-character monogram when no image is available.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Avatar>\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
+
+### Image [#image]
+
+Place Image before Text so the monogram is available while the image loads or if it fails.
+
+<Story of="ImageExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22%3E%3Crect width=%22128%22 height=%22128%22 fill=%22%2302242a%22/%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2251%22 fill=%22%2309757a%22/%3E%3Cpath d=%22M13 72c18-18 34-26 51-26s33 8 51 26v43H13z%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%2264%22 cy=%2253%22 r=%2220%22 fill=%22%23f5f7f8%22/%3E%3Cpath d=%22M35 106c4-17 15-26 29-26s25 9 29 26%22 fill=%22%23f5f7f8%22/%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2251%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-opacity=%22.35%22 stroke-width=%224%22/%3E%3C/svg%3E';\n\nexport function ImageExample() {\n  return (\n    <Avatar>\n      <Image src={image} alt=\&#x22;Uma Thurman\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
+
+### Image Fallback [#image-fallback]
+
+Include a Text fallback so an unavailable photo never leaves an empty identity marker.
+
+<Story of="ImageFallbackExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nexport function ImageFallbackExample() {\n  return (\n    <Avatar>\n      <Image src=\&#x22;/missing-avatar-image.png\&#x22; alt=\&#x22;\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
+
+### Shapes and sizes [#shapes-and-sizes]
+
+Use circular Avatars for people and square Avatars for organizations, workspaces, and accounts.
+
+<Story of="ShapesExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Flex, Text } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg', 'xl'] as const;\n\nexport function ShapesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Circle</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderCircle(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;circle\&#x22; size={size}>\n                <Text>UT</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Square</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderSquare(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;square\&#x22; size={size}>\n                <Text>AC</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Use primary or subtle for standard treatments, and a deterministic figure emphasis to categorize entities in a list.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Flex, Text, type AvatarEmphasis } from '@godaddy/antares';\n\nconst emphases: AvatarEmphasis[] = [\n  'primary',\n  'subtle',\n  'figure0',\n  'figure1',\n  'figure2',\n  'figure3',\n  'figure4',\n  'figure5',\n  'figure6',\n  'figure7',\n  'figure8',\n  'figure9',\n  'figure10',\n  'figure11',\n  'figure12',\n  'figure13',\n  'figure14'\n];\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {emphases.map(function renderAvatar(emphasis, index) {\n        return (\n          <Avatar key={emphasis} emphasis={emphasis}>\n            <Text>{index < 2 ? emphasis.slice(0, 1).toUpperCase() : `${index - 2}`}</Text>\n          </Avatar>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+
+### Avatar Button [#avatar-button]
+
+Use `Pressable` to add accessible interaction to an Avatar while preserving its shape.
+
+<Story of="AvatarButtonExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Pressable, Text } from '@godaddy/antares';\n\nexport function AvatarButtonExample() {\n  return (\n    <Pressable aria-label=\&#x22;Account\&#x22;>\n      <Avatar shape=\&#x22;circle\&#x22; role=\&#x22;button\&#x22;>\n        <Text>UT</Text>\n      </Avatar>\n    </Pressable>\n  );\n}&#x22;" />
+
+### Account Menu [#account-menu]
+
+Wrap an Avatar in a Pressable inside MenuTrigger for an account or profile menu.
+
+<Story of="AccountMenuExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Menu, MenuItem, MenuTrigger, Pressable, Text } from '@godaddy/antares';\n\nexport function AccountMenuExample() {\n  return (\n    <MenuTrigger>\n      <Pressable aria-label=\&#x22;Account menu\&#x22;>\n        <Avatar role=\&#x22;button\&#x22;>\n          <Text>UT</Text>\n        </Avatar>\n      </Pressable>\n      <Menu>\n        <MenuItem id=\&#x22;profile\&#x22;>Profile</MenuItem>\n        <MenuItem id=\&#x22;settings\&#x22;>Settings</MenuItem>\n        <MenuItem id=\&#x22;sign-out\&#x22;>Sign out</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Use Image native image props for responsive image sources. Choose a deterministic `figure0` through `figure14` emphasis in lists that categorize multiple entities.
+
+When an Avatar triggers an action, compose it with `Pressable` so the Avatar keeps its own shape and receives the interaction behavior directly. Use this pattern for an Avatar Button, or place it inside `MenuTrigger` for an Account Menu:
+
+```tsx
+<Pressable aria-label="Account menu" onPress={openAccountMenu}>
+  <Avatar role="button">
+    <Text>UT</Text>
+  </Avatar>
+</Pressable>
+```
+
+## Accessibility [#accessibility]
+
+* Give Image meaningful `alt` text when the image conveys an identity.
+* Text remains available to assistive technology when no image loads.
+* Use `alt=""` on the Image and `aria-hidden="true"` on the Avatar when the entire avatar is purely decorative.
+* Give an Avatar Button or Account Menu an accessible name with `aria-label` or `aria-labelledby`.
+* When using `Pressable`, provide an interactive role for the non-semantic Avatar child.
+
+## Best Practices [#best-practices]
+
+* Use Avatar for informational identity; compose it with `Pressable` for an Avatar Button or Account Menu when it is independently actionable.
+* Use circle for people and square for businesses, workspaces, and accounts.
+* Keep monograms to one or two uppercase characters.
+* Use the same `figure*` emphasis for the same entity wherever it appears.
+
+## Troubleshooting [#troubleshooting]
+
+* If an image is unavailable because of a bad URL or CORS policy, Text remains visible.
+* Long Text content is clipped to the avatar shape; provide a one- or two-character monogram.
+* Figure colors repeat after 15 values; assign a deterministic figure emphasis in the consuming application.
+
+## Props [#props]
+
+```tsx
+<Avatar>
+  <Image />
+  <Text />
+</Avatar>
+```
+
+### Avatar [#avatar]
 
 <PropTable />
 
@@ -3598,6 +3601,71 @@ Do not add `role="button"` to a native `<button>` or `<a>` unless you intentiona
 <PropTable />
 
 
+# ProgressBar
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A determinate progress bar with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
+
+### Statuses [#statuses]
+
+Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
+
+<Story of="StatusesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+
+## Props [#props]
+
+### ProgressBar [#progressbar]
+
+<PropTable />
+
+
 # ProgressSteps
 
 
@@ -3729,71 +3797,6 @@ Step numbers are shown by default; `hideStepNumbers` omits the "N. " prefix.
 <PropTable />
 
 ### ProgressStep [#progressstep]
-
-<PropTable />
-
-
-# ProgressBar
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A determinate progress bar with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
-
-### Statuses [#statuses]
-
-Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
-
-<Story of="StatusesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-
-## Props [#props]
-
-### ProgressBar [#progressbar]
 
 <PropTable />
 
@@ -5557,6 +5560,96 @@ growing a prop for it.
 <PropTable />
 
 
+# Tooltip
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
+Once a tooltip has been shown, subsequent tooltips appear without delay.
+
+`TooltipTrigger` wraps a focusable element and a `<Tooltip>`, handling hover/focus state and positioning automatically.
+
+## Features [#features]
+
+* `overlay` elevation panel positioned relative to its trigger, with an optional arrow
+* Flips and shifts to stay in the viewport
+* Configurable open and close delays
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use it with `TooltipTrigger`, which wraps both the tooltip content and a focusable element such as a `Button`. The tooltip appears on hover and focus.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Button, type TooltipTriggerProps, type TooltipProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: {\n  tooltipTriggerProps?: Partial<TooltipTriggerProps>;\n  tooltipProps?: Partial<TooltipProps>;\n}) {\n  return (\n    <TooltipTrigger {...props.tooltipTriggerProps}>\n      <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n      <Tooltip {...props.tooltipProps}>This is the tooltip content!</Tooltip>\n    </TooltipTrigger>\n  );\n}&#x22;" />
+
+### Custom Anchor [#custom-anchor]
+
+To position a tooltip relative to a different focusable element, use the `triggerRef` prop. `TooltipTrigger` still handles showing and hiding on hover and focus.
+
+<Story of="CustomAnchorExample" />
+
+<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nexport function CustomAnchorExample() {\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <TooltipTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n        <Tooltip triggerRef={triggerRef}>Tooltip positioned relative to the box</Tooltip>\n      </TooltipTrigger>\n\n      <Box elevation=\&#x22;card\&#x22; padding=\&#x22;sm\&#x22; ref={triggerRef}>\n        Tooltip appears here\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+`className` and `style` apply to the tooltip panel.
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key      | Action                                                     |
+| -------- | ---------------------------------------------------------- |
+| `Tab`    | Moves focus to the focusable element and shows the tooltip |
+| `Escape` | Closes the tooltip                                         |
+
+### ARIA [#aria]
+
+* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`
+
+## Best Practices [#best-practices]
+
+* Keep tooltip content short and informative.
+* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
+* Do not place interactive content inside tooltips. Use a `Popover` instead.
+
+## Props [#props]
+
+```tsx
+<TooltipTrigger>
+  <Button />
+  <Tooltip placement="bottom" />
+</TooltipTrigger>
+```
+
+### Tooltip [#tooltip]
+
+<PropTable />
+
+### TooltipTrigger [#tooltiptrigger]
+
+<PropTable />
+
+
 # ToggleButton
 
 
@@ -5835,7 +5928,13 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 <PropTable />
 
 
-# Tooltip
+# DonutChart
+
+
+
+
+
+
 
 
 
@@ -5849,78 +5948,57 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 
 <Meta of="Stories" name="Overview" />
 
-Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
-Once a tooltip has been shown, subsequent tooltips appear without delay.
-
-`TooltipTrigger` wraps a focusable element and a `<Tooltip>`, handling hover/focus state and positioning automatically.
-
-## Features [#features]
-
-* `overlay` elevation panel positioned relative to its trigger, with an optional arrow
-* Flips and shifts to stay in the viewport
-* Configurable open and close delays
-
 ## Installation [#installation]
 
 ```bash
-npm install --save @godaddy/antares
+npm install @godaddy/antares
 ```
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-Use it with `TooltipTrigger`, which wraps both the tooltip content and a focusable element such as a `Button`. The tooltip appears on hover and focus.
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Button, type TooltipTriggerProps, type TooltipProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: {\n  tooltipTriggerProps?: Partial<TooltipTriggerProps>;\n  tooltipProps?: Partial<TooltipProps>;\n}) {\n  return (\n    <TooltipTrigger {...props.tooltipTriggerProps}>\n      <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n      <Tooltip {...props.tooltipProps}>This is the tooltip content!</Tooltip>\n    </TooltipTrigger>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
 
-### Custom Anchor [#custom-anchor]
+### Single slice [#single-slice]
 
-To position a tooltip relative to a different focusable element, use the `triggerRef` prop. `TooltipTrigger` still handles showing and hiding on hover and focus.
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
 
-<Story of="CustomAnchorExample" />
+<Story of="SingleSliceExample" />
 
-<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nexport function CustomAnchorExample() {\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <TooltipTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n        <Tooltip triggerRef={triggerRef}>Tooltip positioned relative to the box</Tooltip>\n      </TooltipTrigger>\n\n      <Box elevation=\&#x22;card\&#x22; padding=\&#x22;sm\&#x22; ref={triggerRef}>\n        Tooltip appears here\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
 
-## Customization [#customization]
+### Legend placement [#legend-placement]
 
-`className` and `style` apply to the tooltip panel.
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
 
-## Accessibility [#accessibility]
+<Story of="LegendLayoutExample" />
 
-### Keyboard [#keyboard]
+<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
 
-| Key      | Action                                                     |
-| -------- | ---------------------------------------------------------- |
-| `Tab`    | Moves focus to the focusable element and shows the tooltip |
-| `Escape` | Closes the tooltip                                         |
+### Small slices [#small-slices]
 
-### ARIA [#aria]
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
 
-* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`
+<Story of="SmallSlicesExample" />
 
-## Best Practices [#best-practices]
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
 
-* Keep tooltip content short and informative.
-* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
-* Do not place interactive content inside tooltips. Use a `Popover` instead.
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Story of="FormatValueExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
 
 ## Props [#props]
 
-```tsx
-<TooltipTrigger>
-  <Button />
-  <Tooltip placement="bottom" />
-</TooltipTrigger>
-```
-
-### Tooltip [#tooltip]
-
-<PropTable />
-
-### TooltipTrigger [#tooltiptrigger]
+### DonutChart [#donutchart]
 
 <PropTable />
 
@@ -6126,81 +6204,6 @@ For better performance:
 ## Props [#props]
 
 ### BarChart [#barchart]
-
-<PropTable />
-
-
-# DonutChart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Story of="SingleSliceExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Story of="LegendLayoutExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Story of="SmallSlicesExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Story of="FormatValueExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### DonutChart [#donutchart]
 
 <PropTable />
 
