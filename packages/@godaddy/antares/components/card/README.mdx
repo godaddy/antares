@@ -1,6 +1,6 @@
 ---
 title: Card
-description: A padded surface for composing media, content, actions, and selection.
+description: A surface that groups related content and actions.
 ---
 
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
@@ -9,10 +9,8 @@ import * as Stories from './card.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-Card is a layout surface. Default padding and gap are `lg`. Direct `CornerActions` sit at the
-top-end. `href` and `onPress` add a primary action. `selection` adds a checkbox or radio instead;
-place `CardSelectionIndicator` yourself. A Card has a primary action or selection, not both.
-Clicking the Card body activates whichever it has.
+Card groups related content, like media, text, and actions, on a single surface. It can also
+work as a link or button, or be selected like a checkbox or radio, but not both.
 
 ## Installation
 
