@@ -14,6 +14,7 @@ import {
 import { partClassName } from '#components/_internal/typography';
 import { Icon } from '#components/icon';
 import { useDeclaredSize } from '#components/size-provider';
+import { Text } from '#components/text';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
@@ -116,7 +117,7 @@ export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(functio
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
     >
-      {buttonLabel(children)}
+      {buttonLabel(isExternal && typeof children === 'string' ? <Text>{children}</Text> : children)}
       {isExternal ? <Icon icon="window-new" /> : null}
     </RACLink>
   );

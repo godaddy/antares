@@ -196,7 +196,32 @@ export function ScenariosExample() {
               <Button slot="control">Verify</Button>
             </Group>
           </TextField>
+          <TextField size="md">
+            <Label>Fax number</Label>
+            <Group>
+              <Select aria-label="Fax prefix" defaultValue="us" variant="control" size="md">
+                <Button slot="trigger" />
+                <SelectOptions>
+                  <SelectItem id="us">+1</SelectItem>
+                </SelectOptions>
+              </Select>
+              <Input />
+            </Group>
+          </TextField>
         </SizeProvider>
+      </div>
+
+      <div style={{ '--ux-oc0naw': '26px' } as CSSProperties}>
+        <TextField>
+          <Label>Nickname</Label>
+          <Input />
+        </TextField>
+        <Select aria-label="Theme" defaultValue="light">
+          <Button slot="trigger" />
+          <SelectOptions>
+            <SelectItem id="light">Light</SelectItem>
+          </SelectOptions>
+        </Select>
       </div>
 
       <div style={{ '--ux-cxbe8g': '20px' } as CSSProperties}>

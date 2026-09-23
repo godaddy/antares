@@ -5,6 +5,7 @@
   --_size-title: var(--font-heading-size-md, 1.25rem);
   --_size-label: var(--font-size-020, 0.75rem);
   --_size-control-font: var(--font-body-size-sm, calc(var(--ux-cxbe8g, 16px) / 1.125));
+  --_size-input-font: var(--font-body-size-sm, calc(var(--ux-oc0naw, 16px) / 1.125));
   --_size-control-padding-block: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
   --_size-padding: var(--size-space-sm, calc(var(--ux-1sbfig8, 0.25rem) * 1));
   --_size-gap: var(--size-space-xs, calc(var(--ux-1sbfig8, 0.25rem) * 0.5));
@@ -17,6 +18,7 @@
   --_size-title: var(--font-heading-size-lg, 1.5rem);
   --_size-label: var(--font-size-040, var(--ux-16aixzc, 0.875rem));
   --_size-control-font: var(--font-body-size-md, var(--ux-cxbe8g, 16px));
+  --_size-input-font: var(--font-body-size-md, var(--ux-oc0naw, 16px));
   --_size-control-padding-block: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
   --_size-padding: var(--size-space-md, calc(var(--ux-1sbfig8, 0.25rem) * 2));
   --_size-gap: var(--size-space-sm, calc(var(--ux-1sbfig8, 0.25rem) * 1));
@@ -29,6 +31,7 @@
   --_size-title: var(--font-heading-size-xl, 1.875rem);
   --_size-label: var(--font-size-050, 1rem);
   --_size-control-font: var(--font-body-size-lg, calc(var(--ux-cxbe8g, 16px) * 1.125));
+  --_size-input-font: var(--font-body-size-lg, calc(var(--ux-oc0naw, 16px) * 1.125));
   --_size-control-padding-block: var(--size-space-060, calc(var(--ux-1sbfig8, 0.25rem) * 3));
   --_size-padding: var(--size-space-lg, calc(var(--ux-1sbfig8, 0.25rem) * 3));
   --_size-gap: var(--size-space-md, calc(var(--ux-1sbfig8, 0.25rem) * 2));

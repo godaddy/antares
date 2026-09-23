@@ -15,7 +15,7 @@ export function IconExample() {
 
       <div>
         <LinkButton variant="secondary" href="#" isExternal>
-          <Text>An external link!</Text>
+          An external link!
         </LinkButton>
       </div>
 

@@ -43,7 +43,7 @@
   border: none;
   font-family: var(--ux-9wtaa3, sans-serif);
   line-height: var(--ux-hm1ty7, 1.375);
-  font-size: var(--_size-control-font);
+  font-size: var(--_size-input-font);
   color: var(--_field-input-fg);
   padding: var(--_size-control-padding-block) var(--sp-md);
   text-align: start;

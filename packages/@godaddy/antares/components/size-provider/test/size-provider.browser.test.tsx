@@ -84,6 +84,22 @@ describe('@godaddy/antares', function antares() {
       }
     });
 
+    it('keeps an explicitly sized control Select aligned with its field', async function explicitControlSelect() {
+      const { getByRole } = await render(<ScenariosExample />);
+      const input = style(getByRole('textbox', { name: 'Fax number' }).element());
+      const trigger = style(getByRole('button', { name: /Fax prefix/ }).element());
+
+      expect(trigger.fontSize).toEqual(input.fontSize);
+      expect(trigger.paddingBlockStart).toEqual(input.paddingBlockStart);
+    });
+
+    it('sizes field inputs and triggers from the legacy input font', async function legacyInputFont() {
+      const { getByRole } = await render(<ScenariosExample />);
+
+      expect(style(getByRole('textbox', { name: 'Nickname' }).element()).fontSize).toEqual('26px');
+      expect(style(getByRole('button', { name: /Theme/ }).element()).fontSize).toEqual('26px');
+    });
+
     it('sizes Text but leaves plain HTML at the page typography', async function plainHtml() {
       const { getByTestId } = await render(<ScenariosExample />);
 

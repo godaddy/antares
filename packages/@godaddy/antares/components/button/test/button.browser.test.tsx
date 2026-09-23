@@ -8,6 +8,7 @@ import { IsolatedLabelExample } from '../examples/isolated-label.tsx';
 import { PrimaryExample } from '../examples/primary.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
+import { IconExample } from '../examples/icon.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
@@ -111,6 +112,14 @@ describe('@godaddy/antares', function antares() {
         expect(rect(first + 1).height).toEqual(rect(first).height);
         expect(rect(first + 2).height).toEqual(rect(first).height);
       }
+    });
+
+    it('pads an external link with a bare label like a labeled button, not an icon-only one', async function externalLabel() {
+      const { getByRole } = await render(<IconExample />);
+      const link = getByRole('link', { name: 'An external link!' }).element();
+      const labeled = getByRole('button', { name: 'With an icon!' }).element();
+
+      expect(getComputedStyle(link).padding).toEqual(getComputedStyle(labeled).padding);
     });
 
     it('shadows an ancestor TextContext so the label keeps the button type', async function isolatedLabel() {

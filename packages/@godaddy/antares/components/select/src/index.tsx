@@ -52,24 +52,12 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
   children: ReactNode | ((renderProps: RACSelectRenderProps) => ReactNode);
 }
 
-/** The control size an enclosing field published, whether or not it slots its buttons. */
-function useInheritedControlSize(): ScaleSize | undefined {
-  const context = useContext(ButtonContext) as (ButtonProps & { slots?: Record<string, ButtonProps> }) | null;
-  const control = context?.slots ? context.slots.control : context;
-
-  // cva types a variant as nullable, but a field only ever publishes a size or nothing.
-  return control?.size ?? undefined;
-}
-
 interface SelectBodyProps {
   /** Chrome for the trigger this Select holds. */
   trigger: ButtonProps;
 
   /** Chrome for a `Group` composed inside, when this Select is a field of its own. */
   group?: GroupProps;
-
-  /** Visual size of the trigger. */
-  size?: ScaleSize;
 
   /** Whether the field is disabled. */
   isDisabled?: boolean;
@@ -82,11 +70,11 @@ interface SelectBodyProps {
  * publishes its trigger props unslotted, so that one value stands in for the trigger and for a
  * plain `Button`.
  */
-function SelectBody({ trigger, group, size, isDisabled, children }: SelectBodyProps) {
+function SelectBody({ trigger, group, isDisabled, children }: SelectBodyProps) {
   const label = useSlottedContext(LabelContext) ?? {};
   const inheritedGroup = useSlottedContext(GroupContext) ?? {};
   const triggerProps = (useContext(ButtonContext) ?? {}) as ButtonProps;
-  const control: ButtonProps = { variant: 'control', size, isDisabled, className: fieldStyles.control };
+  const control: ButtonProps = { variant: 'control', isDisabled, className: fieldStyles.control };
 
   return (
     <RACProvider
@@ -98,7 +86,7 @@ function SelectBody({ trigger, group, size, isDisabled, children }: SelectBodyPr
           {
             slots: {
               // React Aria publishes the trigger unslotted, so the same props stand in for a
-              // `Button` with no slot. `control` is here so a Select nested in this one can read it.
+              // `Button` with no slot.
               [DEFAULT_SLOT]: triggerProps,
               control,
               trigger: mergeProps(triggerProps, trigger, { children: TRIGGER_FACE })
@@ -153,13 +141,11 @@ function FieldSelect<T extends object, M extends SelectionMode>(props: SelectRoo
 function ControlSelect<T extends object, M extends SelectionMode>(props: SelectRootProps<T, M>) {
   const { children, size, className, isDisabled, ...racProps } = props;
   const inheritedGroup = useSlottedContext(GroupContext);
-  const inheritedSize = useInheritedControlSize();
   const controlDisabled = isDisabled ?? inheritedGroup?.isDisabled;
-  const controlSize = size ?? inheritedSize;
-  const scale = useDeclaredSize(controlSize);
+  const scale = useDeclaredSize(size);
 
   return (
-    <SizeProvider size={controlSize}>
+    <SizeProvider size={size}>
       <RACSelect
         {...(racProps as RACSelectProps<T, M>)}
         isDisabled={controlDisabled}
@@ -167,11 +153,7 @@ function ControlSelect<T extends object, M extends SelectionMode>(props: SelectR
       >
         {composeRenderProps(children, function body(node) {
           return (
-            <SelectBody
-              size={controlSize}
-              isDisabled={controlDisabled}
-              trigger={{ variant: 'control', size: controlSize, className: fieldStyles.control }}
-            >
+            <SelectBody isDisabled={controlDisabled} trigger={{ variant: 'control', className: fieldStyles.control }}>
               {node}
             </SelectBody>
           );
