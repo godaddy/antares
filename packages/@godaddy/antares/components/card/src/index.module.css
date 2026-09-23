@@ -29,7 +29,7 @@
   outline-offset: 2px;
 }
 
-.card:where([data-card="interactive"]:active),
+.card:where([data-pressed]),
 .card:where([data-card-selected]) {
   --_card-border: var(--ux-8qoawt, #09757a);
   border-color: var(--_card-border);

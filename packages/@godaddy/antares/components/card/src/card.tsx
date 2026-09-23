@@ -1,4 +1,5 @@
 import { forwardRef, useRef, type MouseEventHandler, type ReactNode, type Ref } from 'react';
+import { mergeProps } from 'react-aria';
 import {
   Link as RACLink,
   type LinkProps as RACLinkProps,
@@ -11,7 +12,7 @@ import { Flex, type FlexProps } from '#components/layout/flex';
 import { ButtonGroupContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import { SelectionProvider } from './card-selection-indicator.tsx';
-import { useForwardedClick } from './use-forwarded-click.ts';
+import { useSurfacePress } from './use-surface-press.ts';
 import styles from './index.module.css';
 
 interface CardBaseProps extends Omit<FlexProps, 'as' | 'children' | 'onClick'> {
@@ -128,7 +129,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
     'aria-describedby': ariaDescribedBy
   };
 
-  const forwardedClick = useForwardedClick(function resolveTarget(card) {
+  const surfacePress = useSurfacePress(function resolveTarget(card) {
     if (hasPrimary) return primaryRef.current;
     for (const input of card.querySelectorAll<HTMLInputElement>('[data-card-selection-control] input')) {
       if (input.closest('[data-card]') === card) return input;
@@ -147,13 +148,14 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
           padding="lg"
           gap="lg"
           direction="column"
-          {...surfaceProps}
+          {...(isInteractive ? mergeProps(surfaceProps, surfacePress.pressProps) : surfaceProps)}
           {...(hasPrimary || selection != null ? undefined : ariaProps)}
           ref={ref}
           className={composeClassName(className, styles.card)}
           data-card-selected={state.isSelected || undefined}
           data-disabled={isDisabled || state.isDisabled || undefined}
-          onClick={shouldForwardClick ? forwardedClick : onClick}
+          data-pressed={(isInteractive && surfacePress.isPressed) || undefined}
+          onClick={shouldForwardClick ? surfacePress.onClick : onClick}
           data-card={isInteractive ? 'interactive' : 'static'}
         >
           {href != null ? (

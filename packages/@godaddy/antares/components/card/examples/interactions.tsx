@@ -11,6 +11,7 @@ import {
   MenuTrigger,
   LinkButton,
   RadioGroup,
+  RangeField,
   Text
 } from '@godaddy/antares';
 
@@ -26,6 +27,7 @@ export function InteractionsExample({
   defaultSelected = false,
   focusable,
   media,
+  slider,
   indicatorChildren
 }: {
   kind?: 'checkbox' | 'radio';
@@ -35,6 +37,7 @@ export function InteractionsExample({
   defaultSelected?: boolean;
   focusable?: 'card' | 'ancestor';
   media?: 'audio' | 'video';
+  slider?: boolean;
   indicatorChildren?: CardSelectionIndicatorProps['children'];
 }) {
   const [presses, setPresses] = useState(0);
@@ -88,6 +91,7 @@ export function InteractionsExample({
           <track kind="captions" />
         </video>
       ) : null}
+      {slider ? <RangeField label="Volume" defaultValue={10} /> : null}
     </>
   );
 

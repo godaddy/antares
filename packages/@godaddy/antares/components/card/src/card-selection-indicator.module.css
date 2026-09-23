@@ -46,8 +46,7 @@
     }
   }
 
-  &:where(:active),
-  &:where([data-card="interactive"]:active *):not(:where([data-card]:not(:active)) *) {
+  &:where([data-card][data-pressed] *):not(:where([data-card]:not([data-pressed])) *) {
     --_card-selection-indicator-background: var(--ux-gdy377, #fff);
     --_card-selection-indicator-check-opacity: 0.5;
   }

@@ -504,6 +504,59 @@ describe('@godaddy/antares', function packageTests() {
       });
 
       it.each([
+        'checkbox',
+        'radio',
+        'action'
+      ] as const)('keeps a nested slider track independent of the %s Card', async function nestedSlider(kind) {
+        const { getByRole, getByText } = await render(
+          <InteractionsExample
+            kind={kind === 'radio' ? 'radio' : 'checkbox'}
+            primary={kind === 'action' ? 'action' : undefined}
+            slider
+          />
+        );
+        const slider = getByRole('slider', { name: 'Volume' }).element() as HTMLInputElement;
+        const track = bounds(slider.closest('[role="group"] > [data-orientation]')!);
+        const x = track.right - 4;
+        const y = track.top + track.height / 2;
+        await moveMouse(x, y, 'mouseMoved');
+        await moveMouse(x, y, 'mousePressed', 'left');
+        await moveMouse(x, y, 'mouseReleased', 'left');
+        await expect.poll(() => slider.value).not.toBe('10');
+        await expect.element(getByText('Primary activations: 0')).toBeInTheDocument();
+        if (kind !== 'action') await expect.element(getByRole(kind, { name: 'Option one' })).not.toBeChecked();
+      });
+
+      it.each([
+        'checkbox',
+        'action'
+      ] as const)('shows the %s Card pressed only for presses it owns', async function ownedPress(kind) {
+        const { getByRole, getByTestId, body } = await renderInteraction(kind);
+        const card = body.element().closest<HTMLElement>('[data-card]')!;
+        const idle = getComputedStyle(card).borderColor;
+
+        async function borderWhilePressed(element: Element, position?: { x: number; y: number }) {
+          const box = bounds(element);
+          const x = box.left + (position?.x ?? 8);
+          const y = box.top + (position?.y ?? box.height / 2);
+          await moveMouse(x, y, 'mouseMoved');
+          await moveMouse(x, y, 'mousePressed', 'left');
+          const border = getComputedStyle(card).borderColor;
+          await moveMouse(x, y, 'mouseReleased', 'left');
+          return border;
+        }
+
+        expect(await borderWhilePressed(getByRole('button', { name: 'Independent One' }).element())).toBe(idle);
+        expect(await borderWhilePressed(body.element())).toBe('rgb(9, 117, 122)');
+        await userEvent.click(getByRole('button', { name: 'Reset choices' }));
+        const ownControl =
+          kind === 'action'
+            ? borderWhilePressed(card, { x: 4, y: 4 })
+            : borderWhilePressed(getByTestId('indicator-One').element());
+        expect(await ownControl).toBe('rgb(9, 117, 122)');
+      });
+
+      it.each([
         { primary: 'action', rings: ['solid', 'none'] },
         { primary: undefined, rings: ['none', 'none', 'none', 'none', 'solid'] }
       ] as const)('rings the surface for its own controls only: primary=$primary', async function focusRing({
