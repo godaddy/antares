@@ -29,9 +29,12 @@
   --_type-slot-size: var(--_size-label, var(--ux-p4h24g, 0.875rem));
 
   font-family: var(--font-body-family, var(--ux-pze30t, var(--ux-117cu43, sans-serif)));
-  font-weight: var(--font-body-weight, var(--ux-8n6y9x, 400));
   font-variation-settings: var(--font-body-variation, var(--ux-1i4pt2s, normal));
   line-height: var(--font-body-line-height, var(--ux-1hhfdnd, var(--ux-mgbt9j, 1.5)));
+}
+
+.field > :where([slot="description"]:not(strong, b)) {
+  font-weight: var(--font-body-weight, var(--ux-8n6y9x, 400));
 }
 
 .input,
@@ -40,7 +43,7 @@
   border: none;
   font-family: var(--ux-9wtaa3, sans-serif);
   line-height: var(--ux-hm1ty7, 1.375);
-  font-size: var(--_size-control-font, var(--ux-oc0naw, 1rem));
+  font-size: var(--_size-control-font, var(--font-body-size-md, var(--ux-cxbe8g, 16px)));
   color: var(--_field-input-fg);
   padding: var(--_size-control-padding-block, var(--sp-md)) var(--sp-md);
   text-align: start;

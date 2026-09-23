@@ -10,6 +10,9 @@ import {
   Input,
   Label,
   NumberField,
+  Select,
+  SelectItem,
+  SelectOptions,
   SizeScope,
   Text,
   TextField,
@@ -72,6 +75,13 @@ export function ScenariosExample() {
           </Text>
         </TextField>
         <TextField>
+          <Label>Company</Label>
+          <Input />
+          <Text as="strong" slot="description" data-testid="strong-description">
+            Strong description
+          </Text>
+        </TextField>
+        <TextField>
           <Label>Phone</Label>
           <Input />
           <Detail slot="description" data-testid="detail-description">
@@ -114,6 +124,45 @@ export function ScenariosExample() {
           <DatePickerCalendar />
         </DatePicker>
       </SizeScope>
+
+      <div style={{ '--font-body-size-md': '20px' } as CSSProperties}>
+        <NumberField>
+          <Label>Rooms</Label>
+          <Group>
+            <Button slot="decrement" />
+            <Input />
+            <Button slot="increment" />
+          </Group>
+        </NumberField>
+      </div>
+
+      <div style={{ '--size-space-sm': '6px', '--size-space-md': '10px', '--size-space-lg': '14px' } as CSSProperties}>
+        <Button data-testid="token-unscoped">Save</Button>
+        <Button data-testid="token-explicit-sm" size="sm">
+          Save
+        </Button>
+        <SizeScope size="md">
+          <Button data-testid="token-md">Save</Button>
+        </SizeScope>
+        <SizeScope size="sm">
+          <Button data-testid="token-sm">Save</Button>
+        </SizeScope>
+        <SizeScope size="lg">
+          <TextField size="md">
+            <Label>Phone number</Label>
+            <Group>
+              <Select aria-label="Country" defaultValue="us" variant="control">
+                <Button slot="trigger" />
+                <SelectOptions>
+                  <SelectItem id="us">+1</SelectItem>
+                </SelectOptions>
+              </Select>
+              <Input />
+              <Button slot="control">Verify</Button>
+            </Group>
+          </TextField>
+        </SizeScope>
+      </div>
 
       <div style={{ '--ux-cxbe8g': '20px' } as CSSProperties}>
         <SizeScope size="lg">

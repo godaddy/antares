@@ -7,11 +7,11 @@ Status: **Proposed**
 - [Summary](#summary)
 - [Problem](#problem)
 - [The model](#the-model)
+- [Scenarios](#scenarios)
 - [Components](#components)
 - [Mechanism](#mechanism)
 - [Tokens](#tokens)
 - [Responsive sizes](#responsive-sizes)
-- [Pilot](#pilot)
 - [Alternatives considered](#alternatives-considered)
 - [Open details](#open-details)
 
@@ -41,80 +41,95 @@ their copy, and a heading's level is independent of its visual size.
 </SizeScope>
 ```
 
-Everything above is small except the second Button. The whole system follows from three rules:
-
-1. **The nearest scope wins.** A scope sets the size of everything inside it, including content rendered
-   in a portal. Scopes do not compound: `sm` inside `sm` is still `sm`.
-2. **An explicit prop wins over the scope,** and only for the component that has it.
-3. **`Text` inherits.** Unsized body text takes the typography of whatever surrounds it: a scope, a
-   control, or a named part. `Detail`, `Heading`, and `Label` apply their own role.
+Everything above is small except the second Button.
 
 ## Problem
 
 Typography has several owners today. `Text` sets no typography, `Heading` gets its size from the browser,
 `TextLockup` applies role tokens to its slots, and every control declares its own font properties. A
-consumer cannot make a section compact, for example on a narrow screen, and predict how its text, controls,
-and spacing respond.
+consumer cannot make a section compact and predict how its text, controls, and spacing respond.
 
 ## The model
 
-### The size scale
+The **size scale** has three sizes: `sm`, `md`, `lg` (`ScaleSize`). Three rules cover most cases:
 
-The **size scale** has three sizes: `sm`, `md`, `lg`, typed as `ScaleSize`. A scope maps its size to a
-small set of private CSS custom properties. Components read them and fall back to `md` values when no scope
-is present.
+1. **The nearest scope wins.** A scope sets the size of everything inside it, portaled content included.
+   Scopes replace, never compound: `sm` inside `sm` is still `sm`.
+2. **An explicit `size` wins,** and only for the component that has it.
+3. **No scope means `md`.** The exception is `Text`, which always follows its surroundings.
 
-Because custom properties inherit through the DOM, the cascade implements the rules:
-
-- The nearest scope's values are the ones a descendant reads.
-- A nested scope replaces values; it never scales them.
-- An explicit prop reads the global token directly, so it is unaffected by any scope and affects nothing
-  else.
-
-The scale selects tokens; it never redefines them. `--font-body-size-md` means the same thing everywhere.
-
-### Typography size
-
-`Text`, `Detail`, `Heading`, `Label`, and `TextLockup` take a six-tier `size`: `xs`, `sm`, `md`, `lg`, `xl`,
-`2xl`. The tier names the step on that component's own ramp, so `Text size="md"` and `Heading size="md"` have
-different font sizes.
-
-Without `size`, these components take the scope's matching tier: an `sm` scope gives heading `sm`, detail
-`sm`, and so on. A scope only produces `sm`, `md`, and `lg`; `xs`, `xl`, and `2xl` are always explicit. An
-explicit tier is fixed across scopes, so a size that should change with the screen uses a
-[responsive value](#responsive-sizes).
-
-### What scopes and what follows
+Components relate to the scale in one of these ways:
 
 | Kind | Components | Behavior |
 | --- | --- | --- |
-| Scope | `SizeScope`, Modal, Drawer, InlineDrawer, TextField and other field owners, the future Card | Sets the whole size scale and body typography on its own element |
-| Text scope | `TextLockup` | Sets only the text entries of the scale, so controls inside keep the surrounding scale size |
-| Follows | Buttons, Tag, Chip, Select, Menu, Popover, Tooltip, and the rest | Reads the scale, or uses its own explicit `size` |
-| Independent | Box, Flex, Grid, Avatar, media, chart geometry | Ignores the scale |
+| Scope | `SizeScope`; `TextField`, `NumberField`, `Select`, `DatePicker`, `DateRangePicker`, and `Modal` with `size` | Sets the size for everything inside, and body typography on its own element |
+| Text scope | `TextLockup` with `size` | Sizes only the text inside; controls keep the surrounding size |
+| Uses the scale's values | Text roles, field parts, overlay padding and titles | Read the scale's value for their role |
+| Picks its own size | `Button`, `LinkButton` | Reads which size is in effect and applies its own definition of it |
+| Independent | Layout, Avatar, media, chart geometry, and components not yet adopted | Ignores the scale |
 
-A scope without an explicit `size` inherits the size around it, and still applies body typography to its own
-element. Layout spacing props keep their meaning: `gap="md"` inside a small scope is still the layout `md`
-gap.
+## Scenarios
+
+The expected behavior, one row per case.
+
+### Text
+
+| Situation | Result |
+| --- | --- |
+| Bare text, a plain element, or `Text` without `size` | Inherits from its container: the scope's body size, or the page's font outside any scope |
+| `Detail`, `Heading`, `Label` without `size` | The scope's detail, heading, or label tier; `md` outside any scope |
+| Heading `level` changes | Different element, same typography |
+| Explicit `size` on text | Applies to that element only; nested text still follows the scope |
+| `as="strong"`, `as="em"`, `<b>` | Keep their weight or style over the role's |
+| `Text` inside a Button | Identical to a bare label; `emphasis` and `maxLines` change only color and truncation |
+
+### Named parts
+
+| Situation | Result |
+| --- | --- |
+| Field description or `FieldError` | Label tier of the field's size |
+| TextLockup body | Body tier |
+| Modal, Drawer, or Popover `slot="title"` | Title tier, one heading step above the body tier |
+| A part filled by `Text` or by `Detail` | Renders the same; the owner decides the treatment |
+| Explicit `size` on a part | Wins over the owner |
+| `TextLockup size="xl"` in an `sm` scope | Its text is `xl`; buttons inside it stay `sm` |
+
+### Controls
+
+| Situation | Result |
+| --- | --- |
+| `Button` in a scope | Uses Button's own sizes: in `sm` it is exactly `<Button size="sm">` |
+| `Button` in an `md` scope | Same as a Button with no scope |
+| Button size precedence | Its own `size`, then a size its parent sets for its slot, then the scope |
+| Field input, control, and trigger buttons | Follow the field's size, using the scale's control values, so they line up with the input |
+| Field with `size` inside a scope | Every part follows the field: label, input, buttons, description, overlay |
+| Field without `size` | Follows the scope around it |
+
+### Overlays
+
+| Situation | Result |
+| --- | --- |
+| Modal, Drawer, Popover, Tooltip, Select list, or DatePicker calendar | Opens at the size of the scope around its trigger |
+| Owner with explicit `size` | Its overlay uses that size |
+
+### Themes
+
+| Situation | Result |
+| --- | --- |
+| Token theme, legacy theme, or no theme | Valid values everywhere; each value falls back from token to legacy variable to literal |
+| Legacy theme in a scope | Scoped and explicit sizes give the same result |
+| Avatar and fitted chart labels | Unchanged |
 
 ## Components
 
 ### SizeScope
 
-`SizeScope` makes any section a scope. It renders a `div` by default; `as` picks another element.
+Makes any section a scope. It renders a `div` by default; `as` picks another element, such as `span` around
+inline content. It renders a real element so bare text and plain HTML follow it. It is not a layout
+component; compose Flex or Grid inside it.
 
-```tsx
-<SizeScope as="section" size="sm">...</SizeScope>
-```
-
-It renders a real element because that is what lets bare text and ordinary HTML follow the scope. It is not
-a layout component; compose Flex or Grid inside it.
-
-Apps render a `SizeScope` at their root. That gives unsized text its body typography, and gives
-responsive sizing a single place to live later. Without a root scope, `Text` inherits the app's own font,
-and every other component falls back to `md`.
-
-`SizeScope` is also how to size a single component that has no `size` prop:
+Apps render a `SizeScope` at their root, so unsized text gets body typography. It also sizes a component that
+has no `size` prop:
 
 ```tsx
 <SizeScope size="lg">
@@ -122,91 +137,43 @@ and every other component falls back to `md`.
 </SizeScope>
 ```
 
-So a component gets its own `size` prop only when it is commonly resized on its own, as Button is. Around
-inline content, use `as="span"`.
+A component gets its own `size` prop only when it is commonly resized on its own, as Button is.
 
 ### Text, Detail, Heading, Label
 
-| Component | Purpose | Without `size` |
-| --- | --- | --- |
-| `Text` | Body copy | Inherits all font properties from its surroundings |
-| `Detail` | Supporting copy, captions, metadata | Detail role at the scope's detail tier |
-| `Heading` | Semantic heading | Heading role at the scope's heading tier |
-| `Label` | Names a form field | Label role at the scope's label tier, medium weight |
+| Component | Purpose |
+| --- | --- |
+| `Text` | Body copy |
+| `Detail` | Supporting copy, captions, metadata |
+| `Heading` | Semantic heading; `level` comes from its prop, then React Aria context, then `3` |
+| `Label` | Names a form field, medium weight |
 
-`Text size` changes only the font size, and `emphasis` changes only the color. So `<Button><Text>Save</Text></Button>` is
-identical to `<Button>Save</Button>`, and `<Button><Text emphasis="critical">Save</Text></Button>` changes only the color.
-`Detail` inside a control is an explicit role change and applies the detail treatment.
+They take a six-tier `size`: `xs`, `sm`, `md`, `lg`, `xl`, `2xl`. The tier is a step on that component's own
+ramp, so `Text size="md"` and `Heading size="md"` differ. A scope only produces `sm`, `md`, and `lg`.
 
-There is no `variant`, `weight`, `family`, `lineHeight`, or `letterSpacing` prop. Use `as="strong"` and
-`as="em"` for semantic emphasis; they use `--font-weight-strong` and `--font-style-em`.
-
-`emphasis` selects a feedback color, with the same values as Tag's `emphasis`; Alert's is a subset:
+`emphasis` changes only the color, with the same values as Tag's `emphasis`:
 
 ```tsx
 emphasis?: 'critical' | 'warning' | 'success' | 'info' | 'highlight' | 'premium' | 'internal' | 'neutral' | 'passive';
 ```
 
-When omitted, text inherits the surrounding color. `Detail` is not automatically muted.
-
-`Heading` resolves `level` from its prop, then React Aria context, then `3`. Level never affects size.
-
-### Controls
-
-Controls read the control entries of the scale: height, padding, and label font size. An explicit `size`
-selects the control's own values instead. Label typography lives on the control's own element, so icons
-and composed `Text` inherit it.
+There is no `variant`, `weight`, `family`, `lineHeight`, or `letterSpacing` prop. Use `as="strong"` and
+`as="em"` for semantic emphasis.
 
 ### Owners and named parts
 
-An owner styles its named parts by merging a class into the part's existing React Aria context. It never
-replaces the context. The class sets the part's slot value in the [precedence chain](#precedence-without-selector-order),
-so an explicit prop on the part still wins.
-
-- **TextField** is a scope. Its label, input, description, and error read the scale, and the field maps them
-  to tiers of their own: the description and error use the label tier. The description value comes from
-  the rule every field shares for its `slot="description"` child, so fields that have not adopted the scale
-  keep their current look.
-
-A named part sets its whole treatment, ramp included, so the component that fills it does not change the
-result: `Text slot="description"` and `Detail slot="description"` render the same. `Text` is the canonical
-form, and `Detail` is for supporting copy that no part styles, such as captions and metadata.
-- **Modal, Drawer, and Popover** give their `title` slot the scale's title tier, one heading step above the
-  body tier.
-- **TextLockup** with a `size` sets the text entries of the scale on its element, so every text part inside,
-  slotted or not, uses that tier. Buttons inside it keep the scale size. Without `size` it follows the scope.
-  Its named parts keep their existing slots, including the eyebrow Tag mapping. A tier keeps the same size
-  at every container width, so the automatic narrow-width title reduction for `sm` and `2xl` is removed;
-  [responsive values](#responsive-sizes) replace it.
+An owner styles its named parts, such as a field's description or a lockup's body, by adding a class to the
+part's existing React Aria context. It never replaces that context, so ids, levels, and field associations
+are kept.
 
 TextLockup's `title` slot belongs to the lockup. It does not become the title of an enclosing Modal; give the
 Modal its own `<Heading slot="title">`.
-
-### Overlays
-
-Portaled content is outside its trigger's DOM, so CSS inheritance cannot reach it. React context carries the
-declared size of the nearest scope, and every portaled surface (Modal, Drawer, Popover, Tooltip) re-applies
-the same scope class on its root. Modal, Drawer, and Popover share one dialog shell that does this. Menu,
-Select, and DatePicker render through Popover, so they get this for free.
-
-An owner's explicit `size` is the declared size for its overlay:
-
-```tsx
-<SizeScope size="sm">
-  <Select>...</Select>            {/* small trigger, small list */}
-  <Select size="lg">...</Select>  {/* large trigger, large list */}
-  <ModalTrigger>
-    <Button>Edit</Button>
-    <Modal>...</Modal>            {/* small modal */}
-  </ModalTrigger>
-</SizeScope>
-```
 
 ## Mechanism
 
 ### Scale variables
 
-One stylesheet defines the scale. Each size class sets these variables:
+A scope's size class sets private CSS variables that descendants read, each with an `md` fallback:
 
 | Variable | `sm` | `md` | `lg` |
 | --- | --- | --- | --- |
@@ -216,55 +183,37 @@ One stylesheet defines the scale. Each size class sets these variables:
 | `--_size-title` | heading `md` | heading `lg` | heading `xl` |
 | `--_size-label` | label `sm` | label `md` | label `lg` |
 | `--_size-control-font` | body `sm` | body `md` | body `lg` |
-| `--_size-control-padding-block`, `-inline` | `010`, `020` | `020`, `030` | `030`, `040` |
-| `--_size-padding` | `sm` | `md` | `lg` |
-| `--_size-gap` | `xs` | `sm` | `md` |
+| `--_size-control-padding-block` | space `010` | space `020` | space `030` |
+| `--_size-padding` | space `sm` | space `md` | space `lg` |
+| `--_size-gap` | space `xs` | space `sm` | space `md` |
 
-Text sizes and spacing reference the existing tokens with their legacy-intent and literal fallbacks. The
-control entries are the current Button values. The spacing entries reproduce today's `md` defaults: region
-padding is `md` and field gaps and block padding are `sm`. Every value is a pilot starting point for visual
-review.
+The scale selects tokens; it never redefines them. `--_size-control-font` is separate from `--_size-body` so
+a TextLockup's text size never reaches the controls inside it.
 
-`--_size-control-font` is separate from `--_size-body` so that a TextLockup's text size never reaches the
-controls inside it.
+### Precedence
 
-This is the one deliberate exception to the styling rule that a component declares its private variables on
-its own root. The scale is declared by a scope and read by descendants. Every read has an `md` fallback, so a
-missing scope is safe, and portals re-apply the scope class instead of relying on inheritance.
-
-### Precedence without selector order
-
-A property with several possible sources reads them through one `var()` fallback chain, most specific
-first. Each source writes its own variable, so no two classes set the same property on the same element and
-stylesheet order never matters:
+A property with several sources reads them through one `var()` chain, most specific first:
 
 ```css
-:where(.heading) {
-  font-size: var(--_type-size, var(--_type-slot-size, var(--_size-heading, var(--_type-md))));
-}
+font-size: var(--_type-size, var(--_type-slot-size, var(--_size-heading, var(--_type-md))));
 ```
 
 An explicit `size` sets `--_type-size`, the owner's part class sets `--_type-slot-size`, and the scope sets
-`--_size-heading`. `emphasis` and part colors use the same pair for `color`. The precedence variables are
-registered with `@property` and `inherits: false`, so an explicit size never reaches nested text. The scale
-variables inherit, which is how a scope reaches its descendants.
+`--_size-heading`. The first two don't inherit, so an explicit size never reaches nested text.
 
-Text component defaults sit in `:where()`, at zero specificity, so an owner's part class and a caller's
-`className` always win over them. Explicit spacing props already win because Box writes them as inline
-styles.
+### React's part
 
-### What stays in React
+- **Portals.** CSS can't reach portaled content, so context carries the scope's size and every overlay
+  re-applies the scope class on its root.
+- **Button.** Reads the size in effect from the same context and applies its own size class.
+- **Parts.** Owners add part classes through React Aria contexts.
 
-- Carrying the declared size to portaled surfaces.
-- Mapping an explicit, non-responsive size prop to classes.
-- Preserving React Aria contexts, ids, levels, and field associations when adding part classes.
-
-An inherited size is never read in JavaScript. That is what keeps responsive sizes possible.
+JavaScript only picks classes from a size; it never computes values from one. That keeps responsive sizes
+possible in CSS.
 
 ## Tokens
 
-The existing role ramps supply every text size. This proposal requires no change to
-`packages/@godaddy/design-tokens`.
+The existing role ramps supply every text size. No change to `packages/@godaddy/design-tokens` is needed.
 
 | Tier | Body | Detail | Heading |
 | --- | --- | --- | --- |
@@ -275,97 +224,47 @@ The existing role ramps supply every text size. This proposal requires no change
 | `xl` | 1.25rem | 1rem | 1.875rem |
 | `2xl` | 1.5rem | 1.125rem | 2.25rem |
 
-- Role properties follow token, then legacy intent, then literal, per the
+- Values follow token, then legacy intent, then literal, per the
   [token mapping](../../../.agents/skills/antares-components/references/token-intent-legacy-map.json).
-  Include `font-variation-settings`.
-- There is no Label role in the tokens. Label uses the label legacy intents, medium weight, and the global
-  font-size scale (`font-size-020`, `040`, `050`, ...) until a label role is approved.
+- There is no Label role in the tokens yet. Label uses the global font-size scale (`font-size-020`, `040`,
+  `050`).
 - Spacing follows [the spacing rules](./gu-spacing.md).
-- Geometry-fitted text, such as Avatar monograms and chart center labels, keeps its own sizing and does not
-  read the scale.
 
 ## Responsive sizes
 
-Responsive values are designed in but ship after the pilot:
+Designed in, shipped later:
 
 ```tsx
 <SizeScope size={{ base: 'sm', md: 'md' }}>...</SizeScope>
-```
-
-Each breakpoint compiles to a size class inside a media query, so the size resolves in CSS during server
-rendering, with no flash. Context carries the same object to portals, which apply the same classes. Because
-media queries follow the viewport, a portal resolves the same size as its trigger.
-
-Every `size` prop accepts the same form, including the six-tier ones, so an explicit size can still change
-with the screen:
-
-```tsx
-<TextLockup size={{ base: 'lg', md: '2xl' }}>...</TextLockup>
 <Button size={{ base: 'lg', md: 'md' }}>Save</Button>
 ```
 
-A size-dependent mapping, such as TextLockup's eyebrow Tag size, must then be expressed in CSS rather than
-computed from the prop in JavaScript.
-
-This needs breakpoint tokens, which Antares does not have yet. Container queries are not used for size,
-because portaled content cannot see its trigger's container.
-
-## Pilot
-
-1. The size scale, `SizeScope`, and the portal bridge.
-2. `Text`, `Detail`, `Heading`, `Label`.
-3. `Button`.
-4. `TextField` with its parts.
-5. `TextLockup`, `Modal`, and `Select` as the Popover example.
-
-The pilot must show:
-
-| Scenario | Expected |
-| --- | --- |
-| Components in `sm`, `md`, `lg` scopes and with no scope | Complete sizing: type, padding, minimum dimensions |
-| `sm` scope inside `sm` scope | Still `sm` |
-| Explicit size inside a scope | Only that component changes |
-| Bare text, a plain `div`, and `Text` in a scope | Identical typography |
-| `<Button>Save</Button>` and `<Button><Text>Save</Text></Button>` | Identical computed font and dimensions |
-| `Text emphasis` or `maxLines` inside a control | Only color or truncation changes |
-| Heading level changes without size | Different element, same typography |
-| Explicit prop on a named part | Wins over the owner's part class |
-| TextLockup `xl` inside an `sm` scope | Text is `xl`, controls are `sm` |
-| Modal and Select opened from an `sm` scope | Portaled content is `sm`; explicit size on the owner wins |
-| TextLockup title inside a Modal | Modal keeps its own title and accessible name |
-| Token theme, legacy-intent theme, and no theme | Valid declarations everywhere |
-| Avatar and fitted chart labels | Unchanged |
+Each breakpoint compiles to a size class inside a media query, so the size resolves in CSS during server
+rendering, with no flash. Portals and Button receive the same object through context and apply the same
+classes. Media queries follow the viewport, so a portal resolves the same size as its trigger. This needs
+breakpoint tokens, which Antares does not have yet.
 
 ## Alternatives considered
 
-**Resolve size in React context.** Every component reads the size during render and picks a class, and a
-typography context passes part treatments down. It works for fixed sizes, but a responsive size would need
-JavaScript media queries and would flash after server rendering. It also needs a dedicated mechanism to keep
-a composed `Text` from restyling a control's label, which plain inheritance gives for free.
+- **Compute sizes in React.** Every component reads the size and computes its values. A responsive size
+  would then need JavaScript media queries and would flash after server rendering.
+- **Density only** ([Spectrum `scale`](https://react-spectrum.adobe.com/react-spectrum/Provider.html),
+  Carbon, MUI). Scopes resize controls and spacing but not text, so a compact section would still need every
+  text size set by hand.
+- **Wrapperless provider.** Adds no element, but cannot style bare text.
+- **Explicit sizes on every overlay.** A small section would open medium menus and modals unless each one
+  were sized by hand.
 
-**Density only** ([Spectrum `scale`](https://react-spectrum.adobe.com/react-spectrum/Provider.html), Carbon,
-MUI). Scopes resize controls and spacing but leave text alone. Simpler, but a compact section would still
-need every text size set by hand, which is the main thing this proposal is for.
-
-**Wrapperless provider.** A context-only provider adds no element, but cannot style bare text and cannot
-work without JavaScript resolution. `SizeScope` renders an element instead.
-
-**Explicit sizes on every overlay.** Simpler to build, but a small section would open medium menus and
-modals unless each one were sized by hand.
-
-Prior art for individual pieces: [Radix Select](https://github.com/radix-ui/themes/blob/main/packages/radix-ui-themes/src/components/select.tsx)
+Prior art: [Radix Select](https://github.com/radix-ui/themes/blob/main/packages/radix-ui-themes/src/components/select.tsx)
 shares its root's size with portaled content, [Radix Themes breakpoints](https://www.radix-ui.com/themes/docs/theme/breakpoints)
 compile responsive props to classes, and [Ant Design ConfigProvider](https://ant.design/components/config-provider)
 provides inherited component sizing.
 
 ## Open details
 
-- Final tier mappings for each part: Modal title, TextField description and error, Label.
-- Control values for `lg` on components that support only `sm` and `md` today: TextField, Select, Menu,
-  Switch, ToggleButton.
-- Whether components with their own `sm`/`md`/`lg` today (Tag, Chip, SegmentedController) map one to one
-  onto the scale.
-- The breakpoint tokens for responsive sizes.
+- Final tier mappings for Modal title, field description and error, and Label.
+- Whether components with their own sizes today (Tag, Chip, Menu, Switch, ToggleButton, SegmentedController)
+  adopt the scale, and how.
+- Breakpoint tokens for responsive sizes.
 
-Out of scope: prose styling for rendered Markdown, leading trim, tabular figures, and a public recipe or
-subtree theme API.
+Out of scope: prose styling for rendered Markdown, leading trim, tabular figures, and a public theme API.

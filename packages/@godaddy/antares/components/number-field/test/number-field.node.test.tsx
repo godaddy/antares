@@ -75,18 +75,17 @@ describe('@godaddy/antares', function antares() {
 
       it('lets a local prop beat the field default', function localWins() {
         expect(html).toMatch(
-          /<button[^>]*class="control button primary"[^>]*>\s*<span class="text type typeText">less/
+          /<button[^>]*class="control button primary sm"[^>]*>\s*<span class="text type typeText">less/
         );
       });
 
-      it('leaves an unslotted Button on the Button defaults', function defaultSlot() {
-        expect(html).toMatch(/<button class="button tertiary"/);
-        expect(html).not.toMatch(/<button class="button tertiary sm"/);
+      it('leaves an unslotted Button on the Button defaults at the field size', function defaultSlot() {
+        expect(html).toMatch(/<button class="button tertiary sm"/);
       });
 
       it('disables a control button with the field, but not an unslotted one', function disabledControl() {
         expect(html).toMatch(/<button[^>]*class="control button control"[^>]*disabled=""/);
-        expect(html).toMatch(/<button class="button tertiary"(?![^>]*disabled)/);
+        expect(html).toMatch(/<button class="button tertiary sm"(?![^>]*disabled)/);
       });
     });
   });

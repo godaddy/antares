@@ -13,6 +13,7 @@ import {
   useSlottedContext
 } from 'react-aria-components';
 import { Icon } from '#components/icon';
+import { useDeclaredSize } from '#components/size-scope';
 import { Text } from '#components/text';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
@@ -80,8 +81,11 @@ type ButtonPresentationProps = Pick<ButtonProps, 'variant' | 'size'>;
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, ref) {
   const { variant, size, className, children, slot, ...rest } = props;
   const inherited = useSlottedContext(ButtonContext, slot) as ButtonPresentationProps | null | undefined;
+  const declared = useDeclaredSize();
   const resolvedVariant = variant ?? inherited?.variant;
-  const resolvedSize = size ?? inherited?.size;
+  // Field parts follow their field's scale instead of Button's own sizes.
+  const isFieldPart = resolvedVariant === 'control' || resolvedVariant === 'trigger';
+  const resolvedSize = size ?? inherited?.size ?? (isFieldPart ? undefined : declared);
 
   return (
     <RACButton
@@ -107,12 +111,13 @@ export interface LinkButtonProps extends BaseButtonProps<LinkButtonVariant>, Omi
  */
 export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(function LinkButton(props, ref) {
   const { variant, size, className, children, isExternal, ...rest } = props;
+  const resolvedSize = useDeclaredSize(size ?? undefined);
 
   return (
     <RACLink
       {...rest}
       ref={ref}
-      className={composeClassName(className, buttonVariants({ variant, size }))}
+      className={composeClassName(className, buttonVariants({ variant, size: resolvedSize }))}
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
     >

@@ -28,6 +28,15 @@ describe('@godaddy/antares', function antares() {
       expect(style(getByTestId('lg').element()).paddingBlockStart).toEqual('12px');
     });
 
+    it("gives a scoped Button the Button's own size for that tier", async function buttonTier() {
+      const { getByTestId } = await render(<ScenariosExample />);
+      const padding = (id: string) => style(getByTestId(id).element()).padding;
+
+      expect(padding('token-md')).toEqual(padding('token-unscoped'));
+      expect(padding('token-sm')).toEqual(padding('token-explicit-sm'));
+      expect(padding('token-sm')).toEqual('6px 10px');
+    });
+
     it('replaces the size in a nested scope rather than compounding it', async function nested() {
       const { getByTestId } = await render(<ScenariosExample />);
 
@@ -58,6 +67,16 @@ describe('@godaddy/antares', function antares() {
       expect(style(getByRole('dialog').element()).fontSize).toEqual('16px');
     });
 
+    it("sizes a field's control and trigger buttons from the field, not the scope", async function fieldButtons() {
+      const { getByRole } = await render(<ScenariosExample />);
+      const input = style(getByRole('textbox', { name: 'Phone number' }).element());
+
+      for (const button of [getByRole('button', { name: 'Verify' }), getByRole('button', { name: /Country/ })]) {
+        expect(style(button.element()).fontSize).toEqual('16px');
+        expect(style(button.element()).paddingBlockStart).toEqual(input.paddingBlockStart);
+      }
+    });
+
     it('gives bare text, a plain element, and Text the same typography', async function bareText() {
       const { getByTestId } = await render(<ScenariosExample />);
       const bare = style(getByTestId('bare').element());
@@ -83,6 +102,14 @@ describe('@godaddy/antares', function antares() {
       const weight = (id: string) => Number(style(getByTestId(id).element()).fontWeight);
 
       expect(weight('strong-detail')).toBeGreaterThan(weight('detail'));
+      expect(weight('strong-description')).toBeGreaterThan(weight('description'));
+    });
+
+    it('sizes an unscoped field like md under a token theme', async function unscopedTokens() {
+      const { getByRole } = await render(<ScenariosExample />);
+
+      expect(style(getByRole('textbox', { name: 'Rooms' }).element()).fontSize).toEqual('20px');
+      expect(style(getByRole('button', { name: 'Increase Rooms' }).element()).fontSize).toEqual('20px');
     });
 
     it('follows a legacy font size in the scope as an explicit size does', async function legacyFont() {
