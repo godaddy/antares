@@ -106,8 +106,8 @@ export function CustomizationExample() {
         </LinkButton>
       </Card>
 
-      <Card>
-        <Text>Card without selection</Text>
+      <Card role="region" aria-label="Card without selection" aria-describedby="props-static-description">
+        <Text id="props-static-description">Static surface description</Text>
         <CornerActions>
           <CardSelectionIndicator data-testid="props-static-indicator" />
         </CornerActions>

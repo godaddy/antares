@@ -35,6 +35,8 @@ behavior are preserved.
 - Name a primary action with `aria-label` or `aria-labelledby`. The stretched control has no visible
   label of its own.
 - Name selection separately with `selectionProps` when the Card also has a primary action.
+- On a Card without a primary action or selection, `aria-label`, `aria-labelledby`, and
+  `aria-describedby` apply to the surface, for example with `role="region"`.
 - `href` turns the Card into a native link. Modifier-click, middle-click, and "Open in new tab" work
   on the surface. Body text is not selectable. Do not put CornerActions on an `href` Card. Clicking
   body text on an `onPress` or selection Card activates it; dragging that text selects it.

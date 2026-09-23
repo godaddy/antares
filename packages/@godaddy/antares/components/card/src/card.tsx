@@ -56,10 +56,10 @@ interface CardBaseProps extends CardLayoutProps {
   /** Primary action callback. */
   onPress?: ButtonProps['onPress'];
 
-  /** Accessible name for the primary action. */
+  /** Accessible name for the primary action, else selection, else the surface. */
   'aria-label'?: string;
 
-  /** Accessible labelled-by reference for the primary action. */
+  /** Accessible labelled-by reference for the primary action, else selection, else the surface. */
   'aria-labelledby'?: string;
 
   /** Whether the primary action is disabled. */
@@ -187,6 +187,11 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
   const hasPrimary = href != null || onPress != null;
   const primaryRef = useRef<HTMLElement>(null);
   const canActivatePrimary = hasPrimary && !isDisabled;
+  const ariaProps = {
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-describedby': ariaDescribedBy
+  };
 
   function resolveForwardTarget(card: HTMLDivElement) {
     if (hasPrimary) return primaryRef.current;
@@ -211,6 +216,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
           gap="lg"
           direction="column"
           {...surfaceProps}
+          {...(hasPrimary || selection != null ? undefined : ariaProps)}
           ref={ref}
           className={composeClassName(resolveClassName(className, selectionState), styles.card)}
           style={resolveStyle(style, selectionState)}
@@ -225,9 +231,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
               ref={primaryRef as Ref<HTMLAnchorElement>}
               href={href}
               onPress={onPress}
-              aria-label={ariaLabel}
-              aria-labelledby={ariaLabelledBy}
-              aria-describedby={ariaDescribedBy}
+              {...ariaProps}
               isDisabled={isDisabled}
               data-card-primary
               className={styles.link}
@@ -236,9 +240,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
             <Button
               ref={primaryRef as Ref<HTMLButtonElement>}
               onPress={onPress}
-              aria-label={ariaLabel}
-              aria-labelledby={ariaLabelledBy}
-              aria-describedby={ariaDescribedBy}
+              {...ariaProps}
               isDisabled={isDisabled}
               data-card-primary
               className={styles.primary}

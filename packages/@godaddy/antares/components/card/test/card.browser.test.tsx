@@ -855,6 +855,13 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(getByTestId('props-static-indicator')).toHaveAttribute('aria-hidden', 'true');
         expect(indicator.closest('[data-card]')?.querySelector('[data-card-selection-control]')).toBeNull();
       });
+
+      it('names and describes a static Card surface', async function staticSurfaceName() {
+        const { getByRole } = await render(<CustomizationExample />);
+        await expect
+          .element(getByRole('region', { name: 'Card without selection' }))
+          .toHaveAccessibleDescription('Static surface description');
+      });
     });
 
     describe('layout', function layoutTests() {
