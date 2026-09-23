@@ -1,0 +1,87 @@
+---
+title: Accordion
+description: Accordion coordinates related collapsible sections with single or multiple expansion.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './accordion.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Single or multiple expanded sections.
+- Controlled and uncontrolled group state.
+- Group-level disabled state.
+- Composable sections using Collapsible and CollapsiblePanel.
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Customization
+
+Compose related `Collapsible` sections inside Accordion. Give each section a stable, unique `id`.
+See [Collapsible](../collapsible/README.mdx) for the section anatomy, panel content, and trigger styling.
+
+Use `defaultExpandedKeys` for initial expansion, or `expandedKeys` with `onExpandedChange` for
+controlled state. Keys must match the section IDs; the callback receives a `Set` of expanded keys.
+By default, only one section can stay open. Set `allowsMultipleExpanded` to keep several open.
+Both behaviors are shown in the examples.
+
+Use `className` and `style` to customize the group container. `data-disabled` reflects the group's
+disabled state. Customize individual headings, triggers, and panels on the composed Collapsible sections.
+
+## Accessibility
+
+Each section provides its own heading and button-to-panel relationship. Choose heading levels that
+fit the page hierarchy. The [Collapsible accessibility guidance](../collapsible/README.mdx#accessibility)
+covers keyboard interaction, focus, and status icons.
+
+To identify the whole accordion as a named group, provide `role="group"` together with `aria-label`
+or `aria-labelledby`. Setting `isDisabled` on Accordion disables every section's trigger.
+
+## Best Practices
+
+- Group related sections and keep essential information visible outside the accordion.
+- Use multiple expansion when users need to compare information across sections.
+- Keep item IDs stable when reordering or filtering data.
+- Manage expansion on Accordion when sections belong to a group.
+- Keep form validation and step progression in application logic.
+
+## Troubleshooting
+
+### Controlled State Not Updating
+
+Update `expandedKeys` from `onExpandedChange` and make sure the keys match the item IDs.
+Changing `defaultExpandedKeys` after mounting does not control expansion.
+
+### Sections Close When Another Opens
+
+Enable `allowsMultipleExpanded` when several sections should remain open together.
+For a single independent section, use Collapsible without an Accordion.
+
+## Props
+
+```tsx
+<Accordion>
+  <Collapsible>
+    <Heading>
+      <Button slot="trigger">
+        <Text />
+        <Icon slot="indicator" />
+      </Button>
+    </Heading>
+    <CollapsiblePanel>{/* ... */}</CollapsiblePanel>
+  </Collapsible>
+</Accordion>;
+```
+
+<ArgTypes of={Stories.Props} />
