@@ -68,7 +68,7 @@
   cursor: not-allowed;
 }
 
-.indicator:where([data-readonly]) {
+.indicator:where([data-readonly], [data-disabled]:not([data-card][data-disabled] *)) {
   opacity: 0.4;
 }
 

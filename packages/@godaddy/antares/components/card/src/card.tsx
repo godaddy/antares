@@ -208,6 +208,10 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
     const canSelect = selection != null && !hasPrimary && !selectionState.isDisabled && !selectionState.isReadOnly;
     const isInteractive = canActivatePrimary || canSelect;
     const shouldForwardClick = (canActivatePrimary && href == null) || canSelect;
+    const isSurfaceDisabled =
+      (hasPrimary || selection != null) &&
+      (!hasPrimary || isDisabled === true) &&
+      (selection == null || selectionState.isDisabled);
 
     return (
       <SelectionProvider kind={selection ?? null}>
@@ -222,7 +226,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
           style={resolveStyle(style, selectionState)}
           data-card-selected={selectionState.isSelected || undefined}
           data-card-indeterminate={selectionState.isIndeterminate || undefined}
-          data-disabled={isDisabled || selectionState.isDisabled || undefined}
+          data-disabled={isSurfaceDisabled || undefined}
           onClick={shouldForwardClick ? forwardedClick : onClick}
           data-card={isInteractive ? 'interactive' : 'static'}
         >

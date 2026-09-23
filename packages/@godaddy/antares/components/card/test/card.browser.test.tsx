@@ -523,6 +523,20 @@ describe('@godaddy/antares', function packageTests() {
       });
 
       it.each([
+        { isDisabled: true, isPrimaryDisabled: false, card: '1', indicator: '0.4' },
+        { isDisabled: false, isPrimaryDisabled: true, card: '1', indicator: '1' },
+        { isDisabled: true, isPrimaryDisabled: true, card: '0.4', indicator: '1' }
+      ])('fades only disabled interactions: selection=$isDisabled, primary=$isPrimaryDisabled', async function partialDisabled({
+        card,
+        indicator,
+        ...props
+      }) {
+        const { container, getByTestId } = await render(<InteractionsExample primary="action" {...props} />);
+        expect(getComputedStyle(container.querySelector('[data-card]')!).opacity).toBe(card);
+        expect(getComputedStyle(getByTestId('indicator-One').element()).opacity).toBe(indicator);
+      });
+
+      it.each([
         { kind: 'checkbox', restriction: 'disabled' },
         { kind: 'checkbox', restriction: 'readOnly' },
         { kind: 'radio', restriction: 'disabled' },
