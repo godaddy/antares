@@ -30,7 +30,7 @@
 }
 
 .card:where([data-card="interactive"]:active),
-.card:where([data-card-selected], [data-card-indeterminate]) {
+.card:where([data-card-selected]) {
   --_card-border: var(--ux-8qoawt, #09757a);
   border-color: var(--_card-border);
 }

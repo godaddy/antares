@@ -113,16 +113,6 @@ describe('@godaddy/antares', function packageTests() {
         await expect.poll(opacity).toBe('0');
       });
 
-      it('keeps the checkmark hidden while hovering a card with a primary action', async function primaryHover() {
-        const { getByTestId, getByText } = await render(<InteractionsExample primary="action" />);
-        const checkmark = getByTestId('indicator-One').element().firstElementChild!;
-        const opacity = () => getComputedStyle(checkmark).opacity;
-        await userEvent.hover(getByText('One: copy this text without changing selection.'));
-        await expect.poll(opacity).toBe('0');
-        await userEvent.hover(getByTestId('indicator-One'));
-        await expect.poll(opacity).toBe('0.5');
-      });
-
       it('toggles selection from ordinary body content', async function bodyTogglesSelection() {
         const { getByRole, getByText, getByTestId } = await render(<CheckboxExample />);
         await userEvent.click(getByText('Keep this plan active when it expires.'));
@@ -177,22 +167,17 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(getByRole(props.kind, { name: 'Option one' })).not.toBeChecked();
       });
 
-      it('exposes mixed and keyboard focus state to custom content', async function customIndicatorState() {
+      it('exposes keyboard focus state to custom content', async function customIndicatorState() {
         const { getByRole, getByTestId } = await render(
-          <InteractionsExample
-            isIndeterminate
-            indicatorChildren={({ isIndeterminate, isFocusVisible }) =>
-              `${isIndeterminate ? 'mixed' : 'unmixed'} ${isFocusVisible ? 'focused' : 'unfocused'}`
-            }
-          />
+          <InteractionsExample indicatorChildren={({ isFocusVisible }) => (isFocusVisible ? 'focused' : 'unfocused')} />
         );
         const indicator = getByTestId('indicator-One');
-        await expect.element(indicator).toHaveTextContent('mixed unfocused');
+        await expect.element(indicator).toHaveTextContent('unfocused');
         await userEvent.click(indicator);
         await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
         await userEvent.tab();
         await expect.element(getByRole('checkbox', { name: 'Option one' })).toHaveFocus();
-        await expect.element(indicator).toHaveTextContent('mixed focused');
+        await expect.element(indicator).toHaveTextContent('focused');
       });
 
       it('selects from static custom content', async function staticCustomIndicator() {
@@ -246,19 +231,6 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(getByRole('radio', { name: 'Starter plan' })).not.toBeChecked();
       });
 
-      it('reveals and marks a mixed, required, invalid selection', async function mixedSelection() {
-        const { container, getByRole, getByTestId } = await render(
-          <InteractionsExample isIndeterminate isRequired isInvalid />
-        );
-        const checkbox = getByRole('checkbox', { name: 'Option one' });
-        await expect.element(checkbox).toHaveAttribute('aria-invalid', 'true');
-        await expect.element(checkbox).toBeRequired();
-        const indicator = getByTestId('indicator-One');
-        await expect.element(indicator).toHaveAttribute('data-indeterminate', 'true');
-        expect(getComputedStyle(indicator.element()).opacity).toBe('1');
-        expect(container.querySelector('[data-card]')).toHaveAttribute('data-card-indeterminate', 'true');
-      });
-
       it('keeps read-only selection unchanged from body and indicator clicks', async function readOnlySelection() {
         const { getByRole, getByText, getByTestId } = await render(<InteractionsExample isReadOnly />);
         await userEvent.click(getByText('One: copy this text without changing selection.'));
@@ -305,7 +277,7 @@ describe('@godaddy/antares', function packageTests() {
 
     describe('primary actions', function primaryActionTests() {
       it('disables the primary link', async function disabledPrimaryLink() {
-        const { getByRole, getByText } = await render(<InteractionsExample primary="navigation" isPrimaryDisabled />);
+        const { getByRole, getByText } = await render(<InteractionsExample primary="navigation" isDisabled />);
         await expect.element(getByRole('link', { name: 'Option one' })).toBeDisabled();
         await expect.element(getByText('Primary activations: 0')).toBeInTheDocument();
       });
@@ -439,8 +411,10 @@ describe('@godaddy/antares', function packageTests() {
       });
 
       it('drops the interactive affordance from a disabled primary', async function disabledAffordance() {
-        const { container } = await render(<InteractionsExample primary="action" isPrimaryDisabled />);
-        expect(container.querySelector('[data-card]')).toHaveAttribute('data-card', 'static');
+        const { container } = await render(<InteractionsExample primary="action" isDisabled />);
+        const card = container.querySelector<HTMLElement>('[data-card]')!;
+        expect(card).toHaveAttribute('data-card', 'static');
+        expect(getComputedStyle(card).opacity).toBe('0.4');
       });
 
       it('activates the primary from a click on body text', async function bodyTextActivates() {
@@ -463,14 +437,11 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     describe('composition', function compositionTests() {
-      it('disables the primary action independently of selection', async function disabledPrimaryAction() {
-        const { getByRole, getByText, getByTestId } = await render(
-          <InteractionsExample primary="action" isPrimaryDisabled />
-        );
+      it('disables the primary action but not nested controls', async function disabledPrimaryAction() {
+        const { getByRole, getByText } = await render(<InteractionsExample primary="action" isDisabled />);
         await expect.element(getByRole('button', { name: 'Option one' })).toBeDisabled();
+        await userEvent.click(getByText('One: copy this text without changing selection.'));
         await expect.element(getByText('Primary activations: 0')).toBeInTheDocument();
-        await userEvent.click(getByTestId('indicator-One'));
-        await expect.element(getByRole('checkbox', { name: 'Option one' })).toBeChecked();
         await userEvent.click(getByRole('button', { name: 'Independent One' }));
         await expect.element(getByText('Independent activations: 1')).toBeInTheDocument();
         await expect.element(getByText('Primary activations: 0')).toBeInTheDocument();
@@ -495,59 +466,6 @@ describe('@godaddy/antares', function packageTests() {
 
         await userEvent.click(getByRole('button', { name: 'Cancel' }));
         await expect.element(getByRole('dialog', { name: 'Join our mailing list' })).not.toBeInTheDocument();
-      });
-
-      it.each([
-        'checkbox',
-        'radio'
-      ] as const)('keeps action and %s selection independent', async function combinedAction(kind) {
-        const { getByRole, getByText, getByTestId } = await render(
-          <InteractionsExample kind={kind} primary="action" />
-        );
-        const control = getByRole(kind, { name: 'Option one' });
-        await userEvent.click(getByRole('button', { name: 'Option one' }), { position: { x: 4, y: 4 } });
-        await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
-        await expect.element(control).not.toBeChecked();
-        await userEvent.click(getByTestId('indicator-One'));
-        await expect.element(control).toBeChecked();
-        await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
-      });
-
-      it('leaves independent actions usable when selection is disabled', async function disabledSelection() {
-        const { getByRole, getByText } = await render(<InteractionsExample isDisabled primary="action" />);
-        await expect.element(getByRole('checkbox', { name: 'Option one' })).toBeDisabled();
-        await userEvent.click(getByRole('button', { name: 'Option one' }), { position: { x: 4, y: 4 } });
-        await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
-        await userEvent.click(getByRole('button', { name: 'Independent One' }));
-        await expect.element(getByText('Independent activations: 1')).toBeInTheDocument();
-      });
-
-      it.each([
-        { isDisabled: true, isPrimaryDisabled: false, card: '1', indicator: '0.4' },
-        { isDisabled: false, isPrimaryDisabled: true, card: '1', indicator: '1' },
-        { isDisabled: true, isPrimaryDisabled: true, card: '0.4', indicator: '1' }
-      ])('fades only disabled interactions: selection=$isDisabled, primary=$isPrimaryDisabled', async function partialDisabled({
-        card,
-        indicator,
-        ...props
-      }) {
-        const { container, getByTestId } = await render(<InteractionsExample primary="action" {...props} />);
-        expect(getComputedStyle(container.querySelector('[data-card]')!).opacity).toBe(card);
-        expect(getComputedStyle(getByTestId('indicator-One').element()).opacity).toBe(indicator);
-      });
-
-      it.each([
-        { kind: 'checkbox', restriction: 'disabled' },
-        { kind: 'checkbox', restriction: 'readOnly' },
-        { kind: 'radio', restriction: 'disabled' },
-        { kind: 'radio', restriction: 'readOnly' }
-      ] as const)('keeps the primary active in a $restriction $kind group', async function groupedPrimaryAction(props) {
-        const { getByRole, getByText } = await render(<GroupedSelectionExample {...props} hasPrimary />);
-        const body = getByText('Grouped card body');
-        await userEvent.click(body);
-        await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
-        await expect.element(getByRole(props.kind, { name: 'Option one' })).not.toBeChecked();
-        expect(body.element().closest('[data-card]')).toHaveAttribute('data-card', 'interactive');
       });
 
       it('does not select from corner spacing, editable text, or a portaled menu', async function independentRegions() {
@@ -582,24 +500,23 @@ describe('@godaddy/antares', function packageTests() {
           position: { x: 1, y: 1 }
         });
         await expect.element(getByText('Primary activations: 0')).toBeInTheDocument();
-        await expect
-          .element(getByRole(kind === 'radio' ? 'radio' : 'checkbox', { name: 'Option one' }))
-          .not.toBeChecked();
+        if (kind !== 'action') await expect.element(getByRole(kind, { name: 'Option one' })).not.toBeChecked();
       });
 
-      it('rings the surface for its own controls only', async function focusRing() {
-        const { container } = await render(<InteractionsExample primary="action" />);
+      it.each([
+        { primary: 'action', rings: ['solid', 'none'] },
+        { primary: undefined, rings: ['none', 'none', 'none', 'none', 'solid'] }
+      ] as const)('rings the surface for its own controls only: primary=$primary', async function focusRing({
+        primary,
+        rings
+      }) {
+        const { container } = await render(<InteractionsExample primary={primary} />);
         const card = container.querySelector<HTMLElement>('[data-card]')!;
 
-        await userEvent.tab();
-        expect(getComputedStyle(card).outlineStyle).toBe('solid');
-        await userEvent.tab();
-        expect(getComputedStyle(card).outlineStyle).toBe('none');
-        await userEvent.tab();
-        await userEvent.tab();
-        await userEvent.tab();
-        await userEvent.tab();
-        expect(getComputedStyle(card).outlineStyle).toBe('solid');
+        for (const ring of rings) {
+          await userEvent.tab();
+          expect(getComputedStyle(card).outlineStyle).toBe(ring);
+        }
       });
 
       it('lets a nested label toggle its field without activating the Card', async function nestedFormLabel() {
@@ -671,18 +588,10 @@ describe('@godaddy/antares', function packageTests() {
       ] as const)('forwards body clicks with a focusable $focusable and primary=$primary', async function focusableSurface(props) {
         const { getByRole, getByText } = await render(<InteractionsExample {...props} />);
         await userEvent.click(getByText('One: copy this text without changing selection.'));
-        if (props.primary) {
-          await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
-          await expect.element(getByRole('checkbox', { name: 'Option one' })).not.toBeChecked();
-        } else {
-          await expect.element(getByRole('checkbox', { name: 'Option one' })).toBeChecked();
-        }
         await userEvent.click(getByRole('button', { name: 'Independent One' }));
         await expect.element(getByText('Independent activations: 1')).toBeInTheDocument();
         await expect.element(getByText(`Primary activations: ${props.primary ? 1 : 0}`)).toBeInTheDocument();
-        expect((getByRole('checkbox', { name: 'Option one' }).element() as HTMLInputElement).checked).toBe(
-          !props.primary
-        );
+        if (!props.primary) await expect.element(getByRole('checkbox', { name: 'Option one' })).toBeChecked();
       });
     });
 
@@ -840,26 +749,22 @@ describe('@godaddy/antares', function packageTests() {
         expect(location.hash).toBe('#custom-content-link');
       });
 
-      it('evaluates selection render props and controlled group changes once', async function renderPropState() {
+      it('marks selected Cards in controlled groups and reports changes once', async function selectedState() {
         const { container, getByRole, getByTestId, getByText } = await render(<CustomizationExample />);
         const checkboxCard = container.querySelector<HTMLElement>('.review-checkbox-card')!;
         const radioCard = container.querySelector<HTMLElement>('.review-radio-card')!;
 
-        expect(checkboxCard).toHaveClass('unselected');
-        expect(checkboxCard.style.borderColor).toBe('rgb(4, 5, 6)');
-        expect(radioCard).toHaveClass('unselected');
-        expect(radioCard.style.borderColor).toBe('rgb(10, 11, 12)');
+        expect(checkboxCard).not.toHaveAttribute('data-card-selected');
+        expect(radioCard).not.toHaveAttribute('data-card-selected');
 
         await userEvent.click(getByTestId('props-checkbox-indicator'));
         await expect.element(getByRole('checkbox', { name: 'Checkbox props card' })).toBeChecked();
-        expect(checkboxCard).toHaveClass('selected');
-        expect(checkboxCard.style.borderColor).toBe('rgb(1, 2, 3)');
+        expect(checkboxCard).toHaveAttribute('data-card-selected', 'true');
         await expect.element(getByText('Checkbox changes: 1')).toBeInTheDocument();
 
         await userEvent.click(getByTestId('props-radio-indicator'));
         await expect.element(getByRole('radio', { name: 'Radio props card' })).toBeChecked();
-        expect(radioCard).toHaveClass('selected');
-        expect(radioCard.style.borderColor).toBe('rgb(7, 8, 9)');
+        expect(radioCard).toHaveAttribute('data-card-selected', 'true');
       });
 
       it('renders an indicator on a Card without selection', async function staticIndicator() {

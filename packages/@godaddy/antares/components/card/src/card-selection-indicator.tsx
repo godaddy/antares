@@ -38,9 +38,6 @@ export interface CardSelectionIndicatorRenderProps {
   /** Whether the card is selected. */
   isSelected: boolean;
 
-  /** Whether a checkbox card is in a mixed state. */
-  isIndeterminate: boolean;
-
   /** Whether selection is disabled. */
   isDisabled: boolean;
 
@@ -63,12 +60,11 @@ export const CardSelectionIndicator = forwardRef<HTMLSpanElement, CardSelectionI
 
     function renderIndicator({
       isSelected = false,
-      isIndeterminate = false,
       isDisabled = false,
       isReadOnly = false,
       isFocusVisible = false
     }: Partial<CardSelectionIndicatorRenderProps> = {}) {
-      const state = { isSelected, isIndeterminate, isDisabled, isReadOnly, isFocusVisible };
+      const state = { isSelected, isDisabled, isReadOnly, isFocusVisible };
 
       return (
         <span
@@ -78,7 +74,6 @@ export const CardSelectionIndicator = forwardRef<HTMLSpanElement, CardSelectionI
           data-card-selection-indicator
           data-custom={isCustom || undefined}
           data-selected={state.isSelected || undefined}
-          data-indeterminate={state.isIndeterminate || undefined}
           data-disabled={state.isDisabled || undefined}
           data-readonly={state.isReadOnly || undefined}
           data-focus-visible={state.isFocusVisible || undefined}
@@ -91,11 +86,7 @@ export const CardSelectionIndicator = forwardRef<HTMLSpanElement, CardSelectionI
               children
             )
           ) : (
-            <Icon
-              icon={state.isIndeterminate ? 'minus' : 'checkmark'}
-              className={state.isIndeterminate ? undefined : styles.checkmark}
-              aria-hidden="true"
-            />
+            <Icon icon="checkmark" className={styles.checkmark} aria-hidden="true" />
           )}
         </span>
       );

@@ -7,6 +7,7 @@ import { LinkExample } from '../examples/link.tsx';
 import { ActionsExample } from '../examples/actions.tsx';
 import { CheckboxExample } from '../examples/checkbox.tsx';
 import { RadioExample } from '../examples/radio.tsx';
+import { DisabledExample } from '../examples/disabled.tsx';
 import { LayoutExample } from '../examples/layout.tsx';
 import { MediaExample } from '../examples/media.tsx';
 import { TypesExample } from '../examples/types.tsx';
@@ -42,6 +43,10 @@ describe('@godaddy/antares', function packageTests() {
       expect(renderToString(<RadioExample />)).toMatchSnapshot();
     });
 
+    it('renders disabled and read-only interactions', function renderDisabled() {
+      expect(renderToString(<DisabledExample />)).toMatchSnapshot();
+    });
+
     it('renders static custom indicator content', function renderCustomIndicator() {
       expect(renderToString(<InteractionsExample indicatorChildren="Select" />)).toMatchSnapshot();
     });
@@ -52,10 +57,6 @@ describe('@godaddy/antares', function packageTests() {
 
     it('renders selection validation examples', function renderTypes() {
       expect(renderToString(<TypesExample />)).toMatchSnapshot();
-    });
-
-    it('rejects a radio card without a value at runtime', function missingRadioValue() {
-      expect(() => renderToString(<TypesExample missingRadioValue />)).toThrowErrorMatchingSnapshot();
     });
 
     it('renders inset, full bleed, standalone and custom media', function renderMedia() {

@@ -3,6 +3,7 @@ import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
 import { CheckboxExample } from '../examples/checkbox.tsx';
+import { DisabledExample } from '../examples/disabled.tsx';
 import { LayoutExample } from '../examples/layout.tsx';
 import { MediaExample } from '../examples/media.tsx';
 
@@ -24,6 +25,11 @@ describe('@godaddy/antares', function packageTests() {
     it('renders checkbox cards with top-end selection indicators', async function checkbox() {
       const { container } = await render(<CheckboxExample />);
       await expect(container).toMatchScreenshot('checkbox');
+    });
+
+    it('renders disabled and read-only Cards', async function disabled() {
+      const { container } = await render(<DisabledExample />);
+      await matchUnclippedScreenshot(container, 'disabled');
     });
 
     it('renders inset, full bleed, standalone and custom media', async function media() {

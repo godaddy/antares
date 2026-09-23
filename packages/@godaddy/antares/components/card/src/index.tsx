@@ -1,4 +1,4 @@
-export { Card, type CardProps, type CardRenderProps } from './card.tsx';
+export { Card, type CardProps } from './card.tsx';
 export {
   CardSelectionIndicator,
   type CardSelectionIndicatorProps,

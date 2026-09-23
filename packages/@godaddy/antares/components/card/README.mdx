@@ -10,9 +10,9 @@ import * as Stories from './card.stories.tsx';
 <Meta of={Stories} name="Overview" />
 
 Card is a layout surface. Default padding and gap are `lg`. Direct `CornerActions` sit at the
-top-end. `href` and `onPress` add a primary action. `selection` adds a checkbox or radio; place
-`CardSelectionIndicator` yourself. Clicking the Card body toggles selection unless the Card also
-has a primary action.
+top-end. `href` and `onPress` add a primary action. `selection` adds a checkbox or radio instead;
+place `CardSelectionIndicator` yourself. A Card has a primary action or selection, not both.
+Clicking the Card body activates whichever it has.
 
 ## Installation
 
@@ -30,19 +30,22 @@ Pass non-interactive children or a selection-state render function to `CardSelec
 to replace its default circle and icon. See the Checkbox example. Native selection and keyboard
 behavior are preserved.
 
+To style the Card by state, target `[data-card-selected]` and `[data-disabled]` from your
+`className`.
+
 ## Accessibility
 
-- Name a primary action with `aria-label` or `aria-labelledby`. The stretched control has no visible
-  label of its own.
-- Name selection separately with `selectionProps` when the Card also has a primary action.
+- Name a primary action or selection with `aria-label` or `aria-labelledby`. The stretched control
+  and the selection input have no visible label of their own.
 - On a Card without a primary action or selection, `aria-label`, `aria-labelledby`, and
   `aria-describedby` apply to the surface, for example with `role="region"`.
 - `href` turns the Card into a native link. Modifier-click, middle-click, and "Open in new tab" work
   on the surface. Body text is not selectable. The link covers the whole Card, so do not put
   CornerActions, buttons, inputs, selection, or other controls in an `href` Card. Clicking body text
   on an `onPress` or selection Card activates it; dragging that text selects it.
-- `isDisabled` disables only the primary. `isSelectionDisabled` disables only selection. Radio
-  read-only and validation state belong on `RadioGroup`.
+- `isDisabled` disables the primary action or selection and fades the Card. Controls you nest
+  inside keep their own disabled state. Required and invalid state belong on `CheckboxGroup` or
+  `RadioGroup`, and so does radio read-only state.
 
 ## Props
 

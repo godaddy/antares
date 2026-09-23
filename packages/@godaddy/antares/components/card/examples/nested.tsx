@@ -14,20 +14,14 @@ export function NestedExample({
 }) {
   const [outer, setOuter] = useState(0);
   const [inner, setInner] = useState(0);
+  const outerProps = selection ? { selection } : { onPress: () => setOuter((count) => count + 1) };
+  const innerProps = selection ? { selection } : { onPress: () => setInner((count) => count + 1) };
 
   return (
     <>
-      <Card
-        aria-label="Outer card"
-        selection={selection}
-        onPress={selection ? undefined : () => setOuter((count) => count + 1)}
-      >
+      <Card aria-label="Outer card" {...outerProps}>
         <Text>Outer copy</Text>
-        <Card
-          aria-label="Inner card"
-          selection={selection}
-          onPress={selection ? undefined : () => setInner((count) => count + 1)}
-        >
+        <Card aria-label="Inner card" {...innerProps}>
           <Text>Inner copy</Text>
           {selection && <CardSelectionIndicator />}
         </Card>

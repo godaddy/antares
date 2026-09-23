@@ -22,11 +22,7 @@ export function InteractionsExample({
   kind = 'checkbox',
   primary,
   isDisabled,
-  isPrimaryDisabled,
   isReadOnly,
-  isIndeterminate,
-  isRequired,
-  isInvalid,
   defaultSelected = false,
   focusable,
   media,
@@ -35,11 +31,7 @@ export function InteractionsExample({
   kind?: 'checkbox' | 'radio';
   primary?: 'action' | 'navigation';
   isDisabled?: boolean;
-  isPrimaryDisabled?: boolean;
   isReadOnly?: boolean;
-  isIndeterminate?: boolean;
-  isRequired?: boolean;
-  isInvalid?: boolean;
   defaultSelected?: boolean;
   focusable?: 'card' | 'ancestor';
   media?: 'audio' | 'video';
@@ -82,9 +74,11 @@ export function InteractionsExample({
           <MenuItem id="nested">Menu action One</MenuItem>
         </Menu>
       </MenuTrigger>
-      <CornerActions data-testid="corner-One" padding="sm">
-        <CardSelectionIndicator data-testid="indicator-One">{indicatorChildren}</CardSelectionIndicator>
-      </CornerActions>
+      {primary ? null : (
+        <CornerActions data-testid="corner-One" padding="sm">
+          <CardSelectionIndicator data-testid="indicator-One">{indicatorChildren}</CardSelectionIndicator>
+        </CornerActions>
+      )}
       <Box contentEditable suppressContentEditableWarning data-testid="editor-One">
         Editable One
       </Box>
@@ -100,7 +94,7 @@ export function InteractionsExample({
   if (primary === 'navigation') {
     return (
       <>
-        <Card href="#card-review-target" onPress={activate} isDisabled={isPrimaryDisabled} aria-label="Option one">
+        <Card href="#card-review-target" onPress={activate} isDisabled={isDisabled} aria-label="Option one">
           <Text>One: copy this text without changing selection.</Text>
         </Card>
         <Text>Primary activations: {presses}</Text>
@@ -108,15 +102,15 @@ export function InteractionsExample({
     );
   }
 
-  const primaryProps = {
-    isDisabled: isPrimaryDisabled,
-    onPress: primary ? activate : undefined,
-    tabIndex: focusable === 'card' ? 0 : undefined
-  };
+  const tabIndex = focusable === 'card' ? 0 : undefined;
 
   return (
     <Box as="form" onSubmit={submit} tabIndex={focusable === 'ancestor' ? 0 : undefined}>
-      {kind === 'radio' ? (
+      {primary === 'action' ? (
+        <Card aria-label="Option one" onPress={activate} isDisabled={isDisabled} tabIndex={tabIndex}>
+          {interior}
+        </Card>
+      ) : kind === 'radio' ? (
         <RadioGroup
           aria-label="Choose an option"
           name="choice"
@@ -124,7 +118,7 @@ export function InteractionsExample({
           isDisabled={isDisabled}
           isReadOnly={isReadOnly}
         >
-          <Card selection="radio" value="one" aria-label="Option one" {...primaryProps}>
+          <Card selection="radio" value="one" aria-label="Option one" tabIndex={tabIndex}>
             {interior}
           </Card>
           <Card selection="radio" value="two" aria-label="Option two">
@@ -141,12 +135,9 @@ export function InteractionsExample({
           value="one"
           aria-label="Option one"
           defaultSelected={defaultSelected}
-          isSelectionDisabled={isDisabled}
+          isDisabled={isDisabled}
           isReadOnly={isReadOnly}
-          isIndeterminate={isIndeterminate}
-          isRequired={isRequired}
-          isInvalid={isInvalid}
-          {...primaryProps}
+          tabIndex={tabIndex}
         >
           {interior}
         </Card>

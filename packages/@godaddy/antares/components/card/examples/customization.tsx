@@ -11,7 +11,7 @@ import {
 } from '@godaddy/antares';
 
 /**
- * Internal review coverage for Card refs, layout props, render props, controlled groups, and an
+ * Internal review coverage for Card refs, layout props, selection attributes, controlled groups, and an
  * indicator on a Card without selection.
  * @ignore
  */
@@ -52,12 +52,7 @@ export function CustomizationExample() {
             ref={checkboxCardRef}
             value="checkbox-card"
             aria-label="Checkbox props card"
-            className={function checkboxCardClass({ isSelected }) {
-              return isSelected ? 'review-checkbox-card selected' : 'review-checkbox-card unselected';
-            }}
-            style={function checkboxCardStyle({ isSelected }) {
-              return { borderColor: isSelected ? 'rgb(1, 2, 3)' : 'rgb(4, 5, 6)' };
-            }}
+            className="review-checkbox-card"
             padding="sm"
             gap="xs"
             direction="row"
@@ -78,12 +73,7 @@ export function CustomizationExample() {
             ref={radioCardRef}
             value="radio-card"
             aria-label="Radio props card"
-            className={function radioCardClass({ isSelected }) {
-              return isSelected ? 'review-radio-card selected' : 'review-radio-card unselected';
-            }}
-            style={function radioCardStyle({ isSelected }) {
-              return { borderColor: isSelected ? 'rgb(7, 8, 9)' : 'rgb(10, 11, 12)' };
-            }}
+            className="review-radio-card"
             padding="md"
             gap="lg"
           >

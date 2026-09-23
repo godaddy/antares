@@ -1,4 +1,4 @@
-import { forwardRef, useRef, type CSSProperties, type MouseEventHandler, type ReactNode, type Ref } from 'react';
+import { forwardRef, useRef, type MouseEventHandler, type ReactNode, type Ref } from 'react';
 import {
   Link as RACLink,
   type LinkProps as RACLinkProps,
@@ -9,83 +9,39 @@ import {
 import { Button, type ButtonProps } from '#components/button';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { ButtonGroupContext } from '#components/structure';
-import { composeClassName, type ClassNameProp } from '#utils/render-props.ts';
+import { composeClassName } from '#utils/render-props.ts';
 import { SelectionProvider } from './card-selection-indicator.tsx';
 import { useForwardedClick } from './use-forwarded-click.ts';
 import styles from './index.module.css';
 
-/** Selection state available to `className` and `style` render props. */
-export interface CardRenderProps {
-  /** Whether the card is selected. */
-  isSelected: boolean;
-
-  /** Whether a checkbox card is in a mixed state. */
-  isIndeterminate: boolean;
-
-  /** Whether selection is disabled. */
-  isDisabled: boolean;
-
-  /** Whether selection is read-only. */
-  isReadOnly: boolean;
-
-  /** Whether the card is required. */
-  isRequired: boolean;
-
-  /** Whether the card is invalid. */
-  isInvalid: boolean;
-}
-
-const IDLE_RENDER_PROPS: CardRenderProps = {
-  isSelected: false,
-  isIndeterminate: false,
-  isDisabled: false,
-  isReadOnly: false,
-  isRequired: false,
-  isInvalid: false
-};
-
-type CardLayoutProps = Omit<FlexProps, 'as' | 'children' | 'onClick' | 'className' | 'style'>;
-
-interface CardBaseProps extends CardLayoutProps {
+interface CardBaseProps extends Omit<FlexProps, 'as' | 'children' | 'onClick'> {
   /** Card contents. */
   children?: ReactNode;
 
+  /** Accessible name for the primary action or selection, else the surface. */
+  'aria-label'?: string;
+
+  /** Accessible labelled-by reference for the primary action or selection, else the surface. */
+  'aria-labelledby'?: string;
+
+  /** Disable the Card, including its primary action or selection. */
+  isDisabled?: boolean;
+
+  /** Observe clicks on the Card surface. Call `preventDefault` to skip native link navigation. */
+  onClick?: MouseEventHandler<HTMLDivElement>;
+}
+
+interface PrimaryProps {
   /** Primary navigation destination. */
   href?: RACLinkProps['href'];
 
   /** Primary action callback. */
   onPress?: ButtonProps['onPress'];
-
-  /** Accessible name for the primary action, else selection, else the surface. */
-  'aria-label'?: string;
-
-  /** Accessible labelled-by reference for the primary action, else selection, else the surface. */
-  'aria-labelledby'?: string;
-
-  /** Whether the primary action is disabled. */
-  isDisabled?: boolean;
-
-  /** Observe clicks on the Card surface. Call `preventDefault` to skip native link navigation. */
-  onClick?: MouseEventHandler<HTMLDivElement>;
-
-  /** Surface classes. Strings match Flex; functions receive native selection state. */
-  className?: ClassNameProp<CardRenderProps>;
-
-  /** Surface styles. Objects match Flex; functions receive native selection state. */
-  style?:
-    | CSSProperties
-    | ((renderProps: CardRenderProps & { defaultStyle: CSSProperties }) => CSSProperties | undefined);
 }
 
 interface SelectionProps {
   /** Selection value submitted by a form or group. Required for radio cards. */
   value?: string;
-
-  /** Disable selection while keeping primary and child actions independent. */
-  isSelectionDisabled?: boolean;
-
-  /** Labels the selection control when it should not share the primary action's name. */
-  selectionProps?: Pick<RACCheckboxFieldProps, 'aria-label' | 'aria-labelledby' | 'aria-describedby'>;
 }
 
 interface CheckboxSelectionProps {
@@ -103,27 +59,16 @@ interface CheckboxSelectionProps {
 
   /** Make checkbox selection read-only. For radio cards, set this on RadioGroup. */
   isReadOnly?: boolean;
-
-  /** Show a mixed selection state on a checkbox card. */
-  isIndeterminate?: boolean;
-
-  /** Require a standalone checkbox card to be selected for form submission. */
-  isRequired?: boolean;
-
-  /** Checkbox selection validation state. */
-  isInvalid?: boolean;
 }
 
-type WithoutCheckboxSelectionProps = { [Key in keyof CheckboxSelectionProps]?: never };
+type Never<T> = { [Key in keyof T]?: never };
 
-type WithoutSelectionProps = { [Key in keyof (SelectionProps & CheckboxSelectionProps)]?: never };
-
-interface CheckboxCardProps extends CardBaseProps, SelectionProps, CheckboxSelectionProps {
+interface CheckboxCardProps extends CardBaseProps, Never<PrimaryProps>, SelectionProps, CheckboxSelectionProps {
   /** Enable native checkbox selection. */
   selection: 'checkbox';
 }
 
-interface RadioCardProps extends CardBaseProps, SelectionProps, WithoutCheckboxSelectionProps {
+interface RadioCardProps extends CardBaseProps, Never<PrimaryProps>, SelectionProps, Never<CheckboxSelectionProps> {
   /** Enable native radio selection inside a RadioGroup. */
   selection: 'radio';
 
@@ -131,25 +76,21 @@ interface RadioCardProps extends CardBaseProps, SelectionProps, WithoutCheckboxS
   value: string;
 }
 
-interface NonSelectableCardProps extends CardBaseProps, WithoutSelectionProps {
+interface NonSelectableCardProps extends CardBaseProps, PrimaryProps, Never<SelectionProps & CheckboxSelectionProps> {
   /** Omit for no selection. */
   selection?: never;
 }
 
-/** Props for Card. Only checkbox selection accepts local selection and validation state. */
+/**
+ * Props for Card. A Card has a primary action or selection, not both. Only standalone checkbox
+ * cards accept local selection state; groups own the rest.
+ */
 export type CardProps = CheckboxCardProps | RadioCardProps | NonSelectableCardProps;
 
-function requireRadioValue(value: string | undefined) {
-  if (value == null) throw new Error('Card with selection="radio" requires a value.');
-  return value;
-}
-
-function resolveClassName(className: CardProps['className'], state: CardRenderProps) {
-  return typeof className === 'function' ? className({ ...state, defaultClassName: undefined }) : className;
-}
-
-function resolveStyle(style: CardProps['style'], state: CardRenderProps) {
-  return typeof style === 'function' ? style({ ...state, defaultStyle: {} }) : style;
+interface SurfaceState {
+  isSelected?: boolean;
+  isDisabled?: boolean;
+  isReadOnly?: boolean;
 }
 
 /**
@@ -165,14 +106,8 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
     isSelected,
     defaultSelected,
     onSelectionChange,
-    isSelectionDisabled,
     isReadOnly,
-    isIndeterminate,
-    isRequired,
-    isInvalid,
-    selectionProps,
     className,
-    style,
     children,
     href,
     onPress,
@@ -193,25 +128,18 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
     'aria-describedby': ariaDescribedBy
   };
 
-  function resolveForwardTarget(card: HTMLDivElement) {
+  const forwardedClick = useForwardedClick(function resolveTarget(card) {
     if (hasPrimary) return primaryRef.current;
     for (const input of card.querySelectorAll<HTMLInputElement>('[data-card-selection-control] input')) {
       if (input.closest('[data-card]') === card) return input;
     }
     return null;
-  }
+  }, onClick);
 
-  const forwardedClick = useForwardedClick(resolveForwardTarget, onClick);
-
-  function renderSurface(state?: Partial<CardRenderProps>) {
-    const selectionState = { ...IDLE_RENDER_PROPS, ...state };
-    const canSelect = selection != null && !hasPrimary && !selectionState.isDisabled && !selectionState.isReadOnly;
+  function renderSurface(state: SurfaceState = {}) {
+    const canSelect = selection != null && !state.isDisabled && !state.isReadOnly;
     const isInteractive = canActivatePrimary || canSelect;
     const shouldForwardClick = (canActivatePrimary && href == null) || canSelect;
-    const isSurfaceDisabled =
-      (hasPrimary || selection != null) &&
-      (!hasPrimary || isDisabled === true) &&
-      (selection == null || selectionState.isDisabled);
 
     return (
       <SelectionProvider kind={selection ?? null}>
@@ -222,11 +150,9 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
           {...surfaceProps}
           {...(hasPrimary || selection != null ? undefined : ariaProps)}
           ref={ref}
-          className={composeClassName(resolveClassName(className, selectionState), styles.card)}
-          style={resolveStyle(style, selectionState)}
-          data-card-selected={selectionState.isSelected || undefined}
-          data-card-indeterminate={selectionState.isIndeterminate || undefined}
-          data-disabled={isSurfaceDisabled || undefined}
+          className={composeClassName(className, styles.card)}
+          data-card-selected={state.isSelected || undefined}
+          data-disabled={isDisabled || state.isDisabled || undefined}
           onClick={shouldForwardClick ? forwardedClick : onClick}
           data-card={isInteractive ? 'interactive' : 'static'}
         >
@@ -237,7 +163,6 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
               onPress={onPress}
               {...ariaProps}
               isDisabled={isDisabled}
-              data-card-primary
               className={styles.link}
             />
           ) : onPress != null ? (
@@ -246,7 +171,6 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
               onPress={onPress}
               {...ariaProps}
               isDisabled={isDisabled}
-              data-card-primary
               className={styles.primary}
             />
           ) : null}
@@ -256,16 +180,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
     );
   }
 
-  const hasSelectionName = selectionProps?.['aria-label'] != null || selectionProps?.['aria-labelledby'] != null;
-  const fieldProps = {
-    value,
-    isDisabled: isSelectionDisabled,
-    'aria-label': hasSelectionName ? undefined : ariaLabel,
-    'aria-labelledby': hasSelectionName ? undefined : ariaLabelledBy,
-    'aria-describedby': ariaDescribedBy,
-    ...selectionProps,
-    style: { display: 'contents' }
-  };
+  const fieldProps = { value, isDisabled, ...ariaProps, style: { display: 'contents' } };
 
   if (selection === 'checkbox') {
     return (
@@ -276,9 +191,6 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
         defaultSelected={defaultSelected}
         onChange={onSelectionChange}
         isReadOnly={isReadOnly}
-        isIndeterminate={isIndeterminate}
-        isRequired={isRequired}
-        isInvalid={isInvalid}
       >
         {renderSurface}
       </RACCheckboxField>
@@ -287,7 +199,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
 
   if (selection === 'radio') {
     return (
-      <RACRadioField {...fieldProps} value={requireRadioValue(value)}>
+      <RACRadioField {...fieldProps} value={value}>
         {renderSurface}
       </RACRadioField>
     );

@@ -20,7 +20,7 @@ const image =
 /**
  * Use Grid for responsiveness.
  * @title Layout
- * @order 9
+ * @order 10
  */
 export function LayoutExample() {
   return (

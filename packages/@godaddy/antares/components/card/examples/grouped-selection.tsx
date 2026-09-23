@@ -16,23 +16,15 @@ interface GroupedSelectionExampleProps {
 
   /** Group state to toggle. */
   restriction: 'disabled' | 'readOnly';
-
-  /** Whether the Card also has an independent primary action. */
-  hasPrimary?: boolean;
 }
 
 /**
- * Group-owned selection restrictions and independent primary actions.
+ * Group-owned selection restrictions.
  * @ignore
  */
-export function GroupedSelectionExample({ kind, restriction, hasPrimary }: GroupedSelectionExampleProps) {
+export function GroupedSelectionExample({ kind, restriction }: GroupedSelectionExampleProps) {
   const [isRestricted, setRestricted] = useState(true);
-  const [presses, setPresses] = useState(0);
   const Group = kind === 'checkbox' ? CheckboxGroup : RadioGroup;
-
-  function activate() {
-    setPresses((count) => count + 1);
-  }
 
   return (
     <Flex direction="column" gap="md">
@@ -41,7 +33,7 @@ export function GroupedSelectionExample({ kind, restriction, hasPrimary }: Group
         isDisabled={restriction === 'disabled' && isRestricted}
         isReadOnly={restriction === 'readOnly' && isRestricted}
       >
-        <Card selection={kind} value="one" aria-label="Option one" onPress={hasPrimary ? activate : undefined}>
+        <Card selection={kind} value="one" aria-label="Option one">
           <Text>Grouped card body</Text>
           <CornerActions>
             <CardSelectionIndicator />
@@ -49,7 +41,6 @@ export function GroupedSelectionExample({ kind, restriction, hasPrimary }: Group
         </Card>
       </Group>
       <Button onPress={() => setRestricted((value) => !value)}>Toggle restriction</Button>
-      <Text>Primary activations: {presses}</Text>
     </Flex>
   );
 }
