@@ -68,6 +68,16 @@ interface CardBaseProps extends CardLayoutProps {
   /** Observe clicks on the Card surface. Call `preventDefault` to skip native link navigation. */
   onClick?: MouseEventHandler<HTMLDivElement>;
 
+  /** Surface classes. Strings match Flex; functions receive native selection state. */
+  className?: ClassNameProp<CardRenderProps>;
+
+  /** Surface styles. Objects match Flex; functions receive native selection state. */
+  style?:
+    | CSSProperties
+    | ((renderProps: CardRenderProps & { defaultStyle: CSSProperties }) => CSSProperties | undefined);
+}
+
+interface SelectionProps {
   /** Selection value submitted by a form or group. Required for radio cards. */
   value?: string;
 
@@ -76,14 +86,6 @@ interface CardBaseProps extends CardLayoutProps {
 
   /** Labels the selection control when it should not share the primary action's name. */
   selectionProps?: Pick<RACCheckboxFieldProps, 'aria-label' | 'aria-labelledby' | 'aria-describedby'>;
-
-  /** Surface classes. Strings match Flex; functions receive native selection state. */
-  className?: ClassNameProp<CardRenderProps>;
-
-  /** Surface styles. Objects match Flex; functions receive native selection state. */
-  style?:
-    | CSSProperties
-    | ((renderProps: CardRenderProps & { defaultStyle: CSSProperties }) => CSSProperties | undefined);
 }
 
 interface CheckboxSelectionProps {
@@ -114,12 +116,14 @@ interface CheckboxSelectionProps {
 
 type WithoutCheckboxSelectionProps = { [Key in keyof CheckboxSelectionProps]?: never };
 
-interface CheckboxCardProps extends CardBaseProps, CheckboxSelectionProps {
+type WithoutSelectionProps = { [Key in keyof (SelectionProps & CheckboxSelectionProps)]?: never };
+
+interface CheckboxCardProps extends CardBaseProps, SelectionProps, CheckboxSelectionProps {
   /** Enable native checkbox selection. */
   selection: 'checkbox';
 }
 
-interface RadioCardProps extends CardBaseProps, WithoutCheckboxSelectionProps {
+interface RadioCardProps extends CardBaseProps, SelectionProps, WithoutCheckboxSelectionProps {
   /** Enable native radio selection inside a RadioGroup. */
   selection: 'radio';
 
@@ -127,7 +131,7 @@ interface RadioCardProps extends CardBaseProps, WithoutCheckboxSelectionProps {
   value: string;
 }
 
-interface NonSelectableCardProps extends CardBaseProps, WithoutCheckboxSelectionProps {
+interface NonSelectableCardProps extends CardBaseProps, WithoutSelectionProps {
   /** Omit for no selection. */
   selection?: never;
 }

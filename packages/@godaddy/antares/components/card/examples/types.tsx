@@ -57,6 +57,12 @@ export function TypesExample({
           <Card isIndeterminate />
           {/* @ts-expect-error - required state requires checkbox selection */}
           <Card isRequired />
+          {/* @ts-expect-error - selection values require selection */}
+          <Card value="one" />
+          {/* @ts-expect-error - selection disabled state requires selection */}
+          <Card isSelectionDisabled />
+          {/* @ts-expect-error - selection labels require selection */}
+          <Card selectionProps={{ 'aria-label': 'Select' }} />
         </>
       ) : null}
     </>
