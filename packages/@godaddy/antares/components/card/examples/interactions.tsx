@@ -46,11 +46,13 @@ export function InteractionsExample({
   indicatorChildren?: CardSelectionIndicatorProps['children'];
 }) {
   const [presses, setPresses] = useState(0);
+  const [lastPress, setLastPress] = useState('none');
   const [actions, setActions] = useState(0);
   const [submission, setSubmission] = useState('none');
 
-  function activate() {
+  function activate(event: { pointerType: string; shiftKey: boolean }) {
     setPresses((count) => count + 1);
+    setLastPress(`${event.pointerType}${event.shiftKey ? '+shift' : ''}`);
   }
 
   function act() {
@@ -152,6 +154,7 @@ export function InteractionsExample({
       <Button type="submit">Submit choices</Button>
       <Button type="reset">Reset choices</Button>
       <Text>Primary activations: {presses}</Text>
+      <Text>Last primary press: {lastPress}</Text>
       <Text>Independent activations: {actions}</Text>
       <Text>Submitted: {submission}</Text>
     </Box>

@@ -7,6 +7,7 @@ import { InteractionsExample } from '../examples/interactions.tsx';
 import { LinkExample } from '../examples/link.tsx';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
 import { CustomizationExample } from '../examples/customization.tsx';
+import { FrameExample } from '../examples/frame.tsx';
 import { LayoutExample } from '../examples/layout.tsx';
 import { NestedExample } from '../examples/nested.tsx';
 import { RadioExample } from '../examples/radio.tsx';
@@ -447,6 +448,18 @@ describe('@godaddy/antares', function packageTests() {
         await userEvent.click(getByText('One: copy this text without changing selection.'));
         await expect.element(getByText('Primary activations: 1')).toBeInTheDocument();
       });
+
+      it('keeps modifier keys when body text activates the primary', async function bodyTextModifiers() {
+        const { getByText, body } = await renderInteraction('action');
+        const box = body.element().getBoundingClientRect();
+        const x = box.left + 8;
+        const y = box.top + box.height / 2;
+        const shift = 8;
+        await moveMouse(x, y, 'mouseMoved', 'none', shift);
+        await moveMouse(x, y, 'mousePressed', 'left', shift);
+        await moveMouse(x, y, 'mouseReleased', 'left', shift);
+        await expect.element(getByText('Last primary press: virtual+shift')).toBeInTheDocument();
+      });
     });
 
     describe('composition', function compositionTests() {
@@ -601,6 +614,31 @@ describe('@godaddy/antares', function packageTests() {
         await userEvent.click(getByText('Inner copy'));
         await expect.element(getByRole('checkbox', { name: 'Inner card' })).toBeChecked();
         await expect.element(getByRole('checkbox', { name: 'Outer card' })).toBeChecked();
+      });
+
+      it('activates Cards from body text inside an iframe', async function framedCards() {
+        const { container, getByText } = await render(<FrameExample />);
+        const frame = container.querySelector('iframe')!;
+        const frameDocument = frame.contentDocument!;
+        await expect.poll(() => frameDocument.querySelectorAll('[data-card]').length).toBe(2);
+
+        async function clickFramedText(text: string) {
+          const node = Array.from(frameDocument.querySelectorAll('[data-card] *')).find(
+            (element) => element.childElementCount === 0 && element.textContent === text
+          )!;
+          const frameBox = frame.getBoundingClientRect();
+          const box = node.getBoundingClientRect();
+          const x = frameBox.left + frame.clientLeft + box.left + 4;
+          const y = frameBox.top + frame.clientTop + box.top + box.height / 2;
+          await moveMouse(x, y, 'mouseMoved');
+          await moveMouse(x, y, 'mousePressed', 'left');
+          await moveMouse(x, y, 'mouseReleased', 'left');
+        }
+
+        await clickFramedText('Framed action copy');
+        await expect.element(getByText('Framed activations: 1')).toBeInTheDocument();
+        await clickFramedText('Framed selection copy');
+        expect(frameDocument.querySelector<HTMLInputElement>('input[type="checkbox"]')!.checked).toBe(true);
       });
 
       it('does not use a nested input when its own indicator is omitted', async function missingIndicator() {
