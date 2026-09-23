@@ -858,344 +858,6 @@ The carousel follows the current **layout direction** (LTR or RTL). By default, 
 <PropTable />
 
 
-# Checkbox
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A single checkbox with a label.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Checkbox>One checkbox</Checkbox>;\n}&#x22;" />
-
-### Indeterminate [#indeterminate]
-
-Checkboxes can display an indeterminate state (neither checked nor unchecked), with the use of the `isIndeterminate` prop, commonly used for "select all" functionality when some but not all child items are selected.
-
-<Story of="IndeterminateExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox } from '@godaddy/antares';\n\nexport function IndeterminateExample() {\n  return <Checkbox isIndeterminate>Option 1</Checkbox>;\n}&#x22;" />
-
-### Checkbox Group [#checkbox-group]
-
-Group multiple checkboxes together with a shared label.
-
-<Story of="GroupExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup, Group, Label } from '@godaddy/antares';\n\nexport function GroupExample() {\n  return (\n    <CheckboxGroup>\n      <Label>Favorite colors</Label>\n      <Group>\n        <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n        <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n        <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n      </Group>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Manage checkbox group state programmatically with controlled component pattern.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Checkbox, CheckboxGroup, Group, Label, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [selected, setSelected] = useState<string[]>(['baseball', 'tennis']);\n\n  return (\n    <CheckboxGroup value={selected} onChange={setSelected}>\n      <Label>Favorite sports</Label>\n      <Group>\n        <Checkbox value=\&#x22;basketball\&#x22;>Basketball</Checkbox>\n        <Checkbox value=\&#x22;soccer\&#x22;>Soccer</Checkbox>\n        <Checkbox value=\&#x22;baseball\&#x22;>Baseball</Checkbox>\n        <Checkbox value=\&#x22;tennis\&#x22;>Tennis</Checkbox>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Select your favorite sports</Text>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-### Horizontal Layout [#horizontal-layout]
-
-Display checkboxes in a horizontal row instead of vertical stack.
-
-<Story of="HorizontalExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup, Group, Label } from '@godaddy/antares';\n\nexport function HorizontalExample() {\n  return (\n    <CheckboxGroup orientation=\&#x22;horizontal\&#x22;>\n      <Label>Favorite colors</Label>\n      <Group>\n        <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n        <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n        <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n      </Group>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-### Disabled States [#disabled-states]
-
-Individual checkboxes within a group can be disabled while others remain interactive.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Checkbox, CheckboxGroup, FieldError, Group, Label, Text } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  const [selected, setSelected] = useState<string[]>(['purple', 'red']);\n\n  return (\n    <CheckboxGroup value={selected} onChange={setSelected} isDisabled>\n      <Label>Favorite colors</Label>\n      <Group>\n        <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n        <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n        <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n        <Checkbox value=\&#x22;purple\&#x22;>Purple</Checkbox>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Choose your favorite color</Text>\n      <FieldError>At least one color must be selected</FieldError>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-### Required Indicator [#required-indicator]
-
-Mark a checkbox group as required with visual indicator and validation.
-
-<Story of="RequiredExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup, Group, Label, Text } from '@godaddy/antares';\n\nexport function RequiredExample() {\n  return (\n    <CheckboxGroup isRequired>\n      <Label>Favorite colors</Label>\n      <Group>\n        <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n        <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n        <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Choose your favorite color</Text>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-### Invalid State [#invalid-state]
-
-Display error state and error message for validation feedback.
-
-<Story of="InvalidExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup, FieldError, Group, Label, Text } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <CheckboxGroup isInvalid>\n      <Label>Favorite colors</Label>\n      <Group>\n        <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n        <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n        <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Choose your favorite color</Text>\n      <FieldError>At least one color must be selected</FieldError>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-`CheckboxGroup` is composed: write `Label`, a `Group` holding the `Checkbox` items, `Text slot="description"`, and `FieldError`. The `Group` takes its axis, gap, and presentational role from the group's `orientation`, so a bare `<Group>` is all you need; pass your own `direction`/`gap` to lay the items out differently. Each `Checkbox` takes label text next to the indicator.
-
-### Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**CheckboxGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
-
-**Checkbox:** `data-selected`, `data-indeterminate`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
-
-```css
-.my-checkbox-group [data-selected] {
-  color: #09757a;
-  font-weight: 500;
-}
-
-.my-checkbox-group[data-invalid] {
-  border-color: #db1802;
-}
-
-.my-checkbox-group [data-focused] {
-  outline: 2px solid #1976d2;
-  outline-offset: 2px;
-}
-
-.my-checkbox-group [data-indeterminate] {
-  background-color: #1976d2;
-}
-
-.my-checkbox-group [data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-```
-
-### Component Customization [#component-customization]
-
-Pass `className` or `style` to customize a checkbox field container. Use descendant data-attribute selectors to style the interactive checkbox state:
-
-```jsx
-<CheckboxGroup className="custom-checkbox-group">
-  <Label>Select options</Label>
-  <Group>
-    <Checkbox value="option1" className="custom-checkbox">
-      Option 1
-    </Checkbox>
-    <Checkbox value="option2" className="highlighted-checkbox">
-      Option 2
-    </Checkbox>
-  </Group>
-</CheckboxGroup>
-```
-
-## Key Features [#key-features]
-
-### Indeterminate State [#indeterminate-state]
-
-The `isIndeterminate` prop displays a minus icon to represent a partial selection state. This is useful for "select all" checkboxes when only some items in a collection are selected.
-
-```jsx
-<Checkbox isIndeterminate onChange={handleSelectAll}>
-  Select All
-</Checkbox>
-```
-
-### Group Validation [#group-validation]
-
-CheckboxGroup supports validation states and error messages:
-
-* **isRequired**: Marks the group as required with visual indicator
-* **isInvalid**: Shows error state styling
-* **`FieldError`**: Displays validation error text below the group
-
-```jsx
-<CheckboxGroup isRequired isInvalid={!hasSelection}>
-  <Label>Required selection</Label>
-  <Checkbox value="a">Option A</Checkbox>
-  <Checkbox value="b">Option B</Checkbox>
-  <FieldError>At least one option must be selected</FieldError>
-</CheckboxGroup>
-```
-
-### Orientation [#orientation]
-
-Use `orientation="vertical"` (default) to stack checkboxes, or `orientation="horizontal"` to arrange them in a row.
-
-## Accessibility [#accessibility]
-
-### Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to the next/previous checkbox
-* **Space**: Toggles the focused checkbox
-* **Shift + Tab**: Moves focus to the previous checkbox
-
-### ARIA Support [#aria-support]
-
-* `aria-disabled` for disabled checkboxes
-* `aria-required` when selection is required
-* `aria-invalid` for validation errors
-* Proper labeling with `aria-labelledby` and `aria-describedby`
-
-## Troubleshooting [#troubleshooting]
-
-### Selection Not Updating [#selection-not-updating]
-
-```jsx
-// ❌ Wrong: Using both value and defaultValue
-<CheckboxGroup value={value} defaultValue={["a"]}>
-  <Label>Options</Label>
-  <Checkbox value="a">Option A</Checkbox>
-</CheckboxGroup>
-
-// ✅ Controlled mode
-<CheckboxGroup value={value} onChange={setValue}>
-  <Label>Options</Label>
-  <Checkbox value="a">Option A</Checkbox>
-</CheckboxGroup>
-
-// ✅ Uncontrolled mode
-<CheckboxGroup defaultValue={["a"]}>
-  <Label>Options</Label>
-  <Checkbox value="a">Option A</Checkbox>
-</CheckboxGroup>
-```
-
-### Indeterminate State Not Updating [#indeterminate-state-not-updating]
-
-The `isIndeterminate` prop must be explicitly managed - it doesn't automatically reflect parent-child relationships:
-
-```jsx
-// ✅ Correct: Manually manage indeterminate state
-const [childSelections, setChildSelections] = React.useState([]);
-const allSelected = childSelections.length === totalChildren;
-const someSelected = childSelections.length > 0 && !allSelected;
-
-<Checkbox
-  isSelected={allSelected}
-  isIndeterminate={someSelected}
-  onChange={handleSelectAll}
->
-  Select All
-</Checkbox>
-```
-
-### Styling Overrides Not Applying [#styling-overrides-not-applying]
-
-```css
-/* ❌ May not have enough specificity */
-.my-custom-checkbox {
-  color: red;
-}
-
-/* ✅ Use data attributes with className for higher specificity */
-.my-checkbox-group [data-selected] {
-  color: red;
-  font-weight: 600;
-}
-```
-
-### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
-
-```css
-/* ❌ Don't remove focus outlines without replacement */
-[data-focused] {
-  outline: none;
-}
-
-/* ✅ Provide visible focus indicator */
-.my-checkbox-group [data-focused] {
-  outline: 2px solid #1976d2;
-  outline-offset: 2px;
-}
-```
-
-## Best Practices [#best-practices]
-
-### When to Use Checkboxes [#when-to-use-checkboxes]
-
-* ✅ For selecting multiple independent options
-* ✅ When users can select zero, one, or many items
-* ✅ For toggling settings or features on/off
-* ✅ When all available options should be visible
-* ❌ For mutually exclusive options (use Radio instead)
-* ❌ For simple on/off toggles without labels (use Toggle/Switch instead)
-
-### Label Guidelines [#label-guidelines]
-
-* Use clear, concise labels that describe what selecting the option means
-* Keep labels short (1-5 words when possible)
-* Ensure labels are descriptive without being verbose
-* Place the most commonly selected options first in groups
-
-### Validation [#validation]
-
-Always provide clear error messages and use appropriate validation states:
-
-```jsx
-<CheckboxGroup isRequired isInvalid={!agreedToTerms}>
-  <Label>Terms and conditions</Label>
-  <Checkbox value="terms">I agree to the terms and conditions</Checkbox>
-  <Checkbox value="privacy">I agree to the privacy policy</Checkbox>
-  <FieldError>You must agree to the terms to continue</FieldError>
-</CheckboxGroup>
-```
-
-### Group Organization [#group-organization]
-
-* Limit checkbox groups to 7-10 options for better usability
-* Use logical ordering (alphabetical, frequency of use, or importance)
-* Consider using CheckboxGroup for related options, even if there are only 2-3
-* Provide a group label that clearly describes the choice being made
-
-## Props [#props]
-
-```tsx
-<CheckboxGroup>
-  <Label />
-  <Group>
-    <Checkbox />
-  </Group>
-  <Text slot="description" />
-  <FieldError />
-</CheckboxGroup>
-```
-
-### Checkbox [#checkbox]
-
-<PropTable />
-
-### CheckboxGroup [#checkboxgroup]
-
-<PropTable />
-
-### CheckboxIndicator [#checkboxindicator]
-
-<PropTable />
-
-
 # Chip
 
 
@@ -1851,6 +1513,344 @@ stays pinned.
 <PropTable />
 
 
+# Checkbox
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A single checkbox with a label.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Checkbox>One checkbox</Checkbox>;\n}&#x22;" />
+
+### Indeterminate [#indeterminate]
+
+Checkboxes can display an indeterminate state (neither checked nor unchecked), with the use of the `isIndeterminate` prop, commonly used for "select all" functionality when some but not all child items are selected.
+
+<Story of="IndeterminateExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox } from '@godaddy/antares';\n\nexport function IndeterminateExample() {\n  return <Checkbox isIndeterminate>Option 1</Checkbox>;\n}&#x22;" />
+
+### Checkbox Group [#checkbox-group]
+
+Group multiple checkboxes together with a shared label.
+
+<Story of="GroupExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup, Group, Label } from '@godaddy/antares';\n\nexport function GroupExample() {\n  return (\n    <CheckboxGroup>\n      <Label>Favorite colors</Label>\n      <Group>\n        <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n        <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n        <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n      </Group>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Manage checkbox group state programmatically with controlled component pattern.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Checkbox, CheckboxGroup, Group, Label, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [selected, setSelected] = useState<string[]>(['baseball', 'tennis']);\n\n  return (\n    <CheckboxGroup value={selected} onChange={setSelected}>\n      <Label>Favorite sports</Label>\n      <Group>\n        <Checkbox value=\&#x22;basketball\&#x22;>Basketball</Checkbox>\n        <Checkbox value=\&#x22;soccer\&#x22;>Soccer</Checkbox>\n        <Checkbox value=\&#x22;baseball\&#x22;>Baseball</Checkbox>\n        <Checkbox value=\&#x22;tennis\&#x22;>Tennis</Checkbox>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Select your favorite sports</Text>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+### Horizontal Layout [#horizontal-layout]
+
+Display checkboxes in a horizontal row instead of vertical stack.
+
+<Story of="HorizontalExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup, Group, Label } from '@godaddy/antares';\n\nexport function HorizontalExample() {\n  return (\n    <CheckboxGroup orientation=\&#x22;horizontal\&#x22;>\n      <Label>Favorite colors</Label>\n      <Group>\n        <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n        <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n        <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n      </Group>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+### Disabled States [#disabled-states]
+
+Individual checkboxes within a group can be disabled while others remain interactive.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Checkbox, CheckboxGroup, FieldError, Group, Label, Text } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  const [selected, setSelected] = useState<string[]>(['purple', 'red']);\n\n  return (\n    <CheckboxGroup value={selected} onChange={setSelected} isDisabled>\n      <Label>Favorite colors</Label>\n      <Group>\n        <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n        <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n        <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n        <Checkbox value=\&#x22;purple\&#x22;>Purple</Checkbox>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Choose your favorite color</Text>\n      <FieldError>At least one color must be selected</FieldError>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+### Required Indicator [#required-indicator]
+
+Mark a checkbox group as required with visual indicator and validation.
+
+<Story of="RequiredExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup, Group, Label, Text } from '@godaddy/antares';\n\nexport function RequiredExample() {\n  return (\n    <CheckboxGroup isRequired>\n      <Label>Favorite colors</Label>\n      <Group>\n        <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n        <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n        <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Choose your favorite color</Text>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+### Invalid State [#invalid-state]
+
+Display error state and error message for validation feedback.
+
+<Story of="InvalidExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup, FieldError, Group, Label, Text } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <CheckboxGroup isInvalid>\n      <Label>Favorite colors</Label>\n      <Group>\n        <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n        <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n        <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Choose your favorite color</Text>\n      <FieldError>At least one color must be selected</FieldError>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+`CheckboxGroup` is composed: write `Label`, a `Group` holding the `Checkbox` items, `Text slot="description"`, and `FieldError`. The `Group` takes its axis, gap, and presentational role from the group's `orientation`, so a bare `<Group>` is all you need; pass your own `direction`/`gap` to lay the items out differently. Each `Checkbox` takes label text next to the indicator.
+
+### Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**CheckboxGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
+
+**Checkbox:** `data-selected`, `data-indeterminate`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
+
+```css
+.my-checkbox-group [data-selected] {
+  color: #09757a;
+  font-weight: 500;
+}
+
+.my-checkbox-group[data-invalid] {
+  border-color: #db1802;
+}
+
+.my-checkbox-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.my-checkbox-group [data-indeterminate] {
+  background-color: #1976d2;
+}
+
+.my-checkbox-group [data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+### Component Customization [#component-customization]
+
+Pass `className` or `style` to customize a checkbox field container. Use descendant data-attribute selectors to style the interactive checkbox state:
+
+```jsx
+<CheckboxGroup className="custom-checkbox-group">
+  <Label>Select options</Label>
+  <Group>
+    <Checkbox value="option1" className="custom-checkbox">
+      Option 1
+    </Checkbox>
+    <Checkbox value="option2" className="highlighted-checkbox">
+      Option 2
+    </Checkbox>
+  </Group>
+</CheckboxGroup>
+```
+
+## Key Features [#key-features]
+
+### Indeterminate State [#indeterminate-state]
+
+The `isIndeterminate` prop displays a minus icon to represent a partial selection state. This is useful for "select all" checkboxes when only some items in a collection are selected.
+
+```jsx
+<Checkbox isIndeterminate onChange={handleSelectAll}>
+  Select All
+</Checkbox>
+```
+
+### Group Validation [#group-validation]
+
+CheckboxGroup supports validation states and error messages:
+
+* **isRequired**: Marks the group as required with visual indicator
+* **isInvalid**: Shows error state styling
+* **`FieldError`**: Displays validation error text below the group
+
+```jsx
+<CheckboxGroup isRequired isInvalid={!hasSelection}>
+  <Label>Required selection</Label>
+  <Checkbox value="a">Option A</Checkbox>
+  <Checkbox value="b">Option B</Checkbox>
+  <FieldError>At least one option must be selected</FieldError>
+</CheckboxGroup>
+```
+
+### Orientation [#orientation]
+
+Use `orientation="vertical"` (default) to stack checkboxes, or `orientation="horizontal"` to arrange them in a row.
+
+## Accessibility [#accessibility]
+
+### Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to the next/previous checkbox
+* **Space**: Toggles the focused checkbox
+* **Shift + Tab**: Moves focus to the previous checkbox
+
+### ARIA Support [#aria-support]
+
+* `aria-disabled` for disabled checkboxes
+* `aria-required` when selection is required
+* `aria-invalid` for validation errors
+* Proper labeling with `aria-labelledby` and `aria-describedby`
+
+## Troubleshooting [#troubleshooting]
+
+### Selection Not Updating [#selection-not-updating]
+
+```jsx
+// ❌ Wrong: Using both value and defaultValue
+<CheckboxGroup value={value} defaultValue={["a"]}>
+  <Label>Options</Label>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+
+// ✅ Controlled mode
+<CheckboxGroup value={value} onChange={setValue}>
+  <Label>Options</Label>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+
+// ✅ Uncontrolled mode
+<CheckboxGroup defaultValue={["a"]}>
+  <Label>Options</Label>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+```
+
+### Indeterminate State Not Updating [#indeterminate-state-not-updating]
+
+The `isIndeterminate` prop must be explicitly managed - it doesn't automatically reflect parent-child relationships:
+
+```jsx
+// ✅ Correct: Manually manage indeterminate state
+const [childSelections, setChildSelections] = React.useState([]);
+const allSelected = childSelections.length === totalChildren;
+const someSelected = childSelections.length > 0 && !allSelected;
+
+<Checkbox
+  isSelected={allSelected}
+  isIndeterminate={someSelected}
+  onChange={handleSelectAll}
+>
+  Select All
+</Checkbox>
+```
+
+### Styling Overrides Not Applying [#styling-overrides-not-applying]
+
+```css
+/* ❌ May not have enough specificity */
+.my-custom-checkbox {
+  color: red;
+}
+
+/* ✅ Use data attributes with className for higher specificity */
+.my-checkbox-group [data-selected] {
+  color: red;
+  font-weight: 600;
+}
+```
+
+### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
+
+```css
+/* ❌ Don't remove focus outlines without replacement */
+[data-focused] {
+  outline: none;
+}
+
+/* ✅ Provide visible focus indicator */
+.my-checkbox-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+```
+
+## Best Practices [#best-practices]
+
+### When to Use Checkboxes [#when-to-use-checkboxes]
+
+* ✅ For selecting multiple independent options
+* ✅ When users can select zero, one, or many items
+* ✅ For toggling settings or features on/off
+* ✅ When all available options should be visible
+* ❌ For mutually exclusive options (use Radio instead)
+* ❌ For simple on/off toggles without labels (use Toggle/Switch instead)
+
+### Label Guidelines [#label-guidelines]
+
+* Use clear, concise labels that describe what selecting the option means
+* Keep labels short (1-5 words when possible)
+* Ensure labels are descriptive without being verbose
+* Place the most commonly selected options first in groups
+
+### Validation [#validation]
+
+Always provide clear error messages and use appropriate validation states:
+
+```jsx
+<CheckboxGroup isRequired isInvalid={!agreedToTerms}>
+  <Label>Terms and conditions</Label>
+  <Checkbox value="terms">I agree to the terms and conditions</Checkbox>
+  <Checkbox value="privacy">I agree to the privacy policy</Checkbox>
+  <FieldError>You must agree to the terms to continue</FieldError>
+</CheckboxGroup>
+```
+
+### Group Organization [#group-organization]
+
+* Limit checkbox groups to 7-10 options for better usability
+* Use logical ordering (alphabetical, frequency of use, or importance)
+* Consider using CheckboxGroup for related options, even if there are only 2-3
+* Provide a group label that clearly describes the choice being made
+
+## Props [#props]
+
+```tsx
+<CheckboxGroup>
+  <Label />
+  <Group>
+    <Checkbox />
+  </Group>
+  <Text slot="description" />
+  <FieldError />
+</CheckboxGroup>
+```
+
+### Checkbox [#checkbox]
+
+<PropTable />
+
+### CheckboxGroup [#checkboxgroup]
+
+<PropTable />
+
+### CheckboxIndicator [#checkboxindicator]
+
+<PropTable />
+
+
 # DropZone
 
 
@@ -2095,53 +2095,6 @@ Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatic
 ## Props [#props]
 
 ### Heading [#heading]
-
-<PropTable />
-
-
-# Image
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders a native `<img>` and accepts all of its attributes
-* Inherits presentation and behavior when composed inside Antares components such as Avatar
-* Ships no default styles, loading state, or fallback so it stays predictable everywhere
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Render an image with alternative text and explicit dimensions.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-* Provide concise, meaningful `alt` text when the image conveys information.
-* Use `alt=""` for decorative images or images already described by adjacent text.
-* Set `width` and `height` when known to reserve space and reduce layout shift.
-
-## Props [#props]
-
-### Image [#image]
 
 <PropTable />
 
@@ -2556,6 +2509,53 @@ For performance optimization:
 1. **Preload common icons**: Consider preloading frequently used icons
 2. **Use sprite mode**: For repeated icons, consider sprite mode which consolidates multiple icons into a single SVG sprite sheet, reducing DOM size and improving performance when the same icon appears multiple times
 3. **Minimize icon sets**: Only load icons that are actually used
+
+
+# Image
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders a native `<img>` and accepts all of its attributes
+* Inherits presentation and behavior when composed inside Antares components such as Avatar
+* Ships no default styles, loading state, or fallback so it stays predictable everywhere
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Render an image with alternative text and explicit dimensions.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+* Provide concise, meaningful `alt` text when the image conveys information.
+* Use `alt=""` for decorative images or images already described by adjacent text.
+* Set `width` and `height` when known to reserve space and reduce layout shift.
+
+## Props [#props]
+
+### Image [#image]
+
+<PropTable />
 
 
 # InlineDrawer
@@ -4664,205 +4664,6 @@ layout props to reserve room beside the surrounding content.
 <PropTable />
 
 
-# Switch
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders a horizontal toggle with a sliding thumb inside a pill-shaped track
-* Communicates state to assistive technologies via the WAI-ARIA `switch` role
-* Toggles on click or tap anywhere in the control — track, thumb, or label
-* Toggles with the `Space` key when focused
-* Optional label, positioned at the `start` or `end` of the track, or omitted entirely
-* Two sizes: `md` (default) and `sm`
-* Supports controlled (`isSelected` + `onChange`) and uncontrolled (`defaultSelected`) usage
-* Takes effect immediately — no form submission required
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-An uncontrolled switch, off by default, with the label at the start.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Switch>Wi-Fi</Switch>;\n}&#x22;" />
-
-### Switch Selected [#switch-selected]
-
-A switch that starts in the on state via `defaultSelected`.
-
-<Story of="SwitchSelectedExample" />
-
-<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function SwitchSelectedExample() {\n  return <Switch defaultSelected>Wi-Fi</Switch>;\n}&#x22;" />
-
-### Switch Sizes [#switch-sizes]
-
-The `size` prop accepts `md` (default) or `sm`.
-
-<Story of="SwitchSizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch size=\&#x22;md\&#x22; defaultSelected>\n        Medium\n      </Switch>\n      <Switch size=\&#x22;sm\&#x22; defaultSelected>\n        Small\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
-
-### Switch Label Position [#switch-label-position]
-
-The `labelPosition` prop places the label at the `start` or `end` of the track.
-
-<Story of="SwitchLabelPositionExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchLabelPositionExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch labelPosition=\&#x22;start\&#x22; defaultSelected>\n        Label on the start\n      </Switch>\n      <Switch labelPosition=\&#x22;end\&#x22; defaultSelected>\n        Label on the end\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
-
-### No Label [#no-label]
-
-When no label is provided, pass `aria-label` so the switch has an accessible name.
-
-<Story of="SwitchNoLabelExample" />
-
-<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function SwitchNoLabelExample() {\n  return <Switch aria-label=\&#x22;Wi-Fi\&#x22; />;\n}&#x22;" />
-
-### Switch Disabled [#switch-disabled]
-
-A disabled switch prevents interaction and renders at reduced opacity, whether off or on.
-
-<Story of="SwitchDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchDisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch isDisabled>Disabled off</Switch>\n      <Switch isDisabled defaultSelected>\n        Disabled on\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
-
-### Switch Controlled [#switch-controlled]
-
-Manage switch state programmatically with `isSelected` and `onChange`.
-
-<Story of="SwitchControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function SwitchControlledExample() {\n  const [isSelected, setIsSelected] = useState(false);\n\n  return (\n    <Switch isSelected={isSelected} onChange={setIsSelected}>\n      Wi-Fi\n    </Switch>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-### Data Attributes [#data-attributes]
-
-The interactive switch control exposes data attributes for styling different states:
-
-`data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-focus-visible`, `data-disabled`, `data-readonly`, `data-invalid`, `data-required`, `data-size`
-
-```css
-.my-switch [data-focus-visible] {
-  outline: 2px solid Highlight;
-}
-
-.my-switch [data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-```
-
-### Design Tokens [#design-tokens]
-
-The track and thumb read from Antares curated tokens, falling back to legacy `--ux-*` custom properties:
-
-| Element           | Token                               | Legacy fallback |
-| ----------------- | ----------------------------------- | --------------- |
-| Track (off)       | —                                   | `--ux-1m9ys0v`  |
-| Track (on)        | `--color-input-background-selected` | `--ux-sywk25`   |
-| Thumb             | `--color-input-background-default`  | `--ux-1nu8itt`  |
-| Thumb inset       | —                                   | `--ux-1sbfig8`  |
-| Label             | `--color-input-text-default`        | `--ux-1glcx6s`  |
-| Focus ring radius | —                                   | `--ux-zvaw3s`   |
-
-### Component Customization [#component-customization]
-
-Pass a `className` or `style` to customize the field container. Target the interactive descendant's data attributes for state-based styling:
-
-```jsx
-<Switch className="custom-switch">Wi-Fi</Switch>
-```
-
-Use the interactive root data attributes for state-based customization. The track and thumb are internal implementation details and do not expose class-name hooks.
-
-## Accessibility [#accessibility]
-
-* Renders with the WAI-ARIA `switch` role via the native `<input type="checkbox" role="switch">`
-* `Space` toggles the switch when it has focus
-* Displays a visible focus ring (`outline: 2px solid Highlight`) for keyboard focus
-* Disabled switches render at `40%` opacity and are excluded from tab order
-* When `children` is omitted, provide `aria-label` or `aria-labelledby` so the switch has an accessible name
-
-## Best Practices [#best-practices]
-
-### When to Use Switch [#when-to-use-switch]
-
-* ✅ For settings that take effect immediately, without a form submission
-* ✅ For binary on/off preferences (e.g. Wi-Fi, notifications, dark mode)
-* ❌ For selections that require a "Save" or "Submit" action (use `Checkbox` instead)
-* ❌ For choosing one of several mutually exclusive options (use `Radio` or `SegmentedController` instead)
-
-### Labeling [#labeling]
-
-* Prefer a visible label that names the setting being toggled (e.g. "Wi-Fi", not "On/Off")
-* If the label is omitted, always provide `aria-label`
-* Keep labels short and describe the setting, not its current state
-
-## Troubleshooting [#troubleshooting]
-
-### Controlled State Not Updating [#controlled-state-not-updating]
-
-```jsx
-// ❌ Wrong: isSelected without onChange leaves the switch stuck
-<Switch isSelected={isOn}>Wi-Fi</Switch>
-
-// ✅ Controlled mode
-<Switch isSelected={isOn} onChange={setIsOn}>Wi-Fi</Switch>
-
-// ✅ Uncontrolled mode
-<Switch defaultSelected>Wi-Fi</Switch>
-```
-
-### Missing Accessible Name [#missing-accessible-name]
-
-```jsx
-// ❌ No children and no aria-label — screen readers announce nothing useful
-<Switch />
-
-// ✅ Provide a label
-<Switch>Wi-Fi</Switch>
-
-// ✅ Or an aria-label when the label is visual-only elsewhere
-<Switch aria-label="Wi-Fi" />
-```
-
-## Props [#props]
-
-### Switch [#switch]
-
-<PropTable />
-
-
 # Tabs
 
 
@@ -5010,6 +4811,83 @@ Use `TabList`'s `containerProps` to customize the outer tab list shell, such as 
 <PropTable />
 
 
+# Text
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic text content.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function DefaultExample(args: TextProps) {\n  return <Text {...args}>Hello, world!</Text>;\n}&#x22;" />
+
+### As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Story of="AsExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AsExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;marquee\&#x22;>\n      A scrolling marquee\n    </Text>\n  );\n}&#x22;" />
+
+### Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. Choose from `start`, `center`, `end`, or `justify`; the logical keywords support RTL languages.
+
+<Story of="AlignExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AlignExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;p\&#x22; align=\&#x22;center\&#x22;>\n      Text is aligned to the center\n    </Text>\n  );\n}&#x22;" />
+
+### Max Lines [#max-lines]
+
+Setting the `maxLines` prop limits the number of displayed lines using an ellipsis.
+
+<Story of="MaxLinesExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function MaxLinesExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; maxLines={2}>\n        This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod\n        tempor incididunt ut labore et dolore magna aliqua.\n      </Text>\n    </div>\n  );\n}&#x22;" />
+
+### Wrap [#wrap]
+
+Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+<Story of="WrapExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function WrapExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; wrap=\&#x22;pretty\&#x22;>\n        Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and\n        legibility. Because counting characters and balancing them across multiple lines is computationally expensive,\n        this value is only supported for blocks of text spanning a limited number of lines\n      </Text>\n    </div>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### Text [#text]
+
+<PropTable />
+
+
 # Tag
 
 
@@ -5141,83 +5019,6 @@ The colored dot is decorative and invisible to screen readers. The text label mu
 ## Props [#props]
 
 ### Tag [#tag]
-
-<PropTable />
-
-
-# Text
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-The `Text` component prepares content with a few properties.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic text content.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function DefaultExample(args: TextProps) {\n  return <Text {...args}>Hello, world!</Text>;\n}&#x22;" />
-
-### As [#as]
-
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
-
-<Story of="AsExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AsExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;marquee\&#x22;>\n      A scrolling marquee\n    </Text>\n  );\n}&#x22;" />
-
-### Align [#align]
-
-Setting the `align` prop allows you to change the alignment of the text. Choose from `start`, `center`, `end`, or `justify`; the logical keywords support RTL languages.
-
-<Story of="AlignExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AlignExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;p\&#x22; align=\&#x22;center\&#x22;>\n      Text is aligned to the center\n    </Text>\n  );\n}&#x22;" />
-
-### Max Lines [#max-lines]
-
-Setting the `maxLines` prop limits the number of displayed lines using an ellipsis.
-
-<Story of="MaxLinesExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function MaxLinesExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; maxLines={2}>\n        This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod\n        tempor incididunt ut labore et dolore magna aliqua.\n      </Text>\n    </div>\n  );\n}&#x22;" />
-
-### Wrap [#wrap]
-
-Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
-
-<Story of="WrapExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function WrapExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; wrap=\&#x22;pretty\&#x22;>\n        Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and\n        legibility. Because counting characters and balancing them across multiple lines is computationally expensive,\n        this value is only supported for blocks of text spanning a limited number of lines\n      </Text>\n    </div>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### Text [#text]
 
 <PropTable />
 
@@ -5921,6 +5722,205 @@ To position a tooltip relative to a different focusable element, use the `trigge
 <PropTable />
 
 ### TooltipTrigger [#tooltiptrigger]
+
+<PropTable />
+
+
+# Switch
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders a horizontal toggle with a sliding thumb inside a pill-shaped track
+* Communicates state to assistive technologies via the WAI-ARIA `switch` role
+* Toggles on click or tap anywhere in the control — track, thumb, or label
+* Toggles with the `Space` key when focused
+* Optional label, positioned at the `start` or `end` of the track, or omitted entirely
+* Two sizes: `md` (default) and `sm`
+* Supports controlled (`isSelected` + `onChange`) and uncontrolled (`defaultSelected`) usage
+* Takes effect immediately — no form submission required
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+An uncontrolled switch, off by default, with the label at the start.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Switch>Wi-Fi</Switch>;\n}&#x22;" />
+
+### Switch Selected [#switch-selected]
+
+A switch that starts in the on state via `defaultSelected`.
+
+<Story of="SwitchSelectedExample" />
+
+<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function SwitchSelectedExample() {\n  return <Switch defaultSelected>Wi-Fi</Switch>;\n}&#x22;" />
+
+### Switch Sizes [#switch-sizes]
+
+The `size` prop accepts `md` (default) or `sm`.
+
+<Story of="SwitchSizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch size=\&#x22;md\&#x22; defaultSelected>\n        Medium\n      </Switch>\n      <Switch size=\&#x22;sm\&#x22; defaultSelected>\n        Small\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
+
+### Switch Label Position [#switch-label-position]
+
+The `labelPosition` prop places the label at the `start` or `end` of the track.
+
+<Story of="SwitchLabelPositionExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchLabelPositionExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch labelPosition=\&#x22;start\&#x22; defaultSelected>\n        Label on the start\n      </Switch>\n      <Switch labelPosition=\&#x22;end\&#x22; defaultSelected>\n        Label on the end\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
+
+### No Label [#no-label]
+
+When no label is provided, pass `aria-label` so the switch has an accessible name.
+
+<Story of="SwitchNoLabelExample" />
+
+<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function SwitchNoLabelExample() {\n  return <Switch aria-label=\&#x22;Wi-Fi\&#x22; />;\n}&#x22;" />
+
+### Switch Disabled [#switch-disabled]
+
+A disabled switch prevents interaction and renders at reduced opacity, whether off or on.
+
+<Story of="SwitchDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchDisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch isDisabled>Disabled off</Switch>\n      <Switch isDisabled defaultSelected>\n        Disabled on\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
+
+### Switch Controlled [#switch-controlled]
+
+Manage switch state programmatically with `isSelected` and `onChange`.
+
+<Story of="SwitchControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function SwitchControlledExample() {\n  const [isSelected, setIsSelected] = useState(false);\n\n  return (\n    <Switch isSelected={isSelected} onChange={setIsSelected}>\n      Wi-Fi\n    </Switch>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+### Data Attributes [#data-attributes]
+
+The interactive switch control exposes data attributes for styling different states:
+
+`data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-focus-visible`, `data-disabled`, `data-readonly`, `data-invalid`, `data-required`, `data-size`
+
+```css
+.my-switch [data-focus-visible] {
+  outline: 2px solid Highlight;
+}
+
+.my-switch [data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+### Design Tokens [#design-tokens]
+
+The track and thumb read from Antares curated tokens, falling back to legacy `--ux-*` custom properties:
+
+| Element           | Token                               | Legacy fallback |
+| ----------------- | ----------------------------------- | --------------- |
+| Track (off)       | —                                   | `--ux-1m9ys0v`  |
+| Track (on)        | `--color-input-background-selected` | `--ux-sywk25`   |
+| Thumb             | `--color-input-background-default`  | `--ux-1nu8itt`  |
+| Thumb inset       | —                                   | `--ux-1sbfig8`  |
+| Label             | `--color-input-text-default`        | `--ux-1glcx6s`  |
+| Focus ring radius | —                                   | `--ux-zvaw3s`   |
+
+### Component Customization [#component-customization]
+
+Pass a `className` or `style` to customize the field container. Target the interactive descendant's data attributes for state-based styling:
+
+```jsx
+<Switch className="custom-switch">Wi-Fi</Switch>
+```
+
+Use the interactive root data attributes for state-based customization. The track and thumb are internal implementation details and do not expose class-name hooks.
+
+## Accessibility [#accessibility]
+
+* Renders with the WAI-ARIA `switch` role via the native `<input type="checkbox" role="switch">`
+* `Space` toggles the switch when it has focus
+* Displays a visible focus ring (`outline: 2px solid Highlight`) for keyboard focus
+* Disabled switches render at `40%` opacity and are excluded from tab order
+* When `children` is omitted, provide `aria-label` or `aria-labelledby` so the switch has an accessible name
+
+## Best Practices [#best-practices]
+
+### When to Use Switch [#when-to-use-switch]
+
+* ✅ For settings that take effect immediately, without a form submission
+* ✅ For binary on/off preferences (e.g. Wi-Fi, notifications, dark mode)
+* ❌ For selections that require a "Save" or "Submit" action (use `Checkbox` instead)
+* ❌ For choosing one of several mutually exclusive options (use `Radio` or `SegmentedController` instead)
+
+### Labeling [#labeling]
+
+* Prefer a visible label that names the setting being toggled (e.g. "Wi-Fi", not "On/Off")
+* If the label is omitted, always provide `aria-label`
+* Keep labels short and describe the setting, not its current state
+
+## Troubleshooting [#troubleshooting]
+
+### Controlled State Not Updating [#controlled-state-not-updating]
+
+```jsx
+// ❌ Wrong: isSelected without onChange leaves the switch stuck
+<Switch isSelected={isOn}>Wi-Fi</Switch>
+
+// ✅ Controlled mode
+<Switch isSelected={isOn} onChange={setIsOn}>Wi-Fi</Switch>
+
+// ✅ Uncontrolled mode
+<Switch defaultSelected>Wi-Fi</Switch>
+```
+
+### Missing Accessible Name [#missing-accessible-name]
+
+```jsx
+// ❌ No children and no aria-label — screen readers announce nothing useful
+<Switch />
+
+// ✅ Provide a label
+<Switch>Wi-Fi</Switch>
+
+// ✅ Or an aria-label when the label is visual-only elsewhere
+<Switch aria-label="Wi-Fi" />
+```
+
+## Props [#props]
+
+### Switch [#switch]
 
 <PropTable />
 
@@ -6818,6 +6818,124 @@ All spacing, elevation, and rounding values are derived from the theme. If no th
 <PropTable />
 
 
+# Grid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic 3-column grid layout with gap.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex, type GridProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: GridProps) {\n  return (\n    <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; {...props}>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 1\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 2\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 3\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 4\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 5\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Columns [#columns]
+
+The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+
+<Story of="ColumnsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ColumnsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: repeat(2, 1fr)</Flex>\n        <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: 1fr 2fr 1fr</Flex>\n        <Grid columns=\&#x22;1fr 2fr 1fr\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Wide\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: auto 1fr auto</Flex>\n        <Grid columns=\&#x22;auto 1fr auto\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Flexible\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Gap [#gap]
+
+The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="GapExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function GapExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: md</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;md\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xl</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xl\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>rowGap: lg, columnGap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rowGap=\&#x22;lg\&#x22; columnGap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 5\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 6\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Named Areas [#named-areas]
+
+Use `areas` to define named grid regions. Children use the `gridArea` prop for placement.
+
+<Story of="AreasExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AreasExample() {\n  return (\n    <Grid\n      areas={['header header header', 'sidebar main main', 'footer footer footer']}\n      columns=\&#x22;200px 1fr 1fr\&#x22;\n      rows=\&#x22;auto 1fr auto\&#x22;\n      gap=\&#x22;sm\&#x22;\n      style={{ height: '300px' }}\n    >\n      <Flex gridArea=\&#x22;header\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Header\n      </Flex>\n      <Flex gridArea=\&#x22;sidebar\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#d0d0d0' }}>\n        Sidebar\n      </Flex>\n      <Flex gridArea=\&#x22;main\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Main Content\n      </Flex>\n      <Flex gridArea=\&#x22;footer\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Footer\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Responsive Grid [#responsive-grid]
+
+Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+
+<Story of="ResponsiveExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ResponsiveExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fill, minmax(150px, 1fr))\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 1\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 2\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 3\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 4\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 5\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Alignment [#alignment]
+
+Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+
+<Story of="AlignmentExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: center</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>alignItems: center (with fixed row height)</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;100px\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: end, alignItems: end</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;80px\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;end\&#x22; alignItems=\&#x22;end\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Form [#form]
+
+A common two-column form pattern with auto-sized label column.
+
+<Story of="FormExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <Grid columns=\&#x22;auto 1fr\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;center\&#x22; style={{ width: '400px' }}>\n      <Flex as=\&#x22;label\&#x22;>Name</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Email</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Message</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Textarea placeholder\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+## RTL Support [#rtl-support]
+
+Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
+
+## Grid vs Flex [#grid-vs-flex]
+
+| Use Case                   | Recommended      |
+| -------------------------- | ---------------- |
+| Single row/column of items | Flex             |
+| Two-dimensional layouts    | Grid             |
+| Named layout regions       | Grid             |
+| Auto-wrapping cards        | Grid (auto-fill) |
+| Navigation bars            | Flex             |
+| Form layouts               | Grid             |
+
+## Props [#props]
+
+### Grid [#grid]
+
+<PropTable />
+
+
 # Flex
 
 
@@ -6934,123 +7052,5 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 ## Props [#props]
 
 ### Flex [#flex]
-
-<PropTable />
-
-
-# Grid
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
-
-**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Scale Sizes [#scale-sizes]
-
-We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic 3-column grid layout with gap.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex, type GridProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: GridProps) {\n  return (\n    <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; {...props}>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 1\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 2\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 3\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 4\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 5\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Columns [#columns]
-
-The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
-
-<Story of="ColumnsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ColumnsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: repeat(2, 1fr)</Flex>\n        <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: 1fr 2fr 1fr</Flex>\n        <Grid columns=\&#x22;1fr 2fr 1fr\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Wide\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: auto 1fr auto</Flex>\n        <Grid columns=\&#x22;auto 1fr auto\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Flexible\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Gap [#gap]
-
-The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
-
-<Story of="GapExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function GapExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: md</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;md\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xl</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xl\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>rowGap: lg, columnGap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rowGap=\&#x22;lg\&#x22; columnGap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 5\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 6\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Named Areas [#named-areas]
-
-Use `areas` to define named grid regions. Children use the `gridArea` prop for placement.
-
-<Story of="AreasExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AreasExample() {\n  return (\n    <Grid\n      areas={['header header header', 'sidebar main main', 'footer footer footer']}\n      columns=\&#x22;200px 1fr 1fr\&#x22;\n      rows=\&#x22;auto 1fr auto\&#x22;\n      gap=\&#x22;sm\&#x22;\n      style={{ height: '300px' }}\n    >\n      <Flex gridArea=\&#x22;header\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Header\n      </Flex>\n      <Flex gridArea=\&#x22;sidebar\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#d0d0d0' }}>\n        Sidebar\n      </Flex>\n      <Flex gridArea=\&#x22;main\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Main Content\n      </Flex>\n      <Flex gridArea=\&#x22;footer\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Footer\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Responsive Grid [#responsive-grid]
-
-Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
-
-<Story of="ResponsiveExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ResponsiveExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fill, minmax(150px, 1fr))\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 1\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 2\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 3\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 4\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 5\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Alignment [#alignment]
-
-Use `justifyItems` and `alignItems` to control default alignment of all grid children.
-
-<Story of="AlignmentExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: center</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>alignItems: center (with fixed row height)</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;100px\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: end, alignItems: end</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;80px\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;end\&#x22; alignItems=\&#x22;end\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Form [#form]
-
-A common two-column form pattern with auto-sized label column.
-
-<Story of="FormExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <Grid columns=\&#x22;auto 1fr\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;center\&#x22; style={{ width: '400px' }}>\n      <Flex as=\&#x22;label\&#x22;>Name</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Email</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Message</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Textarea placeholder\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-## RTL Support [#rtl-support]
-
-Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
-
-## Grid vs Flex [#grid-vs-flex]
-
-| Use Case                   | Recommended      |
-| -------------------------- | ---------------- |
-| Single row/column of items | Flex             |
-| Two-dimensional layouts    | Grid             |
-| Named layout regions       | Grid             |
-| Auto-wrapping cards        | Grid (auto-fill) |
-| Navigation bars            | Flex             |
-| Form layouts               | Grid             |
-
-## Props [#props]
-
-### Grid [#grid]
 
 <PropTable />
