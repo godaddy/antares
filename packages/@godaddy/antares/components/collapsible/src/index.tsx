@@ -16,7 +16,7 @@ import { ButtonContext, type ButtonProps } from '#components/button';
 import { HeadingContext } from '#components/heading';
 import { IconContext } from '#components/icon';
 import { TextContext } from '#components/text';
-import { Box, type BoxOwnProps } from '#components/layout/box';
+import { Box, type BoxOwnProps, type BoxProps } from '#components/layout/box';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
@@ -113,7 +113,10 @@ export const Collapsible = forwardRef<HTMLDivElement, CollapsibleProps>(function
 });
 
 /** Props for the persistent content panel associated with a Collapsible trigger. */
-export interface CollapsiblePanelProps extends RACDisclosurePanelProps, Omit<BoxOwnProps, 'as'> {}
+export interface CollapsiblePanelProps extends RACDisclosurePanelProps, Omit<BoxOwnProps, 'as'> {
+  /** Customize the inner content container, including its padding, className, and style. */
+  contentProps?: Omit<BoxProps<'div'>, 'as' | 'children' | 'dangerouslySetInnerHTML'>;
+}
 
 /**
  * Shows arbitrary content and preserves its state while the section is collapsed.
@@ -124,7 +127,7 @@ export interface CollapsiblePanelProps extends RACDisclosurePanelProps, Omit<Box
  * <CollapsiblePanel><Text as="p">Additional information.</Text></CollapsiblePanel>
  */
 export const CollapsiblePanel = forwardRef<HTMLDivElement, CollapsiblePanelProps>(function CollapsiblePanel(
-  { children, className, ...rest },
+  { children, className, contentProps, ...rest },
   ref
 ) {
   return (
@@ -137,7 +140,9 @@ export const CollapsiblePanel = forwardRef<HTMLDivElement, CollapsiblePanelProps
           [RACDisclosureGroupStateContext, null]
         ]}
       >
-        {children}
+        <Box {...contentProps} className={composeClassName(contentProps?.className, styles.content)}>
+          {children}
+        </Box>
       </RACProvider>
     </Box>
   );

@@ -32,9 +32,21 @@ Place a `Heading` containing `Button slot="trigger"` inside Collapsible, followe
 Add an `Icon slot="indicator"` inside the button for the expansion indicator. The panel accepts text,
 links, forms, and other components.
 
+CollapsiblePanel provides the content spacing automatically. Use `contentProps` to customize its
+inner container with Box spacing props, a class name, or styles:
+
+```tsx
+<CollapsiblePanel contentProps={{ padding: 'sm' }}>
+  Additional information.
+</CollapsiblePanel>
+```
+
+Use `contentProps={{ padding: '0' }}` for content without padding. Props supplied directly to
+CollapsiblePanel, including `className`, `style`, and `ref`, apply to the outer panel.
+
 Use `defaultExpanded` for initial expansion, or `isExpanded` with `onExpandedChange` for controlled
-state. The callback receives a boolean. Use [Accordion](../accordion/README.mdx) to coordinate several
-sections; in that composition, manage expansion through the group.
+state. The callback receives a boolean. Use the Accordion component to coordinate several sections;
+in that composition, manage expansion through the group.
 
 Use `className` and `style` to customize each component. Button supports string or state-based
 `className` values. Components expose these data attributes for state-based styling:
@@ -45,26 +57,30 @@ Use `className` and `style` to customize each component. Button supports string 
 
 ## Accessibility
 
-Choose a Heading level that fits the page hierarchy and use descriptive trigger text. React Aria connects
-the trigger and panel through `aria-expanded`, `aria-controls`, and `aria-labelledby`.
+### Keyboard
 
 | Key | Action |
 | --- | --- |
-| `Tab` / `Shift + Tab` | Moves between available controls. |
-| `Enter` / `Space` | Expands or collapses the focused section. |
+| `Tab` / `Shift + Tab` | Move between the enabled trigger and controls in the expanded panel |
+| `Enter` / `Space` | Toggle the section; focus stays on the trigger |
 
-Disabled triggers are excluded from the tab order. Collapsed panel content stays mounted but is
-excluded from keyboard and accessibility navigation. Opening a panel keeps focus on its trigger.
-If application logic closes a panel containing focus, move focus to a visible control.
+### ARIA
 
-Keep the indicator decorative with `aria-hidden="true"`. If an optional icon communicates status,
-include equivalent text in the label. Place links, inputs, and additional buttons in the panel.
-Use `role="region"` on CollapsiblePanel when its content warrants a named landmark.
+- `Button slot="trigger"` renders a native button with `aria-expanded` for its open state and
+  `aria-controls` linked to the panel automatically.
+- `CollapsiblePanel` is labeled by its trigger through `aria-labelledby` automatically.
+- `CollapsiblePanel` uses `role="group"` by default. Keep it when the panel's content does not need
+  a navigation landmark; there is no need to set it explicitly.
+- Set `role="region"` on `CollapsiblePanel` when its content warrants a named landmark
+  for direct screen-reader navigation.
+- Collapsed content stays mounted but is excluded from keyboard and screen-reader navigation.
+- `Icon slot="indicator"` is decorative and receives `aria-hidden="true"` automatically.
 
 ## Best Practices
 
 - Use descriptive section titles and keep essential information visible.
-- Keep headings concise and avoid deeply nested sections.
+- Choose heading levels that fit the page hierarchy and avoid deeply nested sections.
+- Include text for status icons so their meaning is available to screen readers.
 - Put links, forms, and actions inside the panel.
 - Open the panel before moving focus to an input that needs attention.
 

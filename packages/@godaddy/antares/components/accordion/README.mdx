@@ -29,7 +29,7 @@ npm install --save @godaddy/antares
 ## Customization
 
 Compose related `Collapsible` sections inside Accordion. Give each section a stable, unique `id`.
-See [Collapsible](../collapsible/README.mdx) for the section anatomy, panel content, and trigger styling.
+See the Collapsible component documentation for more information about section anatomy, panel content, and trigger styling.
 
 Use `defaultExpandedKeys` for initial expansion, or `expandedKeys` with `onExpandedChange` for
 controlled state. Keys must match the section IDs; the callback receives a `Set` of expanded keys.
@@ -41,16 +41,22 @@ disabled state. Customize individual headings, triggers, and panels on the compo
 
 ## Accessibility
 
-Each section provides its own heading and button-to-panel relationship. Choose heading levels that
-fit the page hierarchy. The [Collapsible accessibility guidance](../collapsible/README.mdx#accessibility)
-covers keyboard interaction, focus, and status icons.
+### Keyboard
 
-To identify the whole accordion as a named group, provide `role="group"` together with `aria-label`
-or `aria-labelledby`. Setting `isDisabled` on Accordion disables every section's trigger.
+| Key | Action |
+| --- | --- |
+| `Tab` / `Shift + Tab` | Move between enabled triggers and controls in expanded panels |
+| `Enter` / `Space` | Toggle the focused section; focus stays on the trigger |
+
+### ARIA
+
+- Each section's trigger is a native button with `aria-expanded` and `aria-controls` linked to its panel.
+- Each panel is labeled by its trigger through `aria-labelledby` automatically.
 
 ## Best Practices
 
 - Group related sections and keep essential information visible outside the accordion.
+- Use descriptive section titles and heading levels that fit the page hierarchy.
 - Use multiple expansion when users need to compare information across sections.
 - Keep item IDs stable when reordering or filtering data.
 - Manage expansion on Accordion when sections belong to a group.
