@@ -63,6 +63,10 @@
   display: block;
   width: 100%;
   height: 100%;
+
+  &:where([data-indeterminate]) {
+    transform-origin: center;
+  }
 }
 
 .track {
@@ -102,6 +106,23 @@
   line-height: var(--ux-1dje42v, 1.5);
   color: var(--circular-progress-help-color);
   text-align: center;
+}
+
+/* Continuous activity cycle; this duration is separate from value transitions. */
+@keyframes circular-progress-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .svg:where([data-indeterminate]) {
+    animation: circular-progress-spin 1500ms cubic-bezier(0.6, 0.1, 0.3, 0.9) infinite;
+  }
+}
+
+.svg:where([data-indeterminate]) :where(.fill) {
+  transition: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
