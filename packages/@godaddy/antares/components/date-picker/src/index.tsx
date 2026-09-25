@@ -23,6 +23,7 @@ import { Icon } from '#components/icon';
 import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Popover, type PopoverProps } from '#components/popover';
+import { SizeProvider, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-provider';
 import { Content, GroupContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import fieldStyles from '../../_internal/field-styles/index.module.css';
@@ -31,11 +32,9 @@ import styles from './index.module.css';
 const DEFAULT_FORMAT: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
 const DEFAULT_DATE_PLACEHOLDER = 'Select a date';
 const DEFAULT_RANGE_PLACEHOLDER = 'Select dates';
+const SCALE_GAP = 'var(--_size-gap)';
 
 interface PickerBodyProps {
-  /** Visual size of the trigger. */
-  size?: 'sm' | 'md';
-
   /** Whether the field is disabled. */
   isDisabled?: boolean;
 
@@ -53,18 +52,17 @@ interface PickerBodyProps {
  * React Aria anchors a picker's overlay to its `Group`, which a composed interior need not have, so
  * this anchors it to the trigger instead - the same element React Aria's own Select anchors to.
  */
-function PickerBody({ size, isDisabled, value, children }: PickerBodyProps) {
+function PickerBody({ isDisabled, value, children }: PickerBodyProps) {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const label = useSlottedContext(LabelContext) ?? {};
   const group = useSlottedContext(GroupContext) ?? {};
   const popover = useContext(PopoverContext) ?? {};
   const triggerProps = (useContext(ButtonContext) ?? {}) as ButtonProps;
-  const control: ButtonProps = { variant: 'control', size, isDisabled, className: fieldStyles.control };
+  const control: ButtonProps = { variant: 'control', isDisabled, className: fieldStyles.control };
 
   // `mergeProps` merges refs, so React Aria keeps whatever ref it may publish for the trigger.
   const trigger: ButtonProps & { ref?: Ref<HTMLButtonElement> } = {
     variant: 'trigger',
-    size,
     className: fieldStyles.trigger,
     ref: triggerRef
   };
@@ -126,8 +124,8 @@ export interface DatePickerProps
   extends Omit<RACDatePickerProps<CalendarDate>, 'children' | 'size'>,
     Omit<FlexOwnProps, 'as' | 'className'>,
     PickerValueOwnProps {
-  /** Visual size of the trigger. @default 'md' */
-  size?: 'sm' | 'md';
+  /** Size of the field, every part it owns, and its calendar. Follows the size scope when omitted. */
+  size?: ScaleSize;
 
   /** Placeholder when no date is selected. @default 'Select a date' */
   placeholder?: string;
@@ -151,28 +149,30 @@ export interface DatePickerProps
  * ```
  */
 export function DatePicker(props: DatePickerProps) {
-  const { children, size, formatOptions, placeholder, gap = 'sm', className, isDisabled, ...racProps } = props;
+  const { children, size, formatOptions, placeholder, gap = SCALE_GAP, className, isDisabled, ...racProps } = props;
+  const scale = useDeclaredSize(size);
   const value = <DatePickerValue formatOptions={formatOptions} placeholder={placeholder} />;
 
   return (
-    <Flex
-      direction="column"
-      gap={gap}
-      {...racProps}
-      isDisabled={isDisabled}
-      as={RACDatePicker as typeof RACDatePicker<CalendarDate>}
-      data-interior="box"
-      data-size={size}
-      className={composeClassName(className, fieldStyles.field)}
-    >
-      {composeRenderProps(children, function body(node) {
-        return (
-          <PickerBody size={size} isDisabled={isDisabled} value={value}>
-            {node}
-          </PickerBody>
-        );
-      })}
-    </Flex>
+    <SizeProvider size={size}>
+      <Flex
+        direction="column"
+        gap={gap}
+        {...racProps}
+        isDisabled={isDisabled}
+        as={RACDatePicker as typeof RACDatePicker<CalendarDate>}
+        data-interior="box"
+        className={composeClassName(className, fieldStyles.field, sizeScaleClassName(scale))}
+      >
+        {composeRenderProps(children, function body(node) {
+          return (
+            <PickerBody isDisabled={isDisabled} value={value}>
+              {node}
+            </PickerBody>
+          );
+        })}
+      </Flex>
+    </SizeProvider>
   );
 }
 
@@ -180,8 +180,8 @@ export interface DateRangePickerProps
   extends Omit<RACDateRangePickerProps<CalendarDate>, 'children' | 'size'>,
     Omit<FlexOwnProps, 'as' | 'className'>,
     PickerValueOwnProps {
-  /** Visual size of the trigger. @default 'md' */
-  size?: 'sm' | 'md';
+  /** Size of the field, every part it owns, and its calendar. Follows the size scope when omitted. */
+  size?: ScaleSize;
 
   /** Placeholder when no range is selected. @default 'Select dates' */
   placeholder?: string;
@@ -204,28 +204,30 @@ export interface DateRangePickerProps
  * ```
  */
 export function DateRangePicker(props: DateRangePickerProps) {
-  const { children, size, formatOptions, placeholder, gap = 'sm', className, isDisabled, ...racProps } = props;
+  const { children, size, formatOptions, placeholder, gap = SCALE_GAP, className, isDisabled, ...racProps } = props;
+  const scale = useDeclaredSize(size);
   const value = <DateRangePickerValue formatOptions={formatOptions} placeholder={placeholder} />;
 
   return (
-    <Flex
-      direction="column"
-      gap={gap}
-      {...racProps}
-      isDisabled={isDisabled}
-      as={RACDateRangePicker as typeof RACDateRangePicker<CalendarDate>}
-      data-interior="box"
-      data-size={size}
-      className={composeClassName(className, fieldStyles.field)}
-    >
-      {composeRenderProps(children, function body(node) {
-        return (
-          <PickerBody size={size} isDisabled={isDisabled} value={value}>
-            {node}
-          </PickerBody>
-        );
-      })}
-    </Flex>
+    <SizeProvider size={size}>
+      <Flex
+        direction="column"
+        gap={gap}
+        {...racProps}
+        isDisabled={isDisabled}
+        as={RACDateRangePicker as typeof RACDateRangePicker<CalendarDate>}
+        data-interior="box"
+        className={composeClassName(className, fieldStyles.field, sizeScaleClassName(scale))}
+      >
+        {composeRenderProps(children, function body(node) {
+          return (
+            <PickerBody isDisabled={isDisabled} value={value}>
+              {node}
+            </PickerBody>
+          );
+        })}
+      </Flex>
+    </SizeProvider>
   );
 }
 

@@ -1,28 +1,28 @@
 import { Button, Flex, Group, Input, Label, NumberField } from '@godaddy/antares';
 
+const SIZES = ['sm', 'md', 'lg'] as const;
+
 /**
- * Compare the supported `md` and `sm` visual sizes.
+ * `size` sets the label, input, and steppers. Without it, the field follows the surrounding size
+ * scope.
+ * @title Sizes
  * @order 8
  */
 export function SizesExample() {
   return (
     <Flex direction="column" gap="md">
-      <NumberField minValue={0} maxValue={100}>
-        <Label>Quantity (md)</Label>
-        <Group>
-          <Button slot="decrement" />
-          <Input />
-          <Button slot="increment" />
-        </Group>
-      </NumberField>
-      <NumberField minValue={0} maxValue={100} size="sm">
-        <Label>Quantity (sm)</Label>
-        <Group>
-          <Button slot="decrement" />
-          <Input />
-          <Button slot="increment" />
-        </Group>
-      </NumberField>
+      {SIZES.map(function field(size) {
+        return (
+          <NumberField key={size} minValue={0} maxValue={100} size={size}>
+            <Label>Quantity ({size})</Label>
+            <Group>
+              <Button slot="decrement" />
+              <Input />
+              <Button slot="increment" />
+            </Group>
+          </NumberField>
+        );
+      })}
     </Flex>
   );
 }

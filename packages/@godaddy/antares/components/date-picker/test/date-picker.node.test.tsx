@@ -7,6 +7,7 @@ import { FormatOptionsExample } from '../examples/format-options.tsx';
 import { ComposedExample } from '../examples/composed.tsx';
 import { ComposedRangeExample } from '../examples/composed-range.tsx';
 import { InteriorExample } from '../examples/interior.tsx';
+import { SizesExample } from '../examples/sizes.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#DatePicker', function datePicker() {
@@ -35,6 +36,11 @@ describe('@godaddy/antares', function antares() {
       expect(html).toMatchSnapshot();
     });
 
+    it('renders sizes example', function sizes() {
+      const html = renderToString(<SizesExample />);
+      expect(html).toMatchSnapshot();
+    });
+
     it('renders composed range example', function composedRange() {
       const html = renderToString(<ComposedRangeExample />);
       expect(html).toMatchSnapshot();
@@ -44,13 +50,13 @@ describe('@godaddy/antares', function antares() {
       const html = renderToString(<InteriorExample />);
 
       it('fills the trigger face with the trigger chrome', function trigger() {
-        expect(html).toMatch(/<button[^>]*class="trigger button trigger md"/);
+        expect(html).toMatch(/<button[^>]*class="trigger button trigger"/);
         expect(html).toContain('data-icon="calendar"');
       });
 
       it('disables the trigger and a control button with the field', function disabledControl() {
-        expect(html).toMatch(/<button[^>]*class="trigger button trigger md"[^>]*disabled=""/);
-        expect(html).toMatch(/<button[^>]*class="control button control md"[^>]*disabled=""/);
+        expect(html).toMatch(/<button[^>]*class="trigger button trigger"[^>]*disabled=""/);
+        expect(html).toMatch(/<button[^>]*class="control button control"[^>]*disabled=""/);
       });
     });
   });

@@ -12,6 +12,8 @@ import { Tooltip } from '#components/tooltip';
 import type { Optional, SeriesConfig } from '../../types.ts';
 import { chartSegmentGapPadAngle } from '../../utils.ts';
 import styles from './index.module.css';
+import { cx } from 'cva';
+import { partClassName } from '#components/_internal/typography';
 
 /**
  * One slice of donut chart data after normalization (stable `id`, `name`, numeric `value`).
@@ -321,8 +323,8 @@ export function DonutChart(props: DonutChartProps) {
             </svg>
           )}
           <Flex className={styles.content} alignItems="center" justifyContent="center" direction="column">
-            <Text className={styles.label}>{label}</Text>
-            {subLabel && <Text className={styles.subLabel}>{subLabel}</Text>}
+            <Text className={cx(styles.label, partClassName('inherit'))}>{label}</Text>
+            {subLabel && <Text className={cx(styles.subLabel, partClassName('inherit'))}>{subLabel}</Text>}
           </Flex>
         </Box>
         <Tooltip triggerRef={tooltipAnchorRef} offset={tooltipPlacementEpsilon} className={styles.tooltip}>
@@ -343,11 +345,15 @@ export function DonutChart(props: DonutChartProps) {
                       rounding="full"
                       style={{ backgroundColor: chartColorForIndex(slice.index) }}
                     />
-                    <Text>{slice.name}</Text>
+                    <Text className={partClassName('inherit')}>{slice.name}</Text>
                   </Flex>
                   <Flex direction="row" alignItems="center" gap="md" justifyContent="end">
-                    <Text align="end">{formatSlicePercent(slice.value, total)}</Text>
-                    <Text align="end">{formatSliceValue(slice.value)}</Text>
+                    <Text className={partClassName('inherit')} align="end">
+                      {formatSlicePercent(slice.value, total)}
+                    </Text>
+                    <Text className={partClassName('inherit')} align="end">
+                      {formatSliceValue(slice.value)}
+                    </Text>
                   </Flex>
                 </Flex>
               );

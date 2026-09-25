@@ -1,3 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`@godaddy/antares > #Heading > renders the default example 1`] = `"<div class="box flex column" style="gap:var(--sp-sm)"><h1 class="heading">Heading level 1</h1><h2 class="heading">Heading level 2</h2><h3 class="heading">Heading level 3</h3></div>"`;
+exports[`@godaddy/antares > #Heading > renders the default example 1`] = `"<div class="box flex column" style="gap:var(--sp-sm)"><h1 class="heading type typeHeading scaleMd">Heading level 1</h1><h2 class="heading type typeHeading scaleMd">Heading level 2</h2><h3 class="heading type typeHeading scaleMd">Heading level 3</h3></div>"`;
+
+exports[`@godaddy/antares > #Heading > renders the sizes example 1`] = `"<div class="box flex column" style="gap:var(--sp-sm)"><h2 class="heading type typeHeading scaleMd type2xl">Level 2, 2xl</h2><h2 class="heading type typeHeading scaleMd typeSm">Level 2, sm</h2><h4 class="heading type typeHeading scaleMd typeXl">Level 4, xl</h4><h4 class="heading type typeHeading scaleMd">Level 4, default tier</h4></div>"`;

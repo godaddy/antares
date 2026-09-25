@@ -19,6 +19,8 @@ import {
   type TagProps as RACTagProps
 } from 'react-aria-components';
 import styles from './index.module.css';
+import { cx } from 'cva';
+import { partClassName } from '#components/_internal/typography';
 
 /** Visual size for Chips: `sm`, `md`, or `lg`; `md` is the default. */
 export type ChipSize = 'sm' | 'md' | 'lg';
@@ -151,7 +153,7 @@ function ChipBody({ children }: { children: ReactNode }) {
           }
         ],
         [IconContext, { 'aria-hidden': true, className: styles.icon }],
-        [TextContext, { className: styles.text }]
+        [TextContext, { className: cx(styles.text, partClassName('inherit')) }]
       ]}
     >
       {typeof children === 'string' || typeof children === 'number' ? <Text>{children}</Text> : children}
@@ -215,7 +217,7 @@ export const ChipButton = forwardRef<HTMLButtonElement, ChipButtonProps>(functio
           <RACProvider
             values={[
               [IconContext, { 'aria-hidden': true, className: styles.icon }],
-              [TextContext, { className: styles.text }]
+              [TextContext, { className: cx(styles.text, partClassName('inherit')) }]
             ]}
           >
             {typeof content === 'string' || typeof content === 'number' ? <Text>{content}</Text> : content}

@@ -34,9 +34,8 @@ npm install @godaddy/antares
 sit alongside them — a call to action, a second paragraph, an image — without the component
 growing a prop for it.
 
-- **Every part names its role with a slot**: `eyebrow`, `title`, `body`. Anything unslotted is
-  left alone, which is what lets a nested component keep its own internal text. Forget the slot
-  and the text simply renders untypeset rather than erroring.
+- **Every part names its role with a slot**: `eyebrow`, `title`, `body`. Unslotted text follows
+  the lockup's tier too: a bare `Heading` takes the title tier and a bare `Text` the body tier.
 - **The eyebrow is `slot="eyebrow"`**, on either a `Text` or a `Tag`. The two forms swap
   freely, and a `Tag` is sized to pair with the lockup.
 - **The title is `<Heading slot="title">`.** Pick the level from the document outline, not the
@@ -44,11 +43,12 @@ growing a prop for it.
 - **The body is `<Text slot="body">`**, once or as many times as the copy needs.
 - **An explicit prop on a child always wins** over what the lockup supplies. Pass
   `<Tag slot="eyebrow" size="sm">` to break the pairing, for instance.
-- **Controls keep their own type.** A `Button` inside a lockup is sized by its own `size` prop,
-  not the lockup's.
+- **Controls keep the scale size.** A `Button` inside a lockup follows the surrounding
+  `SizeProvider` or its own `size` prop, never the lockup's tier.
 - **`size` is the tier.** The eyebrow reads it on the `detail` ramp, the title on `heading`, and
-  the body on `body`, so there is no table to memorize.
-- Pass `className` to extend the styles, or select on `[data-size]` and `[data-align]`.
+  the body on `body`, so there is no table to memorize. Without `size`, the lockup follows the
+  surrounding size scope. A tier is the same at every container width.
+- Pass `className` to extend the styles, or select on `[data-align]`.
 
 ## Accessibility
 

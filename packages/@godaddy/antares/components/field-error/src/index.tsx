@@ -4,6 +4,7 @@ import {
   FieldErrorContext as RACFieldErrorContext,
   type FieldErrorProps as RACFieldErrorProps
 } from 'react-aria-components';
+import { sizeScaleClassName, useDeclaredSize } from '#components/size-provider';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
@@ -14,5 +15,7 @@ export interface FieldErrorProps extends RACFieldErrorProps {}
 /** Field error message; renders only when invalid. */
 export const FieldError = forwardRef<HTMLElement, FieldErrorProps>(function FieldError(props, ref) {
   const { className, ...rest } = props;
-  return <RACFieldError {...rest} ref={ref} className={composeClassName(className, styles.fieldError)} />;
+  const scale = sizeScaleClassName(useDeclaredSize());
+
+  return <RACFieldError {...rest} ref={ref} className={composeClassName(className, styles.fieldError, scale)} />;
 });

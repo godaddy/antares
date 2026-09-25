@@ -1,4 +1,5 @@
 import {
+  DEFAULT_SLOT,
   Header as RACHeader,
   Menu as RACMenu,
   MenuItem as RACMenuItem,
@@ -6,6 +7,7 @@ import {
   MenuTrigger as RACMenuTrigger,
   Separator as RACSeparator,
   SubmenuTrigger as RACSubmenuTrigger,
+  TextContext as RACTextContext,
   type MenuItemProps as RACMenuItemProps,
   type MenuItemRenderProps as RACMenuItemRenderProps,
   type MenuProps as RACMenuProps,
@@ -13,9 +15,10 @@ import {
   type MenuTriggerProps as RACMenuTriggerProps,
   type SeparatorProps as RACSeparatorProps,
   type SubmenuTriggerProps as RACSubmenuTriggerProps,
+  type TextProps as RACTextProps,
   type Selection as RACSelection
 } from 'react-aria-components';
-import type { ReactElement, ReactNode } from 'react';
+import { useContext, type ReactElement, type ReactNode } from 'react';
 import { cx } from 'cva';
 import styles from './index.module.css';
 import { composeClassName, composeStyle } from '#utils/render-props.ts';
@@ -24,6 +27,7 @@ import { Text } from '#components/text';
 import { Icon } from '#components/icon';
 import { CheckboxIndicator } from '#components/checkbox';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { partClassName } from '#components/_internal/typography';
 
 export interface MenuTriggerProps extends Omit<RACMenuTriggerProps, 'children'> {
   /** Additional props forwarded to the underlying `Popover`. */
@@ -106,6 +110,21 @@ export interface MenuItemProps extends FlexOwnProps, Omit<RACMenuItemProps, 'chi
   children?: ReactNode;
 }
 
+type TextSlots = { slots: Record<string | symbol, RACTextProps> };
+
+/** Gives a `Text` label the item's own type, merged into React Aria's label slots so their ids survive. */
+function MenuItemLabel({ children }: { children?: ReactNode }) {
+  const { slots } = useContext(RACTextContext) as TextSlots;
+  const inherit = partClassName('inherit');
+  const label = { ...slots.label, className: cx(slots.label.className, inherit) };
+
+  return (
+    <RACTextContext.Provider value={{ slots: { ...slots, [DEFAULT_SLOT]: label, label } }}>
+      {children}
+    </RACTextContext.Provider>
+  );
+}
+
 /**
  * A menu item. Renders a leading `icon` (optional), a label, an automatic
  * multi-select checkbox indicator when its group has `selectionMode="multiple"`,
@@ -125,14 +144,14 @@ export function MenuItem({ icon, children, className, ...props }: MenuItemProps)
       className={composeClassName(className, styles.item)}
     >
       {({ hasSubmenu, isSelected, selectionMode }: RACMenuItemRenderProps) => (
-        <>
+        <MenuItemLabel>
           {selectionMode === 'multiple' ? (
             <CheckboxIndicator isSelected={isSelected} className={styles.indicator} />
           ) : null}
           {icon == null ? null : icon}
           {typeof children === 'string' ? <Text className={styles.label}>{children}</Text> : children}
           {hasSubmenu ? <Icon icon="chevron-right" /> : null}
-        </>
+        </MenuItemLabel>
       )}
     </Flex>
   );

@@ -5,6 +5,7 @@ import {
   type ListBoxItemProps as RACListBoxItemProps,
   type Key as RACKey
 } from 'react-aria-components';
+import { useTypographyClassName } from '#components/_internal/typography';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
@@ -43,13 +44,15 @@ export interface ListBoxItemProps extends RACListBoxItemProps, FlexOwnProps {}
  */
 export function ListBoxItem(props: ListBoxItemProps) {
   const { textValue, children, className, ...rest } = props;
+  const typography = useTypographyClassName('text');
+
   return (
     <Flex
       textValue={textValue ?? (typeof children === 'string' ? children : undefined)}
       padding="md"
       {...rest}
       as={RACListBoxItem}
-      className={composeClassName(className, styles.item)}
+      className={composeClassName(className, styles.item, typography)}
     >
       {children}
     </Flex>

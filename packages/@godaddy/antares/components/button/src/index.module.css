@@ -1,27 +1,21 @@
 .button {
-  /* Scoped CSS variables - override per variant */
-  --button-bg: inherit;
-  --button-bg-hovered: inherit;
-  --button-bg-pressed: inherit;
-  --button-border: inherit;
-  --button-border-hovered: inherit;
-  --button-border-pressed: inherit;
-  --button-text: inherit;
-  --button-text-hovered: inherit;
-  --button-text-pressed: inherit;
-  --button-radius: var(--size-radius-md, var(--ux-1s5tndb, 4px));
-  --button-gap: var(--size-space-xs, 0.5em);
-  --button-space-xs: var(--size-space-xs, calc(var(--ux-1sbfig8, 0.25rem) * 0.5));
-  --button-space-sm: var(--size-space-sm, calc(var(--ux-1sbfig8, 0.25rem) * 1));
-  --button-space-md: var(--size-space-md, calc(var(--ux-1sbfig8, 0.25rem) * 2));
-  --button-space-lg: var(--size-space-lg, calc(var(--ux-1sbfig8, 0.25rem) * 3));
+  --_button-radius: var(--size-radius-md, var(--ux-1s5tndb, 4px));
+  --_button-gap: var(--size-space-xs, 0.5em);
+  --_button-space-xs: var(--size-space-xs, calc(var(--ux-1sbfig8, 0.25rem) * 0.5));
+  --_button-space-sm: var(--size-space-sm, calc(var(--ux-1sbfig8, 0.25rem) * 1));
+  --_button-space-md: var(--size-space-md, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  --_button-space-lg: var(--size-space-lg, calc(var(--ux-1sbfig8, 0.25rem) * 3));
+
+  --_button-font-size: var(--font-body-size-md, var(--ux-cxbe8g, 16px));
+  --_button-padding-block: var(--_button-space-md);
+  --_button-padding-inline: var(--_button-space-lg);
 
   font-family: inherit;
   line-height: inherit;
   font-weight: inherit;
   font-size: inherit;
   display: inline-flex;
-  gap: var(--button-gap);
+  gap: var(--_button-gap);
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
@@ -37,27 +31,44 @@
   border: none;
   padding: 0;
   margin: 0;
-  background: var(--button-bg);
-  border-color: var(--button-border);
-  color: var(--button-text);
+  background: var(--_button-bg);
+  border-color: var(--_button-border);
+  color: var(--_button-text);
+
+  > :where([data-icon]) {
+    width: 1lh;
+    height: 1lh;
+  }
 
   &:where(:not(.inline, .control, .trigger)) {
     border-width: 1px;
-    border-radius: var(--button-radius);
+    border-radius: var(--_button-radius);
     border-style: solid;
+    font-size: var(--_button-font-size);
+    padding: var(--_button-padding-block) var(--_button-padding-inline);
+
+    /* only-icon buttons */
+    &:has(> :where([data-icon]:only-child)) {
+      padding: var(--_button-padding-block);
+
+      &:where(.minimal) {
+        padding: var(--_button-space-xs);
+        margin: calc(var(--_button-space-xs) * -1);
+      }
+    }
   }
 
   /* state styles - applied via scoped variables */
   &:where([data-hovered]:not([data-disabled])) {
-    background: var(--button-bg-hovered);
-    border-color: var(--button-border-hovered);
-    color: var(--button-text-hovered);
+    background: var(--_button-bg-hovered);
+    border-color: var(--_button-border-hovered);
+    color: var(--_button-text-hovered);
   }
 
   &:where([data-pressed]:not([data-disabled])) {
-    background: var(--button-bg-pressed);
-    border-color: var(--button-border-pressed);
-    color: var(--button-text-pressed);
+    background: var(--_button-bg-pressed);
+    border-color: var(--_button-border-pressed);
+    color: var(--_button-text-pressed);
   }
 
   &:where([data-focus-visible]:not([data-disabled])) {
@@ -65,8 +76,7 @@
     outline-offset: 2px;
   }
 
-  &:where([data-disabled]),
-  &:disabled {
+  &:where([data-disabled], :disabled) {
     cursor: not-allowed;
     opacity: 0.4;
   }
@@ -74,80 +84,88 @@
   /* variants */
 
   &:where(.primary) {
-    --button-bg: var(--color-action-background-primary-default, var(--ux-c5mlr8, #4169e1));
-    --button-bg-hovered: var(--color-action-background-primary-hovered, var(--ux-ran6wz, #008080));
-    --button-bg-pressed: var(--color-action-background-primary-pressed, var(--ux-1ehwjjs, #191970));
-    --button-border: var(--color-action-border-primary-default, var(--ux-kdwujq, transparent));
-    --button-border-hovered: var(--color-action-border-primary-hovered, var(--ux-bgke81, transparent));
-    --button-border-pressed: var(--color-action-border-primary-pressed, var(--ux-1hnbfne, transparent));
-    --button-text: var(--color-action-text-primary-default, var(--ux-t04p4h, #ffffff));
-    --button-text-hovered: var(--color-action-text-primary-hovered, var(--ux-1ckzto6, #ffffff));
-    --button-text-pressed: var(--color-action-text-primary-pressed, var(--ux-1uyxcq5, #ffffff));
+    --_button-bg: var(--color-action-background-primary-default, var(--ux-c5mlr8, #4169e1));
+    --_button-bg-hovered: var(--color-action-background-primary-hovered, var(--ux-ran6wz, #008080));
+    --_button-bg-pressed: var(--color-action-background-primary-pressed, var(--ux-1ehwjjs, #191970));
+    --_button-border: var(--color-action-border-primary-default, var(--ux-kdwujq, transparent));
+    --_button-border-hovered: var(--color-action-border-primary-hovered, var(--ux-bgke81, transparent));
+    --_button-border-pressed: var(--color-action-border-primary-pressed, var(--ux-1hnbfne, transparent));
+    --_button-text: var(--color-action-text-primary-default, var(--ux-t04p4h, #ffffff));
+    --_button-text-hovered: var(--color-action-text-primary-hovered, var(--ux-1ckzto6, #ffffff));
+    --_button-text-pressed: var(--color-action-text-primary-pressed, var(--ux-1uyxcq5, #ffffff));
   }
 
   &:where(.secondary) {
-    --button-bg: var(--color-action-background-secondary-default, var(--ux-1r87102, #e6e6fa));
-    --button-bg-hovered: var(--color-action-background-secondary-hovered, var(--ux-azkxzs, #d3d3d3));
-    --button-bg-pressed: var(--color-action-background-secondary-pressed, var(--ux-1c4iwhv, #c0c0c0));
-    --button-border: var(--color-action-border-secondary-default, var(--ux-15jttct, transparent));
-    --button-border-hovered: var(--color-action-border-secondary-hovered, var(--ux-1akzvve, transparent));
-    --button-border-pressed: var(--color-action-border-secondary-pressed, var(--ux-im7up, transparent));
-    --button-text: var(--color-action-text-secondary-default, var(--ux-h6sgq2, #000000));
-    --button-text-hovered: var(--color-action-text-secondary-hovered, var(--ux-a0o0wd, #000000));
-    --button-text-pressed: var(--color-action-text-secondary-pressed, var(--ux-1ly125y, #000000));
+    --_button-bg: var(--color-action-background-secondary-default, var(--ux-1r87102, #e6e6fa));
+    --_button-bg-hovered: var(--color-action-background-secondary-hovered, var(--ux-azkxzs, #d3d3d3));
+    --_button-bg-pressed: var(--color-action-background-secondary-pressed, var(--ux-1c4iwhv, #c0c0c0));
+    --_button-border: var(--color-action-border-secondary-default, var(--ux-15jttct, transparent));
+    --_button-border-hovered: var(--color-action-border-secondary-hovered, var(--ux-1akzvve, transparent));
+    --_button-border-pressed: var(--color-action-border-secondary-pressed, var(--ux-im7up, transparent));
+    --_button-text: var(--color-action-text-secondary-default, var(--ux-h6sgq2, #000000));
+    --_button-text-hovered: var(--color-action-text-secondary-hovered, var(--ux-a0o0wd, #000000));
+    --_button-text-pressed: var(--color-action-text-secondary-pressed, var(--ux-1ly125y, #000000));
   }
 
   &:where(.tertiary, .minimal) {
-    --button-bg: var(--color-action-background-tertiary-default, var(--ux-1owc8nc, #ffffff));
-    --button-bg-hovered: var(--color-action-background-tertiary-hovered, var(--ux-1m7qrkf, #f5f5f5));
-    --button-bg-pressed: var(--color-action-background-tertiary-pressed, var(--ux-9qpf6c, #dcdcdc));
-    --button-border: var(--color-action-border-tertiary-default, var(--ux-1np4r62, transparent));
-    --button-border-hovered: var(--color-action-border-tertiary-hovered, var(--ux-1bdtclp, transparent));
-    --button-border-pressed: var(--color-action-border-tertiary-pressed, var(--ux-1xliuhi, transparent));
-    --button-text: var(--color-action-text-tertiary-default, var(--ux-ut3xrx, #4169e1));
-    --button-text-hovered: var(--color-action-text-tertiary-hovered, var(--ux-unx9i2, #008080));
-    --button-text-pressed: var(--color-action-text-tertiary-pressed, var(--ux-h6e7c1, #191970));
+    --_button-bg: var(--color-action-background-tertiary-default, var(--ux-1owc8nc, #ffffff));
+    --_button-bg-hovered: var(--color-action-background-tertiary-hovered, var(--ux-1m7qrkf, #f5f5f5));
+    --_button-bg-pressed: var(--color-action-background-tertiary-pressed, var(--ux-9qpf6c, #dcdcdc));
+    --_button-border: var(--color-action-border-tertiary-default, var(--ux-1np4r62, transparent));
+    --_button-border-hovered: var(--color-action-border-tertiary-hovered, var(--ux-1bdtclp, transparent));
+    --_button-border-pressed: var(--color-action-border-tertiary-pressed, var(--ux-1xliuhi, transparent));
+    --_button-text: var(--color-action-text-tertiary-default, var(--ux-ut3xrx, #4169e1));
+    --_button-text-hovered: var(--color-action-text-tertiary-hovered, var(--ux-unx9i2, #008080));
+    --_button-text-pressed: var(--color-action-text-tertiary-pressed, var(--ux-h6e7c1, #191970));
   }
 
   &:where(.critical) {
-    --button-bg: var(--color-feedback-critical-strong, var(--ux-1marogz, #b22222));
-    --button-bg-hovered: color-mix(
+    --_button-bg: var(--color-feedback-critical-strong, var(--ux-1marogz, #b22222));
+    --_button-bg-hovered: color-mix(
       in oklch,
       var(--color-feedback-critical-strong, var(--ux-1q4q36s, #b22222)),
       white 12%
     );
-    --button-bg-pressed: color-mix(
+    --_button-bg-pressed: color-mix(
       in oklch,
       var(--color-feedback-critical-strong, var(--ux-926l8f, #b22222)),
       black 12%
     );
-    --button-border: var(--color-feedback-critical-strong, var(--ux-ceou01, transparent));
-    --button-border-hovered: color-mix(
+    --_button-border: var(--color-feedback-critical-strong, var(--ux-ceou01, transparent));
+    --_button-border-hovered: color-mix(
       in oklch,
       var(--color-feedback-critical-strong, var(--ux-n0tova, transparent)),
       white 12%
     );
-    --button-border-pressed: color-mix(
+    --_button-border-pressed: color-mix(
       in oklch,
       var(--color-feedback-critical-strong, var(--ux-w3lhdp, transparent)),
       black 12%
     );
-    --button-text: var(--color-feedback-critical-onstrong, var(--ux-17htz86, #ffffff));
-    --button-text-hovered: var(--color-feedback-critical-onstrong, var(--ux-9cq6k1, #ffffff));
-    --button-text-pressed: var(--color-feedback-critical-onstrong, var(--ux-17znn9m, #ffffff));
+    --_button-text: var(--color-feedback-critical-onstrong, var(--ux-17htz86, #ffffff));
+    --_button-text-hovered: var(--color-feedback-critical-onstrong, var(--ux-9cq6k1, #ffffff));
+    --_button-text-pressed: var(--color-feedback-critical-onstrong, var(--ux-17znn9m, #ffffff));
   }
 
   &:where(.control, .trigger) {
-    --button-bg: var(--ux-1mh0ktr, #f5f5f5);
-    --button-bg-hovered: var(--ux-11rtwg8, #f5f5f5);
-    --button-bg-pressed: var(--ux-gdy377, #fff);
-    --button-text: var(--ux-1utwv7e, #111);
-    --button-text-hovered: var(--ux-1e4ese5, #111);
-    --button-text-pressed: var(--ux-k4fkva, #111);
+    --_button-gap: 0.25rem;
+    --_button-font-size: var(--_size-input-font);
+    --_button-padding-block: var(--_size-control-padding-block);
+    --_button-bg: var(--ux-1mh0ktr, #f5f5f5);
+    --_button-bg-hovered: var(--ux-11rtwg8, #f5f5f5);
+    --_button-bg-pressed: var(--ux-gdy377, #fff);
+    --_button-text: var(--ux-1utwv7e, #111);
+    --_button-text-hovered: var(--ux-1e4ese5, #111);
+    --_button-text-pressed: var(--ux-k4fkva, #111);
+
+    font-family: var(--ux-9wtaa3, sans-serif);
+    line-height: var(--ux-hm1ty7, 1.375);
+    font-size: var(--_button-font-size);
+    padding: var(--_button-padding-block);
   }
 
   &:where(.trigger) {
-    --button-bg: transparent;
+    --_button-bg: transparent;
 
     flex: 1;
     min-width: 0;
@@ -156,67 +174,37 @@
   }
 
   &:where(.inline) {
-    --button-bg: transparent;
-    --button-bg-hovered: transparent;
-    --button-bg-pressed: var(--color-action-background-inline-pressed, var(--ux-k7opxc, #dcdcdc));
-    --button-border: transparent;
-    --button-border-hovered: transparent;
-    --button-border-pressed: transparent;
-    --button-text: var(--color-action-text-inline-default, var(--ux-2rqapw, #4169e1));
-    --button-text-hovered: var(--color-action-text-inline-hovered, var(--ux-1j87vvn, #008080));
-    --button-text-pressed: var(--color-action-text-inline-pressed, var(--ux-1ymu8yg, #191970));
+    --_button-bg: transparent;
+    --_button-bg-hovered: transparent;
+    --_button-bg-pressed: var(--color-action-background-inline-pressed, var(--ux-k7opxc, #dcdcdc));
+    --_button-border: transparent;
+    --_button-border-hovered: transparent;
+    --_button-border-pressed: transparent;
+    --_button-text: var(--color-action-text-inline-default, var(--ux-2rqapw, #4169e1));
+    --_button-text-hovered: var(--color-action-text-inline-hovered, var(--ux-1j87vvn, #008080));
+    --_button-text-pressed: var(--color-action-text-inline-pressed, var(--ux-1ymu8yg, #191970));
 
     text-decoration: underline;
-    border-radius: var(--button-radius);
+    border-radius: var(--_button-radius);
   }
 
   /* sizes */
 
-  &:where(.sm:not(.inline, .control, .trigger)) {
-    font-size: var(--font-body-size-sm, calc(var(--ux-cxbe8g, 16px) / 1.125));
-    padding: var(--button-space-sm) var(--button-space-md);
-
-    /* only-icon buttons */
-    &:has(:where([data-icon]:only-child)) {
-      padding: var(--button-space-xs);
-
-      &.minimal {
-        padding: var(--button-space-xs);
-        margin: calc(var(--button-space-xs) * -1);
-      }
-    }
+  &:where(.sm) {
+    --_button-font-size: var(--font-body-size-sm, calc(var(--ux-cxbe8g, 16px) / 1.125));
+    --_button-padding-block: var(--_button-space-sm);
+    --_button-padding-inline: var(--_button-space-md);
   }
 
-  &:where(.md:not(.inline, .control, .trigger)) {
-    font-size: var(--font-body-size-md, var(--ux-cxbe8g, 16px));
-    padding: var(--button-space-md) var(--button-space-lg);
-
-    /* only-icon buttons */
-    &:has(:where([data-icon]:only-child)) {
-      padding: var(--button-space-sm);
-
-      &.minimal {
-        padding: var(--button-space-xs);
-        margin: calc(var(--button-space-xs) * -1);
-      }
-    }
+  &:where(.md) {
+    --_button-font-size: var(--font-body-size-md, var(--ux-cxbe8g, 16px));
+    --_button-padding-block: var(--_button-space-md);
+    --_button-padding-inline: var(--_button-space-lg);
   }
 
-  &:where(.control, .trigger) {
-    --button-gap: var(--sp-sm, 0.25rem);
-    font-family: var(--ux-9wtaa3, sans-serif);
-    line-height: var(--ux-hm1ty7, 1.375);
-    font-size: var(--ux-oc0naw, 1rem);
-    padding: var(--button-space-md);
-
-    > :where([data-icon]) {
-      width: 1lh;
-      height: 1lh;
-    }
-
-    &:where(.sm) {
-      font-size: calc(1em / 1.125);
-      padding: var(--button-space-sm);
-    }
+  &:where(.lg) {
+    --_button-font-size: var(--font-body-size-lg, calc(var(--ux-cxbe8g, 16px) * 1.125));
+    --_button-padding-block: var(--_button-space-lg);
+    --_button-padding-inline: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 4));
   }
 }

@@ -11,6 +11,7 @@ import { ButtonContext, type ButtonProps } from '#components/button';
 import { InputContext } from '#components/input';
 import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { SizeProvider, sizeScaleClassName, useDeclaredSize, type ScaleSize } from '#components/size-provider';
 import { GroupContext } from '#components/structure';
 import { TextAreaContext } from '#components/text-area';
 import { composeClassName } from '#utils/render-props.ts';
@@ -26,8 +27,8 @@ export interface TextFieldProps extends Omit<RACTextFieldProps, 'size'>, Omit<Fl
   /** Current value (controlled). */
   value?: string;
 
-  /** Visual size of the input. @default 'md' */
-  size?: 'sm' | 'md';
+  /** Size of the field and everything inside it. Follows the size scope when omitted. */
+  size?: ScaleSize;
 
   /** Name of the input element, used when submitting a form. */
   name?: string;
@@ -37,9 +38,6 @@ export interface TextFieldProps extends Omit<RACTextFieldProps, 'size'>, Omit<Fl
 }
 
 interface TextFieldBodyProps {
-  /** Visual size of the controls. */
-  size?: 'sm' | 'md';
-
   /** Whether the field is disabled. */
   isDisabled?: boolean;
 
@@ -51,13 +49,13 @@ interface TextFieldBodyProps {
  * wired to each part and republishes it with the field's chrome; a part's own props still win last,
  * in its `useContextProps`.
  */
-function TextFieldBody({ size, isDisabled, children }: TextFieldBodyProps) {
+function TextFieldBody({ isDisabled, children }: TextFieldBodyProps) {
   const label = useSlottedContext(LabelContext) ?? {};
   const input = useSlottedContext(InputContext) ?? {};
   const textArea = useSlottedContext(TextAreaContext) ?? {};
   const group = useSlottedContext(GroupContext) ?? {};
 
-  const control: ButtonProps = { variant: 'control', size, isDisabled, className: fieldStyles.control };
+  const control: ButtonProps = { variant: 'control', isDisabled, className: fieldStyles.control };
 
   return (
     <RACProvider
@@ -98,26 +96,24 @@ function TextFieldBody({ size, isDisabled, children }: TextFieldBodyProps) {
  * ```
  */
 export function TextField(props: TextFieldProps) {
-  const { children, size, gap = 'sm', className, isDisabled, ...rest } = props;
+  const { children, size, gap = 'var(--_size-gap)', className, isDisabled, ...rest } = props;
+  const scale = useDeclaredSize(size);
 
   return (
-    <Flex
-      direction="column"
-      gap={gap}
-      {...rest}
-      isDisabled={isDisabled}
-      as={RACTextField}
-      data-interior="box"
-      data-size={size}
-      className={composeClassName(className, fieldStyles.field)}
-    >
-      {composeRenderProps(children, function body(node) {
-        return (
-          <TextFieldBody size={size} isDisabled={isDisabled}>
-            {node}
-          </TextFieldBody>
-        );
-      })}
-    </Flex>
+    <SizeProvider size={size}>
+      <Flex
+        direction="column"
+        gap={gap}
+        {...rest}
+        isDisabled={isDisabled}
+        as={RACTextField}
+        data-interior="box"
+        className={composeClassName(className, fieldStyles.field, sizeScaleClassName(scale))}
+      >
+        {composeRenderProps(children, function body(node) {
+          return <TextFieldBody isDisabled={isDisabled}>{node}</TextFieldBody>;
+        })}
+      </Flex>
+    </SizeProvider>
   );
 }

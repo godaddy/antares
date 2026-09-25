@@ -17,6 +17,7 @@ import * as Stories from './text-field.stories.tsx';
 - **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
 - **Multiline**: Compose a `TextArea` instead of an `Input` for multiline entry
 - **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
+- **Sizes**: The field is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, input, description, error, and composed controls; without it, the field follows the surrounding scope. An explicit `size` on a part still wins for that part
 
 ## Installation
 

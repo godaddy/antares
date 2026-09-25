@@ -3,9 +3,8 @@ import { Flex, Heading, Text, TextLockup, type TextLockupSize } from '@godaddy/a
 const SIZES: TextLockupSize[] = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];
 
 /**
- * `size` is the tier: the eyebrow reads it on the `detail` ramp, the title on `heading`,
- * and the body on `body`. Use `2xl` for a page title, `xl` for a hero, `lg` for a section
- * title, and `md` (the default) everywhere else.
+ * `size` sets every part, each on its own role ramp. Without it, the lockup follows the size
+ * scope.
  * @order 2
  */
 export function SizesExample() {

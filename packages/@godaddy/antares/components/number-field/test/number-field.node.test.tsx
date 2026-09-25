@@ -65,7 +65,7 @@ describe('@godaddy/antares', function antares() {
       it('fills the stepper faces under the field chrome', function faces() {
         expect(html).toContain('data-icon="minus"');
         expect(html).toContain('data-icon="plus"');
-        expect(html).toMatch(/<button[^>]*class="control button control sm"/);
+        expect(html).toMatch(/<button[^>]*class="control button control"/);
       });
 
       it('keeps the stepper wiring React Aria published', function wiring() {
@@ -74,17 +74,16 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('lets a local prop beat the field default', function localWins() {
-        expect(html).toMatch(/<button[^>]*class="control button primary sm"[^>]*>\s*<span class="text">less/);
+        expect(html).toMatch(/<button[^>]*class="control button primary sm"[^>]*>less</);
       });
 
-      it('leaves an unslotted Button on the Button defaults', function defaultSlot() {
-        expect(html).toMatch(/<button class="button tertiary md"/);
-        expect(html).not.toMatch(/<button class="button tertiary sm"/);
+      it('leaves an unslotted Button on the Button defaults at the field size', function defaultSlot() {
+        expect(html).toMatch(/<button class="button tertiary sm"/);
       });
 
       it('disables a control button with the field, but not an unslotted one', function disabledControl() {
-        expect(html).toMatch(/<button[^>]*class="control button control md"[^>]*disabled=""/);
-        expect(html).toMatch(/<button class="button tertiary md"(?![^>]*disabled)/);
+        expect(html).toMatch(/<button[^>]*class="control button control"[^>]*disabled=""/);
+        expect(html).toMatch(/<button class="button tertiary sm"(?![^>]*disabled)/);
       });
     });
   });

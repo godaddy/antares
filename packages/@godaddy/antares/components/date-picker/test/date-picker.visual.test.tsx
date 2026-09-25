@@ -7,6 +7,7 @@ import { WithErrorExample } from '../examples/with-error.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { MinMaxExample } from '../examples/min-max.tsx';
 import { FormatOptionsExample } from '../examples/format-options.tsx';
+import { SizesExample } from '../examples/sizes.tsx';
 
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
@@ -41,6 +42,11 @@ describe('@godaddy/antares', function antares() {
     it('format-options', async function formatOptions() {
       const { container } = await render(<FormatOptionsExample />);
       await expect(container).toMatchScreenshot('date-picker-format-options');
+    });
+
+    it('sizes', async function sizes() {
+      const { container } = await render(<SizesExample />);
+      await expect(container).toMatchScreenshot('date-picker-sizes');
     });
   });
 });

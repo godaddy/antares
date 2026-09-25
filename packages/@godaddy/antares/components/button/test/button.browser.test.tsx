@@ -6,7 +6,9 @@ import { CloseButton } from '@godaddy/antares';
 import { InlineExample } from '../examples/inline.tsx';
 import { IsolatedLabelExample } from '../examples/isolated-label.tsx';
 import { PrimaryExample } from '../examples/primary.tsx';
+import { SizesExample } from '../examples/sizes.tsx';
 import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
+import { IconExample } from '../examples/icon.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
@@ -100,26 +102,40 @@ describe('@godaddy/antares', function antares() {
       await expect.element(getByRole('button', { name: 'Close' })).toBeVisible();
     });
 
+    it('gives icon-only, text, and icon with text buttons the same height', async function iconHeights() {
+      const { getByRole } = await render(<SizesExample />);
+      const buttons = getByRole('button').elements();
+      const rect = (index: number) => (buttons[index] as Element).getBoundingClientRect();
+
+      for (const first of [0, 3, 6]) {
+        expect(rect(first).width).toEqual(rect(first).height);
+        expect(rect(first + 1).height).toEqual(rect(first).height);
+        expect(rect(first + 2).height).toEqual(rect(first).height);
+      }
+    });
+
+    it('pads an external link with a bare label like a labeled button, not an icon-only one', async function externalLabel() {
+      const { getByRole } = await render(<IconExample />);
+      const link = getByRole('link', { name: 'An external link!' }).element();
+      const labeled = getByRole('button', { name: 'With an icon!' }).element();
+
+      expect(getComputedStyle(link).padding).toEqual(getComputedStyle(labeled).padding);
+    });
+
     it('shadows an ancestor TextContext so the label keeps the button type', async function isolatedLabel() {
       const { getByRole, getByText } = await render(<IsolatedLabelExample />);
 
       // Control: Text outside the button takes the injected size, so the provider is live.
       expect(getComputedStyle(getByText('Outside the button').element()).fontSize).toEqual('40px');
 
-      for (const name of ['String label', 'Composed label']) {
-        const button = getByRole('button', { name }).element();
-        const label = button.querySelector('span');
+      for (const control of [
+        getByRole('button', { name: 'Composed label' }),
+        getByRole('link', { name: 'Composed link label' })
+      ]) {
+        const label = control.element().querySelector('span');
 
         expect(label).not.toBeNull();
-        expect(getComputedStyle(label as Element).fontSize).toEqual(getComputedStyle(button).fontSize);
-      }
-
-      for (const name of ['String link label', 'Composed link label']) {
-        const link = getByRole('link', { name }).element();
-        const label = link.querySelector('span');
-
-        expect(label).not.toBeNull();
-        expect(getComputedStyle(label as Element).fontSize).toEqual(getComputedStyle(link).fontSize);
+        expect(getComputedStyle(label as Element).fontSize).toEqual(getComputedStyle(control.element()).fontSize);
       }
     });
   });
