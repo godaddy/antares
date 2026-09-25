@@ -12,7 +12,6 @@ import { loadBlockManifest, resolveBlockDirectory } from './node.ts';
 
 const README_FILE_REGEX = /README\.mdx$/;
 const STORYBOOK_DOCS_MODULE = '@storybook/addon-docs/blocks';
-const BLOCK_LINK_IMPORT = "import { BlockLinks } from '@bento/block-explorer/runtime';";
 const BLOCK_EXPLORER_IMPORT = "import { StorybookBlockExplorer } from '@bento/block-explorer/storybook-runtime';";
 const STORY_IMPORT = `import { Story } from '${STORYBOOK_DOCS_MODULE}';`;
 
@@ -111,16 +110,12 @@ async function expandMarkers(fileName: string, markers: readonly BlockMarker[]):
     ];
 
     if (marker.name === 'BlockLink') {
-      const blockLink = {
-        id: manifest.id,
-        href: `./?path=/docs/blocks-${manifest.id}--overview`,
-        target: '_top'
-      };
+      const href = `./?path=/docs/blocks-${manifest.id}--overview`;
       expansions.push({
         start: marker.start,
         end: marker.end,
-        value: `<BlockLinks blocks={${JSON.stringify([blockLink])}} />`,
-        imports: [BLOCK_LINK_IMPORT],
+        value: `<a href={${JSON.stringify(href)}} target="_top">{${JSON.stringify(manifest.id)}}</a>`,
+        imports: [],
         watchFiles
       });
       continue;
@@ -168,7 +163,6 @@ function applyReplacements(source: string, expansions: readonly Expansion[]): st
 function prependImports(source: string, lines: readonly string[], tree: Root): string {
   const requiredImports = [
     [STORY_IMPORT, 'Story', STORYBOOK_DOCS_MODULE],
-    [BLOCK_LINK_IMPORT, 'BlockLinks', '@bento/block-explorer/runtime'],
     [BLOCK_EXPLORER_IMPORT, 'StorybookBlockExplorer', '@bento/block-explorer/storybook-runtime']
   ] as const;
   const imports = [...new Set(lines)].filter(function isMissingImport(line) {

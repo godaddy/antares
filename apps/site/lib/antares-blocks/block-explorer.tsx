@@ -19,5 +19,9 @@ function SiteCodeRenderer({ code, language }: BlockCodeRendererProps) {
  * @param props - {@link BlockExplorerProps}
  */
 export function SiteBlockExplorer(props: BlockExplorerProps) {
-  return <BlockExplorer {...props} codeRenderer={SiteCodeRenderer} />;
+  return (
+    <div className="ux-surface not-prose">
+      <BlockExplorer {...props} codeRenderer={SiteCodeRenderer} />
+    </div>
+  );
 }

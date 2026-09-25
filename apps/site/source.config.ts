@@ -11,14 +11,8 @@ import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
-/**
- * Keeps related-block links within the deployed site's base path.
- *
- * @param id - Block directory identifier.
- * @returns The block overview URL, including the deployment base path.
- */
-const resolveBlockHref = (id: string) => `${basePath}/docs/blocks/${id}`;
+// Fumadocs renders Markdown links through Next Link, which applies the deployment base path.
+const resolveBlockHref = (id: string) => `/docs/blocks/${id}`;
 
 const descriptionParser = unified().use(remarkParse).use(remarkGfm);
 const parseMarkdown = (markdown: string) => descriptionParser.parse(markdown).children;

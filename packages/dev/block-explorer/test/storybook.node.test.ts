@@ -24,11 +24,12 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
     const addWatchFile = vi.fn();
     const result = await runTransform(plugin, '<BlockLink id="fixture-block" />', fixtureReadme, addWatchFile);
 
-    expect(result).toContain('<BlockLinks blocks={');
+    expect(result).toContain('<a href={');
     expect(result).toContain('./?path=/docs/blocks-fixture-block--overview');
     expect(result).toContain('blocks-fixture-block--overview');
-    expect(result).toContain('target":"_top"');
-    expect(result).toContain("import { BlockLinks } from '@bento/block-explorer/runtime';");
+    expect(result).toContain('target="_top"');
+    expect(result).not.toContain('BlockLinks');
+    await expect(compile(result)).resolves.toBeDefined();
     expect(addWatchFile).toHaveBeenCalledWith(fixtureReadme);
     expect(addWatchFile).toHaveBeenCalledWith(expect.stringContaining('README.mdx'));
     expect(addWatchFile).toHaveBeenCalledWith(expect.stringContaining('styles/theme.css'));
@@ -76,9 +77,9 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
 
     expect(result).not.toContain('<BlockLink id=');
     expect(result).not.toContain('<Block id=');
-    expect(result).toContain('<BlockLinks blocks={');
+    expect(result).toContain('<a href={');
     expect(result).toContain('<StorybookBlockExplorer block={');
-    expect(result).toContain("import { BlockLinks } from '@bento/block-explorer/runtime';");
+    expect(result).not.toContain('BlockLinks');
     expect(result).toContain("import { StorybookBlockExplorer } from '@bento/block-explorer/storybook-runtime';");
     expect(result).toContain("import { Story } from '@storybook/addon-docs/blocks';");
     expect(addWatchFile).toHaveBeenCalledWith(componentReadme);
@@ -98,16 +99,16 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
   });
 
   it.each([
-    "import { BlockLinks } from '@bento/block-explorer/runtime';",
+    "import { BlockLink } from '@bento/block-explorer/runtime';",
     "import { StorybookBlockExplorer } from '@bento/block-explorer/storybook-runtime';",
     "import { Meta, Story } from '@storybook/addon-docs/blocks';",
     [
-      "import { Block, BlockLinks } from '@bento/block-explorer/runtime';",
+      "import { Block, BlockLink } from '@bento/block-explorer/runtime';",
       "import { StorybookBlockExplorer } from '@bento/block-explorer/storybook-runtime';",
       "import { Meta, Story } from '@storybook/addon-docs/blocks';"
     ].join('\n'),
     [
-      "import { BlockLinks as RelatedBlocks } from '@bento/block-explorer/runtime';",
+      "import { BlockLink as RelatedBlock } from '@bento/block-explorer/runtime';",
       "import { StorybookBlockExplorer as Explorer } from '@bento/block-explorer/storybook-runtime';",
       "import { Story as PreviewStory } from '@storybook/addon-docs/blocks';"
     ].join('\n')
@@ -126,7 +127,7 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
       importedReadme
     );
 
-    expect(result).toContain('<BlockLinks blocks=');
+    expect(result).toContain('<a href={');
     expect(result).toContain('<StorybookBlockExplorer block=');
     await expect(compile(result)).resolves.toBeDefined();
   });

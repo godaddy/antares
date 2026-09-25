@@ -53,12 +53,6 @@ const config = {
       ];
     }
   }),
-  /**
-   * Mirrors the Turbopack documentation aliases and client boundaries for webpack builds.
-   *
-   * @param config - Next.js webpack configuration, updated in place.
-   * @returns The configuration with documentation aliases and client-module rules.
-   */
   webpack(config) {
     config.resolve.alias = {
       ...config.resolve.alias,

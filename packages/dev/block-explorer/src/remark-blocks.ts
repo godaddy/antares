@@ -160,22 +160,21 @@ function renderSiteBlock(manifest: Awaited<ReturnType<typeof loadBlockManifest>>
  *
  * @param manifest - Manifest identifying the referenced block.
  * @param resolveBlockHref - Host resolver for the overview URL.
- * @returns A JSX node rendering the related-block link.
+ * @returns A Markdown paragraph whose link uses the host's document styling.
  */
 function renderSiteBlockLink(
   manifest: Awaited<ReturnType<typeof loadBlockManifest>>,
   resolveBlockHref: RemarkBlocksOptions['resolveBlockHref']
 ): MdNode {
-  const block = {
-    id: manifest.id,
-    href: resolveBlockHref(manifest.id)
-  };
-
   return {
-    type: 'mdxJsxFlowElement',
-    name: 'BlockLinks',
-    attributes: [expressionAttribute('blocks', valueToEstree([block]), JSON.stringify([block]))],
-    children: []
+    type: 'paragraph',
+    children: [
+      {
+        type: 'link',
+        url: resolveBlockHref(manifest.id),
+        children: [{ type: 'text', value: manifest.id }]
+      }
+    ]
   };
 }
 

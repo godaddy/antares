@@ -1,4 +1,5 @@
 import { resolve } from 'node:path';
+import { compile } from '@mdx-js/mdx';
 import { unified } from 'unified';
 import remarkMdx from 'remark-mdx';
 import remarkParse from 'remark-parse';
@@ -76,26 +77,36 @@ describe('remarkBlocks', function remarkBlocksTests() {
     expect(JSON.parse(getExpressionValue(explorer, 'block'))).not.toHaveProperty('description');
   });
 
-  it('expands a BlockLink marker into a site link collection', async function expandsBlockLink() {
+  it('expands a BlockLink marker into a Markdown link for the host renderer', async function expandsBlockLink() {
     const { tree } = await transform('<BlockLink id="fixture-block" />');
-    const links = tree.children[0] as AnyNode;
-    const blocks = JSON.parse(getExpressionValue(links, 'blocks'));
-
-    expect(links).toMatchObject({ type: 'mdxJsxFlowElement', name: 'BlockLinks' });
-    expect(blocks).toEqual([
-      {
-        id: 'fixture-block',
-        href: '/docs/blocks/fixture-block'
-      }
-    ]);
+    expect(tree.children[0]).toEqual({
+      type: 'paragraph',
+      children: [
+        {
+          type: 'link',
+          url: '/docs/blocks/fixture-block',
+          children: [{ type: 'text', value: 'fixture-block' }]
+        }
+      ]
+    });
   });
 
   it('uses the host resolver for BlockLink URLs', async function resolvesHostLinks() {
     const { tree } = await transform('<BlockLink id="fixture-block" />', (id) => `/antares/docs/blocks/${id}`);
-    const links = tree.children[0] as AnyNode;
-    const blocks = JSON.parse(getExpressionValue(links, 'blocks'));
+    expect(tree.children[0].children?.[0]).toMatchObject({
+      type: 'link',
+      url: '/antares/docs/blocks/fixture-block'
+    });
+  });
 
-    expect(blocks[0].href).toBe('/antares/docs/blocks/fixture-block');
+  it('compiles related-block links through the MDX anchor component', async function compilesHostLink() {
+    const compiled = await compile(new VFile({ path: fixtureReadme, value: '<BlockLink id="fixture-block" />' }), {
+      remarkPlugins: [[remarkBlocks, { resolveBlockHref: (id: string) => `/docs/blocks/${id}` }]]
+    });
+
+    expect(String(compiled)).toContain('_components.a');
+    expect(String(compiled)).toContain('href: "/docs/blocks/fixture-block"');
+    expect(String(compiled)).not.toContain('BlockLinks');
   });
 
   it('expands only live markers and reads multiline attributes', async function expandsAuthoredMarkers() {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useState } from 'react';
-import { Box, Flex, Icon, LinkButton, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';
+import { Box, Flex, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';
 import { BlockFileTree } from './block-file-tree.tsx';
 import { BlockSourcePanel } from './block-source-panel.tsx';
 import { BlockToolbar } from './block-toolbar.tsx';
@@ -37,63 +37,6 @@ export function Block(props: BlockMarkerProps): null {
 export function BlockLink(props: BlockLinkMarkerProps): null {
   void props;
   return null;
-}
-
-/** Describes a block link rendered by {@link BlockLinks}. */
-export interface BlockLinkItem {
-  /** Stable block identifier. */
-  readonly id: string;
-
-  /** Host-specific overview URL. */
-  readonly href: string;
-
-  /** Optional browsing context used by embedded documentation hosts. */
-  readonly target?: string;
-}
-
-/** Props for the {@link BlockLinks} component. */
-export interface BlockLinksProps {
-  /** Blocks related to the current component. */
-  readonly blocks: readonly BlockLinkItem[];
-}
-
-/**
- * Renders related blocks as a compact Antares list of links.
- *
- * @param props - {@link BlockLinksProps}
- */
-export function BlockLinks({ blocks }: BlockLinksProps) {
-  return (
-    <Flex as="nav" aria-label="Related blocks" direction="column" gap="xs">
-      {blocks.map(function renderBlockLink(block: BlockLinkItem) {
-        return <BlockLinkItemView key={block.id} block={block} />;
-      })}
-    </Flex>
-  );
-}
-
-/** Renders a block link while preserving the host's browsing context. */
-function BlockLinkItemView({ block }: { block: BlockLinkItem }) {
-  const setBlockTarget = useCallback(
-    function setBlockTarget(element: HTMLAnchorElement | null) {
-      // React Aria filters `target`; assign it on the anchor to preserve the host-provided browsing context.
-      if (element) element.target = block.target ?? '';
-    },
-    [block.target]
-  );
-
-  return (
-    <LinkButton
-      className={styles.blockLink}
-      href={block.href}
-      target={block.target}
-      ref={setBlockTarget}
-      variant="minimal"
-    >
-      {block.id}
-      <Icon icon="chevron-right" />
-    </LinkButton>
-  );
 }
 
 /**

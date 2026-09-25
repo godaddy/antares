@@ -1,7 +1,7 @@
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { describe, expect, it, vi } from 'vitest';
-import { BlockExplorer, BlockLinks, type BlockCodeRendererProps, type BlockManifest } from '../src/runtime.tsx';
+import { BlockExplorer, type BlockCodeRendererProps, type BlockManifest } from '../src/runtime.tsx';
 
 const fixtureManifest: BlockManifest = {
   id: 'fixture-block',
@@ -128,17 +128,6 @@ describe('block explorer runtime', function runtimeTests() {
 
     await userEvent.click(getByRole('button', { name: 'theme.css', exact: true }));
     await expect.element(getByRole('button', { name: 'Copy styles/theme.css' })).toHaveTextContent('Copy');
-  });
-
-  it('renders related blocks as host-provided links', async function rendersRelatedBlocks() {
-    const { getByRole } = await render(
-      <BlockLinks blocks={[{ id: 'fixture-block', href: '/docs/blocks/fixture-block', target: '_top' }]} />
-    );
-    const link = getByRole('link', { name: 'fixture-block' });
-
-    await expect.element(link).toBeVisible();
-    expect(link.element().getAttribute('href')).toBe('/docs/blocks/fixture-block');
-    expect(link.element().getAttribute('target')).toBe('_top');
   });
 
   it('keeps the code view usable when a block has no source files', async function handlesEmptyManifest() {

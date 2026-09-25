@@ -2,12 +2,6 @@
   inline-size: 100%;
 }
 
-.blockLink {
-  inline-size: 100%;
-  justify-content: space-between;
-  text-align: start;
-}
-
 .previewSurface {
   min-height: 24rem;
   overflow: hidden;
