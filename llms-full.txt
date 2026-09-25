@@ -1036,6 +1036,73 @@ Always provide clear error messages and use appropriate validation states:
 <PropTable />
 
 
+# CircularProgress
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A basic determinate progress indicator with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+## Props [#props]
+
+### CircularProgress [#circularprogress]
+
+<PropTable />
+
+
 # Chip
 
 
@@ -1289,73 +1356,6 @@ For a menu trigger, the button and menu are composed as siblings inside
 <PropTable />
 
 ### ChipButton [#chipbutton]
-
-<PropTable />
-
-
-# CircularProgress
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A basic determinate progress indicator with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
-
-<Story of="EmphasisExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value (clamped to 0–100)
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-* `aria-describedby` wires the `helperText` to the progressbar for screen readers
-* The decorative SVG and output text are hidden via `aria-hidden="true"`
-
-## Props [#props]
-
-### CircularProgress [#circularprogress]
 
 <PropTable />
 
@@ -2351,6 +2351,53 @@ For performance optimization:
 3. **Minimize icon sets**: Only load icons that are actually used
 
 
+# Image
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders a native `<img>` and accepts all of its attributes
+* Inherits presentation and behavior when composed inside Antares components such as Avatar
+* Ships no default styles, loading state, or fallback so it stays predictable everywhere
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Render an image with alternative text and explicit dimensions.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+* Provide concise, meaningful `alt` text when the image conveys information.
+* Use `alt=""` for decorative images or images already described by adjacent text.
+* Set `width` and `height` when known to reserve space and reduce layout shift.
+
+## Props [#props]
+
+### Image [#image]
+
+<PropTable />
+
+
 # InlineDrawer
 
 
@@ -2491,53 +2538,6 @@ Input inside TextField.
 ```
 
 ### Input [#input]
-
-<PropTable />
-
-
-# Image
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders a native `<img>` and accepts all of its attributes
-* Inherits presentation and behavior when composed inside Antares components such as Avatar
-* Ships no default styles, loading state, or fallback so it stays predictable everywhere
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Render an image with alternative text and explicit dimensions.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-* Provide concise, meaningful `alt` text when the image conveys information.
-* Use `alt=""` for decorative images or images already described by adjacent text.
-* Set `width` and `height` when known to reserve space and reduce layout shift.
-
-## Props [#props]
-
-### Image [#image]
 
 <PropTable />
 
@@ -5381,96 +5381,6 @@ growing a prop for it.
 <PropTable />
 
 
-# Tooltip
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
-Once a tooltip has been shown, subsequent tooltips appear without delay.
-
-`TooltipTrigger` wraps a focusable element and a `<Tooltip>`, handling hover/focus state and positioning automatically.
-
-## Features [#features]
-
-* `overlay` elevation panel positioned relative to its trigger, with an optional arrow
-* Flips and shifts to stay in the viewport
-* Configurable open and close delays
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use it with `TooltipTrigger`, which wraps both the tooltip content and a focusable element such as a `Button`. The tooltip appears on hover and focus.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Button, type TooltipTriggerProps, type TooltipProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: {\n  tooltipTriggerProps?: Partial<TooltipTriggerProps>;\n  tooltipProps?: Partial<TooltipProps>;\n}) {\n  return (\n    <TooltipTrigger {...props.tooltipTriggerProps}>\n      <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n      <Tooltip {...props.tooltipProps}>This is the tooltip content!</Tooltip>\n    </TooltipTrigger>\n  );\n}&#x22;" />
-
-### Custom Anchor [#custom-anchor]
-
-To position a tooltip relative to a different focusable element, use the `triggerRef` prop. `TooltipTrigger` still handles showing and hiding on hover and focus.
-
-<Story of="CustomAnchorExample" />
-
-<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nexport function CustomAnchorExample() {\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <TooltipTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n        <Tooltip triggerRef={triggerRef}>Tooltip positioned relative to the box</Tooltip>\n      </TooltipTrigger>\n\n      <Box elevation=\&#x22;card\&#x22; padding=\&#x22;sm\&#x22; ref={triggerRef}>\n        Tooltip appears here\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-`className` and `style` apply to the tooltip panel.
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key      | Action                                                     |
-| -------- | ---------------------------------------------------------- |
-| `Tab`    | Moves focus to the focusable element and shows the tooltip |
-| `Escape` | Closes the tooltip                                         |
-
-### ARIA [#aria]
-
-* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`
-
-## Best Practices [#best-practices]
-
-* Keep tooltip content short and informative.
-* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
-* Do not place interactive content inside tooltips. Use a `Popover` instead.
-
-## Props [#props]
-
-```tsx
-<TooltipTrigger>
-  <Button />
-  <Tooltip placement="bottom" />
-</TooltipTrigger>
-```
-
-### Tooltip [#tooltip]
-
-<PropTable />
-
-### TooltipTrigger [#tooltiptrigger]
-
-<PropTable />
-
-
 # ToggleButton
 
 
@@ -5749,19 +5659,7 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 <PropTable />
 
 
-# Bar Chart
-
-
-
-
-
-
-
-
-
-
-
-
+# Tooltip
 
 
 
@@ -5774,20 +5672,17 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 
 
 <Meta of="Stories" name="Overview" />
+
+Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
+Once a tooltip has been shown, subsequent tooltips appear without delay.
+
+`TooltipTrigger` wraps a focusable element and a `<Tooltip>`, handling hover/focus state and positioning automatically.
 
 ## Features [#features]
 
-* **Single and multi-series support**: Display one or multiple data series with grouped bars
-* **Vertical and horizontal orientations**: Choose the best layout for your data and use case
-* **Responsive behavior**: Auto-sizing with horizontal scrolling for many data points, sticky axes
-* **Design system alignment**: 8px border radius, 12px bar width (1.5 GU), consistent spacing
-* **Interactive tooltips**: Hover to see exact values, with smart positioning and scroll-awareness
-* **Customizable axes**: Control gridlines, tick marks, axis titles, and tick formatting
-* **Custom domains**: Set explicit x and y ranges for controlled scales across multiple charts
-* **RTL support*&#x2A;: Full right-to-left layout support for international audiences &#x2A;(in development)*
-* **Accessibility ready**: Keyboard navigation, screen reader support, and semantic HTML
-* **TypeScript support**: Fully typed with comprehensive prop interfaces
-* **VisX integration**: Leverages VisX primitives for scales, axes, shapes, and responsive layout
+* `overlay` elevation panel positioned relative to its trigger, with an optional arrow
+* Flips and shifts to stay in the viewport
+* Configurable open and close delays
 
 ## Installation [#installation]
 
@@ -5799,273 +5694,57 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-You give the chart a `series` array plus `xAccessor` and `yAccessor` so it knows which field is the category and which is the value - this is the everyday setup for one set of vertical bars.
+Use it with `TooltipTrigger`, which wraps both the tooltip content and a focusable element such as a `Button`. The tooltip appears on hover and focus.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function DefaultExample(props: any) {\n  const series = [\n    {\n      id: 'new-york-series',\n      name: 'New York',\n      data: cityTemperature.slice(0, 10)\n    }\n  ];\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.date}\n      yAccessor={(d: any) => d['New York']}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Button, type TooltipTriggerProps, type TooltipProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: {\n  tooltipTriggerProps?: Partial<TooltipTriggerProps>;\n  tooltipProps?: Partial<TooltipProps>;\n}) {\n  return (\n    <TooltipTrigger {...props.tooltipTriggerProps}>\n      <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n      <Tooltip {...props.tooltipProps}>This is the tooltip content!</Tooltip>\n    </TooltipTrigger>\n  );\n}&#x22;" />
 
-### Multi-series [#multi-series]
+### Custom Anchor [#custom-anchor]
 
-Pass more than one entry in `series` and the bars group by category, with a legend naming each series. Use it when the comparison between series matters as much as the values themselves.
+To position a tooltip relative to a different focusable element, use the `triggerRef` prop. `TooltipTrigger` still handles showing and hiding on hover and focus.
 
-<Story of="MultiSeriesExample" />
+<Story of="CustomAnchorExample" />
 
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function MultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city, index) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.x}\n      yAccessor={(d: any) => d.y}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      yDomain={[0, 100]}\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nexport function CustomAnchorExample() {\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <TooltipTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n        <Tooltip triggerRef={triggerRef}>Tooltip positioned relative to the box</Tooltip>\n      </TooltipTrigger>\n\n      <Box elevation=\&#x22;card\&#x22; padding=\&#x22;sm\&#x22; ref={triggerRef}>\n        Tooltip appears here\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
 
-### Horizontal single series [#horizontal-single-series]
+## Customization [#customization]
 
-`orientation="horizontal"` swaps the axes: categories run down the side and values across the bottom. Reach for it when the labels are long or the chart is really a ranking.
-
-<Story of="HorizontalSingleSeriesExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets, type Exoplanets } from '@visx/mock-data';\n\nconst largestExoplanets = [...allExoplanets.filter((d) => d.distance && d.distance > 0)]\n  .sort((a, b) => b.radius - a.radius)\n  .slice(0, 30);\n\nconst series = [{ id: 'radius', name: 'Radius', data: largestExoplanets }];\n\nexport function HorizontalSingleSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: Exoplanets) => d.radius}\n      yAccessor={(d: Exoplanets) => d.name}\n      xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n      yAxisTitle=\&#x22;Exoplanet\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
-
-### Horizontal multi-series [#horizontal-multi-series]
-
-Grouped bars work horizontally too. With many categories the chart scrolls vertically, which is usually easier on a phone than scrolling sideways.
-
-<Story of="HorizontalMultiSeriesExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets } from '@visx/mock-data';\n\ninterface ExoplanetSurveyPoint {\n  name: string;\n  value: number;\n}\n\n// Take 90 real exoplanets and use the first 15 names as the shared category axis.\n// Each series maps a different group of 15 planets' radius onto those same category names,\n// demonstrating multi-series grouped bars with real exoplanet data.\nconst trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);\nconst categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);\n\nfunction toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {\n  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));\n}\n\nconst series = [\n  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },\n  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },\n  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },\n  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }\n];\n\nexport function HorizontalMultiSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: ExoplanetSurveyPoint) => d.value}\n      yAccessor={(d: ExoplanetSurveyPoint) => d.name}\n      xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n      yAxisTitle=\&#x22;Exoplanet\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
-
-### Custom domain [#custom-domain]
-
-`xDomain` and `yDomain` pin down exactly which categories and value range to draw. Here category `F` has no data and still gets an empty slot, and the Y range stays `[0, 40]` even though the largest bar is 30 - handy when several charts need to share a scale.
-
-<Story of="CustomDomainExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function CustomDomainExample() {\n  const data = [\n    { category: 'A', value: 10 },\n    { category: 'B', value: 20 },\n    { category: 'C', value: 15 },\n    { category: 'D', value: 30 },\n    { category: 'E', value: 5 }\n  ];\n  // Example: set xDomain and yDomain explicitly\n  const xDomain = ['A', 'B', 'D', 'E', 'F', 'C']; // F will show as empty slot\n  const yDomain: [number, number] = [0, 40];\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sample Series',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: string; value: number }) => d.category}\n      yAccessor={(d: { category: string; value: number }) => d.value}\n      height={400}\n      width={600}\n      xAxisTitle=\&#x22;Category\&#x22;\n      yAxisTitle=\&#x22;Value\&#x22;\n      xDomain={xDomain}\n      yDomain={yDomain}\n    />\n  );\n}&#x22;" />
-
-### Formatted tick marks [#formatted-tick-marks]
-
-`xTickFormat` and `yTickFormat` shape the axis labels - abbreviated dates on one axis, thousands separators on the other. The functions receive the raw accessor value, so they also cover currency, units, or percentages.
-
-<Story of="FormattedTickMarksExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function FormattedTickMarksExample() {\n  // Example data with Date categories\n  const data = [\n    { category: new Date(2024, 0, 1), value: 1000 }, // Jan 1\n    { category: new Date(2024, 1, 15), value: 2500 }, // Feb 15\n    { category: new Date(2024, 2, 10), value: 1750 }, // Mar 10\n    { category: new Date(2024, 3, 5), value: 3000 }, // Apr 5\n    { category: new Date(2024, 4, 20), value: 1250 } // May 20\n  ];\n\n  // Format x-axis as abbreviated month and day\n  function formatDateTick(value: Date | string | number) {\n    if (value instanceof Date) {\n      return value.toLocaleString('en-US', { month: 'short', day: 'numeric' });\n    }\n    return String(value);\n  }\n\n  // Format y-axis as comma-separated number\n  function formatNumberWithCommas(value: number | string | Date) {\n    if (typeof value === 'number') {\n      return value.toLocaleString();\n    }\n    return String(value);\n  }\n\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sales',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: Date; value: number }) => d.category}\n      yAccessor={(d: { category: Date; value: number }) => d.value}\n      height={600}\n      width={600}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Sales Amount\&#x22;\n      xTickFormat={formatDateTick}\n      yTickFormat={formatNumberWithCommas}\n    />\n  );\n}&#x22;" />
-
-### RTL multi-series [#rtl-multi-series]
-
-The chart follows the current layout direction, which is normally detected from the browser or system settings. In right-to-left it mirrors the axes, bars, and labels; this example forces RTL so you can see it in a left-to-right page. RTL support is still being refined - axis rendering and tick spacing in particular.
-
-<Story of="RTLMultiSeriesExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\nexport function RTLMultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        xAccessor={(d: any) => d.x}\n        yAccessor={(d: any) => d.y}\n        xAxisTitle=\&#x22;Date\&#x22;\n        yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}&#x22;" />
-
-### RTL horizontal multi-series [#rtl-horizontal-multi-series]
-
-Horizontal grouped bars in a right-to-left layout: bars grow from the right edge and the category axis moves to the right side.
-
-<Story of="RTLHorizontalMultiSeriesExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets } from '@visx/mock-data';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\ninterface ExoplanetSurveyPoint {\n  name: string;\n  value: number;\n}\n\nconst trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);\nconst categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);\n\nfunction toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {\n  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));\n}\n\nconst series = [\n  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },\n  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },\n  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },\n  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }\n];\n\nexport function RTLHorizontalMultiSeriesExample(props: any) {\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        orientation=\&#x22;horizontal\&#x22;\n        xAccessor={(d: ExoplanetSurveyPoint) => d.value}\n        yAccessor={(d: ExoplanetSurveyPoint) => d.name}\n        xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n        yAxisTitle=\&#x22;Exoplanet\&#x22;\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        xGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}&#x22;" />
-
-## Design System Alignment [#design-system-alignment]
-
-### Spacing and Sizing [#spacing-and-sizing]
-
-* **Bar width**: 12px (1.5 grid units)
-* **Bar padding** (multi-series): 4px between bars within a group
-* **Group gap**: Minimum 24px between bar groups
-* **Border radius**: 8px on all bars
-* **Margins**: 20px top/right, 60px bottom/left for axes and labels
-
-### Responsive Behavior [#responsive-behavior]
-
-* **Auto-sizing**: Uses VisX's `useParentSize` hook to adapt to container width
-* **Horizontal scrolling**: When data points exceed available width, the chart becomes horizontally scrollable
-* **Sticky y-axis**: The y-axis remains visible during horizontal scroll
-* **Minimum spacing**: Group gaps never fall below 24px, triggering scroll instead
+`className` and `style` apply to the tooltip panel.
 
 ## Accessibility [#accessibility]
 
-* **Keyboard navigation**: Bar groups are keyboard accessible with `tabIndex={0}` and `role="group"`
-* **Screen reader support**: Semantic HTML structure with proper ARIA attributes
-* **Tooltips**: Show on both hover and focus for keyboard users
+### Keyboard [#keyboard]
 
-## Performance Considerations [#performance-considerations]
+| Key      | Action                                                     |
+| -------- | ---------------------------------------------------------- |
+| `Tab`    | Moves focus to the focusable element and shows the tooltip |
+| `Escape` | Closes the tooltip                                         |
 
-### Rendering Strategy [#rendering-strategy]
+### ARIA [#aria]
 
-The component uses VisX primitives for optimal SVG rendering:
+* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`
 
-* **Scales**: VisX's `scaleBand` and `scaleLinear` for efficient coordinate mapping
-* **Grouped rendering**: Bars are rendered in SVG `<Group>` elements for logical organization
-* **Responsive sizing**: `useParentSize` hook provides efficient resize detection with debouncing (15ms)
+## Best Practices [#best-practices]
 
-### Scrolling Strategy [#scrolling-strategy]
-
-* **Vertical charts**: Horizontal scrolling when many data points exceed container width
-* **Horizontal charts**: Vertical scrolling when many categories exceed container height
-* **Sticky axes**: Positioned absolutely to remain visible during scroll
-
-### Recommendations [#recommendations]
-
-* For charts with **many data points** (>20), consider enabling horizontal scroll (default behavior)
-* For **horizontal bar charts**, vertical scrolling is more mobile-friendly than horizontal
-* Use **custom domains** to maintain consistent scales across multiple charts
-* **Tooltips** use absolute positioning and scroll-aware calculations for accurate placement
-
-## Development Status [#development-status]
-
-The BarChart component is in active development. Current focus areas:
-
-* ✅ Single and multi-series support
-* ✅ Vertical and horizontal orientations
-* ✅ Responsive behavior with sticky axes
-* ✅ Interactive tooltips
-* ✅ Custom domains
-* ✅ Design system alignment
-* 🚧 RTL compatibility (axis rendering and spacing refinement)
-* 🚧 Tick mark positioning improvements
-* 🚧 Additional customization options (tick formatting, axis configuration)
-
-## Troubleshooting [#troubleshooting]
-
-### Bars Not Showing [#bars-not-showing]
-
-If bars are not visible:
-
-1. **Check data**: Ensure `series` array has data and `xAccessor`/`yAccessor` return valid values
-2. **Check domains**: Verify `yDomain` (if set) includes your data values
-3. **Check dimensions**: Ensure container has non-zero width and height
-
-### Tooltip Positioning Issues [#tooltip-positioning-issues]
-
-If tooltips appear in the wrong location:
-
-1. **Check scroll position**: The component accounts for horizontal scroll automatically
-2. **Check container**: Ensure the chart container is not transformed or positioned in a complex layout
-3. **Verify event targets**: Tooltips use mouse event coordinates and bar group positions
-
-### Performance Issues [#performance-issues]
-
-For better performance:
-
-1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
-2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
-3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
+* Keep tooltip content short and informative.
+* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
+* Do not place interactive content inside tooltips. Use a `Popover` instead.
 
 ## Props [#props]
 
-### BarChart [#barchart]
+```tsx
+<TooltipTrigger>
+  <Button />
+  <Tooltip placement="bottom" />
+</TooltipTrigger>
+```
+
+### Tooltip [#tooltip]
 
 <PropTable />
 
-
-# Gauge Chart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A continuous gauge with a single label.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { GaugeChart } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <GaugeChart value={50} label=\&#x22;50%\&#x22; aria-label=\&#x22;Basic gauge\&#x22; style={{ maxWidth: '200px', margin: 'auto' }} />;\n}&#x22;" />
-
-### Continuous Values [#continuous-values]
-
-Multiple continuous gauges showing different fill percentages.
-
-<Story of="ContinuousExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function ContinuousExample() {\n  const values = [0, 25, 50, 75, 100];\n\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(180px, 1fr))\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22; alignContent=\&#x22;center\&#x22;>\n      {values.map(function renderGauge(v) {\n        return <GaugeChart key={v} value={v} label={`${v}%`} subLabel=\&#x22;Progress\&#x22; aria-label={`Gauge at ${v}%`} />;\n      })}\n    </Grid>\n  );\n}&#x22;" />
-
-### Segmented [#segmented]
-
-Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
-
-<Story of="SegmentedExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function SegmentedExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 200px)\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart segments={5} value={0} label=\&#x22;0/5\&#x22; subLabel=\&#x22;Empty\&#x22; aria-label=\&#x22;Gauge with 0 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={2} label=\&#x22;2/5\&#x22; subLabel=\&#x22;Partial\&#x22; aria-label=\&#x22;Gauge with 2 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={5} label=\&#x22;5/5\&#x22; subLabel=\&#x22;Full\&#x22; aria-label=\&#x22;Gauge with 5 of 5 filled\&#x22; />\n      <GaugeChart segments={3} value={1} label=\&#x22;1/3\&#x22; subLabel=\&#x22;Three segments\&#x22; aria-label=\&#x22;Gauge with 1 of 3 filled\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-### With Range Labels [#with-range-labels]
-
-Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
-
-<Story of="WithRangeLabelsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function WithRangeLabelsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart\n        value={65}\n        label=\&#x22;65%\&#x22;\n        subLabel=\&#x22;CPU Usage\&#x22;\n        rangeLabel={{ min: 0, max: 100 }}\n        aria-label=\&#x22;CPU usage gauge\&#x22;\n      />\n      <GaugeChart\n        value={3}\n        segments={5}\n        label=\&#x22;3/5\&#x22;\n        subLabel=\&#x22;Risk Level\&#x22;\n        rangeLabel={{ min: 'Low', max: 'High' }}\n        variant=\&#x22;warning\&#x22;\n        aria-label=\&#x22;Risk level gauge\&#x22;\n      />\n    </Grid>\n  );\n}&#x22;" />
-
-### Variants [#variants]
-
-Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
-
-<Story of="VariantsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function VariantsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Default\&#x22; variant=\&#x22;default\&#x22; aria-label=\&#x22;Default variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Success\&#x22; variant=\&#x22;success\&#x22; aria-label=\&#x22;Success variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Warning\&#x22; variant=\&#x22;warning\&#x22; aria-label=\&#x22;Warning variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Critical\&#x22; variant=\&#x22;critical\&#x22; aria-label=\&#x22;Critical variant gauge\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-### Label Type [#label-type]
-
-Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
-
-<Story of="LabelTypeExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function LabelTypeExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={72} label=\&#x22;72%\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with numeric value label\&#x22; />\n      <GaugeChart value={72} label=\&#x22;Good\&#x22; labelType=\&#x22;text\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with text label\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-## Troubleshooting [#troubleshooting]
-
-### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
-
-The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
-
-```tsx
-// ❌ No width constraint — gauge may stretch to full viewport
-<GaugeChart label="50%" value={50} aria-label="Progress" />
-
-// ✅ Parent provides width context
-<div style={{ width: 200 }}>
-  <GaugeChart label="50%" value={50} aria-label="Progress" />
-</div>
-
-// ✅ Or use className for max-width
-<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
-```
-
-### Value Out of Range [#value-out-of-range]
-
-Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
-
-```tsx
-// ✅ Continuous: 0–100
-<GaugeChart label="75%" value={75} aria-label="Score" />
-
-// ✅ Segmented: 0 to segments
-<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
-```
-
-## Props [#props]
-
-### GaugeChart [#gaugechart]
+### TooltipTrigger [#tooltiptrigger]
 
 <PropTable />
 
@@ -6530,6 +6209,378 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 ## Props [#props]
 
 ### LineChart [#linechart]
+
+<PropTable />
+
+
+# Bar Chart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Single and multi-series support**: Display one or multiple data series with grouped bars
+* **Vertical and horizontal orientations**: Choose the best layout for your data and use case
+* **Responsive behavior**: Auto-sizing with horizontal scrolling for many data points, sticky axes
+* **Design system alignment**: 8px border radius, 12px bar width (1.5 GU), consistent spacing
+* **Interactive tooltips**: Hover to see exact values, with smart positioning and scroll-awareness
+* **Customizable axes**: Control gridlines, tick marks, axis titles, and tick formatting
+* **Custom domains**: Set explicit x and y ranges for controlled scales across multiple charts
+* **RTL support*&#x2A;: Full right-to-left layout support for international audiences &#x2A;(in development)*
+* **Accessibility ready**: Keyboard navigation, screen reader support, and semantic HTML
+* **TypeScript support**: Fully typed with comprehensive prop interfaces
+* **VisX integration**: Leverages VisX primitives for scales, axes, shapes, and responsive layout
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+You give the chart a `series` array plus `xAccessor` and `yAccessor` so it knows which field is the category and which is the value - this is the everyday setup for one set of vertical bars.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function DefaultExample(props: any) {\n  const series = [\n    {\n      id: 'new-york-series',\n      name: 'New York',\n      data: cityTemperature.slice(0, 10)\n    }\n  ];\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.date}\n      yAccessor={(d: any) => d['New York']}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Multi-series [#multi-series]
+
+Pass more than one entry in `series` and the bars group by category, with a legend naming each series. Use it when the comparison between series matters as much as the values themselves.
+
+<Story of="MultiSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function MultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city, index) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.x}\n      yAccessor={(d: any) => d.y}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      yDomain={[0, 100]}\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Horizontal single series [#horizontal-single-series]
+
+`orientation="horizontal"` swaps the axes: categories run down the side and values across the bottom. Reach for it when the labels are long or the chart is really a ranking.
+
+<Story of="HorizontalSingleSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets, type Exoplanets } from '@visx/mock-data';\n\nconst largestExoplanets = [...allExoplanets.filter((d) => d.distance && d.distance > 0)]\n  .sort((a, b) => b.radius - a.radius)\n  .slice(0, 30);\n\nconst series = [{ id: 'radius', name: 'Radius', data: largestExoplanets }];\n\nexport function HorizontalSingleSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: Exoplanets) => d.radius}\n      yAccessor={(d: Exoplanets) => d.name}\n      xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n      yAxisTitle=\&#x22;Exoplanet\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Horizontal multi-series [#horizontal-multi-series]
+
+Grouped bars work horizontally too. With many categories the chart scrolls vertically, which is usually easier on a phone than scrolling sideways.
+
+<Story of="HorizontalMultiSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets } from '@visx/mock-data';\n\ninterface ExoplanetSurveyPoint {\n  name: string;\n  value: number;\n}\n\n// Take 90 real exoplanets and use the first 15 names as the shared category axis.\n// Each series maps a different group of 15 planets' radius onto those same category names,\n// demonstrating multi-series grouped bars with real exoplanet data.\nconst trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);\nconst categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);\n\nfunction toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {\n  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));\n}\n\nconst series = [\n  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },\n  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },\n  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },\n  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }\n];\n\nexport function HorizontalMultiSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: ExoplanetSurveyPoint) => d.value}\n      yAccessor={(d: ExoplanetSurveyPoint) => d.name}\n      xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n      yAxisTitle=\&#x22;Exoplanet\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Custom domain [#custom-domain]
+
+`xDomain` and `yDomain` pin down exactly which categories and value range to draw. Here category `F` has no data and still gets an empty slot, and the Y range stays `[0, 40]` even though the largest bar is 30 - handy when several charts need to share a scale.
+
+<Story of="CustomDomainExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function CustomDomainExample() {\n  const data = [\n    { category: 'A', value: 10 },\n    { category: 'B', value: 20 },\n    { category: 'C', value: 15 },\n    { category: 'D', value: 30 },\n    { category: 'E', value: 5 }\n  ];\n  // Example: set xDomain and yDomain explicitly\n  const xDomain = ['A', 'B', 'D', 'E', 'F', 'C']; // F will show as empty slot\n  const yDomain: [number, number] = [0, 40];\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sample Series',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: string; value: number }) => d.category}\n      yAccessor={(d: { category: string; value: number }) => d.value}\n      height={400}\n      width={600}\n      xAxisTitle=\&#x22;Category\&#x22;\n      yAxisTitle=\&#x22;Value\&#x22;\n      xDomain={xDomain}\n      yDomain={yDomain}\n    />\n  );\n}&#x22;" />
+
+### Formatted tick marks [#formatted-tick-marks]
+
+`xTickFormat` and `yTickFormat` shape the axis labels - abbreviated dates on one axis, thousands separators on the other. The functions receive the raw accessor value, so they also cover currency, units, or percentages.
+
+<Story of="FormattedTickMarksExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function FormattedTickMarksExample() {\n  // Example data with Date categories\n  const data = [\n    { category: new Date(2024, 0, 1), value: 1000 }, // Jan 1\n    { category: new Date(2024, 1, 15), value: 2500 }, // Feb 15\n    { category: new Date(2024, 2, 10), value: 1750 }, // Mar 10\n    { category: new Date(2024, 3, 5), value: 3000 }, // Apr 5\n    { category: new Date(2024, 4, 20), value: 1250 } // May 20\n  ];\n\n  // Format x-axis as abbreviated month and day\n  function formatDateTick(value: Date | string | number) {\n    if (value instanceof Date) {\n      return value.toLocaleString('en-US', { month: 'short', day: 'numeric' });\n    }\n    return String(value);\n  }\n\n  // Format y-axis as comma-separated number\n  function formatNumberWithCommas(value: number | string | Date) {\n    if (typeof value === 'number') {\n      return value.toLocaleString();\n    }\n    return String(value);\n  }\n\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sales',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: Date; value: number }) => d.category}\n      yAccessor={(d: { category: Date; value: number }) => d.value}\n      height={600}\n      width={600}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Sales Amount\&#x22;\n      xTickFormat={formatDateTick}\n      yTickFormat={formatNumberWithCommas}\n    />\n  );\n}&#x22;" />
+
+### RTL multi-series [#rtl-multi-series]
+
+The chart follows the current layout direction, which is normally detected from the browser or system settings. In right-to-left it mirrors the axes, bars, and labels; this example forces RTL so you can see it in a left-to-right page. RTL support is still being refined - axis rendering and tick spacing in particular.
+
+<Story of="RTLMultiSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\nexport function RTLMultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        xAccessor={(d: any) => d.x}\n        yAccessor={(d: any) => d.y}\n        xAxisTitle=\&#x22;Date\&#x22;\n        yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}&#x22;" />
+
+### RTL horizontal multi-series [#rtl-horizontal-multi-series]
+
+Horizontal grouped bars in a right-to-left layout: bars grow from the right edge and the category axis moves to the right side.
+
+<Story of="RTLHorizontalMultiSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets } from '@visx/mock-data';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\ninterface ExoplanetSurveyPoint {\n  name: string;\n  value: number;\n}\n\nconst trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);\nconst categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);\n\nfunction toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {\n  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));\n}\n\nconst series = [\n  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },\n  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },\n  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },\n  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }\n];\n\nexport function RTLHorizontalMultiSeriesExample(props: any) {\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        orientation=\&#x22;horizontal\&#x22;\n        xAccessor={(d: ExoplanetSurveyPoint) => d.value}\n        yAccessor={(d: ExoplanetSurveyPoint) => d.name}\n        xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n        yAxisTitle=\&#x22;Exoplanet\&#x22;\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        xGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}&#x22;" />
+
+### Series colors [#series-colors]
+
+Set `colorIndex` on a series to pin every bar in it to a specific color from the
+shared nine-color palette. Give two series the same `colorIndex` and separate them
+with `opacity` instead of hue — a common way to show a comparison period against the
+current one while keeping a single color identity.
+
+Series can also have sparse data: a `null` value simply omits that bar. Each series
+here drops out of a different date, and one date drops two of them at once, so the bars
+present per group keep changing — yet every series stays the color its `colorIndex`
+pins it to. Colors follow the series, never the bar's position, so the shifting gaps
+never move a color onto the wrong series.
+
+<Story of="SeriesColorsExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nconst ROWS = cityTemperature.slice(0, 10);\n\nexport function SeriesColorsExample(props: any) {\n  const series = [\n    {\n      id: 'this-period',\n      name: 'This period',\n      colorIndex: 1,\n      // Missing its own date (index 2).\n      data: ROWS.map((d, i) => ({ x: d.date, y: i === 2 ? null : parseFloat(d['New York']) }))\n    },\n    {\n      id: 'previous-period',\n      name: 'Previous period',\n      colorIndex: 1,\n      opacity: 0.4,\n      // Missing two dates (index 4 shared with Forecast, and index 9).\n      data: ROWS.map((d, i) => ({ x: d.date, y: i === 4 || i === 9 ? null : parseFloat(d['New York']) * 0.88 }))\n    },\n    {\n      id: 'forecast',\n      name: 'Forecast',\n      colorIndex: 4,\n      // Missing two dates (index 4 shared with Previous period, and index 7).\n      data: ROWS.map((d, i) => ({ x: d.date, y: i === 4 || i === 7 ? null : parseFloat(d['San Francisco']) }))\n    }\n  ];\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: { x: string; y: number | null }) => d.x}\n      yAccessor={(d: { x: string; y: number | null }) => d.y}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      yDomain={[0, 100]}\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      aria-label=\&#x22;Series colors example bar chart\&#x22;\n      desc=\&#x22;Grouped bar chart where two series share one palette color via colorIndex and are separated by reduced opacity, plus a third series in its own color; each series omits a different date and one date omits two, and every series keeps its color wherever its bars appear\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Category colors [#category-colors]
+
+`categoryColors` maps individual category values to palette color indices, overriding
+the series color for just those bars — so a single series can carry a different color
+per category. All three periods here share the same category-to-color map, so each
+channel keeps one color across every period; the comparison periods are dropped to
+reduced opacity.
+
+A category missing from the map falls back to the series' own default color. `Marketplace`
+and `Gift Cards` are both absent from `categoryColors`, so each period draws them in that
+period's default palette color instead of a shared channel color — showing the sparse-map
+fallback alongside the mapped channels.
+
+<Story of="CategoryColorsExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function CategoryColorsExample(props: any) {\n  // Sales channel → palette color index. `Marketplace` and `Gift Cards` are intentionally\n  // omitted so they fall back to each series' default color. Indices start at 3 to keep the\n  // mapped channels distinct from those per-series defaults (0, 1, 2).\n  const categoryColors = {\n    'In Person': 3,\n    'Online Store': 4,\n    'Pay Links': 5,\n    Invoicing: 6,\n    'Virtual Terminal': 7\n  };\n\n  const current = [\n    { channel: 'In Person', amount: 1043.5 },\n    { channel: 'Online Store', amount: 692.12 },\n    { channel: 'Pay Links', amount: 618.4 },\n    { channel: 'Invoicing', amount: 431.8 },\n    { channel: 'Virtual Terminal', amount: 182.25 },\n    { channel: 'Marketplace', amount: 305.6 },\n    { channel: 'Gift Cards', amount: 214.0 }\n  ];\n\n  const previous = [\n    { channel: 'In Person', amount: 918.0 },\n    { channel: 'Online Store', amount: 604.75 },\n    { channel: 'Pay Links', amount: 560.0 },\n    { channel: 'Invoicing', amount: 372.5 },\n    { channel: 'Virtual Terminal', amount: 96.5 },\n    { channel: 'Marketplace', amount: 210.4 },\n    { channel: 'Gift Cards', amount: 168.0 }\n  ];\n\n  const twoYearsAgo = [\n    { channel: 'In Person', amount: 802.0 },\n    { channel: 'Online Store', amount: 540.0 },\n    { channel: 'Pay Links', amount: 498.0 },\n    { channel: 'Invoicing', amount: 300.0 },\n    { channel: 'Virtual Terminal', amount: 60.0 },\n    { channel: 'Marketplace', amount: 150.0 },\n    { channel: 'Gift Cards', amount: 120.0 }\n  ];\n\n  const series = [\n    {\n      id: 'this-period',\n      name: 'This period',\n      categoryColors,\n      data: current.map((d) => ({ x: d.amount, y: d.channel }))\n    },\n    {\n      id: 'previous-period',\n      name: 'Previous period',\n      categoryColors,\n      opacity: 0.6,\n      data: previous.map((d) => ({ x: d.amount, y: d.channel }))\n    },\n    {\n      id: 'two-years-ago',\n      name: 'Two years ago',\n      categoryColors,\n      opacity: 0.3,\n      data: twoYearsAgo.map((d) => ({ x: d.amount, y: d.channel }))\n    }\n  ];\n\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: { x: number; y: string }) => d.x}\n      yAccessor={(d: { x: number; y: string }) => d.y}\n      xTickFormat={(value) => `$${Number(value).toLocaleString()}`}\n      xDomain={[0, 1100]}\n      xGridlines={true}\n      yBaseline={true}\n      legendPosition={null}\n      height={520}\n      aria-label=\&#x22;Payment activity by sales channel\&#x22;\n      desc=\&#x22;Horizontal bar chart of net payments per sales channel for three periods; each mapped channel keeps its own color via categoryColors across all periods and the comparison periods are shown at reduced opacity, while the unmapped Marketplace and Gift Cards channels fall back to each period's default color\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Custom tooltip [#custom-tooltip]
+
+A `renderTooltip` example styled as a period-over-period comparison card, using
+`categoryColors` so each date owns its color. Hovering a bar group shows both years'
+values and the percent change; the tooltip swatch is resolved per category from the
+hovered datum, demonstrating category colors inside a custom tooltip.
+
+<Story of="CustomTooltipPeriodComparisonExample" />
+
+<Source language="tsx" code="&#x22;import {\n  BarChart,\n  type BarChartProps,\n  type BarChartTooltipRenderProps,\n  type BarSeriesConfig,\n  Box,\n  Flex,\n  Text\n} from '@godaddy/antares';\n\n/** One day's net payments; `x` is the date label (category), `y` the amount. */\ninterface DailyDatum {\n  x: string;\n  y: number;\n}\n\n/** Series shape carrying which period it represents via `tooltipMetadata`. */\ninterface PaymentSeries extends BarSeriesConfig<DailyDatum, { period: 'current' | 'previous'; year: number }> {\n  tooltipMetadata: { period: 'current' | 'previous'; year: number };\n}\n\nconst DATES = ['Jan 6', 'Jan 7', 'Jan 8', 'Jan 9', 'Jan 10', 'Jan 11', 'Jan 12'];\n\n// Each date is a category with its own palette color, shared by both periods.\nconst categoryColors = { 'Jan 6': 0, 'Jan 7': 1, 'Jan 8': 2, 'Jan 9': 3, 'Jan 10': 4, 'Jan 11': 5, 'Jan 12': 6 };\n\nconst currentAmounts = [432, 665, 800, 692.12, 700, 555, 318];\nconst previousAmounts = [515, 515, 665, 713.25, 620, 310, 432];\n\nconst formatMoney = (v: number) => `$${v.toFixed(2)}`;\n\n/**\n * Period-over-period tooltip built from `renderTooltip`. The two series (this period /\n * previous period) share a `categoryColors` map, so each date's bars carry their own color;\n * the previous period is dropped to reduced opacity. Hovering a date shows both dated values\n * and the percent change, with the swatch color resolved per category on `current.color`.\n */\nfunction renderPaymentTooltip({ hoveredCategory, series }: BarChartTooltipRenderProps<DailyDatum, PaymentSeries>) {\n  const current = series.find((oneSeries) => oneSeries.tooltipMetadata?.period === 'current');\n  const previous = series.find((oneSeries) => oneSeries.tooltipMetadata?.period === 'previous');\n  if (!current || !previous) {\n    return null;\n  }\n\n  const currentDatum = current.datum;\n  const previousDatum = previous.datum;\n  if (!currentDatum || !previousDatum) {\n    return null;\n  }\n\n  const currentValue = currentDatum.y;\n  const previousValue = previousDatum.y;\n  // Per-category color: the color of the hovered date's bars, resolved by BarChart.\n  const color = current.color;\n  const label = String(hoveredCategory ?? '');\n\n  const change = previousValue === 0 ? 0 : ((currentValue - previousValue) / previousValue) * 100;\n  const isUp = change >= 0;\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; style={{ minWidth: 260 }}>\n      <Text style={{ fontSize: 18 }}>Net Payments</Text>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;2xl\&#x22;>\n          <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n            <Box rounding=\&#x22;full\&#x22; style={{ width: 12, height: 12, backgroundColor: color }} />\n            <Text>{`${label}, ${current.tooltipMetadata?.year}`}</Text>\n          </Flex>\n          <Text>{formatMoney(currentValue)}</Text>\n        </Flex>\n\n        <Flex justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;2xl\&#x22;>\n          <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n            <Box rounding=\&#x22;full\&#x22; style={{ width: 12, height: 12, backgroundColor: color, opacity: previous.opacity }} />\n            <Text>{`${label}, ${previous.tooltipMetadata?.year}`}</Text>\n          </Flex>\n          <Text>{formatMoney(previousValue)}</Text>\n        </Flex>\n      </Flex>\n\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text style={{ color: isUp ? '#2f9e44' : '#e03131' }}>{isUp ? '↑' : '↓'}</Text>\n        <Text style={{ fontWeight: 'bolder' }}>{`${Math.abs(change).toFixed(2)}%`}</Text>\n        <Text style={{ color: '#868e96' }}>compared to previous period</Text>\n      </Flex>\n    </Flex>\n  );\n}\n\nexport function CustomTooltipPeriodComparisonExample(props: Partial<BarChartProps<DailyDatum, PaymentSeries>>) {\n  const series: PaymentSeries[] = [\n    {\n      id: 'this-period',\n      name: 'This period',\n      categoryColors,\n      tooltipMetadata: { period: 'current', year: 2026 },\n      data: DATES.map((date, i) => ({ x: date, y: currentAmounts[i] }))\n    },\n    {\n      id: 'previous-period',\n      name: 'Previous period',\n      categoryColors,\n      opacity: 0.35,\n      tooltipMetadata: { period: 'previous', year: 2025 },\n      data: DATES.map((date, i) => ({ x: date, y: previousAmounts[i] }))\n    }\n  ];\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: DailyDatum) => d.x}\n      yAccessor={(d: DailyDatum) => d.y}\n      yTickFormat={(value) => `$${Number(value).toLocaleString()}`}\n      yDomain={[0, 1000]}\n      yGridlines={true}\n      xBaseline={true}\n      legendPosition={null}\n      height={450}\n      renderTooltip={renderPaymentTooltip}\n      aria-label=\&#x22;Payment activity by day\&#x22;\n      desc=\&#x22;Vertical bar chart of daily net payments for two periods; each day keeps its own color via categoryColors, the previous period is shown at reduced opacity, and a custom tooltip compares the two periods for the hovered day\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+## Design System Alignment [#design-system-alignment]
+
+### Spacing and Sizing [#spacing-and-sizing]
+
+* **Bar width**: 12px (1.5 grid units)
+* **Bar padding** (multi-series): 4px between bars within a group
+* **Group gap**: Minimum 24px between bar groups
+* **Border radius**: 8px on all bars
+* **Margins**: 20px top/right, 60px bottom/left for axes and labels
+
+### Responsive Behavior [#responsive-behavior]
+
+* **Auto-sizing**: Uses VisX's `useParentSize` hook to adapt to container width
+* **Horizontal scrolling**: When data points exceed available width, the chart becomes horizontally scrollable
+* **Sticky y-axis**: The y-axis remains visible during horizontal scroll
+* **Minimum spacing**: Group gaps never fall below 24px, triggering scroll instead
+
+## Accessibility [#accessibility]
+
+* **Keyboard navigation**: Bar groups are keyboard accessible with `tabIndex={0}` and `role="group"`
+* **Screen reader support**: Semantic HTML structure with proper ARIA attributes
+* **Tooltips**: Show on both hover and focus for keyboard users
+
+## Performance Considerations [#performance-considerations]
+
+### Rendering Strategy [#rendering-strategy]
+
+The component uses VisX primitives for optimal SVG rendering:
+
+* **Scales**: VisX's `scaleBand` and `scaleLinear` for efficient coordinate mapping
+* **Grouped rendering**: Bars are rendered in SVG `<Group>` elements for logical organization
+* **Responsive sizing**: `useParentSize` hook provides efficient resize detection with debouncing (15ms)
+
+### Scrolling Strategy [#scrolling-strategy]
+
+* **Vertical charts**: Horizontal scrolling when many data points exceed container width
+* **Horizontal charts**: Vertical scrolling when many categories exceed container height
+* **Sticky axes**: Positioned absolutely to remain visible during scroll
+
+### Recommendations [#recommendations]
+
+* For charts with **many data points** (>20), consider enabling horizontal scroll (default behavior)
+* For **horizontal bar charts**, vertical scrolling is more mobile-friendly than horizontal
+* Use **custom domains** to maintain consistent scales across multiple charts
+* **Tooltips** use absolute positioning and scroll-aware calculations for accurate placement
+
+## Development Status [#development-status]
+
+The BarChart component is in active development. Current focus areas:
+
+* ✅ Single and multi-series support
+* ✅ Vertical and horizontal orientations
+* ✅ Responsive behavior with sticky axes
+* ✅ Interactive tooltips
+* ✅ Custom domains
+* ✅ Design system alignment
+* 🚧 RTL compatibility (axis rendering and spacing refinement)
+* 🚧 Tick mark positioning improvements
+* 🚧 Additional customization options (tick formatting, axis configuration)
+
+## Troubleshooting [#troubleshooting]
+
+### Bars Not Showing [#bars-not-showing]
+
+If bars are not visible:
+
+1. **Check data**: Ensure `series` array has data and `xAccessor`/`yAccessor` return valid values
+2. **Check domains**: Verify `yDomain` (if set) includes your data values
+3. **Check dimensions**: Ensure container has non-zero width and height
+
+### Tooltip Positioning Issues [#tooltip-positioning-issues]
+
+If tooltips appear in the wrong location:
+
+1. **Check scroll position**: The component accounts for horizontal scroll automatically
+2. **Check container**: Ensure the chart container is not transformed or positioned in a complex layout
+3. **Verify event targets**: Tooltips use mouse event coordinates and bar group positions
+
+### Performance Issues [#performance-issues]
+
+For better performance:
+
+1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
+2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
+3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
+
+## Props [#props]
+
+### BarChart [#barchart]
+
+<PropTable />
+
+
+# Gauge Chart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A continuous gauge with a single label.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { GaugeChart } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <GaugeChart value={50} label=\&#x22;50%\&#x22; aria-label=\&#x22;Basic gauge\&#x22; style={{ maxWidth: '200px', margin: 'auto' }} />;\n}&#x22;" />
+
+### Continuous Values [#continuous-values]
+
+Multiple continuous gauges showing different fill percentages.
+
+<Story of="ContinuousExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function ContinuousExample() {\n  const values = [0, 25, 50, 75, 100];\n\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(180px, 1fr))\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22; alignContent=\&#x22;center\&#x22;>\n      {values.map(function renderGauge(v) {\n        return <GaugeChart key={v} value={v} label={`${v}%`} subLabel=\&#x22;Progress\&#x22; aria-label={`Gauge at ${v}%`} />;\n      })}\n    </Grid>\n  );\n}&#x22;" />
+
+### Segmented [#segmented]
+
+Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+
+<Story of="SegmentedExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function SegmentedExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 200px)\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart segments={5} value={0} label=\&#x22;0/5\&#x22; subLabel=\&#x22;Empty\&#x22; aria-label=\&#x22;Gauge with 0 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={2} label=\&#x22;2/5\&#x22; subLabel=\&#x22;Partial\&#x22; aria-label=\&#x22;Gauge with 2 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={5} label=\&#x22;5/5\&#x22; subLabel=\&#x22;Full\&#x22; aria-label=\&#x22;Gauge with 5 of 5 filled\&#x22; />\n      <GaugeChart segments={3} value={1} label=\&#x22;1/3\&#x22; subLabel=\&#x22;Three segments\&#x22; aria-label=\&#x22;Gauge with 1 of 3 filled\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
+
+### With Range Labels [#with-range-labels]
+
+Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+
+<Story of="WithRangeLabelsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function WithRangeLabelsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart\n        value={65}\n        label=\&#x22;65%\&#x22;\n        subLabel=\&#x22;CPU Usage\&#x22;\n        rangeLabel={{ min: 0, max: 100 }}\n        aria-label=\&#x22;CPU usage gauge\&#x22;\n      />\n      <GaugeChart\n        value={3}\n        segments={5}\n        label=\&#x22;3/5\&#x22;\n        subLabel=\&#x22;Risk Level\&#x22;\n        rangeLabel={{ min: 'Low', max: 'High' }}\n        variant=\&#x22;warning\&#x22;\n        aria-label=\&#x22;Risk level gauge\&#x22;\n      />\n    </Grid>\n  );\n}&#x22;" />
+
+### Variants [#variants]
+
+Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
+
+<Story of="VariantsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function VariantsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Default\&#x22; variant=\&#x22;default\&#x22; aria-label=\&#x22;Default variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Success\&#x22; variant=\&#x22;success\&#x22; aria-label=\&#x22;Success variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Warning\&#x22; variant=\&#x22;warning\&#x22; aria-label=\&#x22;Warning variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Critical\&#x22; variant=\&#x22;critical\&#x22; aria-label=\&#x22;Critical variant gauge\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
+
+### Label Type [#label-type]
+
+Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
+
+<Story of="LabelTypeExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function LabelTypeExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={72} label=\&#x22;72%\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with numeric value label\&#x22; />\n      <GaugeChart value={72} label=\&#x22;Good\&#x22; labelType=\&#x22;text\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with text label\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
+
+## Troubleshooting [#troubleshooting]
+
+### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
+
+The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
+
+```tsx
+// ❌ No width constraint — gauge may stretch to full viewport
+<GaugeChart label="50%" value={50} aria-label="Progress" />
+
+// ✅ Parent provides width context
+<div style={{ width: 200 }}>
+  <GaugeChart label="50%" value={50} aria-label="Progress" />
+</div>
+
+// ✅ Or use className for max-width
+<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
+```
+
+### Value Out of Range [#value-out-of-range]
+
+Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
+
+```tsx
+// ✅ Continuous: 0–100
+<GaugeChart label="75%" value={75} aria-label="Score" />
+
+// ✅ Segmented: 0 to segments
+<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
+```
+
+## Props [#props]
+
+### GaugeChart [#gaugechart]
 
 <PropTable />
 
