@@ -24,7 +24,7 @@ export function sizeScaleClassName(size?: ScaleSize) {
 }
 
 export interface SizeProviderProps {
-  /** Size of everything inside. Inherits when omitted. */
+  /** Size of the adopted components inside. Inherits when omitted. */
   size?: ScaleSize;
 
   /** Content to size. */

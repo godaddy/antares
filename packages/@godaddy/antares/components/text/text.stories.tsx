@@ -26,7 +26,7 @@ export const Playground = getStory(PlaygroundExample, {
     size: {
       control: 'select',
       options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
-      description: 'Step on the body ramp. Inherits when omitted'
+      description: 'Step on the body ramp. Follows the size scope when omitted'
     },
     emphasis: {
       control: 'select',

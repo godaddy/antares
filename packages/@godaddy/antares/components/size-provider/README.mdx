@@ -11,7 +11,8 @@ import * as Stories from './size-provider.stories.tsx';
 
 ## Features
 
-- `sm`, `md`, or `lg` for everything inside: text, controls, and default spacing.
+- `sm`, `md`, or `lg` for the adopted components inside (listed below): their text, controls, and
+  default spacing.
 - The nearest scope wins, and nested scopes replace the size rather than compounding it.
 - A component's own `size` prop wins for that component only.
 - Overlays opened inside, such as Modal and Select options, open at the scope's size even though
@@ -19,9 +20,10 @@ import * as Stories from './size-provider.stories.tsx';
 - Renders no element, so it never affects layout. Only Antares components follow it; plain HTML
   keeps its own typography, so put copy in `Text`.
 - Without any scope, components use `md`.
-- Adopted so far by Text, Detail, Heading, Label, Button, TextField, TextLockup, Select, Modal,
-  Drawer, and Popover. Layout spacing props keep their meaning: `gap="md"` is the layout `md` gap
-  in any scope.
+- Adopted so far by Text, Detail, Heading, Label, Button, LinkButton, TextField, NumberField, Select,
+  DatePicker, DateRangePicker, Calendar, TextLockup, Modal, Drawer, Popover, and Tooltip. Other
+  components keep their own size. Layout spacing props keep their meaning: `gap="md"` is the layout
+  `md` gap in any scope.
 
 ## Examples
 
