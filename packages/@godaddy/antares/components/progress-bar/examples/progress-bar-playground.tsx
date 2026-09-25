@@ -1,6 +1,7 @@
 import { ProgressBar, type ProgressBarProps } from '@godaddy/antares';
 
-export interface PlaygroundExampleProps extends Pick<ProgressBarProps, 'size' | 'status' | 'value'> {
+export interface PlaygroundExampleProps
+  extends Pick<ProgressBarProps, 'size' | 'status' | 'value' | 'isIndeterminate'> {
   /** The label for the progress bar. */
   label?: string;
   /** Helper text below the track. */
@@ -11,6 +12,7 @@ export function PlaygroundExample({
   size = 'md',
   status = 'default',
   value = 60,
+  isIndeterminate = false,
   label = 'Progress',
   helperText = 'Notice/helper text'
 }: PlaygroundExampleProps) {
@@ -20,6 +22,7 @@ export function PlaygroundExample({
       size={size}
       status={status}
       value={value}
+      isIndeterminate={isIndeterminate}
       helperText={helperText}
       formatOptions={{ currency: 'USD', style: 'currency' }}
     />
