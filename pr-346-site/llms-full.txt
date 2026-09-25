@@ -467,6 +467,132 @@ Buttons come in small and medium sizes to fit different layout densities.
 <PropTable />
 
 
+# Calendar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
+* Month dropdown plus a typeable year input in the header for fast navigation
+* Keyboard navigable and screen-reader announced
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+* Date-only values via `@internationalized/date`'s `CalendarDate`
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
+import { Calendar } from '@godaddy/antares';
+
+<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
+<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
+```
+
+`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
+
+## Examples [#examples]
+
+### Default [#default]
+
+A single-date calendar.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function DefaultExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultFocusedValue={parseDate('2024-03-01')} />;\n}&#x22;" />
+
+### With value [#with-value]
+
+A calendar with a pre-selected date.
+
+<Story of="CalendarWithValueExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarWithValueExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} />;\n}&#x22;" />
+
+### Range [#range]
+
+Selecting a start and end date.
+
+<Story of="RangeCalendarExample" />
+
+<Source language="tsx" code="&#x22;import { RangeCalendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function RangeCalendarExample() {\n  return (\n    <RangeCalendar\n      aria-label=\&#x22;Trip dates\&#x22;\n      defaultValue={{ start: parseDate('2024-03-10'), end: parseDate('2024-03-15') }}\n    />\n  );\n}&#x22;" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates.
+
+<Story of="CalendarMinMaxExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarMinMaxExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Booking date\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      minValue={parseDate('2024-03-05')}\n      maxValue={parseDate('2024-03-25')}\n    />\n  );\n}&#x22;" />
+
+### Unavailable [#unavailable]
+
+Disabling scattered individual dates with `isDateUnavailable`.
+
+<Story of="CalendarUnavailableExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { isWeekend, parseDate } from '@godaddy/antares/date';\n\nexport function CalendarUnavailableExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Weekday only\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      isDateUnavailable={(date) => isWeekend(date, 'en-US')}\n    />\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+A fully disabled calendar.
+
+<Story of="CalendarDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@internationalized/date';\n\nexport function CalendarDisabledExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} isDisabled />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
+* Focus-visible outline; disabled days are not focusable
+* Out-of-month days render at reduced opacity and are not selectable
+
+## Best Practices [#best-practices]
+
+* Always provide an `aria-label` on standalone calendars.
+* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
+
+## Troubleshooting [#troubleshooting]
+
+* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
+
+## Props [#props]
+
+### Calendar [#calendar]
+
+<PropTable />
+
+### RangeCalendar [#rangecalendar]
+
+<PropTable />
+
+
 # Card
 
 
@@ -638,132 +764,6 @@ To style the Card by state, target `[data-card-selected]` and `[data-disabled]` 
 <PropTable />
 
 ### CardSelectionIndicator [#cardselectionindicator]
-
-<PropTable />
-
-
-# Calendar
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
-* Month dropdown plus a typeable year input in the header for fast navigation
-* Keyboard navigable and screen-reader announced
-* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
-* Date-only values via `@internationalized/date`'s `CalendarDate`
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Working with dates [#working-with-dates]
-
-`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
-
-```tsx
-import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
-import { Calendar } from '@godaddy/antares';
-
-<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
-<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
-```
-
-`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
-
-## Examples [#examples]
-
-### Default [#default]
-
-A single-date calendar.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function DefaultExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultFocusedValue={parseDate('2024-03-01')} />;\n}&#x22;" />
-
-### With value [#with-value]
-
-A calendar with a pre-selected date.
-
-<Story of="CalendarWithValueExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarWithValueExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} />;\n}&#x22;" />
-
-### Range [#range]
-
-Selecting a start and end date.
-
-<Story of="RangeCalendarExample" />
-
-<Source language="tsx" code="&#x22;import { RangeCalendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function RangeCalendarExample() {\n  return (\n    <RangeCalendar\n      aria-label=\&#x22;Trip dates\&#x22;\n      defaultValue={{ start: parseDate('2024-03-10'), end: parseDate('2024-03-15') }}\n    />\n  );\n}&#x22;" />
-
-### Min / Max [#min--max]
-
-Bounding selectable dates.
-
-<Story of="CalendarMinMaxExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarMinMaxExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Booking date\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      minValue={parseDate('2024-03-05')}\n      maxValue={parseDate('2024-03-25')}\n    />\n  );\n}&#x22;" />
-
-### Unavailable [#unavailable]
-
-Disabling scattered individual dates with `isDateUnavailable`.
-
-<Story of="CalendarUnavailableExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { isWeekend, parseDate } from '@godaddy/antares/date';\n\nexport function CalendarUnavailableExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Weekday only\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      isDateUnavailable={(date) => isWeekend(date, 'en-US')}\n    />\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-A fully disabled calendar.
-
-<Story of="CalendarDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@internationalized/date';\n\nexport function CalendarDisabledExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} isDisabled />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
-* Focus-visible outline; disabled days are not focusable
-* Out-of-month days render at reduced opacity and are not selectable
-
-## Best Practices [#best-practices]
-
-* Always provide an `aria-label` on standalone calendars.
-* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
-
-## Troubleshooting [#troubleshooting]
-
-* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
-
-## Props [#props]
-
-### Calendar [#calendar]
-
-<PropTable />
-
-### RangeCalendar [#rangecalendar]
 
 <PropTable />
 
@@ -1207,263 +1207,6 @@ Always provide clear error messages and use appropriate validation states:
 <PropTable />
 
 ### CheckboxIndicator [#checkboxindicator]
-
-<PropTable />
-
-
-# Chip
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* `ChipGroup` + `ChipList` + `Chip` for grouped values, selection, keyboard navigation, and removal
-* Toggle Chips for selecting multiple peer filters
-* Removable Chips for user-added filters and input tokens
-* Shared `sm`, `md`, and `lg` sizes, with optional leading icons
-* `ChipButton` for menu filters and other actions with a Chip-like appearance
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Quick start [#quick-start]
-
-```tsx
-import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';
-
-<ChipGroup>
-  <Label>Location</Label>
-  <ChipList>
-    <Chip id="austin">Austin</Chip>
-    <Chip id="chicago">Chicago</Chip>
-    <Chip id="denver">Denver</Chip>
-  </ChipList>
-</ChipGroup>
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Start with a labeled group of related values. Add selection or removal when
-the group needs interactive behavior.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ChipGroup>\n      <Label>Location</Label>\n      <ChipList>\n        <Chip id=\&#x22;austin\&#x22;>Austin</Chip>\n        <Chip id=\&#x22;chicago\&#x22;>Chicago</Chip>\n        <Chip id=\&#x22;denver\&#x22;>Denver</Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
-
-### Toggle Chips [#toggle-chips]
-
-Use Toggle Chips for multiple peer filters. The Chip render prop supplies
-selection state for the checkmark, while `textValue` names composed content.
-
-<Story of="ToggleChipsExample" />
-
-<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function ToggleChipsExample() {\n  return (\n    <ChipGroup defaultSelectedKeys={['home']} selectionMode=\&#x22;multiple\&#x22;>\n      <Label>Amenities</Label>\n      <ChipList>\n        <Chip id=\&#x22;home\&#x22; textValue=\&#x22;Home\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Icon icon=\&#x22;home\&#x22; />\n              <Text>Home</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n        <Chip id=\&#x22;star\&#x22; textValue=\&#x22;Featured\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Icon icon=\&#x22;star\&#x22; />\n              <Text>Featured</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n        <Chip id=\&#x22;wifi\&#x22; textValue=\&#x22;Wifi\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Text>Wifi</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
-
-### Removable Chips [#removable-chips]
-
-Use Removable Chips for user-added filters and tokens. `ChipGroup` reports
-removed keys through `onRemove`; the owner updates its collection. A
-self-closing `Button` in the `remove` slot supplies each remove control.
-
-<Story of="RemovableChipsExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function RemovableChipsExample() {\n  const [filters, setFilters] = useState([\n    { id: 'austin', name: 'Austin', icon: 'map-pin' as const },\n    { id: 'active', name: 'Active' }\n  ]);\n\n  return (\n    <ChipGroup\n      onRemove={function handleRemove(keys) {\n        setFilters((current) => current.filter((item) => !keys.has(item.id)));\n      }}\n    >\n      <Label>Applied filters</Label>\n      <ChipList items={filters} renderEmptyState={() => 'No filters applied'}>\n        {(item) => (\n          <Chip id={item.id} textValue={item.name}>\n            {'icon' in item && item.icon ? <Icon icon={item.icon} /> : null}\n            <Text>{item.name}</Text>\n            <Button slot=\&#x22;remove\&#x22; />\n          </Chip>\n        )}\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
-
-### Controlled Selection [#controlled-selection]
-
-Use `selectedKeys` and `onSelectionChange` when another part of the page
-needs to own the selected filter state.
-
-<Story of="ControlledSelectionExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Chip, ChipGroup, ChipList, Label, Text } from '@godaddy/antares';\n\nconst options = [\n  { id: 'austin', name: 'Austin' },\n  { id: 'active', name: 'Active' },\n  { id: 'featured', name: 'Featured' }\n];\n\nexport function ControlledSelectionExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set(['austin']));\n\n  return (\n    <>\n      <ChipGroup\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={function handleSelectionChange(keys) {\n          setSelectedKeys(\n            keys === 'all' ? new Set(options.map((option) => option.id)) : new Set([...keys].map(String))\n          );\n        }}\n      >\n        <Label>Filters</Label>\n        <ChipList>\n          {options.map((option) => (\n            <Chip key={option.id} id={option.id}>\n              {option.name}\n            </Chip>\n          ))}\n        </ChipList>\n      </ChipGroup>\n      <Text>Selected: {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}</Text>\n    </>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Compare the supported `sm`, `md`, and `lg` sizes. Set `size` on `ChipGroup`
-so every Chip inherits one consistent size.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Flex, Label } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n      {sizes.map((size) => (\n        <ChipGroup key={size} size={size}>\n          <Label>Topics ({size})</Label>\n          <ChipList>\n            <Chip id=\&#x22;design\&#x22;>Design</Chip>\n            <Chip id=\&#x22;development\&#x22;>Development</Chip>\n            <Chip id=\&#x22;research\&#x22;>Research</Chip>\n          </ChipList>\n        </ChipGroup>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Disable individual options with `disabledKeys` when some values are unavailable.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <>\n      <ChipGroup selectionMode=\&#x22;multiple\&#x22; disabledKeys={['a', 'b']} defaultSelectedKeys={['a']}>\n        <Label>Unavailable options</Label>\n        <ChipList>\n          <Chip id=\&#x22;a\&#x22;>Disabled option</Chip>\n          <Chip id=\&#x22;b\&#x22; textValue=\&#x22;Also unavailable\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n            <Text>Also unavailable</Text>\n          </Chip>\n        </ChipList>\n      </ChipGroup>\n      <ChipGroup selectionMode=\&#x22;multiple\&#x22; disabledKeys={['off']} defaultSelectedKeys={['on']}>\n        <Label>Mixed availability</Label>\n        <ChipList>\n          <Chip id=\&#x22;on\&#x22;>Enabled</Chip>\n          <Chip id=\&#x22;off\&#x22;>Disabled option</Chip>\n        </ChipList>\n      </ChipGroup>\n    </>\n  );\n}&#x22;" />
-
-### Truncation [#truncation]
-
-By default, long labels truncate visually when space is constrained, while
-the complete accessible value remains available.
-
-<Story of="TruncationExample" />
-
-<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';\n\nexport function TruncationExample() {\n  return (\n    <ChipGroup>\n      <Label>Filters</Label>\n      <ChipList>\n        <Chip id=\&#x22;category\&#x22;>Category</Chip>\n        <Chip id=\&#x22;long\&#x22;>Discounted price up to $20,000</Chip>\n        <Chip id=\&#x22;status\&#x22;>Active</Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
-
-### Empty State [#empty-state]
-
-Give an empty collection useful guidance, then let the user add the first
-value. Removable items continue to be owned by the collection.
-
-<Story of="EmptyStateExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Chip, ChipGroup, ChipList, Flex, Text } from '@godaddy/antares';\n\nconst newsCategory = { id: 'news', name: 'News' };\n\nexport function EmptyStateExample() {\n  const [categories, setCategories] = useState<Set<typeof newsCategory>>(new Set());\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ChipGroup\n        aria-label=\&#x22;Categories\&#x22;\n        onRemove={function handleRemove(keys) {\n          setCategories((current) => new Set([...current].filter((category) => !keys.has(category.id))));\n        }}\n      >\n        <ChipList items={categories} renderEmptyState={() => 'No categories yet'}>\n          {(category) => (\n            <Chip id={category.id} textValue={category.name}>\n              {category.name}\n              <Button slot=\&#x22;remove\&#x22; />\n            </Chip>\n          )}\n        </ChipList>\n        <Text slot=\&#x22;description\&#x22;>Add a category to get started.</Text>\n      </ChipGroup>\n      <Button\n        onPress={function addCategory() {\n          setCategories((current) => new Set(current).add(newsCategory));\n        }}\n      >\n        Add category\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
-
-### Menu filter trigger [#menu-filter-trigger]
-
-Use `ChipButton` for Chip presentation without collection semantics.
-`MenuTrigger` continues to own open state, focus, and keyboard behavior.
-
-<Story of="MenuFilterTriggerExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ChipButton, Icon, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';\n\nexport function MenuFilterTriggerExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <MenuTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n      <ChipButton>\n        <Text>Location</Text>\n        <Icon icon=\&#x22;chevron-down\&#x22; flip={isOpen ? 'vertical' : undefined} />\n      </ChipButton>\n      <Menu aria-label=\&#x22;Location\&#x22;>\n        <MenuItem id=\&#x22;austin\&#x22;>Austin</MenuItem>\n        <MenuItem id=\&#x22;chicago\&#x22;>Chicago</MenuItem>\n        <MenuItem id=\&#x22;denver\&#x22;>Denver</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-### Content [#content]
-
-Use a string for a simple label. For icons or other composed content, wrap the
-visible label in `Text` and provide `textValue` for the accessible name. See
-**Toggle Chips** and **Removable Chips** above.
-
-### Selection and removal [#selection-and-removal]
-
-`ChipGroup` owns selection and removal behavior. Use a Chip render prop for
-state-dependent content, and `Button` with `slot="remove"` together with
-`onRemove` for removable items. See **Toggle Chips** and **Removable Chips**.
-
-### Layout and sizing [#layout-and-sizing]
-
-Set `size` on `ChipGroup` to keep a collection consistent. `ChipList` wraps by
-default and accepts layout props for custom arrangements. See **Sizes**.
-
-### Button composition [#button-composition]
-
-Use `ChipButton` when Chip presentation is needed without collection semantics.
-Compose it with components such as `MenuTrigger`; those components continue to
-own open state, focus, and keyboard behavior. See **Menu filter trigger**.
-
-## Accessibility [#accessibility]
-
-* Use `Label` or `aria-label` to name the `ChipGroup`; this names the collection,
-  not its individual Chips.
-* Give each Chip a visible label, `textValue`, or `aria-label`. Use `textValue`
-  when a Chip contains icons, composed content, or a render prop.
-* Use a descriptive group label so removal actions can be announced clearly.
-* Keep the visible label and the accessible value synchronized.
-* `ChipButton` is a real button and exposes menu state through `MenuTrigger`; provide an accessible name when the visible content is incomplete.
-
-## Best Practices [#best-practices]
-
-* Keep labels concise and let them truncate only when the available width requires it.
-* Prefer groups of three or more related values.
-* Keep one size per group.
-* Let `ChipList` wrap instead of forcing a single horizontal line.
-* Use removable Chips for user-added filters and tokens.
-* For menu filters, use `ChipButton` with `MenuTrigger` and provide the chevron explicitly.
-
-## Troubleshooting [#troubleshooting]
-
-### A ChipGroup has no accessible name [#a-chipgroup-has-no-accessible-name]
-
-Add a visible `Label` to the group or provide `aria-label`. For an individual Chip
-with composed content, provide a visible label, `textValue`, or `aria-label`.
-
-### The remove action does not update the UI [#the-remove-action-does-not-update-the-ui]
-
-Add `onRemove` to `ChipGroup` and remove the returned keys from the collection
-owned by your application.
-
-### A composed label is not truncating correctly [#a-composed-label-is-not-truncating-correctly]
-
-Keep the label in `Text`, preserve `textValue`, and constrain the available width
-of the surrounding layout. Truncation is visual; the complete accessible value
-should remain available.
-
-### The menu trigger does not look like a Chip [#the-menu-trigger-does-not-look-like-a-chip]
-
-Use `ChipButton` inside `MenuTrigger`, include the visible value, and add a
-trailing chevron to communicate that the control opens a menu.
-
-## Props [#props]
-
-```tsx
-<ChipGroup>
-  <Label />
-  <ChipList>
-    <Chip>
-      <Icon />
-      <Text />
-      <Button slot="remove" />
-    </Chip>
-  </ChipList>
-  <Text slot="description" />
-  <Text slot="errorMessage" />
-</ChipGroup>
-```
-
-For a menu trigger, the button and menu are composed as siblings inside
-`MenuTrigger`:
-
-```tsx
-<MenuTrigger>
-  <ChipButton>
-    <Text />
-    <Icon />
-  </ChipButton>
-  <Menu>
-    <MenuItem />
-    {/* ... */}
-  </Menu>
-</MenuTrigger>
-```
-
-### Chip [#chip]
-
-<PropTable />
-
-### ChipGroup [#chipgroup]
-
-<PropTable />
-
-### ChipList [#chiplist]
-
-<PropTable />
-
-### ChipButton [#chipbutton]
 
 <PropTable />
 
@@ -2011,47 +1754,6 @@ FieldError renders when the field is invalid.
 <PropTable />
 
 
-# Heading
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders `h1`-`h6` from the `level` prop (default `3`).
-* `slot="title"` inside a `Modal` or `Dialog` sets the accessible name.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-`Heading` renders a semantic `h1`-`h6` element via the `level` prop.
-Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### Heading [#heading]
-
-<PropTable />
-
-
 # FileTrigger
 
 
@@ -2110,6 +1812,304 @@ Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow m
 ## Props [#props]
 
 ### FileTrigger [#filetrigger]
+
+<PropTable />
+
+
+# Chip
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* `ChipGroup` + `ChipList` + `Chip` for grouped values, selection, keyboard navigation, and removal
+* Toggle Chips for selecting multiple peer filters
+* Removable Chips for user-added filters and input tokens
+* Shared `sm`, `md`, and `lg` sizes, with optional leading icons
+* `ChipButton` for menu filters and other actions with a Chip-like appearance
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Quick start [#quick-start]
+
+```tsx
+import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';
+
+<ChipGroup>
+  <Label>Location</Label>
+  <ChipList>
+    <Chip id="austin">Austin</Chip>
+    <Chip id="chicago">Chicago</Chip>
+    <Chip id="denver">Denver</Chip>
+  </ChipList>
+</ChipGroup>
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Start with a labeled group of related values. Add selection or removal when
+the group needs interactive behavior.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ChipGroup>\n      <Label>Location</Label>\n      <ChipList>\n        <Chip id=\&#x22;austin\&#x22;>Austin</Chip>\n        <Chip id=\&#x22;chicago\&#x22;>Chicago</Chip>\n        <Chip id=\&#x22;denver\&#x22;>Denver</Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
+
+### Toggle Chips [#toggle-chips]
+
+Use Toggle Chips for multiple peer filters. The Chip render prop supplies
+selection state for the checkmark, while `textValue` names composed content.
+
+<Story of="ToggleChipsExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function ToggleChipsExample() {\n  return (\n    <ChipGroup defaultSelectedKeys={['home']} selectionMode=\&#x22;multiple\&#x22;>\n      <Label>Amenities</Label>\n      <ChipList>\n        <Chip id=\&#x22;home\&#x22; textValue=\&#x22;Home\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Icon icon=\&#x22;home\&#x22; />\n              <Text>Home</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n        <Chip id=\&#x22;star\&#x22; textValue=\&#x22;Featured\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Icon icon=\&#x22;star\&#x22; />\n              <Text>Featured</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n        <Chip id=\&#x22;wifi\&#x22; textValue=\&#x22;Wifi\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Text>Wifi</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
+
+### Removable Chips [#removable-chips]
+
+Use Removable Chips for user-added filters and tokens. `ChipGroup` reports
+removed keys through `onRemove`; the owner updates its collection. A
+self-closing `Button` in the `remove` slot supplies each remove control.
+
+<Story of="RemovableChipsExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function RemovableChipsExample() {\n  const [filters, setFilters] = useState([\n    { id: 'austin', name: 'Austin', icon: 'map-pin' as const },\n    { id: 'active', name: 'Active' }\n  ]);\n\n  return (\n    <ChipGroup\n      onRemove={function handleRemove(keys) {\n        setFilters((current) => current.filter((item) => !keys.has(item.id)));\n      }}\n    >\n      <Label>Applied filters</Label>\n      <ChipList items={filters} renderEmptyState={() => 'No filters applied'}>\n        {(item) => (\n          <Chip id={item.id} textValue={item.name}>\n            {'icon' in item && item.icon ? <Icon icon={item.icon} /> : null}\n            <Text>{item.name}</Text>\n            <Button slot=\&#x22;remove\&#x22; />\n          </Chip>\n        )}\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
+
+### Controlled Selection [#controlled-selection]
+
+Use `selectedKeys` and `onSelectionChange` when another part of the page
+needs to own the selected filter state.
+
+<Story of="ControlledSelectionExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Chip, ChipGroup, ChipList, Label, Text } from '@godaddy/antares';\n\nconst options = [\n  { id: 'austin', name: 'Austin' },\n  { id: 'active', name: 'Active' },\n  { id: 'featured', name: 'Featured' }\n];\n\nexport function ControlledSelectionExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set(['austin']));\n\n  return (\n    <>\n      <ChipGroup\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={function handleSelectionChange(keys) {\n          setSelectedKeys(\n            keys === 'all' ? new Set(options.map((option) => option.id)) : new Set([...keys].map(String))\n          );\n        }}\n      >\n        <Label>Filters</Label>\n        <ChipList>\n          {options.map((option) => (\n            <Chip key={option.id} id={option.id}>\n              {option.name}\n            </Chip>\n          ))}\n        </ChipList>\n      </ChipGroup>\n      <Text>Selected: {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}</Text>\n    </>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Compare the supported `sm`, `md`, and `lg` sizes. Set `size` on `ChipGroup`
+so every Chip inherits one consistent size.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Flex, Label } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n      {sizes.map((size) => (\n        <ChipGroup key={size} size={size}>\n          <Label>Topics ({size})</Label>\n          <ChipList>\n            <Chip id=\&#x22;design\&#x22;>Design</Chip>\n            <Chip id=\&#x22;development\&#x22;>Development</Chip>\n            <Chip id=\&#x22;research\&#x22;>Research</Chip>\n          </ChipList>\n        </ChipGroup>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Disable individual options with `disabledKeys` when some values are unavailable.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <>\n      <ChipGroup selectionMode=\&#x22;multiple\&#x22; disabledKeys={['a', 'b']} defaultSelectedKeys={['a']}>\n        <Label>Unavailable options</Label>\n        <ChipList>\n          <Chip id=\&#x22;a\&#x22;>Disabled option</Chip>\n          <Chip id=\&#x22;b\&#x22; textValue=\&#x22;Also unavailable\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n            <Text>Also unavailable</Text>\n          </Chip>\n        </ChipList>\n      </ChipGroup>\n      <ChipGroup selectionMode=\&#x22;multiple\&#x22; disabledKeys={['off']} defaultSelectedKeys={['on']}>\n        <Label>Mixed availability</Label>\n        <ChipList>\n          <Chip id=\&#x22;on\&#x22;>Enabled</Chip>\n          <Chip id=\&#x22;off\&#x22;>Disabled option</Chip>\n        </ChipList>\n      </ChipGroup>\n    </>\n  );\n}&#x22;" />
+
+### Truncation [#truncation]
+
+By default, long labels truncate visually when space is constrained, while
+the complete accessible value remains available.
+
+<Story of="TruncationExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';\n\nexport function TruncationExample() {\n  return (\n    <ChipGroup>\n      <Label>Filters</Label>\n      <ChipList>\n        <Chip id=\&#x22;category\&#x22;>Category</Chip>\n        <Chip id=\&#x22;long\&#x22;>Discounted price up to $20,000</Chip>\n        <Chip id=\&#x22;status\&#x22;>Active</Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
+
+### Empty State [#empty-state]
+
+Give an empty collection useful guidance, then let the user add the first
+value. Removable items continue to be owned by the collection.
+
+<Story of="EmptyStateExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Chip, ChipGroup, ChipList, Flex, Text } from '@godaddy/antares';\n\nconst newsCategory = { id: 'news', name: 'News' };\n\nexport function EmptyStateExample() {\n  const [categories, setCategories] = useState<Set<typeof newsCategory>>(new Set());\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ChipGroup\n        aria-label=\&#x22;Categories\&#x22;\n        onRemove={function handleRemove(keys) {\n          setCategories((current) => new Set([...current].filter((category) => !keys.has(category.id))));\n        }}\n      >\n        <ChipList items={categories} renderEmptyState={() => 'No categories yet'}>\n          {(category) => (\n            <Chip id={category.id} textValue={category.name}>\n              {category.name}\n              <Button slot=\&#x22;remove\&#x22; />\n            </Chip>\n          )}\n        </ChipList>\n        <Text slot=\&#x22;description\&#x22;>Add a category to get started.</Text>\n      </ChipGroup>\n      <Button\n        onPress={function addCategory() {\n          setCategories((current) => new Set(current).add(newsCategory));\n        }}\n      >\n        Add category\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
+
+### Menu filter trigger [#menu-filter-trigger]
+
+Use `ChipButton` for Chip presentation without collection semantics.
+`MenuTrigger` continues to own open state, focus, and keyboard behavior.
+
+<Story of="MenuFilterTriggerExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ChipButton, Icon, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';\n\nexport function MenuFilterTriggerExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <MenuTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n      <ChipButton>\n        <Text>Location</Text>\n        <Icon icon=\&#x22;chevron-down\&#x22; flip={isOpen ? 'vertical' : undefined} />\n      </ChipButton>\n      <Menu aria-label=\&#x22;Location\&#x22;>\n        <MenuItem id=\&#x22;austin\&#x22;>Austin</MenuItem>\n        <MenuItem id=\&#x22;chicago\&#x22;>Chicago</MenuItem>\n        <MenuItem id=\&#x22;denver\&#x22;>Denver</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+### Content [#content]
+
+Use a string for a simple label. For icons or other composed content, wrap the
+visible label in `Text` and provide `textValue` for the accessible name. See
+**Toggle Chips** and **Removable Chips** above.
+
+### Selection and removal [#selection-and-removal]
+
+`ChipGroup` owns selection and removal behavior. Use a Chip render prop for
+state-dependent content, and `Button` with `slot="remove"` together with
+`onRemove` for removable items. See **Toggle Chips** and **Removable Chips**.
+
+### Layout and sizing [#layout-and-sizing]
+
+Set `size` on `ChipGroup` to keep a collection consistent. `ChipList` wraps by
+default and accepts layout props for custom arrangements. See **Sizes**.
+
+### Button composition [#button-composition]
+
+Use `ChipButton` when Chip presentation is needed without collection semantics.
+Compose it with components such as `MenuTrigger`; those components continue to
+own open state, focus, and keyboard behavior. See **Menu filter trigger**.
+
+## Accessibility [#accessibility]
+
+* Use `Label` or `aria-label` to name the `ChipGroup`; this names the collection,
+  not its individual Chips.
+* Give each Chip a visible label, `textValue`, or `aria-label`. Use `textValue`
+  when a Chip contains icons, composed content, or a render prop.
+* Use a descriptive group label so removal actions can be announced clearly.
+* Keep the visible label and the accessible value synchronized.
+* `ChipButton` is a real button and exposes menu state through `MenuTrigger`; provide an accessible name when the visible content is incomplete.
+
+## Best Practices [#best-practices]
+
+* Keep labels concise and let them truncate only when the available width requires it.
+* Prefer groups of three or more related values.
+* Keep one size per group.
+* Let `ChipList` wrap instead of forcing a single horizontal line.
+* Use removable Chips for user-added filters and tokens.
+* For menu filters, use `ChipButton` with `MenuTrigger` and provide the chevron explicitly.
+
+## Troubleshooting [#troubleshooting]
+
+### A ChipGroup has no accessible name [#a-chipgroup-has-no-accessible-name]
+
+Add a visible `Label` to the group or provide `aria-label`. For an individual Chip
+with composed content, provide a visible label, `textValue`, or `aria-label`.
+
+### The remove action does not update the UI [#the-remove-action-does-not-update-the-ui]
+
+Add `onRemove` to `ChipGroup` and remove the returned keys from the collection
+owned by your application.
+
+### A composed label is not truncating correctly [#a-composed-label-is-not-truncating-correctly]
+
+Keep the label in `Text`, preserve `textValue`, and constrain the available width
+of the surrounding layout. Truncation is visual; the complete accessible value
+should remain available.
+
+### The menu trigger does not look like a Chip [#the-menu-trigger-does-not-look-like-a-chip]
+
+Use `ChipButton` inside `MenuTrigger`, include the visible value, and add a
+trailing chevron to communicate that the control opens a menu.
+
+## Props [#props]
+
+```tsx
+<ChipGroup>
+  <Label />
+  <ChipList>
+    <Chip>
+      <Icon />
+      <Text />
+      <Button slot="remove" />
+    </Chip>
+  </ChipList>
+  <Text slot="description" />
+  <Text slot="errorMessage" />
+</ChipGroup>
+```
+
+For a menu trigger, the button and menu are composed as siblings inside
+`MenuTrigger`:
+
+```tsx
+<MenuTrigger>
+  <ChipButton>
+    <Text />
+    <Icon />
+  </ChipButton>
+  <Menu>
+    <MenuItem />
+    {/* ... */}
+  </Menu>
+</MenuTrigger>
+```
+
+### Chip [#chip]
+
+<PropTable />
+
+### ChipGroup [#chipgroup]
+
+<PropTable />
+
+### ChipList [#chiplist]
+
+<PropTable />
+
+### ChipButton [#chipbutton]
+
+<PropTable />
+
+
+# Heading
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders `h1`-`h6` from the `level` prop (default `3`).
+* `slot="title"` inside a `Modal` or `Dialog` sets the accessible name.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+`Heading` renders a semantic `h1`-`h6` element via the `level` prop.
+Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### Heading [#heading]
 
 <PropTable />
 
@@ -4295,6 +4295,147 @@ Negative values are supported. Set a negative `minValue` and ensure every scalar
 Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
 
 
+# Select
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `SelectOptions`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
+* **Trigger and options**: An empty `Button slot="trigger"` renders the selected value and a chevron from the field. `SelectOptions` is the list in the popover the Select opens: it takes `ListBox` props (including `items` with a render function for a dynamic collection) plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `ListBox` yourself to replace the whole overlay
+* **Composed in another field**: Use `variant="control"` to sit inside another field's `Group`, as a country-code select beside a phone `Input`
+* **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
+* **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
+* **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Minimal usage with a `Label`, items, and a placeholder.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Label, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22;>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <Text slot=\&#x22;description\&#x22;>Select your favorite coffee</Text>\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Label, Select, SelectItem, SelectOptions, Text, type SelectKey } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<SelectKey | null>('latte');\n\n  return (\n    <>\n      <Select placeholder=\&#x22;Pick a drink\&#x22; value={value} onChange={setValue}>\n        <Label>Coffee</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n          <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n          <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Text>\n        <strong>Value:</strong> {String(value ?? '(none)')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Multiple [#multiple]
+
+Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
+
+<Story of="MultipleExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Label, Select, SelectItem, SelectOptions, Text, type SelectKey } from '@godaddy/antares';\n\nexport function MultipleExample() {\n  const [value, setValue] = useState<readonly SelectKey[]>(['latte', 'mocha']);\n\n  return (\n    <>\n      <Select placeholder=\&#x22;Pick one or more\&#x22; selectionMode=\&#x22;multiple\&#x22; value={value} onChange={setValue}>\n        <Label>Coffees you like</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n          <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n          <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Text>\n        <strong>Selected:</strong> {value.length === 0 ? '(none)' : value.join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with a `FieldError` for validation feedback.
+
+<Story of="InvalidExample" />
+
+<Source language="tsx" code="&#x22;import { Button, FieldError, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22; isInvalid isRequired>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <FieldError>Please choose a drink</FieldError>\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent interaction.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Select defaultValue=\&#x22;latte\&#x22; isDisabled>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
+
+### Form [#form]
+
+Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
+
+<Story of="FormExample" />
+
+<Source language="tsx" code="&#x22;import { useState, type FormEvent } from 'react';\nimport { Box, Button, FieldError, Flex, Label, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function FormExample() {\n  const [submitted, setSubmitted] = useState<Record<string, string | string[]> | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const data = new FormData(event.currentTarget);\n    const entries: Record<string, string | string[]> = {};\n    for (const [key, value] of data.entries()) {\n      const stringValue = String(value);\n      const existing = entries[key];\n      if (existing === undefined) {\n        entries[key] = stringValue;\n      } else if (Array.isArray(existing)) {\n        entries[key] = [...existing, stringValue];\n      } else {\n        entries[key] = [existing, stringValue];\n      }\n    }\n    setSubmitted(entries);\n  }\n\n  return (\n    <Flex as=\&#x22;form\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; onSubmit={handleSubmit}>\n      <Select name=\&#x22;drink\&#x22; placeholder=\&#x22;Pick a drink\&#x22; isRequired>\n        <Label>Drink</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <FieldError>Please select an item in the list.</FieldError>\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Select name=\&#x22;extras\&#x22; placeholder=\&#x22;Pick any extras\&#x22; selectionMode=\&#x22;multiple\&#x22;>\n        <Label>Extras</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;oat-milk\&#x22;>Oat milk</SelectItem>\n          <SelectItem id=\&#x22;extra-shot\&#x22;>Extra shot</SelectItem>\n          <SelectItem id=\&#x22;vanilla\&#x22;>Vanilla syrup</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Flex gap=\&#x22;sm\&#x22;>\n        <Button type=\&#x22;submit\&#x22;>Submit</Button>\n        <Button type=\&#x22;reset\&#x22; variant=\&#x22;minimal\&#x22; onPress={() => setSubmitted(null)}>\n          Reset\n        </Button>\n      </Flex>\n      {submitted && (\n        <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; rounding=\&#x22;lg\&#x22;>\n          <Text>\n            <strong>Submitted:</strong> {JSON.stringify(submitted)}\n          </Text>\n        </Box>\n      )}\n    </Flex>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Compare the supported `md` and `sm` visual sizes.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Select placeholder=\&#x22;Pick a drink\&#x22;>\n        <Label>Coffee (md)</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Select placeholder=\&#x22;Pick a drink\&#x22; size=\&#x22;sm\&#x22;>\n        <Label>Coffee (sm)</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n    </Flex>\n  );\n}&#x22;" />
+
+### Composed [#composed]
+
+Write the trigger and the overlay yourself instead of composing `SelectOptions`, for full control
+over the popover and the list.
+
+<Story of="ComposedExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  FieldError,\n  Icon,\n  Label,\n  ListBox,\n  Popover,\n  Select,\n  SelectItem,\n  SelectValue,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22;>\n      <Label>Drink</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <SelectValue />\n        <Icon icon=\&#x22;chevron-down\&#x22; />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your favorite drink</Text>\n      <FieldError />\n      <Popover hideArrow>\n        <Content blockPadding=\&#x22;xs\&#x22; inlinePadding=\&#x22;0\&#x22;>\n          <ListBox>\n            <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n            <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n            <SelectItem id=\&#x22;tea\&#x22;>Tea</SelectItem>\n          </ListBox>\n        </Content>\n      </Popover>\n    </Select>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<Select>
+  <Label />
+  <Button slot="trigger" />
+  <Text slot="description" />
+  <SelectOptions>
+    <SelectItem />
+  </SelectOptions>
+  <FieldError />
+</Select>
+```
+
+### Select [#select]
+
+<PropTable />
+
+### SelectOptions [#selectoptions]
+
+<PropTable />
+
+### SelectValue [#selectvalue]
+
+<PropTable />
+
+### SelectItem [#selectitem]
+
+<PropTable />
+
+
 # SegmentedController
 
 
@@ -4446,147 +4587,6 @@ Components automatically add data attributes for styling different states:
 <PropTable />
 
 ### SegmentedControllerItem [#segmentedcontrolleritem]
-
-<PropTable />
-
-
-# Select
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `SelectOptions`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
-* **Trigger and options**: An empty `Button slot="trigger"` renders the selected value and a chevron from the field. `SelectOptions` is the list in the popover the Select opens: it takes `ListBox` props (including `items` with a render function for a dynamic collection) plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `ListBox` yourself to replace the whole overlay
-* **Composed in another field**: Use `variant="control"` to sit inside another field's `Group`, as a country-code select beside a phone `Input`
-* **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
-* **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
-* **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Minimal usage with a `Label`, items, and a placeholder.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Label, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22;>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <Text slot=\&#x22;description\&#x22;>Select your favorite coffee</Text>\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Label, Select, SelectItem, SelectOptions, Text, type SelectKey } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<SelectKey | null>('latte');\n\n  return (\n    <>\n      <Select placeholder=\&#x22;Pick a drink\&#x22; value={value} onChange={setValue}>\n        <Label>Coffee</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n          <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n          <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Text>\n        <strong>Value:</strong> {String(value ?? '(none)')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Multiple [#multiple]
-
-Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
-
-<Story of="MultipleExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Label, Select, SelectItem, SelectOptions, Text, type SelectKey } from '@godaddy/antares';\n\nexport function MultipleExample() {\n  const [value, setValue] = useState<readonly SelectKey[]>(['latte', 'mocha']);\n\n  return (\n    <>\n      <Select placeholder=\&#x22;Pick one or more\&#x22; selectionMode=\&#x22;multiple\&#x22; value={value} onChange={setValue}>\n        <Label>Coffees you like</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n          <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n          <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Text>\n        <strong>Selected:</strong> {value.length === 0 ? '(none)' : value.join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Invalid [#invalid]
-
-Use `isInvalid` with a `FieldError` for validation feedback.
-
-<Story of="InvalidExample" />
-
-<Source language="tsx" code="&#x22;import { Button, FieldError, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22; isInvalid isRequired>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <FieldError>Please choose a drink</FieldError>\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` to prevent interaction.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Select defaultValue=\&#x22;latte\&#x22; isDisabled>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
-
-### Form [#form]
-
-Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
-
-<Story of="FormExample" />
-
-<Source language="tsx" code="&#x22;import { useState, type FormEvent } from 'react';\nimport { Box, Button, FieldError, Flex, Label, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function FormExample() {\n  const [submitted, setSubmitted] = useState<Record<string, string | string[]> | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const data = new FormData(event.currentTarget);\n    const entries: Record<string, string | string[]> = {};\n    for (const [key, value] of data.entries()) {\n      const stringValue = String(value);\n      const existing = entries[key];\n      if (existing === undefined) {\n        entries[key] = stringValue;\n      } else if (Array.isArray(existing)) {\n        entries[key] = [...existing, stringValue];\n      } else {\n        entries[key] = [existing, stringValue];\n      }\n    }\n    setSubmitted(entries);\n  }\n\n  return (\n    <Flex as=\&#x22;form\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; onSubmit={handleSubmit}>\n      <Select name=\&#x22;drink\&#x22; placeholder=\&#x22;Pick a drink\&#x22; isRequired>\n        <Label>Drink</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <FieldError>Please select an item in the list.</FieldError>\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Select name=\&#x22;extras\&#x22; placeholder=\&#x22;Pick any extras\&#x22; selectionMode=\&#x22;multiple\&#x22;>\n        <Label>Extras</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;oat-milk\&#x22;>Oat milk</SelectItem>\n          <SelectItem id=\&#x22;extra-shot\&#x22;>Extra shot</SelectItem>\n          <SelectItem id=\&#x22;vanilla\&#x22;>Vanilla syrup</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Flex gap=\&#x22;sm\&#x22;>\n        <Button type=\&#x22;submit\&#x22;>Submit</Button>\n        <Button type=\&#x22;reset\&#x22; variant=\&#x22;minimal\&#x22; onPress={() => setSubmitted(null)}>\n          Reset\n        </Button>\n      </Flex>\n      {submitted && (\n        <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; rounding=\&#x22;lg\&#x22;>\n          <Text>\n            <strong>Submitted:</strong> {JSON.stringify(submitted)}\n          </Text>\n        </Box>\n      )}\n    </Flex>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Compare the supported `md` and `sm` visual sizes.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Select placeholder=\&#x22;Pick a drink\&#x22;>\n        <Label>Coffee (md)</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Select placeholder=\&#x22;Pick a drink\&#x22; size=\&#x22;sm\&#x22;>\n        <Label>Coffee (sm)</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n    </Flex>\n  );\n}&#x22;" />
-
-### Composed [#composed]
-
-Write the trigger and the overlay yourself instead of composing `SelectOptions`, for full control
-over the popover and the list.
-
-<Story of="ComposedExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  FieldError,\n  Icon,\n  Label,\n  ListBox,\n  Popover,\n  Select,\n  SelectItem,\n  SelectValue,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22;>\n      <Label>Drink</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <SelectValue />\n        <Icon icon=\&#x22;chevron-down\&#x22; />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your favorite drink</Text>\n      <FieldError />\n      <Popover hideArrow>\n        <Content blockPadding=\&#x22;xs\&#x22; inlinePadding=\&#x22;0\&#x22;>\n          <ListBox>\n            <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n            <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n            <SelectItem id=\&#x22;tea\&#x22;>Tea</SelectItem>\n          </ListBox>\n        </Content>\n      </Popover>\n    </Select>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<Select>
-  <Label />
-  <Button slot="trigger" />
-  <Text slot="description" />
-  <SelectOptions>
-    <SelectItem />
-  </SelectOptions>
-  <FieldError />
-</Select>
-```
-
-### Select [#select]
-
-<PropTable />
-
-### SelectOptions [#selectoptions]
-
-<PropTable />
-
-### SelectValue [#selectvalue]
-
-<PropTable />
-
-### SelectItem [#selectitem]
 
 <PropTable />
 
@@ -5281,144 +5281,6 @@ TextArea inside TextField.
 <PropTable />
 
 
-# TextField
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Composable interior**: Compose `Label`, `Input` or `TextArea`, `Text slot="description"`, and `FieldError`. Omitting `Group` leaves the control as a direct field child with box chrome. Use an explicit `Group` for controls or adornments
-* **Adornments**: Fixed text or icons before or after the input (e.g. `$`, `.00`, `px`) are composed inside `Group`, positioned by source order
-* **Controls**: A `Button slot="control"` beside the input is an interactive affix; it picks up field chrome from context
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Multiline**: Compose a `TextArea` instead of an `Input` for multiline entry
-* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Minimal usage: a `Label` and an `Input`.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Input placeholder=\&#x22;Enter your name\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Input, Label, Text, TextField } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState('');\n\n  return (\n    <>\n      <TextField value={value} onChange={setValue}>\n        <Label>Email</Label>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n      <Text>\n        <strong>Value:</strong> {value || '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Invalid [#invalid]
-
-Use `isInvalid` with a `FieldError` for validation feedback.
-
-<Story of="InvalidExample" />
-
-<Source language="tsx" code="&#x22;import { FieldError, Input, Label, TextField } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Input placeholder=\&#x22;you@example.com\&#x22; />\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` to prevent input.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Input, Label, TextField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <TextField defaultValue=\&#x22;Disabled value\&#x22; isDisabled>\n      <Label>Name</Label>\n      <Input placeholder=\&#x22;Enter your name\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
-
-### Adornments [#adornments]
-
-Fixed text before and after the input, such as currency. Leading and trailing content is
-composed inside the `Group` and its position comes from source order.
-
-<Story of="AdornmentsExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Group, Input, Label, Text, TextField } from '@godaddy/antares';\n\nexport function AdornmentsExample() {\n  return (\n    <TextField>\n      <Label>Amount</Label>\n      <Group>\n        <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n          $\n        </Flex>\n        <Input placeholder=\&#x22;0.00\&#x22; />\n        <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingEnd=\&#x22;md\&#x22;>\n          .00\n        </Flex>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Compose fixed text before and after the input (e.g. currency).</Text>\n    </TextField>\n  );\n}&#x22;" />
-
-### Multiline [#multiline]
-
-Compose a `TextArea` instead of an `Input` for multiline entry.
-
-<Story of="MultilineExample" />
-
-<Source language="tsx" code="&#x22;import { Label, TextArea, TextField, type TextFieldProps } from '@godaddy/antares';\n\nexport function MultilineExample({ value }: Pick<TextFieldProps, 'value'> = {}) {\n  return (\n    <TextField value={value}>\n      <Label>Comment</Label>\n      <TextArea placeholder=\&#x22;Enter your comment\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Compare the supported `md` and `sm` visual sizes, plain and with an icon plus control button.
-Set `size` on `TextField` so the input and `Button slot="control"` share the same size.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Group, Icon, Input, Label, TextField } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField>\n        <Label>Email (md)</Label>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n      <TextField size=\&#x22;sm\&#x22;>\n        <Label>Email (sm)</Label>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n\n      <TextField>\n        <Label>Email with icon (md)</Label>\n        <Group>\n          <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n          </Flex>\n          <Input placeholder=\&#x22;Email\&#x22; />\n          <Button aria-label=\&#x22;Verify email address\&#x22; slot=\&#x22;control\&#x22;>\n            Verify\n          </Button>\n        </Group>\n      </TextField>\n\n      <TextField size=\&#x22;sm\&#x22;>\n        <Label>Email with icon (sm)</Label>\n        <Group>\n          <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;sm\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n          </Flex>\n          <Input placeholder=\&#x22;Email\&#x22; />\n          <Button aria-label=\&#x22;Verify email address\&#x22; slot=\&#x22;control\&#x22;>\n            Verify\n          </Button>\n        </Group>\n      </TextField>\n    </Flex>\n  );\n}&#x22;" />
-
-### Controls and icons [#controls-and-icons]
-
-Put a control or an icon beside the input. A `Button slot="control"` is an
-interactive affix; static content is wrapped in a `Flex as="span"` to center it and give it a gutter.
-
-<Story of="ControlsExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Group, Icon, Input, Label, Text, TextField } from '@godaddy/antares';\n\nexport function ControlsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField>\n        <Label>Image</Label>\n        <Group>\n          <Button slot=\&#x22;control\&#x22;>Browse</Button>\n          <Input placeholder=\&#x22;Paste an image URL\&#x22; />\n        </Group>\n      </TextField>\n\n      <TextField>\n        <Label>Email</Label>\n        <Group>\n          <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n          </Flex>\n          <Input placeholder=\&#x22;Email\&#x22; />\n          <Button aria-label=\&#x22;Verify email address\&#x22; slot=\&#x22;control\&#x22;>\n            Verify\n          </Button>\n        </Group>\n        <Text slot=\&#x22;description\&#x22;>Enter your email address</Text>\n      </TextField>\n    </Flex>\n  );\n}&#x22;" />
-
-### Telephone Field [#telephone-field]
-
-Compose a telephone number input paired with a country-code select.
-
-<Story of="TelephoneFieldExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, Select, SelectItem, SelectOptions, Text, TextField } from '@godaddy/antares';\n\nexport function TelephoneFieldExample() {\n  return (\n    <TextField autoComplete=\&#x22;tel-national\&#x22; inputMode=\&#x22;tel\&#x22; type=\&#x22;tel\&#x22;>\n      <Label>Phone number</Label>\n      <Group>\n        <Select aria-label=\&#x22;Country code\&#x22; defaultValue=\&#x22;us\&#x22; variant=\&#x22;control\&#x22;>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>US +1</SelectItem>\n            <SelectItem id=\&#x22;mx\&#x22;>MX +52</SelectItem>\n            <SelectItem id=\&#x22;gb\&#x22;>GB +44</SelectItem>\n          </SelectOptions>\n        </Select>\n        <Input placeholder=\&#x22;555-555-5555\&#x22; />\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>We'll only call about your order.</Text>\n    </TextField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<TextField>
-  <Label />
-  <Input />
-  {/* or <TextArea /> */}
-  {/* or <Group><Input /></Group> for adornments or a control */}
-  <Text slot="description" />
-  <FieldError />
-</TextField>
-```
-
-### TextField [#textfield]
-
-<PropTable />
-
-
 # TextLockup
 
 
@@ -5568,6 +5430,144 @@ growing a prop for it.
 ```
 
 ### TextLockup [#textlockup]
+
+<PropTable />
+
+
+# TextField
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Composable interior**: Compose `Label`, `Input` or `TextArea`, `Text slot="description"`, and `FieldError`. Omitting `Group` leaves the control as a direct field child with box chrome. Use an explicit `Group` for controls or adornments
+* **Adornments**: Fixed text or icons before or after the input (e.g. `$`, `.00`, `px`) are composed inside `Group`, positioned by source order
+* **Controls**: A `Button slot="control"` beside the input is an interactive affix; it picks up field chrome from context
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Multiline**: Compose a `TextArea` instead of an `Input` for multiline entry
+* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Minimal usage: a `Label` and an `Input`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Input placeholder=\&#x22;Enter your name\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Input, Label, Text, TextField } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState('');\n\n  return (\n    <>\n      <TextField value={value} onChange={setValue}>\n        <Label>Email</Label>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n      <Text>\n        <strong>Value:</strong> {value || '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with a `FieldError` for validation feedback.
+
+<Story of="InvalidExample" />
+
+<Source language="tsx" code="&#x22;import { FieldError, Input, Label, TextField } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Input placeholder=\&#x22;you@example.com\&#x22; />\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent input.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Input, Label, TextField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <TextField defaultValue=\&#x22;Disabled value\&#x22; isDisabled>\n      <Label>Name</Label>\n      <Input placeholder=\&#x22;Enter your name\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
+
+### Adornments [#adornments]
+
+Fixed text before and after the input, such as currency. Leading and trailing content is
+composed inside the `Group` and its position comes from source order.
+
+<Story of="AdornmentsExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Group, Input, Label, Text, TextField } from '@godaddy/antares';\n\nexport function AdornmentsExample() {\n  return (\n    <TextField>\n      <Label>Amount</Label>\n      <Group>\n        <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n          $\n        </Flex>\n        <Input placeholder=\&#x22;0.00\&#x22; />\n        <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingEnd=\&#x22;md\&#x22;>\n          .00\n        </Flex>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Compose fixed text before and after the input (e.g. currency).</Text>\n    </TextField>\n  );\n}&#x22;" />
+
+### Multiline [#multiline]
+
+Compose a `TextArea` instead of an `Input` for multiline entry.
+
+<Story of="MultilineExample" />
+
+<Source language="tsx" code="&#x22;import { Label, TextArea, TextField, type TextFieldProps } from '@godaddy/antares';\n\nexport function MultilineExample({ value }: Pick<TextFieldProps, 'value'> = {}) {\n  return (\n    <TextField value={value}>\n      <Label>Comment</Label>\n      <TextArea placeholder=\&#x22;Enter your comment\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Compare the supported `md` and `sm` visual sizes, plain and with an icon plus control button.
+Set `size` on `TextField` so the input and `Button slot="control"` share the same size.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Group, Icon, Input, Label, TextField } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField>\n        <Label>Email (md)</Label>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n      <TextField size=\&#x22;sm\&#x22;>\n        <Label>Email (sm)</Label>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n\n      <TextField>\n        <Label>Email with icon (md)</Label>\n        <Group>\n          <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n          </Flex>\n          <Input placeholder=\&#x22;Email\&#x22; />\n          <Button aria-label=\&#x22;Verify email address\&#x22; slot=\&#x22;control\&#x22;>\n            Verify\n          </Button>\n        </Group>\n      </TextField>\n\n      <TextField size=\&#x22;sm\&#x22;>\n        <Label>Email with icon (sm)</Label>\n        <Group>\n          <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;sm\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n          </Flex>\n          <Input placeholder=\&#x22;Email\&#x22; />\n          <Button aria-label=\&#x22;Verify email address\&#x22; slot=\&#x22;control\&#x22;>\n            Verify\n          </Button>\n        </Group>\n      </TextField>\n    </Flex>\n  );\n}&#x22;" />
+
+### Controls and icons [#controls-and-icons]
+
+Put a control or an icon beside the input. A `Button slot="control"` is an
+interactive affix; static content is wrapped in a `Flex as="span"` to center it and give it a gutter.
+
+<Story of="ControlsExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Group, Icon, Input, Label, Text, TextField } from '@godaddy/antares';\n\nexport function ControlsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField>\n        <Label>Image</Label>\n        <Group>\n          <Button slot=\&#x22;control\&#x22;>Browse</Button>\n          <Input placeholder=\&#x22;Paste an image URL\&#x22; />\n        </Group>\n      </TextField>\n\n      <TextField>\n        <Label>Email</Label>\n        <Group>\n          <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n          </Flex>\n          <Input placeholder=\&#x22;Email\&#x22; />\n          <Button aria-label=\&#x22;Verify email address\&#x22; slot=\&#x22;control\&#x22;>\n            Verify\n          </Button>\n        </Group>\n        <Text slot=\&#x22;description\&#x22;>Enter your email address</Text>\n      </TextField>\n    </Flex>\n  );\n}&#x22;" />
+
+### Telephone Field [#telephone-field]
+
+Compose a telephone number input paired with a country-code select.
+
+<Story of="TelephoneFieldExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, Select, SelectItem, SelectOptions, Text, TextField } from '@godaddy/antares';\n\nexport function TelephoneFieldExample() {\n  return (\n    <TextField autoComplete=\&#x22;tel-national\&#x22; inputMode=\&#x22;tel\&#x22; type=\&#x22;tel\&#x22;>\n      <Label>Phone number</Label>\n      <Group>\n        <Select aria-label=\&#x22;Country code\&#x22; defaultValue=\&#x22;us\&#x22; variant=\&#x22;control\&#x22;>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>US +1</SelectItem>\n            <SelectItem id=\&#x22;mx\&#x22;>MX +52</SelectItem>\n            <SelectItem id=\&#x22;gb\&#x22;>GB +44</SelectItem>\n          </SelectOptions>\n        </Select>\n        <Input placeholder=\&#x22;555-555-5555\&#x22; />\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>We'll only call about your order.</Text>\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<TextField>
+  <Label />
+  <Input />
+  {/* or <TextArea /> */}
+  {/* or <Group><Input /></Group> for adornments or a control */}
+  <Text slot="description" />
+  <FieldError />
+</TextField>
+```
+
+### TextField [#textfield]
 
 <PropTable />
 
@@ -5940,286 +5940,6 @@ To position a tooltip relative to a different focusable element, use the `trigge
 <PropTable />
 
 
-# Bar Chart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Single and multi-series support**: Display one or multiple data series with grouped bars
-* **Vertical and horizontal orientations**: Choose the best layout for your data and use case
-* **Responsive behavior**: Auto-sizing with horizontal scrolling for many data points, sticky axes
-* **Design system alignment**: 8px border radius, 12px bar width (1.5 GU), consistent spacing
-* **Interactive tooltips**: Hover to see exact values, with smart positioning and scroll-awareness
-* **Customizable axes**: Control gridlines, tick marks, axis titles, and tick formatting
-* **Custom domains**: Set explicit x and y ranges for controlled scales across multiple charts
-* **RTL support*&#x2A;: Full right-to-left layout support for international audiences &#x2A;(in development)*
-* **Accessibility ready**: Keyboard navigation, screen reader support, and semantic HTML
-* **TypeScript support**: Fully typed with comprehensive prop interfaces
-* **VisX integration**: Leverages VisX primitives for scales, axes, shapes, and responsive layout
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-You give the chart a `series` array plus `xAccessor` and `yAccessor` so it knows which field is the category and which is the value - this is the everyday setup for one set of vertical bars.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function DefaultExample(props: any) {\n  const series = [\n    {\n      id: 'new-york-series',\n      name: 'New York',\n      data: cityTemperature.slice(0, 10)\n    }\n  ];\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.date}\n      yAccessor={(d: any) => d['New York']}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
-
-### Multi-series [#multi-series]
-
-Pass more than one entry in `series` and the bars group by category, with a legend naming each series. Use it when the comparison between series matters as much as the values themselves.
-
-<Story of="MultiSeriesExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function MultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city, index) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.x}\n      yAccessor={(d: any) => d.y}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      yDomain={[0, 100]}\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      {...props}\n    />\n  );\n}&#x22;" />
-
-### Horizontal single series [#horizontal-single-series]
-
-`orientation="horizontal"` swaps the axes: categories run down the side and values across the bottom. Reach for it when the labels are long or the chart is really a ranking.
-
-<Story of="HorizontalSingleSeriesExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets, type Exoplanets } from '@visx/mock-data';\n\nconst largestExoplanets = [...allExoplanets.filter((d) => d.distance && d.distance > 0)]\n  .sort((a, b) => b.radius - a.radius)\n  .slice(0, 30);\n\nconst series = [{ id: 'radius', name: 'Radius', data: largestExoplanets }];\n\nexport function HorizontalSingleSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: Exoplanets) => d.radius}\n      yAccessor={(d: Exoplanets) => d.name}\n      xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n      yAxisTitle=\&#x22;Exoplanet\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
-
-### Horizontal multi-series [#horizontal-multi-series]
-
-Grouped bars work horizontally too. With many categories the chart scrolls vertically, which is usually easier on a phone than scrolling sideways.
-
-<Story of="HorizontalMultiSeriesExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets } from '@visx/mock-data';\n\ninterface ExoplanetSurveyPoint {\n  name: string;\n  value: number;\n}\n\n// Take 90 real exoplanets and use the first 15 names as the shared category axis.\n// Each series maps a different group of 15 planets' radius onto those same category names,\n// demonstrating multi-series grouped bars with real exoplanet data.\nconst trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);\nconst categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);\n\nfunction toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {\n  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));\n}\n\nconst series = [\n  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },\n  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },\n  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },\n  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }\n];\n\nexport function HorizontalMultiSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: ExoplanetSurveyPoint) => d.value}\n      yAccessor={(d: ExoplanetSurveyPoint) => d.name}\n      xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n      yAxisTitle=\&#x22;Exoplanet\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
-
-### Custom domain [#custom-domain]
-
-`xDomain` and `yDomain` pin down exactly which categories and value range to draw. Here category `F` has no data and still gets an empty slot, and the Y range stays `[0, 40]` even though the largest bar is 30 - handy when several charts need to share a scale.
-
-<Story of="CustomDomainExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function CustomDomainExample() {\n  const data = [\n    { category: 'A', value: 10 },\n    { category: 'B', value: 20 },\n    { category: 'C', value: 15 },\n    { category: 'D', value: 30 },\n    { category: 'E', value: 5 }\n  ];\n  // Example: set xDomain and yDomain explicitly\n  const xDomain = ['A', 'B', 'D', 'E', 'F', 'C']; // F will show as empty slot\n  const yDomain: [number, number] = [0, 40];\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sample Series',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: string; value: number }) => d.category}\n      yAccessor={(d: { category: string; value: number }) => d.value}\n      height={400}\n      width={600}\n      xAxisTitle=\&#x22;Category\&#x22;\n      yAxisTitle=\&#x22;Value\&#x22;\n      xDomain={xDomain}\n      yDomain={yDomain}\n    />\n  );\n}&#x22;" />
-
-### Formatted tick marks [#formatted-tick-marks]
-
-`xTickFormat` and `yTickFormat` shape the axis labels - abbreviated dates on one axis, thousands separators on the other. The functions receive the raw accessor value, so they also cover currency, units, or percentages.
-
-<Story of="FormattedTickMarksExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function FormattedTickMarksExample() {\n  // Example data with Date categories\n  const data = [\n    { category: new Date(2024, 0, 1), value: 1000 }, // Jan 1\n    { category: new Date(2024, 1, 15), value: 2500 }, // Feb 15\n    { category: new Date(2024, 2, 10), value: 1750 }, // Mar 10\n    { category: new Date(2024, 3, 5), value: 3000 }, // Apr 5\n    { category: new Date(2024, 4, 20), value: 1250 } // May 20\n  ];\n\n  // Format x-axis as abbreviated month and day\n  function formatDateTick(value: Date | string | number) {\n    if (value instanceof Date) {\n      return value.toLocaleString('en-US', { month: 'short', day: 'numeric' });\n    }\n    return String(value);\n  }\n\n  // Format y-axis as comma-separated number\n  function formatNumberWithCommas(value: number | string | Date) {\n    if (typeof value === 'number') {\n      return value.toLocaleString();\n    }\n    return String(value);\n  }\n\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sales',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: Date; value: number }) => d.category}\n      yAccessor={(d: { category: Date; value: number }) => d.value}\n      height={600}\n      width={600}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Sales Amount\&#x22;\n      xTickFormat={formatDateTick}\n      yTickFormat={formatNumberWithCommas}\n    />\n  );\n}&#x22;" />
-
-### RTL multi-series [#rtl-multi-series]
-
-The chart follows the current layout direction, which is normally detected from the browser or system settings. In right-to-left it mirrors the axes, bars, and labels; this example forces RTL so you can see it in a left-to-right page. RTL support is still being refined - axis rendering and tick spacing in particular.
-
-<Story of="RTLMultiSeriesExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\nexport function RTLMultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        xAccessor={(d: any) => d.x}\n        yAccessor={(d: any) => d.y}\n        xAxisTitle=\&#x22;Date\&#x22;\n        yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}&#x22;" />
-
-### RTL horizontal multi-series [#rtl-horizontal-multi-series]
-
-Horizontal grouped bars in a right-to-left layout: bars grow from the right edge and the category axis moves to the right side.
-
-<Story of="RTLHorizontalMultiSeriesExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets } from '@visx/mock-data';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\ninterface ExoplanetSurveyPoint {\n  name: string;\n  value: number;\n}\n\nconst trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);\nconst categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);\n\nfunction toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {\n  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));\n}\n\nconst series = [\n  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },\n  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },\n  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },\n  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }\n];\n\nexport function RTLHorizontalMultiSeriesExample(props: any) {\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        orientation=\&#x22;horizontal\&#x22;\n        xAccessor={(d: ExoplanetSurveyPoint) => d.value}\n        yAccessor={(d: ExoplanetSurveyPoint) => d.name}\n        xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n        yAxisTitle=\&#x22;Exoplanet\&#x22;\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        xGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}&#x22;" />
-
-## Design System Alignment [#design-system-alignment]
-
-### Spacing and Sizing [#spacing-and-sizing]
-
-* **Bar width**: 12px (1.5 grid units)
-* **Bar padding** (multi-series): 4px between bars within a group
-* **Group gap**: Minimum 24px between bar groups
-* **Border radius**: 8px on all bars
-* **Margins**: 20px top/right, 60px bottom/left for axes and labels
-
-### Responsive Behavior [#responsive-behavior]
-
-* **Auto-sizing**: Uses VisX's `useParentSize` hook to adapt to container width
-* **Horizontal scrolling**: When data points exceed available width, the chart becomes horizontally scrollable
-* **Sticky y-axis**: The y-axis remains visible during horizontal scroll
-* **Minimum spacing**: Group gaps never fall below 24px, triggering scroll instead
-
-## Accessibility [#accessibility]
-
-* **Keyboard navigation**: Bar groups are keyboard accessible with `tabIndex={0}` and `role="group"`
-* **Screen reader support**: Semantic HTML structure with proper ARIA attributes
-* **Tooltips**: Show on both hover and focus for keyboard users
-
-## Performance Considerations [#performance-considerations]
-
-### Rendering Strategy [#rendering-strategy]
-
-The component uses VisX primitives for optimal SVG rendering:
-
-* **Scales**: VisX's `scaleBand` and `scaleLinear` for efficient coordinate mapping
-* **Grouped rendering**: Bars are rendered in SVG `<Group>` elements for logical organization
-* **Responsive sizing**: `useParentSize` hook provides efficient resize detection with debouncing (15ms)
-
-### Scrolling Strategy [#scrolling-strategy]
-
-* **Vertical charts**: Horizontal scrolling when many data points exceed container width
-* **Horizontal charts**: Vertical scrolling when many categories exceed container height
-* **Sticky axes**: Positioned absolutely to remain visible during scroll
-
-### Recommendations [#recommendations]
-
-* For charts with **many data points** (>20), consider enabling horizontal scroll (default behavior)
-* For **horizontal bar charts**, vertical scrolling is more mobile-friendly than horizontal
-* Use **custom domains** to maintain consistent scales across multiple charts
-* **Tooltips** use absolute positioning and scroll-aware calculations for accurate placement
-
-## Development Status [#development-status]
-
-The BarChart component is in active development. Current focus areas:
-
-* ✅ Single and multi-series support
-* ✅ Vertical and horizontal orientations
-* ✅ Responsive behavior with sticky axes
-* ✅ Interactive tooltips
-* ✅ Custom domains
-* ✅ Design system alignment
-* 🚧 RTL compatibility (axis rendering and spacing refinement)
-* 🚧 Tick mark positioning improvements
-* 🚧 Additional customization options (tick formatting, axis configuration)
-
-## Troubleshooting [#troubleshooting]
-
-### Bars Not Showing [#bars-not-showing]
-
-If bars are not visible:
-
-1. **Check data**: Ensure `series` array has data and `xAccessor`/`yAccessor` return valid values
-2. **Check domains**: Verify `yDomain` (if set) includes your data values
-3. **Check dimensions**: Ensure container has non-zero width and height
-
-### Tooltip Positioning Issues [#tooltip-positioning-issues]
-
-If tooltips appear in the wrong location:
-
-1. **Check scroll position**: The component accounts for horizontal scroll automatically
-2. **Check container**: Ensure the chart container is not transformed or positioned in a complex layout
-3. **Verify event targets**: Tooltips use mouse event coordinates and bar group positions
-
-### Performance Issues [#performance-issues]
-
-For better performance:
-
-1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
-2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
-3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
-
-## Props [#props]
-
-### BarChart [#barchart]
-
-<PropTable />
-
-
-# DonutChart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Story of="SingleSliceExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Story of="LegendLayoutExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Story of="SmallSlicesExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Story of="FormatValueExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### DonutChart [#donutchart]
-
-<PropTable />
-
-
 # Gauge Chart
 
 
@@ -6332,6 +6052,81 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 ## Props [#props]
 
 ### GaugeChart [#gaugechart]
+
+<PropTable />
+
+
+# DonutChart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Story of="SingleSliceExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Story of="LegendLayoutExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Story of="SmallSlicesExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
+
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Story of="FormatValueExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### DonutChart [#donutchart]
 
 <PropTable />
 
@@ -6721,6 +6516,262 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 ## Props [#props]
 
 ### LineChart [#linechart]
+
+<PropTable />
+
+
+# Bar Chart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Single and multi-series support**: Display one or multiple data series with grouped bars
+* **Vertical and horizontal orientations**: Choose the best layout for your data and use case
+* **Responsive behavior**: Auto-sizing with horizontal scrolling for many data points, sticky axes
+* **Design system alignment**: 8px border radius, 12px bar width (1.5 GU), consistent spacing
+* **Interactive tooltips**: Hover to see exact values, with smart positioning and scroll-awareness
+* **Customizable axes**: Control gridlines, tick marks, axis titles, and tick formatting
+* **Custom domains**: Set explicit x and y ranges for controlled scales across multiple charts
+* **RTL support*&#x2A;: Full right-to-left layout support for international audiences &#x2A;(in development)*
+* **Accessibility ready**: Keyboard navigation, screen reader support, and semantic HTML
+* **TypeScript support**: Fully typed with comprehensive prop interfaces
+* **VisX integration**: Leverages VisX primitives for scales, axes, shapes, and responsive layout
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+You give the chart a `series` array plus `xAccessor` and `yAccessor` so it knows which field is the category and which is the value - this is the everyday setup for one set of vertical bars.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function DefaultExample(props: any) {\n  const series = [\n    {\n      id: 'new-york-series',\n      name: 'New York',\n      data: cityTemperature.slice(0, 10)\n    }\n  ];\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.date}\n      yAccessor={(d: any) => d['New York']}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Multi-series [#multi-series]
+
+Pass more than one entry in `series` and the bars group by category, with a legend naming each series. Use it when the comparison between series matters as much as the values themselves.
+
+<Story of="MultiSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function MultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city, index) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.x}\n      yAccessor={(d: any) => d.y}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      yDomain={[0, 100]}\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Horizontal single series [#horizontal-single-series]
+
+`orientation="horizontal"` swaps the axes: categories run down the side and values across the bottom. Reach for it when the labels are long or the chart is really a ranking.
+
+<Story of="HorizontalSingleSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets, type Exoplanets } from '@visx/mock-data';\n\nconst largestExoplanets = [...allExoplanets.filter((d) => d.distance && d.distance > 0)]\n  .sort((a, b) => b.radius - a.radius)\n  .slice(0, 30);\n\nconst series = [{ id: 'radius', name: 'Radius', data: largestExoplanets }];\n\nexport function HorizontalSingleSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: Exoplanets) => d.radius}\n      yAccessor={(d: Exoplanets) => d.name}\n      xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n      yAxisTitle=\&#x22;Exoplanet\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Horizontal multi-series [#horizontal-multi-series]
+
+Grouped bars work horizontally too. With many categories the chart scrolls vertically, which is usually easier on a phone than scrolling sideways.
+
+<Story of="HorizontalMultiSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets } from '@visx/mock-data';\n\ninterface ExoplanetSurveyPoint {\n  name: string;\n  value: number;\n}\n\n// Take 90 real exoplanets and use the first 15 names as the shared category axis.\n// Each series maps a different group of 15 planets' radius onto those same category names,\n// demonstrating multi-series grouped bars with real exoplanet data.\nconst trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);\nconst categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);\n\nfunction toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {\n  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));\n}\n\nconst series = [\n  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },\n  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },\n  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },\n  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }\n];\n\nexport function HorizontalMultiSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: ExoplanetSurveyPoint) => d.value}\n      yAccessor={(d: ExoplanetSurveyPoint) => d.name}\n      xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n      yAxisTitle=\&#x22;Exoplanet\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Custom domain [#custom-domain]
+
+`xDomain` and `yDomain` pin down exactly which categories and value range to draw. Here category `F` has no data and still gets an empty slot, and the Y range stays `[0, 40]` even though the largest bar is 30 - handy when several charts need to share a scale.
+
+<Story of="CustomDomainExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function CustomDomainExample() {\n  const data = [\n    { category: 'A', value: 10 },\n    { category: 'B', value: 20 },\n    { category: 'C', value: 15 },\n    { category: 'D', value: 30 },\n    { category: 'E', value: 5 }\n  ];\n  // Example: set xDomain and yDomain explicitly\n  const xDomain = ['A', 'B', 'D', 'E', 'F', 'C']; // F will show as empty slot\n  const yDomain: [number, number] = [0, 40];\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sample Series',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: string; value: number }) => d.category}\n      yAccessor={(d: { category: string; value: number }) => d.value}\n      height={400}\n      width={600}\n      xAxisTitle=\&#x22;Category\&#x22;\n      yAxisTitle=\&#x22;Value\&#x22;\n      xDomain={xDomain}\n      yDomain={yDomain}\n    />\n  );\n}&#x22;" />
+
+### Formatted tick marks [#formatted-tick-marks]
+
+`xTickFormat` and `yTickFormat` shape the axis labels - abbreviated dates on one axis, thousands separators on the other. The functions receive the raw accessor value, so they also cover currency, units, or percentages.
+
+<Story of="FormattedTickMarksExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function FormattedTickMarksExample() {\n  // Example data with Date categories\n  const data = [\n    { category: new Date(2024, 0, 1), value: 1000 }, // Jan 1\n    { category: new Date(2024, 1, 15), value: 2500 }, // Feb 15\n    { category: new Date(2024, 2, 10), value: 1750 }, // Mar 10\n    { category: new Date(2024, 3, 5), value: 3000 }, // Apr 5\n    { category: new Date(2024, 4, 20), value: 1250 } // May 20\n  ];\n\n  // Format x-axis as abbreviated month and day\n  function formatDateTick(value: Date | string | number) {\n    if (value instanceof Date) {\n      return value.toLocaleString('en-US', { month: 'short', day: 'numeric' });\n    }\n    return String(value);\n  }\n\n  // Format y-axis as comma-separated number\n  function formatNumberWithCommas(value: number | string | Date) {\n    if (typeof value === 'number') {\n      return value.toLocaleString();\n    }\n    return String(value);\n  }\n\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sales',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: Date; value: number }) => d.category}\n      yAccessor={(d: { category: Date; value: number }) => d.value}\n      height={600}\n      width={600}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Sales Amount\&#x22;\n      xTickFormat={formatDateTick}\n      yTickFormat={formatNumberWithCommas}\n    />\n  );\n}&#x22;" />
+
+### RTL multi-series [#rtl-multi-series]
+
+The chart follows the current layout direction, which is normally detected from the browser or system settings. In right-to-left it mirrors the axes, bars, and labels; this example forces RTL so you can see it in a left-to-right page. RTL support is still being refined - axis rendering and tick spacing in particular.
+
+<Story of="RTLMultiSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\nexport function RTLMultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        xAccessor={(d: any) => d.x}\n        yAccessor={(d: any) => d.y}\n        xAxisTitle=\&#x22;Date\&#x22;\n        yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}&#x22;" />
+
+### RTL horizontal multi-series [#rtl-horizontal-multi-series]
+
+Horizontal grouped bars in a right-to-left layout: bars grow from the right edge and the category axis moves to the right side.
+
+<Story of="RTLHorizontalMultiSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets } from '@visx/mock-data';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\ninterface ExoplanetSurveyPoint {\n  name: string;\n  value: number;\n}\n\nconst trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);\nconst categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);\n\nfunction toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {\n  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));\n}\n\nconst series = [\n  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },\n  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },\n  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },\n  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }\n];\n\nexport function RTLHorizontalMultiSeriesExample(props: any) {\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        orientation=\&#x22;horizontal\&#x22;\n        xAccessor={(d: ExoplanetSurveyPoint) => d.value}\n        yAccessor={(d: ExoplanetSurveyPoint) => d.name}\n        xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n        yAxisTitle=\&#x22;Exoplanet\&#x22;\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        xGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}&#x22;" />
+
+### Series colors [#series-colors]
+
+Set `colorIndex` on a series to pin every bar in it to a specific color from the
+shared nine-color palette. Give two series the same `colorIndex` and separate them
+with `opacity` instead of hue — a common way to show a comparison period against the
+current one while keeping a single color identity.
+
+Series can also have sparse data: a `null` value simply omits that bar. Each series
+here drops out of a different date, and one date drops two of them at once, so the bars
+present per group keep changing — yet every series stays the color its `colorIndex`
+pins it to. Colors follow the series, never the bar's position, so the shifting gaps
+never move a color onto the wrong series.
+
+<Story of="SeriesColorsExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nconst ROWS = cityTemperature.slice(0, 10);\n\nexport function SeriesColorsExample(props: any) {\n  const series = [\n    {\n      id: 'this-period',\n      name: 'This period',\n      colorIndex: 1,\n      // Missing its own date (index 2).\n      data: ROWS.map((d, i) => ({ x: d.date, y: i === 2 ? null : parseFloat(d['New York']) }))\n    },\n    {\n      id: 'previous-period',\n      name: 'Previous period',\n      colorIndex: 1,\n      opacity: 0.4,\n      // Missing two dates (index 4 shared with Forecast, and index 9).\n      data: ROWS.map((d, i) => ({ x: d.date, y: i === 4 || i === 9 ? null : parseFloat(d['New York']) * 0.88 }))\n    },\n    {\n      id: 'forecast',\n      name: 'Forecast',\n      colorIndex: 4,\n      // Missing two dates (index 4 shared with Previous period, and index 7).\n      data: ROWS.map((d, i) => ({ x: d.date, y: i === 4 || i === 7 ? null : parseFloat(d['San Francisco']) }))\n    }\n  ];\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: { x: string; y: number | null }) => d.x}\n      yAccessor={(d: { x: string; y: number | null }) => d.y}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      yDomain={[0, 100]}\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      aria-label=\&#x22;Series colors example bar chart\&#x22;\n      desc=\&#x22;Grouped bar chart where two series share one palette color via colorIndex and are separated by reduced opacity, plus a third series in its own color; each series omits a different date and one date omits two, and every series keeps its color wherever its bars appear\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Category colors [#category-colors]
+
+`categoryColors` maps individual category values to palette color indices, overriding
+the series color for just those bars — so a single series can carry a different color
+per category. All three periods here share the same category-to-color map, so each
+channel keeps one color across every period; the comparison periods are dropped to
+reduced opacity.
+
+A category missing from the map falls back to the series' own default color. `Marketplace`
+and `Gift Cards` are both absent from `categoryColors`, so each period draws them in that
+period's default palette color instead of a shared channel color — showing the sparse-map
+fallback alongside the mapped channels.
+
+<Story of="CategoryColorsExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function CategoryColorsExample(props: any) {\n  // Sales channel → palette color index. `Marketplace` and `Gift Cards` are intentionally\n  // omitted so they fall back to each series' default color. Indices start at 3 to keep the\n  // mapped channels distinct from those per-series defaults (0, 1, 2).\n  const categoryColors = {\n    'In Person': 3,\n    'Online Store': 4,\n    'Pay Links': 5,\n    Invoicing: 6,\n    'Virtual Terminal': 7\n  };\n\n  const current = [\n    { channel: 'In Person', amount: 1043.5 },\n    { channel: 'Online Store', amount: 692.12 },\n    { channel: 'Pay Links', amount: 618.4 },\n    { channel: 'Invoicing', amount: 431.8 },\n    { channel: 'Virtual Terminal', amount: 182.25 },\n    { channel: 'Marketplace', amount: 305.6 },\n    { channel: 'Gift Cards', amount: 214.0 }\n  ];\n\n  const previous = [\n    { channel: 'In Person', amount: 918.0 },\n    { channel: 'Online Store', amount: 604.75 },\n    { channel: 'Pay Links', amount: 560.0 },\n    { channel: 'Invoicing', amount: 372.5 },\n    { channel: 'Virtual Terminal', amount: 96.5 },\n    { channel: 'Marketplace', amount: 210.4 },\n    { channel: 'Gift Cards', amount: 168.0 }\n  ];\n\n  const twoYearsAgo = [\n    { channel: 'In Person', amount: 802.0 },\n    { channel: 'Online Store', amount: 540.0 },\n    { channel: 'Pay Links', amount: 498.0 },\n    { channel: 'Invoicing', amount: 300.0 },\n    { channel: 'Virtual Terminal', amount: 60.0 },\n    { channel: 'Marketplace', amount: 150.0 },\n    { channel: 'Gift Cards', amount: 120.0 }\n  ];\n\n  const series = [\n    {\n      id: 'this-period',\n      name: 'This period',\n      categoryColors,\n      data: current.map((d) => ({ x: d.amount, y: d.channel }))\n    },\n    {\n      id: 'previous-period',\n      name: 'Previous period',\n      categoryColors,\n      opacity: 0.6,\n      data: previous.map((d) => ({ x: d.amount, y: d.channel }))\n    },\n    {\n      id: 'two-years-ago',\n      name: 'Two years ago',\n      categoryColors,\n      opacity: 0.3,\n      data: twoYearsAgo.map((d) => ({ x: d.amount, y: d.channel }))\n    }\n  ];\n\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: { x: number; y: string }) => d.x}\n      yAccessor={(d: { x: number; y: string }) => d.y}\n      xTickFormat={(value) => `$${Number(value).toLocaleString()}`}\n      xDomain={[0, 1100]}\n      xGridlines={true}\n      yBaseline={true}\n      legendPosition={null}\n      height={520}\n      aria-label=\&#x22;Payment activity by sales channel\&#x22;\n      desc=\&#x22;Horizontal bar chart of net payments per sales channel for three periods; each mapped channel keeps its own color via categoryColors across all periods and the comparison periods are shown at reduced opacity, while the unmapped Marketplace and Gift Cards channels fall back to each period's default color\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Custom tooltip [#custom-tooltip]
+
+A `renderTooltip` example styled as a period-over-period comparison card, using
+`categoryColors` so each date owns its color. Hovering a bar group shows both years'
+values and the percent change; the tooltip swatch is resolved per category from the
+hovered datum, demonstrating category colors inside a custom tooltip.
+
+<Story of="CustomTooltipPeriodComparisonExample" />
+
+<Source language="tsx" code="&#x22;import {\n  BarChart,\n  type BarChartProps,\n  type BarChartTooltipRenderProps,\n  type BarSeriesConfig,\n  Box,\n  Flex,\n  Text\n} from '@godaddy/antares';\n\n/** One day's net payments; `x` is the date label (category), `y` the amount. */\ninterface DailyDatum {\n  x: string;\n  y: number;\n}\n\n/** Series shape carrying which period it represents via `tooltipMetadata`. */\ninterface PaymentSeries extends BarSeriesConfig<DailyDatum, { period: 'current' | 'previous'; year: number }> {\n  tooltipMetadata: { period: 'current' | 'previous'; year: number };\n}\n\nconst DATES = ['Jan 6', 'Jan 7', 'Jan 8', 'Jan 9', 'Jan 10', 'Jan 11', 'Jan 12'];\n\n// Each date is a category with its own palette color, shared by both periods.\nconst categoryColors = { 'Jan 6': 0, 'Jan 7': 1, 'Jan 8': 2, 'Jan 9': 3, 'Jan 10': 4, 'Jan 11': 5, 'Jan 12': 6 };\n\nconst currentAmounts = [432, 665, 800, 692.12, 700, 555, 318];\nconst previousAmounts = [515, 515, 665, 713.25, 620, 310, 432];\n\nconst formatMoney = (v: number) => `$${v.toFixed(2)}`;\n\n/**\n * Period-over-period tooltip built from `renderTooltip`. The two series (this period /\n * previous period) share a `categoryColors` map, so each date's bars carry their own color;\n * the previous period is dropped to reduced opacity. Hovering a date shows both dated values\n * and the percent change, with the swatch color resolved per category on `current.color`.\n */\nfunction renderPaymentTooltip({ hoveredCategory, series }: BarChartTooltipRenderProps<DailyDatum, PaymentSeries>) {\n  const current = series.find((oneSeries) => oneSeries.tooltipMetadata?.period === 'current');\n  const previous = series.find((oneSeries) => oneSeries.tooltipMetadata?.period === 'previous');\n  if (!current || !previous) {\n    return null;\n  }\n\n  const currentDatum = current.datum;\n  const previousDatum = previous.datum;\n  if (!currentDatum || !previousDatum) {\n    return null;\n  }\n\n  const currentValue = currentDatum.y;\n  const previousValue = previousDatum.y;\n  // Per-category color: the color of the hovered date's bars, resolved by BarChart.\n  const color = current.color;\n  const label = String(hoveredCategory ?? '');\n\n  const change = previousValue === 0 ? 0 : ((currentValue - previousValue) / previousValue) * 100;\n  const isUp = change >= 0;\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; style={{ minWidth: 260 }}>\n      <Text style={{ fontSize: 18 }}>Net Payments</Text>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;2xl\&#x22;>\n          <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n            <Box rounding=\&#x22;full\&#x22; style={{ width: 12, height: 12, backgroundColor: color }} />\n            <Text>{`${label}, ${current.tooltipMetadata?.year}`}</Text>\n          </Flex>\n          <Text>{formatMoney(currentValue)}</Text>\n        </Flex>\n\n        <Flex justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;2xl\&#x22;>\n          <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n            <Box rounding=\&#x22;full\&#x22; style={{ width: 12, height: 12, backgroundColor: color, opacity: previous.opacity }} />\n            <Text>{`${label}, ${previous.tooltipMetadata?.year}`}</Text>\n          </Flex>\n          <Text>{formatMoney(previousValue)}</Text>\n        </Flex>\n      </Flex>\n\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text style={{ color: isUp ? '#2f9e44' : '#e03131' }}>{isUp ? '↑' : '↓'}</Text>\n        <Text style={{ fontWeight: 'bolder' }}>{`${Math.abs(change).toFixed(2)}%`}</Text>\n        <Text style={{ color: '#868e96' }}>compared to previous period</Text>\n      </Flex>\n    </Flex>\n  );\n}\n\nexport function CustomTooltipPeriodComparisonExample(props: Partial<BarChartProps<DailyDatum, PaymentSeries>>) {\n  const series: PaymentSeries[] = [\n    {\n      id: 'this-period',\n      name: 'This period',\n      categoryColors,\n      tooltipMetadata: { period: 'current', year: 2026 },\n      data: DATES.map((date, i) => ({ x: date, y: currentAmounts[i] }))\n    },\n    {\n      id: 'previous-period',\n      name: 'Previous period',\n      categoryColors,\n      opacity: 0.35,\n      tooltipMetadata: { period: 'previous', year: 2025 },\n      data: DATES.map((date, i) => ({ x: date, y: previousAmounts[i] }))\n    }\n  ];\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: DailyDatum) => d.x}\n      yAccessor={(d: DailyDatum) => d.y}\n      yTickFormat={(value) => `$${Number(value).toLocaleString()}`}\n      yDomain={[0, 1000]}\n      yGridlines={true}\n      xBaseline={true}\n      legendPosition={null}\n      height={450}\n      renderTooltip={renderPaymentTooltip}\n      aria-label=\&#x22;Payment activity by day\&#x22;\n      desc=\&#x22;Vertical bar chart of daily net payments for two periods; each day keeps its own color via categoryColors, the previous period is shown at reduced opacity, and a custom tooltip compares the two periods for the hovered day\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+## Design System Alignment [#design-system-alignment]
+
+### Spacing and Sizing [#spacing-and-sizing]
+
+* **Bar width**: 12px (1.5 grid units)
+* **Bar padding** (multi-series): 4px between bars within a group
+* **Group gap**: Minimum 24px between bar groups
+* **Border radius**: 8px on all bars
+* **Margins**: 20px top/right, 60px bottom/left for axes and labels
+
+### Responsive Behavior [#responsive-behavior]
+
+* **Auto-sizing**: Uses VisX's `useParentSize` hook to adapt to container width
+* **Horizontal scrolling**: When data points exceed available width, the chart becomes horizontally scrollable
+* **Sticky y-axis**: The y-axis remains visible during horizontal scroll
+* **Minimum spacing**: Group gaps never fall below 24px, triggering scroll instead
+
+## Accessibility [#accessibility]
+
+* **Keyboard navigation**: Bar groups are keyboard accessible with `tabIndex={0}` and `role="group"`
+* **Screen reader support**: Semantic HTML structure with proper ARIA attributes
+* **Tooltips**: Show on both hover and focus for keyboard users
+
+## Performance Considerations [#performance-considerations]
+
+### Rendering Strategy [#rendering-strategy]
+
+The component uses VisX primitives for optimal SVG rendering:
+
+* **Scales**: VisX's `scaleBand` and `scaleLinear` for efficient coordinate mapping
+* **Grouped rendering**: Bars are rendered in SVG `<Group>` elements for logical organization
+* **Responsive sizing**: `useParentSize` hook provides efficient resize detection with debouncing (15ms)
+
+### Scrolling Strategy [#scrolling-strategy]
+
+* **Vertical charts**: Horizontal scrolling when many data points exceed container width
+* **Horizontal charts**: Vertical scrolling when many categories exceed container height
+* **Sticky axes**: Positioned absolutely to remain visible during scroll
+
+### Recommendations [#recommendations]
+
+* For charts with **many data points** (>20), consider enabling horizontal scroll (default behavior)
+* For **horizontal bar charts**, vertical scrolling is more mobile-friendly than horizontal
+* Use **custom domains** to maintain consistent scales across multiple charts
+* **Tooltips** use absolute positioning and scroll-aware calculations for accurate placement
+
+## Development Status [#development-status]
+
+The BarChart component is in active development. Current focus areas:
+
+* ✅ Single and multi-series support
+* ✅ Vertical and horizontal orientations
+* ✅ Responsive behavior with sticky axes
+* ✅ Interactive tooltips
+* ✅ Custom domains
+* ✅ Design system alignment
+* 🚧 RTL compatibility (axis rendering and spacing refinement)
+* 🚧 Tick mark positioning improvements
+* 🚧 Additional customization options (tick formatting, axis configuration)
+
+## Troubleshooting [#troubleshooting]
+
+### Bars Not Showing [#bars-not-showing]
+
+If bars are not visible:
+
+1. **Check data**: Ensure `series` array has data and `xAccessor`/`yAccessor` return valid values
+2. **Check domains**: Verify `yDomain` (if set) includes your data values
+3. **Check dimensions**: Ensure container has non-zero width and height
+
+### Tooltip Positioning Issues [#tooltip-positioning-issues]
+
+If tooltips appear in the wrong location:
+
+1. **Check scroll position**: The component accounts for horizontal scroll automatically
+2. **Check container**: Ensure the chart container is not transformed or positioned in a complex layout
+3. **Verify event targets**: Tooltips use mouse event coordinates and bar group positions
+
+### Performance Issues [#performance-issues]
+
+For better performance:
+
+1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
+2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
+3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
+
+## Props [#props]
+
+### BarChart [#barchart]
 
 <PropTable />
 
