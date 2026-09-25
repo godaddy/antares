@@ -1,0 +1,122 @@
+.collapsible {
+  --_collapsible-gu: var(--size-space-020, var(--ux-1sbfig8, 4px));
+  --_collapsible-space: calc(var(--_collapsible-gu) * 4);
+  --_collapsible-indicator-padding: calc(var(--_collapsible-gu) * 2);
+  --_collapsible-indicator-size: calc(24px + var(--_collapsible-indicator-padding) * 2);
+  min-inline-size: 0;
+  padding-block: var(--_collapsible-space);
+  color: var(--color-surface-text-base, var(--ux-1leynsm, #111));
+}
+
+.icon {
+  flex: 0 0 auto;
+}
+
+.indicator {
+  box-sizing: content-box;
+  inline-size: 24px;
+  block-size: 24px;
+  flex: 0 0 auto;
+  padding: var(--_collapsible-indicator-padding);
+  transition: transform 150ms cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+:where(.collapsible) > .heading {
+  margin: 0;
+  font-family: var(--ux-p4wcd9, sans-serif);
+  font-size: var(--ux-18ime9a, 1.375rem);
+  font-weight: var(--ux-1a9e4a3, bolder);
+  line-height: var(--ux-1pw8hzd, 1.25);
+  font-variation-settings: var(--ux-3x9eca, "DSPL" 1);
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+
+  & > :where([slot="trigger"]) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    inline-size: 100%;
+    min-inline-size: 0;
+    min-block-size: var(--_collapsible-indicator-size);
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    white-space: normal;
+    text-align: start;
+    gap: var(--_collapsible-space);
+  }
+
+  & > :where([slot="trigger"][data-focus-visible]:not([data-disabled])) {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  & > :where([slot="trigger"][data-disabled]) {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  & > :where([slot="trigger"]) > :where(:not(svg)) {
+    /* Icon renders an SVG; unslotted icons must not receive the flexible text layout. */
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+.collapsible:where([data-expanded]) > :where(.heading) > :where([slot="trigger"]) :where(.indicator) {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator {
+    transition: none;
+  }
+}
+
+.panel {
+  box-sizing: border-box;
+  padding: 0;
+  opacity: 0;
+  block-size: var(--disclosure-panel-height, auto);
+  overflow: clip;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--font-body-family, var(--ux-117cu43, sans-serif));
+  font-size: var(--font-body-size-md, var(--ux-1klxlj4, 1rem));
+  font-weight: var(--font-body-weight, var(--ux-8n6y9x, 400));
+  line-height: var(--font-body-line-height, var(--ux-mgbt9j, 1.5));
+  font-variation-settings: var(--font-body-variation, var(--ux-1i4pt2s, normal));
+
+  transition:
+    block-size 300ms cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 150ms ease;
+
+  :where(.collapsible[data-expanded]) > & {
+    opacity: 1;
+  }
+
+  /* Hide controls immediately during exit; until-found restores native browser search. */
+  :where(.collapsible:not([data-expanded])) > &:where(:not([hidden])) {
+    visibility: hidden;
+  }
+}
+
+.content {
+  --_collapsible-content-space: var(--size-space-070, calc(var(--ux-1sbfig8, 4px) * 4));
+  padding-block-start: var(--_collapsible-content-space);
+  padding-inline: var(--_collapsible-content-space);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    transition: opacity 150ms ease;
+  }
+}

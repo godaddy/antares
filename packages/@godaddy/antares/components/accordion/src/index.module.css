@@ -1,0 +1,8 @@
+.accordion {
+  min-inline-size: 0;
+  color: var(--color-surface-text-base, var(--ux-1leynsm, #111));
+
+  & > :where([data-collapsible]:not(:last-child)) {
+    border-block-end: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));
+  }
+}
