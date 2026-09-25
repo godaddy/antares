@@ -1,0 +1,598 @@
+1:"$Sreact.fragment"
+3:I[994458,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js"],"RootProvider"]
+4:I[339756,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js"],"default"]
+c:I[168027,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js"],"default",1]
+:HL["/antares/pr-353-site/_next/static/chunks/3cy4qhvd8rfoj.css","style"]
+:HL["/antares/pr-353-site/_next/static/chunks/09rmc9fgphn95.css","style"]
+:HL["/antares/pr-353-site/_next/static/chunks/1tlm92oijakp7.css","style"]
+:HL["/antares/pr-353-site/_next/static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-regular.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
+:HL["https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-bold.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
+:HL["https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
+2:T757,@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 700;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-bold.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-bold.woff') format('woff');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 400;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-regular.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-regular.woff') format('woff');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 1 999;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf.woff2') format('woff2-variations');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 1 900;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf2.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf2.woff2') format('woff2-variations');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 1 900;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf3.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf3.woff2') format('woff2-variations');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 1 900;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf4.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf4.woff2') format('woff2-variations');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}a:X
+0:{"P":null,"c":["","docs","components","chart","bar-chart",""],"q":"","i":false,"f":[[["",{"children":["docs",{"children":[["slug","components/chart/bar-chart","oc",[]],{"children":["__PAGE__",{},"$undefined","$undefined",4608]},"$undefined","$undefined",4608]},"$undefined","$undefined",4608]},"$undefined","$undefined",4624],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/antares/pr-353-site/_next/static/chunks/3cy4qhvd8rfoj.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"inter_5972bc34-module__OU16Qa__className","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[[["$","link","https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-regular.woff2",{"rel":"preload","href":"https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-regular.woff2","as":"font","type":"font/woff2","crossOrigin":"anonymous"}],["$","link","https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-bold.woff2",{"rel":"preload","href":"https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-bold.woff2","as":"font","type":"font/woff2","crossOrigin":"anonymous"}],["$","link","https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf.woff2",{"rel":"preload","href":"https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf.woff2","as":"font","type":"font/woff2","crossOrigin":"anonymous"}]],["$","style",null,{"children":"$2"}]]}],["$","body",null,{"className":"flex flex-col min-h-screen","children":["$","$L3",null,{"search":{"options":{"api":"/antares/pr-353-site/api/search","type":"static"}},"children":["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":"$L5","templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$L6","forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}]]}],{"children":["$L7",{"children":["$L8",{"children":["$L9",{},null,false,null]},null,false,"$a"]},null,false,null]},null,false,null],"$Lb",false]],"m":"$undefined","G":["$c",["$Ld"]],"S":true,"h":null,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"VZDEqvrnybC8zhk-8f-Vz"}
+e:I[837457,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js"],"default"]
+f:I[351676,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js"],"LayoutBody"]
+12:I[897367,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js"],"OutletBoundary"]
+13:"$Sreact.suspense"
+15:I[897367,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js"],"ViewportBoundary"]
+17:I[897367,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js"],"MetadataBoundary"]
+5:["$","$Le",null,{}]
+6:[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]]
+7:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/antares/pr-353-site/_next/static/chunks/09rmc9fgphn95.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","link","1",{"rel":"stylesheet","href":"/antares/pr-353-site/_next/static/chunks/1tlm92oijakp7.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","async":true,"nonce":"$undefined"}],["$","script","script-2",{"src":"/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","async":true,"nonce":"$undefined"}],["$","script","script-3",{"src":"/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","async":true,"nonce":"$undefined"}],["$","script","script-4",{"src":"/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","async":true,"nonce":"$undefined"}],["$","script","script-5",{"src":"/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","async":true,"nonce":"$undefined"}],["$","script","script-6",{"src":"/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","async":true,"nonce":"$undefined"}]],["$","$Lf",null,{"tree":{"type":"root","$ref":{"folder":"","meta":"$undefined"},"$id":"root","name":"Docs","description":"$undefined","children":[{"$id":"index.mdx","type":"page","name":"Antares","description":"A collection of accessible, composable React components built on React Aria.","icon":"$undefined","url":"/docs","$ref":"index.mdx"},{"type":"folder","name":"Components","root":"$undefined","defaultOpen":true,"description":"$undefined","collapsible":"$undefined","children":[{"$id":"components/alert.mdx","type":"page","name":"Alert","description":"In-page alerts are non-intrusive notifications within a webpage, providing users with timely information or feedback without disrupting their experience.","icon":"$undefined","url":"/docs/components/alert","$ref":"components/alert.mdx"},{"$id":"components/avatar.mdx","type":"page","name":"Avatar","description":"A visual representation of a user or entity, shown as a photo or a monogram of their initials.","icon":"$undefined","url":"/docs/components/avatar","$ref":"components/avatar.mdx"},{"$id":"components/button.mdx","type":"page","name":"Button","description":"The Button component allows users to initiate actions or submit forms with a single click","icon":"$undefined","url":"/docs/components/button","$ref":"components/button.mdx"},{"$id":"components/calendar.mdx","type":"page","name":"Calendar","description":"Accessible calendar grids for selecting a single date (Calendar) or a date range (RangeCalendar), built on React Aria.","icon":"$undefined","url":"/docs/components/calendar","$ref":"components/calendar.mdx"},{"$id":"components/carousel.mdx","type":"page","name":"Carousel","description":"The Carousel component allows users to cycle through a series of content panels (typically images, cards, or text) in a horizontal or vertical layout. It is commonly used for featured content, product showcases, or testimonials.","icon":"$undefined","url":"/docs/components/carousel","$ref":"components/carousel.mdx"},{"$id":"components/checkbox.mdx","type":"page","name":"Checkbox","description":"Accessible checkbox component for multi-select options with support for indeterminate states, validation, keyboard navigation, and flexible group layouts.","icon":"$undefined","url":"/docs/components/checkbox","$ref":"components/checkbox.mdx"},{"$id":"components/chip.mdx","type":"page","name":"Chip","description":"Grouped pill-shaped items for selecting values and removing user-added filters or tokens.","icon":"$undefined","url":"/docs/components/chip","$ref":"components/chip.mdx"},{"$id":"components/circular-progress.mdx","type":"page","name":"CircularProgress","description":"A circular progress indicator shows determinate or indeterminate progress of an operation over time","icon":"$undefined","url":"/docs/components/circular-progress","$ref":"components/circular-progress.mdx"},{"$id":"components/date-picker.mdx","type":"page","name":"DatePicker","description":"Date fields that display the selected value as a label and open a calendar popover to pick a single date (DatePicker) or a range (DateRangePicker).","icon":"$undefined","url":"/docs/components/date-picker","$ref":"components/date-picker.mdx"},{"$id":"components/drawer.mdx","type":"page","name":"Drawer","description":"An overlay panel that slides in from a screen edge, supporting sidebar navigation and bottom sheets.","icon":"$undefined","url":"/docs/components/drawer","$ref":"components/drawer.mdx"},{"$id":"components/drop-zone.mdx","type":"page","name":"DropZone","description":"A standalone region that accepts drag-and-drop file interactions, rendering a clearly defined target area where users can drop files.","icon":"$undefined","url":"/docs/components/drop-zone","$ref":"components/drop-zone.mdx"},{"$id":"components/field-error.mdx","type":"page","name":"FieldError","description":"Validation message for a field. Renders only when the field is invalid.","icon":"$undefined","url":"/docs/components/field-error","$ref":"components/field-error.mdx"},{"$id":"components/file-trigger.mdx","type":"page","name":"FileTrigger","description":"A style-less primitive that wraps any pressable component and opens the native file picker when it is activated.","icon":"$undefined","url":"/docs/components/file-trigger","$ref":"components/file-trigger.mdx"},{"$id":"components/heading.mdx","type":"page","name":"Heading","description":"Semantic h1-h6 heading. Use slot=\"title\" inside a Modal or Dialog to name the overlay.","icon":"$undefined","url":"/docs/components/heading","$ref":"components/heading.mdx"},{"$id":"components/icon.mdx","type":"page","name":"Icon","description":"Flexible SVG icon component with on-demand loading, automatic caching, and extensive customization options","icon":"$undefined","url":"/docs/components/icon","$ref":"components/icon.mdx"},{"$id":"components/image.mdx","type":"page","name":"Image","description":"A native image element that inherits presentation and behavior from its Antares parent.","icon":"$undefined","url":"/docs/components/image","$ref":"components/image.mdx"},{"$id":"components/inline-drawer.mdx","type":"page","name":"InlineDrawer","description":"An in-flow collapsible built on RAC Disclosure. Compose a trigger and content to make an accordion or a sidebar rail.","icon":"$undefined","url":"/docs/components/inline-drawer","$ref":"components/inline-drawer.mdx"},{"$id":"components/input.mdx","type":"page","name":"Input","description":"Single-line text control for use inside a field.","icon":"$undefined","url":"/docs/components/input","$ref":"components/input.mdx"},{"$id":"components/label.mdx","type":"page","name":"Label","description":"Names a form field. The required asterisk appears when the field is required.","icon":"$undefined","url":"/docs/components/label","$ref":"components/label.mdx"},{"$id":"components/listbox.mdx","type":"page","name":"ListBox","description":"ListBox is a selectable collection of items rendered inline. Use it for non-popover pickers, inline lists, or as a building block for higher-level components like Select.","icon":"$undefined","url":"/docs/components/listbox","$ref":"components/listbox.mdx"},{"$id":"components/menu.mdx","type":"page","name":"Menu","description":"Accessible dropdown menu with grouping, multi-select checkbox items, leading icons, and submenus.","icon":"$undefined","url":"/docs/components/menu","$ref":"components/menu.mdx"},{"$id":"components/metrics-lockup.mdx","type":"page","name":"MetricsLockup","description":"The MetricsLockup component displays a single metric with an optional title, info tooltip, trend indicator, and description.","icon":"$undefined","url":"/docs/components/metrics-lockup","$ref":"components/metrics-lockup.mdx"},{"$id":"components/modal.mdx","type":"page","name":"Modal","description":"The Modal component presents a dialog window over the page that focuses the user's attention on a single task or piece of information.","icon":"$undefined","url":"/docs/components/modal","$ref":"components/modal.mdx"},{"$id":"components/number-field.mdx","type":"page","name":"NumberField","description":"NumberField is a composed numeric input with min/max/step and optional increment/decrement stepper buttons. Use it in forms for quantities, amounts, or percentages.","icon":"$undefined","url":"/docs/components/number-field","$ref":"components/number-field.mdx"},{"$id":"components/pagination.mdx","type":"page","name":"Pagination","description":"A pagination component with prev/next buttons and dot indicators, configurable page limits, and optional visibility of controls and dots","icon":"$undefined","url":"/docs/components/pagination","$ref":"components/pagination.mdx"},{"$id":"components/popover.mdx","type":"page","name":"Popover","description":"The Popover component is an overlay element positioned relative to a trigger element.","icon":"$undefined","url":"/docs/components/popover","$ref":"components/popover.mdx"},{"$id":"components/pressable.mdx","type":"page","name":"Pressable","description":"A wrapperless interaction primitive that adds accessible press behavior to a single child element.","icon":"$undefined","url":"/docs/components/pressable","$ref":"components/pressable.mdx"},{"$id":"components/progress-bar.mdx","type":"page","name":"ProgressBar","description":"A progress bar shows determinate or indeterminate progress of an operation over time","icon":"$undefined","url":"/docs/components/progress-bar","$ref":"components/progress-bar.mdx"},{"$id":"components/progress-steps.mdx","type":"page","name":"ProgressSteps","description":"A multi-step progress indicator for wizard and onboarding flows.","icon":"$undefined","url":"/docs/components/progress-steps","$ref":"components/progress-steps.mdx"},{"$id":"components/radio.mdx","type":"page","name":"Radio","description":"Accessible radio button component for mutually exclusive selections with keyboard navigation, validation states, and flexible layouts.","icon":"$undefined","url":"/docs/components/radio","$ref":"components/radio.mdx"},{"$id":"components/range-field.mdx","type":"page","name":"RangeField","description":"RangeField lets users select one numeric value or a related set of values on a bounded scale.","icon":"$undefined","url":"/docs/components/range-field","$ref":"components/range-field.mdx"},{"$id":"components/segmented-controller.mdx","type":"page","name":"SegmentedController","description":"A segmented controller is a linear set of two or more segments, each of which functions as a button. A segmented controller allows users to select options, switch views, or sort elements.","icon":"$undefined","url":"/docs/components/segmented-controller","$ref":"components/segmented-controller.mdx"},{"$id":"components/select.mdx","type":"page","name":"Select","description":"Select is a dropdown for picking one or more values from a list of options. It renders a labeled trigger and a popover listbox, supports single and multiple selection, and submits naturally inside a form.","icon":"$undefined","url":"/docs/components/select","$ref":"components/select.mdx"},{"$id":"components/structure.mdx","type":"page","name":"Structure primitives","description":"Generic structural containers for composing a component's interior.","icon":"$undefined","url":"/docs/components/structure","$ref":"components/structure.mdx"},{"$id":"components/switch.mdx","type":"page","name":"Switch","description":"A binary toggle control that switches a setting between on and off states, communicated via the WAI-ARIA switch role.","icon":"$undefined","url":"/docs/components/switch","$ref":"components/switch.mdx"},{"$id":"components/tabs.mdx","type":"page","name":"Tabs","description":"Tabs organize peer sections of content and let users switch between them without leaving the page.","icon":"$undefined","url":"/docs/components/tabs","$ref":"components/tabs.mdx"},{"$id":"components/tag.mdx","type":"page","name":"Tag","description":"Non-interactive labels that highlight statuses and categories.","icon":"$undefined","url":"/docs/components/tag","$ref":"components/tag.mdx"},{"$id":"components/text-area.mdx","type":"page","name":"TextArea","description":"Multiline text control for use inside a field.","icon":"$undefined","url":"/docs/components/text-area","$ref":"components/text-area.mdx"},{"$id":"components/text-field.mdx","type":"page","name":"TextField","description":"TextField is a composed single-line or multiline text input. Use it in forms for short answers (email, search, name) or longer content (comments).","icon":"$undefined","url":"/docs/components/text-field","$ref":"components/text-field.mdx"},{"$id":"components/text-lockup.mdx","type":"page","name":"TextLockup","description":"TextLockup stacks an eyebrow, title, and body text as one coordinated type group across six sizes.","icon":"$undefined","url":"/docs/components/text-lockup","$ref":"components/text-lockup.mdx"},{"$id":"components/text.mdx","type":"page","name":"Text","description":"Text component for displaying and formatting text content with alignment and truncation options","icon":"$undefined","url":"/docs/components/text","$ref":"components/text.mdx"},{"$id":"components/toggle-button.mdx","type":"page","name":"ToggleButton","description":"Accessible toggle button component for grouped contextual actions with single or multiple selection, keyboard navigation, and RTL-aware layouts.","icon":"$undefined","url":"/docs/components/toggle-button","$ref":"components/toggle-button.mdx"},{"$id":"components/tooltip.mdx","type":"page","name":"Tooltip","description":"The Tooltip component displays a description of an element on hover or focus.","icon":"$undefined","url":"/docs/components/tooltip","$ref":"components/tooltip.mdx"},{"type":"folder","name":"Chart","root":"$undefined","defaultOpen":"$undefined","description":"$undefined","collapsible":"$undefined","children":[{"$id":"components/chart/bar-chart.mdx","type":"page","name":"Bar Chart","description":"A flexible, accessible, and design-aligned data visualization solution for displaying single or multi-series bar charts.","icon":"$undefined","url":"/docs/components/chart/bar-chart","$ref":"components/chart/bar-chart.mdx"},{"$id":"components/chart/donut-chart.mdx","type":"page","name":"DonutChart","description":"Donut charts are for parts-to-whole comparison—how partial elements add up to a total—shown as a ring so a few categories are easy to compare at a glance.","icon":"$undefined","url":"/docs/components/chart/donut-chart","$ref":"components/chart/donut-chart.mdx"},{"$id":"components/chart/gauge-chart.mdx","type":"page","name":"Gauge Chart","description":"A visual indicator for representing a single quantitative value within a known range, rendered as a semicircle arc in continuous or segmented mode.","icon":"$undefined","url":"/docs/components/chart/gauge-chart","$ref":"components/chart/gauge-chart.mdx"},{"$id":"components/chart/line-chart.mdx","type":"page","name":"LineChart","description":"Line Chart shows how something changes over time or along a continuous scale. It connects data points with lines so people can quickly spot trends, peaks, dips, and patterns.","icon":"$undefined","url":"/docs/components/chart/line-chart","$ref":"components/chart/line-chart.mdx"}],"$id":"components/chart","$ref":{"folder":"components/chart","meta":"$undefined"},"icon":"$undefined"},{"type":"folder","name":"Layout","root":"$undefined","defaultOpen":"$undefined","description":"$undefined","collapsible":"$undefined","children":[{"$id":"components/layout/box.mdx","type":"page","name":"Box","description":"Polymorphic layout component providing consistent spacing, elevation, rounding, and self-alignment","icon":"$undefined","url":"/docs/components/layout/box","$ref":"components/layout/box.mdx"},{"$id":"components/layout/flex.mdx","type":"page","name":"Flex","description":"One-dimensional layout component for arranging children in rows or columns with alignment and spacing control","icon":"$undefined","url":"/docs/components/layout/flex","$ref":"components/layout/flex.mdx"},{"$id":"components/layout/grid.mdx","type":"page","name":"Grid","description":"Two-dimensional CSS Grid layout component for complex grid-based layouts with rows and columns","icon":"$undefined","url":"/docs/components/layout/grid","$ref":"components/layout/grid.mdx"}],"$id":"components/layout","$ref":{"folder":"components/layout","meta":"components/layout/meta.json"},"icon":"$undefined"}],"$id":"components","$ref":{"folder":"components","meta":"components/meta.json"},"icon":"$undefined"}]},"tabs":[],"tabMode":"$undefined","sidebar":{},"nav":{"title":"Antares"},"links":[{"text":"Documentation","url":"/docs","on":"nav"}],"githubUrl":"https://github.com/godaddy/antares","children":"$L10"}]]}]
+8:["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$Le",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}]
+9:["$","$1","c",{"children":["$L11",[["$","script","script-0",{"src":"/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js","async":true,"nonce":"$undefined"}]],["$","$L12",null,{"children":["$","$13",null,{"name":"Next.MetadataOutlet","children":"$@14"}]}]]}]
+b:["$","$1","h",{"children":[null,["$","$L15",null,{"children":"$L16"}],["$","div",null,{"hidden":true,"children":["$","$L17",null,{"children":["$","$13",null,{"name":"Next.Metadata","children":"$L18"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}]
+d:["$","link","0",{"rel":"stylesheet","href":"/antares/pr-353-site/_next/static/chunks/3cy4qhvd8rfoj.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]
+a:C
+10:["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$Le",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]
+19:I[838538,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"DocsPage"]
+1a:I[838538,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"DocsTitle"]
+1b:I[838538,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"DocsDescription"]
+1c:I[748747,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"LLMCopyButton"]
+1d:I[748747,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"ViewOptions"]
+1e:I[838538,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"DocsBody"]
+1f:I[836838,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"Heading"]
+11:["$","$L19",null,{"toc":[{"depth":2,"url":"#features","title":"Features"},{"depth":2,"url":"#installation","title":"Installation"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#default","title":"Default"},{"depth":3,"url":"#multi-series","title":"Multi-series"},{"depth":3,"url":"#horizontal-single-series","title":"Horizontal single series"},{"depth":3,"url":"#horizontal-multi-series","title":"Horizontal multi-series"},{"depth":3,"url":"#custom-domain","title":"Custom domain"},{"depth":3,"url":"#formatted-tick-marks","title":"Formatted tick marks"},{"depth":3,"url":"#rtl-multi-series","title":"RTL multi-series"},{"depth":3,"url":"#rtl-horizontal-multi-series","title":"RTL horizontal multi-series"},{"depth":3,"url":"#series-colors","title":"Series colors"},{"depth":3,"url":"#category-colors","title":"Category colors"},{"depth":3,"url":"#custom-tooltip","title":"Custom tooltip"},{"depth":2,"url":"#design-system-alignment","title":"Design System Alignment"},{"depth":3,"url":"#spacing-and-sizing","title":"Spacing and Sizing"},{"depth":3,"url":"#responsive-behavior","title":"Responsive Behavior"},{"depth":2,"url":"#accessibility","title":"Accessibility"},{"depth":2,"url":"#performance-considerations","title":"Performance Considerations"},{"depth":3,"url":"#rendering-strategy","title":"Rendering Strategy"},{"depth":3,"url":"#scrolling-strategy","title":"Scrolling Strategy"},{"depth":3,"url":"#recommendations","title":"Recommendations"},{"depth":2,"url":"#development-status","title":"Development Status"},{"depth":2,"url":"#troubleshooting","title":"Troubleshooting"},{"depth":3,"url":"#bars-not-showing","title":"Bars Not Showing"},{"depth":3,"url":"#tooltip-positioning-issues","title":"Tooltip Positioning Issues"},{"depth":3,"url":"#performance-issues","title":"Performance Issues"},{"depth":2,"url":"#props","title":"Props"},{"depth":3,"url":"#barchart","title":"BarChart"}],"full":"$undefined","footer":{"enabled":true},"children":[["$","$L1a",null,{"children":"Bar Chart"}],["$","$L1b",null,{"className":"mb-0","children":"A flexible, accessible, and design-aligned data visualization solution for displaying single or multi-series bar charts."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L1c",null,{"markdownUrl":"/docs/components/chart/bar-chart.mdx"}],["$","$L1d",null,{"markdownUrl":"/docs/components/chart/bar-chart.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/chart/bar-chart/README.mdx"}]]}],["$","$L1e",null,{"children":[null,"\n",["$","$L1f",null,{"as":"h2","id":"features","children":"Features"}],"\n",["$","ul",null,{"children":["\n",["$","li",null,{"children":[["$","strong",null,{"children":"Single and multi-series support"}],": Display one or multiple data series with grouped bars"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Vertical and horizontal orientations"}],": Choose the best layout for your data and use case"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Responsive behavior"}],": Auto-sizing with horizontal scrolling for many data points, sticky axes"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Design system alignment"}],": 8px border radius, 12px bar width (1.5 GU), consistent spacing"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Interactive tooltips"}],": Hover to see exact values, with smart positioning and scroll-awareness"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Customizable axes"}],": Control gridlines, tick marks, axis titles, and tick formatting"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Custom domains"}],": Set explicit x and y ranges for controlled scales across multiple charts"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"RTL support"}],": Full right-to-left layout support for international audiences ",["$","em",null,{"children":"(in development)"}]]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Accessibility ready"}],": Keyboard navigation, screen reader support, and semantic HTML"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"TypeScript support"}],": Fully typed with comprehensive prop interfaces"]}],"\n","$L20","\n"]}],"\n","$L21","\n","$L22","\n","$L23","\n","$L24","\n","$L25","\n","$L26","\n","$L27","\n","$L28","\n","$L29","\n","$L2a","\n","$L2b","\n","$L2c","\n","$L2d","\n","$L2e","\n","$L2f","\n","$L30","\n","$L31","\n","$L32","\n","$L33","\n","$L34","\n","$L35","\n","$L36","\n","$L37","\n","$L38","\n","$L39","\n","$L3a","\n","$L3b","\n","$L3c","\n","$L3d","\n","$L3e","\n","$L3f","\n","$L40","\n","$L41","\n","$L42","\n","$L43","\n","$L44","\n","$L45","\n","$L46","\n","$L47","\n","$L48","\n","$L49","\n","$L4a","\n","$L4b","\n","$L4c","\n","$L4d","\n","$L4e","\n","$L4f","\n","$L50","\n","$L51","\n","$L52","\n","$L53","\n","$L54","\n","$L55","\n","$L56","\n","$L57","\n","$L58","\n","$L59","\n","$L5a","\n","$L5b","\n","$L5c","\n","$L5d","\n","$L5e","\n","$L5f","\n","$L60","\n","$L61","\n","$L62","\n","$L63","\n","$L64","\n","$L65","\n","$L66","\n","$L67","\n","$L68","\n","$L69","\n","$L6a","\n","$L6b","\n","$L6c","\n","$L6d","\n","$L6e","\n","$L6f","\n","$L70"]}]]}]
+71:I[195232,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"CodeBlock"]
+72:I[195232,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"Pre"]
+73:I[403113,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"StoryRenderer"]
+74:I[309361,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"DefaultExample"]
+75:I[156905,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"DynamicCodeBlock"]
+76:I[913236,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"MultiSeriesExample"]
+77:I[583658,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"HorizontalSingleSeriesExample"]
+78:I[856626,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"HorizontalMultiSeriesExample"]
+7a:I[807858,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"CustomDomainExample"]
+7b:I[804184,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"FormattedTickMarksExample"]
+7d:I[949482,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"RTLMultiSeriesExample"]
+7e:I[310661,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"RTLHorizontalMultiSeriesExample"]
+80:I[527337,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"SeriesColorsExample"]
+82:I[777298,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"CategoryColorsExample"]
+84:I[382821,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"CustomTooltipPeriodComparisonExample"]
+86:I[403299,["/antares/pr-353-site/_next/static/chunks/1gle8j8-in1iy.js","/antares/pr-353-site/_next/static/chunks/0ldjss06m03xl.js","/antares/pr-353-site/_next/static/chunks/2e-b19gh5wpa1.js","/antares/pr-353-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-353-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-353-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-353-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-353-site/_next/static/chunks/0_raafrbzuib6.js","/antares/pr-353-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-353-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-353-site/_next/static/chunks/2840g_-xb9ehp.js"],"PropTableClient"]
+20:["$","li",null,{"children":[["$","strong",null,{"children":"VisX integration"}],": Leverages VisX primitives for scales, axes, shapes, and responsive layout"]}]
+21:["$","$L1f",null,{"as":"h2","id":"installation","children":"Installation"}]
+22:["$","$L71",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$L72",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npm"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" install"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" --save"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" @godaddy/antares"}]]}]}]}]}]
+23:["$","$L1f",null,{"as":"h2","id":"examples","children":"Examples"}]
+24:["$","$L1f",null,{"as":"h3","id":"default","children":"Default"}]
+25:["$","p",null,{"children":["You give the chart a ",["$","code",null,{"children":"series"}]," array plus ",["$","code",null,{"children":"xAccessor"}]," and ",["$","code",null,{"children":"yAccessor"}]," so it knows which field is the category and which is the value - this is the everyday setup for one set of vertical bars."]}]
+26:["$","$L73",null,{"component":"$74"}]
+27:["$","$L75",null,{"lang":"tsx","code":"import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function DefaultExample(props: any) {\n  const series = [\n    {\n      id: 'new-york-series',\n      name: 'New York',\n      data: cityTemperature.slice(0, 10)\n    }\n  ];\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.date}\n      yAccessor={(d: any) => d['New York']}\n      xAxisTitle=\"Date\"\n      yAxisTitle=\"Temperature (°F)\"\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}"}]
+28:["$","$L1f",null,{"as":"h3","id":"multi-series","children":"Multi-series"}]
+29:["$","p",null,{"children":["Pass more than one entry in ",["$","code",null,{"children":"series"}]," and the bars group by category, with a legend naming each series. Use it when the comparison between series matters as much as the values themselves."]}]
+2a:["$","$L73",null,{"component":"$76"}]
+2b:["$","$L75",null,{"lang":"tsx","code":"import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function MultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city, index) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.x}\n      yAccessor={(d: any) => d.y}\n      xAxisTitle=\"Date\"\n      yAxisTitle=\"Temperature (°F)\"\n      yDomain={[0, 100]}\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      {...props}\n    />\n  );\n}"}]
+2c:["$","$L1f",null,{"as":"h3","id":"horizontal-single-series","children":"Horizontal single series"}]
+2d:["$","p",null,{"children":[["$","code",null,{"children":"orientation=\"horizontal\""}]," swaps the axes: categories run down the side and values across the bottom. Reach for it when the labels are long or the chart is really a ranking."]}]
+2e:["$","$L73",null,{"component":"$77"}]
+2f:["$","$L75",null,{"lang":"tsx","code":"import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets, type Exoplanets } from '@visx/mock-data';\n\nconst largestExoplanets = [...allExoplanets.filter((d) => d.distance && d.distance > 0)]\n  .sort((a, b) => b.radius - a.radius)\n  .slice(0, 30);\n\nconst series = [{ id: 'radius', name: 'Radius', data: largestExoplanets }];\n\nexport function HorizontalSingleSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\"horizontal\"\n      xAccessor={(d: Exoplanets) => d.radius}\n      yAccessor={(d: Exoplanets) => d.name}\n      xAxisTitle=\"Radius (Rj)\"\n      yAxisTitle=\"Exoplanet\"\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}"}]
+30:["$","$L1f",null,{"as":"h3","id":"horizontal-multi-series","children":"Horizontal multi-series"}]
+31:["$","p",null,{"children":"Grouped bars work horizontally too. With many categories the chart scrolls vertically, which is usually easier on a phone than scrolling sideways."}]
+32:["$","$L73",null,{"component":"$78"}]
+79:T654,import { BarChart } from '@godaddy/antares';
+import { exoplanets as allExoplanets } from '@visx/mock-data';
+
+interface ExoplanetSurveyPoint {
+  name: string;
+  value: number;
+}
+
+// Take 90 real exoplanets and use the first 15 names as the shared category axis.
+// Each series maps a different group of 15 planets' radius onto those same category names,
+// demonstrating multi-series grouped bars with real exoplanet data.
+const trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);
+const categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);
+
+function toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {
+  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));
+}
+
+const series = [
+  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },
+  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },
+  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },
+  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }
+];
+
+export function HorizontalMultiSeriesExample(props: any) {
+  return (
+    <BarChart
+      series={series}
+      orientation="horizontal"
+      xAccessor={(d: ExoplanetSurveyPoint) => d.value}
+      yAccessor={(d: ExoplanetSurveyPoint) => d.name}
+      xAxisTitle="Radius (Rj)"
+      yAxisTitle="Exoplanet"
+      xBaseline={true}
+      yBaseline={true}
+      xTickMarks={true}
+      yTickMarks={true}
+      yGridlines={true}
+      xGridlines={true}
+      {...props}
+    />
+  );
+}33:["$","$L75",null,{"lang":"tsx","code":"$79"}]
+34:["$","$L1f",null,{"as":"h3","id":"custom-domain","children":"Custom domain"}]
+35:["$","p",null,{"children":[["$","code",null,{"children":"xDomain"}]," and ",["$","code",null,{"children":"yDomain"}]," pin down exactly which categories and value range to draw. Here category ",["$","code",null,{"children":"F"}]," has no data and still gets an empty slot, and the Y range stays ",["$","code",null,{"children":"[0, 40]"}]," even though the largest bar is 30 - handy when several charts need to share a scale."]}]
+36:["$","$L73",null,{"component":"$7a"}]
+37:["$","$L75",null,{"lang":"tsx","code":"import { BarChart } from '@godaddy/antares';\n\nexport function CustomDomainExample() {\n  const data = [\n    { category: 'A', value: 10 },\n    { category: 'B', value: 20 },\n    { category: 'C', value: 15 },\n    { category: 'D', value: 30 },\n    { category: 'E', value: 5 }\n  ];\n  // Example: set xDomain and yDomain explicitly\n  const xDomain = ['A', 'B', 'D', 'E', 'F', 'C']; // F will show as empty slot\n  const yDomain: [number, number] = [0, 40];\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sample Series',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: string; value: number }) => d.category}\n      yAccessor={(d: { category: string; value: number }) => d.value}\n      height={400}\n      width={600}\n      xAxisTitle=\"Category\"\n      yAxisTitle=\"Value\"\n      xDomain={xDomain}\n      yDomain={yDomain}\n    />\n  );\n}"}]
+38:["$","$L1f",null,{"as":"h3","id":"formatted-tick-marks","children":"Formatted tick marks"}]
+39:["$","p",null,{"children":[["$","code",null,{"children":"xTickFormat"}]," and ",["$","code",null,{"children":"yTickFormat"}]," shape the axis labels - abbreviated dates on one axis, thousands separators on the other. The functions receive the raw accessor value, so they also cover currency, units, or percentages."]}]
+3a:["$","$L73",null,{"component":"$7b"}]
+7c:T57f,import { BarChart } from '@godaddy/antares';
+
+export function FormattedTickMarksExample() {
+  // Example data with Date categories
+  const data = [
+    { category: new Date(2024, 0, 1), value: 1000 }, // Jan 1
+    { category: new Date(2024, 1, 15), value: 2500 }, // Feb 15
+    { category: new Date(2024, 2, 10), value: 1750 }, // Mar 10
+    { category: new Date(2024, 3, 5), value: 3000 }, // Apr 5
+    { category: new Date(2024, 4, 20), value: 1250 } // May 20
+  ];
+
+  // Format x-axis as abbreviated month and day
+  function formatDateTick(value: Date | string | number) {
+    if (value instanceof Date) {
+      return value.toLocaleString('en-US', { month: 'short', day: 'numeric' });
+    }
+    return String(value);
+  }
+
+  // Format y-axis as comma-separated number
+  function formatNumberWithCommas(value: number | string | Date) {
+    if (typeof value === 'number') {
+      return value.toLocaleString();
+    }
+    return String(value);
+  }
+
+  return (
+    <BarChart
+      series={[
+        {
+          id: 'series1',
+          name: 'Sales',
+          data
+        }
+      ]}
+      xAccessor={(d: { category: Date; value: number }) => d.category}
+      yAccessor={(d: { category: Date; value: number }) => d.value}
+      height={600}
+      width={600}
+      xAxisTitle="Date"
+      yAxisTitle="Sales Amount"
+      xTickFormat={formatDateTick}
+      yTickFormat={formatNumberWithCommas}
+    />
+  );
+}3b:["$","$L75",null,{"lang":"tsx","code":"$7c"}]
+3c:["$","$L1f",null,{"as":"h3","id":"rtl-multi-series","children":"RTL multi-series"}]
+3d:["$","p",null,{"children":"The chart follows the current layout direction, which is normally detected from the browser or system settings. In right-to-left it mirrors the axes, bars, and labels; this example forces RTL so you can see it in a left-to-right page. RTL support is still being refined - axis rendering and tick spacing in particular."}]
+3e:["$","$L73",null,{"component":"$7d"}]
+3f:["$","$L75",null,{"lang":"tsx","code":"import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\nexport function RTLMultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        xAccessor={(d: any) => d.x}\n        yAccessor={(d: any) => d.y}\n        xAxisTitle=\"Date\"\n        yAxisTitle=\"Temperature (°F)\"\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}"}]
+40:["$","$L1f",null,{"as":"h3","id":"rtl-horizontal-multi-series","children":"RTL horizontal multi-series"}]
+41:["$","p",null,{"children":"Horizontal grouped bars in a right-to-left layout: bars grow from the right edge and the category axis moves to the right side."}]
+42:["$","$L73",null,{"component":"$7e"}]
+7f:T5e4,import { BarChart } from '@godaddy/antares';
+import { exoplanets as allExoplanets } from '@visx/mock-data';
+import { RTLProvider } from '#utils/rtl-locale-provider.tsx';
+
+interface ExoplanetSurveyPoint {
+  name: string;
+  value: number;
+}
+
+const trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);
+const categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);
+
+function toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {
+  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));
+}
+
+const series = [
+  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },
+  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },
+  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },
+  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }
+];
+
+export function RTLHorizontalMultiSeriesExample(props: any) {
+  return (
+    <RTLProvider>
+      <BarChart
+        series={series}
+        orientation="horizontal"
+        xAccessor={(d: ExoplanetSurveyPoint) => d.value}
+        yAccessor={(d: ExoplanetSurveyPoint) => d.name}
+        xAxisTitle="Radius (Rj)"
+        yAxisTitle="Exoplanet"
+        xBaseline={true}
+        yBaseline={true}
+        xTickMarks={true}
+        yTickMarks={true}
+        yGridlines={true}
+        xGridlines={true}
+        {...props}
+      />
+    </RTLProvider>
+  );
+}43:["$","$L75",null,{"lang":"tsx","code":"$7f"}]
+44:["$","$L1f",null,{"as":"h3","id":"series-colors","children":"Series colors"}]
+45:["$","p",null,{"children":["Set ",["$","code",null,{"children":"colorIndex"}]," on a series to pin every bar in it to a specific color from the\nshared nine-color palette. Give two series the same ",["$","code",null,{"children":"colorIndex"}]," and separate them\nwith ",["$","code",null,{"children":"opacity"}]," instead of hue — a common way to show a comparison period against the\ncurrent one while keeping a single color identity."]}]
+46:["$","p",null,{"children":["Series can also have sparse data: a ",["$","code",null,{"children":"null"}]," value simply omits that bar. Each series\nhere drops out of a different date, and one date drops two of them at once, so the bars\npresent per group keep changing — yet every series stays the color its ",["$","code",null,{"children":"colorIndex"}],"\npins it to. Colors follow the series, never the bar's position, so the shifting gaps\nnever move a color onto the wrong series."]}]
+47:["$","$L73",null,{"component":"$80"}]
+81:T6b6,import { BarChart } from '@godaddy/antares';
+import { cityTemperature } from '@visx/mock-data';
+
+const ROWS = cityTemperature.slice(0, 10);
+
+export function SeriesColorsExample(props: any) {
+  const series = [
+    {
+      id: 'this-period',
+      name: 'This period',
+      colorIndex: 1,
+      // Missing its own date (index 2).
+      data: ROWS.map((d, i) => ({ x: d.date, y: i === 2 ? null : parseFloat(d['New York']) }))
+    },
+    {
+      id: 'previous-period',
+      name: 'Previous period',
+      colorIndex: 1,
+      opacity: 0.4,
+      // Missing two dates (index 4 shared with Forecast, and index 9).
+      data: ROWS.map((d, i) => ({ x: d.date, y: i === 4 || i === 9 ? null : parseFloat(d['New York']) * 0.88 }))
+    },
+    {
+      id: 'forecast',
+      name: 'Forecast',
+      colorIndex: 4,
+      // Missing two dates (index 4 shared with Previous period, and index 7).
+      data: ROWS.map((d, i) => ({ x: d.date, y: i === 4 || i === 7 ? null : parseFloat(d['San Francisco']) }))
+    }
+  ];
+
+  return (
+    <BarChart
+      series={series}
+      xAccessor={(d: { x: string; y: number | null }) => d.x}
+      yAccessor={(d: { x: string; y: number | null }) => d.y}
+      xAxisTitle="Date"
+      yAxisTitle="Temperature (°F)"
+      yDomain={[0, 100]}
+      xBaseline={true}
+      yBaseline={true}
+      xTickMarks={true}
+      yTickMarks={true}
+      aria-label="Series colors example bar chart"
+      desc="Grouped bar chart where two series share one palette color via colorIndex and are separated by reduced opacity, plus a third series in its own color; each series omits a different date and one date omits two, and every series keeps its color wherever its bars appear"
+      {...props}
+    />
+  );
+}48:["$","$L75",null,{"lang":"tsx","code":"$81"}]
+49:["$","$L1f",null,{"as":"h3","id":"category-colors","children":"Category colors"}]
+4a:["$","p",null,{"children":[["$","code",null,{"children":"categoryColors"}]," maps individual category values to palette color indices, overriding\nthe series color for just those bars — so a single series can carry a different color\nper category. All three periods here share the same category-to-color map, so each\nchannel keeps one color across every period; the comparison periods are dropped to\nreduced opacity."]}]
+4b:["$","p",null,{"children":["A category missing from the map falls back to the series' own default color. ",["$","code",null,{"children":"Marketplace"}],"\nand ",["$","code",null,{"children":"Gift Cards"}]," are both absent from ",["$","code",null,{"children":"categoryColors"}],", so each period draws them in that\nperiod's default palette color instead of a shared channel color — showing the sparse-map\nfallback alongside the mapped channels."]}]
+4c:["$","$L73",null,{"component":"$82"}]
+83:Tb39,import { BarChart } from '@godaddy/antares';
+
+export function CategoryColorsExample(props: any) {
+  // Sales channel → palette color index. `Marketplace` and `Gift Cards` are intentionally
+  // omitted so they fall back to each series' default color. Indices start at 3 to keep the
+  // mapped channels distinct from those per-series defaults (0, 1, 2).
+  const categoryColors = {
+    'In Person': 3,
+    'Online Store': 4,
+    'Pay Links': 5,
+    Invoicing: 6,
+    'Virtual Terminal': 7
+  };
+
+  const current = [
+    { channel: 'In Person', amount: 1043.5 },
+    { channel: 'Online Store', amount: 692.12 },
+    { channel: 'Pay Links', amount: 618.4 },
+    { channel: 'Invoicing', amount: 431.8 },
+    { channel: 'Virtual Terminal', amount: 182.25 },
+    { channel: 'Marketplace', amount: 305.6 },
+    { channel: 'Gift Cards', amount: 214.0 }
+  ];
+
+  const previous = [
+    { channel: 'In Person', amount: 918.0 },
+    { channel: 'Online Store', amount: 604.75 },
+    { channel: 'Pay Links', amount: 560.0 },
+    { channel: 'Invoicing', amount: 372.5 },
+    { channel: 'Virtual Terminal', amount: 96.5 },
+    { channel: 'Marketplace', amount: 210.4 },
+    { channel: 'Gift Cards', amount: 168.0 }
+  ];
+
+  const twoYearsAgo = [
+    { channel: 'In Person', amount: 802.0 },
+    { channel: 'Online Store', amount: 540.0 },
+    { channel: 'Pay Links', amount: 498.0 },
+    { channel: 'Invoicing', amount: 300.0 },
+    { channel: 'Virtual Terminal', amount: 60.0 },
+    { channel: 'Marketplace', amount: 150.0 },
+    { channel: 'Gift Cards', amount: 120.0 }
+  ];
+
+  const series = [
+    {
+      id: 'this-period',
+      name: 'This period',
+      categoryColors,
+      data: current.map((d) => ({ x: d.amount, y: d.channel }))
+    },
+    {
+      id: 'previous-period',
+      name: 'Previous period',
+      categoryColors,
+      opacity: 0.6,
+      data: previous.map((d) => ({ x: d.amount, y: d.channel }))
+    },
+    {
+      id: 'two-years-ago',
+      name: 'Two years ago',
+      categoryColors,
+      opacity: 0.3,
+      data: twoYearsAgo.map((d) => ({ x: d.amount, y: d.channel }))
+    }
+  ];
+
+  return (
+    <BarChart
+      series={series}
+      orientation="horizontal"
+      xAccessor={(d: { x: number; y: string }) => d.x}
+      yAccessor={(d: { x: number; y: string }) => d.y}
+      xTickFormat={(value) => `$${Number(value).toLocaleString()}`}
+      xDomain={[0, 1100]}
+      xGridlines={true}
+      yBaseline={true}
+      legendPosition={null}
+      height={520}
+      aria-label="Payment activity by sales channel"
+      desc="Horizontal bar chart of net payments per sales channel for three periods; each mapped channel keeps its own color via categoryColors across all periods and the comparison periods are shown at reduced opacity, while the unmapped Marketplace and Gift Cards channels fall back to each period's default color"
+      {...props}
+    />
+  );
+}4d:["$","$L75",null,{"lang":"tsx","code":"$83"}]
+4e:["$","$L1f",null,{"as":"h3","id":"custom-tooltip","children":"Custom tooltip"}]
+4f:["$","p",null,{"children":["A ",["$","code",null,{"children":"renderTooltip"}]," example styled as a period-over-period comparison card, using\n",["$","code",null,{"children":"categoryColors"}]," so each date owns its color. Hovering a bar group shows both years'\nvalues and the percent change; the tooltip swatch is resolved per category from the\nhovered datum, demonstrating category colors inside a custom tooltip."]}]
+50:["$","$L73",null,{"component":"$84"}]
+85:T12ee,import {
+  BarChart,
+  type BarChartProps,
+  type BarChartTooltipRenderProps,
+  type BarSeriesConfig,
+  Box,
+  Flex,
+  Text
+} from '@godaddy/antares';
+
+/** One day's net payments; `x` is the date label (category), `y` the amount. */
+interface DailyDatum {
+  x: string;
+  y: number;
+}
+
+/** Series shape carrying which period it represents via `tooltipMetadata`. */
+interface PaymentSeries extends BarSeriesConfig<DailyDatum, { period: 'current' | 'previous'; year: number }> {
+  tooltipMetadata: { period: 'current' | 'previous'; year: number };
+}
+
+const DATES = ['Jan 6', 'Jan 7', 'Jan 8', 'Jan 9', 'Jan 10', 'Jan 11', 'Jan 12'];
+
+// Each date is a category with its own palette color, shared by both periods.
+const categoryColors = { 'Jan 6': 0, 'Jan 7': 1, 'Jan 8': 2, 'Jan 9': 3, 'Jan 10': 4, 'Jan 11': 5, 'Jan 12': 6 };
+
+const currentAmounts = [432, 665, 800, 692.12, 700, 555, 318];
+const previousAmounts = [515, 515, 665, 713.25, 620, 310, 432];
+
+const formatMoney = (v: number) => `$${v.toFixed(2)}`;
+
+/**
+ * Period-over-period tooltip built from `renderTooltip`. The two series (this period /
+ * previous period) share a `categoryColors` map, so each date's bars carry their own color;
+ * the previous period is dropped to reduced opacity. Hovering a date shows both dated values
+ * and the percent change, with the swatch color resolved per category on `current.color`.
+ */
+function renderPaymentTooltip({ hoveredCategory, series }: BarChartTooltipRenderProps<DailyDatum, PaymentSeries>) {
+  const current = series.find((oneSeries) => oneSeries.tooltipMetadata?.period === 'current');
+  const previous = series.find((oneSeries) => oneSeries.tooltipMetadata?.period === 'previous');
+  if (!current || !previous) {
+    return null;
+  }
+
+  const currentDatum = current.datum;
+  const previousDatum = previous.datum;
+  if (!currentDatum || !previousDatum) {
+    return null;
+  }
+
+  const currentValue = currentDatum.y;
+  const previousValue = previousDatum.y;
+  // Per-category color: the color of the hovered date's bars, resolved by BarChart.
+  const color = current.color;
+  const label = String(hoveredCategory ?? '');
+
+  const change = previousValue === 0 ? 0 : ((currentValue - previousValue) / previousValue) * 100;
+  const isUp = change >= 0;
+
+  return (
+    <Flex direction="column" gap="lg" style={{ minWidth: 260 }}>
+      <Text style={{ fontSize: 18 }}>Net Payments</Text>
+
+      <Flex direction="column" gap="sm">
+        <Flex justifyContent="space-between" alignItems="center" gap="2xl">
+          <Flex alignItems="center" gap="md">
+            <Box rounding="full" style={{ width: 12, height: 12, backgroundColor: color }} />
+            <Text>{`${label}, ${current.tooltipMetadata?.year}`}</Text>
+          </Flex>
+          <Text>{formatMoney(currentValue)}</Text>
+        </Flex>
+
+        <Flex justifyContent="space-between" alignItems="center" gap="2xl">
+          <Flex alignItems="center" gap="md">
+            <Box rounding="full" style={{ width: 12, height: 12, backgroundColor: color, opacity: previous.opacity }} />
+            <Text>{`${label}, ${previous.tooltipMetadata?.year}`}</Text>
+          </Flex>
+          <Text>{formatMoney(previousValue)}</Text>
+        </Flex>
+      </Flex>
+
+      <Flex alignItems="center" gap="sm">
+        <Text style={{ color: isUp ? '#2f9e44' : '#e03131' }}>{isUp ? '↑' : '↓'}</Text>
+        <Text style={{ fontWeight: 'bolder' }}>{`${Math.abs(change).toFixed(2)}%`}</Text>
+        <Text style={{ color: '#868e96' }}>compared to previous period</Text>
+      </Flex>
+    </Flex>
+  );
+}
+
+export function CustomTooltipPeriodComparisonExample(props: Partial<BarChartProps<DailyDatum, PaymentSeries>>) {
+  const series: PaymentSeries[] = [
+    {
+      id: 'this-period',
+      name: 'This period',
+      categoryColors,
+      tooltipMetadata: { period: 'current', year: 2026 },
+      data: DATES.map((date, i) => ({ x: date, y: currentAmounts[i] }))
+    },
+    {
+      id: 'previous-period',
+      name: 'Previous period',
+      categoryColors,
+      opacity: 0.35,
+      tooltipMetadata: { period: 'previous', year: 2025 },
+      data: DATES.map((date, i) => ({ x: date, y: previousAmounts[i] }))
+    }
+  ];
+
+  return (
+    <BarChart
+      series={series}
+      xAccessor={(d: DailyDatum) => d.x}
+      yAccessor={(d: DailyDatum) => d.y}
+      yTickFormat={(value) => `$${Number(value).toLocaleString()}`}
+      yDomain={[0, 1000]}
+      yGridlines={true}
+      xBaseline={true}
+      legendPosition={null}
+      height={450}
+      renderTooltip={renderPaymentTooltip}
+      aria-label="Payment activity by day"
+      desc="Vertical bar chart of daily net payments for two periods; each day keeps its own color via categoryColors, the previous period is shown at reduced opacity, and a custom tooltip compares the two periods for the hovered day"
+      {...props}
+    />
+  );
+}51:["$","$L75",null,{"lang":"tsx","code":"$85"}]
+52:["$","$L1f",null,{"as":"h2","id":"design-system-alignment","children":"Design System Alignment"}]
+53:["$","$L1f",null,{"as":"h3","id":"spacing-and-sizing","children":"Spacing and Sizing"}]
+54:["$","ul",null,{"children":["\n",["$","li",null,{"children":[["$","strong",null,{"children":"Bar width"}],": 12px (1.5 grid units)"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Bar padding"}]," (multi-series): 4px between bars within a group"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Group gap"}],": Minimum 24px between bar groups"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Border radius"}],": 8px on all bars"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Margins"}],": 20px top/right, 60px bottom/left for axes and labels"]}],"\n"]}]
+55:["$","$L1f",null,{"as":"h3","id":"responsive-behavior","children":"Responsive Behavior"}]
+56:["$","ul",null,{"children":["\n",["$","li",null,{"children":[["$","strong",null,{"children":"Auto-sizing"}],": Uses VisX's ",["$","code",null,{"children":"useParentSize"}]," hook to adapt to container width"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Horizontal scrolling"}],": When data points exceed available width, the chart becomes horizontally scrollable"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Sticky y-axis"}],": The y-axis remains visible during horizontal scroll"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Minimum spacing"}],": Group gaps never fall below 24px, triggering scroll instead"]}],"\n"]}]
+57:["$","$L1f",null,{"as":"h2","id":"accessibility","children":"Accessibility"}]
+58:["$","ul",null,{"children":["\n",["$","li",null,{"children":[["$","strong",null,{"children":"Keyboard navigation"}],": Bar groups are keyboard accessible with ",["$","code",null,{"children":"tabIndex={0}"}]," and ",["$","code",null,{"children":"role=\"group\""}]]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Screen reader support"}],": Semantic HTML structure with proper ARIA attributes"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Tooltips"}],": Show on both hover and focus for keyboard users"]}],"\n"]}]
+59:["$","$L1f",null,{"as":"h2","id":"performance-considerations","children":"Performance Considerations"}]
+5a:["$","$L1f",null,{"as":"h3","id":"rendering-strategy","children":"Rendering Strategy"}]
+5b:["$","p",null,{"children":"The component uses VisX primitives for optimal SVG rendering:"}]
+5c:["$","ul",null,{"children":["\n",["$","li",null,{"children":[["$","strong",null,{"children":"Scales"}],": VisX's ",["$","code",null,{"children":"scaleBand"}]," and ",["$","code",null,{"children":"scaleLinear"}]," for efficient coordinate mapping"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Grouped rendering"}],": Bars are rendered in SVG ",["$","code",null,{"children":"<Group>"}]," elements for logical organization"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Responsive sizing"}],": ",["$","code",null,{"children":"useParentSize"}]," hook provides efficient resize detection with debouncing (15ms)"]}],"\n"]}]
+5d:["$","$L1f",null,{"as":"h3","id":"scrolling-strategy","children":"Scrolling Strategy"}]
+5e:["$","ul",null,{"children":["\n",["$","li",null,{"children":[["$","strong",null,{"children":"Vertical charts"}],": Horizontal scrolling when many data points exceed container width"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Horizontal charts"}],": Vertical scrolling when many categories exceed container height"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Sticky axes"}],": Positioned absolutely to remain visible during scroll"]}],"\n"]}]
+5f:["$","$L1f",null,{"as":"h3","id":"recommendations","children":"Recommendations"}]
+60:["$","ul",null,{"children":["\n",["$","li",null,{"children":["For charts with ",["$","strong",null,{"children":"many data points"}]," (>20), consider enabling horizontal scroll (default behavior)"]}],"\n",["$","li",null,{"children":["For ",["$","strong",null,{"children":"horizontal bar charts"}],", vertical scrolling is more mobile-friendly than horizontal"]}],"\n",["$","li",null,{"children":["Use ",["$","strong",null,{"children":"custom domains"}]," to maintain consistent scales across multiple charts"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Tooltips"}]," use absolute positioning and scroll-aware calculations for accurate placement"]}],"\n"]}]
+61:["$","$L1f",null,{"as":"h2","id":"development-status","children":"Development Status"}]
+62:["$","p",null,{"children":"The BarChart component is in active development. Current focus areas:"}]
+63:["$","ul",null,{"children":["\n",["$","li",null,{"children":"✅ Single and multi-series support"}],"\n",["$","li",null,{"children":"✅ Vertical and horizontal orientations"}],"\n",["$","li",null,{"children":"✅ Responsive behavior with sticky axes"}],"\n",["$","li",null,{"children":"✅ Interactive tooltips"}],"\n",["$","li",null,{"children":"✅ Custom domains"}],"\n",["$","li",null,{"children":"✅ Design system alignment"}],"\n",["$","li",null,{"children":"🚧 RTL compatibility (axis rendering and spacing refinement)"}],"\n",["$","li",null,{"children":"🚧 Tick mark positioning improvements"}],"\n",["$","li",null,{"children":"🚧 Additional customization options (tick formatting, axis configuration)"}],"\n"]}]
+64:["$","$L1f",null,{"as":"h2","id":"troubleshooting","children":"Troubleshooting"}]
+65:["$","$L1f",null,{"as":"h3","id":"bars-not-showing","children":"Bars Not Showing"}]
+66:["$","p",null,{"children":"If bars are not visible:"}]
+67:["$","ol",null,{"children":["\n",["$","li",null,{"children":[["$","strong",null,{"children":"Check data"}],": Ensure ",["$","code",null,{"children":"series"}]," array has data and ",["$","code",null,{"children":"xAccessor"}],"/",["$","code",null,{"children":"yAccessor"}]," return valid values"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Check domains"}],": Verify ",["$","code",null,{"children":"yDomain"}]," (if set) includes your data values"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Check dimensions"}],": Ensure container has non-zero width and height"]}],"\n"]}]
+68:["$","$L1f",null,{"as":"h3","id":"tooltip-positioning-issues","children":"Tooltip Positioning Issues"}]
+69:["$","p",null,{"children":"If tooltips appear in the wrong location:"}]
+6a:["$","ol",null,{"children":["\n",["$","li",null,{"children":[["$","strong",null,{"children":"Check scroll position"}],": The component accounts for horizontal scroll automatically"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Check container"}],": Ensure the chart container is not transformed or positioned in a complex layout"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Verify event targets"}],": Tooltips use mouse event coordinates and bar group positions"]}],"\n"]}]
+6b:["$","$L1f",null,{"as":"h3","id":"performance-issues","children":"Performance Issues"}]
+6c:["$","p",null,{"children":"For better performance:"}]
+6d:["$","ol",null,{"children":["\n",["$","li",null,{"children":[["$","strong",null,{"children":"Limit data points"}],": Consider pagination or filtering for very large datasets (>100 points)"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Debounce resize"}],": The default 15ms debounce on ",["$","code",null,{"children":"useParentSize"}]," balances smoothness and performance"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Simplify tooltips"}],": If tooltips are complex, consider using simpler content or disabling them"]}],"\n"]}]
+6e:["$","$L1f",null,{"as":"h2","id":"props","children":"Props"}]
+6f:["$","$L1f",null,{"as":"h3","id":"barchart","children":"BarChart"}]
+70:["$","$L86",null,{"entries":[{"name":"aria-label","type":"string","default":"$undefined","description":"$L87","required":false,"deprecated":"$undefined"},{"name":"series","type":"S[]","default":"$undefined","description":"$L88","required":true,"deprecated":"$undefined"},{"name":"orientation","type":"'vertical' | 'horizontal'","default":"'vertical'","description":"$L89","required":false,"deprecated":"$undefined"},{"name":"xAxisTitle","type":"string","default":"$undefined","description":"$L8a","required":false,"deprecated":"$undefined"},{"name":"xLabels","type":"boolean","default":"true","description":"$L8b","required":false,"deprecated":"$undefined"},{"name":"xLabelsOrientation","type":"XLabelsOrientation","default":"'auto'","description":"$L8c","required":false,"deprecated":"$undefined"},{"name":"xTickMarks","type":"boolean","default":"$undefined","description":"$L8d","required":false,"deprecated":"$undefined"},{"name":"xBaseline","type":"boolean","default":"$undefined","description":"$L8e","required":false,"deprecated":"$undefined"},{"name":"xGridlines","type":"boolean","default":"$undefined","description":"$L8f","required":false,"deprecated":"$undefined"},{"name":"xTickFormat","type":"(value: number | string | Date) => string","default":"$undefined","description":"$L90","required":false,"deprecated":"$undefined"},{"name":"xDomain","type":"string[] | [number, number]","default":"$undefined","description":"$L91","required":false,"deprecated":"$undefined"},{"name":"xNumTicks","type":"number","default":"$undefined","description":"$L92","required":false,"deprecated":"$undefined"},{"name":"yAxisTitle","type":"string","default":"$undefined","description":"$L93","required":false,"deprecated":"$undefined"},{"name":"yLabels","type":"boolean","default":"true","description":"$L94","required":false,"deprecated":"$undefined"},{"name":"yTickMarks","type":"boolean","default":"$undefined","description":"$L95","required":false,"deprecated":"$undefined"},{"name":"yBaseline","type":"boolean","default":"$undefined","description":"$L96","required":false,"deprecated":"$undefined"},{"name":"yGridlines","type":"boolean","default":"true","description":"$L97","required":false,"deprecated":"$undefined"},{"name":"yTickFormat","type":"(value: number | string | Date) => string","default":"$undefined","description":"$L98","required":false,"deprecated":"$undefined"},{"name":"yDomain","type":"[number, number] | string[]","default":"$undefined","description":"$L99","required":false,"deprecated":"$undefined"},{"name":"yNumTicks","type":"number","default":"$undefined","description":"$L9a","required":false,"deprecated":"$undefined"},{"name":"legendPosition","type":"LegendPosition | null","default":"'bottom' when more than one series; hidden otherwise","description":"$L9b","required":false,"deprecated":"$undefined"},{"name":"tooltip","type":"boolean","default":"true","description":"$L9c","required":false,"deprecated":"$undefined"},{"name":"tooltipValueFormatter","type":"(datum: T) => string","default":"the value on the category's opposite axis as a string","description":"$L9d","required":false,"deprecated":"$undefined"},{"name":"renderTooltip","type":"(props: BarChartTooltipRenderProps<T, S>) => ReactNode","default":"$undefined","description":"$L9e","required":false,"deprecated":"$undefined"},{"name":"width","type":"number","default":"$undefined","description":"$L9f","required":false,"deprecated":"$undefined"},{"name":"height","type":"number","default":"$undefined","description":"$La0","required":false,"deprecated":"$undefined"},{"name":"desc","type":"string","default":"$undefined","description":"$La1","required":false,"deprecated":"$undefined"},{"name":"className","type":"string","default":"$undefined","description":"$La2","required":false,"deprecated":"$undefined"},{"name":"xAccessor","type":"Accessors<T>['xAccessor']","default":"$undefined","description":"$La3","required":false,"deprecated":"$undefined"},{"name":"yAccessor","type":"Accessors<T>['yAccessor']","default":"$undefined","description":"$La4","required":false,"deprecated":"$undefined"}],"categories":{"Aria":["aria-label"]}}]
+87:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Accessibility label for the chart.\nShould describe what the chart represents."}]]
+88:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Configuration for data series.\nFor a single series, provide an array with one element. For multiple series, provide multiple elements."}]]
+89:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Orientation of the bars."}],"\n",["$","ul","ul-0",{"className":"my-1 list-disc ps-4","children":["\n",["$","li","li-0",{"className":"mt-0.5","children":"'vertical': Bars extend upward from the X-axis"}],"\n",["$","li","li-1",{"className":"mt-0.5","children":"'horizontal': Bars extend rightward from the Y-axis"}],"\n"]}]]
+8a:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Title displayed on the X-axis"}]]
+8b:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to show X-axis labels."}]]
+8c:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"X-axis label orientation. 'auto' rotates labels to vertical when the container is too narrow;\n'horizontal' keeps labels horizontal (chart may scroll); 'vertical' keeps labels vertical."}]]
+8d:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to show X-axis tick marks."}]]
+8e:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to show the X-axis baseline (axis line)."}]]
+8f:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to show vertical gridlines for the X-axis."}]]
+90:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Custom formatting function for X-axis tick labels.\nReceives the tick value and returns a formatted string.\nThe value type depends on orientation:"}],"\n",["$","ul","ul-0",{"className":"my-1 list-disc ps-4","children":["\n",["$","li","li-0",{"className":"mt-0.5","children":"Vertical: categories (string | Date) from xAccessor"}],"\n",["$","li","li-1",{"className":"mt-0.5","children":"Horizontal: numeric values (number) from xAccessor"}],"\n"]}]]
+91:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Domain values for the X-axis.\nType: string[] | [number, number]"}],"\n",["$","ul","ul-0",{"className":"my-1 list-disc ps-4","children":["\n",["$","li","li-0",{"className":"mt-0.5","children":"Vertical orientation: Use string[] or Date[] to explicitly set categories"}],"\n",["$","li","li-1",{"className":"mt-0.5","children":"Horizontal orientation: Use [number, number] to set value range [min, max]\nIf not provided, domain is derived from the data."}],"\n"]}]]
+92:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Approximate number of ticks to display on the X-axis.\nNote: This is approximate - the actual number may vary based on scale calculations."}]]
+93:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Title displayed on the Y-axis"}]]
+94:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to show Y-axis labels."}]]
+95:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to show Y-axis tick marks."}]]
+96:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to show the Y-axis baseline (axis line)."}]]
+97:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to show horizontal gridlines for the Y-axis."}]]
+98:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Custom formatting function for Y-axis tick labels.\nReceives the tick value and returns a formatted string.\nThe value type depends on orientation:"}],"\n",["$","ul","ul-0",{"className":"my-1 list-disc ps-4","children":["\n",["$","li","li-0",{"className":"mt-0.5","children":"Vertical: numeric values (number) from yAccessor"}],"\n",["$","li","li-1",{"className":"mt-0.5","children":"Horizontal: categories (string | Date) from yAccessor"}],"\n"]}]]
+99:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Domain values for the Y-axis.\nType: [number, number] | string[]"}],"\n",["$","ul","ul-0",{"className":"my-1 list-disc ps-4","children":["\n",["$","li","li-0",{"className":"mt-0.5","children":"Vertical orientation: Use [number, number] to set value range [min, max]"}],"\n",["$","li","li-1",{"className":"mt-0.5","children":"Horizontal orientation: Use string[] or Date[] to explicitly set categories\nIf not provided, domain is derived from the data."}],"\n"]}]]
+9a:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Approximate number of ticks to display on the Y-axis.\nNote: This is approximate - the actual number may vary based on scale calculations."}]]
+9b:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Legend position. Omit for default: shown at bottom when there is more than one series, hidden for a single series.\nSet to ",["$","code","code-0",{"className":"font-mono","children":"null"}]," to hide the legend."]}]]
+9c:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to show the tooltip popover on hover. When false, the tooltip is hidden."}]]
+9d:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Format tooltip values."}]]
+9e:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"/**"}],"\n",["$","ul","ul-0",{"className":"my-1 list-disc ps-4","children":["\n",["$","li","li-0",{"className":"mt-0.5","children":"Render a custom tooltip. Receives the hovered category value and the resolved series list,"}],"\n",["$","li","li-1",{"className":"mt-0.5","children":"each series carrying its hovered datum and final color — see {@link BarChartTooltipRenderProps}."}],"\n",["$","li","li-2",{"className":"mt-0.5","children":"Return null, undefined, or a boolean to render no popover."}],"\n"]}]]
+9f:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Outer container width (omitted = 100%)"}]]
+a0:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Outer container height (omitted = 100%)"}]]
+a1:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Detailed description of the chart for screen readers.\nProvides additional context beyond the aria-label.\nThis is rendered as a "," element inside the SVG for screen reader support."]}]]
+a2:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Additional CSS class name"}]]
+a3:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Accessor function to extract X values from data points"}]]
+a4:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Accessor function to extract Y values from data points"}]]
+16:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+14:null
+18:[["$","title","0",{"children":"Bar Chart"}],["$","meta","1",{"name":"description","content":"A flexible, accessible, and design-aligned data visualization solution for displaying single or multi-series bar charts."}],["$","meta","2",{"property":"og:title","content":"Bar Chart"}],["$","meta","3",{"property":"og:description","content":"A flexible, accessible, and design-aligned data visualization solution for displaying single or multi-series bar charts."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/components/chart/bar-chart/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Bar Chart"}],["$","meta","7",{"name":"twitter:description","content":"A flexible, accessible, and design-aligned data visualization solution for displaying single or multi-series bar charts."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/components/chart/bar-chart/image.png"}]]
