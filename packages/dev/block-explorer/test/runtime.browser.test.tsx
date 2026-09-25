@@ -1,0 +1,155 @@
+import { render } from 'vitest-browser-react';
+import { userEvent } from 'vitest/browser';
+import { describe, expect, it, vi } from 'vitest';
+import { BlockExplorer, type BlockCodeRendererProps, type BlockManifest } from '../src/runtime.tsx';
+
+const fixtureManifest: BlockManifest = {
+  id: 'fixture-block',
+  description: 'A fixture used by the block explorer tests.',
+  files: [
+    { path: 'index.tsx', language: 'tsx', source: 'export function FixtureBlock() {\n  return null;\n}\n' },
+    { path: 'styles/theme.css', language: 'css', source: ':root {\n  color: black;\n}\n' }
+  ]
+};
+
+describe('block explorer runtime', function runtimeTests() {
+  it('switches from preview to code and selects a nested source file', async function selectsSourceFile() {
+    const { getByRole, getByTestId, getByText } = await render(
+      <BlockExplorer block={fixtureManifest} codeRenderer={TestCodeRenderer}>
+        <div>Preview content</div>
+      </BlockExplorer>
+    );
+
+    await expect.element(getByRole('radio', { name: 'Preview' })).toBeVisible();
+    await expect.element(getByRole('radio', { name: 'Code' })).toBeVisible();
+    await expect.element(getByText('Preview content')).toBeVisible();
+
+    await userEvent.click(getByRole('radio', { name: 'Code' }));
+    await expect.element(getByTestId('source-file')).toHaveTextContent('index.tsx');
+    const activeFileButton = getByRole('button', { name: 'index.tsx', exact: true });
+    await expect.element(activeFileButton).toHaveAttribute('aria-pressed', 'true');
+
+    await userEvent.click(getByRole('button', { name: 'theme.css', exact: true }));
+    await expect.element(getByTestId('source-file')).toHaveTextContent('styles/theme.css');
+    await expect.element(getByTestId('source-code')).toHaveTextContent(':root');
+  });
+
+  it('collapses and reopens folders without losing the selected source', async function togglesFolders() {
+    const { getByRole, getByTestId } = await render(
+      <BlockExplorer block={fixtureManifest} codeRenderer={TestCodeRenderer}>
+        <div>Preview content</div>
+      </BlockExplorer>
+    );
+
+    await userEvent.click(getByRole('radio', { name: 'Code' }));
+    const folderButton = getByRole('button', { name: 'styles', exact: true });
+    const fileButton = getByRole('button', { name: 'theme.css', exact: true });
+
+    await userEvent.click(fileButton);
+    await userEvent.click(folderButton);
+    await expect.element(fileButton).not.toBeInTheDocument();
+    await expect.element(getByTestId('source-file')).toHaveTextContent('styles/theme.css');
+
+    await userEvent.click(folderButton);
+    await expect.element(fileButton).toBeVisible();
+  });
+
+  it('announces successful and failed source copies', async function copiesSource() {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText }
+    });
+
+    const { getByRole } = await render(
+      <BlockExplorer block={fixtureManifest}>
+        <div>Preview content</div>
+      </BlockExplorer>
+    );
+
+    await userEvent.click(getByRole('radio', { name: 'Code' }));
+    const copyButton = getByRole('button', { name: 'Copy index.tsx' });
+    await userEvent.click(copyButton);
+    expect(writeText).toHaveBeenCalledWith(fixtureManifest.files[0]?.source);
+    const copiedButton = getByRole('button', { name: 'Copied index.tsx' });
+    await expect.element(copiedButton).toHaveTextContent('Copied');
+
+    writeText.mockRejectedValueOnce(new Error('Clipboard unavailable'));
+    await userEvent.click(copiedButton);
+    await expect.element(getByRole('status')).toHaveTextContent('Could not copy index.tsx.');
+    await expect.element(getByRole('button', { name: 'Retry copying index.tsx' })).toHaveTextContent('Retry');
+  });
+
+  it('announces successful and failed install command copies', async function copiesInstallCommand() {
+    const command = 'npx shadcn@latest add godaddy/antares/blocks/fixture-block';
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText }
+    });
+
+    const { getByRole } = await render(
+      <BlockExplorer block={{ ...fixtureManifest, installCommand: command }}>
+        <div>Preview content</div>
+      </BlockExplorer>
+    );
+
+    const installButton = getByRole('button', { name: 'Copy install command for fixture-block' });
+    await userEvent.click(installButton);
+
+    expect(writeText).toHaveBeenCalledWith(command);
+    const copiedButton = getByRole('button', { name: 'Copied for fixture-block' });
+    await expect.element(copiedButton).toHaveTextContent('Copied');
+
+    writeText.mockRejectedValueOnce(new Error('Clipboard unavailable'));
+    await userEvent.click(copiedButton);
+    await expect.element(getByRole('status')).toHaveTextContent('Could not copy install command.');
+    await expect
+      .element(getByRole('button', { name: 'Retry copying install command for fixture-block' }))
+      .toHaveTextContent('Retry');
+  });
+
+  it('resets copy feedback when selecting another source file', async function resetsCopyFeedback() {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText }
+    });
+
+    const { getByRole } = await render(
+      <BlockExplorer block={fixtureManifest}>
+        <div>Preview content</div>
+      </BlockExplorer>
+    );
+
+    await userEvent.click(getByRole('radio', { name: 'Code' }));
+    await userEvent.click(getByRole('button', { name: 'Copy index.tsx' }));
+    await expect.element(getByRole('button', { name: 'Copied index.tsx' })).toHaveTextContent('Copied');
+
+    await userEvent.click(getByRole('button', { name: 'theme.css', exact: true }));
+    await expect.element(getByRole('button', { name: 'Copy styles/theme.css' })).toHaveTextContent('Copy');
+  });
+
+  it('keeps the code view usable when a block has no source files', async function handlesEmptyManifest() {
+    const { getByRole } = await render(
+      <BlockExplorer block={{ ...fixtureManifest, files: [] }}>
+        <div>Preview content</div>
+      </BlockExplorer>
+    );
+
+    await userEvent.click(getByRole('radio', { name: 'Code' }));
+    await expect.element(getByRole('navigation', { name: 'Block files' })).toBeVisible();
+    await expect.element(getByRole('button', { name: /Copy/ })).not.toBeInTheDocument();
+  });
+});
+
+/** Exposes the selected file and language for browser assertions. */
+function TestCodeRenderer({ code, filePath, language }: BlockCodeRendererProps) {
+  return (
+    <pre data-testid="source-file" data-language={language}>
+      <code data-testid="source-code">
+        {filePath}\n{code}
+      </code>
+    </pre>
+  );
+}

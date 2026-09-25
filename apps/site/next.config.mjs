@@ -11,6 +11,7 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 // example source files stay free of the directive (see lib/use-client-loader.cjs).
 const useClientLoader = join(__dirname, 'lib/use-client-loader.cjs');
 const EXAMPLE_MODULE = /[\\/]components[\\/].+[\\/]examples[\\/][^\\/]+\.tsx$/;
+const BLOCK_MODULE = /[\\/]packages[\\/]@godaddy[\\/]antares[\\/]blocks[\\/].+\.tsx$/;
 
 /** @type {import('next').NextConfig} */
 const config = {
@@ -27,10 +28,14 @@ const config = {
     resolveAlias: {
       '@storybook/addon-docs/blocks': './lib/storybook-bridge/blocks.tsx',
       '@storybook/react-vite': './lib/storybook-bridge/react-vite.ts',
-      '@bento/storybook-addon-helpers': '@bento/storybook-addon-helpers/runtime'
+      '@bento/storybook-addon-helpers': '@bento/storybook-addon-helpers/runtime',
+      '@bento/block-explorer/runtime': '../../packages/dev/block-explorer/src/runtime.tsx'
     },
     rules: {
       '**/components/**/examples/*.tsx': {
+        loaders: [useClientLoader]
+      },
+      '**/packages/@godaddy/antares/blocks/**/*.tsx': {
         loaders: [useClientLoader]
       }
     }
@@ -53,11 +58,12 @@ const config = {
       ...config.resolve.alias,
       '@storybook/addon-docs/blocks': join(__dirname, 'lib/storybook-bridge/blocks.tsx'),
       '@storybook/react-vite': join(__dirname, 'lib/storybook-bridge/react-vite.ts'),
-      '@bento/storybook-addon-helpers$': '@bento/storybook-addon-helpers/runtime'
+      '@bento/storybook-addon-helpers$': '@bento/storybook-addon-helpers/runtime',
+      '@bento/block-explorer/runtime': join(__dirname, '../../packages/dev/block-explorer/src/runtime.tsx')
     };
 
     config.module.rules.push({
-      test: EXAMPLE_MODULE,
+      test: new RegExp(`${EXAMPLE_MODULE.source}|${BLOCK_MODULE.source}`),
       enforce: 'pre',
       use: [useClientLoader]
     });
