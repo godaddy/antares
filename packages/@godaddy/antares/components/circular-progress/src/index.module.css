@@ -125,6 +125,20 @@
   transition: none;
 }
 
+@media (forced-colors: active) {
+  .svg:where([data-indeterminate]) {
+    forced-color-adjust: none;
+  }
+
+  .svg:where([data-indeterminate]) :where(.track) {
+    stroke: CanvasText;
+  }
+
+  .svg:where([data-indeterminate]) :where(.fill) {
+    stroke: Highlight;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .fill {
     transition: none;
