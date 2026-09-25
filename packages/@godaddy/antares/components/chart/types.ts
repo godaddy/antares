@@ -51,11 +51,37 @@ export interface LineSeriesConfig<
   tooltipMetadata?: U;
 }
 
+/**
+ * Config for one bar-chart series.
+ */
+export interface BarSeriesConfig<
+  T extends object = DataPoint,
+  U extends Record<string, unknown> = Record<string, unknown>
+> extends SeriesConfig<T> {
+  /** Palette color index for the whole series (non-negative integer, wraps past the palette length). Omit to use the auto-assigned series color. */
+  colorIndex?: number;
+  /** Per-bar color indices keyed by category value (coerced via `String(value)`); each index follows the same rules as `colorIndex`. Categories not listed fall back to the series color. */
+  categoryColors?: Record<string, number>;
+  /** Series opacity from 0 to 1, applied to the bars, legend swatch, and tooltip swatch. */
+  opacity?: number;
+  /** Arbitrary data passed through to a custom `renderTooltip` for this series. */
+  tooltipMetadata?: U;
+}
+
 export interface InternalSeriesConfig<
   T extends object = DataPoint,
   U extends Record<string, unknown> | undefined = Record<string, unknown>
 > extends SeriesConfig<T> {
+  /** Series' representative color. Used by the legend swatch and as the tooltip fallback. */
   _resolvedColor?: string;
+  /**
+   * Per-datum color override for the built-in tooltip swatch. When set, the tooltip
+   * resolves each row's color from the hovered datum (e.g. bar chart `categoryColors`),
+   * falling back to `_resolvedColor` when this is absent or returns nothing.
+   */
+  _resolveDatumColor?: (datum: T) => string | undefined;
+  /** Series opacity (e.g. bar chart comparison period). Applied to the tooltip swatch to match the bars. */
+  opacity?: number;
   variant?: LineSeriesVariant;
   colorIndex?: number;
   tooltipMetadata?: U;
