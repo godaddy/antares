@@ -16,6 +16,7 @@ import * as Stories from './structure.stories.tsx';
 - **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
 - **`ButtonGroup`** - a cluster of related actions (a wrapping row with `role="group"`). Overlay parents like `Modal` adopt it with end alignment and padding.
 - **`Group`** — semantic grouping container for field item controls. A parent field injects the box chrome.
+- **`CornerActions`** - an always-visible structural row for actions placed at a surface corner.
 
 ## Hybrid styling
 
@@ -49,3 +50,7 @@ Each container works in two modes:
 ### Group
 
 <ArgTypes of={Stories.GroupProps} />
+
+### CornerActions
+
+<ArgTypes of={Stories.CornerActionsProps} />
