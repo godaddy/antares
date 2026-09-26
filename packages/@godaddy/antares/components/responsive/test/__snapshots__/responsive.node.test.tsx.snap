@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@godaddy/antares > #Responsive > publishes the agreed breakpoint widths and matching queries 1`] = `"<dl><dt>sm</dt><dd>40rem<!-- -->: <code>(min-width: 40rem)</code></dd><dt>md</dt><dd>48rem<!-- -->: <code>(min-width: 48rem)</code></dd><dt>lg</dt><dd>64rem<!-- -->: <code>(min-width: 64rem)</code></dd><dt>xl</dt><dd>80rem<!-- -->: <code>(min-width: 80rem)</code></dd></dl>"`;
+
+exports[`@godaddy/antares > #Responsive > renders the CSS container example 1`] = `"<div class="box container" style="max-inline-size:640px"><section aria-label="Container layout" class="box grid containerLayout" style="gap:var(--sp-md)"><div class="box" style="padding:var(--sp-md)" data-elevation="card"><span class="text type typeText scaleMd">Account settings</span></div><div class="box" style="padding:var(--sp-md)" data-elevation="card"><span class="text type typeText scaleMd">Billing settings</span></div></section></div>"`;
+
+exports[`@godaddy/antares > #Responsive > renders the CSS viewport example 1`] = `"<section aria-label="Viewport layout" class="box grid viewportLayout" style="gap:var(--sp-md)"><div class="box" style="padding:var(--sp-md)" data-elevation="card"><span class="text type typeText scaleMd">Account settings</span></div><div class="box" style="padding:var(--sp-md)" data-elevation="card"><span class="text type typeText scaleMd">Billing settings</span></div></section>"`;
+
+exports[`@godaddy/antares > #Responsive > renders the matching server fallback without a browser 1`] = `"<span class="text type typeText scaleMd" role="status">Matches</span>"`;
+
+exports[`@godaddy/antares > #Responsive > renders the non-matching server fallback without a browser 1`] = `"<span class="text type typeText scaleMd" role="status">Does not match</span>"`;

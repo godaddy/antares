@@ -51,5 +51,6 @@ export * from './exports/Pressable';
 export * from './exports/Chip';
 export * from './exports/TextLockup';
 export * from './exports/SizeProvider';
+export * from './exports/Responsive';
 
 export { FocusScope, type FocusScopeProps } from '@react-aria/focus';
