@@ -58,6 +58,9 @@ jobs:
           ref: ${{ needs.notify.outputs.head_sha }}
           persist-credentials: false
 
+      - name: Snapshot tracked screenshot paths
+        run: git ls-files -z -- ':(glob)**/__screenshots__/**/*.png' > "$RUNNER_TEMP/tracked-screenshots.nul"
+
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
@@ -75,15 +78,24 @@ jobs:
 
       - name: Prepare screenshot artifact
         id: prepare
+        env:
+          TRACKED_SCREENSHOTS: ${{ runner.temp }}/tracked-screenshots.nul
         run: |
           destination="$(mktemp -d "$RUNNER_TEMP/screenshots.XXXXXX")"
           python3 - "$destination" <<'PY'
+          import os
           import shutil
           import sys
           from pathlib import Path
 
           workspace = Path.cwd().resolve()
           destination = Path(sys.argv[1])
+          tracked = {
+              Path(os.fsdecode(path))
+              for path in Path(os.environ["TRACKED_SCREENSHOTS"]).read_bytes().split(b"\0")
+              if path
+          }
+          present = set()
           count = 0
           for image in workspace.glob("**/__screenshots__/**/*.png"):
               relative = image.relative_to(workspace)
@@ -94,12 +106,16 @@ jobs:
                       raise SystemExit(f"Screenshot path contains a symlink: {image}")
               if not image.is_file():
                   raise SystemExit(f"Not a screenshot file: {image}")
+              present.add(relative)
               target = destination / relative
               target.parent.mkdir(parents=True, exist_ok=True)
               shutil.copyfile(image, target)
               count += 1
-          if not count:
-              raise SystemExit("No screenshot PNGs found")
+          deleted = sorted(tracked - present, key=os.fsencode)
+          manifest = destination / "deleted-screenshots.nul"
+          manifest.write_bytes(b"".join(os.fsencode(path) + b"\0" for path in deleted))
+          if not count and not deleted:
+              raise SystemExit("No screenshot PNGs found and no deletions to upload")
           PY
           echo "path=$destination" >> "$GITHUB_OUTPUT"
 
