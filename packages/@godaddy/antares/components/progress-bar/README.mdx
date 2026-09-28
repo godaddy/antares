@@ -1,6 +1,6 @@
 ---
 title: ProgressBar
-description: A progress bar shows determinate progress of an operation over time
+description: A progress bar shows determinate or indeterminate progress of an operation over time
 ---
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import { Examples } from '@bento/storybook-addon-helpers/runtime';
@@ -23,9 +23,9 @@ npm install --save @godaddy/antares
 ### ARIA Support
 
 - `role="progressbar"` on the container
-- `aria-valuenow` reflects the current value
+- `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value
 - `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-- `aria-valuetext` provides a formatted string (e.g. `"60%"`)
+- `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`)
 - `aria-labelledby` associates the visible label when the `label` prop is provided
 
 ## Props
