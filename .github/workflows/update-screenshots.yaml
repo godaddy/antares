@@ -4,69 +4,212 @@ on:
   issue_comment:
     types: [created]
 
+permissions: {}
+
 jobs:
-  update-screenshots:
-    name: Update Screenshots
-    if: github.event.issue.pull_request && contains(github.event.comment.body, '/update-screenshots')
+  notify:
+    name: Authorize screenshot update
+    if: >-
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '/update-screenshots') &&
+      contains(fromJSON('["OWNER","MEMBER"]'), github.event.comment.author_association)
     runs-on: ubuntu-latest
-
+    permissions:
+      issues: write
+      pull-requests: read
+    outputs:
+      allowed: ${{ steps.preflight.outputs.allowed }}
+      head_sha: ${{ steps.preflight.outputs.head_sha }}
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v7
-
-      - name: Checkout PR branch
+      - name: Verify same-repository PR and comment started
+        id: preflight
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh pr checkout ${{ github.event.issue.number }}
-
-      - name: Comment - Update Started
-        env:
-          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.issue.number }}
+          REPOSITORY: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          gh pr comment ${{ github.event.issue.number }} --body "### 📸 Updating screenshots... [View workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+          head_repository="$(gh api "repos/$REPOSITORY/pulls/$PR_NUMBER" --jq '.head.repo.full_name')"
+
+          if [ "$head_repository" != "$REPOSITORY" ]; then
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+            gh pr comment "$PR_NUMBER" --repo "$REPOSITORY" \
+              --body "Screenshot updates are only supported for PR branches in this repository."
+            exit 0
+          fi
+
+          head_sha="$(gh api "repos/$REPOSITORY/pulls/$PR_NUMBER" --jq '.head.sha')"
+          gh pr comment "$PR_NUMBER" --repo "$REPOSITORY" \
+            --body "### 📸 Updating screenshots... [View workflow run]($RUN_URL)"
+          echo "allowed=true" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
+
+  render:
+    name: Render screenshots (read-only)
+    needs: notify
+    if: needs.notify.outputs.allowed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.notify.outputs.head_sha }}
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
+          package-manager-cache: false
 
-      - name: Install Dependencies
-        run: |
-          npm ci
-          npx playwright install
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Update Screenshots
+      - name: Install Playwright browsers
+        run: npx playwright install
+
+      - name: Update screenshots
         run: npm run test:visual:update
 
-      - name: Commit and push
+      - name: Prepare screenshot artifact
+        id: prepare
+        run: |
+          destination="$(mktemp -d "$RUNNER_TEMP/screenshots.XXXXXX")"
+          python3 - "$destination" <<'PY'
+          import shutil
+          import sys
+          from pathlib import Path
+
+          workspace = Path.cwd().resolve()
+          destination = Path(sys.argv[1])
+          count = 0
+          for image in workspace.glob("**/__screenshots__/**/*.png"):
+              relative = image.relative_to(workspace)
+              source = workspace
+              for part in relative.parts:
+                  source /= part
+                  if source.is_symlink():
+                      raise SystemExit(f"Screenshot path contains a symlink: {image}")
+              if not image.is_file():
+                  raise SystemExit(f"Not a screenshot file: {image}")
+              target = destination / relative
+              target.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copyfile(image, target)
+              count += 1
+          if not count:
+              raise SystemExit("No screenshot PNGs found")
+          PY
+          echo "path=$destination" >> "$GITHUB_OUTPUT"
+
+      - name: Upload screenshot PNGs
+        uses: actions/upload-artifact@v7
+        with:
+          name: screenshots
+          path: ${{ steps.prepare.outputs.path }}
+          if-no-files-found: error
+
+  commit:
+    name: Commit screenshots and report result
+    needs: [notify, render]
+    if: always() && needs.notify.outputs.allowed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: read
+    steps:
+      - name: Checkout default branch
+        if: needs.render.result == 'success'
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: true
+
+      - name: Test trusted screenshot validator
+        if: needs.render.result == 'success'
+        run: python3 -m unittest discover -s .github/scripts -p 'test_*.py'
+
+      - name: Copy trusted screenshot validator
+        if: needs.render.result == 'success'
+        run: cp .github/scripts/validate_screenshots.py "$RUNNER_TEMP/validate_screenshots.py"
+
+      - name: Checkout PR branch
+        if: needs.render.result == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.issue.number }}
+        run: gh pr checkout "$PR_NUMBER"
+
+      - name: Verify PR head is unchanged
+        id: verify_head
+        if: needs.render.result == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.issue.number }}
+          REPOSITORY: ${{ github.repository }}
+          EXPECTED_HEAD_SHA: ${{ needs.notify.outputs.head_sha }}
+        run: |
+          actual_head_sha="$(git rev-parse HEAD)"
+          if [ "$actual_head_sha" != "$EXPECTED_HEAD_SHA" ]; then
+            gh pr comment "$PR_NUMBER" --repo "$REPOSITORY" \
+              --body "### ⚠️ PR head changed while screenshots were rendering. No screenshots were committed. Comment \`/update-screenshots\` again to retry."
+            echo "stale=true" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+
+      - name: Download screenshot artifact
+        if: needs.render.result == 'success'
+        uses: actions/download-artifact@v8
+        with:
+          name: screenshots
+          path: ${{ runner.temp }}/screenshots-artifact
+
+      - name: Validate screenshot files
+        if: needs.render.result == 'success'
+        env:
+          SCREENSHOTS_DIR: ${{ runner.temp }}/screenshots-artifact
+        run: python3 -I "$RUNNER_TEMP/validate_screenshots.py"
+
+      - name: Commit and push screenshots
         id: commit
+        if: needs.render.result == 'success'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add "**/__screenshots__/**"
+          git add -A -- ':(glob)**/__screenshots__/**/*.png'
           if git diff --staged --quiet; then
-            echo "changes=false" >> $GITHUB_OUTPUT
+            echo "changes=false" >> "$GITHUB_OUTPUT"
           else
             git commit -m "test: update visual regression screenshots" --no-verify
             git push
-            echo "changes=true" >> $GITHUB_OUTPUT
+            echo "changes=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Comment result
+        if: always() && needs.render.result == 'success' && steps.commit.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.issue.number }}
+          REPOSITORY: ${{ github.repository }}
+          CHANGES: ${{ steps.commit.outputs.changes }}
         run: |
-          if [ "${{ steps.commit.outputs.changes }}" = "true" ]; then
-            gh pr comment ${{ github.event.issue.number }} --body "### 🎉 Successfully updated and committed screenshots!"
+          if [ "$CHANGES" = "true" ]; then
+            gh pr comment "$PR_NUMBER" --repo "$REPOSITORY" \
+              --body "### 🎉 Successfully updated and committed screenshots!"
           else
-            gh pr comment ${{ github.event.issue.number }} --body "### ✅ No screenshot changes detected. Screenshots are already up to date."
+            gh pr comment "$PR_NUMBER" --repo "$REPOSITORY" \
+              --body "### ✅ No screenshot changes detected. Screenshots are already up to date."
           fi
 
       - name: Comment on failure
-        if: failure()
+        if: always() && (needs.render.result != 'success' || failure()) && steps.verify_head.outputs.stale != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.issue.number }}
+          REPOSITORY: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          gh pr comment ${{ github.event.issue.number }} --body "### ❌ Failed to update screenshots. [View workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+          gh pr comment "$PR_NUMBER" --repo "$REPOSITORY" \
+            --body "### ❌ Failed to update screenshots. [View workflow run]($RUN_URL)"
