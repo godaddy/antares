@@ -27,7 +27,7 @@ import { Text } from '#components/text';
 import { Icon } from '#components/icon';
 import { CheckboxIndicator } from '#components/checkbox';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { partClassName } from '#components/_internal/typography';
+import { textTreatmentClassName } from '#components/_internal/typography';
 
 export interface MenuTriggerProps extends Omit<RACMenuTriggerProps, 'children'> {
   /** Additional props forwarded to the underlying `Popover`. */
@@ -115,7 +115,7 @@ type TextSlots = { slots: Record<string | symbol, RACTextProps> };
 /** Gives a `Text` label the item's own type, merged into React Aria's label slots so their ids survive. */
 function MenuItemLabel({ children }: { children?: ReactNode }) {
   const { slots } = useContext(RACTextContext) as TextSlots;
-  const inherit = partClassName('inherit');
+  const inherit = textTreatmentClassName('inherit');
   const label = { ...slots.label, className: cx(slots.label.className, inherit) };
 
   return (

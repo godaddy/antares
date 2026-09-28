@@ -13,7 +13,7 @@ import type { Optional, SeriesConfig } from '../../types.ts';
 import { chartSegmentGapPadAngle } from '../../utils.ts';
 import styles from './index.module.css';
 import { cx } from 'cva';
-import { partClassName } from '#components/_internal/typography';
+import { textTreatmentClassName } from '#components/_internal/typography';
 
 /**
  * One slice of donut chart data after normalization (stable `id`, `name`, numeric `value`).
@@ -323,8 +323,8 @@ export function DonutChart(props: DonutChartProps) {
             </svg>
           )}
           <Flex className={styles.content} alignItems="center" justifyContent="center" direction="column">
-            <Text className={cx(styles.label, partClassName('inherit'))}>{label}</Text>
-            {subLabel && <Text className={cx(styles.subLabel, partClassName('inherit'))}>{subLabel}</Text>}
+            <Text className={cx(styles.label, textTreatmentClassName('inherit'))}>{label}</Text>
+            {subLabel && <Text className={cx(styles.subLabel, textTreatmentClassName('inherit'))}>{subLabel}</Text>}
           </Flex>
         </Box>
         <Tooltip triggerRef={tooltipAnchorRef} offset={tooltipPlacementEpsilon} className={styles.tooltip}>
@@ -345,13 +345,13 @@ export function DonutChart(props: DonutChartProps) {
                       rounding="full"
                       style={{ backgroundColor: chartColorForIndex(slice.index) }}
                     />
-                    <Text className={partClassName('inherit')}>{slice.name}</Text>
+                    <Text className={textTreatmentClassName('inherit')}>{slice.name}</Text>
                   </Flex>
                   <Flex direction="row" alignItems="center" gap="md" justifyContent="end">
-                    <Text className={partClassName('inherit')} align="end">
+                    <Text className={textTreatmentClassName('inherit')} align="end">
                       {formatSlicePercent(slice.value, total)}
                     </Text>
-                    <Text className={partClassName('inherit')} align="end">
+                    <Text className={textTreatmentClassName('inherit')} align="end">
                       {formatSliceValue(slice.value)}
                     </Text>
                   </Flex>

@@ -4,7 +4,7 @@ import { cx } from 'cva';
 import { Provider as RACProvider, TextContext } from 'react-aria-components';
 import { ImageContext } from '#components/image';
 import styles from './index.module.css';
-import { partClassName } from '#components/_internal/typography';
+import { textTreatmentClassName } from '#components/_internal/typography';
 
 export type AvatarShape = 'circle' | 'square';
 
@@ -99,7 +99,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(p
             }
           }
         ],
-        [TextContext, { className: cx(styles.fallback, partClassName('inherit')) }]
+        [TextContext, { className: cx(styles.fallback, textTreatmentClassName('inherit')) }]
       ]}
     >
       <span

@@ -43,7 +43,7 @@ const SIZE: Record<TypographySize, string> = {
   '2xl': styles.type2xl
 };
 
-const SLOT_SIZE: Record<TypographySize, string> = {
+const TEXT_SLOT_SIZE_CLASS: Record<TypographySize, string> = {
   xs: styles.typeSlotXs,
   sm: styles.typeSlotSm,
   md: styles.typeSlotMd,
@@ -70,9 +70,9 @@ export function useTypographyClassName(role: TypographyRole, { size, emphasis }:
   return cx(styles.type, ROLE[role], scale, size && SIZE[size], emphasis && EMPHASIS[emphasis]);
 }
 
-type PartTreatment = 'body' | 'detail' | 'inherit';
+type TextTreatment = 'body' | 'detail' | 'inherit';
 
-const PART: Record<PartTreatment, string> = {
+const TEXT_TREATMENT_CLASS: Record<TextTreatment, string> = {
   body: styles.typeBody,
   detail: styles.typeDetail,
   inherit: styles.typeInherit
@@ -82,11 +82,11 @@ const PART: Record<PartTreatment, string> = {
  * An owner's treatment for one of its parts, whichever text component fills it. `inherit` takes the
  * owner's own type, as a control's label does.
  */
-export function partClassName(treatment: PartTreatment) {
-  return PART[treatment];
+export function textTreatmentClassName(treatment: TextTreatment) {
+  return TEXT_TREATMENT_CLASS[treatment];
 }
 
 /** A part's tier on the ramp of the text that fills it. An explicit `size` still wins. */
-export function slotSizeClassName(size: TypographySize) {
-  return SLOT_SIZE[size];
+export function textSlotSizeClassName(size: TypographySize) {
+  return TEXT_SLOT_SIZE_CLASS[size];
 }
