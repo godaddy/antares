@@ -1,17 +1,17 @@
 1:"$Sreact.fragment"
-2:I[838538,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"DocsPage"]
-3:I[838538,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"DocsTitle"]
-4:I[838538,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"DocsDescription"]
-5:I[748747,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"LLMCopyButton"]
-6:I[748747,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"ViewOptions"]
-7:I[838538,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"DocsBody"]
-8:I[836838,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"Heading"]
-9:I[195232,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"CodeBlock"]
-a:I[195232,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"Pre"]
-b:I[403113,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"StoryRenderer"]
-c:I[695594,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"DefaultExample"]
-d:I[156905,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"DynamicCodeBlock"]
-e:T62a,import {
+2:I[838538,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"DocsPage"]
+3:I[838538,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"DocsTitle"]
+4:I[838538,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"DocsDescription"]
+5:I[748747,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"LLMCopyButton"]
+6:I[748747,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"ViewOptions"]
+7:I[838538,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"DocsBody"]
+8:I[836838,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"Heading"]
+9:I[195232,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"CodeBlock"]
+a:I[195232,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"Pre"]
+b:I[403113,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"StoryRenderer"]
+c:I[695594,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"DefaultExample"]
+d:I[156905,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"DynamicCodeBlock"]
+e:T5f1,import {
   Accordion,
   Collapsible,
   CollapsiblePanel,
@@ -31,7 +31,7 @@ export function DefaultExample({
         <Heading>
           <Button slot="trigger">
             <Text>Can I transfer my domain?</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>
@@ -42,7 +42,7 @@ export function DefaultExample({
         <Heading>
           <Button slot="trigger">
             <Text>How does renewal work?</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>
@@ -53,7 +53,7 @@ export function DefaultExample({
         <Heading>
           <Button slot="trigger">
             <Text>Is domain privacy included?</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Domain privacy helps keep your personal contact information private.</CollapsiblePanel>
@@ -63,13 +63,13 @@ export function DefaultExample({
 }3a:X
 3f:X
 3f:C
-0:{"buildId":"ESqrdcF_wDqtbgqcRM8Gs","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"toc":[{"depth":2,"url":"#features","title":"Features"},{"depth":2,"url":"#installation","title":"Installation"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#one-section-at-a-time","title":"One section at a time"},{"depth":3,"url":"#multiple-sections-open","title":"Multiple sections open"},{"depth":3,"url":"#controlled","title":"Controlled"},{"depth":3,"url":"#disabled","title":"Disabled"},{"depth":3,"url":"#form-steps","title":"Form Steps"},{"depth":3,"url":"#nested","title":"Nested"},{"depth":2,"url":"#customization","title":"Customization"},{"depth":2,"url":"#accessibility","title":"Accessibility"},{"depth":3,"url":"#keyboard","title":"Keyboard"},{"depth":3,"url":"#aria","title":"ARIA"},{"depth":2,"url":"#best-practices","title":"Best Practices"},{"depth":2,"url":"#troubleshooting","title":"Troubleshooting"},{"depth":3,"url":"#controlled-state-not-updating","title":"Controlled State Not Updating"},{"depth":3,"url":"#sections-close-when-another-opens","title":"Sections Close When Another Opens"},{"depth":2,"url":"#props","title":"Props"}],"footer":{"enabled":true},"children":[["$","$L3",null,{"children":"Accordion"}],["$","$L4",null,{"className":"mb-0","children":"Accordion coordinates related collapsible sections with single or multiple expansion."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L5",null,{"markdownUrl":"/docs/components/accordion.mdx"}],["$","$L6",null,{"markdownUrl":"/docs/components/accordion.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/accordion/README.mdx"}]]}],["$","$L7",null,{"children":[null,"\n",["$","$L8",null,{"as":"h2","id":"features","children":"Features"}],"\n",["$","ul",null,{"children":["\n",["$","li",null,{"children":"Single or multiple expanded sections."}],"\n",["$","li",null,{"children":"Controlled and uncontrolled group state."}],"\n",["$","li",null,{"children":"Group-level disabled state."}],"\n",["$","li",null,{"children":"Composable sections using Collapsible and CollapsiblePanel."}],"\n"]}],"\n",["$","$L8",null,{"as":"h2","id":"installation","children":"Installation"}],"\n",["$","$L9",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$La",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npm"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" install"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" --save"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" @godaddy/antares"}]]}]}]}]}],"\n",["$","$L8",null,{"as":"h2","id":"examples","children":"Examples"}],"\n",["$","$L8",null,{"as":"h3","id":"one-section-at-a-time","children":"One section at a time"}],"\n",["$","p",null,{"children":"Let people explore short answers one at a time."}],"\n",["$","$Lb",null,{"component":"$c"}],"\n",["$","$Ld",null,{"lang":"tsx","code":"$e"}],"\n","$Lf","\n","$L10","\n","$L11","\n","$L12","\n","$L13","\n","$L14","\n","$L15","\n","$L16","\n","$L17","\n","$L18","\n","$L19","\n","$L1a","\n","$L1b","\n","$L1c","\n","$L1d","\n","$L1e","\n","$L1f","\n","$L20","\n","$L21","\n","$L22","\n","$L23","\n","$L24","\n","$L25","\n","$L26","\n","$L27","\n","$L28","\n","$L29","\n","$L2a","\n","$L2b","\n","$L2c","\n","$L2d","\n","$L2e","\n","$L2f","\n","$L30","\n","$L31","\n","$L32","\n","$L33","\n","$L34","\n","$L35"]}]]}],["$L36","$L37"],"$L38"]}],"isPartial":"$@39","staleTime":"$3a","varyParams":null},{"rsc":"$L3b","isPartial":"$@3c","staleTime":"$3a","varyParams":null},{"rsc":"$L3d","isPartial":"$@3e","staleTime":"$3a","varyParams":"$3f"}],"isUpgradeableISRFallback":false,"a":"$@40","rootVaryParams":null,"needsRuntimeRequest":"$@41"}
-42:I[893042,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"MultipleExample"]
-44:I[98399,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"ControlledExample"]
-46:I[47828,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"DisabledExample"]
-48:I[481368,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"FormStepsExample"]
-4a:I[559875,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"NestedExample"]
-58:I[403299,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2zqq1lx45f9cm.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"PropTableClient"]
+0:{"buildId":"Gfre4tnSrzelj3O3NmicY","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"toc":[{"depth":2,"url":"#features","title":"Features"},{"depth":2,"url":"#installation","title":"Installation"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#one-section-at-a-time","title":"One section at a time"},{"depth":3,"url":"#multiple-sections-open","title":"Multiple sections open"},{"depth":3,"url":"#controlled","title":"Controlled"},{"depth":3,"url":"#disabled","title":"Disabled"},{"depth":3,"url":"#form-steps","title":"Form Steps"},{"depth":3,"url":"#nested","title":"Nested"},{"depth":2,"url":"#customization","title":"Customization"},{"depth":2,"url":"#accessibility","title":"Accessibility"},{"depth":3,"url":"#keyboard","title":"Keyboard"},{"depth":3,"url":"#aria","title":"ARIA"},{"depth":2,"url":"#best-practices","title":"Best Practices"},{"depth":2,"url":"#troubleshooting","title":"Troubleshooting"},{"depth":3,"url":"#controlled-state-not-updating","title":"Controlled State Not Updating"},{"depth":3,"url":"#sections-close-when-another-opens","title":"Sections Close When Another Opens"},{"depth":2,"url":"#props","title":"Props"}],"footer":{"enabled":true},"children":[["$","$L3",null,{"children":"Accordion"}],["$","$L4",null,{"className":"mb-0","children":"Accordion coordinates related collapsible sections with single or multiple expansion."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L5",null,{"markdownUrl":"/docs/components/accordion.mdx"}],["$","$L6",null,{"markdownUrl":"/docs/components/accordion.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/accordion/README.mdx"}]]}],["$","$L7",null,{"children":[null,"\n",["$","$L8",null,{"as":"h2","id":"features","children":"Features"}],"\n",["$","ul",null,{"children":["\n",["$","li",null,{"children":"Single or multiple expanded sections."}],"\n",["$","li",null,{"children":"Controlled and uncontrolled group state."}],"\n",["$","li",null,{"children":"Group-level disabled state."}],"\n",["$","li",null,{"children":"Composable sections using Collapsible and CollapsiblePanel."}],"\n"]}],"\n",["$","$L8",null,{"as":"h2","id":"installation","children":"Installation"}],"\n",["$","$L9",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$La",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npm"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" install"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" --save"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" @godaddy/antares"}]]}]}]}]}],"\n",["$","$L8",null,{"as":"h2","id":"examples","children":"Examples"}],"\n",["$","$L8",null,{"as":"h3","id":"one-section-at-a-time","children":"One section at a time"}],"\n",["$","p",null,{"children":"Let people explore short answers one at a time."}],"\n",["$","$Lb",null,{"component":"$c"}],"\n",["$","$Ld",null,{"lang":"tsx","code":"$e"}],"\n","$Lf","\n","$L10","\n","$L11","\n","$L12","\n","$L13","\n","$L14","\n","$L15","\n","$L16","\n","$L17","\n","$L18","\n","$L19","\n","$L1a","\n","$L1b","\n","$L1c","\n","$L1d","\n","$L1e","\n","$L1f","\n","$L20","\n","$L21","\n","$L22","\n","$L23","\n","$L24","\n","$L25","\n","$L26","\n","$L27","\n","$L28","\n","$L29","\n","$L2a","\n","$L2b","\n","$L2c","\n","$L2d","\n","$L2e","\n","$L2f","\n","$L30","\n","$L31","\n","$L32","\n","$L33","\n","$L34","\n","$L35"]}]]}],["$L36","$L37"],"$L38"]}],"isPartial":"$@39","staleTime":"$3a","varyParams":null},{"rsc":"$L3b","isPartial":"$@3c","staleTime":"$3a","varyParams":null},{"rsc":"$L3d","isPartial":"$@3e","staleTime":"$3a","varyParams":"$3f"}],"isUpgradeableISRFallback":false,"a":"$@40","rootVaryParams":null,"needsRuntimeRequest":"$@41"}
+42:I[893042,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"MultipleExample"]
+44:I[98399,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"ControlledExample"]
+46:I[47828,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"DisabledExample"]
+48:I[481368,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"FormStepsExample"]
+4a:I[559875,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"NestedExample"]
+58:I[403299,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js","/antares/pr-349-site/_next/static/chunks/2lc0xhdwvnb3v.js","/antares/pr-349-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-349-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-349-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-349-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-349-site/_next/static/chunks/2mrqy9vdhqbn5.js","/antares/pr-349-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-349-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-349-site/_next/static/chunks/3ebku16fazki3.js"],"PropTableClient"]
 59:I[897367,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js"],"OutletBoundary"]
 5a:"$Sreact.suspense"
 5c:I[897367,["/antares/pr-349-site/_next/static/chunks/2glm3v-ddlayp.js","/antares/pr-349-site/_next/static/chunks/3m64j2ru7o4_w.js"],"ViewportBoundary"]
@@ -79,7 +79,7 @@ export function DefaultExample({
 f:["$","$L8",null,{"as":"h3","id":"multiple-sections-open","children":"Multiple sections open"}]
 10:["$","p",null,{"children":"Keep related answers visible together when people need to compare information."}]
 11:["$","$Lb",null,{"component":"$42"}]
-43:T513,import { Accordion, Button, Collapsible, CollapsiblePanel, Heading, Icon, Text } from '@godaddy/antares';
+43:T4da,import { Accordion, Button, Collapsible, CollapsiblePanel, Heading, Icon, Text } from '@godaddy/antares';
 
 export function MultipleExample() {
   return (
@@ -88,7 +88,7 @@ export function MultipleExample() {
         <Heading>
           <Button slot="trigger">
             <Text>Shipping</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Most orders arrive within two business days.</CollapsiblePanel>
@@ -97,7 +97,7 @@ export function MultipleExample() {
         <Heading>
           <Button slot="trigger">
             <Text>Returns</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Return eligible items within thirty days.</CollapsiblePanel>
@@ -106,7 +106,7 @@ export function MultipleExample() {
         <Heading>
           <Button slot="trigger">
             <Text>Tracking</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Track your order from the confirmation email.</CollapsiblePanel>
@@ -117,7 +117,7 @@ export function MultipleExample() {
 13:["$","$L8",null,{"as":"h3","id":"controlled","children":"Controlled"}]
 14:["$","p",null,{"children":"Coordinate expanded sections with application state in either expansion mode."}]
 15:["$","$Lb",null,{"component":"$44"}]
-45:T7b8,import { useState } from 'react';
+45:T77f,import { useState } from 'react';
 import {
   Accordion,
   Button,
@@ -154,7 +154,7 @@ export function ControlledExample({
           <Heading>
             <Button slot="trigger">
               <Text>Account</Text>
-              <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+              <Icon slot="indicator" icon="chevron-down" />
             </Button>
           </Heading>
           <CollapsiblePanel>Manage your account information.</CollapsiblePanel>
@@ -163,7 +163,7 @@ export function ControlledExample({
           <Heading>
             <Button slot="trigger">
               <Text>Billing</Text>
-              <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+              <Icon slot="indicator" icon="chevron-down" />
             </Button>
           </Heading>
           <CollapsiblePanel>Manage payment methods.</CollapsiblePanel>
@@ -172,7 +172,7 @@ export function ControlledExample({
           <Heading>
             <Button slot="trigger">
               <Text>Notifications</Text>
-              <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+              <Icon slot="indicator" icon="chevron-down" />
             </Button>
           </Heading>
           <CollapsiblePanel>Choose how you receive account updates.</CollapsiblePanel>
@@ -184,7 +184,7 @@ export function ControlledExample({
 17:["$","$L8",null,{"as":"h3","id":"disabled","children":"Disabled"}]
 18:["$","p",null,{"children":"Keep unavailable options visible and explain the reason in their label."}]
 19:["$","$Lb",null,{"component":"$46"}]
-47:T567,import { Accordion, Collapsible, CollapsiblePanel, Heading, Button, Icon, Text } from '@godaddy/antares';
+47:T52e,import { Accordion, Collapsible, CollapsiblePanel, Heading, Button, Icon, Text } from '@godaddy/antares';
 
 export function DisabledExample({ isGroupDisabled = false }: { isGroupDisabled?: boolean } = {}) {
   return (
@@ -193,7 +193,7 @@ export function DisabledExample({ isGroupDisabled = false }: { isGroupDisabled?:
         <Heading>
           <Button slot="trigger">
             <Text>Basic plan</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Features included with your plan.</CollapsiblePanel>
@@ -202,7 +202,7 @@ export function DisabledExample({ isGroupDisabled = false }: { isGroupDisabled?:
         <Heading>
           <Button slot="trigger">
             <Text>Premium plan (Upgrade required)</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Additional premium features.</CollapsiblePanel>
@@ -211,7 +211,7 @@ export function DisabledExample({ isGroupDisabled = false }: { isGroupDisabled?:
         <Heading>
           <Button slot="trigger">
             <Text>Enterprise plan (Contact sales)</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Contact our sales team for a plan tailored to your business.</CollapsiblePanel>
@@ -222,7 +222,7 @@ export function DisabledExample({ isGroupDisabled = false }: { isGroupDisabled?:
 1b:["$","$L8",null,{"as":"h3","id":"form-steps","children":"Form Steps"}]
 1c:["$","p",null,{"children":"Break a single-page form into steps while keeping entered values mounted."}]
 1d:["$","$Lb",null,{"component":"$48"}]
-49:T7c9,import { useRef, useState } from 'react';
+49:T790,import { useRef, useState } from 'react';
 import {
   Accordion,
   Button,
@@ -246,7 +246,7 @@ export function FormStepsExample() {
         <Heading>
           <Button slot="trigger">
             <Text>Contact details</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>
@@ -270,7 +270,7 @@ export function FormStepsExample() {
         <Heading>
           <Button slot="trigger" ref={paymentTrigger}>
             <Text>Payment details</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Review your payment details before submitting.</CollapsiblePanel>
@@ -279,7 +279,7 @@ export function FormStepsExample() {
         <Heading>
           <Button slot="trigger">
             <Text>Review and submit</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Check your contact and payment details before submitting.</CollapsiblePanel>
@@ -290,7 +290,7 @@ export function FormStepsExample() {
 1f:["$","$L8",null,{"as":"h3","id":"nested","children":"Nested"}]
 20:["$","p",null,{"children":"Nested sections keep independent state. Prefer a flatter structure when possible."}]
 21:["$","$Lb",null,{"component":"$4a"}]
-4b:T528,import { Accordion, Collapsible, CollapsiblePanel, Heading, Button, Icon, Text } from '@godaddy/antares';
+4b:T4ef,import { Accordion, Collapsible, CollapsiblePanel, Heading, Button, Icon, Text } from '@godaddy/antares';
 
 export function NestedExample() {
   return (
@@ -299,7 +299,7 @@ export function NestedExample() {
         <Heading level={2}>
           <Button slot="trigger">
             <Text>Outer question</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>
@@ -307,7 +307,7 @@ export function NestedExample() {
             <Heading>
               <Button slot="trigger">
                 <Text>Independent detail</Text>
-                <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+                <Icon slot="indicator" icon="chevron-down" />
               </Button>
             </Heading>
             <CollapsiblePanel>Independent answer.</CollapsiblePanel>
@@ -317,7 +317,7 @@ export function NestedExample() {
               <Heading>
                 <Button slot="trigger">
                   <Text>Inner question</Text>
-                  <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+                  <Icon slot="indicator" icon="chevron-down" />
                 </Button>
               </Heading>
               <CollapsiblePanel>Inner answer.</CollapsiblePanel>
