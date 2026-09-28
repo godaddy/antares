@@ -1,0 +1,4 @@
+design-tokens:
+  - changed-files:
+      - any-glob-to-any-file:
+          - packages/@godaddy/design-tokens/src/tokens.yml
