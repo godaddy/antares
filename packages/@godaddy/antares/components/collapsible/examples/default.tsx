@@ -10,7 +10,7 @@ export function DefaultExample({ defaultExpanded = false }: { defaultExpanded?: 
       <Heading level={2}>
         <Button slot="trigger">
           <Text>Advanced settings</Text>
-          <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+          <Icon slot="indicator" icon="chevron-down" />
         </Button>
       </Heading>
       <CollapsiblePanel role="region">Configure additional options here.</CollapsiblePanel>

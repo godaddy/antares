@@ -11,7 +11,7 @@ export function DisabledExample({ isGroupDisabled = false }: { isGroupDisabled?:
         <Heading>
           <Button slot="trigger">
             <Text>Basic plan</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Features included with your plan.</CollapsiblePanel>
@@ -20,7 +20,7 @@ export function DisabledExample({ isGroupDisabled = false }: { isGroupDisabled?:
         <Heading>
           <Button slot="trigger">
             <Text>Premium plan (Upgrade required)</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Additional premium features.</CollapsiblePanel>
@@ -29,7 +29,7 @@ export function DisabledExample({ isGroupDisabled = false }: { isGroupDisabled?:
         <Heading>
           <Button slot="trigger">
             <Text>Enterprise plan (Contact sales)</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Contact our sales team for a plan tailored to your business.</CollapsiblePanel>

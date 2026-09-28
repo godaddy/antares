@@ -39,7 +39,7 @@ export function ControlledExample({
           <Heading>
             <Button slot="trigger">
               <Text>Account</Text>
-              <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+              <Icon slot="indicator" icon="chevron-down" />
             </Button>
           </Heading>
           <CollapsiblePanel>Manage your account information.</CollapsiblePanel>
@@ -48,7 +48,7 @@ export function ControlledExample({
           <Heading>
             <Button slot="trigger">
               <Text>Billing</Text>
-              <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+              <Icon slot="indicator" icon="chevron-down" />
             </Button>
           </Heading>
           <CollapsiblePanel>Manage payment methods.</CollapsiblePanel>
@@ -57,7 +57,7 @@ export function ControlledExample({
           <Heading>
             <Button slot="trigger">
               <Text>Notifications</Text>
-              <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+              <Icon slot="indicator" icon="chevron-down" />
             </Button>
           </Heading>
           <CollapsiblePanel>Choose how you receive account updates.</CollapsiblePanel>

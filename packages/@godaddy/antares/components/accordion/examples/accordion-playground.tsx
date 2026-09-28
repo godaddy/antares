@@ -22,7 +22,7 @@ export function PlaygroundExample(
         <Heading>
           <Button slot="trigger">
             <Text>First question</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>First answer.</CollapsiblePanel>
@@ -31,7 +31,7 @@ export function PlaygroundExample(
         <Heading>
           <Button slot="trigger">
             <Text>Second question</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Second answer.</CollapsiblePanel>
@@ -40,7 +40,7 @@ export function PlaygroundExample(
         <Heading>
           <Button slot="trigger">
             <Text>Third question</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Third answer.</CollapsiblePanel>

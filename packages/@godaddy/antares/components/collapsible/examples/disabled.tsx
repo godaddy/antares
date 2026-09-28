@@ -10,7 +10,7 @@ export function DisabledExample({ defaultExpanded = false }: { defaultExpanded?:
       <Heading>
         <Button slot="trigger">
           <Text>Unavailable settings</Text>
-          <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+          <Icon slot="indicator" icon="chevron-down" />
         </Button>
       </Heading>
       <CollapsiblePanel>These settings are currently unavailable.</CollapsiblePanel>

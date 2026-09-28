@@ -23,7 +23,7 @@ export function DefaultExample({
         <Heading>
           <Button slot="trigger">
             <Text>Can I transfer my domain?</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>
@@ -34,7 +34,7 @@ export function DefaultExample({
         <Heading>
           <Button slot="trigger">
             <Text>How does renewal work?</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>
@@ -45,7 +45,7 @@ export function DefaultExample({
         <Heading>
           <Button slot="trigger">
             <Text>Is domain privacy included?</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Domain privacy helps keep your personal contact information private.</CollapsiblePanel>

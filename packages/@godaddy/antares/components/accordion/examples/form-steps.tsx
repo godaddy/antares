@@ -26,7 +26,7 @@ export function FormStepsExample() {
         <Heading>
           <Button slot="trigger">
             <Text>Contact details</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>
@@ -50,7 +50,7 @@ export function FormStepsExample() {
         <Heading>
           <Button slot="trigger" ref={paymentTrigger}>
             <Text>Payment details</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Review your payment details before submitting.</CollapsiblePanel>
@@ -59,7 +59,7 @@ export function FormStepsExample() {
         <Heading>
           <Button slot="trigger">
             <Text>Review and submit</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Check your contact and payment details before submitting.</CollapsiblePanel>

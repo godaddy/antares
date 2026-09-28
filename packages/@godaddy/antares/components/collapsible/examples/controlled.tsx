@@ -20,7 +20,7 @@ export function ControlledExample({ onChange }: { onChange?: (isExpanded: boolea
         <Heading>
           <Button slot="trigger">
             <Text>Account details</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Your account details.</CollapsiblePanel>

@@ -305,7 +305,8 @@ describe('@godaddy/antares', function antares() {
       if (!bodyIcon) throw new Error('Missing panel icon');
       // A named panel slot would throw if the summary's IconContext leaked here.
       expect(bodyIcon.getAttribute('data-icon')).toBe('checkmark');
-      expect(bodyIcon.getAttribute('aria-hidden')).toBe('true');
+      expect(bodyIcon.getAttribute('role')).toBe('presentation');
+      expect(bodyIcon.hasAttribute('aria-hidden')).toBe(false);
     });
 
     it('preserves the default button slot without wiring it as a disclosure trigger', async function defaultSlot() {

@@ -31,7 +31,7 @@ export const AccordionContext = createContext<ContextValue<AccordionProps, HTMLD
  *     <Heading>
  *       <Button slot="trigger">
  *         <Text>Shipping</Text>
- *         <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+ *         <Icon slot="indicator" icon="chevron-down" />
  *       </Button>
  *     </Heading>
  *     <CollapsiblePanel>Ships within two business days.</CollapsiblePanel>
@@ -40,7 +40,7 @@ export const AccordionContext = createContext<ContextValue<AccordionProps, HTMLD
  *     <Heading>
  *       <Button slot="trigger">
  *         <Text>Returns</Text>
- *         <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+ *         <Icon slot="indicator" icon="chevron-down" />
  *       </Button>
  *     </Heading>
  *     <CollapsiblePanel>Return eligible items within thirty days.</CollapsiblePanel>

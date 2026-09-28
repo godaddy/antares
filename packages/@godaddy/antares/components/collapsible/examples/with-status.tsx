@@ -9,9 +9,9 @@ export function WithStatusExample() {
     <Collapsible defaultExpanded>
       <Heading>
         <Button slot="trigger">
-          <Icon icon="checkmark" aria-hidden="true" />
+          <Icon icon="checkmark" />
           <Text>Contact details (Completed)</Text>
-          <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+          <Icon slot="indicator" icon="chevron-down" />
         </Button>
       </Heading>
       <CollapsiblePanel>Your contact details have been saved.</CollapsiblePanel>

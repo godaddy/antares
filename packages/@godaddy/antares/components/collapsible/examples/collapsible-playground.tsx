@@ -39,12 +39,12 @@ export function PlaygroundExample({
     <Collapsible key={String(props.defaultExpanded)} {...props}>
       <Heading>
         <Button slot="trigger">
-          {showStatus && <Icon icon="checkmark" aria-hidden="true" />}
+          {showStatus && <Icon icon="checkmark" />}
           <Text>
             {headingText}
             {showStatus && ' (Completed)'}
           </Text>
-          {showIndicator && <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />}
+          {showIndicator && <Icon slot="indicator" icon="chevron-down" />}
         </Button>
       </Heading>
       <CollapsiblePanel contentProps={contentProps}>{content}</CollapsiblePanel>

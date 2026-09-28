@@ -12,7 +12,7 @@ export function MultipleExample() {
         <Heading>
           <Button slot="trigger">
             <Text>Shipping</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Most orders arrive within two business days.</CollapsiblePanel>
@@ -21,7 +21,7 @@ export function MultipleExample() {
         <Heading>
           <Button slot="trigger">
             <Text>Returns</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Return eligible items within thirty days.</CollapsiblePanel>
@@ -30,7 +30,7 @@ export function MultipleExample() {
         <Heading>
           <Button slot="trigger">
             <Text>Tracking</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>Track your order from the confirmation email.</CollapsiblePanel>

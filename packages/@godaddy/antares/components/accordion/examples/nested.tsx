@@ -11,7 +11,7 @@ export function NestedExample() {
         <Heading level={2}>
           <Button slot="trigger">
             <Text>Outer question</Text>
-            <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+            <Icon slot="indicator" icon="chevron-down" />
           </Button>
         </Heading>
         <CollapsiblePanel>
@@ -19,7 +19,7 @@ export function NestedExample() {
             <Heading>
               <Button slot="trigger">
                 <Text>Independent detail</Text>
-                <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+                <Icon slot="indicator" icon="chevron-down" />
               </Button>
             </Heading>
             <CollapsiblePanel>Independent answer.</CollapsiblePanel>
@@ -29,7 +29,7 @@ export function NestedExample() {
               <Heading>
                 <Button slot="trigger">
                   <Text>Inner question</Text>
-                  <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+                  <Icon slot="indicator" icon="chevron-down" />
                 </Button>
               </Heading>
               <CollapsiblePanel>Inner answer.</CollapsiblePanel>

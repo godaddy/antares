@@ -66,14 +66,14 @@ export function CompositionExample({
                       style={triggerProps?.style ?? { textDecoration: 'underline' }}
                     >
                       <Text>Composed heading</Text>
-                      <Icon slot="indicator" icon="chevron-down" aria-hidden="true" />
+                      <Icon slot="indicator" icon="chevron-down" />
                     </Button>
                   </Heading>
                   <Button onPress={onAuxiliaryPress}>Independent action</Button>
                   <CollapsiblePanel ref={panelRef} className="custom-panel" role="region">
                     <Heading level={4}>Panel heading</Heading>
                     <Button>Panel action</Button>
-                    <Icon slot="panel-status" icon="checkmark" aria-hidden="true" />
+                    <Icon slot="panel-status" icon="checkmark" />
                     <Text>{isExpanded ? 'Expanded content' : 'Collapsed content'}</Text>
                   </CollapsiblePanel>
                 </>
