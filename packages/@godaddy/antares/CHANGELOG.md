@@ -1,5 +1,11 @@
 # @godaddy/antares
 
+## 0.9.0
+
+### Minor Changes
+
+- BarChart: add per-category and per-series color overrides, series opacity, tooltip value formatting, and custom tooltip rendering. ([#324](https://github.com/godaddy/bento/pull/324) by @amcmillen-godaddy)
+
 ## 0.8.0
 
 ### Minor Changes
