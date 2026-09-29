@@ -10,7 +10,7 @@
 }
 
 .indicator {
-  --_card-selection-indicator-padding: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
+  --_card-selection-indicator-padding: var(--size-space-md, calc(var(--ux-1sbfig8, 0.25rem) * 2));
   --_card-selection-indicator-background: var(--ux-1mh0ktr, #f5f5f5);
   --_card-selection-indicator-border: var(--color-surface-border-card, var(--ux-97h3vl, #d4dbe0));
   --_card-selection-indicator-check-opacity: 0;
