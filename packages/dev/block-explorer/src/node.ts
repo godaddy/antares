@@ -17,6 +17,13 @@ const ROOT_README_REGEX = /^README(?:\.[^/]*)?$/i;
 const ROOT_STORY_REGEX = /\.stories\.tsx$/i;
 const ROOT_TEST_DIRECTORY = 'test';
 
+function assertMatchingBlockDirectory(id: string, directory: string, origin: string): void {
+  const directoryName = basename(directory);
+  if (id !== directoryName) {
+    throw new Error(`${origin}: block id "${id}" must match directory name "${directoryName}".`);
+  }
+}
+
 function assertBlockId(id: string, origin: string): void {
   if (!BLOCK_ID_REGEX.test(id)) {
     throw new Error(
@@ -27,7 +34,8 @@ function assertBlockId(id: string, origin: string): void {
 
 /**
  * Discovers implementation files, excluding root READMEs, stories, and `test/`.
- * Overrides take precedence over the directory name and matching Block description.
+ * An id override must match the directory name so the generated install command
+ * targets the registry item created from that directory.
  *
  * @param blockDirectory - Directory containing the block implementation.
  * @param overrides - {@link BlockManifestOverrides}
@@ -41,6 +49,7 @@ export async function loadBlockManifest(
   const directory = resolve(blockDirectory);
   const id = overrides.id ?? basename(directory);
   assertBlockId(id, directory);
+  assertMatchingBlockDirectory(id, directory, directory);
   const description = overrides.description ?? (await readBlockDescription(directory, id));
   const files = await discoverBlockFiles(directory);
 
@@ -74,9 +83,12 @@ export async function resolveBlockDirectory(readmePath: string, id: string): Pro
     if (await isBlockDirectory(packageBlockCandidate)) return packageBlockCandidate;
   }
 
-  // A block README may use a directory name that differs from its id. In that
-  // case, only accept the local directory when this README contains the marker.
-  if (await localReadmeDefinesBlock(readmePath, id)) return readmeDirectory;
+  // A local README may resolve to its own directory only when the registry id
+  // matches the directory name.
+  if (await localReadmeDefinesBlock(readmePath, id)) {
+    assertMatchingBlockDirectory(id, readmeDirectory, readmePath);
+    return readmeDirectory;
+  }
 
   throw new Error(`${readmePath}: unable to resolve block "${id}".`);
 }

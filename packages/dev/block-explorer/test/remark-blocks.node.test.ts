@@ -22,7 +22,7 @@ interface AnyTree extends AnyNode {
   children: AnyNode[];
 }
 
-const fixtureReadme = resolve(import.meta.dirname, 'fixtures/block/README.mdx');
+const fixtureReadme = resolve(import.meta.dirname, 'fixtures/fixture-block/README.mdx');
 
 describe('remarkBlocks', function remarkBlocksTests() {
   it('expands a Block marker into a site explorer and registers discovered files', async function expandsBlock() {

@@ -1,11 +1,11 @@
-import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, rename, rm, symlink, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 import { describe, expect, it } from 'vitest';
 import { languageForPath, loadBlockManifest, resolveBlockDirectory } from '../src/node.ts';
 
-const fixtureDirectory = resolve(dirname(fileURLToPath(import.meta.url)), 'fixtures/block');
+const fixtureDirectory = resolve(dirname(fileURLToPath(import.meta.url)), 'fixtures/fixture-block');
 
 describe('block manifest utilities', function blockManifestUtilities() {
   it('discovers implementation files and uses marker metadata', async function loadsManifest() {
@@ -187,6 +187,30 @@ describe('block manifest utilities', function blockManifestUtilities() {
 
     await expect(loadBlockManifest(fixtureDirectory, { id })).rejects.toThrow(expectedOverrideError);
     await expect(loadBlockManifest(invalidDirectory)).rejects.toThrow(expectedDirectoryError);
+  });
+
+  it('rejects an installable block id that differs from its directory name', async function rejectsMismatchedId() {
+    await withTemporaryBlock(async function assertMismatchedId(directory) {
+      const mismatchedId = 'another-block';
+      await expect(loadBlockManifest(directory, { id: mismatchedId })).rejects.toThrow(
+        `${directory}: block id "${mismatchedId}" must match directory name "temporary-block".`
+      );
+    });
+  });
+
+  it('rejects a local README whose id differs from its directory name', async function rejectsMismatchedLocalBlock() {
+    await withTemporaryBlock(async function assertMismatchedLocalBlock(directory) {
+      const mismatchedDirectory = resolve(dirname(directory), 'different-directory');
+      await rename(directory, mismatchedDirectory);
+      const readmePath = resolve(mismatchedDirectory, 'README.mdx');
+
+      await expect(resolveBlockDirectory(readmePath, 'temporary-block')).rejects.toThrow(
+        `${readmePath}: block id "temporary-block" must match directory name "different-directory".`
+      );
+      await expect(loadBlockManifest(mismatchedDirectory, { id: 'temporary-block' })).rejects.toThrow(
+        `${mismatchedDirectory}: block id "temporary-block" must match directory name "different-directory".`
+      );
+    });
   });
 
   it('reports an unresolved block id with the source README path', async function rejectsUnknownBlock() {

@@ -4,7 +4,7 @@ import remarkFrontmatter from 'remark-frontmatter';
 import { describe, expect, it, vi } from 'vitest';
 import { generateBlocksPlugin, viteFinal } from '../src/storybook.tsx';
 
-const fixtureReadme = resolve(import.meta.dirname, 'fixtures/block/README.mdx');
+const fixtureReadme = resolve(import.meta.dirname, 'fixtures/fixture-block/README.mdx');
 const noMarkerReadme = resolve(import.meta.dirname, 'fixtures/no-marker/README.mdx');
 const componentReadme = resolve(import.meta.dirname, 'fixtures/package/components/example/README.mdx');
 const importedReadme = resolve(import.meta.dirname, 'fixtures/package/components/imported/README.mdx');
@@ -187,7 +187,7 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
 
   it('reports missing marker attributes with the README path', async function reportsInvalidMarkers() {
     await expect(
-      runTransform(generateBlocksPlugin(), '<Block id="fixture-block" />', invalidBlockReadme)
+      runTransform(generateBlocksPlugin(), '<Block id="invalid-block" />', invalidBlockReadme)
     ).rejects.toThrow(`${invalidBlockReadme}: <Block> requires id="..." and of={Stories.Preview}.`);
     await expect(runTransform(generateBlocksPlugin(), '<BlockLink />', invalidLinkReadme)).rejects.toThrow(
       `${invalidLinkReadme}: <BlockLink> requires id="...".`
