@@ -16,6 +16,7 @@ import { ButtonContext, type ButtonProps } from '#components/button';
 import { HeadingContext } from '#components/heading';
 import { IconContext } from '#components/icon';
 import { TextContext } from '#components/text';
+import { useTypographyClassName } from '#components/_internal/typography';
 import { Box, type BoxOwnProps, type BoxProps } from '#components/layout/box';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
@@ -130,8 +131,10 @@ export const CollapsiblePanel = forwardRef<HTMLDivElement, CollapsiblePanelProps
   { children, className, contentProps, ...rest },
   ref
 ) {
+  const typography = useTypographyClassName('text');
+
   return (
-    <Box {...rest} as={RACDisclosurePanel} ref={ref} className={composeClassName(className, styles.panel)}>
+    <Box {...rest} as={RACDisclosurePanel} ref={ref} className={composeClassName(className, styles.panel, typography)}>
       <RACProvider
         values={[
           [HeadingContext, null],

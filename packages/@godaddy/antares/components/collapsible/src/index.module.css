@@ -22,34 +22,24 @@
 }
 
 :where(.collapsible) > .heading {
-  margin: 0;
-  font-family: var(--ux-p4wcd9, sans-serif);
-  font-size: var(--ux-18ime9a, 1.375rem);
-  font-weight: var(--ux-1a9e4a3, bolder);
-  line-height: var(--ux-1pw8hzd, 1.25);
-  font-variation-settings: var(--ux-3x9eca, "DSPL" 1);
-  letter-spacing: 0;
   overflow-wrap: anywhere;
 
   & > :where([slot="trigger"]) {
     display: flex;
-    align-items: center;
     justify-content: space-between;
     inline-size: 100%;
     min-inline-size: 0;
     min-block-size: var(--_collapsible-indicator-size);
     padding: 0;
-    margin: 0;
     border: none;
     border-radius: 0;
     background: transparent;
     color: inherit;
     font-family: inherit;
     font-size: inherit;
-    font-weight: inherit;
     line-height: inherit;
-    white-space: normal;
     text-align: start;
+    white-space: normal;
     gap: var(--_collapsible-space);
   }
 
@@ -89,11 +79,6 @@
   overflow: clip;
   min-inline-size: 0;
   overflow-wrap: anywhere;
-  font-family: var(--font-body-family, var(--ux-117cu43, sans-serif));
-  font-size: var(--font-body-size-md, var(--ux-1klxlj4, 1rem));
-  font-weight: var(--font-body-weight, var(--ux-8n6y9x, 400));
-  line-height: var(--font-body-line-height, var(--ux-mgbt9j, 1.5));
-  font-variation-settings: var(--font-body-variation, var(--ux-1i4pt2s, normal));
 
   transition:
     block-size 300ms cubic-bezier(0.32, 0.72, 0, 1),
