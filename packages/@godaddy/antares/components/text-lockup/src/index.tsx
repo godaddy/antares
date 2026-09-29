@@ -1,7 +1,7 @@
 import { forwardRef, type ReactNode } from 'react';
 import { cx } from 'cva';
 import { DEFAULT_SLOT, HeadingContext, Provider as RACProvider, TextContext } from 'react-aria-components';
-import { partClassName, slotSizeClassName } from '#components/_internal/typography';
+import { textTreatmentClassName, textSlotSizeClassName } from '#components/_internal/typography';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { TagContext, type TagSize } from '#components/tag';
 import { composeClassName } from '#utils/render-props.ts';
@@ -59,7 +59,7 @@ export interface TextLockupProps extends Omit<FlexProps, 'as' | 'direction' | 'a
  */
 export const TextLockup = forwardRef<HTMLDivElement, TextLockupProps>(function TextLockup(props, ref) {
   const { size, align = 'start', legibleLines = true, className, children, ...rest } = props;
-  const tier = size && slotSizeClassName(size);
+  const tier = size && textSlotSizeClassName(size);
 
   return (
     <Flex
@@ -82,8 +82,8 @@ export const TextLockup = forwardRef<HTMLDivElement, TextLockupProps>(function T
             {
               slots: {
                 [DEFAULT_SLOT]: { className: tier },
-                eyebrow: { className: cx(styles.part, partClassName('detail'), tier) },
-                body: { className: cx(styles.part, partClassName('body'), tier) }
+                eyebrow: { className: cx(styles.part, textTreatmentClassName('detail'), tier) },
+                body: { className: cx(styles.part, textTreatmentClassName('body'), tier) }
               }
             }
           ],

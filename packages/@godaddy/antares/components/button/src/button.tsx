@@ -11,7 +11,7 @@ import {
   TextContext as RACTextContext,
   useSlottedContext
 } from 'react-aria-components';
-import { partClassName } from '#components/_internal/typography';
+import { textTreatmentClassName } from '#components/_internal/typography';
 import { Icon } from '#components/icon';
 import { useDeclaredSize } from '#components/size-provider';
 import { Text } from '#components/text';
@@ -53,7 +53,9 @@ type LinkButtonVariant = Exclude<ButtonVariant, 'control' | 'trigger'>;
 function buttonLabel(children: React.ReactNode) {
   if (children === undefined) return children;
 
-  return <RACProvider values={[[RACTextContext, { className: partClassName('inherit') }]]}>{children}</RACProvider>;
+  return (
+    <RACProvider values={[[RACTextContext, { className: textTreatmentClassName('inherit') }]]}>{children}</RACProvider>
+  );
 }
 
 interface BaseButtonProps<V extends ButtonVariant = ButtonVariant> {

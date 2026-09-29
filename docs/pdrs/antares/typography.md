@@ -238,10 +238,17 @@ The existing role ramps supply every text size. No change to `packages/@godaddy/
 
 ## Responsive sizes
 
-Size props and `SizeProvider` remain scalar. The [responsive foundation](./responsive.md) supplies shared
-viewport breakpoints and a media-query hook, while responsive styling uses native CSS. Responsive size
-objects and coordinated responsive size scopes are deferred. Choosing a scalar size through the hook is
-possible, but uses its server fallback until hydration and may then change the layout.
+Designed in, shipped later:
+
+```tsx
+<SizeProvider size={{ base: 'sm', md: 'md' }}>...</SizeProvider>
+<Button size={{ base: 'lg', md: 'md' }}>Save</Button>
+```
+
+Each breakpoint compiles to a size class inside a media query, so the size resolves in CSS during server
+rendering, with no flash. Portals and Button receive the same object through context and apply the same
+classes. Media queries follow the viewport, so a portal resolves the same size as its trigger. This needs
+breakpoint tokens, which Antares does not have yet.
 
 ## Alternatives considered
 
@@ -265,6 +272,6 @@ provides inherited component sizing.
 - Final tier mappings for Modal title, field description and error, and Label.
 - Whether components with their own sizes today (Tag, Chip, Menu, Switch, ToggleButton, SegmentedController)
   adopt the scale, and how.
-- Coordinated responsive size scopes, deferred beyond the responsive foundation.
+- Breakpoint tokens for responsive sizes.
 
 Out of scope: prose styling for rendered Markdown, leading trim, tabular figures, and a public theme API.
