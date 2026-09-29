@@ -9,7 +9,7 @@ interface FormExampleProps {
 }
 
 /**
- * Type into a field and resize across 64rem. CSS reflows the same inputs, preserving their
+ * Type into a field and resize across `lg`. CSS reflows the same inputs, preserving their
  * values, focus, and selection. Let CSS own columns and allow long descriptions to wrap.
  * @order 5
  */

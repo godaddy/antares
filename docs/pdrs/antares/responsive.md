@@ -1,26 +1,35 @@
 # Responsive foundation
 
-Each component owns whether it adapts, what changes, and whether the component or its consumer
-controls that behavior. The foundation supplies shared conventions and tools for those decisions.
+Each component owns whether it adapts and what changes. The foundation supplies shared conventions and
+tools for those decisions.
 
 ## Decisions
 
-- Use native CSS for styling: flexible sizing and wrapping first, media queries for viewport or
-  device conditions, and named container queries for a section's available space.
-- Publish shared, mobile-first viewport widths in `rem` and derive JavaScript queries from them.
-  Container thresholds belong to the content of each layout.
-- Use `useMediaQuery` for media-dependent React behavior. It observes `matchMedia` through
-  `useSyncExternalStore` and requires an explicit server fallback.
-- Keep layout props scalar. Each component can address specialized needs, such as measuring a
-  chart's container, without expanding the shared API until there is a demonstrated common need.
+- **CSS first.** Start with flexible sizing and wrapping. Use container queries when a component adapts to
+  the space it is given, and media queries only for viewport or device conditions such as pointer type or
+  reduced motion.
+- **One breakpoint source.** `viewportBreakpoints` holds the shared, mobile-first viewport widths in `rem`,
+  and `viewportQueries` derives from it. Design tokens don't carry breakpoints. Container thresholds belong
+  to each component.
+- **Scalar props.** Props don't take per-breakpoint values. Components adapt in their own CSS, and consumers
+  do the same with their own classes.
+- **`useMediaQuery` for behavior, not styling.** It observes `matchMedia` through `useSyncExternalStore`
+  and requires an explicit server fallback.
 
 ## Tradeoffs
 
-Native CSS repeats the published breakpoint literals. This avoids requiring a consumer build plugin
-or runtime stylesheet generation; examples check that CSS and JavaScript agree at the boundary.
+- **Container vs. media queries.** Container queries make a component behave the same in a page, a
+  sidebar, or a modal. However, a container can't take its width from its content, so it collapses in
+  shrink-to-fit layouts, and its queries don't reach portaled content. Media queries have neither limit,
+  but they only know the viewport.
+- **Breakpoint literals.** Media queries can't read JavaScript or CSS variables, so CSS repeats the
+  published widths. A test fails on any viewport width that isn't published. A shared `@custom-media`
+  file would remove the literals, but every tool that compiles the CSS would need to support it.
+- **Scalar props.** The API stays small, and server output doesn't depend on the viewport. A responsive
+  layout needs a class instead of a prop.
+- **Hook fallback.** The fallback keeps server rendering and hydration consistent. The browser result can
+  change content after hydration, so the component must preserve state and focus.
 
-The hook's explicit fallback keeps server rendering and hydration consistent. The browser result
-can change content after hydration, so each component must decide how that affects its state and focus.
-
-[Runnable examples and usage notes](../../../packages/@godaddy/antares/components/responsive/README.mdx)
-are the source of truth for using the foundation. Components validate their own adaptations.
+[Usage notes and examples](../../../packages/@godaddy/antares/components/responsive/README.mdx) cover
+consumers, and the [component guidelines](../../../.agents/skills/antares-components/references/responsive.md)
+cover implementation.

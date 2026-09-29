@@ -6,7 +6,7 @@ interface DefaultExampleProps {
 }
 
 /**
- * Resize the viewport to see the `lg` query change at 64rem. Use this hook for behavior that
+ * Resize the viewport across `lg` to see the query change. Use this hook for behavior that
  * needs JavaScript; ordinary responsive styles belong in CSS.
  * @order 1
  */

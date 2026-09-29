@@ -30,7 +30,9 @@ The examples include their CSS in `<style>` blocks so the complete code is visib
 place those rules in their own stylesheets. Let responsive CSS own both the base and query values
 for a property; leave its corresponding layout prop and inline `style` unset. Normal cascade rules
 still apply. A named container controls its descendants; portaled content needs a suitable
-container in its own DOM ancestry.
+container in its own DOM ancestry. A container can't take its width from its content, so give it one
+from its parent, as the container example does with `inline-size: 100%`. Otherwise it collapses in flex
+rows and other shrink-to-fit layouts.
 
 ## Server rendering
 
