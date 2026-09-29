@@ -42,8 +42,6 @@ export function CompositionExample({
       <Accordion
         render={customSurface ? (surfaceProps) => <div {...surfaceProps} data-custom-surface="" /> : undefined}
         ref={groupRef}
-        role="group"
-        aria-label="Composition"
         isDisabled={isDisabled}
         className="custom-group"
       >

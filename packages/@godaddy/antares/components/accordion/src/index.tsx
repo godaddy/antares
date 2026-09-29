@@ -1,4 +1,4 @@
-import { createContext, forwardRef, type AriaRole, type AriaAttributes } from 'react';
+import { createContext, forwardRef } from 'react';
 import {
   DisclosureGroup as RACDisclosureGroup,
   useContextProps,
@@ -9,12 +9,7 @@ import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
 /** Related collapsible sections with React Aria's expansion and interaction props. */
-export interface AccordionProps
-  extends RACDisclosureGroupProps,
-    Pick<AriaAttributes, 'aria-label' | 'aria-labelledby'> {
-  /** Optional container role. Pair role="group" with an accessible label to name related sections. */
-  role?: AriaRole;
-}
+export interface AccordionProps extends RACDisclosureGroupProps {}
 
 /** Supplies optional Accordion defaults and a ref; local props take precedence. */
 export const AccordionContext = createContext<ContextValue<AccordionProps, HTMLDivElement>>(null);
@@ -24,7 +19,7 @@ export const AccordionContext = createContext<ContextValue<AccordionProps, HTMLD
  * Set allowsMultipleExpanded to keep several sections open; React Aria defaults to one.
  * Give each child a stable ID matching the keys used to control expansion.
  *
- * @param props - React Aria group state, accessible label, and composed collapsibles.
+ * @param props - React Aria group state and composed collapsibles.
  * @example
  * <Accordion allowsMultipleExpanded defaultExpandedKeys={['shipping', 'returns']}>
  *   <Collapsible id="shipping">
@@ -49,18 +44,7 @@ export const AccordionContext = createContext<ContextValue<AccordionProps, HTMLD
  */
 export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(function Accordion(props, ref) {
   [props, ref] = useContextProps(props, ref, AccordionContext);
-  const { className, role, 'aria-label': ariaLabel, 'aria-labelledby': ariaLabelledBy, render, ...rest } = props;
+  const { className, ...rest } = props;
 
-  return (
-    <RACDisclosureGroup
-      {...rest}
-      ref={ref}
-      className={composeClassName(className, styles.accordion)}
-      render={function renderGroup(domProps, state) {
-        // DisclosureGroup filters naming props; preserve them on the same primary surface.
-        const surfaceProps = { ...domProps, role, 'aria-label': ariaLabel, 'aria-labelledby': ariaLabelledBy };
-        return render ? render(surfaceProps, state) : <div {...surfaceProps} />;
-      }}
-    />
-  );
+  return <RACDisclosureGroup {...rest} ref={ref} className={composeClassName(className, styles.accordion)} />;
 });
