@@ -9,8 +9,9 @@ import * as Stories from './card.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-Card groups related content, like media, text, and actions, on a single surface. It can also
-work as a link or button, or be selected like a checkbox or radio, but not both.
+Card groups related content, like media, text, and actions, on a single surface. Use a primary
+action (`href` or `onPress`) or selection (`selection="checkbox"` or `selection="radio"`). If
+combined, `selection` takes precedence and `href` and `onPress` are ignored.
 
 ## Installation
 
