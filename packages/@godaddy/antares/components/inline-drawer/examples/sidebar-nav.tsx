@@ -31,7 +31,7 @@ export function SidebarNavExample() {
                 style={{ justifyContent: 'flex-start' }}
               >
                 <Icon icon={item.icon} />
-                {expanded ? item.label : null}
+                {expanded ? <Text>{item.label}</Text> : null}
               </LinkButton>
             );
           })}
