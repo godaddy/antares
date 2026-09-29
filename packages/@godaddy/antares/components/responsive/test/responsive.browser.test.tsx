@@ -2,12 +2,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, StrictMode } from 'react';
 import { hydrateRoot, type Root } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
-import { page } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 import { cleanup, render } from 'vitest-browser-react';
 import { viewportQueries } from '@godaddy/antares';
 import { DefaultExample } from '../examples/default.tsx';
 import { ViewportLayoutExample } from '../examples/viewport-layout.tsx';
 import { ContainerLayoutExample } from '../examples/container-layout.tsx';
+import { FormExample } from '../examples/form.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Responsive', function responsiveTests() {
@@ -145,6 +146,56 @@ describe('@godaddy/antares', function packageTests() {
 
       await screen.rerender(<ContainerLayoutExample width={640} />);
       expect(getComputedStyle(grid).gridTemplateColumns.split(' ')).toHaveLength(2);
+    });
+
+    it('preserves entered values, focus and selection when the form reflows', async function formReflow() {
+      await page.viewport(1023, 768);
+      const screen = await render(<FormExample />);
+      const form = screen.getByRole('form', { name: 'Account details' }).element();
+      const name = screen.getByRole('textbox', { name: 'Account display name' });
+      await name.fill('Acme shop');
+      const input = name.element() as HTMLInputElement;
+      input.setSelectionRange(0, 4);
+
+      for (const [width, columns] of [
+        [1024, 2],
+        [320, 1],
+        [1200, 2]
+      ]) {
+        await page.viewport(width, 768);
+        expect(getComputedStyle(form).gridTemplateColumns.split(' ')).toHaveLength(columns);
+        await expect.element(name).toHaveValue('Acme shop');
+        await expect.element(name).toHaveFocus();
+        expect(input.selectionStart).toBe(0);
+        expect(input.selectionEnd).toBe(4);
+      }
+
+      await userEvent.tab();
+      await expect.element(screen.getByRole('textbox', { name: 'Email' })).toHaveFocus();
+    });
+
+    it.each([
+      'ltr',
+      'rtl'
+    ] as const)('reflows long form text at 320px with enlarged text in %s', async function narrowForm(dir) {
+      await page.viewport(320, 768);
+      const originalFontSize = document.documentElement.style.fontSize;
+      const fontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize);
+      document.documentElement.style.fontSize = `${fontSize * 2}px`;
+      try {
+        const description = `Account reference: ${'customeraccountreference'.repeat(12)}`;
+        const screen = await render(<FormExample dir={dir} description={description} />);
+        const form = screen.getByRole('form', { name: 'Account details' }).element();
+        expect(getComputedStyle(form).gridTemplateColumns.split(' ')).toHaveLength(1);
+        expect(form.scrollWidth).toBeLessThanOrEqual(form.clientWidth);
+        expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(window.innerWidth);
+        await expect.element(screen.getByText(description)).toBeVisible();
+        await screen.getByRole('textbox', { name: 'Account display name' }).fill('Acme shop');
+        await userEvent.tab();
+        await expect.element(screen.getByRole('textbox', { name: 'Email' })).toHaveFocus();
+      } finally {
+        document.documentElement.style.fontSize = originalFontSize;
+      }
     });
   });
 });

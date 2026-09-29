@@ -4,6 +4,7 @@ import { DefaultExample } from '../examples/default.tsx';
 import { BreakpointsExample } from '../examples/breakpoints.tsx';
 import { ViewportLayoutExample } from '../examples/viewport-layout.tsx';
 import { ContainerLayoutExample } from '../examples/container-layout.tsx';
+import { FormExample } from '../examples/form.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Responsive', function responsiveTests() {
@@ -25,6 +26,10 @@ describe('@godaddy/antares', function packageTests() {
 
     it('renders the CSS container example', function containerLayout() {
       expect(renderToString(<ContainerLayoutExample />)).toMatchSnapshot();
+    });
+
+    it('renders the form without choosing a viewport on the server', function form() {
+      expect(renderToString(<FormExample />)).toMatchSnapshot();
     });
   });
 });

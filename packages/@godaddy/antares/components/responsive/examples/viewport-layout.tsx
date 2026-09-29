@@ -1,5 +1,4 @@
 import { Box, Grid, Text } from '@godaddy/antares';
-import styles from './layout.module.css';
 
 /**
  * CSS changes this layout from one column to two at the shared `lg` viewport threshold.
@@ -8,13 +7,26 @@ import styles from './layout.module.css';
  */
 export function ViewportLayoutExample() {
   return (
-    <Grid as="section" aria-label="Viewport layout" gap="md" className={styles.viewportLayout}>
-      <Box padding="md" elevation="card">
-        <Text>Account settings</Text>
-      </Box>
-      <Box padding="md" elevation="card">
-        <Text>Billing settings</Text>
-      </Box>
-    </Grid>
+    <>
+      <style>{`
+        .responsive-viewport-example {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        @media (min-width: 64rem) {
+          .responsive-viewport-example {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+      `}</style>
+      <Grid as="section" aria-label="Viewport layout" gap="md" className="responsive-viewport-example">
+        <Box padding="md" elevation="card">
+          <Text>Account settings</Text>
+        </Box>
+        <Box padding="md" elevation="card">
+          <Text>Billing settings</Text>
+        </Box>
+      </Grid>
+    </>
   );
 }

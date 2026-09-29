@@ -13,107 +13,35 @@ import * as Stories from './responsive.stories.tsx';
 
 - Shared, mobile-first viewport widths and query strings.
 - Native CSS media and container queries for styling.
-- A `useMediaQuery` hook for behavior, with an explicit server-rendering fallback.
-- No provider, additional dependency, CSS generation, or consumer build plugin.
-
-## Usage
-
-```tsx
-import {
-  viewportBreakpoints,
-  viewportQueries,
-  useMediaQuery,
-} from '@godaddy/antares/Responsive';
-
-const isLarge = useMediaQuery(viewportQueries.lg, { ssrMatch: false });
-```
-
-These exports are also available from `@godaddy/antares`. Use the hook inside a component or another
-hook, and use CSS for ordinary responsive styles.
-
-| Name | `viewportBreakpoints` | `viewportQueries` |
-| --- | --- | --- |
-| `sm` | `40rem` | `(min-width: 40rem)` |
-| `md` | `48rem` | `(min-width: 48rem)` |
-| `lg` | `64rem` | `(min-width: 64rem)` |
-| `xl` | `80rem` | `(min-width: 80rem)` |
-
-Each query matches at its threshold and above. Base CSS applies at every width, then matching
-queries override it. Width names are independent of the `sm`, `md`, and `lg` component sizes.
-Media-query `rem` units refer to the browser's initial font size, not a CSS override on `html`.
+- `useMediaQuery` for media-dependent React behavior, with an explicit server fallback.
 
 ## Examples
 
 <Examples of={Stories.Examples} />
 
-## CSS queries
-
-Use the published width directly in native CSS. CSS variables cannot supply a media-query threshold,
-and these JavaScript exports do not introduce CSS aliases.
-
-```css
-.layout {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-/* The lg viewport threshold. */
-@media (min-width: 64rem) {
-  .layout {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-```
-
-The corresponding `Grid` can set `className={styles.layout}` while leaving `columns` unset. Existing
-layout props may set inline styles; do not supply a prop for the same property your media query
-controls.
-
-For a layout that responds to its available space, establish a named container on an ancestor:
-
-```css
-.panel {
-  container: panel / inline-size;
-}
-
-@container panel (min-width: 30rem) {
-  .layout {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-```
-
-Choose that threshold from the content's needs. There is no shared container breakpoint scale, and
-`useMediaQuery` does not observe containers. A container queries its descendants, not itself;
-portaled content must have a suitable container in its own DOM ancestry.
-
 ## Customization
 
-Pass an application-specific media query directly to the hook:
+Exports are available from `@godaddy/antares` and `@godaddy/antares/Responsive`. Pass any valid
+media-query string to `useMediaQuery`, including device preferences such as reduced motion.
+Viewport widths describe available space; each component chooses the thresholds it needs.
+In media queries, `rem` uses the browser's initial font size.
 
-```tsx
-const isUltrawide = useMediaQuery('(min-width: 100rem)', { ssrMatch: false });
-const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)', {
-  ssrMatch: true,
-});
-```
-
-Use the same literal query in application CSS when styles depend on it. Custom queries do not change
-Antares' published defaults. Component props keep their existing value types; they do not accept
-breakpoint objects.
+The examples include their CSS in `<style>` blocks so the complete code is visible. Applications can
+place those rules in their own stylesheets. Let responsive CSS own both the base and query values
+for a property; leave its corresponding layout prop and inline `style` unset. Normal cascade rules
+still apply. A named container controls its descendants; portaled content needs a suitable
+container in its own DOM ancestry.
 
 ## Server rendering
 
-`ssrMatch` is required. Choose the fallback appropriate to the behavior being rendered and use the
-same value on the server and client. The hook returns it on the server and during initial hydration,
-then adopts the browser's actual result. A different result can change the content after hydration.
-The fallback is also used if `matchMedia` is unavailable. During client-only rendering, an available
-browser result is used immediately.
-
-The hook uses `matchMedia` change events, so updates follow query matches rather than every resize.
-Changing the query replaces the subscription; unmounting removes it.
+Use the same `ssrMatch` value on the server and client. It is returned on the server, during initial
+hydration, and when `matchMedia` is unavailable. After hydration the hook adopts the browser result;
+client-only rendering uses it immediately. Changing the query replaces the subscription, and
+unmounting removes it.
 
 ## Accessibility
 
-Prefer CSS reflow and wrapping over hiding content or shrinking text. Keep focus, selection, and
-component state in mind when a hook changes the rendered composition. Use pointer or hover media
-features for input capabilities instead of assuming that a narrow viewport means a touch device.
+Preserve reading order, keyboard focus, and entered values as layouts change. If a component swaps
+React trees, it must manage state and focus across that transition. Validate its chosen behavior
+with long text, RTL, narrow widths, text enlargement, and browser zoom. Resizing the viewport alone
+does not test every effect of zoom. Use pointer and hover media features to detect input capabilities.
