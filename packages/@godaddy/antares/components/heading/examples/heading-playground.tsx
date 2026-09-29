@@ -1,7 +1,11 @@
 import { Heading, type HeadingProps } from '@godaddy/antares';
 
-export function PlaygroundExample(props: Pick<HeadingProps, 'level' | 'children'>) {
-  const { level = 3, children = 'Heading' } = props;
+export function PlaygroundExample(props: Pick<HeadingProps, 'level' | 'size' | 'emphasis' | 'children'>) {
+  const { level = 3, size, emphasis, children = 'Heading' } = props;
 
-  return <Heading level={level}>{children}</Heading>;
+  return (
+    <Heading level={level} size={size} emphasis={emphasis}>
+      {children}
+    </Heading>
+  );
 }

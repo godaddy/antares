@@ -27,7 +27,7 @@ export function SelfContainedExample() {
       </Flex>
 
       <Flex direction="row" style={{ inlineSize: '600px' }}>
-        <TextLockup>
+        <TextLockup data-testid="row-lockup">
           <Heading slot="title">In a row</Heading>
         </TextLockup>
       </Flex>
