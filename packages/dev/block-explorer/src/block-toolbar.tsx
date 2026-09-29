@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Flex, Text } from '@godaddy/antares';
+import { Detail, Flex } from '@godaddy/antares';
 import { BlockInstallButton } from './block-install-button.tsx';
 
 /** Props for the {@link BlockToolbar} component. */
@@ -38,9 +38,9 @@ export function BlockToolbar({ description, installCommand, blockId, children }:
         {installCommand && blockId ? <BlockInstallButton blockId={blockId} command={installCommand} /> : null}
       </Flex>
       {description ? (
-        <Text as="p" maxLines={1} wrap="nowrap">
+        <Detail as="p" maxLines={1} wrap="nowrap">
           {description}
-        </Text>
+        </Detail>
       ) : null}
     </Flex>
   );

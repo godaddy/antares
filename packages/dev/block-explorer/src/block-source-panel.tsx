@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type ComponentType } from 'react';
-import { Box, Button, Flex, Icon, Text } from '@godaddy/antares';
+import { Box, Button, Detail, Flex, Icon, Text } from '@godaddy/antares';
 import type { BlockCodeRendererProps, BlockFile } from './types.ts';
 import styles from './runtime.module.css';
 
@@ -72,9 +72,9 @@ export function BlockSourcePanel({ file, codeRenderer: CodeRenderer = PlainCode 
         blockPadding="sm"
         inlinePadding="md"
       >
-        <Text maxLines={1} wrap="nowrap">
+        <Detail maxLines={1} wrap="nowrap">
           {file.path}
-        </Text>
+        </Detail>
         <Flex alignItems="center" gap="sm">
           <Button
             variant="minimal"
