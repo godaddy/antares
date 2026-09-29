@@ -1,21 +1,27 @@
-import { forwardRef, useRef, type MouseEventHandler, type ReactNode, type Ref } from 'react';
-import { mergeProps, useHover } from 'react-aria';
+import { forwardRef, useRef, useState, type ReactNode, type Ref } from 'react';
+import { mergeProps, useFocusVisible, useHover } from 'react-aria';
 import {
+  Button as RACButton,
+  type ButtonProps as RACButtonProps,
   Link as RACLink,
   type LinkProps as RACLinkProps,
+  CheckboxButton as RACCheckboxButton,
   CheckboxField as RACCheckboxField,
+  RadioButton as RACRadioButton,
   RadioField as RACRadioField,
   type CheckboxFieldProps as RACCheckboxFieldProps
 } from 'react-aria-components';
-import { Button, type ButtonProps } from '#components/button';
 import { Flex, type FlexProps } from '#components/layout/flex';
-import { ButtonGroupContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import { SelectionProvider } from './card-selection-indicator.tsx';
 import { useSurfacePress } from './use-surface-press.ts';
 import styles from './index.module.css';
 
-interface CardBaseProps extends Omit<FlexProps, 'as' | 'children' | 'onClick'> {
+/**
+ * Props for Card. A Card has a primary action (`href` or `onPress`) or `selection`, not both.
+ * When both are set, `selection` wins.
+ */
+export interface CardProps extends Omit<FlexProps, 'as' | 'children' | 'onClick'> {
   /** Card contents. */
   children?: ReactNode;
 
@@ -28,24 +34,18 @@ interface CardBaseProps extends Omit<FlexProps, 'as' | 'children' | 'onClick'> {
   /** Disable the Card, including its primary action or selection. */
   isDisabled?: boolean;
 
-  /** Observe clicks on the Card surface. Call `preventDefault` to skip native link navigation. */
-  onClick?: MouseEventHandler<HTMLDivElement>;
-}
-
-interface PrimaryProps {
-  /** Primary navigation destination. */
+  /** Primary navigation destination. The Card itself renders as the native link. */
   href?: RACLinkProps['href'];
 
   /** Primary action callback. */
-  onPress?: ButtonProps['onPress'];
-}
+  onPress?: RACButtonProps['onPress'];
 
-interface SelectionProps {
+  /** Native selection. Radio cards go inside a `RadioGroup`. */
+  selection?: 'checkbox' | 'radio';
+
   /** Selection value submitted by a form or group. Required for radio cards. */
   value?: string;
-}
 
-interface CheckboxSelectionProps {
   /** Form field name for a standalone checkbox card. Groups own their field name. */
   name?: string;
 
@@ -58,39 +58,7 @@ interface CheckboxSelectionProps {
   /** Called when standalone checkbox selection changes. Groups own grouped changes. */
   onSelectionChange?: RACCheckboxFieldProps['onChange'];
 
-  /** Make checkbox selection read-only. For radio cards, set this on RadioGroup. */
-  isReadOnly?: boolean;
-}
-
-type Never<T> = { [Key in keyof T]?: never };
-
-interface CheckboxCardProps extends CardBaseProps, Never<PrimaryProps>, SelectionProps, CheckboxSelectionProps {
-  /** Enable native checkbox selection. */
-  selection: 'checkbox';
-}
-
-interface RadioCardProps extends CardBaseProps, Never<PrimaryProps>, SelectionProps, Never<CheckboxSelectionProps> {
-  /** Enable native radio selection inside a RadioGroup. */
-  selection: 'radio';
-
-  /** Selection value submitted by the RadioGroup. */
-  value: string;
-}
-
-interface NonSelectableCardProps extends CardBaseProps, PrimaryProps, Never<SelectionProps & CheckboxSelectionProps> {
-  /** Omit for no selection. */
-  selection?: never;
-}
-
-/**
- * Props for Card. A Card has a primary action or selection, not both. Only standalone checkbox
- * cards accept local selection state; groups own the rest.
- */
-export type CardProps = CheckboxCardProps | RadioCardProps | NonSelectableCardProps;
-
-interface SurfaceState {
-  isSelected?: boolean;
-  isDisabled?: boolean;
+  /** Make checkbox selection read-only. For radio cards, set this on `RadioGroup`. */
   isReadOnly?: boolean;
 }
 
@@ -99,7 +67,7 @@ interface SurfaceState {
  *
  * @param props - {@link CardProps}
  */
-export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, ref) {
+export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref) {
   const {
     selection,
     value,
@@ -113,80 +81,102 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
     href,
     onPress,
     isDisabled,
-    onClick,
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
     'aria-describedby': ariaDescribedBy,
     ...surfaceProps
   } = props;
 
-  const hasPrimary = href != null || onPress != null;
-  const primaryRef = useRef<HTMLElement>(null);
-  const canActivatePrimary = hasPrimary && !isDisabled;
+  const hasPrimary = selection == null && (href != null || onPress != null);
+  const isLink = hasPrimary && href != null;
+  const SelectionButton = selection === 'radio' ? RACRadioButton : RACCheckboxButton;
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const ariaProps = {
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
     'aria-describedby': ariaDescribedBy
   };
 
-  const surfacePress = useSurfacePress(function resolveTarget(card) {
-    if (hasPrimary) return primaryRef.current;
-    for (const input of card.querySelectorAll<HTMLInputElement>('[data-card-selection-control] input')) {
-      if (input.closest('[data-card]') === card) return input;
-    }
-    return null;
-  }, onClick);
+  const surfacePress = useSurfacePress(selection == null ? buttonRef : inputRef);
   const hover = useHover({});
+  const [isSelectionFocused, setSelectionFocused] = useState(false);
+  const focusVisible = useFocusVisible();
+  const surface = {
+    padding: 'lg',
+    gap: 'lg',
+    direction: 'column',
+    ...surfaceProps,
+    className: composeClassName(className, styles.card)
+  } satisfies FlexProps;
 
-  function renderSurface(state: SurfaceState = {}) {
+  if (isLink) {
+    return (
+      <Flex
+        {...(surface as FlexProps<typeof RACLink>)}
+        {...ariaProps}
+        as={RACLink}
+        ref={ref as Ref<HTMLAnchorElement>}
+        href={href}
+        onPress={onPress}
+        isDisabled={isDisabled}
+        data-card={isDisabled ? 'static' : 'interactive'}
+      >
+        {children}
+      </Flex>
+    );
+  }
+
+  function renderSurface(state = { isSelected: false, isDisabled: false, isReadOnly: false }) {
     const canSelect = selection != null && !state.isDisabled && !state.isReadOnly;
-    const isInteractive = canActivatePrimary || canSelect;
-    const shouldForwardClick = (canActivatePrimary && href == null) || canSelect;
+    const isInteractive = (hasPrimary && !isDisabled) || canSelect;
     const isHovered = isInteractive && hover.isHovered;
     const isPressed = isInteractive && surfacePress.isPressed;
 
     return (
-      <SelectionProvider kind={selection ?? null} isHovered={isHovered} isPressed={isPressed}>
+      <SelectionProvider
+        isSelected={state.isSelected}
+        isDisabled={state.isDisabled}
+        isReadOnly={state.isReadOnly}
+        isFocusVisible={isSelectionFocused && focusVisible.isFocusVisible}
+        isHovered={isHovered}
+        isPressed={isPressed}
+      >
         <Flex
-          padding="lg"
-          gap="lg"
-          direction="column"
-          {...mergeProps(surfaceProps, hover.hoverProps, isInteractive ? surfacePress.pressProps : null)}
+          {...mergeProps(surface, hover.hoverProps, isInteractive ? surfacePress.pressProps : null)}
           {...(hasPrimary || selection != null ? undefined : ariaProps)}
-          ref={ref}
-          className={composeClassName(className, styles.card)}
+          ref={ref as Ref<HTMLDivElement>}
           data-card-selected={state.isSelected || undefined}
           data-disabled={isDisabled || state.isDisabled || undefined}
           data-hovered={isHovered || undefined}
           data-pressed={isPressed || undefined}
-          onClick={shouldForwardClick ? surfacePress.onClick : onClick}
           data-card={isInteractive ? 'interactive' : 'static'}
         >
-          {href != null ? (
-            <RACLink
-              ref={primaryRef as Ref<HTMLAnchorElement>}
-              href={href}
-              onPress={onPress}
-              {...ariaProps}
-              isDisabled={isDisabled}
-              className={styles.link}
-            />
-          ) : onPress != null ? (
-            <Button
-              ref={primaryRef as Ref<HTMLButtonElement>}
+          {selection != null ? (
+            <SelectionButton className={styles.selection} />
+          ) : hasPrimary ? (
+            <RACButton
+              ref={buttonRef}
               onPress={onPress}
               {...ariaProps}
               isDisabled={isDisabled}
               className={styles.primary}
             />
           ) : null}
-          <ButtonGroupContext.Provider value={null}>{children}</ButtonGroupContext.Provider>
+          {children}
         </Flex>
       </SelectionProvider>
     );
   }
 
-  const fieldProps = { value, isDisabled, ...ariaProps, style: { display: 'contents' } };
+  const fieldProps = {
+    value,
+    isDisabled,
+    ...ariaProps,
+    onFocusChange: setSelectionFocused,
+    inputRef,
+    style: { display: 'contents' }
+  };
 
   if (selection === 'checkbox') {
     return (
@@ -205,7 +195,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, r
 
   if (selection === 'radio') {
     return (
-      <RACRadioField {...fieldProps} value={value}>
+      <RACRadioField {...fieldProps} value={value ?? ''}>
         {renderSurface}
       </RACRadioField>
     );

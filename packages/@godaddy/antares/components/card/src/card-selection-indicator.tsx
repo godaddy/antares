@@ -1,21 +1,22 @@
 import { createContext, forwardRef, useContext, type HTMLAttributes, type ReactNode } from 'react';
-import {
-  CheckboxButton as RACCheckboxButton,
-  RadioButton as RACRadioButton,
-  DEFAULT_SLOT,
-  TextContext
-} from 'react-aria-components';
+import { DEFAULT_SLOT, TextContext } from 'react-aria-components';
 import { Icon } from '#components/icon';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './card-selection-indicator.module.css';
 
-interface SelectionContextValue {
-  kind: 'checkbox' | 'radio' | null;
+interface SelectionContextValue extends CardSelectionIndicatorRenderProps {
   isHovered: boolean;
   isPressed: boolean;
 }
 
-const SelectionContext = createContext<SelectionContextValue>({ kind: null, isHovered: false, isPressed: false });
+const SelectionContext = createContext<SelectionContextValue>({
+  isSelected: false,
+  isDisabled: false,
+  isReadOnly: false,
+  isFocusVisible: false,
+  isHovered: false,
+  isPressed: false
+});
 
 /** Card-owned selection, interaction, and text context, below the native field provider. */
 export function SelectionProvider({ children, ...value }: SelectionContextValue & { children: ReactNode }) {
@@ -55,67 +56,39 @@ export interface CardSelectionIndicatorRenderProps {
 }
 
 /**
- * An explicitly placed visual for a Card's native selection control.
+ * An explicitly placed visual for a Card's native selection control. The Card owns the control, so
+ * selection works without an indicator.
  *
  * @param props - {@link CardSelectionIndicatorProps}
  */
 export const CardSelectionIndicator = forwardRef<HTMLSpanElement, CardSelectionIndicatorProps>(
   function CardSelectionIndicator({ className, children, ...props }, ref) {
-    const { kind: control, isHovered, isPressed } = useContext(SelectionContext);
+    const { isHovered, isPressed, ...state } = useContext(SelectionContext);
     const isCustom = children !== undefined;
 
-    function renderIndicator({
-      isSelected = false,
-      isDisabled = false,
-      isReadOnly = false,
-      isFocusVisible = false
-    }: Partial<CardSelectionIndicatorRenderProps> = {}) {
-      const state = { isSelected, isDisabled, isReadOnly, isFocusVisible };
-
-      return (
-        <span
-          {...props}
-          ref={ref}
-          aria-hidden="true"
-          data-card-selection-indicator
-          data-custom={isCustom || undefined}
-          data-selected={state.isSelected || undefined}
-          data-disabled={state.isDisabled || undefined}
-          data-readonly={state.isReadOnly || undefined}
-          data-focus-visible={state.isFocusVisible || undefined}
-          data-hovered={isHovered || undefined}
-          data-pressed={isPressed || undefined}
-          className={composeClassName(className, styles.indicator)}
-        >
-          {isCustom ? (
-            typeof children === 'function' ? (
-              children(state)
-            ) : (
-              children
-            )
-          ) : (
-            <Icon icon="checkmark" className={styles.checkmark} aria-hidden="true" />
-          )}
-        </span>
-      );
-    }
-
-    if (control === 'checkbox') {
-      return (
-        <RACCheckboxButton data-card-selection-control className={styles.control}>
-          {renderIndicator}
-        </RACCheckboxButton>
-      );
-    }
-
-    if (control === 'radio') {
-      return (
-        <RACRadioButton data-card-selection-control className={styles.control}>
-          {renderIndicator}
-        </RACRadioButton>
-      );
-    }
-
-    return renderIndicator();
+    return (
+      <span
+        {...props}
+        ref={ref}
+        aria-hidden="true"
+        data-card-selection-indicator
+        data-custom={isCustom || undefined}
+        data-selected={state.isSelected || undefined}
+        data-disabled={state.isDisabled || undefined}
+        data-readonly={state.isReadOnly || undefined}
+        data-focus-visible={state.isFocusVisible || undefined}
+        data-hovered={isHovered || undefined}
+        data-pressed={isPressed || undefined}
+        className={composeClassName(className, styles.indicator)}
+      >
+        {!isCustom ? (
+          <Icon icon="checkmark" className={styles.checkmark} aria-hidden="true" />
+        ) : typeof children === 'function' ? (
+          children(state)
+        ) : (
+          children
+        )}
+      </span>
+    );
   }
 );

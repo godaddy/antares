@@ -24,23 +24,24 @@ npm install @godaddy/antares
 
 ## Customization
 
-Pass non-interactive children or a selection-state render function to `CardSelectionIndicator`
-to replace its default circle and icon. See the Checkbox example. Native selection and keyboard
-behavior are preserved.
+`CardSelectionIndicator` only shows the selection state. The Card owns the native checkbox or
+radio, so a selection Card keeps its keyboard stop and form value without an indicator. Pass
+non-interactive children or a selection-state render function to replace the default circle and
+icon. See the Checkbox example.
 
 To style the Card by state, target `[data-card-selected]` and `[data-disabled]` from your
 `className`.
 
 ## Accessibility
 
-- Name a primary action or selection with `aria-label` or `aria-labelledby`. The stretched control
-  and the selection input have no visible label of their own.
+- Name an `onPress` action or selection with `aria-label` or `aria-labelledby`. The stretched
+  control and the selection input have no visible label of their own.
 - On a Card without a primary action or selection, `aria-label`, `aria-labelledby`, and
   `aria-describedby` apply to the surface, for example with `role="region"`.
-- `href` turns the Card into a native link. Modifier-click, middle-click, and "Open in new tab" work
-  on the surface. Body text is not selectable. The link covers the whole Card, so do not put
-  CornerActions, buttons, inputs, selection, or other controls in an `href` Card. Clicking body text
-  on an `onPress` or selection Card activates it; dragging that text selects it.
+- `href` renders the Card itself as a native link, named by its content unless you pass
+  `aria-label`. A link Card cannot contain controls, so do not put CornerActions, buttons,
+  inputs, or selection in an `href` Card. Clicking body text on an `onPress` or
+  selection Card activates it; dragging that text selects it.
 - `isDisabled` disables the primary action or selection and fades the Card. Controls you nest
   inside keep their own disabled state. Required and invalid state belong on `CheckboxGroup` or
   `RadioGroup`, and so does radio read-only state.

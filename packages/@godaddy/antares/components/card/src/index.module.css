@@ -3,13 +3,14 @@
   isolation: isolate;
   box-sizing: border-box;
   border-radius: var(--size-radius-lg, var(--ux-2jubes, 6px));
+  color: inherit;
+  text-decoration: none;
 }
 
 /* A consumer-set elevation hands the surface chrome to Box. */
 .card:where(:not([data-elevation])) {
-  --_card-border: var(--color-surface-border-card, var(--ux-97h3vl, #d4dbe0));
   background: var(--color-surface-background-card, var(--ux-cao06b, #fff));
-  border: 1px solid var(--_card-border);
+  border: 1px solid var(--color-surface-border-card, var(--ux-97h3vl, #d4dbe0));
   color: var(--color-surface-text-card, var(--ux-1leynsm, #111));
 }
 
@@ -18,19 +19,13 @@
   box-shadow: var(--shadow-surface-card, 0 2px 8px rgba(17, 17, 17, 0.12));
 }
 
-/* One ring on the surface. The stretched control and selection control do not draw their own. */
-.card:where(:has(> :where(.link, .primary)[data-focus-visible])),
-.card:where(:has([data-card-selection-indicator][data-focus-visible])):where(
-  :not(:has([data-card] [data-card-selection-indicator][data-focus-visible]))
-) {
+.card:where([data-focus-visible], :has(> :where(.primary, .selection)[data-focus-visible])) {
   outline: 2px solid Highlight;
   outline-offset: 2px;
 }
 
-.card:where([data-pressed]),
-.card:where([data-card-selected]) {
-  --_card-border: var(--ux-8qoawt, #09757a);
-  border-color: var(--_card-border);
+.card:where([data-pressed], [data-card-selected]) {
+  border-color: var(--ux-8qoawt, #09757a);
 }
 
 .card:where([data-disabled]) {
@@ -47,26 +42,14 @@
   padding-inline-end: inherit;
 }
 
-.link,
-.primary {
+.primary,
+.selection {
   position: absolute;
   inset: 0;
+  z-index: -1;
   border-radius: inherit;
 }
 
-.link:where([data-focus-visible]),
-.primary:where([data-focus-visible]) {
-  outline: none;
-}
-
-.card:where(:has(> .link)) {
-  user-select: none;
-}
-
 .primary {
-  z-index: -1;
   opacity: 0;
-  overflow: hidden;
-  padding: 0;
-  border: 0;
 }

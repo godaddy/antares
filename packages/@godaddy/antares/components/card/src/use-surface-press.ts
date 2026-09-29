@@ -1,11 +1,12 @@
-import { useRef, useState, type MouseEvent, type MouseEventHandler, type PointerEvent } from 'react';
+import { useRef, useState, type MouseEvent, type PointerEvent, type RefObject } from 'react';
 
 const NESTED_CONTROL =
-  'a, button, input, textarea, select, summary, label, audio[controls], video[controls], [contenteditable]:not([contenteditable="false"]), [data-react-aria-pressable], [role="button"], [role="link"], [tabindex], [data-corner-actions], [data-card-selection-control]';
+  'a, button, input, textarea, select, summary, label, audio[controls], video[controls], [contenteditable]:not([contenteditable="false"]), [data-react-aria-pressable], [role="button"], [role="link"], [tabindex], [data-corner-actions]';
 
 function isSurfaceTarget(event: MouseEvent<HTMLDivElement>, view: Window & typeof globalThis) {
   const { target, currentTarget } = event;
   if (!(target instanceof view.Element) || target.closest('[data-card]') !== currentTarget) return false;
+  if (target.closest('[data-card-selection-indicator]')) return true;
 
   const control = target.closest(NESTED_CONTROL);
   return !control || control === currentTarget || !currentTarget.contains(control);
@@ -21,10 +22,7 @@ function isOwnControl(target: EventTarget, control: HTMLElement | null, view: Wi
  * Tracks presses the Card owns and forwards its surface clicks, leaving text selection and
  * independent controls alone. A nested widget that stops `pointerdown` propagation keeps its press.
  */
-export function useSurfacePress(
-  getTarget: (card: HTMLDivElement) => HTMLElement | null,
-  onClick: MouseEventHandler<HTMLDivElement> | undefined
-) {
+export function useSurfacePress(targetRef: RefObject<HTMLElement | null>) {
   const forwardingRef = useRef(false);
   const ownsPressRef = useRef(false);
   const [isPressed, setPressed] = useState(false);
@@ -38,7 +36,7 @@ export function useSurfacePress(
     const view = ownerDocument.defaultView;
     if (!view || event.button !== 0) return;
     ownsPressRef.current = isSurfaceTarget(event, view);
-    if (!ownsPressRef.current && !isOwnControl(event.target, getTarget(event.currentTarget), view)) return;
+    if (!ownsPressRef.current && !isOwnControl(event.target, targetRef.current, view)) return;
 
     setPressed(true);
     function release() {
@@ -50,12 +48,11 @@ export function useSurfacePress(
     ownerDocument.addEventListener('pointercancel', release, true);
   }
 
-  function forwardClick(event: MouseEvent<HTMLDivElement>) {
+  function onClick(event: MouseEvent<HTMLDivElement>) {
     if (forwardingRef.current) {
       event.stopPropagation();
       return;
     }
-    onClick?.(event);
     const { ownerDocument } = event.currentTarget;
     const view = ownerDocument.defaultView;
     if (!view || event.defaultPrevented || event.button !== 0 || !isSurfaceTarget(event, view)) return;
@@ -64,7 +61,7 @@ export function useSurfacePress(
     const selection = ownerDocument.getSelection();
     if (selection?.toString() && selection.containsNode(event.currentTarget, true)) return;
 
-    const destination = getTarget(event.currentTarget);
+    const destination = targetRef.current;
     if (!destination) return;
     const { altKey, ctrlKey, metaKey, shiftKey } = event;
     forwardingRef.current = true;
@@ -87,5 +84,5 @@ export function useSurfacePress(
     }
   }
 
-  return { isPressed, pressProps: { onPointerDown, onPointerDownCapture }, onClick: forwardClick };
+  return { isPressed, pressProps: { onPointerDown, onPointerDownCapture, onClick } };
 }
