@@ -110,10 +110,9 @@ async function replaceBlockLink(
   if (!id) throw new Error(`${file.path}: <BlockLink> requires id="...".`);
 
   const blockDirectory = await resolveBlockDirectory(file.path as string, id);
-  const manifest = await loadBlockManifest(blockDirectory, { id });
-  addManifestDependencies(file, blockDirectory, manifest);
+  addMdxDependency(file, `${blockDirectory}/README.mdx`);
 
-  nodes[index] = renderSiteBlockLink(manifest, resolveBlockHref);
+  nodes[index] = renderSiteBlockLink(id, resolveBlockHref);
 }
 
 /**
@@ -162,17 +161,14 @@ function renderSiteBlock(manifest: Awaited<ReturnType<typeof loadBlockManifest>>
  * @param resolveBlockHref - Host resolver for the overview URL.
  * @returns A Markdown paragraph whose link uses the host's document styling.
  */
-function renderSiteBlockLink(
-  manifest: Awaited<ReturnType<typeof loadBlockManifest>>,
-  resolveBlockHref: RemarkBlocksOptions['resolveBlockHref']
-): MdNode {
+function renderSiteBlockLink(id: string, resolveBlockHref: RemarkBlocksOptions['resolveBlockHref']): MdNode {
   return {
     type: 'paragraph',
     children: [
       {
         type: 'link',
-        url: resolveBlockHref(manifest.id),
-        children: [{ type: 'text', value: manifest.id }]
+        url: resolveBlockHref(id),
+        children: [{ type: 'text', value: id }]
       }
     ]
   };

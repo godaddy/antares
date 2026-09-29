@@ -17,6 +17,14 @@ const ROOT_README_REGEX = /^README(?:\.[^/]*)?$/i;
 const ROOT_STORY_REGEX = /\.stories\.tsx$/i;
 const ROOT_TEST_DIRECTORY = 'test';
 
+function assertBlockId(id: string, origin: string): void {
+  if (!BLOCK_ID_REGEX.test(id)) {
+    throw new Error(
+      `${origin}: invalid block id ${JSON.stringify(id)}. Expected lowercase kebab-case, such as "sign-in-form".`
+    );
+  }
+}
+
 /**
  * Discovers implementation files, excluding root READMEs, stories, and `test/`.
  * Overrides take precedence over the directory name and matching Block description.
@@ -32,6 +40,7 @@ export async function loadBlockManifest(
 ): Promise<BlockManifest> {
   const directory = resolve(blockDirectory);
   const id = overrides.id ?? basename(directory);
+  assertBlockId(id, directory);
   const description = overrides.description ?? (await readBlockDescription(directory, id));
   const files = await discoverBlockFiles(directory);
 
@@ -52,11 +61,7 @@ export async function loadBlockManifest(
  * @throws If the id is invalid, the block cannot be resolved, or lookup fails.
  */
 export async function resolveBlockDirectory(readmePath: string, id: string): Promise<string> {
-  if (!BLOCK_ID_REGEX.test(id)) {
-    throw new Error(
-      `${readmePath}: invalid block id ${JSON.stringify(id)}. Expected lowercase kebab-case, such as "sign-in-form".`
-    );
-  }
+  assertBlockId(id, readmePath);
 
   const readmeDirectory = dirname(readmePath);
   const siblingCandidate = join(readmeDirectory, id);

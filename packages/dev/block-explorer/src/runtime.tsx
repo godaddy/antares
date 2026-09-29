@@ -104,7 +104,8 @@ export type {
   BlockFile,
   BlockLanguage,
   BlockManifest,
-  BlockLinkMarkerProps
+  BlockLinkMarkerProps,
+  BlockMarkerProps
 } from './types.ts';
 
 export { BlockInstallButton, type BlockInstallButtonProps } from './block-install-button.tsx';

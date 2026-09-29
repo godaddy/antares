@@ -172,6 +172,23 @@ describe('block manifest utilities', function blockManifestUtilities() {
     );
   });
 
+  it.each([
+    'SignInForm',
+    'sign_in_form',
+    'block--name'
+  ])('rejects invalid IDs when loading a manifest: %s', async function rejectsInvalidManifestId(id) {
+    const invalidDirectory = resolve(fixtureDirectory, '../package/blocks', id);
+    const expectedOverrideError =
+      `${fixtureDirectory}: invalid block id ${JSON.stringify(id)}. ` +
+      'Expected lowercase kebab-case, such as "sign-in-form".';
+    const expectedDirectoryError =
+      `${invalidDirectory}: invalid block id ${JSON.stringify(id)}. ` +
+      'Expected lowercase kebab-case, such as "sign-in-form".';
+
+    await expect(loadBlockManifest(fixtureDirectory, { id })).rejects.toThrow(expectedOverrideError);
+    await expect(loadBlockManifest(invalidDirectory)).rejects.toThrow(expectedDirectoryError);
+  });
+
   it('reports an unresolved block id with the source README path', async function rejectsUnknownBlock() {
     await expect(resolveBlockDirectory(resolve(fixtureDirectory, 'README.mdx'), 'missing-block')).rejects.toThrow(
       `${fixtureDirectory}/README.mdx: unable to resolve block "missing-block".`
@@ -210,9 +227,11 @@ describe('block manifest utilities', function blockManifestUtilities() {
 
 /** Creates an isolated block and removes it after the assertion completes. */
 async function withTemporaryBlock(callback: (directory: string) => Promise<void>) {
-  const directory = await mkdtemp(join(tmpdir(), 'block-explorer-'));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), 'block-explorer-'));
+  const directory = resolve(temporaryRoot, 'temporary-block');
 
   try {
+    await mkdir(directory);
     await writeFile(
       resolve(directory, 'README.mdx'),
       '<Block id="temporary-block" description="Temporary block description." />\n'
@@ -220,6 +239,6 @@ async function withTemporaryBlock(callback: (directory: string) => Promise<void>
     await writeFile(resolve(directory, 'index.tsx'), 'export {}\n');
     await callback(directory);
   } finally {
-    await rm(directory, { recursive: true, force: true });
+    await rm(temporaryRoot, { recursive: true, force: true });
   }
 }

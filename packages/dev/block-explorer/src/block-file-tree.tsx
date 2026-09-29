@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Button, Flex, Heading, Icon, Text } from '@godaddy/antares';
+import { Button, Flex, Icon, Text } from '@godaddy/antares';
 import type { FileTreeNode } from './types.ts';
 import styles from './runtime.module.css';
 
@@ -30,7 +30,7 @@ export function BlockFileTree({ tree, activePath, onFileSelect }: BlockFileTreeP
       padding="md"
       aria-label="Block files"
     >
-      <Heading level={2}>Files</Heading>
+      <Text>Files</Text>
       {tree.map(function renderNode(node: FileTreeNode) {
         return <FileTreeNodeView key={node.path} node={node} activePath={activePath} onFileSelect={onFileSelect} />;
       })}

@@ -78,7 +78,7 @@ describe('remarkBlocks', function remarkBlocksTests() {
   });
 
   it('expands a BlockLink marker into a Markdown link for the host renderer', async function expandsBlockLink() {
-    const { tree } = await transform('<BlockLink id="fixture-block" />');
+    const { tree, addDependency } = await transform('<BlockLink id="fixture-block" />');
     expect(tree.children[0]).toEqual({
       type: 'paragraph',
       children: [
@@ -89,6 +89,7 @@ describe('remarkBlocks', function remarkBlocksTests() {
         }
       ]
     });
+    expect(addDependency.mock.calls.map(([path]) => path)).toEqual([expect.stringContaining('README.mdx')]);
   });
 
   it('uses the host resolver for BlockLink URLs', async function resolvesHostLinks() {

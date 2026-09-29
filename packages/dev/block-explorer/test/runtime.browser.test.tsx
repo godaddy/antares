@@ -25,6 +25,8 @@ describe('block explorer runtime', function runtimeTests() {
     await expect.element(getByText('Preview content')).toBeVisible();
 
     await userEvent.click(getByRole('radio', { name: 'Code' }));
+    await expect.element(getByText('Files')).toBeVisible();
+    await expect.element(getByRole('heading', { name: 'Files' })).not.toBeInTheDocument();
     await expect.element(getByTestId('source-file')).toHaveTextContent('index.tsx');
     const activeFileButton = getByRole('button', { name: 'index.tsx', exact: true });
     await expect.element(activeFileButton).toHaveAttribute('aria-pressed', 'true');

@@ -19,7 +19,7 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
     await expect(runTransform(plugin, '# Fixture without a block marker', noMarkerReadme)).resolves.toBeNull();
   });
 
-  it('expands BlockLink with the Storybook overview route and watch files', async function expandsBlockLink() {
+  it('expands BlockLink with the Storybook overview route and watches only the target README', async function expandsBlockLink() {
     const plugin = generateBlocksPlugin();
     const addWatchFile = vi.fn();
     const result = await runTransform(plugin, '<BlockLink id="fixture-block" />', fixtureReadme, addWatchFile);
@@ -31,8 +31,8 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
     expect(result).not.toContain('BlockLinks');
     await expect(compile(result)).resolves.toBeDefined();
     expect(addWatchFile).toHaveBeenCalledWith(fixtureReadme);
-    expect(addWatchFile).toHaveBeenCalledWith(expect.stringContaining('README.mdx'));
-    expect(addWatchFile).toHaveBeenCalledWith(expect.stringContaining('styles/theme.css'));
+    expect(addWatchFile).not.toHaveBeenCalledWith(expect.stringContaining('index.tsx'));
+    expect(addWatchFile).not.toHaveBeenCalledWith(expect.stringContaining('styles/theme.css'));
   });
 
   it.each([
@@ -96,6 +96,16 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
 
     expect(result?.match(/import \{[^}]*\bStory\b[^}]*\}\s*from\s*'@storybook\/addon-docs\/blocks'/g)).toHaveLength(1);
     expect(result).toContain("import { StorybookBlockExplorer } from '@bento/block-explorer/storybook-runtime';");
+  });
+
+  it('reports an import alias that occupies the generated Story binding', async function reportsConflictingStoryAlias() {
+    await expect(
+      runTransform(
+        generateBlocksPlugin(),
+        'import { Source as Story } from \'@storybook/addon-docs/blocks\';\n\n<Block id="fixture-block" of={Stories.Preview} />',
+        importedReadme
+      )
+    ).rejects.toThrow('Generated "Story" import conflicts with an existing binding.');
   });
 
   it.each([

@@ -92,31 +92,20 @@ async function expandMarkers(fileName: string, markers: readonly BlockMarker[]):
   const expansions: Expansion[] = [];
 
   for (const marker of markers) {
-    if (!marker.id) {
+    const id = marker.id;
+    if (!id) {
       throw new Error(`${fileName}: <${marker.name}> requires id="...".`);
     }
 
-    const blockDirectory = await resolveBlockDirectory(fileName, marker.id);
-    const cacheKey = `${blockDirectory}:${marker.id}:${marker.description ?? ''}`;
-    let manifest = manifestCache.get(cacheKey);
-    if (!manifest) {
-      manifest = await loadBlockManifest(blockDirectory, { id: marker.id, description: marker.description });
-      manifestCache.set(cacheKey, manifest);
-    }
-
-    const watchFiles = [
-      `${blockDirectory}/README.mdx`,
-      ...manifest.files.map((blockFile) => `${blockDirectory}/${blockFile.path}`)
-    ];
-
+    const blockDirectory = await resolveBlockDirectory(fileName, id);
     if (marker.name === 'BlockLink') {
-      const href = `./?path=/docs/blocks-${manifest.id}--overview`;
+      const href = `./?path=/docs/blocks-${id}--overview`;
       expansions.push({
         start: marker.start,
         end: marker.end,
-        value: `<a href={${JSON.stringify(href)}} target="_top">{${JSON.stringify(manifest.id)}}</a>`,
+        value: `<a href={${JSON.stringify(href)}} target="_top">{${JSON.stringify(id)}}</a>`,
         imports: [],
-        watchFiles
+        watchFiles: [`${blockDirectory}/README.mdx`]
       });
       continue;
     }
@@ -124,6 +113,18 @@ async function expandMarkers(fileName: string, markers: readonly BlockMarker[]):
     if (!marker.ofExpression) {
       throw new Error(`${fileName}: <Block> requires id="..." and of={Stories.Preview}.`);
     }
+
+    const cacheKey = `${blockDirectory}:${id}:${marker.description ?? ''}`;
+    let manifest = manifestCache.get(cacheKey);
+    if (!manifest) {
+      manifest = await loadBlockManifest(blockDirectory, { id, description: marker.description });
+      manifestCache.set(cacheKey, manifest);
+    }
+
+    const watchFiles = [
+      `${blockDirectory}/README.mdx`,
+      ...manifest.files.map((blockFile) => `${blockDirectory}/${blockFile.path}`)
+    ];
 
     expansions.push({
       start: marker.start,

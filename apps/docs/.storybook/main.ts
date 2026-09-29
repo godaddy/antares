@@ -22,7 +22,8 @@ const config: StorybookConfig = {
     '../../../packages/@godaddy/antares/README.mdx',
     '../../../packages/@godaddy/antares/components/**/*.mdx',
     '../../../packages/@godaddy/antares/components/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../../packages/@godaddy/antares/blocks/**/*.mdx',
+    '../../../packages/@godaddy/antares/blocks/README.mdx',
+    '../../../packages/@godaddy/antares/blocks/*/README.mdx',
     '../../../packages/@godaddy/antares/blocks/**/*.stories.@(js|jsx|mjs|ts|tsx)',
 
     // Documentation (PDRs, Architecture, etc.) - excluding templates

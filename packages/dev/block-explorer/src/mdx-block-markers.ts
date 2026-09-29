@@ -29,6 +29,7 @@ interface EstreeNode {
 interface EstreeSpecifier {
   type: string;
   importKind?: string;
+  imported?: { name?: string };
   local?: { name?: string };
 }
 
@@ -137,23 +138,28 @@ function visitMarkers(node: MdNode, markers: BlockMarker[]) {
 }
 
 /**
- * Inspects actual import declarations, excluding type imports and other modules.
+ * Inspects actual import declarations, excluding type imports and mismatched bindings.
  *
  * @param node - MDX node that may contain an ESTree import declaration.
  * @param name - Required local binding.
  * @param moduleId - Expected source module.
  * @returns Whether the node declares the named runtime binding.
+ * @throws If the generated local name is already bound to a different import.
  */
 function declarationBindsRuntimeName(node: MdNode, name: string, moduleId: string): boolean {
   if (node.type !== 'mdxjsEsm') return false;
 
   for (const statement of node.data?.estree?.body ?? []) {
     if (statement.type !== 'ImportDeclaration' || statement.importKind === 'type') continue;
-    if (statement.source?.value !== moduleId) continue;
 
     for (const specifier of statement.specifiers ?? []) {
       if (specifier.type !== 'ImportSpecifier' || specifier.importKind === 'type') continue;
-      if (specifier.local?.name === name) return true;
+      const localName = specifier.local?.name;
+      if (localName !== name) continue;
+
+      if (statement.source?.value === moduleId && specifier.imported?.name === name) return true;
+
+      throw new Error(`Generated "${name}" import conflicts with an existing binding.`);
     }
   }
 
