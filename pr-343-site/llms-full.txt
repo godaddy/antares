@@ -363,6 +363,7 @@ Use the `CloseButton` preset to dismiss an overlay (such as a `Modal`). It defau
 
 Inside a field `Group`, `slot="control"` and `slot="trigger"` pick up the matching look, size, and
 disabled state from context. See TextField for control affixes, and Select or DatePicker for trigger faces.
+The `control` and `trigger` variants are field parts: the field sizes them, so use them only inside a field.
 
 ## Installation [#installation]
 
@@ -422,11 +423,11 @@ Any button variant can be disabled to prevent interaction, communicated with red
 
 ### Icon [#icon]
 
-You may provide an optional `Icon` component to the button. If you do not include text, you must provide an aria-label attribute to identify the purpose of the button. This will produce a square button.
+You may provide an optional `Icon` component to the button. Wrap the text beside an icon in a `Text`. If you do not include text, you must provide an aria-label attribute to identify the purpose of the button. This will produce a square button.
 
 <Story of="IconExample" />
 
-<Source language="tsx" code="&#x22;import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function IconExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <div>\n        <Button variant=\&#x22;primary\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n          <Text>With an icon!</Text>\n        </Button>\n      </div>\n\n      <div>\n        <LinkButton variant=\&#x22;secondary\&#x22; href=\&#x22;#\&#x22; isExternal>\n          <Text>An external link!</Text>\n        </LinkButton>\n      </div>\n\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Icon only button:</Text>\n        <Button variant=\&#x22;primary\&#x22; aria-label=\&#x22;Star\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n        </Button>\n      </Flex>\n\n      <div>\n        <Text>\n          Hey look at me!{' '}\n          <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;inline\&#x22; isExternal>\n            link button\n          </LinkButton>{' '}\n          I have an icon!\n        </Text>\n      </div>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function IconExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <div>\n        <Button variant=\&#x22;primary\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n          <Text>With an icon!</Text>\n        </Button>\n      </div>\n\n      <div>\n        <LinkButton variant=\&#x22;secondary\&#x22; href=\&#x22;#\&#x22; isExternal>\n          An external link!\n        </LinkButton>\n      </div>\n\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Icon only button:</Text>\n        <Button variant=\&#x22;primary\&#x22; aria-label=\&#x22;Star\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n        </Button>\n      </Flex>\n\n      <div>\n        <Text>\n          Hey look at me!{' '}\n          <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;inline\&#x22; isExternal>\n            link button\n          </LinkButton>{' '}\n          I have an icon!\n        </Text>\n      </div>\n    </Flex>\n  );\n}&#x22;" />
 
 ### Inline [#inline]
 
@@ -446,11 +447,13 @@ The minimal button is an icon-only button that's used when space is limited and/
 
 ### Sizes [#sizes]
 
-Buttons come in small and medium sizes to fit different layout densities.
+Buttons come in small, medium, and large sizes to fit different layout densities. Without
+`size`, a button follows the surrounding size scope, and uses medium outside any scope. An
+icon-only button is square and as tall as a text button of the same size.
 
 <Story of="SizesExample" />
 
-<Source language="tsx" code="&#x22;import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22;>\n        Small\n      </Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Small</Text>\n      </LinkButton>\n\n      <Button variant=\&#x22;primary\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22;>Medium</Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Medium</Text>\n      </LinkButton>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22;>\n        Small\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Small</Text>\n      </Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Small</Text>\n      </LinkButton>\n\n      <Button variant=\&#x22;primary\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22;>Medium</Button>\n\n      <Button variant=\&#x22;primary\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Medium</Text>\n      </Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Medium</Text>\n      </LinkButton>\n\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;lg\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;lg\&#x22;>\n        Large\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;lg\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Large</Text>\n      </Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22; size=\&#x22;lg\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Large</Text>\n      </LinkButton>\n    </Flex>\n  );\n}&#x22;" />
 
 ## Props [#props]
 
@@ -2233,12 +2236,15 @@ Once the total is known, set `isIndeterminate` to false and supply a measured va
 
 
 
+
+
 <Meta of="Stories" name="Overview" />
 
 ## Features [#features]
 
 * **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `DatePickerCalendar`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in. `children` also accepts a function for picker state
 * **Trigger and calendar**: An empty `Button slot="trigger"` renders a calendar icon and the formatted value from the field. `DatePickerCalendar` (and `DateRangePickerCalendar`) is the calendar in the popover it opens: it takes `Calendar` props plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `Calendar` yourself to replace the whole overlay
+* **Sizes**: Each picker is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, trigger, description, error, and the calendar it opens; without it, the picker follows the surrounding scope
 * `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
 * Built on React Aria - native form integration, validation, focus management, and screen-reader support
 * Label formatting via `formatOptions` / `placeholder` on the picker itself, or on `DatePickerValue` / `DateRangePickerValue` in a trigger you write
@@ -2345,6 +2351,15 @@ Write a DateRangePicker's trigger and overlay from lower-level pieces the same w
 <Story of="ComposedRangeExample" />
 
 <Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  DateRangePicker,\n  DateRangePickerValue,\n  Icon,\n  Label,\n  Popover,\n  RangeCalendar,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedRangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DateRangePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your start and end dates</Text>\n      <Popover hideArrow>\n        <Content>\n          <RangeCalendar />\n        </Content>\n      </Popover>\n    </DateRangePicker>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+`size` sets the label, trigger, and calendar. Without it, the picker follows the surrounding
+size scope.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Flex, Label } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function picker(size) {\n        return (\n          <DatePicker key={size} size={size}>\n            <Label>Event date ({size})</Label>\n            <Button slot=\&#x22;trigger\&#x22; />\n            <DatePickerCalendar />\n          </DatePicker>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
 
 ## Props [#props]
 
@@ -2588,7 +2603,7 @@ A reference composition combining `DropZone` with `FileTrigger` to support both 
 
 <Story of="FileUploadExample" />
 
-<Source language="tsx" code="&#x22;import { useEffect, useState } from 'react';\nimport { Button, DropZone, FileTrigger, Flex, Icon, isFileDropItem, Text } from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\ntype Preview = { name: string; url?: string };\n\nexport function FileUploadExample() {\n  const [files, setFiles] = useState<File[]>([]);\n  const [previews, setPreviews] = useState<Preview[]>([]);\n\n  useEffect(\n    function buildPreviews() {\n      const next: Preview[] = files.map(function toPreview(file) {\n        return {\n          name: file.name,\n          url: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined\n        };\n      });\n      setPreviews(next);\n\n      return function revoke() {\n        for (const preview of next) {\n          if (preview.url) URL.revokeObjectURL(preview.url);\n        }\n      };\n    },\n    [files]\n  );\n\n  function handleFiles(list: FileList | File[] | null) {\n    if (!list) return;\n    setFiles(Array.from(list));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <DropZone\n        aria-label=\&#x22;Add files or drag them here\&#x22;\n        getDropOperation={function getDropOperation(types) {\n          return ACCEPTED_TYPES.some(function matches(type) {\n            return types.has(type);\n          })\n            ? 'copy'\n            : 'cancel';\n        }}\n        onDrop={async function handleDrop(e) {\n          const dropped = await Promise.all(\n            e.items.filter(isFileDropItem).map(function getFile(item) {\n              return item.getFile();\n            })\n          );\n          handleFiles(dropped);\n        }}\n        gap=\&#x22;sm\&#x22;\n      >\n        <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} allowsMultiple onSelect={handleFiles}>\n          <Button variant=\&#x22;inline\&#x22; style={{ fontSize: '0.984rem', fontWeight: 700 }}>\n            <Icon icon=\&#x22;add\&#x22; aria-hidden=\&#x22;true\&#x22; />\n            Add files\n          </Button>\n        </FileTrigger>\n        <Text style={{ fontSize: '0.778rem' }}>The file must be less than 256MB</Text>\n      </DropZone>\n\n      <Flex justifyContent=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n        <Text style={{ fontSize: '0.778rem' }}>Supported formats:</Text>\n        <Text as=\&#x22;strong\&#x22; style={{ fontSize: '0.778rem' }}>\n          .pdf, .jpg, .gif, .png\n        </Text>\n      </Flex>\n\n      {previews.length > 0 ? (\n        <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22; aria-label=\&#x22;Selected files\&#x22;>\n          {previews.map(function renderPreview(preview) {\n            return (\n              <Flex key={preview.name} direction=\&#x22;column\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n                {preview.url ? (\n                  <img\n                    src={preview.url}\n                    alt={preview.name}\n                    style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 8 }}\n                  />\n                ) : (\n                  <Flex\n                    alignItems=\&#x22;center\&#x22;\n                    justifyContent=\&#x22;center\&#x22;\n                    style={{ width: 64, height: 64, borderRadius: 8, background: '#f5f5f5' }}\n                  >\n                    <Text style={{ textTransform: 'uppercase' }}>{preview.name.split('.').pop()}</Text>\n                  </Flex>\n                )}\n                <Text maxLines={1} style={{ maxWidth: 64 }}>\n                  {preview.name}\n                </Text>\n              </Flex>\n            );\n          })}\n        </Flex>\n      ) : null}\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useEffect, useState } from 'react';\nimport { Button, DropZone, FileTrigger, Flex, Icon, isFileDropItem, Text } from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\ntype Preview = { name: string; url?: string };\n\nexport function FileUploadExample() {\n  const [files, setFiles] = useState<File[]>([]);\n  const [previews, setPreviews] = useState<Preview[]>([]);\n\n  useEffect(\n    function buildPreviews() {\n      const next: Preview[] = files.map(function toPreview(file) {\n        return {\n          name: file.name,\n          url: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined\n        };\n      });\n      setPreviews(next);\n\n      return function revoke() {\n        for (const preview of next) {\n          if (preview.url) URL.revokeObjectURL(preview.url);\n        }\n      };\n    },\n    [files]\n  );\n\n  function handleFiles(list: FileList | File[] | null) {\n    if (!list) return;\n    setFiles(Array.from(list));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <DropZone\n        aria-label=\&#x22;Add files or drag them here\&#x22;\n        getDropOperation={function getDropOperation(types) {\n          return ACCEPTED_TYPES.some(function matches(type) {\n            return types.has(type);\n          })\n            ? 'copy'\n            : 'cancel';\n        }}\n        onDrop={async function handleDrop(e) {\n          const dropped = await Promise.all(\n            e.items.filter(isFileDropItem).map(function getFile(item) {\n              return item.getFile();\n            })\n          );\n          handleFiles(dropped);\n        }}\n        gap=\&#x22;sm\&#x22;\n      >\n        <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} allowsMultiple onSelect={handleFiles}>\n          <Button variant=\&#x22;inline\&#x22; style={{ fontSize: '0.984rem', fontWeight: 700 }}>\n            <Icon icon=\&#x22;add\&#x22; aria-hidden=\&#x22;true\&#x22; />\n            <Text>Add files</Text>\n          </Button>\n        </FileTrigger>\n        <Text style={{ fontSize: '0.778rem' }}>The file must be less than 256MB</Text>\n      </DropZone>\n\n      <Flex justifyContent=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n        <Text style={{ fontSize: '0.778rem' }}>Supported formats:</Text>\n        <Text as=\&#x22;strong\&#x22; style={{ fontSize: '0.778rem' }}>\n          .pdf, .jpg, .gif, .png\n        </Text>\n      </Flex>\n\n      {previews.length > 0 ? (\n        <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22; aria-label=\&#x22;Selected files\&#x22;>\n          {previews.map(function renderPreview(preview) {\n            return (\n              <Flex key={preview.name} direction=\&#x22;column\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n                {preview.url ? (\n                  <img\n                    src={preview.url}\n                    alt={preview.name}\n                    style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 8 }}\n                  />\n                ) : (\n                  <Flex\n                    alignItems=\&#x22;center\&#x22;\n                    justifyContent=\&#x22;center\&#x22;\n                    style={{ width: 64, height: 64, borderRadius: 8, background: '#f5f5f5' }}\n                  >\n                    <Text style={{ textTransform: 'uppercase' }}>{preview.name.split('.').pop()}</Text>\n                  </Flex>\n                )}\n                <Text maxLines={1} style={{ maxWidth: 64 }}>\n                  {preview.name}\n                </Text>\n              </Flex>\n            );\n          })}\n        </Flex>\n      ) : null}\n    </Flex>\n  );\n}&#x22;" />
 
 ### Drop Target Label [#drop-target-label]
 
@@ -2604,7 +2619,7 @@ Use `children` as a render function to show different content based on the curre
 
 <Story of="ReplaceFileExample" />
 
-<Source language="tsx" code="&#x22;import { useEffect, useState } from 'react';\nimport {\n  Button,\n  DropZone,\n  type DropZoneRenderProps,\n  FileTrigger,\n  Flex,\n  Icon,\n  isFileDropItem,\n  Text\n} from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\ntype Preview = { name: string; url?: string };\n\nexport function ReplaceFileExample() {\n  const [file, setFile] = useState<File | null>(null);\n  const [preview, setPreview] = useState<Preview | null>(null);\n\n  useEffect(\n    function buildPreview() {\n      if (!file) {\n        setPreview(null);\n        return;\n      }\n      const url = file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined;\n      setPreview({ name: file.name, url });\n      return function revoke() {\n        if (url) URL.revokeObjectURL(url);\n      };\n    },\n    [file]\n  );\n\n  function handleFiles(list: FileList | File[] | null) {\n    if (!list) return;\n    const f = Array.from(list)[0];\n    if (f) setFile(f);\n  }\n\n  const isFilled = file !== null;\n\n  return (\n    <div style={{ width: 200 }}>\n      <DropZone\n        aria-label={isFilled ? 'Replace uploaded file' : 'Add a file'}\n        getDropOperation={function getDropOperation(types) {\n          return ACCEPTED_TYPES.some(function matches(type) {\n            return types.has(type);\n          })\n            ? 'copy'\n            : 'cancel';\n        }}\n        onDrop={async function handleDrop(e) {\n          const dropped = await Promise.all(\n            e.items.filter(isFileDropItem).map(function getFile(item) {\n              return item.getFile();\n            })\n          );\n          handleFiles(dropped);\n        }}\n        gap=\&#x22;sm\&#x22;\n        style={{ minHeight: 200 }}\n      >\n        {function renderContent({ isDropTarget }: DropZoneRenderProps) {\n          if (isFilled && isDropTarget) {\n            return <Text as=\&#x22;strong\&#x22;>Drop to replace</Text>;\n          }\n\n          if (isFilled) {\n            return (\n              <Flex direction=\&#x22;column\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n                {preview?.url ? (\n                  <img\n                    src={preview.url}\n                    alt={preview.name}\n                    style={{ width: 64, height: 48, objectFit: 'cover', borderRadius: 4 }}\n                  />\n                ) : (\n                  <Flex\n                    alignItems=\&#x22;center\&#x22;\n                    justifyContent=\&#x22;center\&#x22;\n                    style={{ width: 64, height: 48, background: '#f5f5f5', borderRadius: 4 }}\n                  >\n                    <Text style={{ textTransform: 'uppercase' }}>{file?.name.split('.').pop()}</Text>\n                  </Flex>\n                )}\n                <Text maxLines={1} style={{ maxWidth: 96 }}>\n                  {file?.name}\n                </Text>\n                <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} onSelect={handleFiles}>\n                  <Button variant=\&#x22;inline\&#x22;>Replace</Button>\n                </FileTrigger>\n              </Flex>\n            );\n          }\n\n          return (\n            <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} onSelect={handleFiles}>\n              <Button\n                variant=\&#x22;inline\&#x22;\n                style={{\n                  position: 'absolute',\n                  inset: 0,\n                  display: 'flex',\n                  flexDirection: 'column',\n                  alignItems: 'center',\n                  justifyContent: 'center',\n                  gap: '0.5rem',\n                  fontSize: '0.984rem',\n                  fontWeight: 700\n                }}\n              >\n                <Icon icon=\&#x22;add\&#x22; aria-hidden=\&#x22;true\&#x22; />\n                Add files\n              </Button>\n            </FileTrigger>\n          );\n        }}\n      </DropZone>\n    </div>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useEffect, useState } from 'react';\nimport {\n  Button,\n  DropZone,\n  type DropZoneRenderProps,\n  FileTrigger,\n  Flex,\n  Icon,\n  isFileDropItem,\n  Text\n} from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\ntype Preview = { name: string; url?: string };\n\nexport function ReplaceFileExample() {\n  const [file, setFile] = useState<File | null>(null);\n  const [preview, setPreview] = useState<Preview | null>(null);\n\n  useEffect(\n    function buildPreview() {\n      if (!file) {\n        setPreview(null);\n        return;\n      }\n      const url = file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined;\n      setPreview({ name: file.name, url });\n      return function revoke() {\n        if (url) URL.revokeObjectURL(url);\n      };\n    },\n    [file]\n  );\n\n  function handleFiles(list: FileList | File[] | null) {\n    if (!list) return;\n    const f = Array.from(list)[0];\n    if (f) setFile(f);\n  }\n\n  const isFilled = file !== null;\n\n  return (\n    <div style={{ width: 200 }}>\n      <DropZone\n        aria-label={isFilled ? 'Replace uploaded file' : 'Add a file'}\n        getDropOperation={function getDropOperation(types) {\n          return ACCEPTED_TYPES.some(function matches(type) {\n            return types.has(type);\n          })\n            ? 'copy'\n            : 'cancel';\n        }}\n        onDrop={async function handleDrop(e) {\n          const dropped = await Promise.all(\n            e.items.filter(isFileDropItem).map(function getFile(item) {\n              return item.getFile();\n            })\n          );\n          handleFiles(dropped);\n        }}\n        gap=\&#x22;sm\&#x22;\n        style={{ minHeight: 200 }}\n      >\n        {function renderContent({ isDropTarget }: DropZoneRenderProps) {\n          if (isFilled && isDropTarget) {\n            return <Text as=\&#x22;strong\&#x22;>Drop to replace</Text>;\n          }\n\n          if (isFilled) {\n            return (\n              <Flex direction=\&#x22;column\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n                {preview?.url ? (\n                  <img\n                    src={preview.url}\n                    alt={preview.name}\n                    style={{ width: 64, height: 48, objectFit: 'cover', borderRadius: 4 }}\n                  />\n                ) : (\n                  <Flex\n                    alignItems=\&#x22;center\&#x22;\n                    justifyContent=\&#x22;center\&#x22;\n                    style={{ width: 64, height: 48, background: '#f5f5f5', borderRadius: 4 }}\n                  >\n                    <Text style={{ textTransform: 'uppercase' }}>{file?.name.split('.').pop()}</Text>\n                  </Flex>\n                )}\n                <Text maxLines={1} style={{ maxWidth: 96 }}>\n                  {file?.name}\n                </Text>\n                <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} onSelect={handleFiles}>\n                  <Button variant=\&#x22;inline\&#x22;>Replace</Button>\n                </FileTrigger>\n              </Flex>\n            );\n          }\n\n          return (\n            <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} onSelect={handleFiles}>\n              <Button\n                variant=\&#x22;inline\&#x22;\n                style={{\n                  position: 'absolute',\n                  inset: 0,\n                  display: 'flex',\n                  flexDirection: 'column',\n                  alignItems: 'center',\n                  justifyContent: 'center',\n                  gap: '0.5rem',\n                  fontSize: '0.984rem',\n                  fontWeight: 700\n                }}\n              >\n                <Icon icon=\&#x22;add\&#x22; aria-hidden=\&#x22;true\&#x22; />\n                <Text>Add files</Text>\n              </Button>\n            </FileTrigger>\n          );\n        }}\n      </DropZone>\n    </div>\n  );\n}&#x22;" />
 
 ## Accessibility [#accessibility]
 
@@ -2755,12 +2770,18 @@ Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow m
 
 
 
+
+
 <Meta of="Stories" name="Overview" />
 
 ## Features [#features]
 
-* Renders `h1`-`h6` from the `level` prop (default `3`).
-* `slot="title"` inside a `Modal` or `Dialog` sets the accessible name.
+* Renders `h1`-`h6` from the `level` prop (default `3`). The level never changes the visual size.
+* Without `size`, takes the heading tier of the surrounding `SizeProvider`.
+  `size` picks a step on the heading ramp (`xs` to `2xl`).
+* `emphasis` picks a feedback color and changes only the color.
+* `slot="title"` inside a `Modal` or `Dialog` sets the accessible name, and takes the overlay's
+  title tier, one step above the heading tier.
 
 ## Installation [#installation]
 
@@ -2778,6 +2799,15 @@ Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatic
 <Story of="DefaultExample" />
 
 <Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+`level` sets the semantics and `size` sets the look, so the two never have to match. Without
+`size`, a heading takes the size scope's heading tier at any level.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={2} size=\&#x22;2xl\&#x22;>\n        Level 2, 2xl\n      </Heading>\n      <Heading level={2} size=\&#x22;sm\&#x22;>\n        Level 2, sm\n      </Heading>\n      <Heading level={4} size=\&#x22;xl\&#x22;>\n        Level 4, xl\n      </Heading>\n      <Heading level={4}>Level 4, default tier</Heading>\n    </Flex>\n  );\n}&#x22;" />
 
 ## Props [#props]
 
@@ -3302,7 +3332,7 @@ A rail whose content stays visible when collapsed is a composition, not a mode: 
 
 <Story of="SidebarNavExample" />
 
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { InlineDrawer, Flex, ToggleButton, LinkButton, Icon, Text } from '@godaddy/antares';\n\nconst NAV = [\n  { icon: 'grid', label: 'Dashboard', href: '#' },\n  { icon: 'star', label: 'Favorites', href: '#' },\n  { icon: 'comment', label: 'Messages', href: '#' }\n] as const;\n\nexport function SidebarNavExample() {\n  const [expanded, setExpanded] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;row\&#x22;>\n      <InlineDrawer placement=\&#x22;left\&#x22; isExpanded={expanded} onExpandedChange={setExpanded} minSize={35} maxSize={150}>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22; padding=\&#x22;xs\&#x22;>\n          <ToggleButton isSelected={expanded} onChange={setExpanded} aria-label=\&#x22;Menu\&#x22;>\n            <Icon icon=\&#x22;bulleted-list\&#x22; />\n          </ToggleButton>\n          {NAV.map(function renderItem(item) {\n            return (\n              <LinkButton\n                key={item.label}\n                href={item.href}\n                aria-label={!expanded ? item.label : undefined}\n                variant=\&#x22;minimal\&#x22;\n                style={{ justifyContent: 'flex-start' }}\n              >\n                <Icon icon={item.icon} />\n                {expanded ? item.label : null}\n              </LinkButton>\n            );\n          })}\n        </Flex>\n      </InlineDrawer>\n      <Flex padding=\&#x22;md\&#x22; style={{ flex: 1, borderInlineStart: '1px solid var(--bd-base)' }}>\n        <Text>Main content area</Text>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { InlineDrawer, Flex, ToggleButton, LinkButton, Icon, Text } from '@godaddy/antares';\n\nconst NAV = [\n  { icon: 'grid', label: 'Dashboard', href: '#' },\n  { icon: 'star', label: 'Favorites', href: '#' },\n  { icon: 'comment', label: 'Messages', href: '#' }\n] as const;\n\nexport function SidebarNavExample() {\n  const [expanded, setExpanded] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;row\&#x22;>\n      <InlineDrawer placement=\&#x22;left\&#x22; isExpanded={expanded} onExpandedChange={setExpanded} minSize={35} maxSize={150}>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22; padding=\&#x22;xs\&#x22;>\n          <ToggleButton isSelected={expanded} onChange={setExpanded} aria-label=\&#x22;Menu\&#x22;>\n            <Icon icon=\&#x22;bulleted-list\&#x22; />\n          </ToggleButton>\n          {NAV.map(function renderItem(item) {\n            return (\n              <LinkButton\n                key={item.label}\n                href={item.href}\n                aria-label={!expanded ? item.label : undefined}\n                variant=\&#x22;minimal\&#x22;\n                style={{ justifyContent: 'flex-start' }}\n              >\n                <Icon icon={item.icon} />\n                {expanded ? <Text>{item.label}</Text> : null}\n              </LinkButton>\n            );\n          })}\n        </Flex>\n      </InlineDrawer>\n      <Flex padding=\&#x22;md\&#x22; style={{ flex: 1, borderInlineStart: '1px solid var(--bd-base)' }}>\n        <Text>Main content area</Text>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
 
 ## Accessibility [#accessibility]
 
@@ -3404,6 +3434,8 @@ Input inside TextField.
 ## Features [#features]
 
 * Associates the visible name with the field control.
+* Applies the label treatment, medium weight, at the surrounding
+  `SizeProvider` tier. `size` and `emphasis` work as on `Text`.
 * Field CSS adds the required asterisk when the field root is `isRequired`. That is not a Label prop.
 
 ## Installation [#installation]
@@ -3573,7 +3605,7 @@ npm install --save @godaddy/antares
 
 ## Scale Sizes [#scale-sizes]
 
-We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+We use the same scale sizes as the `Box` component.
 
 ## Examples [#examples]
 
@@ -3693,7 +3725,7 @@ npm install --save @godaddy/antares
 
 ## Scale Sizes [#scale-sizes]
 
-We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+We use the same scale sizes as the `Box` component.
 
 ## Examples [#examples]
 
@@ -4145,9 +4177,15 @@ Use the `compact` prop to render the metric value and description inline rather 
 
 
 
+
+
+
+
 <Meta of="Stories" name="Overview" />
 
 `ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
+
+The modal is a `SizeProvider`. It opens at the size of the scope around its trigger, even though it renders in a portal, and `size` overrides that.
 
 ## Installation [#installation]
 
@@ -4191,6 +4229,24 @@ row and the `ButtonGroup` stay pinned.
 <Story of="TriggerlessExample" />
 
 <Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, ButtonGroup, CloseButton, Content, Heading, Modal } from '@godaddy/antares';\n\nexport function TriggerlessExample() {\n  const [isOpen, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open modal\n      </Button>\n      <Modal isOpen={isOpen} onOpenChange={setOpen}>\n        <Heading slot=\&#x22;title\&#x22;>Triggerless modal</Heading>\n        <CloseButton />\n        <Content>This is the content of the modal.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Done\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </>\n  );\n}&#x22;" />
+
+### Size [#size]
+
+`size` sets the modal's text, controls, and spacing. Without it, the modal follows the size
+scope around its trigger.
+
+<Story of="SizeExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function SizeExample() {\n  return (\n    <ModalTrigger>\n      <Button>Open small modal</Button>\n      <Modal size=\&#x22;sm\&#x22;>\n        <Heading slot=\&#x22;title\&#x22;>Rename file</Heading>\n        <CloseButton />\n        <Content>\n          <Text>The new name applies everywhere the file is shared.</Text>\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Rename\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### With Text Lockup [#with-text-lockup]
+
+A `TextLockup` in the content keeps its own title. The modal's `Heading slot="title"` still names
+the dialog.
+
+<Story of="WithTextLockupExample" />
+
+<Source language="tsx" code="&#x22;import {\n  ModalTrigger,\n  Modal,\n  Button,\n  CloseButton,\n  Heading,\n  Content,\n  ButtonGroup,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function WithTextLockupExample() {\n  return (\n    <ModalTrigger>\n      <Button>Compare plans</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Compare plans</Heading>\n        <CloseButton />\n        <Content>\n          <TextLockup size=\&#x22;sm\&#x22;>\n            <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n              Pro\n            </Tag>\n            <Heading slot=\&#x22;title\&#x22;>Unlimited seats</Heading>\n            <Text slot=\&#x22;body\&#x22;>Add your whole team with priority support.</Text>\n          </TextLockup>\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Close</Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
 
 ## Accessibility [#accessibility]
 
@@ -4269,7 +4325,8 @@ row and the `ButtonGroup` stay pinned.
 ## Features [#features]
 
 * **Composable interior**: Compose `Label`, the control, `Text slot="description"`, and `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
-* **Steppers**: A stepper is a `Group` holding `Button slot="decrement"`, an `Input`, and `Button slot="increment"`. Left empty, each button takes its icon, `variant="control"`, and `size` from the field, so no icon imports are needed. Compose a bare `Input` instead for a plain numeric input
+* **Steppers**: A stepper is a `Group` holding `Button slot="decrement"`, an `Input`, and `Button slot="increment"`. Left empty, each button takes its icon and `variant="control"` from the field, so no icon imports are needed. Compose a bare `Input` instead for a plain numeric input
+* **Sizes**: The field is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, input, steppers, description, and error; without it, the field follows the surrounding scope
 * **Value scale**: `minValue`, `maxValue`, `step`, and `formatOptions` configure the numeric behavior
 * **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
 * **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
@@ -4340,11 +4397,12 @@ By default, NumberField displays the value using the numbering system for the us
 
 ### Sizes [#sizes]
 
-Compare the supported `md` and `sm` visual sizes.
+`size` sets the label, input, and steppers. Without it, the field follows the surrounding size
+scope.
 
 <Story of="SizesExample" />
 
-<Source language="tsx" code="&#x22;import { Button, Flex, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <NumberField minValue={0} maxValue={100}>\n        <Label>Quantity (md)</Label>\n        <Group>\n          <Button slot=\&#x22;decrement\&#x22; />\n          <Input />\n          <Button slot=\&#x22;increment\&#x22; />\n        </Group>\n      </NumberField>\n      <NumberField minValue={0} maxValue={100} size=\&#x22;sm\&#x22;>\n        <Label>Quantity (sm)</Label>\n        <Group>\n          <Button slot=\&#x22;decrement\&#x22; />\n          <Input />\n          <Button slot=\&#x22;increment\&#x22; />\n        </Group>\n      </NumberField>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Flex, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function field(size) {\n        return (\n          <NumberField key={size} minValue={0} maxValue={100} size={size}>\n            <Label>Quantity ({size})</Label>\n            <Group>\n              <Button slot=\&#x22;decrement\&#x22; />\n              <Input />\n              <Button slot=\&#x22;increment\&#x22; />\n            </Group>\n          </NumberField>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
 
 ### Text Steppers [#text-steppers]
 
@@ -5513,6 +5571,7 @@ Components automatically add data attributes for styling different states:
 * **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
 * **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
 * **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
+* **Sizes**: The field is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets the label, trigger, and options, which open at the same size even though they render in a portal. Without it, the Select follows the surrounding scope
 * **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
 * **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
 
@@ -5616,6 +5675,115 @@ over the popover and the list.
 <PropTable />
 
 ### SelectItem [#selectitem]
+
+<PropTable />
+
+
+# SizeProvider
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* `sm`, `md`, or `lg` for the adopted components inside (listed below): their text, controls, and
+  default spacing.
+* The nearest scope wins, and nested scopes replace the size rather than compounding it.
+* A component's own `size` prop wins for that component only.
+* Overlays opened inside, such as Modal and Select options, open at the scope's size even though
+  they render in a portal.
+* Renders no element, so it never affects layout. Only Antares components follow it; plain HTML
+  keeps its own typography, so put copy in `Text`.
+* Without any scope, components use `md`.
+* Adopted so far by Text, Detail, Heading, Label, Button, LinkButton, TextField, NumberField, Select,
+  DatePicker, DateRangePicker, Calendar, TextLockup, Modal, Drawer, Popover, and Tooltip. Other
+  components keep their own size. Layout spacing props keep their meaning: `gap="md"` is the layout
+  `md` gap in any scope.
+
+## Examples [#examples]
+
+### Default [#default]
+
+A scope sizes everything inside it: text, controls, and default spacing. A component's own
+`size` still wins.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Heading, Input, Label, SizeProvider, Text, TextField, TextLockup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22; level={2}>\n            Billing\n          </Heading>\n          <Text slot=\&#x22;body\&#x22;>Manage your payment methods.</Text>\n        </TextLockup>\n\n        <TextField>\n          <Label>Email</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n        </TextField>\n\n        <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n          <Button variant=\&#x22;primary\&#x22;>Update payment method</Button>\n          <Button variant=\&#x22;primary\&#x22; size=\&#x22;md\&#x22;>\n            Contact support\n          </Button>\n        </Flex>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+The same section at each size. Without a scope, components use `md`.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      {SIZES.map(function section(size) {\n        return (\n          <SizeProvider key={size} size={size}>\n            <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n              <Heading>Size {size}</Heading>\n              <Text>Body copy follows the scope.</Text>\n              <Detail>Supporting copy too.</Detail>\n              <Button variant=\&#x22;primary\&#x22;>Save</Button>\n            </Flex>\n          </SizeProvider>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+
+### Form [#form]
+
+Wrap a whole form to size it at once. Fields, their labels and descriptions, choices, and
+buttons all follow the scope, so they stay aligned with each other.
+
+<Story of="FormExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Button,\n  Checkbox,\n  Flex,\n  Heading,\n  Input,\n  Label,\n  Select,\n  SelectItem,\n  SelectOptions,\n  SizeProvider,\n  Text,\n  TextField\n} from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <Heading level={2}>Contact details</Heading>\n\n        <TextField>\n          <Label>Full name</Label>\n          <Input />\n        </TextField>\n\n        <TextField>\n          <Label>Email</Label>\n          <Input type=\&#x22;email\&#x22; />\n          <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n        </TextField>\n\n        <Select placeholder=\&#x22;Pick a country\&#x22;>\n          <Label>Country</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>United States</SelectItem>\n            <SelectItem id=\&#x22;ca\&#x22;>Canada</SelectItem>\n            <SelectItem id=\&#x22;mx\&#x22;>Mexico</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <Checkbox>Email me about offers</Checkbox>\n\n        <Flex gap=\&#x22;sm\&#x22;>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;primary\&#x22;>Save</Button>\n        </Flex>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+
+### Nested Scopes [#nested-scopes]
+
+The nearest scope wins. An inner scope replaces the outer size rather than scaling it, so an
+`sm` section inside an `lg` page matches `sm` anywhere else.
+
+<Story of="NestedScopesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nexport function NestedScopesExample() {\n  return (\n    <SizeProvider size=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <Heading level={2}>Your plan</Heading>\n        <Text>Premium hosting, renews on March 1.</Text>\n        <Button variant=\&#x22;primary\&#x22;>Manage plan</Button>\n\n        <SizeProvider size=\&#x22;sm\&#x22;>\n          <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n            <Detail>Need less? You can switch to Basic at any time.</Detail>\n            <Button variant=\&#x22;primary\&#x22;>Compare plans</Button>\n          </Flex>\n        </SizeProvider>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+
+### Explicit Size [#explicit-size]
+
+A component's own `size` wins for that component and every part inside it, such as a field's
+label and description. Its siblings keep following the scope.
+
+<Story of="ExplicitSizeExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Input, Label, SizeProvider, Text, TextField } from '@godaddy/antares';\n\nexport function ExplicitSizeExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <TextField>\n          <Label>Coupon code</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>Follows the scope.</Text>\n        </TextField>\n\n        <TextField size=\&#x22;lg\&#x22;>\n          <Label>Domain name</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>Sized by the field.</Text>\n        </TextField>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+
+### Overlays [#overlays]
+
+Overlays open at the size of the scope around their trigger, even though they render in a
+portal. An explicit `size` on the owner sizes its overlay too.
+
+<Story of="OverlaysExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Button,\n  ButtonGroup,\n  Content,\n  DatePicker,\n  DatePickerCalendar,\n  DateRangePicker,\n  DateRangePickerCalendar,\n  Flex,\n  Heading,\n  Label,\n  Modal,\n  ModalTrigger,\n  Select,\n  SelectItem,\n  SelectOptions,\n  SizeProvider,\n  Text,\n  Tooltip,\n  TooltipTrigger\n} from '@godaddy/antares';\n\nexport function OverlaysExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex gap=\&#x22;md\&#x22; alignItems=\&#x22;end\&#x22; wrap=\&#x22;wrap\&#x22;>\n        <Select placeholder=\&#x22;Pick a plan\&#x22;>\n          <Label>Plan</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;basic\&#x22;>Basic</SelectItem>\n            <SelectItem id=\&#x22;pro\&#x22;>Pro</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <Select size=\&#x22;lg\&#x22; placeholder=\&#x22;Pick a region\&#x22;>\n          <Label>Region</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>United States</SelectItem>\n            <SelectItem id=\&#x22;eu\&#x22;>Europe</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <DatePicker>\n          <Label>Renewal date</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <DatePickerCalendar />\n        </DatePicker>\n\n        <DateRangePicker size=\&#x22;lg\&#x22;>\n          <Label>Contract dates</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <DateRangePickerCalendar />\n        </DateRangePicker>\n\n        <ModalTrigger>\n          <Button variant=\&#x22;primary\&#x22;>Edit plan</Button>\n          <Modal>\n            <Heading slot=\&#x22;title\&#x22;>Edit plan</Heading>\n            <Content>\n              <Text>Changes apply at the next billing cycle.</Text>\n            </Content>\n            <ButtonGroup>\n              <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n              <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n                Save\n              </Button>\n            </ButtonGroup>\n          </Modal>\n        </ModalTrigger>\n\n        <TooltipTrigger>\n          <Button variant=\&#x22;primary\&#x22;>Help</Button>\n          <Tooltip>Billing questions</Tooltip>\n        </TooltipTrigger>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+
+### Plain Html [#plain-html]
+
+A scope sizes Antares components only. Plain HTML keeps its own typography, so put copy in
+`Text` to follow the scope.
+
+<Story of="PlainHtmlExample" />
+
+<Source language="tsx" code="&#x22;import { SizeProvider, Text } from '@godaddy/antares';\n\nexport function PlainHtmlExample() {\n  return (\n    <SizeProvider size=\&#x22;lg\&#x22;>\n      <p>A plain paragraph keeps the page's typography.</p>\n      <Text>Text follows the scope.</Text>\n    </SizeProvider>\n  );\n}&#x22;" />
+
+## Props [#props]
 
 <PropTable />
 
@@ -6253,6 +6421,7 @@ TextArea inside TextField.
 * **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
 * **Multiline**: Compose a `TextArea` instead of an `Input` for multiline entry
 * **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
+* **Sizes**: The field is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, input, description, error, and composed controls; without it, the field follows the surrounding scope. An explicit `size` on a part still wins for that part
 
 ## Installation [#installation]
 
@@ -6313,12 +6482,12 @@ Compose a `TextArea` instead of an `Input` for multiline entry.
 
 ### Sizes [#sizes]
 
-Compare the supported `md` and `sm` visual sizes, plain and with an icon plus control button.
-Set `size` on `TextField` so the input and `Button slot="control"` share the same size.
+`size` sets the label, input, description, and any control composed inside. Without it, the
+field follows the surrounding size scope.
 
 <Story of="SizesExample" />
 
-<Source language="tsx" code="&#x22;import { Button, Flex, Group, Icon, Input, Label, TextField } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField>\n        <Label>Email (md)</Label>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n      <TextField size=\&#x22;sm\&#x22;>\n        <Label>Email (sm)</Label>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n\n      <TextField>\n        <Label>Email with icon (md)</Label>\n        <Group>\n          <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n          </Flex>\n          <Input placeholder=\&#x22;Email\&#x22; />\n          <Button aria-label=\&#x22;Verify email address\&#x22; slot=\&#x22;control\&#x22;>\n            Verify\n          </Button>\n        </Group>\n      </TextField>\n\n      <TextField size=\&#x22;sm\&#x22;>\n        <Label>Email with icon (sm)</Label>\n        <Group>\n          <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;sm\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n          </Flex>\n          <Input placeholder=\&#x22;Email\&#x22; />\n          <Button aria-label=\&#x22;Verify email address\&#x22; slot=\&#x22;control\&#x22;>\n            Verify\n          </Button>\n        </Group>\n      </TextField>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Flex, Group, Icon, Input, Label, Text, TextField } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function field(size) {\n        return (\n          <TextField key={size} size={size}>\n            <Label>Email ({size})</Label>\n            <Group>\n              <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Flex>\n              <Input placeholder=\&#x22;you@example.com\&#x22; />\n              <Button aria-label=\&#x22;Verify email address\&#x22; slot=\&#x22;control\&#x22;>\n                Verify\n              </Button>\n            </Group>\n            <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n          </TextField>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
 
 ### Controls and icons [#controls-and-icons]
 
@@ -6406,9 +6575,8 @@ number of paragraphs; `size` sets the tier for all of them at once.
 
 ### Sizes [#sizes]
 
-`size` is the tier: the eyebrow reads it on the `detail` ramp, the title on `heading`,
-and the body on `body`. Use `2xl` for a page title, `xl` for a hero, `lg` for a section
-title, and `md` (the default) everywhere else.
+`size` sets every part, each on its own role ramp. Without it, the lockup follows the size
+scope.
 
 <Story of="SizesExample" />
 
@@ -6457,9 +6625,8 @@ here. Controls keep their own type: the buttons are unaffected by the lockup's `
 sit alongside them — a call to action, a second paragraph, an image — without the component
 growing a prop for it.
 
-* **Every part names its role with a slot**: `eyebrow`, `title`, `body`. Anything unslotted is
-  left alone, which is what lets a nested component keep its own internal text. Forget the slot
-  and the text simply renders untypeset rather than erroring.
+* **Every part names its role with a slot**: `eyebrow`, `title`, `body`. Unslotted text follows
+  the lockup's tier too: a bare `Heading` takes the title tier and a bare `Text` the body tier.
 * **The eyebrow is `slot="eyebrow"`**, on either a `Text` or a `Tag`. The two forms swap
   freely, and a `Tag` is sized to pair with the lockup.
 * **The title is `<Heading slot="title">`.** Pick the level from the document outline, not the
@@ -6467,11 +6634,12 @@ growing a prop for it.
 * **The body is `<Text slot="body">`**, once or as many times as the copy needs.
 * **An explicit prop on a child always wins** over what the lockup supplies. Pass
   `<Tag slot="eyebrow" size="sm">` to break the pairing, for instance.
-* **Controls keep their own type.** A `Button` inside a lockup is sized by its own `size` prop,
-  not the lockup's.
+* **Controls keep the scale size.** A `Button` inside a lockup follows the surrounding
+  `SizeProvider` or its own `size` prop, never the lockup's tier.
 * **`size` is the tier.** The eyebrow reads it on the `detail` ramp, the title on `heading`, and
-  the body on `body`, so there is no table to memorize.
-* Pass `className` to extend the styles, or select on `[data-size]` and `[data-align]`.
+  the body on `body`, so there is no table to memorize. Without `size`, the lockup follows the
+  surrounding size scope. A tier is the same at every container width.
+* Pass `className` to extend the styles, or select on `[data-align]`.
 
 ## Accessibility [#accessibility]
 
@@ -6526,9 +6694,26 @@ growing a prop for it.
 
 
 
+
+
+
+
+
+
 <Meta of="Stories" name="Overview" />
 
-The `Text` component prepares content with a few properties.
+`Text` is body copy and `Detail` is supporting copy: captions, metadata, and hints.
+
+## Features [#features]
+
+* `Text` applies the body role and `Detail` the detail role, each at the tier of the nearest
+  `SizeProvider`, or `md` outside any scope.
+* Inside a component's named part, such as a field description or a lockup body, the part sets the
+  treatment. Inside a control, the label keeps the control's type, so
+  `<Button><Text>Save</Text></Button>` looks exactly like `<Button>Save</Button>`.
+* `size` picks a step on the component's own ramp (`xs` to `2xl`) and changes only the font size.
+* `emphasis` picks a feedback color and changes only the color.
+* For semantic emphasis, render `as="strong"` or `as="em"`.
 
 ## Installation [#installation]
 
@@ -6578,9 +6763,40 @@ Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowr
 
 <Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function WrapExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; wrap=\&#x22;pretty\&#x22;>\n        Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and\n        legibility. Because counting characters and balancing them across multiple lines is computationally expensive,\n        this value is only supported for blocks of text spanning a limited number of lines\n      </Text>\n    </div>\n  );\n}&#x22;" />
 
+### Sizes [#sizes]
+
+Without `size`, text takes the scope's body tier, or `md` outside any scope. `size` picks a step
+on the body ramp and changes only the font size.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Text } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Text>Default</Text>\n      <Text size=\&#x22;xs\&#x22;>Extra small</Text>\n      <Text size=\&#x22;sm\&#x22;>Small</Text>\n      <Text size=\&#x22;md\&#x22;>Medium</Text>\n      <Text size=\&#x22;lg\&#x22;>Large</Text>\n      <Text size=\&#x22;xl\&#x22;>Extra large</Text>\n      <Text size=\&#x22;2xl\&#x22;>2x large</Text>\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+`emphasis` selects a feedback color and changes nothing else. Without it, text inherits the
+surrounding color.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Text } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Text emphasis=\&#x22;critical\&#x22;>Payment failed</Text>\n      <Text emphasis=\&#x22;warning\&#x22;>Card expires soon</Text>\n      <Text emphasis=\&#x22;success\&#x22;>Payment received</Text>\n      <Text emphasis=\&#x22;info\&#x22;>Invoice sent</Text>\n      <Text emphasis=\&#x22;passive\&#x22;>No recent activity</Text>\n    </Flex>\n  );\n}&#x22;" />
+
+### Detail [#detail]
+
+`Detail` is supporting copy, such as captions and metadata, on the detail ramp. It keeps the
+surrounding color; add `emphasis="passive"` to mute it.
+
+<Story of="DetailExample" />
+
+<Source language="tsx" code="&#x22;import { Detail, Flex, Text } from '@godaddy/antares';\n\nexport function DetailExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n      <Text>Quarterly report</Text>\n      <Detail emphasis=\&#x22;passive\&#x22;>Updated 2 hours ago</Detail>\n    </Flex>\n  );\n}&#x22;" />
+
 ## Props [#props]
 
 ### Text [#text]
+
+<PropTable />
+
+### Detail [#detail-1]
 
 <PropTable />
 
