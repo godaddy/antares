@@ -9,7 +9,7 @@
 }
 
 .indicator:where(:not([data-custom])) {
-  padding: var(--size-space-md, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  padding: var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 2));
   border: 1px solid var(--_card-selection-indicator-border);
   border-radius: 50%;
   background: var(--_card-selection-indicator-background);
