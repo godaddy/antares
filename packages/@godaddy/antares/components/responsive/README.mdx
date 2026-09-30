@@ -47,3 +47,11 @@ Preserve reading order, keyboard focus, and entered values as layouts change. If
 React trees, it must manage state and focus across that transition. Validate its chosen behavior
 with long text, RTL, narrow widths, text enlargement, and browser zoom. Resizing the viewport alone
 does not test every effect of zoom. Use pointer and hover media features to detect input capabilities.
+
+## API
+
+```ts
+useMediaQuery(query: string, options: { ssrMatch: boolean }): boolean
+```
+
+Breakpoint values are listed in the Breakpoints example above. Types: `ViewportBreakpoint` and `UseMediaQueryOptions`.
