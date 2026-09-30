@@ -1374,220 +1374,6 @@ Once the total is known, set `isIndeterminate` to false and supply a measured va
 <PropTable />
 
 
-# DatePicker
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `DatePickerCalendar`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in. `children` also accepts a function for picker state
-* **Trigger and calendar**: An empty `Button slot="trigger"` renders a calendar icon and the formatted value from the field. `DatePickerCalendar` (and `DateRangePickerCalendar`) is the calendar in the popover it opens: it takes `Calendar` props plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `Calendar` yourself to replace the whole overlay
-* **Sizes**: Each picker is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, trigger, description, error, and the calendar it opens; without it, the picker follows the surrounding scope
-* `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
-* Built on React Aria - native form integration, validation, focus management, and screen-reader support
-* Label formatting via `formatOptions` / `placeholder` on the picker itself, or on `DatePickerValue` / `DateRangePickerValue` in a trigger you write
-* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Working with dates [#working-with-dates]
-
-Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
-
-```tsx
-import { parseDate } from '@godaddy/antares/date';
-import { DatePicker, Label } from '@godaddy/antares';
-
-function EventDatePicker() {
-  return (
-    <DatePicker defaultValue={parseDate('2024-03-15')}>
-      <Label>Event date</Label>
-    </DatePicker>
-  );
-}
-```
-
-Import date helpers from `@godaddy/antares/date` (a re-export of
-[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/)).
-Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user's locale.
-
-## Examples [#examples]
-
-### Default [#default]
-
-A single date picker with a `Label`.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DatePicker>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Range [#range]
-
-A start/end range picker.
-
-<Story of="RangeExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DateRangePicker, DateRangePickerCalendar, Label } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DateRangePickerCalendar />\n    </DateRangePicker>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Driving the value with `useState`.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { type CalendarDate, parseDate } from '@godaddy/antares/date';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<CalendarDate | null>(parseDate('2024-03-15'));\n\n  return (\n    <DatePicker value={value} onChange={setValue}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Format Options [#format-options]
-
-Controlling the trigger's label format via `formatOptions`.
-
-<Story of="FormatOptionsExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function FormatOptionsExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')} formatOptions={{ dateStyle: 'short' }}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Min / Max [#min--max]
-
-Bounding selectable dates with `minValue` / `maxValue`.
-
-<Story of="MinMaxExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function MinMaxExample() {\n  return (\n    <DatePicker minValue={parseDate('2024-03-05')} maxValue={parseDate('2024-03-25')}>\n      <Label>Booking date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### With error [#with-error]
-
-An invalid picker showing a validation message via `isInvalid` and a `FieldError`.
-
-<Story of="WithErrorExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, FieldError, Label } from '@godaddy/antares';\n\nexport function WithErrorExample() {\n  return (\n    <DatePicker isInvalid>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <FieldError>Please choose a date</FieldError>\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-A disabled picker via `isDisabled`.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DatePicker isDisabled>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Composed [#composed]
-
-Write the trigger and the overlay yourself instead of composing `DatePickerCalendar`, for full
-control over the popover and the calendar.
-
-<Story of="ComposedExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Calendar, Content, DatePicker, DatePickerValue, Icon, Label, Popover, Text } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function ComposedExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DatePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose the event date</Text>\n      <Popover hideArrow>\n        <Content>\n          <Calendar />\n        </Content>\n      </Popover>\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Composed range [#composed-range]
-
-Write a DateRangePicker's trigger and overlay from lower-level pieces the same way.
-
-<Story of="ComposedRangeExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  DateRangePicker,\n  DateRangePickerValue,\n  Icon,\n  Label,\n  Popover,\n  RangeCalendar,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedRangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DateRangePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your start and end dates</Text>\n      <Popover hideArrow>\n        <Content>\n          <RangeCalendar />\n        </Content>\n      </Popover>\n    </DateRangePicker>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-`size` sets the label, trigger, and calendar. Without it, the picker follows the surrounding
-size scope.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Flex, Label } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function picker(size) {\n        return (\n          <DatePicker key={size} size={size}>\n            <Label>Event date ({size})</Label>\n            <Button slot=\&#x22;trigger\&#x22; />\n            <DatePickerCalendar />\n          </DatePicker>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<DatePicker>
-  <Label />
-  <Group>
-    <Button slot="trigger">
-      <DatePickerValue />
-    </Button>
-  </Group>
-  <Text slot="description" />
-  <Popover>
-    <Content>
-      <Calendar />
-    </Content>
-  </Popover>
-  <FieldError />
-</DatePicker>
-```
-
-```tsx
-<DateRangePicker>
-  <Label />
-  <Group>
-    <Button slot="trigger">
-      <DateRangePickerValue />
-    </Button>
-  </Group>
-  <Text slot="description" />
-  <Popover>
-    <Content>
-      <RangeCalendar />
-    </Content>
-  </Popover>
-  <FieldError />
-</DateRangePicker>
-```
-
-### DatePicker [#datepicker]
-
-<PropTable />
-
-### DateRangePicker [#daterangepicker]
-
-<PropTable />
-
-### DatePickerCalendar [#datepickercalendar]
-
-<PropTable />
-
-### DateRangePickerCalendar [#daterangepickercalendar]
-
-<PropTable />
-
-### DatePickerValue [#datepickervalue]
-
-<PropTable />
-
-### DateRangePickerValue [#daterangepickervalue]
-
-<PropTable />
-
-
 # Drawer
 
 
@@ -1976,6 +1762,220 @@ Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatic
 ## Props [#props]
 
 ### Heading [#heading]
+
+<PropTable />
+
+
+# DatePicker
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `DatePickerCalendar`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in. `children` also accepts a function for picker state
+* **Trigger and calendar**: An empty `Button slot="trigger"` renders a calendar icon and the formatted value from the field. `DatePickerCalendar` (and `DateRangePickerCalendar`) is the calendar in the popover it opens: it takes `Calendar` props plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `Calendar` yourself to replace the whole overlay
+* **Sizes**: Each picker is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, trigger, description, error, and the calendar it opens; without it, the picker follows the surrounding scope
+* `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
+* Built on React Aria - native form integration, validation, focus management, and screen-reader support
+* Label formatting via `formatOptions` / `placeholder` on the picker itself, or on `DatePickerValue` / `DateRangePickerValue` in a trigger you write
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate } from '@godaddy/antares/date';
+import { DatePicker, Label } from '@godaddy/antares';
+
+function EventDatePicker() {
+  return (
+    <DatePicker defaultValue={parseDate('2024-03-15')}>
+      <Label>Event date</Label>
+    </DatePicker>
+  );
+}
+```
+
+Import date helpers from `@godaddy/antares/date` (a re-export of
+[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/)).
+Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user's locale.
+
+## Examples [#examples]
+
+### Default [#default]
+
+A single date picker with a `Label`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DatePicker>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Range [#range]
+
+A start/end range picker.
+
+<Story of="RangeExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DateRangePicker, DateRangePickerCalendar, Label } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DateRangePickerCalendar />\n    </DateRangePicker>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Driving the value with `useState`.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { type CalendarDate, parseDate } from '@godaddy/antares/date';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<CalendarDate | null>(parseDate('2024-03-15'));\n\n  return (\n    <DatePicker value={value} onChange={setValue}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Format Options [#format-options]
+
+Controlling the trigger's label format via `formatOptions`.
+
+<Story of="FormatOptionsExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function FormatOptionsExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')} formatOptions={{ dateStyle: 'short' }}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates with `minValue` / `maxValue`.
+
+<Story of="MinMaxExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function MinMaxExample() {\n  return (\n    <DatePicker minValue={parseDate('2024-03-05')} maxValue={parseDate('2024-03-25')}>\n      <Label>Booking date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### With error [#with-error]
+
+An invalid picker showing a validation message via `isInvalid` and a `FieldError`.
+
+<Story of="WithErrorExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, FieldError, Label } from '@godaddy/antares';\n\nexport function WithErrorExample() {\n  return (\n    <DatePicker isInvalid>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <FieldError>Please choose a date</FieldError>\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+A disabled picker via `isDisabled`.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DatePicker isDisabled>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Composed [#composed]
+
+Write the trigger and the overlay yourself instead of composing `DatePickerCalendar`, for full
+control over the popover and the calendar.
+
+<Story of="ComposedExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Calendar, Content, DatePicker, DatePickerValue, Icon, Label, Popover, Text } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function ComposedExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DatePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose the event date</Text>\n      <Popover hideArrow>\n        <Content>\n          <Calendar />\n        </Content>\n      </Popover>\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Composed range [#composed-range]
+
+Write a DateRangePicker's trigger and overlay from lower-level pieces the same way.
+
+<Story of="ComposedRangeExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  DateRangePicker,\n  DateRangePickerValue,\n  Icon,\n  Label,\n  Popover,\n  RangeCalendar,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedRangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DateRangePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your start and end dates</Text>\n      <Popover hideArrow>\n        <Content>\n          <RangeCalendar />\n        </Content>\n      </Popover>\n    </DateRangePicker>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+`size` sets the label, trigger, and calendar. Without it, the picker follows the surrounding
+size scope.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Flex, Label } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function picker(size) {\n        return (\n          <DatePicker key={size} size={size}>\n            <Label>Event date ({size})</Label>\n            <Button slot=\&#x22;trigger\&#x22; />\n            <DatePickerCalendar />\n          </DatePicker>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<DatePicker>
+  <Label />
+  <Group>
+    <Button slot="trigger">
+      <DatePickerValue />
+    </Button>
+  </Group>
+  <Text slot="description" />
+  <Popover>
+    <Content>
+      <Calendar />
+    </Content>
+  </Popover>
+  <FieldError />
+</DatePicker>
+```
+
+```tsx
+<DateRangePicker>
+  <Label />
+  <Group>
+    <Button slot="trigger">
+      <DateRangePickerValue />
+    </Button>
+  </Group>
+  <Text slot="description" />
+  <Popover>
+    <Content>
+      <RangeCalendar />
+    </Content>
+  </Popover>
+  <FieldError />
+</DateRangePicker>
+```
+
+### DatePicker [#datepicker]
+
+<PropTable />
+
+### DateRangePicker [#daterangepicker]
+
+<PropTable />
+
+### DatePickerCalendar [#datepickercalendar]
+
+<PropTable />
+
+### DateRangePickerCalendar [#daterangepickercalendar]
+
+<PropTable />
+
+### DatePickerValue [#datepickervalue]
+
+<PropTable />
+
+### DateRangePickerValue [#daterangepickervalue]
 
 <PropTable />
 
@@ -2979,6 +2979,81 @@ Use the `compact` prop to render the metric value and description inline rather 
 <PropTable />
 
 
+# Pagination
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DefaultExample() {\n  const [page, setPage] = useState(0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={5} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Pass `activeIndex` and `onChange` to control the active page externally.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={4} activeIndex={page} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Default Active [#default-active]
+
+Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
+
+<Story of="DefaultActiveExample" />
+
+<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function DefaultActiveExample() {\n  return <Pagination total={5} defaultActiveIndex={2} />;\n}&#x22;" />
+
+### With Limit [#with-limit]
+
+Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
+
+<Story of="WithLimitExample" />
+
+<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function WithLimitExample() {\n  return <Pagination total={10} limit={3} />;\n}&#x22;" />
+
+### onChange Event [#onchange-event]
+
+The `onChange` callback fires with the new page index whenever the user navigates.
+
+<Story of="OnChangeExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function OnChangeExample() {\n  const [onChangeValue, setOnChangeValue] = useState<number | undefined>(undefined);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={3} onChange={setOnChangeValue} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        onChange: {onChangeValue ?? 'none'}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### Pagination [#pagination]
+
+<PropTable />
+
+
 # Modal
 
 
@@ -3251,15 +3326,7 @@ Compose with `children` to replace the stepper icons with your own content, such
 <PropTable />
 
 
-# Pagination
-
-
-
-
-
-
-
-
+# Pressable
 
 
 
@@ -3271,57 +3338,74 @@ Compose with `children` to replace the stepper icons with your own content, such
 
 <Meta of="Stories" name="Overview" />
 
+## Features [#features]
+
+* Adds accessible press behavior to an existing visual component.
+* Applies interaction states directly to the child without adding a wrapper element.
+* Supports pointer, touch, and keyboard interactions through React Aria.
+* Preserves the child's layout, shape, and base visual styling while adding state feedback.
+
 ## Installation [#installation]
 
 ```bash
-npm install --save @godaddy/antares
+npm install @godaddy/antares
 ```
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
+Add accessible press behavior to an existing visual component without adding a wrapper element.
+The surface supports pointer, touch, and keyboard activation.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DefaultExample() {\n  const [page, setPage] = useState(0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={5} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Box, Flex, Pressable, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Pressable aria-label=\&#x22;View account summary\&#x22;>\n      <Box role=\&#x22;button\&#x22; padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n          <Text>Account summary</Text>\n          <Text>View your account details</Text>\n        </Flex>\n      </Box>\n    </Pressable>\n  );\n}&#x22;" />
 
-### Controlled [#controlled]
+## Customization [#customization]
 
-Pass `activeIndex` and `onChange` to control the active page externally.
+Use `Pressable` when an existing visual component or layout surface needs press behavior while keeping its own DOM element, layout, and styles. The child must be a single element that forwards its ref and accepts the DOM, ARIA, and event props supplied by React Aria.
 
-<Story of="ControlledExample" />
+Use `Button` when you need a standard button control with button-specific sizing, layout, and visual variants.
 
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={4} activeIndex={page} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+Pass `onPress` for the action instead of wiring separate pointer and keyboard handlers:
 
-### Default Active [#default-active]
+```tsx
+<Pressable aria-label="View account summary" onPress={handlePress}>
+  <Box role="button" padding="md" rounding="md" elevation="card">
+    Account summary
+  </Box>
+</Pressable>
+```
 
-Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
+## Accessibility [#accessibility]
 
-<Story of="DefaultActiveExample" />
+`Pressable` accepts the React Aria press props, including `onPress`, `onPressStart`, `onPressEnd`, `onPressUp`, and `onPressChange`.
 
-<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function DefaultActiveExample() {\n  return <Pagination total={5} defaultActiveIndex={2} />;\n}&#x22;" />
+Use a semantic interactive element when possible. For a non-semantic child such as `Avatar` or `Box`, provide an appropriate interactive role and an accessible name. Pressable makes the child focusable when the required props are forwarded.
 
-### With Limit [#with-limit]
+Do not add `role="button"` to a native `<button>` or `<a>` unless you intentionally need to change its semantics. Use a dedicated semantic component such as `Button`, `LinkButton`, `Menu`, or `ToggleButton` when that control's meaning is known.
 
-Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
+## Best Practices [#best-practices]
 
-<Story of="WithLimitExample" />
+* Prefer a native interactive element or a semantic Antares component when the interaction meaning is known.
+* Avoid nesting interactive elements inside the child passed to `Pressable`.
+* `Pressable` automatically applies React Aria state attributes such as `[data-hovered]`, `[data-pressed]`, `[data-focus-visible]`, and `[data-disabled]` to the child. Ensure the child component styles these states appropriately if it overrides the default `Pressable` styles.
 
-<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function WithLimitExample() {\n  return <Pagination total={10} limit={3} />;\n}&#x22;" />
+## Troubleshooting [#troubleshooting]
 
-### onChange Event [#onchange-event]
-
-The `onChange` callback fires with the new page index whenever the user navigates.
-
-<Story of="OnChangeExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function OnChangeExample() {\n  const [onChangeValue, setOnChangeValue] = useState<number | undefined>(undefined);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={3} onChange={setOnChangeValue} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        onChange: {onChangeValue ?? 'none'}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+* If React Aria warns that the child must be focusable, ensure it is a single element that forwards its ref, `tabIndex`, DOM props, and ARIA attributes.
+* If `onPress` does not fire, confirm that the child forwards event handlers and is not disabled by another component.
 
 ## Props [#props]
 
-### Pagination [#pagination]
+```tsx
+<Pressable>
+  <Box />
+</Pressable>
+```
+
+### Pressable [#pressable]
 
 <PropTable />
 
@@ -3419,90 +3503,6 @@ also gives the dialog its accessible name.
 <PropTable />
 
 ### PopoverTrigger [#popovertrigger]
-
-<PropTable />
-
-
-# Pressable
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Adds accessible press behavior to an existing visual component.
-* Applies interaction states directly to the child without adding a wrapper element.
-* Supports pointer, touch, and keyboard interactions through React Aria.
-* Preserves the child's layout, shape, and base visual styling while adding state feedback.
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Add accessible press behavior to an existing visual component without adding a wrapper element.
-The surface supports pointer, touch, and keyboard activation.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex, Pressable, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Pressable aria-label=\&#x22;View account summary\&#x22;>\n      <Box role=\&#x22;button\&#x22; padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n          <Text>Account summary</Text>\n          <Text>View your account details</Text>\n        </Flex>\n      </Box>\n    </Pressable>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-Use `Pressable` when an existing visual component or layout surface needs press behavior while keeping its own DOM element, layout, and styles. The child must be a single element that forwards its ref and accepts the DOM, ARIA, and event props supplied by React Aria.
-
-Use `Button` when you need a standard button control with button-specific sizing, layout, and visual variants.
-
-Pass `onPress` for the action instead of wiring separate pointer and keyboard handlers:
-
-```tsx
-<Pressable aria-label="View account summary" onPress={handlePress}>
-  <Box role="button" padding="md" rounding="md" elevation="card">
-    Account summary
-  </Box>
-</Pressable>
-```
-
-## Accessibility [#accessibility]
-
-`Pressable` accepts the React Aria press props, including `onPress`, `onPressStart`, `onPressEnd`, `onPressUp`, and `onPressChange`.
-
-Use a semantic interactive element when possible. For a non-semantic child such as `Avatar` or `Box`, provide an appropriate interactive role and an accessible name. Pressable makes the child focusable when the required props are forwarded.
-
-Do not add `role="button"` to a native `<button>` or `<a>` unless you intentionally need to change its semantics. Use a dedicated semantic component such as `Button`, `LinkButton`, `Menu`, or `ToggleButton` when that control's meaning is known.
-
-## Best Practices [#best-practices]
-
-* Prefer a native interactive element or a semantic Antares component when the interaction meaning is known.
-* Avoid nesting interactive elements inside the child passed to `Pressable`.
-* `Pressable` automatically applies React Aria state attributes such as `[data-hovered]`, `[data-pressed]`, `[data-focus-visible]`, and `[data-disabled]` to the child. Ensure the child component styles these states appropriately if it overrides the default `Pressable` styles.
-
-## Troubleshooting [#troubleshooting]
-
-* If React Aria warns that the child must be focusable, ensure it is a single element that forwards its ref, `tabIndex`, DOM props, and ARIA attributes.
-* If `onPress` does not fire, confirm that the child forwards event handlers and is not disabled by another component.
-
-## Props [#props]
-
-```tsx
-<Pressable>
-  <Box />
-</Pressable>
-```
-
-### Pressable [#pressable]
 
 <PropTable />
 
@@ -5024,131 +5024,6 @@ Use `TabList`'s `containerProps` to customize the outer tab list shell, such as 
 <PropTable />
 
 
-# Text
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Text` is body copy and `Detail` is supporting copy: captions, metadata, and hints.
-
-## Features [#features]
-
-* `Text` applies the body role and `Detail` the detail role, each at the tier of the nearest
-  `SizeProvider`, or `md` outside any scope.
-* Inside a component's named part, such as a field description or a lockup body, the part sets the
-  treatment. Inside a control, the label keeps the control's type, so
-  `<Button><Text>Save</Text></Button>` looks exactly like `<Button>Save</Button>`.
-* `size` picks a step on the component's own ramp (`xs` to `2xl`) and changes only the font size.
-* `emphasis` picks a feedback color and changes only the color.
-* For semantic emphasis, render `as="strong"` or `as="em"`.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic text content.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function DefaultExample(args: TextProps) {\n  return <Text {...args}>Hello, world!</Text>;\n}&#x22;" />
-
-### As [#as]
-
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
-
-<Story of="AsExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AsExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;marquee\&#x22;>\n      A scrolling marquee\n    </Text>\n  );\n}&#x22;" />
-
-### Align [#align]
-
-Setting the `align` prop allows you to change the alignment of the text. Choose from `start`, `center`, `end`, or `justify`; the logical keywords support RTL languages.
-
-<Story of="AlignExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AlignExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;p\&#x22; align=\&#x22;center\&#x22;>\n      Text is aligned to the center\n    </Text>\n  );\n}&#x22;" />
-
-### Max Lines [#max-lines]
-
-Setting the `maxLines` prop limits the number of displayed lines using an ellipsis.
-
-<Story of="MaxLinesExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function MaxLinesExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; maxLines={2}>\n        This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod\n        tempor incididunt ut labore et dolore magna aliqua.\n      </Text>\n    </div>\n  );\n}&#x22;" />
-
-### Wrap [#wrap]
-
-Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
-
-<Story of="WrapExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function WrapExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; wrap=\&#x22;pretty\&#x22;>\n        Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and\n        legibility. Because counting characters and balancing them across multiple lines is computationally expensive,\n        this value is only supported for blocks of text spanning a limited number of lines\n      </Text>\n    </div>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Without `size`, text takes the scope's body tier, or `md` outside any scope. `size` picks a step
-on the body ramp and changes only the font size.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Text } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Text>Default</Text>\n      <Text size=\&#x22;xs\&#x22;>Extra small</Text>\n      <Text size=\&#x22;sm\&#x22;>Small</Text>\n      <Text size=\&#x22;md\&#x22;>Medium</Text>\n      <Text size=\&#x22;lg\&#x22;>Large</Text>\n      <Text size=\&#x22;xl\&#x22;>Extra large</Text>\n      <Text size=\&#x22;2xl\&#x22;>2x large</Text>\n    </Flex>\n  );\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-`emphasis` selects a feedback color and changes nothing else. Without it, text inherits the
-surrounding color.
-
-<Story of="EmphasisExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Text } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Text emphasis=\&#x22;critical\&#x22;>Payment failed</Text>\n      <Text emphasis=\&#x22;warning\&#x22;>Card expires soon</Text>\n      <Text emphasis=\&#x22;success\&#x22;>Payment received</Text>\n      <Text emphasis=\&#x22;info\&#x22;>Invoice sent</Text>\n      <Text emphasis=\&#x22;passive\&#x22;>No recent activity</Text>\n    </Flex>\n  );\n}&#x22;" />
-
-### Detail [#detail]
-
-`Detail` is supporting copy, such as captions and metadata, on the detail ramp. It keeps the
-surrounding color; add `emphasis="passive"` to mute it.
-
-<Story of="DetailExample" />
-
-<Source language="tsx" code="&#x22;import { Detail, Flex, Text } from '@godaddy/antares';\n\nexport function DetailExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n      <Text>Quarterly report</Text>\n      <Detail emphasis=\&#x22;passive\&#x22;>Updated 2 hours ago</Detail>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### Text [#text]
-
-<PropTable />
-
-### Detail [#detail-1]
-
-<PropTable />
-
-
 # Tag
 
 
@@ -5284,6 +5159,131 @@ The colored dot is decorative and invisible to screen readers. The text label mu
 <PropTable />
 
 
+# Text
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Text` is body copy and `Detail` is supporting copy: captions, metadata, and hints.
+
+## Features [#features]
+
+* `Text` applies the body role and `Detail` the detail role, each at the tier of the nearest
+  `SizeProvider`, or `md` outside any scope.
+* Inside a component's named part, such as a field description or a lockup body, the part sets the
+  treatment. Inside a control, the label keeps the control's type, so
+  `<Button><Text>Save</Text></Button>` looks exactly like `<Button>Save</Button>`.
+* `size` picks a step on the component's own ramp (`xs` to `2xl`) and changes only the font size.
+* `emphasis` picks a feedback color and changes only the color.
+* For semantic emphasis, render `as="strong"` or `as="em"`.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic text content.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function DefaultExample(args: TextProps) {\n  return <Text {...args}>Hello, world!</Text>;\n}&#x22;" />
+
+### As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Story of="AsExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AsExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;marquee\&#x22;>\n      A scrolling marquee\n    </Text>\n  );\n}&#x22;" />
+
+### Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. Choose from `start`, `center`, `end`, or `justify`; the logical keywords support RTL languages.
+
+<Story of="AlignExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AlignExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;p\&#x22; align=\&#x22;center\&#x22;>\n      Text is aligned to the center\n    </Text>\n  );\n}&#x22;" />
+
+### Max Lines [#max-lines]
+
+Setting the `maxLines` prop limits the number of displayed lines using an ellipsis.
+
+<Story of="MaxLinesExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function MaxLinesExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; maxLines={2}>\n        This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod\n        tempor incididunt ut labore et dolore magna aliqua.\n      </Text>\n    </div>\n  );\n}&#x22;" />
+
+### Wrap [#wrap]
+
+Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+<Story of="WrapExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function WrapExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; wrap=\&#x22;pretty\&#x22;>\n        Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and\n        legibility. Because counting characters and balancing them across multiple lines is computationally expensive,\n        this value is only supported for blocks of text spanning a limited number of lines\n      </Text>\n    </div>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Without `size`, text takes the scope's body tier, or `md` outside any scope. `size` picks a step
+on the body ramp and changes only the font size.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Text } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Text>Default</Text>\n      <Text size=\&#x22;xs\&#x22;>Extra small</Text>\n      <Text size=\&#x22;sm\&#x22;>Small</Text>\n      <Text size=\&#x22;md\&#x22;>Medium</Text>\n      <Text size=\&#x22;lg\&#x22;>Large</Text>\n      <Text size=\&#x22;xl\&#x22;>Extra large</Text>\n      <Text size=\&#x22;2xl\&#x22;>2x large</Text>\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+`emphasis` selects a feedback color and changes nothing else. Without it, text inherits the
+surrounding color.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Text } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Text emphasis=\&#x22;critical\&#x22;>Payment failed</Text>\n      <Text emphasis=\&#x22;warning\&#x22;>Card expires soon</Text>\n      <Text emphasis=\&#x22;success\&#x22;>Payment received</Text>\n      <Text emphasis=\&#x22;info\&#x22;>Invoice sent</Text>\n      <Text emphasis=\&#x22;passive\&#x22;>No recent activity</Text>\n    </Flex>\n  );\n}&#x22;" />
+
+### Detail [#detail]
+
+`Detail` is supporting copy, such as captions and metadata, on the detail ramp. It keeps the
+surrounding color; add `emphasis="passive"` to mute it.
+
+<Story of="DetailExample" />
+
+<Source language="tsx" code="&#x22;import { Detail, Flex, Text } from '@godaddy/antares';\n\nexport function DetailExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n      <Text>Quarterly report</Text>\n      <Detail emphasis=\&#x22;passive\&#x22;>Updated 2 hours ago</Detail>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### Text [#text]
+
+<PropTable />
+
+### Detail [#detail-1]
+
+<PropTable />
+
+
 # TextArea
 
 
@@ -5324,149 +5324,6 @@ TextArea inside TextField.
 ```
 
 ### TextArea [#textarea]
-
-<PropTable />
-
-
-# TextField
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Composable interior**: Compose `Label`, `Input` or `TextArea`, `Text slot="description"`, and `FieldError`. Omitting `Group` leaves the control as a direct field child with box chrome. Use an explicit `Group` for controls or adornments
-* **Adornments**: Fixed text or icons before or after the input (e.g. `$`, `.00`, `px`) are composed inside `Group`, positioned by source order
-* **Controls**: A `Button slot="control"` beside the input is an interactive affix; it picks up field chrome from context
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Multiline**: Compose a `TextArea` instead of an `Input` for multiline entry
-* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
-* **Sizes**: The field is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, input, description, error, and composed controls; without it, the field follows the surrounding scope. An explicit `size` on a part still wins for that part
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Minimal usage: a `Label` and an `Input`.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Input placeholder=\&#x22;Enter your name\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Input, Label, Text, TextField } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState('');\n\n  return (\n    <>\n      <TextField value={value} onChange={setValue}>\n        <Label>Email</Label>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n      <Text>\n        <strong>Value:</strong> {value || '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Invalid [#invalid]
-
-Use `isInvalid` with a `FieldError` for validation feedback.
-
-<Story of="InvalidExample" />
-
-<Source language="tsx" code="&#x22;import { FieldError, Input, Label, TextField } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Input placeholder=\&#x22;you@example.com\&#x22; />\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` to prevent input.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Input, Label, TextField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <TextField defaultValue=\&#x22;Disabled value\&#x22; isDisabled>\n      <Label>Name</Label>\n      <Input placeholder=\&#x22;Enter your name\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
-
-### Adornments [#adornments]
-
-Fixed text before and after the input, such as currency. Leading and trailing content is
-composed inside the `Group` and its position comes from source order.
-
-<Story of="AdornmentsExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Group, Input, Label, Text, TextField } from '@godaddy/antares';\n\nexport function AdornmentsExample() {\n  return (\n    <TextField>\n      <Label>Amount</Label>\n      <Group>\n        <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n          $\n        </Flex>\n        <Input placeholder=\&#x22;0.00\&#x22; />\n        <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingEnd=\&#x22;md\&#x22;>\n          .00\n        </Flex>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Compose fixed text before and after the input (e.g. currency).</Text>\n    </TextField>\n  );\n}&#x22;" />
-
-### Multiline [#multiline]
-
-Compose a `TextArea` instead of an `Input` for multiline entry.
-
-<Story of="MultilineExample" />
-
-<Source language="tsx" code="&#x22;import { Label, TextArea, TextField, type TextFieldProps } from '@godaddy/antares';\n\nexport function MultilineExample({ value }: Pick<TextFieldProps, 'value'> = {}) {\n  return (\n    <TextField value={value}>\n      <Label>Comment</Label>\n      <TextArea placeholder=\&#x22;Enter your comment\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-`size` sets the label, input, description, and any control composed inside. Without it, the
-field follows the surrounding size scope.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Group, Icon, Input, Label, Text, TextField } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function field(size) {\n        return (\n          <TextField key={size} size={size}>\n            <Label>Email ({size})</Label>\n            <Group>\n              <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Flex>\n              <Input placeholder=\&#x22;you@example.com\&#x22; />\n              <Button aria-label=\&#x22;Verify email address\&#x22; slot=\&#x22;control\&#x22;>\n                Verify\n              </Button>\n            </Group>\n            <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n          </TextField>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
-
-### Controls and icons [#controls-and-icons]
-
-Put a control or an icon beside the input. A `Button slot="control"` is an
-interactive affix; static content is wrapped in a `Flex as="span"` to center it and give it a gutter.
-
-<Story of="ControlsExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Group, Icon, Input, Label, Text, TextField } from '@godaddy/antares';\n\nexport function ControlsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField>\n        <Label>Image</Label>\n        <Group>\n          <Button slot=\&#x22;control\&#x22;>Browse</Button>\n          <Input placeholder=\&#x22;Paste an image URL\&#x22; />\n        </Group>\n      </TextField>\n\n      <TextField>\n        <Label>Email</Label>\n        <Group>\n          <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n          </Flex>\n          <Input placeholder=\&#x22;Email\&#x22; />\n          <Button aria-label=\&#x22;Verify email address\&#x22; slot=\&#x22;control\&#x22;>\n            Verify\n          </Button>\n        </Group>\n        <Text slot=\&#x22;description\&#x22;>Enter your email address</Text>\n      </TextField>\n    </Flex>\n  );\n}&#x22;" />
-
-### Telephone Field [#telephone-field]
-
-Compose a telephone number input paired with a country-code select.
-
-<Story of="TelephoneFieldExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, Select, SelectItem, SelectOptions, Text, TextField } from '@godaddy/antares';\n\nexport function TelephoneFieldExample() {\n  return (\n    <TextField autoComplete=\&#x22;tel-national\&#x22; inputMode=\&#x22;tel\&#x22; type=\&#x22;tel\&#x22;>\n      <Label>Phone number</Label>\n      <Group>\n        <Select aria-label=\&#x22;Country code\&#x22; defaultValue=\&#x22;us\&#x22; variant=\&#x22;control\&#x22;>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>US +1</SelectItem>\n            <SelectItem id=\&#x22;mx\&#x22;>MX +52</SelectItem>\n            <SelectItem id=\&#x22;gb\&#x22;>GB +44</SelectItem>\n          </SelectOptions>\n        </Select>\n        <Input placeholder=\&#x22;555-555-5555\&#x22; />\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>We'll only call about your order.</Text>\n    </TextField>\n  );\n}&#x22;" />
-
-## Blocks [#blocks]
-
-[sign-in-form](/docs/blocks/sign-in-form)
-
-## Props [#props]
-
-```tsx
-<TextField>
-  <Label />
-  <Input />
-  {/* or <TextArea /> */}
-  {/* or <Group><Input /></Group> for adornments or a control */}
-  <Text slot="description" />
-  <FieldError />
-</TextField>
-```
-
-### TextField [#textfield]
 
 <PropTable />
 
@@ -5619,6 +5476,149 @@ growing a prop for it.
 ```
 
 ### TextLockup [#textlockup]
+
+<PropTable />
+
+
+# TextField
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Composable interior**: Compose `Label`, `Input` or `TextArea`, `Text slot="description"`, and `FieldError`. Omitting `Group` leaves the control as a direct field child with box chrome. Use an explicit `Group` for controls or adornments
+* **Adornments**: Fixed text or icons before or after the input (e.g. `$`, `.00`, `px`) are composed inside `Group`, positioned by source order
+* **Controls**: A `Button slot="control"` beside the input is an interactive affix; it picks up field chrome from context
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Multiline**: Compose a `TextArea` instead of an `Input` for multiline entry
+* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
+* **Sizes**: The field is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, input, description, error, and composed controls; without it, the field follows the surrounding scope. An explicit `size` on a part still wins for that part
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Minimal usage: a `Label` and an `Input`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Input placeholder=\&#x22;Enter your name\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Input, Label, Text, TextField } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState('');\n\n  return (\n    <>\n      <TextField value={value} onChange={setValue}>\n        <Label>Email</Label>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n      <Text>\n        <strong>Value:</strong> {value || '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with a `FieldError` for validation feedback.
+
+<Story of="InvalidExample" />
+
+<Source language="tsx" code="&#x22;import { FieldError, Input, Label, TextField } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Input placeholder=\&#x22;you@example.com\&#x22; />\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent input.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Input, Label, TextField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <TextField defaultValue=\&#x22;Disabled value\&#x22; isDisabled>\n      <Label>Name</Label>\n      <Input placeholder=\&#x22;Enter your name\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
+
+### Adornments [#adornments]
+
+Fixed text before and after the input, such as currency. Leading and trailing content is
+composed inside the `Group` and its position comes from source order.
+
+<Story of="AdornmentsExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Group, Input, Label, Text, TextField } from '@godaddy/antares';\n\nexport function AdornmentsExample() {\n  return (\n    <TextField>\n      <Label>Amount</Label>\n      <Group>\n        <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n          $\n        </Flex>\n        <Input placeholder=\&#x22;0.00\&#x22; />\n        <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingEnd=\&#x22;md\&#x22;>\n          .00\n        </Flex>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Compose fixed text before and after the input (e.g. currency).</Text>\n    </TextField>\n  );\n}&#x22;" />
+
+### Multiline [#multiline]
+
+Compose a `TextArea` instead of an `Input` for multiline entry.
+
+<Story of="MultilineExample" />
+
+<Source language="tsx" code="&#x22;import { Label, TextArea, TextField, type TextFieldProps } from '@godaddy/antares';\n\nexport function MultilineExample({ value }: Pick<TextFieldProps, 'value'> = {}) {\n  return (\n    <TextField value={value}>\n      <Label>Comment</Label>\n      <TextArea placeholder=\&#x22;Enter your comment\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+`size` sets the label, input, description, and any control composed inside. Without it, the
+field follows the surrounding size scope.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Group, Icon, Input, Label, Text, TextField } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function field(size) {\n        return (\n          <TextField key={size} size={size}>\n            <Label>Email ({size})</Label>\n            <Group>\n              <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Flex>\n              <Input placeholder=\&#x22;you@example.com\&#x22; />\n              <Button aria-label=\&#x22;Verify email address\&#x22; slot=\&#x22;control\&#x22;>\n                Verify\n              </Button>\n            </Group>\n            <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n          </TextField>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+
+### Controls and icons [#controls-and-icons]
+
+Put a control or an icon beside the input. A `Button slot="control"` is an
+interactive affix; static content is wrapped in a `Flex as="span"` to center it and give it a gutter.
+
+<Story of="ControlsExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Group, Icon, Input, Label, Text, TextField } from '@godaddy/antares';\n\nexport function ControlsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField>\n        <Label>Image</Label>\n        <Group>\n          <Button slot=\&#x22;control\&#x22;>Browse</Button>\n          <Input placeholder=\&#x22;Paste an image URL\&#x22; />\n        </Group>\n      </TextField>\n\n      <TextField>\n        <Label>Email</Label>\n        <Group>\n          <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n          </Flex>\n          <Input placeholder=\&#x22;Email\&#x22; />\n          <Button aria-label=\&#x22;Verify email address\&#x22; slot=\&#x22;control\&#x22;>\n            Verify\n          </Button>\n        </Group>\n        <Text slot=\&#x22;description\&#x22;>Enter your email address</Text>\n      </TextField>\n    </Flex>\n  );\n}&#x22;" />
+
+### Telephone Field [#telephone-field]
+
+Compose a telephone number input paired with a country-code select.
+
+<Story of="TelephoneFieldExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, Select, SelectItem, SelectOptions, Text, TextField } from '@godaddy/antares';\n\nexport function TelephoneFieldExample() {\n  return (\n    <TextField autoComplete=\&#x22;tel-national\&#x22; inputMode=\&#x22;tel\&#x22; type=\&#x22;tel\&#x22;>\n      <Label>Phone number</Label>\n      <Group>\n        <Select aria-label=\&#x22;Country code\&#x22; defaultValue=\&#x22;us\&#x22; variant=\&#x22;control\&#x22;>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>US +1</SelectItem>\n            <SelectItem id=\&#x22;mx\&#x22;>MX +52</SelectItem>\n            <SelectItem id=\&#x22;gb\&#x22;>GB +44</SelectItem>\n          </SelectOptions>\n        </Select>\n        <Input placeholder=\&#x22;555-555-5555\&#x22; />\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>We'll only call about your order.</Text>\n    </TextField>\n  );\n}&#x22;" />
+
+## Blocks [#blocks]
+
+[sign-in-form](/docs/blocks/sign-in-form)
+
+## Props [#props]
+
+```tsx
+<TextField>
+  <Label />
+  <Input />
+  {/* or <TextArea /> */}
+  {/* or <Group><Input /></Group> for adornments or a control */}
+  <Text slot="description" />
+  <FieldError />
+</TextField>
+```
+
+### TextField [#textfield]
 
 <PropTable />
 
