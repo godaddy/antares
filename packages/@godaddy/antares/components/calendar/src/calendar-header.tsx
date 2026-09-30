@@ -111,7 +111,7 @@ export function MonthControls({ date: displayDate, minValue, maxValue, onChange 
   );
 
   return (
-    <Flex direction="row" gap="sm" alignItems="center">
+    <Flex direction="row" gap="sm" alignItems="center" justifyContent="center" wrap="wrap">
       <Select aria-label="Month" value={String(displayDate.month)} onChange={handleMonthChange}>
         <Group alignItems="center">
           <Button slot="trigger">

@@ -7,6 +7,8 @@ import {
   DateRangePicker,
   DateRangePickerCalendar,
   Label,
+  type CalendarProps,
+  type RangeCalendarProps,
   type ScaleSize
 } from '@godaddy/antares';
 import { parseDate, type DateValue } from '@godaddy/antares/date';
@@ -51,6 +53,15 @@ interface MobileExampleProps {
   /** Allow a range to cross unavailable dates. */
   allowsNonContiguousRanges?: boolean;
 
+  /** Number of months per page. */
+  pageCount?: number;
+
+  /** Amount to advance using the navigation buttons. */
+  pageBehavior?: CalendarProps['pageBehavior'];
+
+  /** React Aria's behavior when focus leaves an unfinished range. */
+  commitBehavior?: RangeCalendarProps['commitBehavior'];
+
   /** Component size. */
   size?: ScaleSize;
 }
@@ -81,6 +92,9 @@ function MobilePicker({
   max,
   unavailable,
   allowsNonContiguousRanges,
+  pageCount,
+  pageBehavior,
+  commitBehavior,
   size
 }: MobileExampleProps) {
   const { direction } = useLocale();
@@ -93,6 +107,8 @@ function MobilePicker({
   }
   const calendarProps = {
     overlay,
+    pageCount,
+    pageBehavior,
     dir: direction,
     focusedValue: focus ? parseDate(focus) : undefined,
     defaultFocusedValue: defaultFocusedDate ? parseDate(defaultFocusedDate) : undefined,
@@ -120,7 +136,11 @@ function MobilePicker({
       <Label>Event dates</Label>
       <Button slot="trigger" />
       {range ? (
-        <DateRangePickerCalendar {...calendarProps} allowsNonContiguousRanges={allowsNonContiguousRanges} />
+        <DateRangePickerCalendar
+          {...calendarProps}
+          allowsNonContiguousRanges={allowsNonContiguousRanges}
+          commitBehavior={commitBehavior}
+        />
       ) : (
         <DatePickerCalendar {...calendarProps} />
       )}

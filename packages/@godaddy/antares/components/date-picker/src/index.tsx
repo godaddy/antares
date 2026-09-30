@@ -255,7 +255,7 @@ interface PickerOverlayOptions {
 
 interface PickerOverlayProps extends PickerOverlayOptions {
   /** Calendar content appropriate for the chosen container. */
-  children: (container: 'popover' | 'drawer', isOpen: boolean) => ReactNode;
+  children: (container: 'popover' | 'drawer') => ReactNode;
 }
 
 function PickerOverlay({ popoverProps, drawerProps, overlay, children }: PickerOverlayProps) {
@@ -276,19 +276,22 @@ function PickerOverlay({ popoverProps, drawerProps, overlay, children }: PickerO
         isOpen={state.isOpen}
         onOpenChange={state.setOpen}
       >
-        <Content style={{ overflow: 'hidden' }}>{children(container, state.isOpen)}</Content>
+        <Content style={{ overflow: 'hidden' }}>{children(container)}</Content>
       </Drawer>
     );
   }
 
   return (
     <Popover hideArrow {...popoverProps} isOpen={state.isOpen} onOpenChange={state.setOpen}>
-      <Content>{children(container, state.isOpen)}</Content>
+      <Content>{children(container)}</Content>
     </Popover>
   );
 }
 
-export interface DatePickerCalendarProps extends CalendarProps, PickerOverlayOptions {}
+export interface DatePickerCalendarProps extends CalendarProps, PickerOverlayOptions {
+  /** Months per page. Defaults to one in a popover and three in a drawer. */
+  pageCount?: number;
+}
 
 /** The responsive calendar overlay opened by a DatePicker. */
 export function DatePickerCalendar({ popoverProps, drawerProps, overlay, ...props }: DatePickerCalendarProps) {
@@ -301,7 +304,10 @@ export function DatePickerCalendar({ popoverProps, drawerProps, overlay, ...prop
   );
 }
 
-export interface DateRangePickerCalendarProps extends RangeCalendarProps, PickerOverlayOptions {}
+export interface DateRangePickerCalendarProps extends RangeCalendarProps, PickerOverlayOptions {
+  /** Months per page. Defaults to two in a popover and three in a drawer. */
+  pageCount?: number;
+}
 
 /** The responsive calendar overlay opened by a DateRangePicker. */
 export function DateRangePickerCalendar({
@@ -312,12 +318,8 @@ export function DateRangePickerCalendar({
 }: DateRangePickerCalendarProps) {
   return (
     <PickerOverlay popoverProps={popoverProps} drawerProps={drawerProps} overlay={overlay}>
-      {function calendar(container, isOpen) {
-        return container === 'drawer' ? (
-          <ScrollRangeCalendar {...props} isOpen={isOpen} />
-        ) : (
-          <RangeCalendar {...props} />
-        );
+      {function calendar(container) {
+        return container === 'drawer' ? <ScrollRangeCalendar {...props} /> : <RangeCalendar {...props} />;
       }}
     </PickerOverlay>
   );
