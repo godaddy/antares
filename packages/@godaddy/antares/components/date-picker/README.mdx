@@ -80,8 +80,9 @@ current viewport. An initially open server-rendered picker keeps its popover thr
 
 The drawer has the same accessible name as the picker. Escape, an outside press, or the screen-reader
 dismiss control closes it and returns focus to the trigger. Arrow keys and Page Up/Down retain React
-Aria's calendar navigation. Scrolling does not move keyboard focus or change the selected value. Weekday labels shorten when the
-calendar has limited space, including with enlarged text; their accessible names are preserved.
+Aria's calendar navigation. Scrolling does not move keyboard focus or change the selected value. Weekday
+labels shorten when the calendar has limited space, including with enlarged text. The weekday row is
+decorative; each date cell provides its full accessible name.
 
 
 ## Props

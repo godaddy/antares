@@ -17,8 +17,10 @@ describe('@godaddy/antares', function antares() {
   beforeEach(function fixedToday() {
     vi.setSystemTime(new Date('2026-09-30T12:00:00Z'));
   });
-  afterEach(function restoreClock() {
+  afterEach(async function reset() {
     vi.useRealTimers();
+    document.documentElement.style.fontSize = '';
+    await page.viewport(1024, 768);
   });
 
   describe('#DatePicker', function datePicker() {
@@ -27,7 +29,6 @@ describe('@godaddy/antares', function antares() {
       const screen = await render(<MobileExample />);
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
       await expect(screen.getByRole('dialog')).toMatchScreenshot(`date-picker-open-${width}`);
-      await page.viewport(1024, 768);
     });
 
     it('mobile range selection', async function mobileRange() {
@@ -42,16 +43,14 @@ describe('@godaddy/antares', function antares() {
       await screen.getByRole('button', { name: /September 15, 2026/ }).click();
       await screen.getByRole('button', { name: /September 25, 2026/ }).click();
       await expect(screen.getByRole('dialog')).toMatchScreenshot('date-picker-mobile-range');
-      await page.viewport(1024, 768);
     });
 
     it('mobile RTL with enlarged text', async function rtl() {
       await page.viewport(320, 768);
       document.documentElement.style.fontSize = '200%';
-      const screen = await render(<MobileExample locale="ar-AE" defaultOpen />);
+      const screen = await render(<MobileExample locale="ar-AE" />);
+      await screen.getByRole('button', { name: /Event dates/ }).click();
       await expect(screen.getByRole('dialog')).toMatchScreenshot('date-picker-mobile-rtl-large-text');
-      document.documentElement.style.fontSize = '';
-      await page.viewport(1024, 768);
     });
 
     it('with value', async function withValue() {

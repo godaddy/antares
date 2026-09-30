@@ -1,10 +1,11 @@
 import {
-  useContext,
   useEffect,
+  useId,
   useLayoutEffect,
   useMemo,
   useRef,
   useState,
+  type ComponentProps,
   type Dispatch,
   type SetStateAction
 } from 'react';
@@ -18,20 +19,18 @@ import {
   type CalendarDate,
   type DateValue
 } from '@internationalized/date';
-import { mergeProps, useRangeCalendar, VisuallyHidden } from 'react-aria';
+import { mergeProps, useCalendar, useRangeCalendar, VisuallyHidden } from 'react-aria';
 import { filterDOMProps } from 'react-aria/filterDOMProps';
-import { useRangeCalendarState, type CalendarState, type RangeCalendarState } from 'react-stately';
+import { useCalendarState, useRangeCalendarState, type CalendarState, type RangeCalendarState } from 'react-stately';
 import type { CalendarSelectionMode } from 'react-stately/useCalendarState';
 import {
-  Calendar as RACCalendar,
   CalendarStateContext,
   CalendarContext,
   RangeCalendarContext,
   RangeCalendarStateContext,
   useContextProps,
   useLocale,
-  useRenderProps,
-  useSlottedContext
+  useRenderProps
 } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
 import { sizeScaleClassName, useDeclaredSize } from '#components/size-provider';
@@ -41,8 +40,11 @@ import { CalendarGrid } from './calendar-grid.tsx';
 import { MonthControls } from './calendar-header.tsx';
 import styles from './index.module.css';
 
+const OVERSCAN = 3;
+const WINDOW_MONTHS = 2 * OVERSCAN + 1;
+
 function useDuration() {
-  const [months, setMonths] = useState(7);
+  const [months, setMonths] = useState(WINDOW_MONTHS);
   const duration = useMemo(
     function duration() {
       return { months };
@@ -54,21 +56,56 @@ function useDuration() {
 
 /** Internal single-date view used by a picker's drawer. */
 export function ScrollCalendar({ pageCount: _pageCount, className, ...props }: CalendarProps) {
-  const { duration, setMonths } = useDuration();
   const size = useDeclaredSize();
   return (
     <Flex
-      as={RACCalendar<CalendarDate>}
+      as={ScrollCalendarRoot}
       {...props}
       direction="column"
-      visibleDuration={duration}
-      selectionAlignment="center"
-      pageBehavior="single"
       data-size={size}
       className={composeClassName(className, styles.calendar, styles.scrollCalendar, sizeScaleClassName(size))}
-    >
-      <ScrollBody setMonths={setMonths} type="single" />
-    </Flex>
+    />
+  );
+}
+
+function ScrollCalendarRoot(props: CalendarProps) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [merged, ref] = useContextProps(props, rootRef, CalendarContext);
+  const { locale } = useLocale();
+  const { duration, setMonths } = useDuration();
+  const state = useCalendarState({
+    ...merged,
+    locale,
+    createCalendar: merged.createCalendar ?? createCalendar,
+    visibleDuration: duration,
+    selectionAlignment: 'center',
+    pageBehavior: 'single'
+  });
+  const { calendarProps, nextButtonProps } = useCalendar(merged, state);
+  const renderProps = useRenderProps({
+    ...merged,
+    values: { state, isDisabled: state.isDisabled, isInvalid: state.isValueInvalid },
+    defaultClassName: ''
+  });
+
+  return (
+    <CalendarContext.Provider value={{ firstDayOfWeek: merged.firstDayOfWeek, weeksInMonth: merged.weeksInMonth }}>
+      <CalendarStateContext.Provider value={state}>
+        <ScrollCalendarView
+          {...mergeProps(filterDOMProps(merged, { global: true }), calendarProps)}
+          ref={ref}
+          aria-label={merged['aria-label']}
+          aria-labelledby={merged['aria-labelledby']}
+          style={renderProps.style}
+          className={renderProps.className}
+          state={state}
+          type="single"
+          bounds={merged}
+          setMonths={setMonths}
+          nextButtonProps={nextButtonProps}
+        />
+      </CalendarStateContext.Provider>
+    </CalendarContext.Provider>
   );
 }
 
@@ -125,39 +162,30 @@ function ScrollRangeCalendarRoot({ isOpen, ...props }: ScrollRangeCalendarProps)
   });
 
   return (
-    <div
-      {...mergeProps(filterDOMProps(merged, { global: true }), calendarProps)}
-      ref={ref}
-      data-disabled={state.isDisabled || undefined}
-      data-invalid={state.isValueInvalid || undefined}
-      style={renderProps.style}
-      className={renderProps.className}
-    >
-      <RangeCalendarContext.Provider
-        value={{ firstDayOfWeek: merged.firstDayOfWeek, weeksInMonth: merged.weeksInMonth }}
-      >
-        <RangeCalendarStateContext.Provider value={viewState}>
-          <VisuallyHidden>
-            <h2>{calendarProps['aria-label']}</h2>
-          </VisuallyHidden>
-          <ScrollBody setMonths={setMonths} type="range" bounds={merged} />
-          <VisuallyHidden>
-            <button
-              aria-label={nextButtonProps['aria-label']}
-              disabled={nextButtonProps.isDisabled}
-              tabIndex={-1}
-              onClick={function nextPage() {
-                state.focusNextPage();
-              }}
-            />
-          </VisuallyHidden>
-        </RangeCalendarStateContext.Provider>
-      </RangeCalendarContext.Provider>
-    </div>
+    <RangeCalendarContext.Provider value={{ firstDayOfWeek: merged.firstDayOfWeek, weeksInMonth: merged.weeksInMonth }}>
+      <RangeCalendarStateContext.Provider value={viewState}>
+        <ScrollCalendarView
+          {...mergeProps(filterDOMProps(merged, { global: true }), calendarProps)}
+          ref={ref}
+          aria-label={merged['aria-label']}
+          aria-labelledby={merged['aria-labelledby']}
+          style={renderProps.style}
+          className={renderProps.className}
+          state={viewState}
+          type="range"
+          bounds={merged}
+          setMonths={setMonths}
+          nextButtonProps={nextButtonProps}
+        />
+      </RangeCalendarStateContext.Provider>
+    </RangeCalendarContext.Provider>
   );
 }
 
-interface ScrollBodyProps {
+interface ScrollCalendarViewProps extends Omit<ComponentProps<'div'>, 'children'> {
+  /** One shared owner of focus, selection, and a pending range. */
+  state: CalendarState<CalendarSelectionMode> | RangeCalendarState;
+
   /** Original bounds, before a pending range narrows selectable dates. */
   bounds?: Pick<CalendarProps, 'minValue' | 'maxValue' | 'firstDayOfWeek' | 'weeksInMonth'>;
 
@@ -166,6 +194,9 @@ interface ScrollBodyProps {
 
   /** Adjust the logical calendar range without tying grid identities to it. */
   setMonths: Dispatch<SetStateAction<number>>;
+
+  /** Accessible next-page control supplied by React Aria. */
+  nextButtonProps: ReturnType<typeof useCalendar>['nextButtonProps'];
 }
 
 interface MonthWindow {
@@ -194,7 +225,7 @@ function monthDistance(from: CalendarDate, to: CalendarDate) {
 
 function monthWindow(date: CalendarDate, min?: DateValue | null, max?: DateValue | null): MonthWindow {
   const months: CalendarDate[] = [];
-  for (let offset = -3; offset <= 3; offset++) {
+  for (let offset = -OVERSCAN; offset <= OVERSCAN; offset++) {
     const month = startOfMonth(date.add({ months: offset }));
     if ((min && endOfMonth(month).compare(min) < 0) || (max && month.compare(max) > 0)) continue;
     if (
@@ -207,31 +238,56 @@ function monthWindow(date: CalendarDate, min?: DateValue | null, max?: DateValue
   return { months, active: startOfMonth(date) };
 }
 
-function ScrollBody({ type, setMonths, bounds }: ScrollBodyProps) {
-  const calendarProps = useSlottedContext(CalendarContext);
-  const single = useContext(CalendarStateContext);
-  const range = useContext(RangeCalendarStateContext);
-  const state = type === 'range' ? range : single;
+function ScrollCalendarView({
+  state,
+  type,
+  setMonths,
+  bounds = {},
+  nextButtonProps,
+  ...props
+}: ScrollCalendarViewProps) {
   const { locale } = useLocale();
-  if (!state) return null;
-  const effectiveBounds = bounds ?? calendarProps ?? {};
+  const headingId = useId();
   return (
-    <MonthScroller
-      key={`${locale}/${state.focusedDate.calendar.identifier}/${effectiveBounds.minValue}/${effectiveBounds.maxValue}/${effectiveBounds.firstDayOfWeek}/${effectiveBounds.weeksInMonth}`}
-      state={state}
-      type={type}
-      setMonths={setMonths}
-      bounds={effectiveBounds}
-    />
+    <div
+      {...props}
+      aria-label={undefined}
+      aria-labelledby={[props['aria-labelledby'], headingId].filter(Boolean).join(' ')}
+      data-disabled={state.isDisabled || undefined}
+      data-invalid={state.isValueInvalid || undefined}
+    >
+      <MonthScroller
+        key={`${locale}/${state.focusedDate.calendar.identifier}/${bounds.minValue}/${bounds.maxValue}/${bounds.firstDayOfWeek}/${bounds.weeksInMonth}`}
+        state={state}
+        type={type}
+        setMonths={setMonths}
+        bounds={bounds}
+        headingId={headingId}
+        label={props['aria-label']}
+      />
+      <VisuallyHidden>
+        <button
+          aria-label={nextButtonProps['aria-label']}
+          disabled={nextButtonProps.isDisabled}
+          tabIndex={-1}
+          onClick={function nextPage() {
+            state.focusNextPage();
+          }}
+        />
+      </VisuallyHidden>
+    </div>
   );
 }
 
-interface MonthScrollerProps extends ScrollBodyProps {
-  /** One shared owner of focus, selection, and a pending range. */
-  state: CalendarState<CalendarSelectionMode> | RangeCalendarState;
+interface MonthScrollerProps extends Pick<ScrollCalendarViewProps, 'state' | 'type' | 'setMonths' | 'bounds'> {
+  /** Heading that names the calendar's active month. */
+  headingId: string;
+
+  /** Optional consumer label to include before the active month. */
+  label?: string;
 }
 
-function MonthScroller({ state, type, setMonths, bounds = {} }: MonthScrollerProps) {
+function MonthScroller({ state, type, setMonths, bounds = {}, headingId, label }: MonthScrollerProps) {
   const { locale } = useLocale();
   const viewport = useRef<HTMLDivElement>(null);
   const [metrics, setMetrics] = useState({ row: 0, chrome: 0 });
@@ -273,7 +329,7 @@ function MonthScroller({ state, type, setMonths, bounds = {} }: MonthScrollerPro
     1;
   useLayoutEffect(
     function coverRenderedMonths() {
-      setMonths(Math.max(7, needed));
+      setMonths(Math.max(WINDOW_MONTHS, needed));
     },
     [needed, setMonths]
   );
@@ -352,13 +408,13 @@ function MonthScroller({ state, type, setMonths, bounds = {} }: MonthScrollerPro
     const active = window.months[index];
     if (!active) return;
     const before =
-      index < 3
+      index < OVERSCAN
         ? monthWindow(first, bounds.minValue, bounds.maxValue).months.filter(function earlier(date) {
             return date.compare(first) < 0;
           })
         : [];
     const after =
-      index >= window.months.length - 3
+      index >= window.months.length - OVERSCAN
         ? monthWindow(last, bounds.minValue, bounds.maxValue).months.filter(function later(date) {
             return date.compare(last) > 0;
           })
@@ -382,12 +438,18 @@ function MonthScroller({ state, type, setMonths, bounds = {} }: MonthScrollerPro
   });
   return (
     <>
+      <VisuallyHidden>
+        <h2 id={headingId}>
+          {label && `${label}, `}
+          {formatter.format(window.active.toDate(state.timeZone))}
+        </h2>
+      </VisuallyHidden>
       <Flex as="header" justifyContent="center" className={styles.scrollHeader}>
         <MonthControls date={window.active} minValue={bounds.minValue} maxValue={bounds.maxValue} onChange={navigate} />
       </Flex>
       <div ref={viewport} className={styles.monthViewport} onScroll={scroll}>
         {window.months.map(function renderMonth(month, index) {
-          const mounted = Math.abs(index - activeIndex) <= 2 || isSameMonth(month, state.focusedDate);
+          const mounted = Math.abs(index - activeIndex) < OVERSCAN || isSameMonth(month, state.focusedDate);
           // Keep the wrapper stable while grids mount; WebKit otherwise clamps scrollTop during the swap.
           return (
             <div

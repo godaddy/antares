@@ -40,11 +40,9 @@ export function CalendarGrid({ className, type, ...rest }: CalendarGridProps) {
       <RACCalendarGridHeader>
         {function weekday(day) {
           return (
-            <RACCalendarHeaderCell aria-label={day}>
+            <RACCalendarHeaderCell>
               <span className={styles.weekdayShort}>{day}</span>
-              <span className={styles.weekdayNarrow} aria-hidden="true">
-                {narrowWeekdays.get(day) ?? day}
-              </span>
+              <span className={styles.weekdayNarrow}>{narrowWeekdays.get(day) ?? day}</span>
             </RACCalendarHeaderCell>
           );
         }}
@@ -57,8 +55,6 @@ export function CalendarGrid({ className, type, ...rest }: CalendarGridProps) {
             alignItems="center"
             justifyContent="center"
             data-type={type}
-            data-month-start={date.day === 1 || undefined}
-            data-month-end={date.day === date.calendar.getDaysInMonth(date) || undefined}
             className={styles.cell}
           />
         )}
