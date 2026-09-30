@@ -15,8 +15,7 @@ jobs:
       contains(fromJSON('["OWNER","MEMBER"]'), github.event.comment.author_association)
     runs-on: ubuntu-latest
     permissions:
-      issues: write
-      pull-requests: read
+      pull-requests: write
     outputs:
       allowed: ${{ steps.preflight.outputs.allowed }}
       head_sha: ${{ steps.preflight.outputs.head_sha }}
@@ -133,8 +132,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      issues: write
-      pull-requests: read
+      pull-requests: write
     steps:
       - name: Checkout default branch
         if: needs.render.result == 'success'
