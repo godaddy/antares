@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@godaddy/antares > #useOverlayContainer > chooses a popover on the server when closed 1`] = `"<button class="button tertiary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_">Open</button><span class="text type typeText scaleMd" role="status">popover</span>"`;
+
+exports[`@godaddy/antares > #useOverlayContainer > chooses a popover on the server when initially open 1`] = `"<button class="button tertiary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_">Close</button><span class="text type typeText scaleMd" role="status">popover</span>"`;

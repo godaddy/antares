@@ -1,22 +1,38 @@
 .calendar {
-  --_calendar-gu: var(--ux-1sbfig8, 0.5rem);
-  --_calendar-line-height: var(--ux-jw5s9j, 1.375);
+  --_calendar-gu: var(--ux-1sbfig8, 0.25rem);
+  --_calendar-gap: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
+  --_calendar-padding: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  --_calendar-cell-padding: var(--size-space-070, calc(var(--_calendar-gu) * 4));
   --_calendar-font-size: var(--_size-control-font);
+  --_calendar-weekday-font: var(--font-heading-size-sm, calc(var(--ux-18ime9a, 1.375rem) / 1.125 / 1.125));
+  --_calendar-cell-max: calc(
+    var(--_calendar-cell-padding) *
+    2 +
+    var(--ux-jw5s9j, 1.375) *
+    var(--_calendar-font-size) +
+    2px
+  );
+  --_calendar-cell-width: clamp(32px, (100vw - 2rem) / 7, var(--_calendar-cell-max));
+  --_calendar-radius: 6px;
+  --_calendar-band: var(--color-action-background-tertiary-hovered, var(--ux-1m7qrkf, rgba(17, 17, 17, 0.1)));
 
-  --_calendar-cell-max: calc(var(--_calendar-gu) * 4 + var(--_calendar-line-height) * var(--_calendar-font-size));
-  /* Reserved from the viewport width: popover padding plus breathing room from screen edges. */
-  --_calendar-viewport-inset: 2rem;
-  /* Fluid, capped square: a fraction of the viewport (7 columns), floored and capped. */
-  --_calendar-cell-width: clamp(2rem, (100vw - var(--_calendar-viewport-inset)) / 7, var(--_calendar-cell-max));
+  inline-size: max-content;
+  max-inline-size: 100%;
+}
 
-  width: max-content;
-  max-width: 100%;
+.calendar:where([data-size="sm"]) {
+  --_calendar-cell-padding: var(--size-space-040, calc(var(--_calendar-gu) * 2));
+  --_calendar-padding: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
+  --_calendar-weekday-font: var(
+    --font-heading-size-xs,
+    calc(var(--ux-18ime9a, 1.375rem) / 1.125 / 1.125 / 1.125 / 1.125)
+  );
 }
 
 .yearField {
   font-family: var(--ux-9wtaa3, sans-serif);
   font-size: var(--_size-input-font);
-  max-width: calc(4ch + var(--_calendar-gu) * 4 + 2px);
+  max-inline-size: calc(4ch + var(--_calendar-gu) * 4 + 2px);
 }
 
 .navHidden {
@@ -24,41 +40,74 @@
 }
 
 .monthDivider {
-  width: 1px;
+  inline-size: 1px;
   background: currentColor;
 }
 
 .grid {
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 var(--_calendar-gap);
+  table-layout: fixed;
+  inline-size: calc(var(--_calendar-cell-width) * 7);
+  max-inline-size: 100%;
   font-size: var(--_calendar-font-size);
 }
 
+.grid :where(th) {
+  padding: 0;
+  block-size: var(--_calendar-cell-width);
+  font-size: var(--_calendar-weekday-font);
+  font-weight: bolder;
+  text-align: center;
+}
+
+.weekdayNarrow {
+  display: none;
+}
+
+.grid :where(td) {
+  padding: 0;
+}
+
+.grid :where(td:has([data-type="range"][data-selected]:not([data-outside-month]))) {
+  background: var(--_calendar-band);
+}
+
+.grid :where(td:first-child, td:has([data-selection-start]), td:has([data-month-start])) {
+  border-start-start-radius: var(--_calendar-radius);
+  border-end-start-radius: var(--_calendar-radius);
+}
+
+.grid :where(td:last-child, td:has([data-selection-end]), td:has([data-month-end])) {
+  border-start-end-radius: var(--_calendar-radius);
+  border-end-end-radius: var(--_calendar-radius);
+}
+
 .cell {
-  border-width: 1px;
-  border-style: solid;
+  box-sizing: border-box;
+  border: 1px solid var(--color-action-border-tertiary-default, var(--ux-1np4r62, transparent));
+  border-radius: var(--_calendar-radius);
   background: var(--color-action-background-tertiary-default, var(--ux-1owc8nc, transparent));
-  border-color: var(--color-action-border-tertiary-default, var(--ux-1np4r62, transparent));
   color: var(--color-action-text-tertiary-default, var(--ux-ut3xrx, #111));
-  width: var(--_calendar-cell-width);
+  inline-size: 100%;
   aspect-ratio: 1;
   cursor: pointer;
-
-  &:where([data-focus-visible]) {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
-    background: var(--ux-15qjz45, rgba(17, 17, 17, 0.1));
-    border-color: var(--ux-1ds8u13, transparent);
-    color: var(--ux-1e85ids, #111);
-  }
+  font-family: var(--ux-gfnupv, sans-serif);
+  line-height: var(--ux-jw5s9j, 1.375);
 
   &:where([data-today]) {
     border-color: currentColor;
   }
 
-  &:where([data-selected]) {
-    background: var(--ux-l7zq7p, #f5f7f8);
-    border-color: var(--ux-l7zq7p, #f5f7f8);
-    color: var(--ux-vuekow, #111);
+  &:where([data-hovered], [data-focus-visible]) {
+    background: var(--_calendar-band);
+    color: var(--color-action-text-tertiary-hovered, var(--ux-unx9i2, #111));
+  }
+
+  &:where([data-selected][data-type="range"]:not([data-selection-start], [data-selection-end])) {
+    background: transparent;
+    border-color: transparent;
+    border-radius: 0;
   }
 
   &:where([data-selected]:not([data-type="range"])),
@@ -69,25 +118,69 @@
     color: var(--color-action-text-tertiary-pressed, var(--ux-h6e7c1, #fff));
   }
 
-  &:where([data-hovered]) {
-    background: var(--color-action-background-tertiary-hovered, var(--ux-1m7qrkf, rgba(17, 17, 17, 0.1)));
-    border-color: var(--color-action-border-tertiary-hovered, var(--ux-1bdtclp, transparent));
-    color: var(--color-action-text-tertiary-hovered, var(--ux-unx9i2, #111));
+  &:where([data-focus-visible]) {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+    position: relative;
   }
 
   &:where([data-outside-month]) {
-    opacity: 0.4;
-    pointer-events: none;
+    visibility: hidden;
   }
 
   &:where([data-unavailable]) {
     text-decoration: line-through;
-    opacity: 0.4;
-    pointer-events: none;
+    cursor: not-allowed;
   }
 
-  &:where([data-disabled]) {
+  &:where([data-disabled]:not([data-outside-month])) {
     opacity: 0.4;
     cursor: not-allowed;
+  }
+}
+
+.scrollCalendar {
+  container: calendar-months / inline-size;
+  inline-size: 100%;
+  max-inline-size: calc(var(--_calendar-cell-max) * 7);
+  min-block-size: 0;
+  block-size: 100%;
+  margin-inline: auto;
+  overflow: hidden;
+}
+
+.scrollHeader {
+  flex-shrink: 0;
+  padding: var(--_calendar-padding);
+}
+
+.monthViewport {
+  flex: 1;
+  min-block-size: 0;
+  overflow: auto;
+  overflow-anchor: none;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding-inline: 4px;
+}
+
+.scrollMonth {
+  display: flow-root;
+  box-sizing: border-box;
+}
+
+.monthLabel {
+  padding-block: var(--_calendar-padding);
+  font-size: var(--font-body-size-md, var(--ux-oc0naw, 1rem));
+  font-family: var(--ux-9wtaa3, sans-serif);
+  text-align: center;
+}
+
+@container calendar-months (width < 17rem) {
+  .weekdayShort {
+    display: none;
+  }
+  .weekdayNarrow {
+    display: inline;
   }
 }

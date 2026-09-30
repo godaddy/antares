@@ -7,8 +7,14 @@ import { Content, Group } from '#components/structure';
 import { Popover } from '#components/popover';
 import { ListBox } from '#components/listbox';
 import { Button } from '#components/button';
-import { CalendarDate, DateFormatter, getLocalTimeZone } from '@internationalized/date';
-import { useCallback, useContext, useMemo } from 'react';
+import {
+  type CalendarDate,
+  type DateValue,
+  DateFormatter,
+  getLocalTimeZone,
+  toCalendar
+} from '@internationalized/date';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import {
   CalendarStateContext as RACCalendarStateContext,
   RangeCalendarStateContext as RACRangeCalendarStateContext,
@@ -44,46 +50,65 @@ export function MonthHeading(props: { offset: number }) {
   const calendarState = useContext(RACCalendarStateContext);
   const rangeState = useContext(RACRangeCalendarStateContext);
   const state = calendarState ?? rangeState;
-  const { locale } = useLocale();
-  const displayDate = state?.visibleRange.start.add({ months: offset }) ?? null;
+  if (!state) return null;
 
-  // Localized month names for the dropdown; recompute only when locale or the shown year changes.
+  return (
+    <MonthControls
+      date={state.visibleRange.start.add({ months: offset })}
+      minValue={state.minValue?.add({ months: offset })}
+      maxValue={state.maxValue}
+      onChange={function changeMonth(date) {
+        state.setFocusedDate(date.subtract({ months: offset }));
+      }}
+    />
+  );
+}
+
+interface MonthControlsProps {
+  /** Month displayed by the controls. */
+  date: CalendarDate;
+
+  /** Earliest navigable date. */
+  minValue?: DateValue | null;
+
+  /** Latest navigable date. */
+  maxValue?: DateValue | null;
+
+  /** Navigate after a month selection or committed year edit. */
+  onChange: (date: CalendarDate) => void;
+}
+
+export function MonthControls({ date: displayDate, minValue, maxValue, onChange }: MonthControlsProps) {
+  const { locale } = useLocale();
+  const [editingYear, setEditingYear] = useState<number | null>(null);
+  const min = minValue && toCalendar(minValue, displayDate.calendar);
+  const max = maxValue && toCalendar(maxValue, displayDate.calendar);
   const monthNames = useMemo(
     function computeMonthNames() {
-      const formatter = new DateFormatter(locale, { month: 'long' });
-      const year = displayDate?.year ?? 2024;
-      return Array.from({ length: 12 }, (_, index) =>
-        formatter.format(new CalendarDate(year, index + 1, 1).toDate(getLocalTimeZone()))
-      );
+      const formatter = new DateFormatter(locale, { month: 'long', calendar: displayDate.calendar.identifier });
+      return Array.from({ length: displayDate.calendar.getMonthsInYear(displayDate) }, function monthName(_, index) {
+        return formatter.format(displayDate.set({ month: index + 1, day: 1 }).toDate(getLocalTimeZone()));
+      });
     },
-    [locale, displayDate?.year]
+    [locale, displayDate]
   );
 
   const handleMonthChange = useCallback(
     function handleMonthChange(key: RACKey | null) {
-      if (!state || !displayDate || key === null) {
-        return;
-      }
-
-      state.setFocusedDate(displayDate.set({ month: Number(key) }).subtract({ months: offset }));
+      if (key !== null) onChange(displayDate.set({ month: Number(key) }));
     },
-    [state, displayDate, offset]
+    [displayDate, onChange]
   );
 
   const handleYearChange = useCallback(
     function handleYearChange(year: number) {
-      if (!state || !displayDate || Number.isNaN(year)) {
-        return;
+      if (Number.isFinite(year)) {
+        setEditingYear(year);
+        onChange(displayDate.set({ year }));
       }
-
-      state.setFocusedDate(displayDate.set({ year }).subtract({ months: offset }));
     },
-    [state, displayDate, offset]
+    [displayDate, onChange]
   );
-
-  if (!state || !displayDate) {
-    return null;
-  }
 
   return (
     <Flex direction="row" gap="sm" alignItems="center">
@@ -111,7 +136,15 @@ export function MonthHeading(props: { offset: number }) {
       <NumberField
         aria-label="Year"
         formatOptions={{ useGrouping: false }}
-        value={displayDate.year}
+        value={editingYear ?? displayDate.year}
+        minValue={min?.era === displayDate.era ? min.year : 1}
+        maxValue={max?.era === displayDate.era ? max.year : displayDate.calendar.getYearsInEra(displayDate)}
+        onFocus={function beginEdit() {
+          setEditingYear(displayDate.year);
+        }}
+        onBlur={function finishEdit() {
+          setEditingYear(null);
+        }}
         onChange={handleYearChange}
         className={styles.yearField}
       >
