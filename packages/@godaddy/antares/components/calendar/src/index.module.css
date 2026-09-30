@@ -160,18 +160,13 @@
   flex: 1;
   min-block-size: 0;
   overflow: auto;
-  overflow-anchor: none;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
   padding-inline: var(--_calendar-viewport-padding);
 }
 
-.scrollMonth {
-  display: flow-root;
-  box-sizing: border-box;
-}
-
 .monthLabel {
+  margin: 0;
   padding-block: var(--_calendar-padding);
   font-size: var(--font-body-size-md, var(--ux-oc0naw, 1rem));
   font-family: var(--ux-9wtaa3, sans-serif);

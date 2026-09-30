@@ -53,9 +53,9 @@ Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user'
 ## Mobile
 
 Below `40rem`, `DatePickerCalendar` and `DateRangePickerCalendar` open a bottom drawer with vertically
-scrolling months. Scroll forward or backward, choose a month, or type a year to jump directly. The
-initial month follows `focusedValue`, `defaultFocusedValue`, the selected date (range start), then today,
-constrained by the date bounds.
+scrolling months. Each drawer page contains three months by default. Use Previous/Next to change pages,
+choose a month, or type a year to jump directly. The initial date follows `focusedValue`,
+`defaultFocusedValue`, the selected date (range start), then today, constrained by the date bounds.
 
 The overlay keeps its container until it closes, including during resizing. Its next opening uses the
 current viewport. An initially open server-rendered picker keeps its popover through hydration.
@@ -63,9 +63,13 @@ current viewport. An initially open server-rendered picker keeps its popover thr
 - Set `overlay="popover"` on the calendar to always use the desktop presentation.
 - Use `drawerProps` for drawer presentation, such as `maxSize` or an accessible label. It defaults to
   `85dvh`. Open state stays on the picker; `popoverProps` configures the popover.
-- `pageCount` applies to the popover. The drawer renders the months near the visible area as needed.
-- A range is committed when both dates are chosen. Browsing or editing the header keeps the pending
-  start date; dismissing the drawer cancels it and preserves the previous selection.
+- `pageCount` sets the number of months in either presentation. Defaults: three in the drawer, one in a
+  single-date popover, and two in a range popover. Scrolling stays within the current page. Navigation
+  advances by a full page, or by one month with `pageBehavior="single"`.
+- Range selection and endpoint dragging follow React Aria. With the default `commitBehavior="select"`,
+  releasing a pointer on the calendar background or moving focus outside the calendar commits the
+  pending range. Set `commitBehavior="reset"` on `DateRangePickerCalendar` to restore the previous range
+  instead. Escape from a date cell cancels the pending selection.
 - `shouldCloseOnSelect={false}` on the picker keeps either presentation open after a selection.
 
 ```tsx
@@ -80,7 +84,8 @@ current viewport. An initially open server-rendered picker keeps its popover thr
 
 The drawer has the same accessible name as the picker. Escape, an outside press, or the screen-reader
 dismiss control closes it and returns focus to the trigger. Arrow keys and Page Up/Down retain React
-Aria's calendar navigation. Scrolling does not move keyboard focus or change the selected value. Weekday
+Aria's calendar navigation. Scrolling does not move keyboard focus or change the selected value. The
+month/year controls follow the focused date, and each grid has its own month heading. Weekday
 labels shorten when the calendar has limited space, including with enlarged text. The weekday row is
 decorative; each date cell provides its full accessible name.
 
