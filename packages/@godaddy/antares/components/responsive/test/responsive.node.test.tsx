@@ -56,16 +56,13 @@ describe('@godaddy/antares', function packageTests() {
 });
 
 /**
- * Collects the lengths of every width feature in the `@media` preludes of a source file.
+ * Collects every length in the `@media` preludes of a source file that test width.
  * @param source - CSS, or a module with inline CSS.
  * @returns The lengths, such as `64rem`.
  */
 function mediaQueryWidths(source: string) {
   const preludes = source.match(/@media[^{]*/g) ?? [];
-  const features = preludes.flatMap(function widthFeatures(prelude) {
-    return prelude.match(/\([^()]*width[^()]*\)/g) ?? [];
-  });
-  return features.flatMap(function lengths(feature) {
-    return feature.match(/[\d.]+[a-z]+/g) ?? [];
+  return preludes.flatMap(function lengths(prelude) {
+    return prelude.includes('width') ? (prelude.match(/[\d.]+[a-z]+/g) ?? []) : [];
   });
 }
