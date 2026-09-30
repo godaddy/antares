@@ -2,19 +2,18 @@ import type { CalendarDate } from '@internationalized/date';
 import { Flex, type FlexOwnProps, type FlexProps } from '#components/layout/flex';
 import { Box } from '#components/layout/box';
 import {
-  CalendarCell as RACCalendarCell,
-  CalendarGrid as RACCalendarGrid,
   Calendar as RACCalendar,
   type CalendarProps as RACCalendarProps,
   RangeCalendar as RACRangeCalendar,
-  type RangeCalendarProps as RACRangeCalendarProps,
-  type CalendarGridProps as RACCalendarGridProps
+  type RangeCalendarProps as RACRangeCalendarProps
 } from 'react-aria-components';
 import { sizeScaleClassName, useDeclaredSize } from '#components/size-provider';
 import { composeClassName } from '#utils/render-props.ts';
 import { MonthHeading, NavButton } from './calendar-header.tsx';
 import styles from './index.module.css';
-import { cx } from 'cva';
+import { CalendarGrid, type CalendarGridProps } from './calendar-grid.tsx';
+
+export { ScrollCalendar, ScrollRangeCalendar } from './scroll-calendar.tsx';
 
 export interface CalendarProps extends FlexOwnProps, RACCalendarProps<CalendarDate> {
   /** Number of month grids to display. @default 1 */
@@ -35,13 +34,15 @@ export interface CalendarProps extends FlexOwnProps, RACCalendarProps<CalendarDa
  */
 export function Calendar(props: CalendarProps) {
   const { className, pageCount = 1, ...rest } = props;
-  const scale = sizeScaleClassName(useDeclaredSize());
+  const size = useDeclaredSize();
+  const scale = sizeScaleClassName(size);
 
   return (
     <Flex
       direction="column"
       gap="md"
       {...rest}
+      data-size={size}
       visibleDuration={{ months: pageCount }}
       as={RACCalendar<CalendarDate>}
       className={composeClassName(className, styles.calendar, scale)}
@@ -70,49 +71,21 @@ export interface RangeCalendarProps extends FlexOwnProps, RACRangeCalendarProps<
  */
 export function RangeCalendar(props: RangeCalendarProps) {
   const { className, pageCount = 2, ...rest } = props;
-  const scale = sizeScaleClassName(useDeclaredSize());
+  const size = useDeclaredSize();
+  const scale = sizeScaleClassName(size);
 
   return (
     <Flex
       direction="column"
       gap="md"
       {...rest}
+      data-size={size}
       visibleDuration={{ months: pageCount }}
       as={RACRangeCalendar<CalendarDate>}
       className={composeClassName(className, styles.calendar, scale)}
     >
       <CalendarBody type="range" pageCount={pageCount} />
     </Flex>
-  );
-}
-
-interface CalendarGridProps extends RACCalendarGridProps {
-  /** The type of the calendar grid. */
-  type: 'single' | 'range';
-}
-
-/**
- * The grid of a single visible month.
- *
- * @param props - {@link CalendarGridProps} The props for the calendar grid.
- */
-function CalendarGrid(props: CalendarGridProps) {
-  const { className, type, ...rest } = props;
-
-  return (
-    <Box as={RACCalendarGrid} weekdayStyle="short" {...rest} className={cx(styles.grid, className)}>
-      {(date) => (
-        <Flex
-          as={RACCalendarCell}
-          date={date}
-          alignItems="center"
-          justifyContent="center"
-          data-type={type}
-          rounding={type === 'single' ? 'full' : 'lg'}
-          className={styles.cell}
-        />
-      )}
-    </Box>
   );
 }
 
@@ -125,12 +98,12 @@ function CalendarBody(props: CalendarBodyProps) {
   const { type, pageCount = 1, ...rest } = props;
 
   return (
-    <Flex direction="row" gap="md" alignItems="stretch" wrap="wrap" {...rest}>
+    <Flex direction="row" gap="var(--_calendar-padding)" alignItems="stretch" wrap="wrap" {...rest}>
       {Array.from({ length: pageCount }).flatMap(function renderMonth(_, offset) {
         const showPrevious = offset === 0;
         const showNext = offset === pageCount - 1;
         const monthCard = (
-          <Flex key={`month-${offset}`} direction="column" gap="md">
+          <Flex key={`month-${offset}`} direction="column" gap="var(--_calendar-padding)">
             <Flex as="header" direction="row" justifyContent="space-between" alignItems="center" gap="sm">
               <NavButton direction="previous" hidden={!showPrevious} />
               <MonthHeading offset={offset} />

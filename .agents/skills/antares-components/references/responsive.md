@@ -45,3 +45,13 @@ Use `viewportBreakpoints` values as literals, mobile-first: base styles first, t
 - Visual: when the look changes, screenshot the example at a mobile viewport (`320px`) and on each side of
   its threshold.
 - Check the README's accessibility cases: long text, RTL, text enlargement, and zoom.
+
+## Switching overlay containers
+
+When behavior requires a different overlay (for example, a picker drawer below `40rem`), use
+`useOverlayContainer` from `#components/_internal/use-overlay-container`. Pass the effective open state
+and keep selection state on the common owner. The hook chooses a container on opening and holds it
+through that session and its exit animation. Resizing takes effect on the next opening. It uses the
+popover for SSR, and an initially open overlay keeps that container through hydration. Test closed and
+initially open hydration, breakpoint crossings, controlled state, focus restoration, and reopening
+during exit.

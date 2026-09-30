@@ -1,6 +1,7 @@
 import { type ReactNode, type Ref, useContext, useMemo, useRef } from 'react';
 import { DateFormatter, getLocalTimeZone, type CalendarDate } from '@internationalized/date';
 import { mergeProps } from 'react-aria';
+import { useOverlayTriggerState } from 'react-stately';
 import {
   DEFAULT_SLOT,
   DatePicker as RACDatePicker,
@@ -12,13 +13,23 @@ import {
   type DateRangePickerRenderProps as RACDateRangePickerRenderProps,
   DateRangePickerStateContext,
   PopoverContext,
+  OverlayTriggerStateContext,
   Provider as RACProvider,
   composeRenderProps,
   useLocale,
   useSlottedContext
 } from 'react-aria-components';
 import { ButtonContext, type ButtonProps } from '#components/button';
-import { Calendar, type CalendarProps, RangeCalendar, type RangeCalendarProps } from '#components/calendar';
+import {
+  Calendar,
+  type CalendarProps,
+  RangeCalendar,
+  type RangeCalendarProps,
+  ScrollCalendar,
+  ScrollRangeCalendar
+} from '#components/calendar';
+import { Drawer, type DrawerProps } from '#components/drawer';
+import { useOverlayContainer } from '#components/_internal/use-overlay-container';
 import { Icon } from '#components/icon';
 import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
@@ -231,45 +242,84 @@ export function DateRangePicker(props: DateRangePickerProps) {
   );
 }
 
-export interface DatePickerCalendarProps extends CalendarProps {
+interface PickerOverlayOptions {
   /** Props for the popover layer that positions the calendar. */
   popoverProps?: Omit<PopoverProps, 'children'>;
+
+  /** Choose a drawer below 40rem, or always use a popover. @default 'responsive' */
+  overlay?: 'responsive' | 'popover';
+
+  /** Presentation props for the mobile drawer. Open state belongs to the picker. */
+  drawerProps?: Omit<DrawerProps, 'children' | 'placement' | 'isOpen' | 'defaultOpen' | 'onOpenChange'>;
 }
 
-/**
- * The calendar a DatePicker opens. Write `Popover`, `Content`, and `Calendar` yourself to replace
- * the whole overlay.
- */
-export function DatePickerCalendar(props: DatePickerCalendarProps) {
-  const { popoverProps, ...calendarProps } = props;
+interface PickerOverlayProps extends PickerOverlayOptions {
+  /** Calendar content appropriate for the chosen container. */
+  children: (container: 'popover' | 'drawer', isOpen: boolean) => ReactNode;
+}
+
+function PickerOverlay({ popoverProps, drawerProps, overlay, children }: PickerOverlayProps) {
+  const context = useContext(OverlayTriggerStateContext);
+  const local = useOverlayTriggerState(popoverProps ?? {});
+  const state =
+    popoverProps?.isOpen !== undefined || popoverProps?.defaultOpen !== undefined || !context ? local : context;
+  const container = useOverlayContainer({ isOpen: state.isOpen, overlay });
+
+  if (container === 'drawer') {
+    return (
+      <Drawer
+        placement="bottom"
+        minSize={drawerProps?.maxSize ?? '85dvh'}
+        maxSize="85dvh"
+        isDismissable
+        {...drawerProps}
+        isOpen={state.isOpen}
+        onOpenChange={state.setOpen}
+      >
+        <Content style={{ overflow: 'hidden' }}>{children(container, state.isOpen)}</Content>
+      </Drawer>
+    );
+  }
 
   return (
-    <Popover hideArrow {...popoverProps}>
-      <Content>
-        <Calendar {...calendarProps} />
-      </Content>
+    <Popover hideArrow {...popoverProps} isOpen={state.isOpen} onOpenChange={state.setOpen}>
+      <Content>{children(container, state.isOpen)}</Content>
     </Popover>
   );
 }
 
-export interface DateRangePickerCalendarProps extends RangeCalendarProps {
-  /** Props for the popover layer that positions the calendar. */
-  popoverProps?: Omit<PopoverProps, 'children'>;
+export interface DatePickerCalendarProps extends CalendarProps, PickerOverlayOptions {}
+
+/** The responsive calendar overlay opened by a DatePicker. */
+export function DatePickerCalendar({ popoverProps, drawerProps, overlay, ...props }: DatePickerCalendarProps) {
+  return (
+    <PickerOverlay popoverProps={popoverProps} drawerProps={drawerProps} overlay={overlay}>
+      {function calendar(container) {
+        return container === 'drawer' ? <ScrollCalendar {...props} /> : <Calendar {...props} />;
+      }}
+    </PickerOverlay>
+  );
 }
 
-/**
- * The calendar a DateRangePicker opens. Write `Popover`, `Content`, and `RangeCalendar` yourself to
- * replace the whole overlay.
- */
-export function DateRangePickerCalendar(props: DateRangePickerCalendarProps) {
-  const { popoverProps, ...calendarProps } = props;
+export interface DateRangePickerCalendarProps extends RangeCalendarProps, PickerOverlayOptions {}
 
+/** The responsive calendar overlay opened by a DateRangePicker. */
+export function DateRangePickerCalendar({
+  popoverProps,
+  drawerProps,
+  overlay,
+  ...props
+}: DateRangePickerCalendarProps) {
   return (
-    <Popover hideArrow {...popoverProps}>
-      <Content>
-        <RangeCalendar {...calendarProps} />
-      </Content>
-    </Popover>
+    <PickerOverlay popoverProps={popoverProps} drawerProps={drawerProps} overlay={overlay}>
+      {function calendar(container, isOpen) {
+        return container === 'drawer' ? (
+          <ScrollRangeCalendar {...props} isOpen={isOpen} />
+        ) : (
+          <RangeCalendar {...props} />
+        );
+      }}
+    </PickerOverlay>
   );
 }
 
