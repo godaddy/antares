@@ -11,7 +11,6 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 // example source files stay free of the directive (see lib/use-client-loader.cjs).
 const useClientLoader = join(__dirname, 'lib/use-client-loader.cjs');
 const EXAMPLE_MODULE = /[\\/]components[\\/].+[\\/]examples[\\/][^\\/]+\.tsx$/;
-const BLOCK_MODULE = /[\\/]packages[\\/]@godaddy[\\/]antares[\\/]blocks[\\/].+\.tsx$/;
 
 /** @type {import('next').NextConfig} */
 const config = {
@@ -33,9 +32,6 @@ const config = {
     },
     rules: {
       '**/components/**/examples/*.tsx': {
-        loaders: [useClientLoader]
-      },
-      '**/packages/@godaddy/antares/blocks/**/*.tsx': {
         loaders: [useClientLoader]
       }
     }
@@ -63,7 +59,7 @@ const config = {
     };
 
     config.module.rules.push({
-      test: new RegExp(`${EXAMPLE_MODULE.source}|${BLOCK_MODULE.source}`),
+      test: EXAMPLE_MODULE,
       enforce: 'pre',
       use: [useClientLoader]
     });

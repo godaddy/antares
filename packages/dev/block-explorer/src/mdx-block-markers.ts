@@ -1,9 +1,16 @@
-import type { MdxJsxAttribute, MdxJsxExpressionAttribute, MdxJsxFlowElement } from 'mdast-util-mdx-jsx';
+import type {
+  MdxJsxAttribute,
+  MdxJsxExpressionAttribute,
+  MdxJsxFlowElement,
+  MdxJsxTextElement
+} from 'mdast-util-mdx-jsx';
 import type { Root, Yaml } from 'mdast';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkMdx from 'remark-mdx';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
+
+type MarkerElement = MdxJsxFlowElement | MdxJsxTextElement;
 
 const MDX_PARSER = unified().use(remarkParse).use(remarkFrontmatter).use(remarkMdx);
 
@@ -33,7 +40,7 @@ interface EstreeSpecifier {
   local?: { name?: string };
 }
 
-/** A live `<Block>` or `<BlockLink>` flow element found in authored MDX. */
+/** A live `<Block>` or `<BlockLink>` element found in authored MDX. */
 export interface BlockMarker {
   /** Marker component name. */
   name: 'Block' | 'BlockLink';
@@ -114,14 +121,17 @@ export function hasNamedRuntimeImport(tree: Root, name: string, moduleId: string
  * @param markers - Accumulator receiving live markers and their source offsets.
  */
 function visitMarkers(node: MdNode, markers: BlockMarker[]) {
-  if (node.type === 'mdxJsxFlowElement' && (node.name === 'Block' || node.name === 'BlockLink')) {
+  if (
+    (node.type === 'mdxJsxFlowElement' && node.name === 'Block') ||
+    ((node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement') && node.name === 'BlockLink')
+  ) {
     const start = node.position?.start?.offset;
     const end = node.position?.end?.offset;
     if (start === undefined || end === undefined) {
       throw new Error(`<${node.name}> is missing source offsets and cannot be expanded.`);
     }
 
-    const marker = node as unknown as MdxJsxFlowElement;
+    const marker = node as unknown as MarkerElement;
     markers.push({
       name: node.name,
       id: getStringAttribute(marker, 'id'),
@@ -173,7 +183,7 @@ function declarationBindsRuntimeName(node: MdNode, name: string, moduleId: strin
  * @param name - Explicit attribute name to look up.
  * @returns The string value, or `undefined` for absent or non-string attributes.
  */
-export function getStringAttribute(node: MdxJsxFlowElement, name: string): string | undefined {
+export function getStringAttribute(node: MarkerElement, name: string): string | undefined {
   const attribute = findNamedAttribute(node, name);
   return typeof attribute?.value === 'string' ? attribute.value : undefined;
 }
@@ -185,7 +195,7 @@ export function getStringAttribute(node: MdxJsxFlowElement, name: string): strin
  * @param name - Explicit attribute name to look up.
  * @returns Trimmed expression source, or `undefined` for absent or non-expression attributes.
  */
-export function getExpressionAttribute(node: MdxJsxFlowElement, name: string): string | undefined {
+export function getExpressionAttribute(node: MarkerElement, name: string): string | undefined {
   const attribute = findNamedAttribute(node, name);
   const value = attribute?.value;
   if (!value || typeof value === 'string' || value.type !== 'mdxJsxAttributeValueExpression') return undefined;
@@ -199,7 +209,7 @@ export function getExpressionAttribute(node: MdxJsxFlowElement, name: string): s
  * @param name - Attribute name to match.
  * @returns The first matching attribute, or `undefined` when absent.
  */
-function findNamedAttribute(node: MdxJsxFlowElement, name: string): MdxJsxAttribute | undefined {
+function findNamedAttribute(node: MarkerElement, name: string): MdxJsxAttribute | undefined {
   for (const attribute of node.attributes as (MdxJsxAttribute | MdxJsxExpressionAttribute)[]) {
     if (attribute.type === 'mdxJsxAttribute' && attribute.name === name) return attribute;
   }

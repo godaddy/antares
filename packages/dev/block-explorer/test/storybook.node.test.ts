@@ -35,6 +35,18 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
     expect(addWatchFile).not.toHaveBeenCalledWith(expect.stringContaining('styles/theme.css'));
   });
 
+  it('expands inline links without changing surrounding prose', async function expandsInlineLinks() {
+    const result = await runTransform(
+      generateBlocksPlugin(),
+      'See <BlockLink id="fixture-block" /> for an example.',
+      componentReadme
+    );
+    expect(result).toMatch(/^See <a href=/);
+    expect(result).toContain('target="_top"');
+    expect(result).toMatch(/<\/a> for an example\.$/);
+    await expect(compile(result)).resolves.toBeDefined();
+  });
+
   it.each([
     { format: 'LF', newline: '\n' },
     { format: 'CRLF', newline: '\r\n' }

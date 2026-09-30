@@ -26,9 +26,10 @@ const fixtureReadme = resolve(import.meta.dirname, 'fixtures/fixture-block/READM
 
 describe('remarkBlocks', function remarkBlocksTests() {
   it('expands a Block marker into a site explorer and registers discovered files', async function expandsBlock() {
-    const { tree, addDependency } = await transform(
+    const { tree, addDependency, addContextDependency } = await transform(
       '<Block id="fixture-block" description="Fixture description." of={Stories.Preview} />'
     );
+    expect(addContextDependency).toHaveBeenCalledWith(resolve(fixtureReadme, '..'));
     const explorer = tree.children[0] as AnyNode;
 
     expect(explorer).toMatchObject({ type: 'mdxJsxFlowElement', name: 'SiteBlockExplorer' });
@@ -78,7 +79,7 @@ describe('remarkBlocks', function remarkBlocksTests() {
   });
 
   it('expands a BlockLink marker into a Markdown link for the host renderer', async function expandsBlockLink() {
-    const { tree, addDependency } = await transform('<BlockLink id="fixture-block" />');
+    const { tree, addDependency, addContextDependency } = await transform('<BlockLink id="fixture-block" />');
     expect(tree.children[0]).toEqual({
       type: 'paragraph',
       children: [
@@ -90,6 +91,24 @@ describe('remarkBlocks', function remarkBlocksTests() {
       ]
     });
     expect(addDependency.mock.calls.map(([path]) => path)).toEqual([expect.stringContaining('README.mdx')]);
+    expect(addContextDependency).not.toHaveBeenCalled();
+  });
+
+  it('keeps inline links inside their original paragraph', async function expandsInlineLink() {
+    const { tree } = await transform('See <BlockLink id="fixture-block" /> for an example.');
+    expect(tree.children[0]).toMatchObject({
+      type: 'paragraph',
+      children: [
+        { type: 'text', value: 'See ' },
+        { type: 'link', url: '/docs/blocks/fixture-block', children: [{ type: 'text', value: 'fixture-block' }] },
+        { type: 'text', value: ' for an example.' }
+      ]
+    });
+    const compiled = await compile(new VFile({ path: fixtureReadme, value: 'See <BlockLink id="fixture-block" />.' }), {
+      remarkPlugins: [[remarkBlocks, { resolveBlockHref: (id: string) => `/docs/blocks/${id}` }]]
+    });
+    expect(String(compiled)).toContain('_components.a');
+    expect(String(compiled)).not.toContain('BlockLink');
   });
 
   it('uses the host resolver for BlockLink URLs', async function resolvesHostLinks() {
@@ -172,11 +191,13 @@ async function transform(markdown: string, resolveBlockHref = (id: string) => `/
     .use(remarkBlocks, { resolveBlockHref });
   const file = new VFile({ path: fixtureReadme, value: markdown });
   const addDependency = vi.fn();
-  Object.assign(file.data, { _compiler: { addDependency } });
+  const addContextDependency = vi.fn();
+  Object.assign(file.data, { _compiler: { addDependency, addContextDependency } });
 
   return {
     tree: (await processor.run(processor.parse(file), file)) as AnyTree,
-    addDependency
+    addDependency,
+    addContextDependency
   };
 }
 

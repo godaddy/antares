@@ -28,6 +28,9 @@ import { BlockLink } from '@bento/block-explorer/runtime';
 ```
 
 `BlockLink` requires a literal string `id` and provides navigation to a related block.
+It also works inside prose: `See <BlockLink id="sign-in-form" /> for a complete example.`
+Add references when the composition helps explain a component's use; they are not
+generated automatically for every component used by a block.
 
 Both markers require lowercase kebab-case identifiers, such as `sign-in-form`.
 
@@ -42,6 +45,10 @@ files are included; symbolic links are skipped. Source is read during documentat
 MDX syntax trees distinguish live markers from code examples, comments, and YAML
 text. Invalid MDX and filesystem failures report build errors, while changes to
 block documentation and source trigger documentation rebuilds.
+During development, Storybook watches block directories and reloads affected docs
+when implementation files are added, changed, or removed. The Site adapter registers
+directory dependencies with its MDX compiler, including nested source directories.
+Related-block links depend only on the target README, not its implementation files.
 
 ## Host integration
 

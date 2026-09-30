@@ -1,45 +1,68 @@
-import { describe, it, vi } from 'vitest';
+import { describe, it, vi, expect } from 'vitest';
 import assume from 'assume';
 
-const { getPageTree } = vi.hoisted(() => ({
-  getPageTree: vi.fn()
-}));
+vi.mock('fumadocs-mdx:collections/server', async function mockCollections() {
+  const { readFileSync } = await import('node:fs');
+  const metadata = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
+  return {
+    docs: {
+      toFumadocsSource: () => ({
+        files: [
+          { path: 'index.mdx', type: 'page', data: { title: 'Welcome' } },
+          { path: 'meta.json', type: 'meta', data: metadata('../content/docs/meta.json') }
+        ]
+      })
+    },
+    components: {
+      toFumadocsSource: () => ({
+        files: [
+          { path: 'text-field/README.mdx', type: 'page', data: { title: 'TextField' } },
+          { path: 'meta.json', type: 'meta', data: metadata('../../../packages/@godaddy/antares/components/meta.json') }
+        ]
+      })
+    },
+    blocks: {
+      toFumadocsSource: () => ({
+        files: [
+          { path: 'README.mdx', type: 'page', data: { title: 'Build product experiences with Antares.' } },
+          { path: 'sign-in-form/README.mdx', type: 'page', data: { title: 'Sign-in form' } },
+          { path: 'meta.json', type: 'meta', data: metadata('../../../packages/@godaddy/antares/blocks/meta.json') }
+        ]
+      })
+    }
+  };
+});
 
-vi.mock('fumadocs-mdx:collections/server', () => ({
-  docs: { toFumadocsSource: () => ({ files: [] }) },
-  components: {
-    toFumadocsSource: () => ({
-      files: [{ path: 'radio/README.mdx', data: {}, type: 'page' }]
-    })
-  },
-  blocks: {
-    toFumadocsSource: () => ({
-      files: [
-        { path: 'README.mdx', data: {}, type: 'page' },
-        { path: 'sign-in-form/README.mdx', data: {}, type: 'page' }
-      ]
-    })
-  }
-}));
-
-vi.mock('fumadocs-core/source', () => ({
-  loader: (input: unknown) => ({ getPageTree, input }),
-  multiple: () => ({})
-}));
-
-vi.mock('fumadocs-core/source/lucide-icons', () => ({
-  lucideIconsPlugin: () => ({})
-}));
-
-import { blocksSource, getDocsPageTree, getLLMText, getPageImage } from '../lib/source';
+import { source, getLLMText, getPageImage } from '../lib/source';
 
 describe('site', function siteTests() {
-  describe('#blocksSource', function blocksSourceTests() {
-    it('maps root and nested block READMEs to their public routes', function mapsBlockReadmes() {
-      assume((blocksSource as unknown as { input: { files: { path: string }[] } }).input.files).deep.equals([
-        { path: 'index.mdx', data: {}, type: 'page' },
-        { path: 'sign-in-form.mdx', data: {}, type: 'page' }
-      ]);
+  describe('#source', function sourceTests() {
+    it('preserves catalog, block and component URLs in the shared source', function preservesRoutes() {
+      expect(source.getPage(['blocks'])?.url).toBe('/docs/blocks');
+      expect(source.getPage(['blocks', 'sign-in-form'])?.url).toBe('/docs/blocks/sign-in-form');
+      expect(source.getPage(['components', 'text-field'])?.url).toBe('/docs/components/text-field');
+      expect(source.getPage(['blocks', 'missing'])).toBeUndefined();
+    });
+
+    it('includes blocks in the page and route listings used by search, LLM and OG endpoints', function listsBlocks() {
+      expect(source.getPages().map((page) => page.url)).toEqual(
+        expect.arrayContaining(['/docs', '/docs/components/text-field', '/docs/blocks', '/docs/blocks/sign-in-form'])
+      );
+      expect(source.generateParams()).toEqual(
+        expect.arrayContaining([{ slug: ['blocks'] }, { slug: ['blocks', 'sign-in-form'] }])
+      );
+    });
+
+    it('places the Blocks folder after Components, with a catalog index and discovered children', function buildsNavigation() {
+      const tree = source.getPageTree();
+      expect(tree.children.map((node) => node.name)).toEqual(['Welcome', 'Components', 'Blocks']);
+      expect(tree.children[2]).toMatchObject({
+        type: 'folder',
+        name: 'Blocks',
+        defaultOpen: true,
+        index: { type: 'page', url: '/docs/blocks' },
+        children: [{ type: 'page', name: 'Sign-in form', url: '/docs/blocks/sign-in-form' }]
+      });
     });
   });
 
@@ -64,109 +87,6 @@ describe('site', function siteTests() {
       const result = await getLLMText(page);
       assume(getText.mock.calls[0][0]).equals('processed');
       assume(result).equals('# Button\n\nsome content');
-    });
-  });
-
-  describe('#getDocsPageTree', function getDocsPageTreeTests() {
-    it('inserts Blocks immediately after the Components root page', function insertsBlocksAfterComponents() {
-      getPageTree.mockReturnValue({
-        children: [
-          { type: 'page', name: 'Welcome', url: '/docs' },
-          { type: 'page', name: 'Components', url: '/docs/components' }
-        ]
-      });
-
-      const tree = getDocsPageTree();
-
-      assume(tree.children.map((node) => ('url' in node ? node.url : undefined))).deep.equals([
-        '/docs',
-        '/docs/components',
-        '/docs/blocks'
-      ]);
-      assume(tree.children[2]).deep.equals({
-        $id: 'antares-blocks-index',
-        type: 'page',
-        name: 'Blocks',
-        url: '/docs/blocks'
-      });
-    });
-
-    it('recognizes a Components-named page root', function recognizesNamedPageRoot() {
-      getPageTree.mockReturnValue({ children: [{ type: 'page', name: 'Components', url: '/docs/other' }] });
-
-      const tree = getDocsPageTree();
-
-      assume(tree.children.map((node) => ('url' in node ? node.url : undefined))).deep.equals([
-        '/docs/other',
-        '/docs/blocks'
-      ]);
-    });
-
-    it('recognizes generated Components folder roots', function recognizesFolderRoots() {
-      getPageTree.mockReturnValue({
-        children: [
-          { type: 'separator', name: 'Other' },
-          { type: 'folder', name: 'Other', root: false, children: [] },
-          { type: 'folder', name: null, root: true, children: [] },
-          { type: 'folder', name: 'Components', root: true, children: [] }
-        ]
-      });
-
-      const tree = getDocsPageTree();
-
-      assume(tree.children[4]).deep.equals({
-        $id: 'antares-blocks-index',
-        type: 'page',
-        name: 'Blocks',
-        url: '/docs/blocks'
-      });
-    });
-
-    it('recognizes a Components folder by its index URL', function recognizesFolderIndex() {
-      getPageTree.mockReturnValue({
-        children: [
-          {
-            type: 'folder',
-            name: 'Component library',
-            root: false,
-            index: { type: 'page', name: 'Components', url: '/docs/components' },
-            children: []
-          }
-        ]
-      });
-
-      const tree = getDocsPageTree();
-
-      assume(tree.children[1]).deep.equals({
-        $id: 'antares-blocks-index',
-        type: 'page',
-        name: 'Blocks',
-        url: '/docs/blocks'
-      });
-    });
-
-    it('falls back after Welcome when Components is unavailable', function fallsBackAfterWelcome() {
-      getPageTree.mockReturnValue({ children: [{ type: 'page', name: 'Welcome', url: '/docs' }] });
-
-      const tree = getDocsPageTree();
-
-      assume(tree.children.map((node) => ('url' in node ? node.url : undefined))).deep.equals([
-        '/docs',
-        '/docs/blocks'
-      ]);
-    });
-
-    it('falls back to the beginning when Welcome and Components are unavailable', function fallsBackToBeginning() {
-      getPageTree.mockReturnValue({ children: [] });
-
-      const tree = getDocsPageTree();
-
-      assume(tree.children[0]).deep.equals({
-        $id: 'antares-blocks-index',
-        type: 'page',
-        name: 'Blocks',
-        url: '/docs/blocks'
-      });
     });
   });
 });

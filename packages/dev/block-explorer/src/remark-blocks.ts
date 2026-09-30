@@ -1,8 +1,8 @@
 import { valueToEstree } from 'estree-util-value-to-estree';
-import type { MdxJsxFlowElement } from 'mdast-util-mdx-jsx';
+import type { MdxJsxFlowElement, MdxJsxTextElement } from 'mdast-util-mdx-jsx';
 import type { Root } from 'mdast';
 import { getExpressionAttribute, getStringAttribute } from './mdx-block-markers.ts';
-import { addMdxDependency } from './remark-utils.ts';
+import { addMdxContextDependency, addMdxDependency } from './remark-utils.ts';
 import { loadBlockManifest, resolveBlockDirectory } from './node.ts';
 
 interface RemarkFile {
@@ -57,7 +57,7 @@ async function replaceMarkers(
       continue;
     }
 
-    if (node.type === 'mdxJsxFlowElement' && node.name === 'BlockLink') {
+    if ((node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement') && node.name === 'BlockLink') {
       await replaceBlockLink(nodes, file, index, resolveBlockHref);
       continue;
     }
@@ -104,7 +104,7 @@ async function replaceBlockLink(
   index: number,
   resolveBlockHref: RemarkBlocksOptions['resolveBlockHref']
 ) {
-  const marker = nodes[index] as unknown as MdxJsxFlowElement;
+  const marker = nodes[index] as unknown as MdxJsxFlowElement | MdxJsxTextElement;
   const id = getStringAttribute(marker, 'id');
 
   if (!id) throw new Error(`${file.path}: <BlockLink> requires id="...".`);
@@ -112,7 +112,8 @@ async function replaceBlockLink(
   const blockDirectory = await resolveBlockDirectory(file.path as string, id);
   addMdxDependency(file, `${blockDirectory}/README.mdx`);
 
-  nodes[index] = renderSiteBlockLink(id, resolveBlockHref);
+  const link = renderSiteBlockLink(id, resolveBlockHref);
+  nodes[index] = marker.type === 'mdxJsxTextElement' ? link : { type: 'paragraph', children: [link] };
 }
 
 /**
@@ -127,6 +128,7 @@ function addManifestDependencies(
   blockDirectory: string,
   manifest: Awaited<ReturnType<typeof loadBlockManifest>>
 ) {
+  addMdxContextDependency(file, blockDirectory);
   addMdxDependency(file, `${blockDirectory}/README.mdx`);
   for (const sourceFile of manifest.files) addMdxDependency(file, `${blockDirectory}/${sourceFile.path}`);
 }
@@ -157,20 +159,15 @@ function renderSiteBlock(manifest: Awaited<ReturnType<typeof loadBlockManifest>>
 /**
  * Builds the related-block navigation node using the host's URL.
  *
- * @param manifest - Manifest identifying the referenced block.
+ * @param id - Identifier of the referenced block.
  * @param resolveBlockHref - Host resolver for the overview URL.
- * @returns A Markdown paragraph whose link uses the host's document styling.
+ * @returns A Markdown link using the host's document styling.
  */
 function renderSiteBlockLink(id: string, resolveBlockHref: RemarkBlocksOptions['resolveBlockHref']): MdNode {
   return {
-    type: 'paragraph',
-    children: [
-      {
-        type: 'link',
-        url: resolveBlockHref(id),
-        children: [{ type: 'text', value: id }]
-      }
-    ]
+    type: 'link',
+    url: resolveBlockHref(id),
+    children: [{ type: 'text', value: id }]
   };
 }
 

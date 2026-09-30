@@ -1,5 +1,5 @@
 import { readdir, readFile, stat } from 'node:fs/promises';
-import { basename, dirname, join, relative, resolve } from 'node:path';
+import { basename, dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { collectBlockMarkers, parseBlockMdx, type BlockMarker } from './mdx-block-markers.ts';
 import type { BlockFile, BlockLanguage, BlockManifest } from './types.ts';
 
@@ -16,6 +16,14 @@ const BLOCK_ID_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ROOT_README_REGEX = /^README(?:\.[^/]*)?$/i;
 const ROOT_STORY_REGEX = /\.stories\.tsx$/i;
 const ROOT_TEST_DIRECTORY = 'test';
+
+/** Matches only paths included in a block's source manifest, including nested READMEs. */
+export function isBlockSourcePath(blockDirectory: string, file: string): boolean {
+  const path = relative(blockDirectory, file).replaceAll('\\', '/');
+  if (!path || path === '..' || path.startsWith('../') || isAbsolute(path)) return false;
+  if (path === ROOT_TEST_DIRECTORY || path.startsWith(`${ROOT_TEST_DIRECTORY}/`)) return false;
+  return dirname(path) !== '.' || !isExcludedRootFile(path);
+}
 
 function assertMatchingBlockDirectory(id: string, directory: string, origin: string): void {
   const directoryName = basename(directory);
@@ -143,7 +151,7 @@ async function collectBlockFiles(directory: string, rootDirectory: string, files
     if (!entry.isFile()) continue;
 
     const filePath = relative(rootDirectory, absolutePath).replaceAll('\\', '/');
-    if (dirname(filePath) === '.' && isExcludedRootFile(entry.name)) continue;
+    if (!isBlockSourcePath(rootDirectory, absolutePath)) continue;
 
     files.push({
       path: filePath,

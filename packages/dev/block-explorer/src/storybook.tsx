@@ -1,6 +1,6 @@
 import type { Root } from 'mdast';
 import type { StorybookConfig } from '@storybook/react-vite';
-import type { Plugin } from 'vite';
+import type { Plugin, ViteDevServer } from 'vite';
 import {
   collectBlockMarkers,
   getYamlFrontmatter,
@@ -8,7 +8,7 @@ import {
   parseBlockMdx,
   type BlockMarker
 } from './mdx-block-markers.ts';
-import { loadBlockManifest, resolveBlockDirectory } from './node.ts';
+import { isBlockSourcePath, loadBlockManifest, resolveBlockDirectory } from './node.ts';
 
 const README_FILE_REGEX = /README\.mdx$/;
 const STORYBOOK_DOCS_MODULE = '@storybook/addon-docs/blocks';
@@ -30,6 +30,9 @@ interface Expansion {
 
   /** Files that can change the generated replacement. */
   watchFiles: readonly string[];
+
+  /** Source directory whose membership affects an explorer, absent for links. */
+  blockDirectory?: string;
 }
 
 /**
@@ -52,9 +55,46 @@ export const viteFinal: StorybookConfig['viteFinal'] = async function viteFinal(
  * @returns A Vite plugin that expands markers and watches their source dependencies.
  */
 export function generateBlocksPlugin(readmeRegex: RegExp = README_FILE_REGEX): Plugin {
+  const dependencies = new Map<string, Expansion[]>();
+  let server: ViteDevServer | undefined;
+
+  /** Invalidates embedded manifests even when the changed file has no module of its own. */
+  function onFileEvent(event: string, path: string) {
+    if (!server || !['add', 'change', 'unlink'].includes(event)) return;
+    const file = path.replaceAll('\\', '/');
+    let invalidated = false;
+
+    for (const [readme, expansions] of dependencies) {
+      const affected = expansions.some(
+        ({ watchFiles, blockDirectory }) =>
+          watchFiles.some((dependency) => dependency.replaceAll('\\', '/') === file) ||
+          (blockDirectory && isBlockSourcePath(blockDirectory, path))
+      );
+      if (!affected) continue;
+
+      for (const environment of Object.values(server.environments)) {
+        for (const module of environment.moduleGraph.getModulesByFile(readme) ?? []) {
+          environment.moduleGraph.invalidateModule(module);
+          invalidated = true;
+        }
+      }
+    }
+
+    if (invalidated) server.ws.send({ type: 'full-reload' });
+  }
+
   return {
     name: 'block-explorer-mdx',
     enforce: 'pre',
+    configureServer(devServer) {
+      server = devServer;
+      server.watcher.on('all', onFileEvent);
+    },
+    closeBundle() {
+      server?.watcher.off('all', onFileEvent);
+      dependencies.clear();
+      server = undefined;
+    },
     /** Expands authored markers before MDX compilation and registers their dependencies. */
     async transform(source, id) {
       const fileName = id.split('?')[0];
@@ -62,9 +102,16 @@ export function generateBlocksPlugin(readmeRegex: RegExp = README_FILE_REGEX): P
 
       const tree = parseBlockMdx(source, fileName);
       const markers = collectBlockMarkers(tree);
-      if (markers.length === 0) return null;
+      if (markers.length === 0) {
+        dependencies.delete(fileName);
+        return null;
+      }
 
       const expansions = await expandMarkers(fileName, markers);
+      dependencies.set(fileName, expansions);
+      for (const { blockDirectory } of expansions) {
+        if (blockDirectory) server?.watcher.add(blockDirectory);
+      }
       for (const watchFile of new Set([fileName, ...expansions.flatMap((expansion) => expansion.watchFiles)])) {
         this.addWatchFile(watchFile);
       }
@@ -131,7 +178,8 @@ async function expandMarkers(fileName: string, markers: readonly BlockMarker[]):
       end: marker.end,
       value: `<StorybookBlockExplorer block={${JSON.stringify(manifest)}}><Story of={${marker.ofExpression}} inline /></StorybookBlockExplorer>`,
       imports: [BLOCK_EXPLORER_IMPORT, STORY_IMPORT],
-      watchFiles
+      watchFiles,
+      blockDirectory
     });
   }
 
