@@ -9,8 +9,8 @@
 - [Checkbox](/docs/components/checkbox): Accessible checkbox component for multi-select options with support for indeterminate states, validation, keyboard navigation, and flexible group layouts.
 - [Chip](/docs/components/chip): Grouped pill-shaped items for selecting values and removing user-added filters or tokens.
 - [CircularProgress](/docs/components/circular-progress): A circular progress indicator shows determinate or indeterminate progress of an operation over time
-- [Drawer](/docs/components/drawer): An overlay panel that slides in from a screen edge, supporting sidebar navigation and bottom sheets.
 - [DatePicker](/docs/components/date-picker): Date fields that display the selected value as a label and open a calendar popover to pick a single date (DatePicker) or a range (DateRangePicker).
+- [Drawer](/docs/components/drawer): An overlay panel that slides in from a screen edge, supporting sidebar navigation and bottom sheets.
 - [DropZone](/docs/components/drop-zone): A standalone region that accepts drag-and-drop file interactions, rendering a clearly defined target area where users can drop files.
 - [FieldError](/docs/components/field-error): Validation message for a field. Renders only when the field is invalid.
 - [FileTrigger](/docs/components/file-trigger): A style-less primitive that wraps any pressable component and opens the native file picker when it is activated.

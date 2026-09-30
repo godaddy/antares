@@ -1374,135 +1374,6 @@ Once the total is known, set `isIndeterminate` to false and supply a measured va
 <PropTable />
 
 
-# Drawer
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-An overlay panel that slides in from a screen edge. Built on the same RAC stack as `Modal` (a
-modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar
-navigation and bottom sheets.
-
-`DrawerTrigger` wraps a trigger button and a `<Drawer>`, handling open
-state automatically.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Content, Drawer, DrawerTrigger } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Drawer\&#x22;>\n        <Content>Drawer content goes here.</Content>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
-
-### Bottom Sheet [#bottom-sheet]
-
-Use `placement="bottom"` with controlled state for a bottom sheet pattern. Compose a
-`CloseButton` for the dismiss affordance.
-
-<Story of="BottomSheetExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, CloseButton, Content, Drawer, Heading } from '@godaddy/antares';\n\nexport function BottomSheetExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open bottom sheet\n      </Button>\n      <Drawer placement=\&#x22;bottom\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable>\n        <Heading slot=\&#x22;title\&#x22;>Bottom sheet</Heading>\n        <CloseButton />\n        <Content>Bottom sheet with a composed close button.</Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
-
-### Placements [#placements]
-
-The drawer slides in from whichever edge you set with `placement`.
-
-<Story of="PlacementsExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer, Flex, type DrawerPlacement } from '@godaddy/antares';\n\nconst PLACEMENTS: DrawerPlacement[] = ['left', 'right', 'top', 'bottom'];\n\nexport function PlacementsExample() {\n  const [placement, setPlacement] = useState<DrawerPlacement>('right');\n  const [open, setOpen] = useState(false);\n\n  return (\n    <Flex gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {PLACEMENTS.map(function renderButton(p) {\n        return (\n          <Button\n            key={p}\n            variant=\&#x22;primary\&#x22;\n            onPress={function openAt() {\n              setPlacement(p);\n              setOpen(true);\n            }}\n          >\n            Open {p}\n          </Button>\n        );\n      })}\n      <Drawer\n        placement={placement}\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        aria-label={`${placement} drawer`}\n      >\n        <Content>Placement: {placement}</Content>\n      </Drawer>\n    </Flex>\n  );\n}&#x22;" />
-
-### Nested Popover [#nested-popover]
-
-Popovers rendered inside a drawer stay open without dismissing the drawer.
-
-<Story of="NestedPopoverExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer, Popover, PopoverTrigger, Text } from '@godaddy/antares';\n\nexport function NestedPopoverExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open drawer\n      </Button>\n      <Drawer placement=\&#x22;right\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable aria-label=\&#x22;Nested popover\&#x22;>\n        <Content>\n          <PopoverTrigger>\n            <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n            <Popover aria-label=\&#x22;Popover\&#x22;>\n              <Content>\n                <Text>Popover inside drawer</Text>\n              </Content>\n            </Popover>\n          </PopoverTrigger>\n        </Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
-
-### No Escape Dismiss [#no-escape-dismiss]
-
-Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by the escape key.
-
-<Story of="NoEscapeDismissExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer } from '@godaddy/antares';\n\nexport function NoEscapeDismissExample() {\n  const [open, setOpen] = useState(false);\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open\n      </Button>\n      <Drawer\n        placement=\&#x22;right\&#x22;\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        isKeyboardDismissDisabled\n        aria-label=\&#x22;Drawer\&#x22;\n      >\n        <Content>Cannot escape</Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
-
-### Scrollable content [#scrollable-content]
-
-When the content is taller than the drawer, the `Content` region scrolls while the title row
-stays pinned.
-
-<Story of="ScrollableExample" />
-
-<Source language="tsx" code="&#x22;import { Button, CloseButton, Content, Drawer, DrawerTrigger, Heading, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Terms\&#x22;>\n        <Heading slot=\&#x22;title\&#x22;>Terms</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 12 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key      | Action                                                |
-| -------- | ----------------------------------------------------- |
-| `Escape` | Close the drawer (unless `isKeyboardDismissDisabled`) |
-| `Tab`    | Move focus within the drawer (focus is trapped)       |
-
-### ARIA [#aria]
-
-* `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
-* A `Heading slot="title"` labels the dialog via `aria-labelledby`; otherwise pass `aria-label`
-
-## Best Practices [#best-practices]
-
-* Provide a `Heading slot="title"` or an `aria-label` so the dialog has an accessible name.
-* Use `isDismissable` to allow closing via backdrop click.
-* Don't nest drawers.
-
-## Props [#props]
-
-```tsx
-<Drawer placement="right">
-  <Header>
-    <Heading slot="title" />
-    <CloseButton />
-  </Header>
-  <Content />
-  {/* ... */}
-</Drawer>
-```
-
-### Drawer [#drawer]
-
-<PropTable />
-
-### DrawerTrigger [#drawertrigger]
-
-<PropTable />
-
-
 # DatePicker
 
 
@@ -1713,6 +1584,135 @@ size scope.
 <PropTable />
 
 ### DateRangePickerValue [#daterangepickervalue]
+
+<PropTable />
+
+
+# Drawer
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+An overlay panel that slides in from a screen edge. Built on the same RAC stack as `Modal` (a
+modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar
+navigation and bottom sheets.
+
+`DrawerTrigger` wraps a trigger button and a `<Drawer>`, handling open
+state automatically.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Content, Drawer, DrawerTrigger } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Drawer\&#x22;>\n        <Content>Drawer content goes here.</Content>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
+
+### Bottom Sheet [#bottom-sheet]
+
+Use `placement="bottom"` with controlled state for a bottom sheet pattern. Compose a
+`CloseButton` for the dismiss affordance.
+
+<Story of="BottomSheetExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, CloseButton, Content, Drawer, Heading } from '@godaddy/antares';\n\nexport function BottomSheetExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open bottom sheet\n      </Button>\n      <Drawer placement=\&#x22;bottom\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable>\n        <Heading slot=\&#x22;title\&#x22;>Bottom sheet</Heading>\n        <CloseButton />\n        <Content>Bottom sheet with a composed close button.</Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
+
+### Placements [#placements]
+
+The drawer slides in from whichever edge you set with `placement`.
+
+<Story of="PlacementsExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer, Flex, type DrawerPlacement } from '@godaddy/antares';\n\nconst PLACEMENTS: DrawerPlacement[] = ['left', 'right', 'top', 'bottom'];\n\nexport function PlacementsExample() {\n  const [placement, setPlacement] = useState<DrawerPlacement>('right');\n  const [open, setOpen] = useState(false);\n\n  return (\n    <Flex gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {PLACEMENTS.map(function renderButton(p) {\n        return (\n          <Button\n            key={p}\n            variant=\&#x22;primary\&#x22;\n            onPress={function openAt() {\n              setPlacement(p);\n              setOpen(true);\n            }}\n          >\n            Open {p}\n          </Button>\n        );\n      })}\n      <Drawer\n        placement={placement}\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        aria-label={`${placement} drawer`}\n      >\n        <Content>Placement: {placement}</Content>\n      </Drawer>\n    </Flex>\n  );\n}&#x22;" />
+
+### Nested Popover [#nested-popover]
+
+Popovers rendered inside a drawer stay open without dismissing the drawer.
+
+<Story of="NestedPopoverExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer, Popover, PopoverTrigger, Text } from '@godaddy/antares';\n\nexport function NestedPopoverExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open drawer\n      </Button>\n      <Drawer placement=\&#x22;right\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable aria-label=\&#x22;Nested popover\&#x22;>\n        <Content>\n          <PopoverTrigger>\n            <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n            <Popover aria-label=\&#x22;Popover\&#x22;>\n              <Content>\n                <Text>Popover inside drawer</Text>\n              </Content>\n            </Popover>\n          </PopoverTrigger>\n        </Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
+
+### No Escape Dismiss [#no-escape-dismiss]
+
+Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by the escape key.
+
+<Story of="NoEscapeDismissExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer } from '@godaddy/antares';\n\nexport function NoEscapeDismissExample() {\n  const [open, setOpen] = useState(false);\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open\n      </Button>\n      <Drawer\n        placement=\&#x22;right\&#x22;\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        isKeyboardDismissDisabled\n        aria-label=\&#x22;Drawer\&#x22;\n      >\n        <Content>Cannot escape</Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
+
+### Scrollable content [#scrollable-content]
+
+When the content is taller than the drawer, the `Content` region scrolls while the title row
+stays pinned.
+
+<Story of="ScrollableExample" />
+
+<Source language="tsx" code="&#x22;import { Button, CloseButton, Content, Drawer, DrawerTrigger, Heading, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Terms\&#x22;>\n        <Heading slot=\&#x22;title\&#x22;>Terms</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 12 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key      | Action                                                |
+| -------- | ----------------------------------------------------- |
+| `Escape` | Close the drawer (unless `isKeyboardDismissDisabled`) |
+| `Tab`    | Move focus within the drawer (focus is trapped)       |
+
+### ARIA [#aria]
+
+* `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
+* A `Heading slot="title"` labels the dialog via `aria-labelledby`; otherwise pass `aria-label`
+
+## Best Practices [#best-practices]
+
+* Provide a `Heading slot="title"` or an `aria-label` so the dialog has an accessible name.
+* Use `isDismissable` to allow closing via backdrop click.
+* Don't nest drawers.
+
+## Props [#props]
+
+```tsx
+<Drawer placement="right">
+  <Header>
+    <Heading slot="title" />
+    <CloseButton />
+  </Header>
+  <Content />
+  {/* ... */}
+</Drawer>
+```
+
+### Drawer [#drawer]
+
+<PropTable />
+
+### DrawerTrigger [#drawertrigger]
 
 <PropTable />
 
