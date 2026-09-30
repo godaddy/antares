@@ -52,6 +52,67 @@ describe('@godaddy/antares', function packageTests() {
       expect(screen.getByRole('grid').all()).toHaveLength(1);
     });
 
+    it.each([false, true])('names the active month while scrolling, range=%s', async function calendarName(range) {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample range={range} />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      const calendar = screen.getByRole('application');
+      await expect.element(calendar).toHaveAccessibleName('September 2026');
+      await expect.element(screen.getByRole('heading', { level: 2 })).toHaveTextContent('September 2026');
+      await expect
+        .poll(function settled() {
+          return getComputedStyle(screen.getByRole('dialog').element().parentElement!).transform;
+        })
+        .toBe('none');
+      let month = parseDate('2026-09-01');
+      for (let step = 0; step < 14; step++) {
+        month = month.add({ months: 1 });
+        const target = document.querySelector(`[data-calendar-month="${month}"]`) as HTMLElement;
+        target.scrollIntoView();
+        const label = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(
+          month.toDate('UTC')
+        );
+        await expect.element(calendar).toHaveAccessibleName(label);
+        await expect.element(screen.getByRole('heading', { level: 2 })).toHaveTextContent(label);
+      }
+    });
+
+    it.each([
+      'en-US',
+      'ar-AE'
+    ])('rounds range segments around unavailable dates in %s', async function rangeBand(locale) {
+      await page.viewport(320, 768);
+      const screen = await render(
+        <MobileExample range keepOpen unavailable allowsNonContiguousRanges locale={locale} />
+      );
+      await screen.getByRole('button', { name: /Event dates/ }).click();
+      const september = screen
+        .getByRole('grid')
+        .all()
+        .find(function month(grid) {
+          return grid.element().closest('[data-calendar-month="2026-09-01"]');
+        })!;
+      await september.getByRole('button').all()[14].click();
+      const november = document.querySelector('[data-calendar-month="2026-11-01"]') as HTMLElement;
+      november.scrollIntoView();
+      await expect
+        .poll(function mounted() {
+          return november.querySelectorAll('[role="button"]:not([data-outside-month])').length;
+        })
+        .toBe(30);
+      const end = november.querySelectorAll<HTMLElement>('[role="button"]:not([data-outside-month])')[11];
+      end.click();
+      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-11-12');
+      const october = document.querySelector('[data-calendar-month="2026-10-01"]') as HTMLElement;
+      const dates = october.querySelectorAll<HTMLElement>('[role="button"]:not([data-outside-month])');
+      const before = getComputedStyle(dates[18].parentElement!);
+      const after = getComputedStyle(dates[20].parentElement!);
+      expect(before.backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+      expect(after.backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+      expect(before.borderStartEndRadius).not.toBe('0px');
+      expect(after.borderStartStartRadius).not.toBe('0px');
+    });
+
     it('preserves the visible month while resizing an open drawer', async function resizeScroll() {
       await page.viewport(320, 768);
       const screen = await render(<MobileExample />);
