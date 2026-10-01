@@ -1,0 +1,85 @@
+.item {
+  position: relative;
+  box-sizing: border-box;
+  border: 1px solid var(--ux-box-border-color, #e5e5e5);
+  border-radius: var(--ux-2jubes, 6px);
+}
+
+.item:where([data-variant="horizontal"]) {
+  inline-size: 100%;
+  min-block-size: 4.625rem;
+}
+
+.item:where([data-variant="vertical"]) {
+  inline-size: 100%;
+  min-inline-size: 0;
+  background-color: var(--color-surface-background-passive, var(--ux-l7zq7p, #ffffff));
+}
+
+.item:where([data-variant="vertical"]:focus-within) {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .item:where([data-variant="vertical"]:hover) {
+    border-color: var(--color-action-border-secondary-hovered, var(--ux-kkdx4n, #09757a));
+  }
+}
+
+.item:where([data-variant="thumbnail"]) {
+  inline-size: 5.125rem;
+  block-size: 5.125rem;
+  border: 0;
+}
+
+.coverSlot {
+  position: relative;
+}
+
+.coverSlot:where([data-variant="horizontal"]) {
+  flex: 0 0 3.5rem;
+  inline-size: 3.5rem;
+}
+
+.details {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  overflow: hidden;
+}
+
+.details:where([data-variant="horizontal"]) {
+  padding-inline-end: 2rem;
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remove {
+  position: absolute;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 0.5rem;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  padding: 0;
+  background: var(--ux-control-backgroundColor, #ffffff);
+}
+
+.remove:where([data-variant="thumbnail"]) {
+  inset-block-start: 0;
+  inset-inline-end: 0;
+}
+
+.thumbnailRetry {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  padding: 0;
+  background: var(--ux-control-backgroundColor, #ffffff);
+  color: var(--color-feedback-critical-strong, #db1802);
+}
