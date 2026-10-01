@@ -1,0 +1,22 @@
+.row {
+  border: 1px solid var(--ux-box-border-color, #d0d5dd);
+}
+
+.details {
+  min-inline-size: 0;
+}
+
+.fileName {
+  overflow-wrap: anywhere;
+}
+
+.pickerButton {
+  display: flex;
+  inline-size: 100%;
+  min-block-size: 5rem;
+  padding: 0.75rem 1rem;
+  border: 1px dashed var(--ux-box-border-color, #8d8d8d);
+  border-radius: var(--ux-2jubes, 6px);
+  background: var(--ux-box-backgroundColor, #f7f7f7);
+  white-space: normal;
+}

@@ -1,0 +1,19 @@
+.emptyState {
+  min-block-size: 16rem;
+  border: 1px dashed var(--color-border-low-contrast, #d4dbe0);
+  border-radius: var(--ux-2jubes, 16px);
+  background-color: var(--color-surface-background-passive, var(--ux-l7zq7p, #ffffff));
+  text-align: center;
+}
+
+.iconSurface {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border-low-contrast, #d4dbe0);
+  background-color: var(--color-action-background-secondary-default, var(--ux-1r87102, #ffffff));
+}
+
+.description {
+  max-inline-size: 30rem;
+}

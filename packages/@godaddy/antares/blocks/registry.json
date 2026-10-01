@@ -3,6 +3,184 @@
   "name": "antares-blocks",
   "items": [
     {
+      "name": "blocks/gallery",
+      "type": "registry:block",
+      "title": "Gallery",
+      "description": "Browse images in a list or grid with local file upload.",
+      "dependencies": ["@godaddy/antares"],
+      "files": [
+        {
+          "path": "gallery/components/drop-overlay/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/gallery/components/drop-overlay/index.module.css"
+        },
+        {
+          "path": "gallery/components/drop-overlay/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/drop-overlay/index.tsx"
+        },
+        {
+          "path": "gallery/components/file-cover/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/gallery/components/file-cover/index.module.css"
+        },
+        {
+          "path": "gallery/components/file-cover/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/file-cover/index.tsx"
+        },
+        {
+          "path": "gallery/components/file-item/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/gallery/components/file-item/index.module.css"
+        },
+        {
+          "path": "gallery/components/file-item/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/file-item/index.tsx"
+        },
+        {
+          "path": "gallery/components/gallery/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/gallery/components/gallery/index.module.css"
+        },
+        {
+          "path": "gallery/components/gallery/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/gallery/index.tsx"
+        },
+        {
+          "path": "gallery/components/grid-view/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/gallery/components/grid-view/index.module.css"
+        },
+        {
+          "path": "gallery/components/grid-view/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/grid-view/index.tsx"
+        },
+        {
+          "path": "gallery/components/image/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/gallery/components/image/index.module.css"
+        },
+        {
+          "path": "gallery/components/image/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/image/index.tsx"
+        },
+        {
+          "path": "gallery/components/list-view/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/gallery/components/list-view/index.module.css"
+        },
+        {
+          "path": "gallery/components/list-view/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/list-view/index.tsx"
+        },
+        {
+          "path": "gallery/components/upload-prompt/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/upload-prompt/index.tsx"
+        },
+        {
+          "path": "gallery/components/view-banner/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/view-banner/index.tsx"
+        },
+        {
+          "path": "gallery/components/viewer/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/gallery/components/viewer/index.module.css"
+        },
+        {
+          "path": "gallery/components/viewer/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/viewer/index.tsx"
+        },
+        {
+          "path": "gallery/data/sample-images.ts",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/data/sample-images.ts"
+        },
+        {
+          "path": "gallery/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/index.tsx"
+        }
+      ]
+    },
+    {
+      "name": "blocks/project-inquiry-form",
+      "type": "registry:block",
+      "title": "Project inquiry form",
+      "description": "A responsive inquiry form with transparent drag-and-drop file upload.",
+      "dependencies": ["@godaddy/antares"],
+      "files": [
+        {
+          "path": "project-inquiry-form/components/drop-overlay/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/project-inquiry-form/components/drop-overlay/index.module.css"
+        },
+        {
+          "path": "project-inquiry-form/components/drop-overlay/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/components/drop-overlay/index.tsx"
+        },
+        {
+          "path": "project-inquiry-form/components/attached-files/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/project-inquiry-form/components/attached-files/index.module.css"
+        },
+        {
+          "path": "project-inquiry-form/components/attached-files/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/components/attached-files/index.tsx"
+        },
+        {
+          "path": "project-inquiry-form/components/benefits/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/project-inquiry-form/components/benefits/index.module.css"
+        },
+        {
+          "path": "project-inquiry-form/components/benefits/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/components/benefits/index.tsx"
+        },
+        {
+          "path": "project-inquiry-form/components/fields/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/components/fields/index.tsx"
+        },
+        {
+          "path": "project-inquiry-form/components/file-preview/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/project-inquiry-form/components/file-preview/index.module.css"
+        },
+        {
+          "path": "project-inquiry-form/components/file-preview/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/components/file-preview/index.tsx"
+        },
+        {
+          "path": "project-inquiry-form/components/project-inquiry-form/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/project-inquiry-form/components/project-inquiry-form/index.module.css"
+        },
+        {
+          "path": "project-inquiry-form/components/project-inquiry-form/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/components/project-inquiry-form/index.tsx"
+        },
+        {
+          "path": "project-inquiry-form/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/index.tsx"
+        }
+      ]
+    },
+    {
       "name": "blocks/sign-in-form",
       "type": "registry:block",
       "title": "Sign-in form",

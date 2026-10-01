@@ -1,0 +1,6 @@
+.preview {
+  inline-size: 3.5rem;
+  block-size: 3.5rem;
+  flex-shrink: 0;
+  object-fit: cover;
+}

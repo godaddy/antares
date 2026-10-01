@@ -1,0 +1,43 @@
+.image {
+  display: block;
+  max-inline-size: 100%;
+}
+
+.image:where([data-variant="grid"]) {
+  inline-size: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.image:where([data-variant="list"]) {
+  inline-size: 3.5rem;
+  block-size: 3.5rem;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.image:where([data-variant="viewer"]) {
+  inline-size: 100%;
+  max-block-size: 55dvh;
+  object-fit: contain;
+}
+
+.image:where([data-variant="thumbnail"]) {
+  inline-size: 5rem;
+  block-size: 3.75rem;
+  object-fit: cover;
+}
+
+.container {
+  min-inline-size: 0;
+}
+
+.openButton {
+  inline-size: 100%;
+  min-inline-size: 0;
+  padding: 0;
+}
+
+.openButton:where([data-selected="true"]) {
+  outline: 2px solid currentColor;
+}
