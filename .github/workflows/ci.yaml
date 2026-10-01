@@ -37,6 +37,9 @@ jobs:
           npm ci
           npx playwright install --with-deps
 
+      - name: Validate shadcn Registry Schema
+        run: npm run registry:validate
+
       - name: Run Dependency Checks
         run: npm run deps:check
 

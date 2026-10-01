@@ -1,4 +1,4 @@
-import { docs, components } from 'fumadocs-mdx:collections/server';
+import { blocks, docs, components } from 'fumadocs-mdx:collections/server';
 import { type InferPageType, loader, multiple } from 'fumadocs-core/source';
 import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons';
 
@@ -17,10 +17,27 @@ function toComponentsSource() {
   };
 }
 
+/**
+ * Maps the catalog README to the index route and block READMEs to their slugs.
+ *
+ * @returns A Fumadocs source with `blocks/`-prefixed paths under `/docs`.
+ */
+function toBlocksSource() {
+  const raw = blocks.toFumadocsSource();
+  return {
+    ...raw,
+    files: raw.files.map((file) => ({
+      ...file,
+      path: `blocks/${file.path === 'README.mdx' ? 'index.mdx' : file.path.replace(/\/README\.mdx$/, '.mdx')}`
+    })) as ReturnType<typeof blocks.toFumadocsSource>['files']
+  };
+}
+
 export const source = loader(
   multiple({
     root: docs.toFumadocsSource(),
-    components: toComponentsSource()
+    components: toComponentsSource(),
+    blocks: toBlocksSource()
   }),
   {
     baseUrl: '/docs',

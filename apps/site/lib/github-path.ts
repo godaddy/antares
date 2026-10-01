@@ -1,7 +1,7 @@
 /**
  * Returns the path to the source MDX file in the repository for a given docs page.
  *
- * Component pages live in the antares package; all other pages live under the
+ * Component and block pages live in the antares package; all other pages live under the
  * site content directory.
  *
  * @param page - Docs page with slugs and path
@@ -12,6 +12,9 @@
 export function getGithubPath(page: { slugs: string[]; path: string }): string {
   if (page.slugs[0] === 'components') {
     return `packages/@godaddy/antares/components/${page.slugs.slice(1).join('/')}/README.mdx`;
+  }
+  if (page.slugs[0] === 'blocks') {
+    return ['packages/@godaddy/antares/blocks', ...page.slugs.slice(1), 'README.mdx'].join('/');
   }
   return `apps/site/content/docs/${page.path}`;
 }
