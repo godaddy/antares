@@ -34,13 +34,19 @@ export function ScrollCalendar({ pageCount = 3, className, ...props }: CalendarP
 }
 
 /** Internal range calendar with React Aria's selection and navigation behavior. */
-export function ScrollRangeCalendar({ pageCount = 3, className, ...props }: RangeCalendarProps) {
+export function ScrollRangeCalendar({
+  pageCount = 3,
+  className,
+  commitBehavior = 'reset',
+  ...props
+}: RangeCalendarProps) {
   const size = useDeclaredSize();
   return (
     <Flex
       as={RACRangeCalendar<CalendarDate>}
       selectionAlignment="start"
       {...props}
+      commitBehavior={commitBehavior}
       direction="column"
       visibleDuration={{ months: pageCount }}
       data-size={size}
