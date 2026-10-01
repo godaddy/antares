@@ -11,6 +11,7 @@
     "typecheck": "tsgo --noEmit -p tsconfig.json"
   },
   "dependencies": {
+    "@bento/block-explorer": "*",
     "@bento/box": "*",
     "@bento/button": "*",
     "@bento/checkbox": "*",
