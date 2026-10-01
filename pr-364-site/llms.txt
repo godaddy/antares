@@ -54,3 +54,5 @@
 - [Text](/docs/components/text): Body copy and supporting detail, with size, emphasis, alignment, and truncation options
 - [ToggleButton](/docs/components/toggle-button): Accessible toggle button component for grouped contextual actions with single or multiple selection, keyboard navigation, and RTL-aware layouts.
 - [Tooltip](/docs/components/tooltip): The Tooltip component displays a description of an element on hover or focus.
+- [Build product experiences with Antares.](/docs/blocks): Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product.
+- [Sign-in form](/docs/blocks/sign-in-form): A simple Antares sign-in experience.

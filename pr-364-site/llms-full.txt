@@ -6820,6 +6820,10 @@ Compose a telephone number input paired with a country-code select.
 
 <Source language="tsx" code="&#x22;import { Button, Group, Input, Label, Select, SelectItem, SelectOptions, Text, TextField } from '@godaddy/antares';\n\nexport function TelephoneFieldExample() {\n  return (\n    <TextField autoComplete=\&#x22;tel-national\&#x22; inputMode=\&#x22;tel\&#x22; type=\&#x22;tel\&#x22;>\n      <Label>Phone number</Label>\n      <Group>\n        <Select aria-label=\&#x22;Country code\&#x22; defaultValue=\&#x22;us\&#x22; variant=\&#x22;control\&#x22;>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>US +1</SelectItem>\n            <SelectItem id=\&#x22;mx\&#x22;>MX +52</SelectItem>\n            <SelectItem id=\&#x22;gb\&#x22;>GB +44</SelectItem>\n          </SelectOptions>\n        </Select>\n        <Input placeholder=\&#x22;555-555-5555\&#x22; />\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>We'll only call about your order.</Text>\n    </TextField>\n  );\n}&#x22;" />
 
+## Blocks [#blocks]
+
+[sign-in-form](/docs/blocks/sign-in-form)
+
 ## Props [#props]
 
 ```tsx
@@ -7481,3 +7485,41 @@ To position a tooltip relative to a different focusable element, use the `trigge
 ### TooltipTrigger [#tooltiptrigger]
 
 <PropTable />
+
+
+# Build product experiences with Antares.
+
+
+
+
+
+<Meta title="Blocks" id="blocks" />
+
+## Install a block [#install-a-block]
+
+From the root of your application, run the command copied by the block's Install button:
+
+```bash
+npx shadcn@latest add godaddy/antares/blocks/sign-in-form
+```
+
+## Blocks [#blocks]
+
+### Sign-in form [#sign-in-form]
+
+<SiteBlockExplorer block="{&#x22;id&#x22;:&#x22;sign-in-form&#x22;,&#x22;description&#x22;:&#x22;A simple Antares sign-in experience.&#x22;,&#x22;installCommand&#x22;:&#x22;npx shadcn@latest add godaddy/antares/blocks/sign-in-form&#x22;,&#x22;files&#x22;:[{&#x22;path&#x22;:&#x22;components/sign-in-fields.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Flex, Input, Label, TextField } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\n\n/** Groups the accessible fields used by the sign-in form block. */\nexport function SignInFields() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField name=\&#x22;email\&#x22; isRequired>\n        <Label>{signInCopy.emailLabel}</Label>\n        <Input type=\&#x22;email\&#x22; autoComplete=\&#x22;email\&#x22; placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n      <TextField name=\&#x22;password\&#x22; isRequired>\n        <Label>{signInCopy.passwordLabel}</Label>\n        <Input type=\&#x22;password\&#x22; autoComplete=\&#x22;current-password\&#x22; />\n      </TextField>\n    </Flex>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/sign-in-form.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;'use client';\n\nimport { Box, Button, Flex, Heading, Text } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\nimport { SignInFields } from './sign-in-fields';\n\n/**\n * Provides a sign-in form composition to copy and adapt. Submission is prevented\n * until the consuming application supplies its authentication behavior.\n *\n * @example\n * ```tsx\n * <SignInForm />\n * ```\n */\nexport function SignInForm() {\n  return (\n    <Flex justifyContent=\&#x22;center\&#x22;>\n      <Box flex=\&#x22;0 1 28rem\&#x22; padding=\&#x22;xl\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        <Flex\n          as=\&#x22;form\&#x22;\n          direction=\&#x22;column\&#x22;\n          gap=\&#x22;lg\&#x22;\n          onSubmit={function handleSubmit(event) {\n            event.preventDefault();\n          }}\n        >\n          <Heading level={2}>{signInCopy.title}</Heading>\n          <Text>{signInCopy.description}</Text>\n          <SignInFields />\n          <Button type=\&#x22;submit\&#x22; variant=\&#x22;primary\&#x22;>\n            {signInCopy.submitLabel}\n          </Button>\n        </Flex>\n      </Box>\n    </Flex>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;data/copy.ts&#x22;,&#x22;language&#x22;:&#x22;ts&#x22;,&#x22;source&#x22;:&#x22;export const signInCopy = {\n  title: 'Sign in to your account',\n  description: 'Use your email and password to continue.',\n  emailLabel: 'Email',\n  passwordLabel: 'Password',\n  submitLabel: 'Sign in'\n} as const;\n&#x22;},{&#x22;path&#x22;:&#x22;index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;export { SignInForm } from './components/sign-in-form';\n&#x22;}]}">
+  <SignInFormStories.Preview />
+</SiteBlockExplorer>
+
+
+# Sign-in form
+
+
+
+
+
+<Meta of="Stories" name="Overview" id="blocks-sign-in-form" />
+
+<SiteBlockExplorer block="{&#x22;id&#x22;:&#x22;sign-in-form&#x22;,&#x22;description&#x22;:&#x22;A simple Antares sign-in experience.&#x22;,&#x22;installCommand&#x22;:&#x22;npx shadcn@latest add godaddy/antares/blocks/sign-in-form&#x22;,&#x22;files&#x22;:[{&#x22;path&#x22;:&#x22;components/sign-in-fields.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Flex, Input, Label, TextField } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\n\n/** Groups the accessible fields used by the sign-in form block. */\nexport function SignInFields() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField name=\&#x22;email\&#x22; isRequired>\n        <Label>{signInCopy.emailLabel}</Label>\n        <Input type=\&#x22;email\&#x22; autoComplete=\&#x22;email\&#x22; placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n      <TextField name=\&#x22;password\&#x22; isRequired>\n        <Label>{signInCopy.passwordLabel}</Label>\n        <Input type=\&#x22;password\&#x22; autoComplete=\&#x22;current-password\&#x22; />\n      </TextField>\n    </Flex>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/sign-in-form.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;'use client';\n\nimport { Box, Button, Flex, Heading, Text } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\nimport { SignInFields } from './sign-in-fields';\n\n/**\n * Provides a sign-in form composition to copy and adapt. Submission is prevented\n * until the consuming application supplies its authentication behavior.\n *\n * @example\n * ```tsx\n * <SignInForm />\n * ```\n */\nexport function SignInForm() {\n  return (\n    <Flex justifyContent=\&#x22;center\&#x22;>\n      <Box flex=\&#x22;0 1 28rem\&#x22; padding=\&#x22;xl\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        <Flex\n          as=\&#x22;form\&#x22;\n          direction=\&#x22;column\&#x22;\n          gap=\&#x22;lg\&#x22;\n          onSubmit={function handleSubmit(event) {\n            event.preventDefault();\n          }}\n        >\n          <Heading level={2}>{signInCopy.title}</Heading>\n          <Text>{signInCopy.description}</Text>\n          <SignInFields />\n          <Button type=\&#x22;submit\&#x22; variant=\&#x22;primary\&#x22;>\n            {signInCopy.submitLabel}\n          </Button>\n        </Flex>\n      </Box>\n    </Flex>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;data/copy.ts&#x22;,&#x22;language&#x22;:&#x22;ts&#x22;,&#x22;source&#x22;:&#x22;export const signInCopy = {\n  title: 'Sign in to your account',\n  description: 'Use your email and password to continue.',\n  emailLabel: 'Email',\n  passwordLabel: 'Password',\n  submitLabel: 'Sign in'\n} as const;\n&#x22;},{&#x22;path&#x22;:&#x22;index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;export { SignInForm } from './components/sign-in-form';\n&#x22;}]}">
+  <Stories.Preview />
+</SiteBlockExplorer>
