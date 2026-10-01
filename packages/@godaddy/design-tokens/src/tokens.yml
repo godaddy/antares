@@ -196,15 +196,15 @@ color-action-border-control-pressed:
   $description: "Border for a form control when pressed or active."
 color-action-text-control-default:
   $type: color
-  $value: "#111111"
+  $value: "black"
   $description: "Label and icon color for a form control in the default state."
 color-action-text-control-hovered:
   $type: color
-  $value: "#111111"
+  $value: "black"
   $description: "Label and icon color for a form control when hovered or focused."
 color-action-text-control-pressed:
   $type: color
-  $value: "#111111"
+  $value: "black"
   $description: "Label and icon color for a form control when pressed or active."
 
 # --
@@ -236,15 +236,15 @@ color-action-border-overlay-pressed:
   $description: "Border for an overlay button when pressed or active."
 color-action-text-overlay-default:
   $type: color
-  $value: "#111111"
+  $value: "black"
   $description: "Label and icon color for an overlay button in the default state."
 color-action-text-overlay-hovered:
   $type: color
-  $value: "#111111"
+  $value: "black"
   $description: "Label and icon color for an overlay button when hovered or focused."
 color-action-text-overlay-pressed:
   $type: color
-  $value: "#111111"
+  $value: "black"
   $description: "Label and icon color for an overlay button when pressed or active."
 
 # --
@@ -276,15 +276,15 @@ color-action-border-option-pressed:
   $description: "Border for an option item when pressed or active."
 color-action-text-option-default:
   $type: color
-  $value: "#111111"
+  $value: "black"
   $description: "Label and icon color for an option item in the default state."
 color-action-text-option-hovered:
   $type: color
-  $value: "#111111"
+  $value: "black"
   $description: "Label and icon color for an option item when hovered or focused."
 color-action-text-option-pressed:
   $type: color
-  $value: "#111111"
+  $value: "black"
   $description: "Label and icon color for an option item when pressed or active."
 
 # --
@@ -316,15 +316,15 @@ color-action-border-selected-pressed:
   $description: "Border for a selected control when pressed or active."
 color-action-text-selected-default:
   $type: color
-  $value: "#111111"
+  $value: "black"
   $description: "Label and icon color for a selected control in the default state."
 color-action-text-selected-hovered:
   $type: color
-  $value: "#111111"
+  $value: "black"
   $description: "Label and icon color for a selected control when hovered or focused."
 color-action-text-selected-pressed:
   $type: color
-  $value: "#111111"
+  $value: "black"
   $description: "Label and icon color for a selected control when pressed or active."
 
 # --
