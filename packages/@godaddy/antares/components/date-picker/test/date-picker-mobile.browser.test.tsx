@@ -375,6 +375,22 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(year).toHaveValue('2027');
     });
 
+    it('updates month choices when navigating between Hebrew common and leap years', async function leapYear() {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample locale="en-US-u-ca-hebrew" />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      const year = screen.getByRole('textbox', { name: 'Year' });
+      await year.fill('5786');
+      await userEvent.keyboard('{Enter}');
+      await screen.getByRole('button', { name: 'Month' }).click();
+      expect(screen.getByRole('option').all()).toHaveLength(12);
+      await userEvent.keyboard('{Escape}');
+      await year.fill('5787');
+      await userEvent.keyboard('{Enter}');
+      await screen.getByRole('button', { name: 'Month' }).click();
+      expect(screen.getByRole('option').all()).toHaveLength(13);
+    });
+
     it('reveals controlled focus changes without selecting', async function controlledFocus() {
       await page.viewport(320, 768);
       const screen = await render(<MobileExample keepOpen focusedDate="2026-09-15" />);

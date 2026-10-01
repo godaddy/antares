@@ -14,7 +14,7 @@ import {
   getLocalTimeZone,
   toCalendar
 } from '@internationalized/date';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import {
   CalendarStateContext as RACCalendarStateContext,
   RangeCalendarStateContext as RACRangeCalendarStateContext,
@@ -80,7 +80,6 @@ interface MonthControlsProps {
 
 export function MonthControls({ date: displayDate, minValue, maxValue, onChange }: MonthControlsProps) {
   const { locale } = useLocale();
-  const [editingYear, setEditingYear] = useState<number | null>(null);
   const min = minValue && toCalendar(minValue, displayDate.calendar);
   const max = maxValue && toCalendar(maxValue, displayDate.calendar);
   const monthNames = useMemo(
@@ -90,7 +89,7 @@ export function MonthControls({ date: displayDate, minValue, maxValue, onChange 
         return formatter.format(displayDate.set({ month: index + 1, day: 1 }).toDate(getLocalTimeZone()));
       });
     },
-    [locale, displayDate]
+    [locale, displayDate.calendar.identifier, displayDate.era, displayDate.year]
   );
 
   const handleMonthChange = useCallback(
@@ -103,7 +102,6 @@ export function MonthControls({ date: displayDate, minValue, maxValue, onChange 
   const handleYearChange = useCallback(
     function handleYearChange(year: number) {
       if (Number.isFinite(year)) {
-        setEditingYear(year);
         onChange(displayDate.set({ year }));
       }
     },
@@ -136,15 +134,9 @@ export function MonthControls({ date: displayDate, minValue, maxValue, onChange 
       <NumberField
         aria-label="Year"
         formatOptions={{ useGrouping: false }}
-        value={editingYear ?? displayDate.year}
+        value={displayDate.year}
         minValue={min?.era === displayDate.era ? min.year : 1}
         maxValue={max?.era === displayDate.era ? max.year : displayDate.calendar.getYearsInEra(displayDate)}
-        onFocus={function beginEdit() {
-          setEditingYear(displayDate.year);
-        }}
-        onBlur={function finishEdit() {
-          setEditingYear(null);
-        }}
         onChange={handleYearChange}
         className={styles.yearField}
       >

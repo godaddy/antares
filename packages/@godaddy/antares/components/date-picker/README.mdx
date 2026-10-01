@@ -66,10 +66,11 @@ current viewport. An initially open server-rendered picker keeps its popover thr
 - `pageCount` sets the number of months in either presentation. Defaults: three in the drawer, one in a
   single-date popover, and two in a range popover. Scrolling stays within the current page. Navigation
   advances by a full page, or by one month with `pageBehavior="single"`.
-- Range selection and endpoint dragging follow React Aria. With the default `commitBehavior="select"`,
-  releasing a pointer on the calendar background or moving focus outside the calendar commits the
-  pending range. Set `commitBehavior="reset"` on `DateRangePickerCalendar` to restore the previous range
-  instead. Escape from a date cell cancels the pending selection.
+- Range selection and endpoint dragging follow React Aria. Drawers default to `commitBehavior="reset"`:
+  a calendar background press, focus leaving the calendar, or backdrop dismissal cancels a pending
+  range and preserves the previous value. Popovers default to `commitBehavior="select"`, which commits
+  the pending range on background press or blur. Set `commitBehavior` on `DateRangePickerCalendar` to
+  override either default. Escape from a date cell cancels the pending selection.
 - `shouldCloseOnSelect={false}` on the picker keeps either presentation open after a selection.
 
 ```tsx
