@@ -1,0 +1,70 @@
+---
+title: Card
+description: A surface that groups related content and actions.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './card.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+Card groups related content, like media, text, and actions, on a single surface. Use a primary
+action (`href` or `onPress`) or selection (`selection="checkbox"` or `selection="radio"`). If
+combined, `selection` takes precedence and `href` and `onPress` are ignored.
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Customization
+
+`CardSelectionIndicator` only shows the selection state. The Card owns the native checkbox or
+radio, so a selection Card keeps its keyboard stop and form value without an indicator. Pass
+non-interactive children or a selection-state render function to replace the default circle and
+icon. See the Checkbox example.
+
+To style the Card by state, target `[data-card-selected]` and `[data-disabled]` from your
+`className`.
+
+## Accessibility
+
+- Name an `onPress` action or selection with `aria-label` or `aria-labelledby`. The stretched
+  control and the selection input have no visible label of their own.
+- On a Card without a primary action or selection, `aria-label`, `aria-labelledby`, and
+  `aria-describedby` apply to the surface, for example with `role="region"`.
+- `href` renders the Card itself as a native link, named by its content unless you pass
+  `aria-label`. A link Card cannot contain controls, so do not put CornerActions, buttons,
+  inputs, or selection in an `href` Card. Clicking body text on an `onPress` or
+  selection Card activates it; dragging that text selects it.
+- `isDisabled` disables the primary action or selection and fades the Card. Controls you nest
+  inside keep their own disabled state. Required and invalid state belong on `CheckboxGroup` or
+  `RadioGroup`, and so does radio read-only state.
+
+## Props
+
+```tsx
+<Card>
+  <CornerActions>
+    <CardSelectionIndicator />
+  </CornerActions>
+
+  <Image />
+  <TextLockup />
+  {/* ... */}
+</Card>
+```
+
+### Card
+
+<ArgTypes of={Stories.Props} />
+
+### CardSelectionIndicator
+
+<ArgTypes of={Stories.CardSelectionIndicatorProps} />

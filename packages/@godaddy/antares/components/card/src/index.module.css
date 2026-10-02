@@ -1,0 +1,55 @@
+.card {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  border-radius: var(--size-radius-lg, var(--ux-2jubes, 6px));
+  color: inherit;
+  text-decoration: none;
+}
+
+/* A consumer-set elevation hands the surface chrome to Box. */
+.card:where(:not([data-elevation])) {
+  background: var(--color-surface-background-card, var(--ux-cao06b, #fff));
+  border: 1px solid var(--color-surface-border-card, var(--ux-97h3vl, #d4dbe0));
+  color: var(--color-surface-text-card, var(--ux-1leynsm, #111));
+}
+
+.card:where([data-hovered]) {
+  cursor: pointer;
+  box-shadow: var(--shadow-surface-card, 0 2px 8px rgba(17, 17, 17, 0.12));
+}
+
+.card:where([data-focus-visible], :has(> :where(.primary, .selection)[data-focus-visible])) {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+}
+
+.card:where([data-pressed], [data-card-selected]) {
+  border-color: var(--ux-8qoawt, #09757a);
+}
+
+.card:where([data-disabled]) {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Direct CornerActions sit in the padding box at the top-end. Nest them to keep them in flow. */
+.card > :where([data-corner-actions]) {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  padding-block-start: inherit;
+  padding-inline-end: inherit;
+}
+
+.primary,
+.selection {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+}
+
+.primary {
+  opacity: 0;
+}
