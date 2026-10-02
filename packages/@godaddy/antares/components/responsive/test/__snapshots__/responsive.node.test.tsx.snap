@@ -1,0 +1,59 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@godaddy/antares > #Responsive > publishes the agreed breakpoint widths and matching queries 1`] = `"<dl><dt>sm</dt><dd>40rem<!-- -->: <code>(min-width: 40rem)</code></dd><dt>md</dt><dd>48rem<!-- -->: <code>(min-width: 48rem)</code></dd><dt>lg</dt><dd>64rem<!-- -->: <code>(min-width: 64rem)</code></dd><dt>xl</dt><dd>80rem<!-- -->: <code>(min-width: 80rem)</code></dd></dl>"`;
+
+exports[`@godaddy/antares > #Responsive > renders the CSS container example 1`] = `
+"<style>
+        .responsive-container-example {
+          container: responsive-example / inline-size;
+          inline-size: 100%;
+        }
+
+        .responsive-container-example-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        @container responsive-example (min-width: 30rem) {
+          .responsive-container-example-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+      </style><div class="box responsive-container-example" style="max-inline-size:640px"><section aria-label="Container layout" class="box grid responsive-container-example-grid" style="gap:var(--sp-md)"><div class="box" style="padding:var(--sp-md)" data-elevation="card"><span class="text type typeText scaleMd">Account settings</span></div><div class="box" style="padding:var(--sp-md)" data-elevation="card"><span class="text type typeText scaleMd">Billing settings</span></div></section></div>"
+`;
+
+exports[`@godaddy/antares > #Responsive > renders the CSS viewport example 1`] = `
+"<style>
+        .responsive-viewport-example {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        @media (min-width: 64rem) {
+          .responsive-viewport-example {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+      </style><section aria-label="Viewport layout" class="box grid responsive-viewport-example" style="gap:var(--sp-md)"><div class="box" style="padding:var(--sp-md)" data-elevation="card"><span class="text type typeText scaleMd">Account settings</span></div><div class="box" style="padding:var(--sp-md)" data-elevation="card"><span class="text type typeText scaleMd">Billing settings</span></div></section>"
+`;
+
+exports[`@godaddy/antares > #Responsive > renders the form without choosing a viewport on the server 1`] = `
+"<style>
+        .responsive-form-example {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .responsive-form-example-field {
+          min-inline-size: 0;
+          overflow-wrap: anywhere;
+        }
+
+        @media (min-width: 64rem) {
+          .responsive-form-example {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+      </style><form aria-label="Account details" class="box grid responsive-form-example" style="gap:var(--sp-md)"><div data-interior="box" class="box flex column field scaleMd responsive-form-example-field" style="gap:var(--_size-gap)" data-rac=""><label class="label type typeLabel scaleMd" id="react-aria-_R_6H1_" for="react-aria-_R_6_">Account display name</label><input type="text" tabindex="0" id="react-aria-_R_6_" aria-labelledby="react-aria-_R_6H1_" aria-describedby="react-aria-_R_6H3_ react-aria-_R_6H4_" class="input box" data-rac="" name="displayName" value=""/><span class="text type typeText scaleMd" id="react-aria-_R_6H3_" slot="description">Use the name customers recognize on invoices and receipts.</span></div><div data-interior="box" class="box flex column field scaleMd responsive-form-example-field" style="gap:var(--_size-gap)" data-rac=""><label class="label type typeLabel scaleMd" id="react-aria-_R_aH1_" for="react-aria-_R_a_">Email</label><input type="email" tabindex="0" id="react-aria-_R_a_" aria-labelledby="react-aria-_R_aH1_" aria-describedby="react-aria-_R_aH3_ react-aria-_R_aH4_" class="input box" data-rac="" name="email" value=""/></div></form>"
+`;
+
+exports[`@godaddy/antares > #Responsive > renders the matching server fallback without a browser 1`] = `"<span class="text type typeText scaleMd" role="status">Matches</span>"`;
+
+exports[`@godaddy/antares > #Responsive > renders the non-matching server fallback without a browser 1`] = `"<span class="text type typeText scaleMd" role="status">Does not match</span>"`;

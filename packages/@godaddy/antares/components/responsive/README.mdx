@@ -1,0 +1,57 @@
+---
+title: Responsive
+description: Shared viewport breakpoints, native CSS patterns, and a media-query hook for responsive behavior.
+---
+
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './responsive.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Shared, mobile-first viewport widths and query strings.
+- Native CSS media and container queries for styling.
+- `useMediaQuery` for media-dependent React behavior, with an explicit server fallback.
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Customization
+
+Exports are available from `@godaddy/antares` and `@godaddy/antares/Responsive`. Pass any valid
+media-query string to `useMediaQuery`, including device preferences such as reduced motion.
+Viewport widths describe available space; each component chooses the thresholds it needs.
+In media queries, `rem` uses the browser's initial font size.
+
+The examples include their CSS in `<style>` blocks so the complete code is visible. Applications can
+place those rules in their own stylesheets. Let responsive CSS own both the base and query values
+for a property; leave its corresponding layout prop and inline `style` unset. Normal cascade rules
+still apply. A named container controls its descendants; portaled content needs a suitable
+container in its own DOM ancestry. A container can't take its width from its content, so give it one
+from its parent, as the container example does with `inline-size: 100%`. Otherwise it collapses in flex
+rows and other shrink-to-fit layouts.
+
+## Server rendering
+
+Use the same `ssrMatch` value on the server and client. It is returned on the server, during initial
+hydration, and when `matchMedia` is unavailable. After hydration the hook adopts the browser result;
+client-only rendering uses it immediately. Changing the query replaces the subscription, and
+unmounting removes it.
+
+## Accessibility
+
+Preserve reading order, keyboard focus, and entered values as layouts change. If a component swaps
+React trees, it must manage state and focus across that transition. Validate its chosen behavior
+with long text, RTL, narrow widths, text enlargement, and browser zoom. Resizing the viewport alone
+does not test every effect of zoom. Use pointer and hover media features to detect input capabilities.
+
+## API
+
+```ts
+useMediaQuery(query: string, options: { ssrMatch: boolean }): boolean
+```
+
+Breakpoint values are listed in the Breakpoints example above. Types: `ViewportBreakpoint` and `UseMediaQueryOptions`.
