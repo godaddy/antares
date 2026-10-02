@@ -92,6 +92,158 @@ Any bundler that supports CSS imports will work with Antares. If your bundler do
 <ComponentCards />
 
 
+# Accordion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Single or multiple expanded sections.
+* Controlled and uncontrolled group state.
+* Group-level disabled state.
+* Composable sections using Collapsible and CollapsiblePanel.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### One section at a time [#one-section-at-a-time]
+
+Let people explore short answers one at a time.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Accordion,\n  Collapsible,\n  CollapsiblePanel,\n  Heading,\n  Text,\n  Button,\n  Icon,\n  type AccordionProps\n} from '@godaddy/antares';\n\nexport function DefaultExample({\n  defaultExpandedKeys = ['domains']\n}: Pick<AccordionProps, 'defaultExpandedKeys'> = {}) {\n  return (\n    <Accordion allowsMultipleExpanded={false} defaultExpandedKeys={defaultExpandedKeys}>\n      <Collapsible id=\&#x22;domains\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Can I transfer my domain?</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>\n          <Text>Yes. Start your transfer from the Domains page.</Text>\n        </CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;renewal\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>How does renewal work?</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>\n          <Text>Enable automatic renewal in your account settings.</Text>\n        </CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;privacy\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Is domain privacy included?</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Domain privacy helps keep your personal contact information private.</CollapsiblePanel>\n      </Collapsible>\n    </Accordion>\n  );\n}&#x22;" />
+
+### Multiple sections open [#multiple-sections-open]
+
+Keep related answers visible together when people need to compare information.
+
+<Story of="MultipleExample" />
+
+<Source language="tsx" code="&#x22;import { Accordion, Button, Collapsible, CollapsiblePanel, Heading, Icon, Text } from '@godaddy/antares';\n\nexport function MultipleExample() {\n  return (\n    <Accordion allowsMultipleExpanded defaultExpandedKeys={['shipping', 'returns']}>\n      <Collapsible id=\&#x22;shipping\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Shipping</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Most orders arrive within two business days.</CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;returns\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Returns</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Return eligible items within thirty days.</CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;tracking\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Tracking</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Track your order from the confirmation email.</CollapsiblePanel>\n      </Collapsible>\n    </Accordion>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Coordinate expanded sections with application state in either expansion mode.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Accordion,\n  Button,\n  Collapsible,\n  CollapsiblePanel,\n  Flex,\n  Heading,\n  Text,\n  Icon,\n  type AccordionProps\n} from '@godaddy/antares';\n\nexport function ControlledExample({\n  onChange,\n  allowsMultipleExpanded = false\n}: {\n  onChange?: AccordionProps['onExpandedChange'];\n  allowsMultipleExpanded?: boolean;\n} = {}) {\n  const [keys, setKeys] = useState<Set<string | number>>(new Set(['account']));\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Button onPress={() => setKeys(new Set())}>Close all sections</Button>\n      <Text>Open panels: {[...keys].join(', ') || 'none'}</Text>\n      <Accordion\n        allowsMultipleExpanded={allowsMultipleExpanded}\n        expandedKeys={keys}\n        onExpandedChange={function handleExpandedChange(next) {\n          setKeys(next);\n          onChange?.(next);\n        }}\n      >\n        <Collapsible id=\&#x22;account\&#x22;>\n          <Heading>\n            <Button slot=\&#x22;trigger\&#x22;>\n              <Text>Account</Text>\n              <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n            </Button>\n          </Heading>\n          <CollapsiblePanel>Manage your account information.</CollapsiblePanel>\n        </Collapsible>\n        <Collapsible id=\&#x22;billing\&#x22;>\n          <Heading>\n            <Button slot=\&#x22;trigger\&#x22;>\n              <Text>Billing</Text>\n              <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n            </Button>\n          </Heading>\n          <CollapsiblePanel>Manage payment methods.</CollapsiblePanel>\n        </Collapsible>\n        <Collapsible id=\&#x22;notifications\&#x22;>\n          <Heading>\n            <Button slot=\&#x22;trigger\&#x22;>\n              <Text>Notifications</Text>\n              <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n            </Button>\n          </Heading>\n          <CollapsiblePanel>Choose how you receive account updates.</CollapsiblePanel>\n        </Collapsible>\n      </Accordion>\n    </Flex>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Keep unavailable options visible and explain the reason in their label.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Accordion, Collapsible, CollapsiblePanel, Heading, Button, Icon, Text } from '@godaddy/antares';\n\nexport function DisabledExample({ isGroupDisabled = false }: { isGroupDisabled?: boolean } = {}) {\n  return (\n    <Accordion isDisabled={isGroupDisabled}>\n      <Collapsible id=\&#x22;basic\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Basic plan</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Features included with your plan.</CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;premium\&#x22; isDisabled>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Premium plan (Upgrade required)</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Additional premium features.</CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;enterprise\&#x22; isDisabled>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Enterprise plan (Contact sales)</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Contact our sales team for a plan tailored to your business.</CollapsiblePanel>\n      </Collapsible>\n    </Accordion>\n  );\n}&#x22;" />
+
+### Form Steps [#form-steps]
+
+Break a single-page form into steps while keeping entered values mounted.
+
+<Story of="FormStepsExample" />
+
+<Source language="tsx" code="&#x22;import { useRef, useState } from 'react';\nimport {\n  Accordion,\n  Button,\n  Collapsible,\n  CollapsiblePanel,\n  Flex,\n  Heading,\n  Input,\n  Label,\n  TextField,\n  Icon,\n  Text\n} from '@godaddy/antares';\n\nexport function FormStepsExample() {\n  const [keys, setKeys] = useState<Set<string | number>>(new Set(['contact']));\n  const paymentTrigger = useRef<HTMLButtonElement>(null);\n  return (\n    <Accordion allowsMultipleExpanded={false} expandedKeys={keys} onExpandedChange={setKeys}>\n      <Collapsible id=\&#x22;contact\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Contact details</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>\n          <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n            <TextField>\n              <Label>Name</Label>\n              <Input />\n            </TextField>\n            <Button\n              onPress={function continueToPayment() {\n                paymentTrigger.current?.focus();\n                setKeys(new Set(['payment']));\n              }}\n            >\n              Continue to payment\n            </Button>\n          </Flex>\n        </CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;payment\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22; ref={paymentTrigger}>\n            <Text>Payment details</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Review your payment details before submitting.</CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;review\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Review and submit</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Check your contact and payment details before submitting.</CollapsiblePanel>\n      </Collapsible>\n    </Accordion>\n  );\n}&#x22;" />
+
+### Nested [#nested]
+
+Nested sections keep independent state. Prefer a flatter structure when possible.
+
+<Story of="NestedExample" />
+
+<Source language="tsx" code="&#x22;import { Accordion, Collapsible, CollapsiblePanel, Heading, Button, Icon, Text } from '@godaddy/antares';\n\nexport function NestedExample() {\n  return (\n    <Accordion defaultExpandedKeys={['outer']}>\n      <Collapsible id=\&#x22;outer\&#x22;>\n        <Heading level={2}>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Outer question</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>\n          <Collapsible>\n            <Heading>\n              <Button slot=\&#x22;trigger\&#x22;>\n                <Text>Independent detail</Text>\n                <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n              </Button>\n            </Heading>\n            <CollapsiblePanel>Independent answer.</CollapsiblePanel>\n          </Collapsible>\n          <Accordion>\n            <Collapsible id=\&#x22;inner\&#x22;>\n              <Heading>\n                <Button slot=\&#x22;trigger\&#x22;>\n                  <Text>Inner question</Text>\n                  <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n                </Button>\n              </Heading>\n              <CollapsiblePanel>Inner answer.</CollapsiblePanel>\n            </Collapsible>\n          </Accordion>\n        </CollapsiblePanel>\n      </Collapsible>\n    </Accordion>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Compose related `Collapsible` sections inside Accordion. Give each section a stable, unique `id`.
+See the Collapsible component documentation for more information about section anatomy, panel content, and trigger styling.
+
+Use `defaultExpandedKeys` for initial expansion, or `expandedKeys` with `onExpandedChange` for
+controlled state. Keys must match the section IDs; the callback receives a `Set` of expanded keys.
+By default, only one section can stay open. Set `allowsMultipleExpanded` to keep several open.
+Both behaviors are shown in the examples.
+
+Use `className` and `style` to customize the group container. `data-disabled` reflects the group's
+disabled state. Customize individual headings, triggers, and panels on the composed Collapsible sections.
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key                   | Action                                                        |
+| --------------------- | ------------------------------------------------------------- |
+| `Tab` / `Shift + Tab` | Move between enabled triggers and controls in expanded panels |
+| `Enter` / `Space`     | Toggle the focused section; focus stays on the trigger        |
+
+### ARIA [#aria]
+
+* Each section's trigger is a native button with `aria-expanded` and `aria-controls` linked to its panel.
+* Each panel is labeled by its trigger through `aria-labelledby` automatically.
+
+## Best Practices [#best-practices]
+
+* Group related sections and keep essential information visible outside the accordion.
+* Use descriptive section titles and heading levels that fit the page hierarchy.
+* Use multiple expansion when users need to compare information across sections.
+* Keep item IDs stable when reordering or filtering data.
+* Manage expansion on Accordion when sections belong to a group.
+* Keep form validation and step progression in application logic.
+
+## Troubleshooting [#troubleshooting]
+
+### Controlled State Not Updating [#controlled-state-not-updating]
+
+Update `expandedKeys` from `onExpandedChange` and make sure the keys match the item IDs.
+Changing `defaultExpandedKeys` after mounting does not control expansion.
+
+### Sections Close When Another Opens [#sections-close-when-another-opens]
+
+Enable `allowsMultipleExpanded` when several sections should remain open together.
+For a single independent section, use Collapsible without an Accordion.
+
+## Props [#props]
+
+```tsx
+<Accordion>
+  <Collapsible>
+    <Heading>
+      <Button slot="trigger">
+        <Text />
+        <Icon slot="indicator" />
+      </Button>
+    </Heading>
+    <CollapsiblePanel>{/* ... */}</CollapsiblePanel>
+  </Collapsible>
+</Accordion>;
+```
+
+<PropTable />
+
+
 # Alert
 
 
@@ -1296,6 +1448,246 @@ For a menu trigger, the button and menu are composed as siblings inside
 <PropTable />
 
 
+# CircularProgress
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A basic determinate progress indicator with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Indeterminate [#indeterminate]
+
+Use indeterminate progress while preparing an upload whose total size is unknown.
+Once the total is known, set `isIndeterminate` to false and supply a measured value.
+
+<Story of="IndeterminateExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, type CircularProgressProps } from '@godaddy/antares';\n\nexport function IndeterminateExample(props: CircularProgressProps) {\n  return (\n    <CircularProgress label=\&#x22;Preparing upload…\&#x22; helperText=\&#x22;Calculating the total size\&#x22; isIndeterminate {...props} />\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+## Props [#props]
+
+### CircularProgress [#circularprogress]
+
+<PropTable />
+
+
+# Collapsible
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Independent sections with controlled or uncontrolled expansion.
+* Composed headings, optional status icons, and flexible panel content.
+* Persistent panel content when collapsed.
+* Accessible keyboard interaction and button-to-panel relationships powered by React Aria Components.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Reveal optional details without an Accordion group.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Collapsible, CollapsiblePanel, Heading, Button, Icon, Text } from '@godaddy/antares';\n\nexport function DefaultExample({ defaultExpanded = false }: { defaultExpanded?: boolean } = {}) {\n  return (\n    <Collapsible defaultExpanded={defaultExpanded}>\n      <Heading level={2}>\n        <Button slot=\&#x22;trigger\&#x22;>\n          <Text>Advanced settings</Text>\n          <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n        </Button>\n      </Heading>\n      <CollapsiblePanel role=\&#x22;region\&#x22;>Configure additional options here.</CollapsiblePanel>\n    </Collapsible>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Control a section from application state or an external action.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Collapsible, CollapsiblePanel, Heading, Icon, Text, Flex } from '@godaddy/antares';\n\nexport function ControlledExample({ onChange }: { onChange?: (isExpanded: boolean) => void } = {}) {\n  const [isExpanded, setIsExpanded] = useState(false);\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Button onPress={() => setIsExpanded((value) => !value)}>Toggle details externally</Button>\n      <Collapsible\n        isExpanded={isExpanded}\n        onExpandedChange={function handleExpandedChange(value) {\n          setIsExpanded(value);\n          onChange?.(value);\n        }}\n      >\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Account details</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Your account details.</CollapsiblePanel>\n      </Collapsible>\n    </Flex>\n  );\n}&#x22;" />
+
+### With Status [#with-status]
+
+Pair a status icon with text so completion is understandable without the icon.
+
+<Story of="WithStatusExample" />
+
+<Source language="tsx" code="&#x22;import { Collapsible, CollapsiblePanel, Heading, Icon, Text, Button } from '@godaddy/antares';\n\nexport function WithStatusExample() {\n  return (\n    <Collapsible defaultExpanded>\n      <Heading>\n        <Button slot=\&#x22;trigger\&#x22;>\n          <Icon icon=\&#x22;checkmark\&#x22; />\n          <Text>Contact details (Completed)</Text>\n          <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n        </Button>\n      </Heading>\n      <CollapsiblePanel>Your contact details have been saved.</CollapsiblePanel>\n    </Collapsible>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Keep unavailable details disabled, including when their content starts visible.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Collapsible, CollapsiblePanel, Heading, Button, Icon, Text } from '@godaddy/antares';\n\nexport function DisabledExample({ defaultExpanded = false }: { defaultExpanded?: boolean } = {}) {\n  return (\n    <Collapsible isDisabled defaultExpanded={defaultExpanded}>\n      <Heading>\n        <Button slot=\&#x22;trigger\&#x22;>\n          <Text>Unavailable settings</Text>\n          <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n        </Button>\n      </Heading>\n      <CollapsiblePanel>These settings are currently unavailable.</CollapsiblePanel>\n    </Collapsible>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Place a `Heading` containing `Button slot="trigger"` inside Collapsible, followed by CollapsiblePanel.
+Add an `Icon slot="indicator"` inside the button for the expansion indicator. The panel accepts text,
+links, forms, and other components.
+
+CollapsiblePanel provides the content spacing automatically. Use `contentProps` to customize its
+inner container with Box spacing props, a class name, or styles:
+
+```tsx
+<CollapsiblePanel contentProps={{ padding: 'sm' }}>
+  Additional information.
+</CollapsiblePanel>
+```
+
+Use `contentProps={{ padding: '0' }}` for content without padding. Props supplied directly to
+CollapsiblePanel, including `className`, `style`, and `ref`, apply to the outer panel.
+
+Use `defaultExpanded` for initial expansion, or `isExpanded` with `onExpandedChange` for controlled
+state. The callback receives a boolean. Use the Accordion component to coordinate several sections;
+in that composition, manage expansion through the group.
+
+Use `className` and `style` to customize each component. Button supports string or state-based
+`className` values. Components expose these data attributes for state-based styling:
+
+* `Collapsible`: `data-expanded`, `data-disabled`, and `data-focus-visible-within`.
+* Trigger `Button`: `data-hovered`, `data-pressed`, `data-focus-visible`, and `data-disabled`.
+* `CollapsiblePanel`: `data-focus-visible-within`.
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key                   | Action                                                              |
+| --------------------- | ------------------------------------------------------------------- |
+| `Tab` / `Shift + Tab` | Move between the enabled trigger and controls in the expanded panel |
+| `Enter` / `Space`     | Toggle the section; focus stays on the trigger                      |
+
+### ARIA [#aria]
+
+* `Button slot="trigger"` renders a native button with `aria-expanded` for its open state and
+  `aria-controls` linked to the panel automatically.
+* `CollapsiblePanel` is labeled by its trigger through `aria-labelledby` automatically.
+* `CollapsiblePanel` uses `role="group"` by default. Keep it when the panel's content does not need
+  a navigation landmark; there is no need to set it explicitly.
+* Set `role="region"` on `CollapsiblePanel` when its content warrants a named landmark
+  for direct screen-reader navigation.
+* Collapsed content stays mounted but is excluded from keyboard and screen-reader navigation.
+* `Icon slot="indicator"` is decorative and receives `aria-hidden="true"` automatically.
+
+## Best Practices [#best-practices]
+
+* Use descriptive section titles and keep essential information visible.
+* Choose heading levels that fit the page hierarchy and avoid deeply nested sections.
+* Include text for status icons so their meaning is available to screen readers.
+* Put links, forms, and actions inside the panel.
+* Open the panel before moving focus to an input that needs attention.
+
+## Troubleshooting [#troubleshooting]
+
+### Controlled State Not Updating [#controlled-state-not-updating]
+
+Update `isExpanded` from `onExpandedChange`. Changing `defaultExpanded` after mounting does not
+control expansion. Inside Accordion, update the group's `expandedKeys` instead.
+
+### Trigger Not Expanding the Panel [#trigger-not-expanding-the-panel]
+
+Place `Button slot="trigger"` inside the section's Heading. A Button without that slot acts
+independently and does not toggle the section.
+
+### Input Values Persist After Closing [#input-values-persist-after-closing]
+
+Panel content stays mounted when collapsed. Reset form state explicitly when the application requires it.
+
+## Props [#props]
+
+```tsx
+<Collapsible>
+  <Heading>
+    <Button slot="trigger">
+      <Text />
+      <Icon slot="indicator" />
+    </Button>
+  </Heading>
+  <CollapsiblePanel>{/* ... */}</CollapsiblePanel>
+</Collapsible>;
+```
+
+### Collapsible [#collapsible]
+
+<PropTable />
+
+### CollapsiblePanel [#collapsiblepanel]
+
+<PropTable />
+
+
 # DatePicker
 
 
@@ -1506,84 +1898,6 @@ size scope.
 <PropTable />
 
 ### DateRangePickerValue [#daterangepickervalue]
-
-<PropTable />
-
-
-# CircularProgress
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A basic determinate progress indicator with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
-
-<Story of="EmphasisExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Indeterminate [#indeterminate]
-
-Use indeterminate progress while preparing an upload whose total size is unknown.
-Once the total is known, set `isIndeterminate` to false and supply a measured value.
-
-<Story of="IndeterminateExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, type CircularProgressProps } from '@godaddy/antares';\n\nexport function IndeterminateExample(props: CircularProgressProps) {\n  return (\n    <CircularProgress label=\&#x22;Preparing upload…\&#x22; helperText=\&#x22;Calculating the total size\&#x22; isIndeterminate {...props} />\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value (clamped to 0–100)
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-* `aria-describedby` wires the `helperText` to the progressbar for screen readers
-* The decorative SVG and output text are hidden via `aria-hidden="true"`
-
-## Props [#props]
-
-### CircularProgress [#circularprogress]
 
 <PropTable />
 
@@ -1823,6 +2137,45 @@ The button's accessible name is built from two sources, combined in order:
 <PropTable />
 
 
+# FieldError
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Shown when the parent field is invalid (`isInvalid` or native constraint validation).
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+FieldError renders when the field is invalid.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { FieldError, Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### FieldError [#fielderror]
+
+<PropTable />
+
+
 # FileTrigger
 
 
@@ -1885,45 +2238,6 @@ Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow m
 <PropTable />
 
 
-# FieldError
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Shown when the parent field is invalid (`isInvalid` or native constraint validation).
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-FieldError renders when the field is invalid.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { FieldError, Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### FieldError [#fielderror]
-
-<PropTable />
-
-
 # Heading
 
 
@@ -1976,53 +2290,6 @@ Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatic
 ## Props [#props]
 
 ### Heading [#heading]
-
-<PropTable />
-
-
-# Image
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders a native `<img>` and accepts all of its attributes
-* Inherits presentation and behavior when composed inside Antares components such as Avatar
-* Ships no default styles, loading state, or fallback so it stays predictable everywhere
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Render an image with alternative text and explicit dimensions.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-* Provide concise, meaningful `alt` text when the image conveys information.
-* Use `alt=""` for decorative images or images already described by adjacent text.
-* Set `width` and `height` when known to reserve space and reduce layout shift.
-
-## Props [#props]
-
-### Image [#image]
 
 <PropTable />
 
@@ -2437,6 +2704,53 @@ For performance optimization:
 1. **Preload common icons**: Consider preloading frequently used icons
 2. **Use sprite mode**: For repeated icons, consider sprite mode which consolidates multiple icons into a single SVG sprite sheet, reducing DOM size and improving performance when the same icon appears multiple times
 3. **Minimize icon sets**: Only load icons that are actually used
+
+
+# Image
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders a native `<img>` and accepts all of its attributes
+* Inherits presentation and behavior when composed inside Antares components such as Avatar
+* Ships no default styles, loading state, or fallback so it stays predictable everywhere
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Render an image with alternative text and explicit dimensions.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+* Provide concise, meaningful `alt` text when the image conveys information.
+* Use `alt=""` for decorative images or images already described by adjacent text.
+* Set `width` and `height` when known to reserve space and reduce layout shift.
+
+## Props [#props]
+
+### Image [#image]
+
+<PropTable />
 
 
 # Input
@@ -5438,158 +5752,6 @@ TextArea inside TextField.
 <PropTable />
 
 
-# TextLockup
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Six coordinated sizes, from a `2xl` page title down to `xs`
-* An eyebrow that takes plain text or a `Tag`, sized to match the lockup
-* Slotted parts, so nested components keep their own type
-* Any heading level, chosen independently of the visual size
-* Start or center alignment
-* A legible line-length clamp, on by default
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A lockup stacks an optional eyebrow, a title and body text as one coordinated type
-group. You supply the parts, so the title can be any heading level and the body any
-number of paragraphs; `size` sets the tier for all of them at once.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextLockup>\n      <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n      <Heading slot=\&#x22;title\&#x22;>Text Lockup</Heading>\n      <Text slot=\&#x22;body\&#x22;>\n        She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n      </Text>\n    </TextLockup>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-`size` sets every part, each on its own role ramp. Without it, the lockup follows the size
-scope.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup, type TextLockupSize } from '@godaddy/antares';\n\nconst SIZES: TextLockupSize[] = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      {SIZES.map(function renderSize(size) {\n        return (\n          <TextLockup key={size} size={size}>\n            <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n            <Heading slot=\&#x22;title\&#x22;>Text Lockup</Heading>\n            <Text slot=\&#x22;body\&#x22;>\n              She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n            </Text>\n          </TextLockup>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
-
-### Tag Eyebrow [#tag-eyebrow]
-
-The eyebrow takes either plain text or a `Tag`. Both use `slot="eyebrow"`, so the two
-forms swap freely, and the lockup pairs the tag's `size` with its own.
-
-<Story of="TagEyebrowExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function TagEyebrowExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <TextLockup size=\&#x22;xl\&#x22;>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n          New\n        </Tag>\n        <Heading slot=\&#x22;title\&#x22;>Tag eyebrow</Heading>\n        <Text slot=\&#x22;body\&#x22;>The tag is sized to match the lockup, so changing `size` keeps them in step.</Text>\n      </TextLockup>\n\n      <TextLockup size=\&#x22;sm\&#x22;>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n          New\n        </Tag>\n        <Heading slot=\&#x22;title\&#x22;>The same lockup, smaller</Heading>\n        <Text slot=\&#x22;body\&#x22;>The tag steps down with it.</Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
-
-### Alignment [#alignment]
-
-`align` centers the parts as well as the text, so a `Tag` eyebrow stays centered too.
-
-<Story of="AlignmentExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <TextLockup align=\&#x22;start\&#x22;>\n        <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n        <Heading slot=\&#x22;title\&#x22;>Start aligned</Heading>\n        <Text slot=\&#x22;body\&#x22;>\n          She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n        </Text>\n      </TextLockup>\n\n      <TextLockup align=\&#x22;center\&#x22;>\n        <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n        <Heading slot=\&#x22;title\&#x22;>Center aligned</Heading>\n        <Text slot=\&#x22;body\&#x22;>\n          She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n        </Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
-
-### Legible Lines [#legible-lines]
-
-The text parts are constrained to a comfortable line length by default. Set
-`legibleLines={false}` to let them run the full width of their container, which suits a
-lockup already inside a narrow column. Both lockups below share one wide container, so the
-clamp is what makes the first one narrower.
-
-<Story of="LegibleLinesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';\n\nconst COPY =\n  'She expressed her gratitude again, but it was too painful a subject to be dwelt on farther. ' +\n  'Elizabeth was pleased to find that he had not betrayed the interference of his friend, and she ' +\n  'was glad of it, for she could not have borne the reflection.';\n\nexport function LegibleLinesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; style={{ inlineSize: '46rem', maxInlineSize: '100%' }}>\n      <TextLockup>\n        <Heading slot=\&#x22;title\&#x22;>Constrained by default</Heading>\n        <Text slot=\&#x22;body\&#x22;>{COPY}</Text>\n      </TextLockup>\n\n      <TextLockup legibleLines={false}>\n        <Heading slot=\&#x22;title\&#x22;>Full width</Heading>\n        <Text slot=\&#x22;body\&#x22;>{COPY}</Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
-
-### With Actions [#with-actions]
-
-Because you compose the parts, anything else can sit alongside them — a call to action
-here. Controls keep their own type: the buttons are unaffected by the lockup's `size`.
-
-<Story of="WithActionsExample" />
-
-<Source language="tsx" code="&#x22;import { Button, ButtonGroup, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function WithActionsExample() {\n  return (\n    <TextLockup size=\&#x22;xl\&#x22;>\n      <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n        Pro\n      </Tag>\n      <Heading slot=\&#x22;title\&#x22; level={1}>\n        Upgrade your plan\n      </Heading>\n      <Text slot=\&#x22;body\&#x22;>Unlock advanced reporting, priority support, and unlimited seats for your whole team.</Text>\n      <ButtonGroup inlinePadding=\&#x22;0\&#x22; blockPadding=\&#x22;0\&#x22;>\n        <Button variant=\&#x22;primary\&#x22;>Upgrade</Button>\n        <Button variant=\&#x22;secondary\&#x22;>Compare plans</Button>\n      </ButtonGroup>\n    </TextLockup>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-`TextLockup` positions and type-sets its parts; you supply them. That means anything else can
-sit alongside them — a call to action, a second paragraph, an image — without the component
-growing a prop for it.
-
-* **Every part names its role with a slot**: `eyebrow`, `title`, `body`. Unslotted text follows
-  the lockup's tier too: a bare `Heading` takes the title tier and a bare `Text` the body tier.
-* **The eyebrow is `slot="eyebrow"`**, on either a `Text` or a `Tag`. The two forms swap
-  freely, and a `Tag` is sized to pair with the lockup.
-* **The title is `<Heading slot="title">`.** Pick the level from the document outline, not the
-  visual size: `size` handles the visuals, so `level={1}` in an `xs` lockup is perfectly valid.
-* **The body is `<Text slot="body">`**, once or as many times as the copy needs.
-* **An explicit prop on a child always wins** over what the lockup supplies. Pass
-  `<Tag slot="eyebrow" size="sm">` to break the pairing, for instance.
-* **Controls keep the scale size.** A `Button` inside a lockup follows the surrounding
-  `SizeProvider` or its own `size` prop, never the lockup's tier.
-* **`size` is the tier.** The eyebrow reads it on the `detail` ramp, the title on `heading`, and
-  the body on `body`, so there is no table to memorize. Without `size`, the lockup follows the
-  surrounding size scope. A tier is the same at every container width.
-* Pass `className` to extend the styles, or select on `[data-align]`.
-
-## Accessibility [#accessibility]
-
-* The title carries the heading semantics. Choose `level` so the page outline stays correct
-  rather than to achieve a size.
-* Slots resolve against the lockup, so `slot="title"` names the lockup's title, not an outer
-  container's. Inside a
-  `Modal`, `Drawer` or `Popover`, give the dialog its own `<Heading slot="title">` as a direct
-  child for the accessible name, and use the lockup for the body.
-* The eyebrow is decorative in most designs. If it carries meaning, make sure the title still
-  reads sensibly on its own, since screen reader users often navigate by heading.
-
-## Best Practices [#best-practices]
-
-* Use one `2xl` lockup per page at most — it is the page title.
-* Keep `legibleLines` on for running prose. Turn it off only when the lockup already sits in a
-  narrow column, where the clamp does nothing but complicate the layout.
-* Prefer a `Tag` eyebrow for status or category, and plain text for a kicker or section label.
-* Reach for `MetricsLockup` instead when the emphasis is a single number rather than prose.
-
-## Props [#props]
-
-```tsx
-<TextLockup>
-  <Tag slot="eyebrow" />
-  <Heading slot="title" />
-  <Text slot="body" />
-  {/* ... */}
-</TextLockup>
-```
-
-### TextLockup [#textlockup]
-
-<PropTable />
-
-
 # TextField
 
 
@@ -5710,6 +5872,10 @@ Compose a telephone number input paired with a country-code select.
 <Story of="TelephoneFieldExample" />
 
 <Source language="tsx" code="&#x22;import { Button, Group, Input, Label, Select, SelectItem, SelectOptions, Text, TextField } from '@godaddy/antares';\n\nexport function TelephoneFieldExample() {\n  return (\n    <TextField autoComplete=\&#x22;tel-national\&#x22; inputMode=\&#x22;tel\&#x22; type=\&#x22;tel\&#x22;>\n      <Label>Phone number</Label>\n      <Group>\n        <Select aria-label=\&#x22;Country code\&#x22; defaultValue=\&#x22;us\&#x22; variant=\&#x22;control\&#x22;>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>US +1</SelectItem>\n            <SelectItem id=\&#x22;mx\&#x22;>MX +52</SelectItem>\n            <SelectItem id=\&#x22;gb\&#x22;>GB +44</SelectItem>\n          </SelectOptions>\n        </Select>\n        <Input placeholder=\&#x22;555-555-5555\&#x22; />\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>We'll only call about your order.</Text>\n    </TextField>\n  );\n}&#x22;" />
+
+## Blocks [#blocks]
+
+[sign-in-form](/docs/blocks/sign-in-form)
 
 ## Props [#props]
 
@@ -6003,6 +6169,158 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 <PropTable />
 
 ### ToggleButton [#togglebutton]
+
+<PropTable />
+
+
+# TextLockup
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Six coordinated sizes, from a `2xl` page title down to `xs`
+* An eyebrow that takes plain text or a `Tag`, sized to match the lockup
+* Slotted parts, so nested components keep their own type
+* Any heading level, chosen independently of the visual size
+* Start or center alignment
+* A legible line-length clamp, on by default
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A lockup stacks an optional eyebrow, a title and body text as one coordinated type
+group. You supply the parts, so the title can be any heading level and the body any
+number of paragraphs; `size` sets the tier for all of them at once.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextLockup>\n      <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n      <Heading slot=\&#x22;title\&#x22;>Text Lockup</Heading>\n      <Text slot=\&#x22;body\&#x22;>\n        She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n      </Text>\n    </TextLockup>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+`size` sets every part, each on its own role ramp. Without it, the lockup follows the size
+scope.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup, type TextLockupSize } from '@godaddy/antares';\n\nconst SIZES: TextLockupSize[] = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      {SIZES.map(function renderSize(size) {\n        return (\n          <TextLockup key={size} size={size}>\n            <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n            <Heading slot=\&#x22;title\&#x22;>Text Lockup</Heading>\n            <Text slot=\&#x22;body\&#x22;>\n              She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n            </Text>\n          </TextLockup>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+
+### Tag Eyebrow [#tag-eyebrow]
+
+The eyebrow takes either plain text or a `Tag`. Both use `slot="eyebrow"`, so the two
+forms swap freely, and the lockup pairs the tag's `size` with its own.
+
+<Story of="TagEyebrowExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function TagEyebrowExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <TextLockup size=\&#x22;xl\&#x22;>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n          New\n        </Tag>\n        <Heading slot=\&#x22;title\&#x22;>Tag eyebrow</Heading>\n        <Text slot=\&#x22;body\&#x22;>The tag is sized to match the lockup, so changing `size` keeps them in step.</Text>\n      </TextLockup>\n\n      <TextLockup size=\&#x22;sm\&#x22;>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n          New\n        </Tag>\n        <Heading slot=\&#x22;title\&#x22;>The same lockup, smaller</Heading>\n        <Text slot=\&#x22;body\&#x22;>The tag steps down with it.</Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
+
+### Alignment [#alignment]
+
+`align` centers the parts as well as the text, so a `Tag` eyebrow stays centered too.
+
+<Story of="AlignmentExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <TextLockup align=\&#x22;start\&#x22;>\n        <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n        <Heading slot=\&#x22;title\&#x22;>Start aligned</Heading>\n        <Text slot=\&#x22;body\&#x22;>\n          She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n        </Text>\n      </TextLockup>\n\n      <TextLockup align=\&#x22;center\&#x22;>\n        <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n        <Heading slot=\&#x22;title\&#x22;>Center aligned</Heading>\n        <Text slot=\&#x22;body\&#x22;>\n          She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n        </Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
+
+### Legible Lines [#legible-lines]
+
+The text parts are constrained to a comfortable line length by default. Set
+`legibleLines={false}` to let them run the full width of their container, which suits a
+lockup already inside a narrow column. Both lockups below share one wide container, so the
+clamp is what makes the first one narrower.
+
+<Story of="LegibleLinesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';\n\nconst COPY =\n  'She expressed her gratitude again, but it was too painful a subject to be dwelt on farther. ' +\n  'Elizabeth was pleased to find that he had not betrayed the interference of his friend, and she ' +\n  'was glad of it, for she could not have borne the reflection.';\n\nexport function LegibleLinesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; style={{ inlineSize: '46rem', maxInlineSize: '100%' }}>\n      <TextLockup>\n        <Heading slot=\&#x22;title\&#x22;>Constrained by default</Heading>\n        <Text slot=\&#x22;body\&#x22;>{COPY}</Text>\n      </TextLockup>\n\n      <TextLockup legibleLines={false}>\n        <Heading slot=\&#x22;title\&#x22;>Full width</Heading>\n        <Text slot=\&#x22;body\&#x22;>{COPY}</Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
+
+### With Actions [#with-actions]
+
+Because you compose the parts, anything else can sit alongside them — a call to action
+here. Controls keep their own type: the buttons are unaffected by the lockup's `size`.
+
+<Story of="WithActionsExample" />
+
+<Source language="tsx" code="&#x22;import { Button, ButtonGroup, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function WithActionsExample() {\n  return (\n    <TextLockup size=\&#x22;xl\&#x22;>\n      <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n        Pro\n      </Tag>\n      <Heading slot=\&#x22;title\&#x22; level={1}>\n        Upgrade your plan\n      </Heading>\n      <Text slot=\&#x22;body\&#x22;>Unlock advanced reporting, priority support, and unlimited seats for your whole team.</Text>\n      <ButtonGroup inlinePadding=\&#x22;0\&#x22; blockPadding=\&#x22;0\&#x22;>\n        <Button variant=\&#x22;primary\&#x22;>Upgrade</Button>\n        <Button variant=\&#x22;secondary\&#x22;>Compare plans</Button>\n      </ButtonGroup>\n    </TextLockup>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+`TextLockup` positions and type-sets its parts; you supply them. That means anything else can
+sit alongside them — a call to action, a second paragraph, an image — without the component
+growing a prop for it.
+
+* **Every part names its role with a slot**: `eyebrow`, `title`, `body`. Unslotted text follows
+  the lockup's tier too: a bare `Heading` takes the title tier and a bare `Text` the body tier.
+* **The eyebrow is `slot="eyebrow"`**, on either a `Text` or a `Tag`. The two forms swap
+  freely, and a `Tag` is sized to pair with the lockup.
+* **The title is `<Heading slot="title">`.** Pick the level from the document outline, not the
+  visual size: `size` handles the visuals, so `level={1}` in an `xs` lockup is perfectly valid.
+* **The body is `<Text slot="body">`**, once or as many times as the copy needs.
+* **An explicit prop on a child always wins** over what the lockup supplies. Pass
+  `<Tag slot="eyebrow" size="sm">` to break the pairing, for instance.
+* **Controls keep the scale size.** A `Button` inside a lockup follows the surrounding
+  `SizeProvider` or its own `size` prop, never the lockup's tier.
+* **`size` is the tier.** The eyebrow reads it on the `detail` ramp, the title on `heading`, and
+  the body on `body`, so there is no table to memorize. Without `size`, the lockup follows the
+  surrounding size scope. A tier is the same at every container width.
+* Pass `className` to extend the styles, or select on `[data-align]`.
+
+## Accessibility [#accessibility]
+
+* The title carries the heading semantics. Choose `level` so the page outline stays correct
+  rather than to achieve a size.
+* Slots resolve against the lockup, so `slot="title"` names the lockup's title, not an outer
+  container's. Inside a
+  `Modal`, `Drawer` or `Popover`, give the dialog its own `<Heading slot="title">` as a direct
+  child for the accessible name, and use the lockup for the body.
+* The eyebrow is decorative in most designs. If it carries meaning, make sure the title still
+  reads sensibly on its own, since screen reader users often navigate by heading.
+
+## Best Practices [#best-practices]
+
+* Use one `2xl` lockup per page at most — it is the page title.
+* Keep `legibleLines` on for running prose. Turn it off only when the lockup already sits in a
+  narrow column, where the clamp does nothing but complicate the layout.
+* Prefer a `Tag` eyebrow for status or category, and plain text for a kicker or section label.
+* Reach for `MetricsLockup` instead when the emphasis is a single number rather than prose.
+
+## Props [#props]
+
+```tsx
+<TextLockup>
+  <Tag slot="eyebrow" />
+  <Heading slot="title" />
+  <Text slot="body" />
+  {/* ... */}
+</TextLockup>
+```
+
+### TextLockup [#textlockup]
 
 <PropTable />
 
@@ -7277,3 +7595,41 @@ Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid 
 ### Grid [#grid]
 
 <PropTable />
+
+
+# Build product experiences with Antares.
+
+
+
+
+
+<Meta title="Blocks" id="blocks" />
+
+## Install a block [#install-a-block]
+
+From the root of your application, run the command copied by the block's Install button:
+
+```bash
+npx shadcn@latest add godaddy/antares/blocks/sign-in-form
+```
+
+## Blocks [#blocks]
+
+### Sign-in form [#sign-in-form]
+
+<SiteBlockExplorer block="{&#x22;id&#x22;:&#x22;sign-in-form&#x22;,&#x22;description&#x22;:&#x22;A simple Antares sign-in experience.&#x22;,&#x22;installCommand&#x22;:&#x22;npx shadcn@latest add godaddy/antares/blocks/sign-in-form&#x22;,&#x22;files&#x22;:[{&#x22;path&#x22;:&#x22;components/sign-in-fields.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Flex, Input, Label, TextField } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\n\n/** Groups the accessible fields used by the sign-in form block. */\nexport function SignInFields() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField name=\&#x22;email\&#x22; isRequired>\n        <Label>{signInCopy.emailLabel}</Label>\n        <Input type=\&#x22;email\&#x22; autoComplete=\&#x22;email\&#x22; placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n      <TextField name=\&#x22;password\&#x22; isRequired>\n        <Label>{signInCopy.passwordLabel}</Label>\n        <Input type=\&#x22;password\&#x22; autoComplete=\&#x22;current-password\&#x22; />\n      </TextField>\n    </Flex>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/sign-in-form.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;'use client';\n\nimport { Box, Button, Flex, Heading, Text } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\nimport { SignInFields } from './sign-in-fields';\n\n/**\n * Provides a sign-in form composition to copy and adapt. Submission is prevented\n * until the consuming application supplies its authentication behavior.\n *\n * @example\n * ```tsx\n * <SignInForm />\n * ```\n */\nexport function SignInForm() {\n  return (\n    <Flex justifyContent=\&#x22;center\&#x22;>\n      <Box flex=\&#x22;0 1 28rem\&#x22; padding=\&#x22;xl\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        <Flex\n          as=\&#x22;form\&#x22;\n          direction=\&#x22;column\&#x22;\n          gap=\&#x22;lg\&#x22;\n          onSubmit={function handleSubmit(event) {\n            event.preventDefault();\n          }}\n        >\n          <Heading level={2}>{signInCopy.title}</Heading>\n          <Text>{signInCopy.description}</Text>\n          <SignInFields />\n          <Button type=\&#x22;submit\&#x22; variant=\&#x22;primary\&#x22;>\n            {signInCopy.submitLabel}\n          </Button>\n        </Flex>\n      </Box>\n    </Flex>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;data/copy.ts&#x22;,&#x22;language&#x22;:&#x22;ts&#x22;,&#x22;source&#x22;:&#x22;export const signInCopy = {\n  title: 'Sign in to your account',\n  description: 'Use your email and password to continue.',\n  emailLabel: 'Email',\n  passwordLabel: 'Password',\n  submitLabel: 'Sign in'\n} as const;\n&#x22;},{&#x22;path&#x22;:&#x22;index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;export { SignInForm } from './components/sign-in-form';\n&#x22;}]}">
+  <SignInFormStories.Preview />
+</SiteBlockExplorer>
+
+
+# Sign-in form
+
+
+
+
+
+<Meta of="Stories" name="Overview" id="blocks-sign-in-form" />
+
+<SiteBlockExplorer block="{&#x22;id&#x22;:&#x22;sign-in-form&#x22;,&#x22;description&#x22;:&#x22;A simple Antares sign-in experience.&#x22;,&#x22;installCommand&#x22;:&#x22;npx shadcn@latest add godaddy/antares/blocks/sign-in-form&#x22;,&#x22;files&#x22;:[{&#x22;path&#x22;:&#x22;components/sign-in-fields.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Flex, Input, Label, TextField } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\n\n/** Groups the accessible fields used by the sign-in form block. */\nexport function SignInFields() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField name=\&#x22;email\&#x22; isRequired>\n        <Label>{signInCopy.emailLabel}</Label>\n        <Input type=\&#x22;email\&#x22; autoComplete=\&#x22;email\&#x22; placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n      <TextField name=\&#x22;password\&#x22; isRequired>\n        <Label>{signInCopy.passwordLabel}</Label>\n        <Input type=\&#x22;password\&#x22; autoComplete=\&#x22;current-password\&#x22; />\n      </TextField>\n    </Flex>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/sign-in-form.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;'use client';\n\nimport { Box, Button, Flex, Heading, Text } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\nimport { SignInFields } from './sign-in-fields';\n\n/**\n * Provides a sign-in form composition to copy and adapt. Submission is prevented\n * until the consuming application supplies its authentication behavior.\n *\n * @example\n * ```tsx\n * <SignInForm />\n * ```\n */\nexport function SignInForm() {\n  return (\n    <Flex justifyContent=\&#x22;center\&#x22;>\n      <Box flex=\&#x22;0 1 28rem\&#x22; padding=\&#x22;xl\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        <Flex\n          as=\&#x22;form\&#x22;\n          direction=\&#x22;column\&#x22;\n          gap=\&#x22;lg\&#x22;\n          onSubmit={function handleSubmit(event) {\n            event.preventDefault();\n          }}\n        >\n          <Heading level={2}>{signInCopy.title}</Heading>\n          <Text>{signInCopy.description}</Text>\n          <SignInFields />\n          <Button type=\&#x22;submit\&#x22; variant=\&#x22;primary\&#x22;>\n            {signInCopy.submitLabel}\n          </Button>\n        </Flex>\n      </Box>\n    </Flex>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;data/copy.ts&#x22;,&#x22;language&#x22;:&#x22;ts&#x22;,&#x22;source&#x22;:&#x22;export const signInCopy = {\n  title: 'Sign in to your account',\n  description: 'Use your email and password to continue.',\n  emailLabel: 'Email',\n  passwordLabel: 'Password',\n  submitLabel: 'Sign in'\n} as const;\n&#x22;},{&#x22;path&#x22;:&#x22;index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;export { SignInForm } from './components/sign-in-form';\n&#x22;}]}">
+  <Stories.Preview />
+</SiteBlockExplorer>
