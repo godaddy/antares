@@ -1,19 +1,23 @@
-import { Flex, Pagination } from '@godaddy/antares';
 import { useState } from 'react';
+import { Button, Input, Pagination, Text } from '@godaddy/antares';
 
 /**
- * Pass `activeIndex` and `onChange` to control the active page externally.
+ * A controlled Pagination keeps the current page in consumer state.
+ * @title Controlled
  * @order 2
  */
 export function ControlledExample() {
   const [page, setPage] = useState(2);
 
   return (
-    <Flex direction="column" gap="sm">
-      <Pagination total={4} activeIndex={page} onChange={setPage} />
-      <Flex as="span" justifyContent="center">
-        Current page: {page}
-      </Flex>
-    </Flex>
+    <Pagination value={page} pageCount={3} onChange={setPage}>
+      <Button slot="previous" aria-label="Previous" />
+      <Input aria-label="Current page" />
+      <Text size="sm" aria-hidden>
+        /
+      </Text>
+      <Text size="sm">3</Text>
+      <Button slot="next" aria-label="Next" />
+    </Pagination>
   );
 }

@@ -1,45 +1,30 @@
 import { render } from 'vitest-browser-react';
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { userEvent } from 'vitest/browser';
 import { DefaultExample } from '../examples/default.tsx';
-import { ControlledExample } from '../examples/controlled.tsx';
-import { WithLimitExample } from '../examples/with-limit.tsx';
-import { OnChangeExample } from '../examples/on-change.tsx';
-import { DefaultActiveExample } from '../examples/default-active.tsx';
+import { PageCountKnownExample } from '../examples/page-count-known.tsx';
+import { PageCountUnknownExample } from '../examples/page-count-unknown.tsx';
+import { PaginationDotsExample } from '../examples/dots.tsx';
+import { PlaygroundExample } from '../examples/pagination-playground.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Pagination', function paginationTests() {
-    it('renders prev/next buttons and dots for 5 pages', async function rendersDefault() {
-      const { getByRole } = await render(<DefaultExample />);
-      const prev = getByRole('button', { name: 'Go to previous page' });
-      const next = getByRole('button', { name: 'Go to next page' });
-      const dots = getByRole('group', { name: 'Dots' });
-
-      await expect.element(prev).toBeVisible();
-      await expect.element(next).toBeVisible();
-      await expect.element(dots).toBeVisible();
-      await expect.element(prev).toBeDisabled();
-      await expect.element(next).not.toBeDisabled();
-    });
-
     it('navigates forward and backward in uncontrolled mode', async function navigatesUncontrolled() {
       const { getByRole } = await render(<DefaultExample />);
-      const prev = getByRole('button', { name: 'Go to previous page' });
-      const next = getByRole('button', { name: 'Go to next page' });
-      const dots = getByRole('group', { name: 'Dots' });
+      const previous = getByRole('button', { name: 'Previous' });
+      const next = getByRole('button', { name: 'Next' });
 
-      await expect.element(prev).toBeDisabled();
+      await expect.element(previous).toBeDisabled();
       await next.click();
-      await expect.element(prev).not.toBeDisabled();
-
-      const dotElements = dots.elements().flatMap(function getDots(el) {
-        return Array.from(el.children);
-      });
-      expect(dotElements[1]?.className).toContain('selected');
+      await expect.element(previous).not.toBeDisabled();
+      await next.click();
+      await previous.click();
+      await expect.element(previous).not.toBeDisabled();
     });
 
-    it('disables next button on the last page', async function disablesNextAtLast() {
+    it('clamps the next button on the last page', async function clampsLastPage() {
       const { getByRole } = await render(<DefaultExample />);
-      const next = getByRole('button', { name: 'Go to next page' });
+      const next = getByRole('button', { name: 'Next' });
 
       await next.click();
       await next.click();
@@ -49,74 +34,92 @@ describe('@godaddy/antares', function antares() {
       await expect.element(next).toBeDisabled();
     });
 
-    it('disables prev at start and does not go below 0', async function prevClampedAtZero() {
-      const { getByRole } = await render(<DefaultExample />);
-      const prev = getByRole('button', { name: 'Go to previous page' });
-      const next = getByRole('button', { name: 'Go to next page' });
+    it('keeps controlled page state synchronized through the input context', async function keepsControlledState() {
+      const { getByRole } = await render(<PageCountKnownExample />);
+      const next = getByRole('button', { name: 'Next' });
+      const input = getByRole('spinbutton', { name: 'Current page' });
 
-      await expect.element(prev).toBeDisabled();
+      await expect.element(input).toHaveValue(1);
       await next.click();
-      await prev.click();
-      await expect.element(prev).toBeDisabled();
+      await expect.element(input).toHaveValue(2);
     });
 
-    it('controls the active index via activeIndex prop', async function controlled() {
-      const { getByRole, getByText } = await render(<ControlledExample />);
-      const prev = getByRole('button', { name: 'Go to previous page' });
-      const next = getByRole('button', { name: 'Go to next page' });
-
-      await expect.element(prev).not.toBeDisabled();
-      await expect.element(next).not.toBeDisabled();
-
-      await expect.element(getByText('Current page: 2')).toBeInTheDocument();
-      await next.click();
-      await expect.element(getByText('Current page: 3')).toBeInTheDocument();
-      await expect.element(next).toBeDisabled();
-      await expect.element(prev).not.toBeDisabled();
-
-      await prev.click();
-      await prev.click();
-      await prev.click();
-      await expect.element(getByText('Current page: 0')).toBeInTheDocument();
-      await expect.element(prev).toBeDisabled();
-      await expect.element(next).not.toBeDisabled();
+    it('starts the uncontrolled input at page one', async function startsInputAtPageOne() {
+      const { getByRole } = await render(<PageCountKnownExample />);
+      await expect.element(getByRole('spinbutton', { name: 'Current page' })).toHaveValue(1);
     });
 
-    it('derives 4 dots from total=10 and limit=3', async function derivesDotsFromLimit() {
-      const { getByRole } = await render(<WithLimitExample />);
-      const dots = getByRole('group', { name: 'Dots' });
-      const dotElements = dots.elements().flatMap(function getDots(el) {
-        return Array.from(el.children);
-      });
-
-      expect(dotElements).toHaveLength(4);
+    it('keeps next available when pageCount is unknown', async function keepsUnknownNextAvailable() {
+      const { getByRole } = await render(<PageCountUnknownExample />);
+      await expect.element(getByRole('button', { name: 'Next' })).not.toBeDisabled();
     });
 
-    it('fires onChange when navigating in uncontrolled mode', async function firesOnChange() {
-      const { getByRole, getByText } = await render(<OnChangeExample />);
-      const next = getByRole('button', { name: 'Go to next page' });
-      const prev = getByRole('button', { name: 'Go to previous page' });
+    it('navigates forward when pageCount is unknown', async function navigatesUnknownPageCount() {
+      const { getByRole } = await render(<PageCountUnknownExample />);
+      const input = getByRole('spinbutton', { name: 'Current page' });
 
-      await expect.element(getByText('onChange: none')).toBeInTheDocument();
-      await next.click();
-      await expect.element(getByText('onChange: 1')).toBeInTheDocument();
-      await next.click();
-      await expect.element(getByText('onChange: 2')).toBeInTheDocument();
-      await prev.click();
-      await expect.element(getByText('onChange: 1')).toBeInTheDocument();
+      await getByRole('button', { name: 'Next' }).click();
+      await expect.element(input).toHaveValue(2);
     });
 
-    it('starts at defaultActiveIndex when provided', async function defaultActive() {
-      const { getByRole } = await render(<DefaultActiveExample />);
-      const prev = getByRole('button', { name: 'Go to previous page' });
-      const dots = getByRole('group', { name: 'Dots' });
+    it('propagates isDisabled through composed controls', async function propagatesDisabledState() {
+      const { getByRole } = await render(<PlaygroundExample isDisabled />);
+      await expect.element(getByRole('button', { name: 'Previous' })).toBeDisabled();
+      await expect.element(getByRole('button', { name: 'Next' })).toBeDisabled();
+      const input = getByRole('spinbutton', { name: 'Current page' });
 
-      await expect.element(prev).not.toBeDisabled();
+      await expect.element(input).toBeDisabled();
+      await expect.element(input).toHaveStyle({ opacity: '0.4', cursor: 'not-allowed' });
+    });
 
-      const dotElements = dots.elements().flatMap(function getDots(el) {
-        return Array.from(el.children);
-      });
-      expect(dotElements[2]?.className).toContain('selected');
+    it('renders passive PaginationDots from page state', async function rendersPaginationDots() {
+      const { container } = await render(<PaginationDotsExample />);
+      expect(container.querySelectorAll('[data-pagination-dot]')).toHaveLength(5);
+    });
+
+    it('updates the active PaginationDots indicator after navigation', async function updatesPaginationDots() {
+      const { container, getByRole } = await render(<PaginationDotsExample />);
+      const dots = container.querySelectorAll('[data-pagination-dot]');
+
+      expect(dots[0]?.getAttribute('data-active')).toBe('true');
+      await getByRole('button', { name: 'Next' }).click();
+      expect(dots[0]?.getAttribute('data-active')).toBe('false');
+      expect(dots[1]?.getAttribute('data-active')).toBe('true');
+    });
+
+    it('does not render PaginationDots when pageCount is zero', async function omitsPaginationDotsForZeroPages() {
+      const { container } = await render(<PlaygroundExample composition="dots" pageCount={0} />);
+
+      expect(container.querySelectorAll('[data-pagination-dot]')).toHaveLength(0);
+    });
+
+    it('disables the composed controls when pageCount is zero', async function disablesZeroPageCount() {
+      const { getByRole } = await render(<PlaygroundExample pageCount={0} />);
+
+      await expect.element(getByRole('button', { name: 'Previous' })).toBeDisabled();
+      await expect.element(getByRole('button', { name: 'Next' })).toBeDisabled();
+      await expect.element(getByRole('spinbutton', { name: 'Current page' })).toBeDisabled();
+    });
+
+    it('accepts keyboard input through the composed Input', async function acceptsKeyboardInput() {
+      const user = userEvent.setup();
+      const { getByRole } = await render(<PageCountKnownExample />);
+      const input = getByRole('spinbutton', { name: 'Current page' });
+
+      await input.fill('3');
+      await user.keyboard('{Enter}');
+      await expect.element(input).toHaveValue(3);
+    });
+
+    it('ignores non-integer keyboard input', async function ignoresNonIntegerInput() {
+      const user = userEvent.setup();
+      const { getByRole } = await render(<PageCountKnownExample />);
+      const input = getByRole('spinbutton', { name: 'Current page' });
+
+      await input.fill('2.5');
+      await user.keyboard('{Enter}');
+      await getByRole('button', { name: 'Next' }).click();
+      await expect.element(input).toHaveValue(2);
     });
   });
 });
