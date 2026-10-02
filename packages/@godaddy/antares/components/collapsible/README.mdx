@@ -1,0 +1,123 @@
+---
+title: Collapsible
+description: Collapsible reveals or hides a section of content beneath a heading.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './collapsible.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Independent sections with controlled or uncontrolled expansion.
+- Composed headings, optional status icons, and flexible panel content.
+- Persistent panel content when collapsed.
+- Accessible keyboard interaction and button-to-panel relationships powered by React Aria Components.
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Customization
+
+Place a `Heading` containing `Button slot="trigger"` inside Collapsible, followed by CollapsiblePanel.
+Add an `Icon slot="indicator"` inside the button for the expansion indicator. The panel accepts text,
+links, forms, and other components.
+
+CollapsiblePanel provides the content spacing automatically. Use `contentProps` to customize its
+inner container with Box spacing props, a class name, or styles:
+
+```tsx
+<CollapsiblePanel contentProps={{ padding: 'sm' }}>
+  Additional information.
+</CollapsiblePanel>
+```
+
+Use `contentProps={{ padding: '0' }}` for content without padding. Props supplied directly to
+CollapsiblePanel, including `className`, `style`, and `ref`, apply to the outer panel.
+
+Use `defaultExpanded` for initial expansion, or `isExpanded` with `onExpandedChange` for controlled
+state. The callback receives a boolean. Use the Accordion component to coordinate several sections;
+in that composition, manage expansion through the group.
+
+Use `className` and `style` to customize each component. Button supports string or state-based
+`className` values. Components expose these data attributes for state-based styling:
+
+- `Collapsible`: `data-expanded`, `data-disabled`, and `data-focus-visible-within`.
+- Trigger `Button`: `data-hovered`, `data-pressed`, `data-focus-visible`, and `data-disabled`.
+- `CollapsiblePanel`: `data-focus-visible-within`.
+
+## Accessibility
+
+### Keyboard
+
+| Key | Action |
+| --- | --- |
+| `Tab` / `Shift + Tab` | Move between the enabled trigger and controls in the expanded panel |
+| `Enter` / `Space` | Toggle the section; focus stays on the trigger |
+
+### ARIA
+
+- `Button slot="trigger"` renders a native button with `aria-expanded` for its open state and
+  `aria-controls` linked to the panel automatically.
+- `CollapsiblePanel` is labeled by its trigger through `aria-labelledby` automatically.
+- `CollapsiblePanel` uses `role="group"` by default. Keep it when the panel's content does not need
+  a navigation landmark; there is no need to set it explicitly.
+- Set `role="region"` on `CollapsiblePanel` when its content warrants a named landmark
+  for direct screen-reader navigation.
+- Collapsed content stays mounted but is excluded from keyboard and screen-reader navigation.
+- `Icon slot="indicator"` is decorative and receives `aria-hidden="true"` automatically.
+
+## Best Practices
+
+- Use descriptive section titles and keep essential information visible.
+- Choose heading levels that fit the page hierarchy and avoid deeply nested sections.
+- Include text for status icons so their meaning is available to screen readers.
+- Put links, forms, and actions inside the panel.
+- Open the panel before moving focus to an input that needs attention.
+
+## Troubleshooting
+
+### Controlled State Not Updating
+
+Update `isExpanded` from `onExpandedChange`. Changing `defaultExpanded` after mounting does not
+control expansion. Inside Accordion, update the group's `expandedKeys` instead.
+
+### Trigger Not Expanding the Panel
+
+Place `Button slot="trigger"` inside the section's Heading. A Button without that slot acts
+independently and does not toggle the section.
+
+### Input Values Persist After Closing
+
+Panel content stays mounted when collapsed. Reset form state explicitly when the application requires it.
+
+## Props
+
+```tsx
+<Collapsible>
+  <Heading>
+    <Button slot="trigger">
+      <Text />
+      <Icon slot="indicator" />
+    </Button>
+  </Heading>
+  <CollapsiblePanel>{/* ... */}</CollapsiblePanel>
+</Collapsible>;
+```
+
+### Collapsible
+
+<ArgTypes of={Stories.Props} />
+
+### CollapsiblePanel
+
+<ArgTypes of={Stories.CollapsiblePanelProps} />

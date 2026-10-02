@@ -14,6 +14,14 @@
       "#utils/*": ["./utils/*"]
     }
   },
-  "include": ["index.ts", "exports", "components", "utils", "test", "types"],
+  "include": [
+    "index.ts",
+    "exports",
+    "components",
+    "blocks",
+    "utils",
+    "test",
+    "types"
+  ],
   "exclude": ["node_modules", "dist"]
 }

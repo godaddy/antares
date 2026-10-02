@@ -1,0 +1,54 @@
+.root {
+  inline-size: 100%;
+}
+
+.previewSurface {
+  min-height: 24rem;
+  overflow: hidden;
+}
+
+.codeSurface {
+  overflow: hidden;
+}
+
+.codeLayout {
+  min-width: 0;
+}
+
+.fileTree {
+  min-width: 0;
+  flex: 0 0 16rem;
+  border-inline-end: 1px solid var(--color-border-low-contrast, #d4dbe0);
+}
+
+.sourcePanel {
+  min-width: 0;
+}
+
+.sourceHeader {
+  min-width: 0;
+  border-bottom: 1px solid var(--color-border-low-contrast, #d4dbe0);
+}
+
+.sourceContent {
+  min-width: 0;
+  overflow: auto;
+}
+
+.sourceContent :where(pre) {
+  min-width: max-content;
+  margin: 0;
+  white-space: pre;
+}
+
+@media (max-width: 48rem) {
+  .codeLayout {
+    flex-direction: column;
+  }
+
+  .fileTree {
+    flex-basis: auto;
+    border-inline-end: 0;
+    border-block-end: 1px solid var(--color-border-low-contrast, #d4dbe0);
+  }
+}
