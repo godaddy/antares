@@ -1,19 +1,19 @@
-import { Flex, Pagination } from '@godaddy/antares';
-import { useState } from 'react';
+import { Button, Input, Pagination, Text } from '@godaddy/antares';
 
 /**
- * The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
+ * The default pagination for a known page count without a page-size selector.
  * @order 1
  */
 export function DefaultExample() {
-  const [page, setPage] = useState(0);
-
   return (
-    <Flex direction="column" gap="sm">
-      <Pagination total={5} onChange={setPage} />
-      <Flex as="span" justifyContent="center">
-        Current page: {page}
-      </Flex>
-    </Flex>
+    <Pagination pageCount={5} defaultValue={1}>
+      <Button slot="previous" aria-label="Previous" />
+      <Input aria-label="Current page" />
+      <Text size="sm" aria-hidden>
+        /
+      </Text>
+      <Text size="sm">5</Text>
+      <Button slot="next" aria-label="Next" />
+    </Pagination>
   );
 }

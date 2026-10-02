@@ -1,6 +1,6 @@
 ---
 title: Pagination
-description: A pagination component with prev/next buttons and dot indicators, configurable page limits, and optional visibility of controls and dots
+description: A composed pagination primitive for controlled or uncontrolled page navigation.
 ---
 
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
@@ -8,6 +8,14 @@ import { Examples } from '@bento/storybook-addon-helpers/runtime';
 import * as Stories from './pagination.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
+
+## Features
+
+- Controlled and uncontrolled 1-based page state.
+- Explicit composition with Antares `Button`, `Input`, `Text`, `Select` and `PaginationDots`.
+- Known and unknown page-count data sources.
+- React Aria context defaults for previous, next and the single page input.
+- Medium and small control sizes.
 
 ## Installation
 
@@ -19,8 +27,50 @@ npm install --save @godaddy/antares
 
 <Examples of={Stories.Examples} />
 
+## Customization
+
+Pagination is composed: pass only the regions your layout needs. Previous and
+next `Button`s and the page `Input` receive navigation defaults from
+Pagination, while explicit child props and `className` values remain available
+for local customization. Separator, page count, `Select` and
+`PaginationDots` are consumer-owned.
+
+Use `className` to extend styling without replacing the interaction behavior
+provided by Antares.
+
+## Accessibility
+
+- Pagination does not add translated labels. Provide accessible names for the
+  navigation region, previous/next buttons and page input.
+- `PaginationDots` is decorative and does not replace interactive page
+  controls.
+- For interactive page links, compose explicit `Button` or `LinkButton` children and
+  provide the active state with `aria-current="page"`.
+
+## Best Practices
+
+- Pass `pageCount` when the backend exposes a known number of pages.
+- Omit `pageCount` for cursor-based data and disable the composed next button
+  when the backend reports that there is no next page.
+- Keep total items, page size and result ranges in the consuming data layer.
+- Compose exactly one page `Input`; use a separate component for advanced range
+  navigation.
+
 ## Props
 
 ### Pagination
 
+```tsx
+<Pagination>
+  <Button slot="previous" />
+  <Input />
+  {/* separator, page count, Select, PaginationDots, or custom regions */}
+  <Button slot="next" />
+</Pagination>
+```
+
 <ArgTypes of={Stories.Props} />
+
+### PaginationDots
+
+<ArgTypes of={Stories.PaginationDotsProps} />
