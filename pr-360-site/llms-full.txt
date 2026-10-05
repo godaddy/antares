@@ -92,158 +92,6 @@ Any bundler that supports CSS imports will work with Antares. If your bundler do
 <ComponentCards />
 
 
-# Accordion
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Single or multiple expanded sections.
-* Controlled and uncontrolled group state.
-* Group-level disabled state.
-* Composable sections using Collapsible and CollapsiblePanel.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### One section at a time [#one-section-at-a-time]
-
-Let people explore short answers one at a time.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Accordion,\n  Collapsible,\n  CollapsiblePanel,\n  Heading,\n  Text,\n  Button,\n  Icon,\n  type AccordionProps\n} from '@godaddy/antares';\n\nexport function DefaultExample({\n  defaultExpandedKeys = ['domains']\n}: Pick<AccordionProps, 'defaultExpandedKeys'> = {}) {\n  return (\n    <Accordion allowsMultipleExpanded={false} defaultExpandedKeys={defaultExpandedKeys}>\n      <Collapsible id=\&#x22;domains\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Can I transfer my domain?</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>\n          <Text>Yes. Start your transfer from the Domains page.</Text>\n        </CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;renewal\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>How does renewal work?</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>\n          <Text>Enable automatic renewal in your account settings.</Text>\n        </CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;privacy\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Is domain privacy included?</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Domain privacy helps keep your personal contact information private.</CollapsiblePanel>\n      </Collapsible>\n    </Accordion>\n  );\n}&#x22;" />
-
-### Multiple sections open [#multiple-sections-open]
-
-Keep related answers visible together when people need to compare information.
-
-<Story of="MultipleExample" />
-
-<Source language="tsx" code="&#x22;import { Accordion, Button, Collapsible, CollapsiblePanel, Heading, Icon, Text } from '@godaddy/antares';\n\nexport function MultipleExample() {\n  return (\n    <Accordion allowsMultipleExpanded defaultExpandedKeys={['shipping', 'returns']}>\n      <Collapsible id=\&#x22;shipping\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Shipping</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Most orders arrive within two business days.</CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;returns\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Returns</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Return eligible items within thirty days.</CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;tracking\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Tracking</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Track your order from the confirmation email.</CollapsiblePanel>\n      </Collapsible>\n    </Accordion>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Coordinate expanded sections with application state in either expansion mode.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Accordion,\n  Button,\n  Collapsible,\n  CollapsiblePanel,\n  Flex,\n  Heading,\n  Text,\n  Icon,\n  type AccordionProps\n} from '@godaddy/antares';\n\nexport function ControlledExample({\n  onChange,\n  allowsMultipleExpanded = false\n}: {\n  onChange?: AccordionProps['onExpandedChange'];\n  allowsMultipleExpanded?: boolean;\n} = {}) {\n  const [keys, setKeys] = useState<Set<string | number>>(new Set(['account']));\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Button onPress={() => setKeys(new Set())}>Close all sections</Button>\n      <Text>Open panels: {[...keys].join(', ') || 'none'}</Text>\n      <Accordion\n        allowsMultipleExpanded={allowsMultipleExpanded}\n        expandedKeys={keys}\n        onExpandedChange={function handleExpandedChange(next) {\n          setKeys(next);\n          onChange?.(next);\n        }}\n      >\n        <Collapsible id=\&#x22;account\&#x22;>\n          <Heading>\n            <Button slot=\&#x22;trigger\&#x22;>\n              <Text>Account</Text>\n              <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n            </Button>\n          </Heading>\n          <CollapsiblePanel>Manage your account information.</CollapsiblePanel>\n        </Collapsible>\n        <Collapsible id=\&#x22;billing\&#x22;>\n          <Heading>\n            <Button slot=\&#x22;trigger\&#x22;>\n              <Text>Billing</Text>\n              <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n            </Button>\n          </Heading>\n          <CollapsiblePanel>Manage payment methods.</CollapsiblePanel>\n        </Collapsible>\n        <Collapsible id=\&#x22;notifications\&#x22;>\n          <Heading>\n            <Button slot=\&#x22;trigger\&#x22;>\n              <Text>Notifications</Text>\n              <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n            </Button>\n          </Heading>\n          <CollapsiblePanel>Choose how you receive account updates.</CollapsiblePanel>\n        </Collapsible>\n      </Accordion>\n    </Flex>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Keep unavailable options visible and explain the reason in their label.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Accordion, Collapsible, CollapsiblePanel, Heading, Button, Icon, Text } from '@godaddy/antares';\n\nexport function DisabledExample({ isGroupDisabled = false }: { isGroupDisabled?: boolean } = {}) {\n  return (\n    <Accordion isDisabled={isGroupDisabled}>\n      <Collapsible id=\&#x22;basic\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Basic plan</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Features included with your plan.</CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;premium\&#x22; isDisabled>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Premium plan (Upgrade required)</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Additional premium features.</CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;enterprise\&#x22; isDisabled>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Enterprise plan (Contact sales)</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Contact our sales team for a plan tailored to your business.</CollapsiblePanel>\n      </Collapsible>\n    </Accordion>\n  );\n}&#x22;" />
-
-### Form Steps [#form-steps]
-
-Break a single-page form into steps while keeping entered values mounted.
-
-<Story of="FormStepsExample" />
-
-<Source language="tsx" code="&#x22;import { useRef, useState } from 'react';\nimport {\n  Accordion,\n  Button,\n  Collapsible,\n  CollapsiblePanel,\n  Flex,\n  Heading,\n  Input,\n  Label,\n  TextField,\n  Icon,\n  Text\n} from '@godaddy/antares';\n\nexport function FormStepsExample() {\n  const [keys, setKeys] = useState<Set<string | number>>(new Set(['contact']));\n  const paymentTrigger = useRef<HTMLButtonElement>(null);\n  return (\n    <Accordion allowsMultipleExpanded={false} expandedKeys={keys} onExpandedChange={setKeys}>\n      <Collapsible id=\&#x22;contact\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Contact details</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>\n          <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n            <TextField>\n              <Label>Name</Label>\n              <Input />\n            </TextField>\n            <Button\n              onPress={function continueToPayment() {\n                paymentTrigger.current?.focus();\n                setKeys(new Set(['payment']));\n              }}\n            >\n              Continue to payment\n            </Button>\n          </Flex>\n        </CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;payment\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22; ref={paymentTrigger}>\n            <Text>Payment details</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Review your payment details before submitting.</CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;review\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Review and submit</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Check your contact and payment details before submitting.</CollapsiblePanel>\n      </Collapsible>\n    </Accordion>\n  );\n}&#x22;" />
-
-### Nested [#nested]
-
-Nested sections keep independent state. Prefer a flatter structure when possible.
-
-<Story of="NestedExample" />
-
-<Source language="tsx" code="&#x22;import { Accordion, Collapsible, CollapsiblePanel, Heading, Button, Icon, Text } from '@godaddy/antares';\n\nexport function NestedExample() {\n  return (\n    <Accordion defaultExpandedKeys={['outer']}>\n      <Collapsible id=\&#x22;outer\&#x22;>\n        <Heading level={2}>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Outer question</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>\n          <Collapsible>\n            <Heading>\n              <Button slot=\&#x22;trigger\&#x22;>\n                <Text>Independent detail</Text>\n                <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n              </Button>\n            </Heading>\n            <CollapsiblePanel>Independent answer.</CollapsiblePanel>\n          </Collapsible>\n          <Accordion>\n            <Collapsible id=\&#x22;inner\&#x22;>\n              <Heading>\n                <Button slot=\&#x22;trigger\&#x22;>\n                  <Text>Inner question</Text>\n                  <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n                </Button>\n              </Heading>\n              <CollapsiblePanel>Inner answer.</CollapsiblePanel>\n            </Collapsible>\n          </Accordion>\n        </CollapsiblePanel>\n      </Collapsible>\n    </Accordion>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-Compose related `Collapsible` sections inside Accordion. Give each section a stable, unique `id`.
-See the Collapsible component documentation for more information about section anatomy, panel content, and trigger styling.
-
-Use `defaultExpandedKeys` for initial expansion, or `expandedKeys` with `onExpandedChange` for
-controlled state. Keys must match the section IDs; the callback receives a `Set` of expanded keys.
-By default, only one section can stay open. Set `allowsMultipleExpanded` to keep several open.
-Both behaviors are shown in the examples.
-
-Use `className` and `style` to customize the group container. `data-disabled` reflects the group's
-disabled state. Customize individual headings, triggers, and panels on the composed Collapsible sections.
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key                   | Action                                                        |
-| --------------------- | ------------------------------------------------------------- |
-| `Tab` / `Shift + Tab` | Move between enabled triggers and controls in expanded panels |
-| `Enter` / `Space`     | Toggle the focused section; focus stays on the trigger        |
-
-### ARIA [#aria]
-
-* Each section's trigger is a native button with `aria-expanded` and `aria-controls` linked to its panel.
-* Each panel is labeled by its trigger through `aria-labelledby` automatically.
-
-## Best Practices [#best-practices]
-
-* Group related sections and keep essential information visible outside the accordion.
-* Use descriptive section titles and heading levels that fit the page hierarchy.
-* Use multiple expansion when users need to compare information across sections.
-* Keep item IDs stable when reordering or filtering data.
-* Manage expansion on Accordion when sections belong to a group.
-* Keep form validation and step progression in application logic.
-
-## Troubleshooting [#troubleshooting]
-
-### Controlled State Not Updating [#controlled-state-not-updating]
-
-Update `expandedKeys` from `onExpandedChange` and make sure the keys match the item IDs.
-Changing `defaultExpandedKeys` after mounting does not control expansion.
-
-### Sections Close When Another Opens [#sections-close-when-another-opens]
-
-Enable `allowsMultipleExpanded` when several sections should remain open together.
-For a single independent section, use Collapsible without an Accordion.
-
-## Props [#props]
-
-```tsx
-<Accordion>
-  <Collapsible>
-    <Heading>
-      <Button slot="trigger">
-        <Text />
-        <Icon slot="indicator" />
-      </Button>
-    </Heading>
-    <CollapsiblePanel>{/* ... */}</CollapsiblePanel>
-  </Collapsible>
-</Accordion>;
-```
-
-<PropTable />
-
-
 # Alert
 
 
@@ -330,151 +178,6 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 ## Props [#props]
 
 ### Alert [#alert]
-
-<PropTable />
-
-
-# Avatar
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Composable `Avatar`, `Image`, and `Text` parts
-* Circle and rounded-square shapes at four named sizes
-* Automatic image loading with a Text monogram fallback
-* Primary, subtle, and 15 categorical figure emphases
-* Avatar Button and Account Menu compositions built with Pressable
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use an Avatar with a one- or two-character monogram when no image is available.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Avatar>\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
-
-### Image [#image]
-
-Place Image before Text so the monogram is available while the image loads or if it fails.
-
-<Story of="ImageExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22%3E%3Crect width=%22128%22 height=%22128%22 fill=%22%2302242a%22/%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2251%22 fill=%22%2309757a%22/%3E%3Cpath d=%22M13 72c18-18 34-26 51-26s33 8 51 26v43H13z%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%2264%22 cy=%2253%22 r=%2220%22 fill=%22%23f5f7f8%22/%3E%3Cpath d=%22M35 106c4-17 15-26 29-26s25 9 29 26%22 fill=%22%23f5f7f8%22/%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2251%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-opacity=%22.35%22 stroke-width=%224%22/%3E%3C/svg%3E';\n\nexport function ImageExample() {\n  return (\n    <Avatar>\n      <Image src={image} alt=\&#x22;Uma Thurman\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
-
-### Image Fallback [#image-fallback]
-
-Include a Text fallback so an unavailable photo never leaves an empty identity marker.
-
-<Story of="ImageFallbackExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nexport function ImageFallbackExample() {\n  return (\n    <Avatar>\n      <Image src=\&#x22;/missing-avatar-image.png\&#x22; alt=\&#x22;\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
-
-### Shapes and sizes [#shapes-and-sizes]
-
-Use circular Avatars for people and square Avatars for organizations, workspaces, and accounts.
-
-<Story of="ShapesExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Flex, Text } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg', 'xl'] as const;\n\nexport function ShapesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Circle</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderCircle(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;circle\&#x22; size={size}>\n                <Text>UT</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Square</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderSquare(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;square\&#x22; size={size}>\n                <Text>AC</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Use primary or subtle for standard treatments, and a deterministic figure emphasis to categorize entities in a list.
-
-<Story of="EmphasisExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Flex, Text, type AvatarEmphasis } from '@godaddy/antares';\n\nconst emphases: AvatarEmphasis[] = [\n  'primary',\n  'subtle',\n  'figure0',\n  'figure1',\n  'figure2',\n  'figure3',\n  'figure4',\n  'figure5',\n  'figure6',\n  'figure7',\n  'figure8',\n  'figure9',\n  'figure10',\n  'figure11',\n  'figure12',\n  'figure13',\n  'figure14'\n];\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {emphases.map(function renderAvatar(emphasis, index) {\n        return (\n          <Avatar key={emphasis} emphasis={emphasis}>\n            <Text>{index < 2 ? emphasis.slice(0, 1).toUpperCase() : `${index - 2}`}</Text>\n          </Avatar>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
-
-### Avatar Button [#avatar-button]
-
-Use `Pressable` to add accessible interaction to an Avatar while preserving its shape.
-
-<Story of="AvatarButtonExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Pressable, Text } from '@godaddy/antares';\n\nexport function AvatarButtonExample() {\n  return (\n    <Pressable aria-label=\&#x22;Account\&#x22;>\n      <Avatar shape=\&#x22;circle\&#x22; role=\&#x22;button\&#x22;>\n        <Text>UT</Text>\n      </Avatar>\n    </Pressable>\n  );\n}&#x22;" />
-
-### Account Menu [#account-menu]
-
-Wrap an Avatar in a Pressable inside MenuTrigger for an account or profile menu.
-
-<Story of="AccountMenuExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Menu, MenuItem, MenuTrigger, Pressable, Text } from '@godaddy/antares';\n\nexport function AccountMenuExample() {\n  return (\n    <MenuTrigger>\n      <Pressable aria-label=\&#x22;Account menu\&#x22;>\n        <Avatar role=\&#x22;button\&#x22;>\n          <Text>UT</Text>\n        </Avatar>\n      </Pressable>\n      <Menu>\n        <MenuItem id=\&#x22;profile\&#x22;>Profile</MenuItem>\n        <MenuItem id=\&#x22;settings\&#x22;>Settings</MenuItem>\n        <MenuItem id=\&#x22;sign-out\&#x22;>Sign out</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-Use Image native image props for responsive image sources. Choose a deterministic `figure0` through `figure14` emphasis in lists that categorize multiple entities.
-
-When an Avatar triggers an action, compose it with `Pressable` so the Avatar keeps its own shape and receives the interaction behavior directly. Use this pattern for an Avatar Button, or place it inside `MenuTrigger` for an Account Menu:
-
-```tsx
-<Pressable aria-label="Account menu" onPress={openAccountMenu}>
-  <Avatar role="button">
-    <Text>UT</Text>
-  </Avatar>
-</Pressable>
-```
-
-## Accessibility [#accessibility]
-
-* Give Image meaningful `alt` text when the image conveys an identity.
-* Text remains available to assistive technology when no image loads.
-* Use `alt=""` on the Image and `aria-hidden="true"` on the Avatar when the entire avatar is purely decorative.
-* Give an Avatar Button or Account Menu an accessible name with `aria-label` or `aria-labelledby`.
-* When using `Pressable`, provide an interactive role for the non-semantic Avatar child.
-
-## Best Practices [#best-practices]
-
-* Use Avatar for informational identity; compose it with `Pressable` for an Avatar Button or Account Menu when it is independently actionable.
-* Use circle for people and square for businesses, workspaces, and accounts.
-* Keep monograms to one or two uppercase characters.
-* Use the same `figure*` emphasis for the same entity wherever it appears.
-
-## Troubleshooting [#troubleshooting]
-
-* If an image is unavailable because of a bad URL or CORS policy, Text remains visible.
-* Long Text content is clipped to the avatar shape; provide a one- or two-character monogram.
-* Figure colors repeat after 15 values; assign a deterministic figure emphasis in the consuming application.
-
-## Props [#props]
-
-```tsx
-<Avatar>
-  <Image />
-  <Text />
-</Avatar>
-```
-
-### Avatar [#avatar]
 
 <PropTable />
 
@@ -744,6 +447,151 @@ A fully disabled calendar.
 <PropTable />
 
 ### RangeCalendar [#rangecalendar]
+
+<PropTable />
+
+
+# Avatar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Composable `Avatar`, `Image`, and `Text` parts
+* Circle and rounded-square shapes at four named sizes
+* Automatic image loading with a Text monogram fallback
+* Primary, subtle, and 15 categorical figure emphases
+* Avatar Button and Account Menu compositions built with Pressable
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use an Avatar with a one- or two-character monogram when no image is available.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Avatar>\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
+
+### Image [#image]
+
+Place Image before Text so the monogram is available while the image loads or if it fails.
+
+<Story of="ImageExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22%3E%3Crect width=%22128%22 height=%22128%22 fill=%22%2302242a%22/%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2251%22 fill=%22%2309757a%22/%3E%3Cpath d=%22M13 72c18-18 34-26 51-26s33 8 51 26v43H13z%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%2264%22 cy=%2253%22 r=%2220%22 fill=%22%23f5f7f8%22/%3E%3Cpath d=%22M35 106c4-17 15-26 29-26s25 9 29 26%22 fill=%22%23f5f7f8%22/%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2251%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-opacity=%22.35%22 stroke-width=%224%22/%3E%3C/svg%3E';\n\nexport function ImageExample() {\n  return (\n    <Avatar>\n      <Image src={image} alt=\&#x22;Uma Thurman\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
+
+### Image Fallback [#image-fallback]
+
+Include a Text fallback so an unavailable photo never leaves an empty identity marker.
+
+<Story of="ImageFallbackExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nexport function ImageFallbackExample() {\n  return (\n    <Avatar>\n      <Image src=\&#x22;/missing-avatar-image.png\&#x22; alt=\&#x22;\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
+
+### Shapes and sizes [#shapes-and-sizes]
+
+Use circular Avatars for people and square Avatars for organizations, workspaces, and accounts.
+
+<Story of="ShapesExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Flex, Text } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg', 'xl'] as const;\n\nexport function ShapesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Circle</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderCircle(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;circle\&#x22; size={size}>\n                <Text>UT</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Square</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderSquare(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;square\&#x22; size={size}>\n                <Text>AC</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Use primary or subtle for standard treatments, and a deterministic figure emphasis to categorize entities in a list.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Flex, Text, type AvatarEmphasis } from '@godaddy/antares';\n\nconst emphases: AvatarEmphasis[] = [\n  'primary',\n  'subtle',\n  'figure0',\n  'figure1',\n  'figure2',\n  'figure3',\n  'figure4',\n  'figure5',\n  'figure6',\n  'figure7',\n  'figure8',\n  'figure9',\n  'figure10',\n  'figure11',\n  'figure12',\n  'figure13',\n  'figure14'\n];\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {emphases.map(function renderAvatar(emphasis, index) {\n        return (\n          <Avatar key={emphasis} emphasis={emphasis}>\n            <Text>{index < 2 ? emphasis.slice(0, 1).toUpperCase() : `${index - 2}`}</Text>\n          </Avatar>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+
+### Avatar Button [#avatar-button]
+
+Use `Pressable` to add accessible interaction to an Avatar while preserving its shape.
+
+<Story of="AvatarButtonExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Pressable, Text } from '@godaddy/antares';\n\nexport function AvatarButtonExample() {\n  return (\n    <Pressable aria-label=\&#x22;Account\&#x22;>\n      <Avatar shape=\&#x22;circle\&#x22; role=\&#x22;button\&#x22;>\n        <Text>UT</Text>\n      </Avatar>\n    </Pressable>\n  );\n}&#x22;" />
+
+### Account Menu [#account-menu]
+
+Wrap an Avatar in a Pressable inside MenuTrigger for an account or profile menu.
+
+<Story of="AccountMenuExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Menu, MenuItem, MenuTrigger, Pressable, Text } from '@godaddy/antares';\n\nexport function AccountMenuExample() {\n  return (\n    <MenuTrigger>\n      <Pressable aria-label=\&#x22;Account menu\&#x22;>\n        <Avatar role=\&#x22;button\&#x22;>\n          <Text>UT</Text>\n        </Avatar>\n      </Pressable>\n      <Menu>\n        <MenuItem id=\&#x22;profile\&#x22;>Profile</MenuItem>\n        <MenuItem id=\&#x22;settings\&#x22;>Settings</MenuItem>\n        <MenuItem id=\&#x22;sign-out\&#x22;>Sign out</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Use Image native image props for responsive image sources. Choose a deterministic `figure0` through `figure14` emphasis in lists that categorize multiple entities.
+
+When an Avatar triggers an action, compose it with `Pressable` so the Avatar keeps its own shape and receives the interaction behavior directly. Use this pattern for an Avatar Button, or place it inside `MenuTrigger` for an Account Menu:
+
+```tsx
+<Pressable aria-label="Account menu" onPress={openAccountMenu}>
+  <Avatar role="button">
+    <Text>UT</Text>
+  </Avatar>
+</Pressable>
+```
+
+## Accessibility [#accessibility]
+
+* Give Image meaningful `alt` text when the image conveys an identity.
+* Text remains available to assistive technology when no image loads.
+* Use `alt=""` on the Image and `aria-hidden="true"` on the Avatar when the entire avatar is purely decorative.
+* Give an Avatar Button or Account Menu an accessible name with `aria-label` or `aria-labelledby`.
+* When using `Pressable`, provide an interactive role for the non-semantic Avatar child.
+
+## Best Practices [#best-practices]
+
+* Use Avatar for informational identity; compose it with `Pressable` for an Avatar Button or Account Menu when it is independently actionable.
+* Use circle for people and square for businesses, workspaces, and accounts.
+* Keep monograms to one or two uppercase characters.
+* Use the same `figure*` emphasis for the same entity wherever it appears.
+
+## Troubleshooting [#troubleshooting]
+
+* If an image is unavailable because of a bad URL or CORS policy, Text remains visible.
+* Long Text content is clipped to the avatar shape; provide a one- or two-character monogram.
+* Figure colors repeat after 15 values; assign a deterministic figure emphasis in the consuming application.
+
+## Props [#props]
+
+```tsx
+<Avatar>
+  <Image />
+  <Text />
+</Avatar>
+```
+
+### Avatar [#avatar]
 
 <PropTable />
 
@@ -1526,6 +1374,158 @@ Once the total is known, set `isIndeterminate` to false and supply a measured va
 <PropTable />
 
 
+# Accordion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Single or multiple expanded sections.
+* Controlled and uncontrolled group state.
+* Group-level disabled state.
+* Composable sections using Collapsible and CollapsiblePanel.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### One section at a time [#one-section-at-a-time]
+
+Let people explore short answers one at a time.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Accordion,\n  Collapsible,\n  CollapsiblePanel,\n  Heading,\n  Text,\n  Button,\n  Icon,\n  type AccordionProps\n} from '@godaddy/antares';\n\nexport function DefaultExample({\n  defaultExpandedKeys = ['domains']\n}: Pick<AccordionProps, 'defaultExpandedKeys'> = {}) {\n  return (\n    <Accordion allowsMultipleExpanded={false} defaultExpandedKeys={defaultExpandedKeys}>\n      <Collapsible id=\&#x22;domains\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Can I transfer my domain?</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>\n          <Text>Yes. Start your transfer from the Domains page.</Text>\n        </CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;renewal\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>How does renewal work?</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>\n          <Text>Enable automatic renewal in your account settings.</Text>\n        </CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;privacy\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Is domain privacy included?</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Domain privacy helps keep your personal contact information private.</CollapsiblePanel>\n      </Collapsible>\n    </Accordion>\n  );\n}&#x22;" />
+
+### Multiple sections open [#multiple-sections-open]
+
+Keep related answers visible together when people need to compare information.
+
+<Story of="MultipleExample" />
+
+<Source language="tsx" code="&#x22;import { Accordion, Button, Collapsible, CollapsiblePanel, Heading, Icon, Text } from '@godaddy/antares';\n\nexport function MultipleExample() {\n  return (\n    <Accordion allowsMultipleExpanded defaultExpandedKeys={['shipping', 'returns']}>\n      <Collapsible id=\&#x22;shipping\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Shipping</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Most orders arrive within two business days.</CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;returns\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Returns</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Return eligible items within thirty days.</CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;tracking\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Tracking</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Track your order from the confirmation email.</CollapsiblePanel>\n      </Collapsible>\n    </Accordion>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Coordinate expanded sections with application state in either expansion mode.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Accordion,\n  Button,\n  Collapsible,\n  CollapsiblePanel,\n  Flex,\n  Heading,\n  Text,\n  Icon,\n  type AccordionProps\n} from '@godaddy/antares';\n\nexport function ControlledExample({\n  onChange,\n  allowsMultipleExpanded = false\n}: {\n  onChange?: AccordionProps['onExpandedChange'];\n  allowsMultipleExpanded?: boolean;\n} = {}) {\n  const [keys, setKeys] = useState<Set<string | number>>(new Set(['account']));\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Button onPress={() => setKeys(new Set())}>Close all sections</Button>\n      <Text>Open panels: {[...keys].join(', ') || 'none'}</Text>\n      <Accordion\n        allowsMultipleExpanded={allowsMultipleExpanded}\n        expandedKeys={keys}\n        onExpandedChange={function handleExpandedChange(next) {\n          setKeys(next);\n          onChange?.(next);\n        }}\n      >\n        <Collapsible id=\&#x22;account\&#x22;>\n          <Heading>\n            <Button slot=\&#x22;trigger\&#x22;>\n              <Text>Account</Text>\n              <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n            </Button>\n          </Heading>\n          <CollapsiblePanel>Manage your account information.</CollapsiblePanel>\n        </Collapsible>\n        <Collapsible id=\&#x22;billing\&#x22;>\n          <Heading>\n            <Button slot=\&#x22;trigger\&#x22;>\n              <Text>Billing</Text>\n              <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n            </Button>\n          </Heading>\n          <CollapsiblePanel>Manage payment methods.</CollapsiblePanel>\n        </Collapsible>\n        <Collapsible id=\&#x22;notifications\&#x22;>\n          <Heading>\n            <Button slot=\&#x22;trigger\&#x22;>\n              <Text>Notifications</Text>\n              <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n            </Button>\n          </Heading>\n          <CollapsiblePanel>Choose how you receive account updates.</CollapsiblePanel>\n        </Collapsible>\n      </Accordion>\n    </Flex>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Keep unavailable options visible and explain the reason in their label.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Accordion, Collapsible, CollapsiblePanel, Heading, Button, Icon, Text } from '@godaddy/antares';\n\nexport function DisabledExample({ isGroupDisabled = false }: { isGroupDisabled?: boolean } = {}) {\n  return (\n    <Accordion isDisabled={isGroupDisabled}>\n      <Collapsible id=\&#x22;basic\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Basic plan</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Features included with your plan.</CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;premium\&#x22; isDisabled>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Premium plan (Upgrade required)</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Additional premium features.</CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;enterprise\&#x22; isDisabled>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Enterprise plan (Contact sales)</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Contact our sales team for a plan tailored to your business.</CollapsiblePanel>\n      </Collapsible>\n    </Accordion>\n  );\n}&#x22;" />
+
+### Form Steps [#form-steps]
+
+Break a single-page form into steps while keeping entered values mounted.
+
+<Story of="FormStepsExample" />
+
+<Source language="tsx" code="&#x22;import { useRef, useState } from 'react';\nimport {\n  Accordion,\n  Button,\n  Collapsible,\n  CollapsiblePanel,\n  Flex,\n  Heading,\n  Input,\n  Label,\n  TextField,\n  Icon,\n  Text\n} from '@godaddy/antares';\n\nexport function FormStepsExample() {\n  const [keys, setKeys] = useState<Set<string | number>>(new Set(['contact']));\n  const paymentTrigger = useRef<HTMLButtonElement>(null);\n  return (\n    <Accordion allowsMultipleExpanded={false} expandedKeys={keys} onExpandedChange={setKeys}>\n      <Collapsible id=\&#x22;contact\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Contact details</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>\n          <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n            <TextField>\n              <Label>Name</Label>\n              <Input />\n            </TextField>\n            <Button\n              onPress={function continueToPayment() {\n                paymentTrigger.current?.focus();\n                setKeys(new Set(['payment']));\n              }}\n            >\n              Continue to payment\n            </Button>\n          </Flex>\n        </CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;payment\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22; ref={paymentTrigger}>\n            <Text>Payment details</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Review your payment details before submitting.</CollapsiblePanel>\n      </Collapsible>\n      <Collapsible id=\&#x22;review\&#x22;>\n        <Heading>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Review and submit</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>Check your contact and payment details before submitting.</CollapsiblePanel>\n      </Collapsible>\n    </Accordion>\n  );\n}&#x22;" />
+
+### Nested [#nested]
+
+Nested sections keep independent state. Prefer a flatter structure when possible.
+
+<Story of="NestedExample" />
+
+<Source language="tsx" code="&#x22;import { Accordion, Collapsible, CollapsiblePanel, Heading, Button, Icon, Text } from '@godaddy/antares';\n\nexport function NestedExample() {\n  return (\n    <Accordion defaultExpandedKeys={['outer']}>\n      <Collapsible id=\&#x22;outer\&#x22;>\n        <Heading level={2}>\n          <Button slot=\&#x22;trigger\&#x22;>\n            <Text>Outer question</Text>\n            <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n          </Button>\n        </Heading>\n        <CollapsiblePanel>\n          <Collapsible>\n            <Heading>\n              <Button slot=\&#x22;trigger\&#x22;>\n                <Text>Independent detail</Text>\n                <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n              </Button>\n            </Heading>\n            <CollapsiblePanel>Independent answer.</CollapsiblePanel>\n          </Collapsible>\n          <Accordion>\n            <Collapsible id=\&#x22;inner\&#x22;>\n              <Heading>\n                <Button slot=\&#x22;trigger\&#x22;>\n                  <Text>Inner question</Text>\n                  <Icon slot=\&#x22;indicator\&#x22; icon=\&#x22;chevron-down\&#x22; />\n                </Button>\n              </Heading>\n              <CollapsiblePanel>Inner answer.</CollapsiblePanel>\n            </Collapsible>\n          </Accordion>\n        </CollapsiblePanel>\n      </Collapsible>\n    </Accordion>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Compose related `Collapsible` sections inside Accordion. Give each section a stable, unique `id`.
+See the Collapsible component documentation for more information about section anatomy, panel content, and trigger styling.
+
+Use `defaultExpandedKeys` for initial expansion, or `expandedKeys` with `onExpandedChange` for
+controlled state. Keys must match the section IDs; the callback receives a `Set` of expanded keys.
+By default, only one section can stay open. Set `allowsMultipleExpanded` to keep several open.
+Both behaviors are shown in the examples.
+
+Use `className` and `style` to customize the group container. `data-disabled` reflects the group's
+disabled state. Customize individual headings, triggers, and panels on the composed Collapsible sections.
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key                   | Action                                                        |
+| --------------------- | ------------------------------------------------------------- |
+| `Tab` / `Shift + Tab` | Move between enabled triggers and controls in expanded panels |
+| `Enter` / `Space`     | Toggle the focused section; focus stays on the trigger        |
+
+### ARIA [#aria]
+
+* Each section's trigger is a native button with `aria-expanded` and `aria-controls` linked to its panel.
+* Each panel is labeled by its trigger through `aria-labelledby` automatically.
+
+## Best Practices [#best-practices]
+
+* Group related sections and keep essential information visible outside the accordion.
+* Use descriptive section titles and heading levels that fit the page hierarchy.
+* Use multiple expansion when users need to compare information across sections.
+* Keep item IDs stable when reordering or filtering data.
+* Manage expansion on Accordion when sections belong to a group.
+* Keep form validation and step progression in application logic.
+
+## Troubleshooting [#troubleshooting]
+
+### Controlled State Not Updating [#controlled-state-not-updating]
+
+Update `expandedKeys` from `onExpandedChange` and make sure the keys match the item IDs.
+Changing `defaultExpandedKeys` after mounting does not control expansion.
+
+### Sections Close When Another Opens [#sections-close-when-another-opens]
+
+Enable `allowsMultipleExpanded` when several sections should remain open together.
+For a single independent section, use Collapsible without an Accordion.
+
+## Props [#props]
+
+```tsx
+<Accordion>
+  <Collapsible>
+    <Heading>
+      <Button slot="trigger">
+        <Text />
+        <Icon slot="indicator" />
+      </Button>
+    </Heading>
+    <CollapsiblePanel>{/* ... */}</CollapsiblePanel>
+  </Collapsible>
+</Accordion>;
+```
+
+<PropTable />
+
+
 # Collapsible
 
 
@@ -1684,220 +1684,6 @@ Panel content stays mounted when collapsed. Reset form state explicitly when the
 <PropTable />
 
 ### CollapsiblePanel [#collapsiblepanel]
-
-<PropTable />
-
-
-# DatePicker
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `DatePickerCalendar`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in. `children` also accepts a function for picker state
-* **Trigger and calendar**: An empty `Button slot="trigger"` renders a calendar icon and the formatted value from the field. `DatePickerCalendar` (and `DateRangePickerCalendar`) is the calendar in the popover it opens: it takes `Calendar` props plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `Calendar` yourself to replace the whole overlay
-* **Sizes**: Each picker is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, trigger, description, error, and the calendar it opens; without it, the picker follows the surrounding scope
-* `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
-* Built on React Aria - native form integration, validation, focus management, and screen-reader support
-* Label formatting via `formatOptions` / `placeholder` on the picker itself, or on `DatePickerValue` / `DateRangePickerValue` in a trigger you write
-* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Working with dates [#working-with-dates]
-
-Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
-
-```tsx
-import { parseDate } from '@godaddy/antares/date';
-import { DatePicker, Label } from '@godaddy/antares';
-
-function EventDatePicker() {
-  return (
-    <DatePicker defaultValue={parseDate('2024-03-15')}>
-      <Label>Event date</Label>
-    </DatePicker>
-  );
-}
-```
-
-Import date helpers from `@godaddy/antares/date` (a re-export of
-[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/)).
-Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user's locale.
-
-## Examples [#examples]
-
-### Default [#default]
-
-A single date picker with a `Label`.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DatePicker>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Range [#range]
-
-A start/end range picker.
-
-<Story of="RangeExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DateRangePicker, DateRangePickerCalendar, Label } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DateRangePickerCalendar />\n    </DateRangePicker>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Driving the value with `useState`.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { type CalendarDate, parseDate } from '@godaddy/antares/date';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<CalendarDate | null>(parseDate('2024-03-15'));\n\n  return (\n    <DatePicker value={value} onChange={setValue}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Format Options [#format-options]
-
-Controlling the trigger's label format via `formatOptions`.
-
-<Story of="FormatOptionsExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function FormatOptionsExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')} formatOptions={{ dateStyle: 'short' }}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Min / Max [#min--max]
-
-Bounding selectable dates with `minValue` / `maxValue`.
-
-<Story of="MinMaxExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function MinMaxExample() {\n  return (\n    <DatePicker minValue={parseDate('2024-03-05')} maxValue={parseDate('2024-03-25')}>\n      <Label>Booking date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### With error [#with-error]
-
-An invalid picker showing a validation message via `isInvalid` and a `FieldError`.
-
-<Story of="WithErrorExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, FieldError, Label } from '@godaddy/antares';\n\nexport function WithErrorExample() {\n  return (\n    <DatePicker isInvalid>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <FieldError>Please choose a date</FieldError>\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-A disabled picker via `isDisabled`.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DatePicker isDisabled>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Composed [#composed]
-
-Write the trigger and the overlay yourself instead of composing `DatePickerCalendar`, for full
-control over the popover and the calendar.
-
-<Story of="ComposedExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Calendar, Content, DatePicker, DatePickerValue, Icon, Label, Popover, Text } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function ComposedExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DatePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose the event date</Text>\n      <Popover hideArrow>\n        <Content>\n          <Calendar />\n        </Content>\n      </Popover>\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Composed range [#composed-range]
-
-Write a DateRangePicker's trigger and overlay from lower-level pieces the same way.
-
-<Story of="ComposedRangeExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  DateRangePicker,\n  DateRangePickerValue,\n  Icon,\n  Label,\n  Popover,\n  RangeCalendar,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedRangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DateRangePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your start and end dates</Text>\n      <Popover hideArrow>\n        <Content>\n          <RangeCalendar />\n        </Content>\n      </Popover>\n    </DateRangePicker>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-`size` sets the label, trigger, and calendar. Without it, the picker follows the surrounding
-size scope.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Flex, Label } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function picker(size) {\n        return (\n          <DatePicker key={size} size={size}>\n            <Label>Event date ({size})</Label>\n            <Button slot=\&#x22;trigger\&#x22; />\n            <DatePickerCalendar />\n          </DatePicker>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<DatePicker>
-  <Label />
-  <Group>
-    <Button slot="trigger">
-      <DatePickerValue />
-    </Button>
-  </Group>
-  <Text slot="description" />
-  <Popover>
-    <Content>
-      <Calendar />
-    </Content>
-  </Popover>
-  <FieldError />
-</DatePicker>
-```
-
-```tsx
-<DateRangePicker>
-  <Label />
-  <Group>
-    <Button slot="trigger">
-      <DateRangePickerValue />
-    </Button>
-  </Group>
-  <Text slot="description" />
-  <Popover>
-    <Content>
-      <RangeCalendar />
-    </Content>
-  </Popover>
-  <FieldError />
-</DateRangePicker>
-```
-
-### DatePicker [#datepicker]
-
-<PropTable />
-
-### DateRangePicker [#daterangepicker]
-
-<PropTable />
-
-### DatePickerCalendar [#datepickercalendar]
-
-<PropTable />
-
-### DateRangePickerCalendar [#daterangepickercalendar]
-
-<PropTable />
-
-### DatePickerValue [#datepickervalue]
-
-<PropTable />
-
-### DateRangePickerValue [#daterangepickervalue]
 
 <PropTable />
 
@@ -2753,50 +2539,6 @@ Render an image with alternative text and explicit dimensions.
 <PropTable />
 
 
-# Input
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Input` is the single-line control inside a field, not a field on its own. Prefer `TextField` or `NumberField` as the parent; see those components for fuller examples.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Input inside TextField.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Email</Label>\n      <Input placeholder=\&#x22;you@example.com\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<TextField>
-  <Label>Email</Label>
-  <Input placeholder="you@example.com" />
-</TextField>
-```
-
-### Input [#input]
-
-<PropTable />
-
-
 # InlineDrawer
 
 
@@ -2893,6 +2635,50 @@ A rail whose content stays visible when collapsed is a composition, not a mode: 
 <PropTable />
 
 ### InlineDrawerPanel [#inlinedrawerpanel]
+
+<PropTable />
+
+
+# Input
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Input` is the single-line control inside a field, not a field on its own. Prefer `TextField` or `NumberField` as the parent; see those components for fuller examples.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Input inside TextField.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Email</Label>\n      <Input placeholder=\&#x22;you@example.com\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<TextField>
+  <Label>Email</Label>
+  <Input placeholder="you@example.com" />
+</TextField>
+```
+
+### Input [#input]
 
 <PropTable />
 
@@ -3214,6 +3000,220 @@ Nested menus via `SubmenuTrigger`.
 <PropTable />
 
 
+# DatePicker
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `DatePickerCalendar`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in. `children` also accepts a function for picker state
+* **Trigger and calendar**: An empty `Button slot="trigger"` renders a calendar icon and the formatted value from the field. `DatePickerCalendar` (and `DateRangePickerCalendar`) is the calendar in the popover it opens: it takes `Calendar` props plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `Calendar` yourself to replace the whole overlay
+* **Sizes**: Each picker is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, trigger, description, error, and the calendar it opens; without it, the picker follows the surrounding scope
+* `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
+* Built on React Aria - native form integration, validation, focus management, and screen-reader support
+* Label formatting via `formatOptions` / `placeholder` on the picker itself, or on `DatePickerValue` / `DateRangePickerValue` in a trigger you write
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate } from '@godaddy/antares/date';
+import { DatePicker, Label } from '@godaddy/antares';
+
+function EventDatePicker() {
+  return (
+    <DatePicker defaultValue={parseDate('2024-03-15')}>
+      <Label>Event date</Label>
+    </DatePicker>
+  );
+}
+```
+
+Import date helpers from `@godaddy/antares/date` (a re-export of
+[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/)).
+Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user's locale.
+
+## Examples [#examples]
+
+### Default [#default]
+
+A single date picker with a `Label`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DatePicker>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Range [#range]
+
+A start/end range picker.
+
+<Story of="RangeExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DateRangePicker, DateRangePickerCalendar, Label } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DateRangePickerCalendar />\n    </DateRangePicker>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Driving the value with `useState`.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { type CalendarDate, parseDate } from '@godaddy/antares/date';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<CalendarDate | null>(parseDate('2024-03-15'));\n\n  return (\n    <DatePicker value={value} onChange={setValue}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Format Options [#format-options]
+
+Controlling the trigger's label format via `formatOptions`.
+
+<Story of="FormatOptionsExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function FormatOptionsExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')} formatOptions={{ dateStyle: 'short' }}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates with `minValue` / `maxValue`.
+
+<Story of="MinMaxExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function MinMaxExample() {\n  return (\n    <DatePicker minValue={parseDate('2024-03-05')} maxValue={parseDate('2024-03-25')}>\n      <Label>Booking date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### With error [#with-error]
+
+An invalid picker showing a validation message via `isInvalid` and a `FieldError`.
+
+<Story of="WithErrorExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, FieldError, Label } from '@godaddy/antares';\n\nexport function WithErrorExample() {\n  return (\n    <DatePicker isInvalid>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <FieldError>Please choose a date</FieldError>\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+A disabled picker via `isDisabled`.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DatePicker isDisabled>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Composed [#composed]
+
+Write the trigger and the overlay yourself instead of composing `DatePickerCalendar`, for full
+control over the popover and the calendar.
+
+<Story of="ComposedExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Calendar, Content, DatePicker, DatePickerValue, Icon, Label, Popover, Text } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function ComposedExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DatePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose the event date</Text>\n      <Popover hideArrow>\n        <Content>\n          <Calendar />\n        </Content>\n      </Popover>\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Composed range [#composed-range]
+
+Write a DateRangePicker's trigger and overlay from lower-level pieces the same way.
+
+<Story of="ComposedRangeExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  DateRangePicker,\n  DateRangePickerValue,\n  Icon,\n  Label,\n  Popover,\n  RangeCalendar,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedRangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DateRangePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your start and end dates</Text>\n      <Popover hideArrow>\n        <Content>\n          <RangeCalendar />\n        </Content>\n      </Popover>\n    </DateRangePicker>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+`size` sets the label, trigger, and calendar. Without it, the picker follows the surrounding
+size scope.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Flex, Label } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function picker(size) {\n        return (\n          <DatePicker key={size} size={size}>\n            <Label>Event date ({size})</Label>\n            <Button slot=\&#x22;trigger\&#x22; />\n            <DatePickerCalendar />\n          </DatePicker>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<DatePicker>
+  <Label />
+  <Group>
+    <Button slot="trigger">
+      <DatePickerValue />
+    </Button>
+  </Group>
+  <Text slot="description" />
+  <Popover>
+    <Content>
+      <Calendar />
+    </Content>
+  </Popover>
+  <FieldError />
+</DatePicker>
+```
+
+```tsx
+<DateRangePicker>
+  <Label />
+  <Group>
+    <Button slot="trigger">
+      <DateRangePickerValue />
+    </Button>
+  </Group>
+  <Text slot="description" />
+  <Popover>
+    <Content>
+      <RangeCalendar />
+    </Content>
+  </Popover>
+  <FieldError />
+</DateRangePicker>
+```
+
+### DatePicker [#datepicker]
+
+<PropTable />
+
+### DateRangePicker [#daterangepicker]
+
+<PropTable />
+
+### DatePickerCalendar [#datepickercalendar]
+
+<PropTable />
+
+### DateRangePickerCalendar [#daterangepickercalendar]
+
+<PropTable />
+
+### DatePickerValue [#datepickervalue]
+
+<PropTable />
+
+### DateRangePickerValue [#daterangepickervalue]
+
+<PropTable />
+
+
 # MetricsLockup
 
 
@@ -3293,9 +3293,7 @@ Use the `compact` prop to render the metric value and description inline rather 
 <PropTable />
 
 
-# Modal
-
-
+# Pagination
 
 
 
@@ -3315,10 +3313,6 @@ Use the `compact` prop to render the metric value and description inline rather 
 
 <Meta of="Stories" name="Overview" />
 
-`ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
-
-The modal is a `SizeProvider`. It opens at the size of the scope around its trigger, even though it renders in a portal, and `size` overrides that.
-
 ## Installation [#installation]
 
 ```bash
@@ -3329,99 +3323,47 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-Compose a Modal from a `Heading slot="title"`, a `CloseButton`, `Content`, and a
-`ButtonGroup`. `ModalTrigger` opens the Modal and manages its open/close state.
+The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Delete file?</Heading>\n        <CloseButton />\n        <Content>This action cannot be undone. The file will be permanently removed.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;critical\&#x22;>\n            Delete\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DefaultExample() {\n  const [page, setPage] = useState(0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={5} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
 
 ### Controlled [#controlled]
 
-Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
+Pass `activeIndex` and `onChange` to control the active page externally.
 
 <Story of="ControlledExample" />
 
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Flex, Text } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal>\n          <Heading slot=\&#x22;title\&#x22;>Modal title</Heading>\n          <CloseButton />\n          <Content>\n            She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n          </Content>\n          <ButtonGroup>\n            <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Close\n            </Button>\n          </ButtonGroup>\n        </Modal>\n      </ModalTrigger>\n\n      <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>\n\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setIsOpen(true)}>\n        Open from outside\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={4} activeIndex={page} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
 
-### Scrollable [#scrollable]
+### Default Active [#default-active]
 
-When the content is taller than the viewport, the `Content` region scrolls while the title
-row and the `ButtonGroup` stay pinned.
+Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
 
-<Story of="ScrollableExample" />
+<Story of="DefaultActiveExample" />
 
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Terms of service</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 24 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n            Decline\n          </Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Accept\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function DefaultActiveExample() {\n  return <Pagination total={5} defaultActiveIndex={2} />;\n}&#x22;" />
 
-### Triggerless [#triggerless]
+### With Limit [#with-limit]
 
-`Modal` accepts `isOpen` and `onOpenChange` directly, so it can be controlled without a
-`ModalTrigger`. Useful when the modal is opened from several places at once.
+Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
 
-<Story of="TriggerlessExample" />
+<Story of="WithLimitExample" />
 
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, ButtonGroup, CloseButton, Content, Heading, Modal } from '@godaddy/antares';\n\nexport function TriggerlessExample() {\n  const [isOpen, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open modal\n      </Button>\n      <Modal isOpen={isOpen} onOpenChange={setOpen}>\n        <Heading slot=\&#x22;title\&#x22;>Triggerless modal</Heading>\n        <CloseButton />\n        <Content>This is the content of the modal.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Done\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function WithLimitExample() {\n  return <Pagination total={10} limit={3} />;\n}&#x22;" />
 
-### Size [#size]
+### onChange Event [#onchange-event]
 
-`size` sets the modal's text, controls, and spacing. Without it, the modal follows the size
-scope around its trigger.
+The `onChange` callback fires with the new page index whenever the user navigates.
 
-<Story of="SizeExample" />
+<Story of="OnChangeExample" />
 
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function SizeExample() {\n  return (\n    <ModalTrigger>\n      <Button>Open small modal</Button>\n      <Modal size=\&#x22;sm\&#x22;>\n        <Heading slot=\&#x22;title\&#x22;>Rename file</Heading>\n        <CloseButton />\n        <Content>\n          <Text>The new name applies everywhere the file is shared.</Text>\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Rename\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
-
-### With Text Lockup [#with-text-lockup]
-
-A `TextLockup` in the content keeps its own title. The modal's `Heading slot="title"` still names
-the dialog.
-
-<Story of="WithTextLockupExample" />
-
-<Source language="tsx" code="&#x22;import {\n  ModalTrigger,\n  Modal,\n  Button,\n  CloseButton,\n  Heading,\n  Content,\n  ButtonGroup,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function WithTextLockupExample() {\n  return (\n    <ModalTrigger>\n      <Button>Compare plans</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Compare plans</Heading>\n        <CloseButton />\n        <Content>\n          <TextLockup size=\&#x22;sm\&#x22;>\n            <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n              Pro\n            </Tag>\n            <Heading slot=\&#x22;title\&#x22;>Unlimited seats</Heading>\n            <Text slot=\&#x22;body\&#x22;>Add your whole team with priority support.</Text>\n          </TextLockup>\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Close</Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard interaction [#keyboard-interaction]
-
-| Key      | Action                                                     |
-| -------- | ---------------------------------------------------------- |
-| `Tab`    | Moves focus to the next focusable element inside the modal |
-| `Escape` | Closes the modal (unless `isKeyboardDismissDisabled`)      |
-
-### ARIA [#aria]
-
-* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
-* Focus is trapped within the modal while open and returned to the trigger on close
-
-## Best Practices [#best-practices]
-
-* Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
-* Pair every action button with `slot="close"` when it should dismiss the modal
-* Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function OnChangeExample() {\n  const [onChangeValue, setOnChangeValue] = useState<number | undefined>(undefined);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={3} onChange={setOnChangeValue} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        onChange: {onChangeValue ?? 'none'}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
 
 ## Props [#props]
 
-```tsx
-<ModalTrigger>
-  <Button />
-  <Modal>
-    <Heading slot="title" />
-    <CloseButton />
-    <Header />
-    <Content />
-    <Footer />
-    <ButtonGroup />
-    {/* ... */}
-  </Modal>
-</ModalTrigger>
-```
-
-### Modal [#modal]
-
-<PropTable />
-
-### ModalTrigger [#modaltrigger]
+### Pagination [#pagination]
 
 <PropTable />
 
@@ -3561,81 +3503,6 @@ Compose with `children` to replace the stepper icons with your own content, such
 ```
 
 ### NumberField [#numberfield]
-
-<PropTable />
-
-
-# Pagination
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DefaultExample() {\n  const [page, setPage] = useState(0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={5} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Pass `activeIndex` and `onChange` to control the active page externally.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={4} activeIndex={page} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Default Active [#default-active]
-
-Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
-
-<Story of="DefaultActiveExample" />
-
-<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function DefaultActiveExample() {\n  return <Pagination total={5} defaultActiveIndex={2} />;\n}&#x22;" />
-
-### With Limit [#with-limit]
-
-Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
-
-<Story of="WithLimitExample" />
-
-<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function WithLimitExample() {\n  return <Pagination total={10} limit={3} />;\n}&#x22;" />
-
-### onChange Event [#onchange-event]
-
-The `onChange` callback fires with the new page index whenever the user navigates.
-
-<Story of="OnChangeExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function OnChangeExample() {\n  const [onChangeValue, setOnChangeValue] = useState<number | undefined>(undefined);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={3} onChange={setOnChangeValue} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        onChange: {onChangeValue ?? 'none'}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### Pagination [#pagination]
 
 <PropTable />
 
@@ -4624,6 +4491,148 @@ useMediaQuery(query: string, options: { ssrMatch: boolean }): boolean
 Breakpoint values are listed in the Breakpoints example above. Types: `ViewportBreakpoint` and `UseMediaQueryOptions`.
 
 
+# Select
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `SelectOptions`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
+* **Trigger and options**: An empty `Button slot="trigger"` renders the selected value and a chevron from the field. `SelectOptions` is the list in the popover the Select opens: it takes `ListBox` props (including `items` with a render function for a dynamic collection) plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `ListBox` yourself to replace the whole overlay
+* **Composed in another field**: Use `variant="control"` to sit inside another field's `Group`, as a country-code select beside a phone `Input`
+* **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
+* **Sizes**: The field is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets the label, trigger, and options, which open at the same size even though they render in a portal. Without it, the Select follows the surrounding scope
+* **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
+* **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Minimal usage with a `Label`, items, and a placeholder.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Label, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22;>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <Text slot=\&#x22;description\&#x22;>Select your favorite coffee</Text>\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Label, Select, SelectItem, SelectOptions, Text, type SelectKey } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<SelectKey | null>('latte');\n\n  return (\n    <>\n      <Select placeholder=\&#x22;Pick a drink\&#x22; value={value} onChange={setValue}>\n        <Label>Coffee</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n          <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n          <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Text>\n        <strong>Value:</strong> {String(value ?? '(none)')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Multiple [#multiple]
+
+Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
+
+<Story of="MultipleExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Label, Select, SelectItem, SelectOptions, Text, type SelectKey } from '@godaddy/antares';\n\nexport function MultipleExample() {\n  const [value, setValue] = useState<readonly SelectKey[]>(['latte', 'mocha']);\n\n  return (\n    <>\n      <Select placeholder=\&#x22;Pick one or more\&#x22; selectionMode=\&#x22;multiple\&#x22; value={value} onChange={setValue}>\n        <Label>Coffees you like</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n          <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n          <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Text>\n        <strong>Selected:</strong> {value.length === 0 ? '(none)' : value.join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with a `FieldError` for validation feedback.
+
+<Story of="InvalidExample" />
+
+<Source language="tsx" code="&#x22;import { Button, FieldError, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22; isInvalid isRequired>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <FieldError>Please choose a drink</FieldError>\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent interaction.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Select defaultValue=\&#x22;latte\&#x22; isDisabled>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
+
+### Form [#form]
+
+Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
+
+<Story of="FormExample" />
+
+<Source language="tsx" code="&#x22;import { useState, type FormEvent } from 'react';\nimport { Box, Button, FieldError, Flex, Label, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function FormExample() {\n  const [submitted, setSubmitted] = useState<Record<string, string | string[]> | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const data = new FormData(event.currentTarget);\n    const entries: Record<string, string | string[]> = {};\n    for (const [key, value] of data.entries()) {\n      const stringValue = String(value);\n      const existing = entries[key];\n      if (existing === undefined) {\n        entries[key] = stringValue;\n      } else if (Array.isArray(existing)) {\n        entries[key] = [...existing, stringValue];\n      } else {\n        entries[key] = [existing, stringValue];\n      }\n    }\n    setSubmitted(entries);\n  }\n\n  return (\n    <Flex as=\&#x22;form\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; onSubmit={handleSubmit}>\n      <Select name=\&#x22;drink\&#x22; placeholder=\&#x22;Pick a drink\&#x22; isRequired>\n        <Label>Drink</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <FieldError>Please select an item in the list.</FieldError>\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Select name=\&#x22;extras\&#x22; placeholder=\&#x22;Pick any extras\&#x22; selectionMode=\&#x22;multiple\&#x22;>\n        <Label>Extras</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;oat-milk\&#x22;>Oat milk</SelectItem>\n          <SelectItem id=\&#x22;extra-shot\&#x22;>Extra shot</SelectItem>\n          <SelectItem id=\&#x22;vanilla\&#x22;>Vanilla syrup</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Flex gap=\&#x22;sm\&#x22;>\n        <Button type=\&#x22;submit\&#x22;>Submit</Button>\n        <Button type=\&#x22;reset\&#x22; variant=\&#x22;minimal\&#x22; onPress={() => setSubmitted(null)}>\n          Reset\n        </Button>\n      </Flex>\n      {submitted && (\n        <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; rounding=\&#x22;lg\&#x22;>\n          <Text>\n            <strong>Submitted:</strong> {JSON.stringify(submitted)}\n          </Text>\n        </Box>\n      )}\n    </Flex>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Compare the supported `md` and `sm` visual sizes.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Select placeholder=\&#x22;Pick a drink\&#x22;>\n        <Label>Coffee (md)</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Select placeholder=\&#x22;Pick a drink\&#x22; size=\&#x22;sm\&#x22;>\n        <Label>Coffee (sm)</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n    </Flex>\n  );\n}&#x22;" />
+
+### Composed [#composed]
+
+Write the trigger and the overlay yourself instead of composing `SelectOptions`, for full control
+over the popover and the list.
+
+<Story of="ComposedExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  FieldError,\n  Icon,\n  Label,\n  ListBox,\n  Popover,\n  Select,\n  SelectItem,\n  SelectValue,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22;>\n      <Label>Drink</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <SelectValue />\n        <Icon icon=\&#x22;chevron-down\&#x22; />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your favorite drink</Text>\n      <FieldError />\n      <Popover hideArrow>\n        <Content blockPadding=\&#x22;xs\&#x22; inlinePadding=\&#x22;0\&#x22;>\n          <ListBox>\n            <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n            <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n            <SelectItem id=\&#x22;tea\&#x22;>Tea</SelectItem>\n          </ListBox>\n        </Content>\n      </Popover>\n    </Select>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<Select>
+  <Label />
+  <Button slot="trigger" />
+  <Text slot="description" />
+  <SelectOptions>
+    <SelectItem />
+  </SelectOptions>
+  <FieldError />
+</Select>
+```
+
+### Select [#select]
+
+<PropTable />
+
+### SelectOptions [#selectoptions]
+
+<PropTable />
+
+### SelectValue [#selectvalue]
+
+<PropTable />
+
+### SelectItem [#selectitem]
+
+<PropTable />
+
+
 # SegmentedController
 
 
@@ -4779,148 +4788,6 @@ Components automatically add data attributes for styling different states:
 <PropTable />
 
 
-# Select
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `SelectOptions`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
-* **Trigger and options**: An empty `Button slot="trigger"` renders the selected value and a chevron from the field. `SelectOptions` is the list in the popover the Select opens: it takes `ListBox` props (including `items` with a render function for a dynamic collection) plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `ListBox` yourself to replace the whole overlay
-* **Composed in another field**: Use `variant="control"` to sit inside another field's `Group`, as a country-code select beside a phone `Input`
-* **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
-* **Sizes**: The field is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets the label, trigger, and options, which open at the same size even though they render in a portal. Without it, the Select follows the surrounding scope
-* **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
-* **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Minimal usage with a `Label`, items, and a placeholder.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Label, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22;>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <Text slot=\&#x22;description\&#x22;>Select your favorite coffee</Text>\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Label, Select, SelectItem, SelectOptions, Text, type SelectKey } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<SelectKey | null>('latte');\n\n  return (\n    <>\n      <Select placeholder=\&#x22;Pick a drink\&#x22; value={value} onChange={setValue}>\n        <Label>Coffee</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n          <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n          <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Text>\n        <strong>Value:</strong> {String(value ?? '(none)')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Multiple [#multiple]
-
-Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
-
-<Story of="MultipleExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Label, Select, SelectItem, SelectOptions, Text, type SelectKey } from '@godaddy/antares';\n\nexport function MultipleExample() {\n  const [value, setValue] = useState<readonly SelectKey[]>(['latte', 'mocha']);\n\n  return (\n    <>\n      <Select placeholder=\&#x22;Pick one or more\&#x22; selectionMode=\&#x22;multiple\&#x22; value={value} onChange={setValue}>\n        <Label>Coffees you like</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n          <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n          <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Text>\n        <strong>Selected:</strong> {value.length === 0 ? '(none)' : value.join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Invalid [#invalid]
-
-Use `isInvalid` with a `FieldError` for validation feedback.
-
-<Story of="InvalidExample" />
-
-<Source language="tsx" code="&#x22;import { Button, FieldError, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22; isInvalid isRequired>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <FieldError>Please choose a drink</FieldError>\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` to prevent interaction.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Select defaultValue=\&#x22;latte\&#x22; isDisabled>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
-
-### Form [#form]
-
-Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
-
-<Story of="FormExample" />
-
-<Source language="tsx" code="&#x22;import { useState, type FormEvent } from 'react';\nimport { Box, Button, FieldError, Flex, Label, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function FormExample() {\n  const [submitted, setSubmitted] = useState<Record<string, string | string[]> | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const data = new FormData(event.currentTarget);\n    const entries: Record<string, string | string[]> = {};\n    for (const [key, value] of data.entries()) {\n      const stringValue = String(value);\n      const existing = entries[key];\n      if (existing === undefined) {\n        entries[key] = stringValue;\n      } else if (Array.isArray(existing)) {\n        entries[key] = [...existing, stringValue];\n      } else {\n        entries[key] = [existing, stringValue];\n      }\n    }\n    setSubmitted(entries);\n  }\n\n  return (\n    <Flex as=\&#x22;form\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; onSubmit={handleSubmit}>\n      <Select name=\&#x22;drink\&#x22; placeholder=\&#x22;Pick a drink\&#x22; isRequired>\n        <Label>Drink</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <FieldError>Please select an item in the list.</FieldError>\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Select name=\&#x22;extras\&#x22; placeholder=\&#x22;Pick any extras\&#x22; selectionMode=\&#x22;multiple\&#x22;>\n        <Label>Extras</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;oat-milk\&#x22;>Oat milk</SelectItem>\n          <SelectItem id=\&#x22;extra-shot\&#x22;>Extra shot</SelectItem>\n          <SelectItem id=\&#x22;vanilla\&#x22;>Vanilla syrup</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Flex gap=\&#x22;sm\&#x22;>\n        <Button type=\&#x22;submit\&#x22;>Submit</Button>\n        <Button type=\&#x22;reset\&#x22; variant=\&#x22;minimal\&#x22; onPress={() => setSubmitted(null)}>\n          Reset\n        </Button>\n      </Flex>\n      {submitted && (\n        <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; rounding=\&#x22;lg\&#x22;>\n          <Text>\n            <strong>Submitted:</strong> {JSON.stringify(submitted)}\n          </Text>\n        </Box>\n      )}\n    </Flex>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Compare the supported `md` and `sm` visual sizes.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Select placeholder=\&#x22;Pick a drink\&#x22;>\n        <Label>Coffee (md)</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Select placeholder=\&#x22;Pick a drink\&#x22; size=\&#x22;sm\&#x22;>\n        <Label>Coffee (sm)</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n    </Flex>\n  );\n}&#x22;" />
-
-### Composed [#composed]
-
-Write the trigger and the overlay yourself instead of composing `SelectOptions`, for full control
-over the popover and the list.
-
-<Story of="ComposedExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  FieldError,\n  Icon,\n  Label,\n  ListBox,\n  Popover,\n  Select,\n  SelectItem,\n  SelectValue,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22;>\n      <Label>Drink</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <SelectValue />\n        <Icon icon=\&#x22;chevron-down\&#x22; />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your favorite drink</Text>\n      <FieldError />\n      <Popover hideArrow>\n        <Content blockPadding=\&#x22;xs\&#x22; inlinePadding=\&#x22;0\&#x22;>\n          <ListBox>\n            <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n            <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n            <SelectItem id=\&#x22;tea\&#x22;>Tea</SelectItem>\n          </ListBox>\n        </Content>\n      </Popover>\n    </Select>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<Select>
-  <Label />
-  <Button slot="trigger" />
-  <Text slot="description" />
-  <SelectOptions>
-    <SelectItem />
-  </SelectOptions>
-  <FieldError />
-</Select>
-```
-
-### Select [#select]
-
-<PropTable />
-
-### SelectOptions [#selectoptions]
-
-<PropTable />
-
-### SelectValue [#selectvalue]
-
-<PropTable />
-
-### SelectItem [#selectitem]
-
-<PropTable />
-
-
 # SizeProvider
 
 
@@ -5026,78 +4893,6 @@ A scope sizes Antares components only. Plain HTML keeps its own typography, so p
 <Source language="tsx" code="&#x22;import { SizeProvider, Text } from '@godaddy/antares';\n\nexport function PlainHtmlExample() {\n  return (\n    <SizeProvider size=\&#x22;lg\&#x22;>\n      <p>A plain paragraph keeps the page's typography.</p>\n      <Text>Text follows the scope.</Text>\n    </SizeProvider>\n  );\n}&#x22;" />
 
 ## Props [#props]
-
-<PropTable />
-
-
-# Structure primitives
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
-
-* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
-* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
-* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
-* **`ButtonGroup`** - a cluster of related actions (a wrapping row with `role="group"`). Overlay parents like `Modal` adopt it with end alignment and padding.
-* **`Group`** — semantic grouping container for field item controls. A parent field injects the box chrome.
-
-## Hybrid styling [#hybrid-styling]
-
-Each container works in two modes:
-
-* **Standalone** - with no parent context it renders with its own structural defaults and looks the same everywhere.
-* **Adopted** - inside a parent that provides its context (e.g. `Modal`), it picks up that parent's styling and spacing automatically. Consumer props still win over the adopted defaults.
-
-## Examples [#examples]
-
-### Default [#default]
-
-The shared structural containers composed together into a card-like layout. Each is a
-plain semantic region here; inside a parent that provides their contexts (e.g. `Modal`)
-they adopt that parent's spacing automatically.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
-
-### Group [#group]
-
-Group is the bordered field box. Size and invalid/disabled chrome apply here.
-
-<Story of="GroupExample" />
-
-<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function GroupExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Group>\n        <Input placeholder=\&#x22;Enter your name\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### Content [#content]
-
-<PropTable />
-
-### Header [#header]
-
-<PropTable />
-
-### Footer [#footer]
-
-<PropTable />
-
-### ButtonGroup [#buttongroup]
-
-<PropTable />
-
-### Group [#group-1]
 
 <PropTable />
 
@@ -5301,6 +5096,78 @@ Use the interactive root data attributes for state-based customization. The trac
 <PropTable />
 
 
+# Structure primitives
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
+
+* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
+* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
+* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
+* **`ButtonGroup`** - a cluster of related actions (a wrapping row with `role="group"`). Overlay parents like `Modal` adopt it with end alignment and padding.
+* **`Group`** — semantic grouping container for field item controls. A parent field injects the box chrome.
+
+## Hybrid styling [#hybrid-styling]
+
+Each container works in two modes:
+
+* **Standalone** - with no parent context it renders with its own structural defaults and looks the same everywhere.
+* **Adopted** - inside a parent that provides its context (e.g. `Modal`), it picks up that parent's styling and spacing automatically. Consumer props still win over the adopted defaults.
+
+## Examples [#examples]
+
+### Default [#default]
+
+The shared structural containers composed together into a card-like layout. Each is a
+plain semantic region here; inside a parent that provides their contexts (e.g. `Modal`)
+they adopt that parent's spacing automatically.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
+
+### Group [#group]
+
+Group is the bordered field box. Size and invalid/disabled chrome apply here.
+
+<Story of="GroupExample" />
+
+<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function GroupExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Group>\n        <Input placeholder=\&#x22;Enter your name\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### Content [#content]
+
+<PropTable />
+
+### Header [#header]
+
+<PropTable />
+
+### Footer [#footer]
+
+<PropTable />
+
+### ButtonGroup [#buttongroup]
+
+<PropTable />
+
+### Group [#group-1]
+
+<PropTable />
+
+
 # Tabs
 
 
@@ -5448,6 +5315,131 @@ Use `TabList`'s `containerProps` to customize the outer tab list shell, such as 
 <PropTable />
 
 
+# Text
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Text` is body copy and `Detail` is supporting copy: captions, metadata, and hints.
+
+## Features [#features]
+
+* `Text` applies the body role and `Detail` the detail role, each at the tier of the nearest
+  `SizeProvider`, or `md` outside any scope.
+* Inside a component's named part, such as a field description or a lockup body, the part sets the
+  treatment. Inside a control, the label keeps the control's type, so
+  `<Button><Text>Save</Text></Button>` looks exactly like `<Button>Save</Button>`.
+* `size` picks a step on the component's own ramp (`xs` to `2xl`) and changes only the font size.
+* `emphasis` picks a feedback color and changes only the color.
+* For semantic emphasis, render `as="strong"` or `as="em"`.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic text content.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function DefaultExample(args: TextProps) {\n  return <Text {...args}>Hello, world!</Text>;\n}&#x22;" />
+
+### As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Story of="AsExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AsExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;marquee\&#x22;>\n      A scrolling marquee\n    </Text>\n  );\n}&#x22;" />
+
+### Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. Choose from `start`, `center`, `end`, or `justify`; the logical keywords support RTL languages.
+
+<Story of="AlignExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AlignExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;p\&#x22; align=\&#x22;center\&#x22;>\n      Text is aligned to the center\n    </Text>\n  );\n}&#x22;" />
+
+### Max Lines [#max-lines]
+
+Setting the `maxLines` prop limits the number of displayed lines using an ellipsis.
+
+<Story of="MaxLinesExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function MaxLinesExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; maxLines={2}>\n        This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod\n        tempor incididunt ut labore et dolore magna aliqua.\n      </Text>\n    </div>\n  );\n}&#x22;" />
+
+### Wrap [#wrap]
+
+Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+<Story of="WrapExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function WrapExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; wrap=\&#x22;pretty\&#x22;>\n        Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and\n        legibility. Because counting characters and balancing them across multiple lines is computationally expensive,\n        this value is only supported for blocks of text spanning a limited number of lines\n      </Text>\n    </div>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Without `size`, text takes the scope's body tier, or `md` outside any scope. `size` picks a step
+on the body ramp and changes only the font size.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Text } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Text>Default</Text>\n      <Text size=\&#x22;xs\&#x22;>Extra small</Text>\n      <Text size=\&#x22;sm\&#x22;>Small</Text>\n      <Text size=\&#x22;md\&#x22;>Medium</Text>\n      <Text size=\&#x22;lg\&#x22;>Large</Text>\n      <Text size=\&#x22;xl\&#x22;>Extra large</Text>\n      <Text size=\&#x22;2xl\&#x22;>2x large</Text>\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+`emphasis` selects a feedback color and changes nothing else. Without it, text inherits the
+surrounding color.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Text } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Text emphasis=\&#x22;critical\&#x22;>Payment failed</Text>\n      <Text emphasis=\&#x22;warning\&#x22;>Card expires soon</Text>\n      <Text emphasis=\&#x22;success\&#x22;>Payment received</Text>\n      <Text emphasis=\&#x22;info\&#x22;>Invoice sent</Text>\n      <Text emphasis=\&#x22;passive\&#x22;>No recent activity</Text>\n    </Flex>\n  );\n}&#x22;" />
+
+### Detail [#detail]
+
+`Detail` is supporting copy, such as captions and metadata, on the detail ramp. It keeps the
+surrounding color; add `emphasis="passive"` to mute it.
+
+<Story of="DetailExample" />
+
+<Source language="tsx" code="&#x22;import { Detail, Flex, Text } from '@godaddy/antares';\n\nexport function DetailExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n      <Text>Quarterly report</Text>\n      <Detail emphasis=\&#x22;passive\&#x22;>Updated 2 hours ago</Detail>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### Text [#text]
+
+<PropTable />
+
+### Detail [#detail-1]
+
+<PropTable />
+
+
 # Tag
 
 
@@ -5583,11 +5575,7 @@ The colored dot is decorative and invisible to screen readers. The text label mu
 <PropTable />
 
 
-# Text
-
-
-
-
+# TextLockup
 
 
 
@@ -5608,146 +5596,133 @@ The colored dot is decorative and invisible to screen readers. The text label mu
 
 
 <Meta of="Stories" name="Overview" />
-
-`Text` is body copy and `Detail` is supporting copy: captions, metadata, and hints.
 
 ## Features [#features]
 
-* `Text` applies the body role and `Detail` the detail role, each at the tier of the nearest
-  `SizeProvider`, or `md` outside any scope.
-* Inside a component's named part, such as a field description or a lockup body, the part sets the
-  treatment. Inside a control, the label keeps the control's type, so
-  `<Button><Text>Save</Text></Button>` looks exactly like `<Button>Save</Button>`.
-* `size` picks a step on the component's own ramp (`xs` to `2xl`) and changes only the font size.
-* `emphasis` picks a feedback color and changes only the color.
-* For semantic emphasis, render `as="strong"` or `as="em"`.
+* Six coordinated sizes, from a `2xl` page title down to `xs`
+* An eyebrow that takes plain text or a `Tag`, sized to match the lockup
+* Slotted parts, so nested components keep their own type
+* Any heading level, chosen independently of the visual size
+* Start or center alignment
+* A legible line-length clamp, on by default
 
 ## Installation [#installation]
 
 ```bash
-npm install --save @godaddy/antares
+npm install @godaddy/antares
 ```
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-Basic text content.
+A lockup stacks an optional eyebrow, a title and body text as one coordinated type
+group. You supply the parts, so the title can be any heading level and the body any
+number of paragraphs; `size` sets the tier for all of them at once.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function DefaultExample(args: TextProps) {\n  return <Text {...args}>Hello, world!</Text>;\n}&#x22;" />
-
-### As [#as]
-
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
-
-<Story of="AsExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AsExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;marquee\&#x22;>\n      A scrolling marquee\n    </Text>\n  );\n}&#x22;" />
-
-### Align [#align]
-
-Setting the `align` prop allows you to change the alignment of the text. Choose from `start`, `center`, `end`, or `justify`; the logical keywords support RTL languages.
-
-<Story of="AlignExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AlignExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;p\&#x22; align=\&#x22;center\&#x22;>\n      Text is aligned to the center\n    </Text>\n  );\n}&#x22;" />
-
-### Max Lines [#max-lines]
-
-Setting the `maxLines` prop limits the number of displayed lines using an ellipsis.
-
-<Story of="MaxLinesExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function MaxLinesExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; maxLines={2}>\n        This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod\n        tempor incididunt ut labore et dolore magna aliqua.\n      </Text>\n    </div>\n  );\n}&#x22;" />
-
-### Wrap [#wrap]
-
-Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
-
-<Story of="WrapExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function WrapExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; wrap=\&#x22;pretty\&#x22;>\n        Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and\n        legibility. Because counting characters and balancing them across multiple lines is computationally expensive,\n        this value is only supported for blocks of text spanning a limited number of lines\n      </Text>\n    </div>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextLockup>\n      <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n      <Heading slot=\&#x22;title\&#x22;>Text Lockup</Heading>\n      <Text slot=\&#x22;body\&#x22;>\n        She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n      </Text>\n    </TextLockup>\n  );\n}&#x22;" />
 
 ### Sizes [#sizes]
 
-Without `size`, text takes the scope's body tier, or `md` outside any scope. `size` picks a step
-on the body ramp and changes only the font size.
+`size` sets every part, each on its own role ramp. Without it, the lockup follows the size
+scope.
 
 <Story of="SizesExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Text } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Text>Default</Text>\n      <Text size=\&#x22;xs\&#x22;>Extra small</Text>\n      <Text size=\&#x22;sm\&#x22;>Small</Text>\n      <Text size=\&#x22;md\&#x22;>Medium</Text>\n      <Text size=\&#x22;lg\&#x22;>Large</Text>\n      <Text size=\&#x22;xl\&#x22;>Extra large</Text>\n      <Text size=\&#x22;2xl\&#x22;>2x large</Text>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup, type TextLockupSize } from '@godaddy/antares';\n\nconst SIZES: TextLockupSize[] = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      {SIZES.map(function renderSize(size) {\n        return (\n          <TextLockup key={size} size={size}>\n            <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n            <Heading slot=\&#x22;title\&#x22;>Text Lockup</Heading>\n            <Text slot=\&#x22;body\&#x22;>\n              She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n            </Text>\n          </TextLockup>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
 
-### Emphasis [#emphasis]
+### Tag Eyebrow [#tag-eyebrow]
 
-`emphasis` selects a feedback color and changes nothing else. Without it, text inherits the
-surrounding color.
+The eyebrow takes either plain text or a `Tag`. Both use `slot="eyebrow"`, so the two
+forms swap freely, and the lockup pairs the tag's `size` with its own.
 
-<Story of="EmphasisExample" />
+<Story of="TagEyebrowExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Text } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Text emphasis=\&#x22;critical\&#x22;>Payment failed</Text>\n      <Text emphasis=\&#x22;warning\&#x22;>Card expires soon</Text>\n      <Text emphasis=\&#x22;success\&#x22;>Payment received</Text>\n      <Text emphasis=\&#x22;info\&#x22;>Invoice sent</Text>\n      <Text emphasis=\&#x22;passive\&#x22;>No recent activity</Text>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function TagEyebrowExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <TextLockup size=\&#x22;xl\&#x22;>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n          New\n        </Tag>\n        <Heading slot=\&#x22;title\&#x22;>Tag eyebrow</Heading>\n        <Text slot=\&#x22;body\&#x22;>The tag is sized to match the lockup, so changing `size` keeps them in step.</Text>\n      </TextLockup>\n\n      <TextLockup size=\&#x22;sm\&#x22;>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n          New\n        </Tag>\n        <Heading slot=\&#x22;title\&#x22;>The same lockup, smaller</Heading>\n        <Text slot=\&#x22;body\&#x22;>The tag steps down with it.</Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
 
-### Detail [#detail]
+### Alignment [#alignment]
 
-`Detail` is supporting copy, such as captions and metadata, on the detail ramp. It keeps the
-surrounding color; add `emphasis="passive"` to mute it.
+`align` centers the parts as well as the text, so a `Tag` eyebrow stays centered too.
 
-<Story of="DetailExample" />
+<Story of="AlignmentExample" />
 
-<Source language="tsx" code="&#x22;import { Detail, Flex, Text } from '@godaddy/antares';\n\nexport function DetailExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n      <Text>Quarterly report</Text>\n      <Detail emphasis=\&#x22;passive\&#x22;>Updated 2 hours ago</Detail>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <TextLockup align=\&#x22;start\&#x22;>\n        <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n        <Heading slot=\&#x22;title\&#x22;>Start aligned</Heading>\n        <Text slot=\&#x22;body\&#x22;>\n          She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n        </Text>\n      </TextLockup>\n\n      <TextLockup align=\&#x22;center\&#x22;>\n        <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n        <Heading slot=\&#x22;title\&#x22;>Center aligned</Heading>\n        <Text slot=\&#x22;body\&#x22;>\n          She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n        </Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
 
-## Props [#props]
+### Legible Lines [#legible-lines]
 
-### Text [#text]
+The text parts are constrained to a comfortable line length by default. Set
+`legibleLines={false}` to let them run the full width of their container, which suits a
+lockup already inside a narrow column. Both lockups below share one wide container, so the
+clamp is what makes the first one narrower.
 
-<PropTable />
+<Story of="LegibleLinesExample" />
 
-### Detail [#detail-1]
+<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';\n\nconst COPY =\n  'She expressed her gratitude again, but it was too painful a subject to be dwelt on farther. ' +\n  'Elizabeth was pleased to find that he had not betrayed the interference of his friend, and she ' +\n  'was glad of it, for she could not have borne the reflection.';\n\nexport function LegibleLinesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; style={{ inlineSize: '46rem', maxInlineSize: '100%' }}>\n      <TextLockup>\n        <Heading slot=\&#x22;title\&#x22;>Constrained by default</Heading>\n        <Text slot=\&#x22;body\&#x22;>{COPY}</Text>\n      </TextLockup>\n\n      <TextLockup legibleLines={false}>\n        <Heading slot=\&#x22;title\&#x22;>Full width</Heading>\n        <Text slot=\&#x22;body\&#x22;>{COPY}</Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
 
-<PropTable />
+### With Actions [#with-actions]
 
+Because you compose the parts, anything else can sit alongside them — a call to action
+here. Controls keep their own type: the buttons are unaffected by the lockup's `size`.
 
-# TextArea
+<Story of="WithActionsExample" />
 
+<Source language="tsx" code="&#x22;import { Button, ButtonGroup, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function WithActionsExample() {\n  return (\n    <TextLockup size=\&#x22;xl\&#x22;>\n      <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n        Pro\n      </Tag>\n      <Heading slot=\&#x22;title\&#x22; level={1}>\n        Upgrade your plan\n      </Heading>\n      <Text slot=\&#x22;body\&#x22;>Unlock advanced reporting, priority support, and unlimited seats for your whole team.</Text>\n      <ButtonGroup inlinePadding=\&#x22;0\&#x22; blockPadding=\&#x22;0\&#x22;>\n        <Button variant=\&#x22;primary\&#x22;>Upgrade</Button>\n        <Button variant=\&#x22;secondary\&#x22;>Compare plans</Button>\n      </ButtonGroup>\n    </TextLockup>\n  );\n}&#x22;" />
 
+## Customization [#customization]
 
+`TextLockup` positions and type-sets its parts; you supply them. That means anything else can
+sit alongside them — a call to action, a second paragraph, an image — without the component
+growing a prop for it.
 
+* **Every part names its role with a slot**: `eyebrow`, `title`, `body`. Unslotted text follows
+  the lockup's tier too: a bare `Heading` takes the title tier and a bare `Text` the body tier.
+* **The eyebrow is `slot="eyebrow"`**, on either a `Text` or a `Tag`. The two forms swap
+  freely, and a `Tag` is sized to pair with the lockup.
+* **The title is `<Heading slot="title">`.** Pick the level from the document outline, not the
+  visual size: `size` handles the visuals, so `level={1}` in an `xs` lockup is perfectly valid.
+* **The body is `<Text slot="body">`**, once or as many times as the copy needs.
+* **An explicit prop on a child always wins** over what the lockup supplies. Pass
+  `<Tag slot="eyebrow" size="sm">` to break the pairing, for instance.
+* **Controls keep the scale size.** A `Button` inside a lockup follows the surrounding
+  `SizeProvider` or its own `size` prop, never the lockup's tier.
+* **`size` is the tier.** The eyebrow reads it on the `detail` ramp, the title on `heading`, and
+  the body on `body`, so there is no table to memorize. Without `size`, the lockup follows the
+  surrounding size scope. A tier is the same at every container width.
+* Pass `className` to extend the styles, or select on `[data-align]`.
 
+## Accessibility [#accessibility]
 
+* The title carries the heading semantics. Choose `level` so the page outline stays correct
+  rather than to achieve a size.
+* Slots resolve against the lockup, so `slot="title"` names the lockup's title, not an outer
+  container's. Inside a
+  `Modal`, `Drawer` or `Popover`, give the dialog its own `<Heading slot="title">` as a direct
+  child for the accessible name, and use the lockup for the body.
+* The eyebrow is decorative in most designs. If it carries meaning, make sure the title still
+  reads sensibly on its own, since screen reader users often navigate by heading.
 
+## Best Practices [#best-practices]
 
-
-<Meta of="Stories" name="Overview" />
-
-`TextArea` is the multiline control inside a field, not a field on its own. Prefer `TextField` as the parent; see that component for fuller examples.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-TextArea inside TextField.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Label, TextArea, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Comment</Label>\n      <TextArea placeholder=\&#x22;Enter your comment\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
+* Use one `2xl` lockup per page at most — it is the page title.
+* Keep `legibleLines` on for running prose. Turn it off only when the lockup already sits in a
+  narrow column, where the clamp does nothing but complicate the layout.
+* Prefer a `Tag` eyebrow for status or category, and plain text for a kicker or section label.
+* Reach for `MetricsLockup` instead when the emphasis is a single number rather than prose.
 
 ## Props [#props]
 
 ```tsx
-<TextField>
-  <Label>Comment</Label>
-  <TextArea placeholder="Enter your comment" />
-</TextField>
+<TextLockup>
+  <Tag slot="eyebrow" />
+  <Heading slot="title" />
+  <Text slot="body" />
+  {/* ... */}
+</TextLockup>
 ```
 
-### TextArea [#textarea]
+### TextLockup [#textlockup]
 
 <PropTable />
 
@@ -5891,6 +5866,50 @@ Compose a telephone number input paired with a country-code select.
 ```
 
 ### TextField [#textfield]
+
+<PropTable />
+
+
+# TextArea
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`TextArea` is the multiline control inside a field, not a field on its own. Prefer `TextField` as the parent; see that component for fuller examples.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+TextArea inside TextField.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Label, TextArea, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Comment</Label>\n      <TextArea placeholder=\&#x22;Enter your comment\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<TextField>
+  <Label>Comment</Label>
+  <TextArea placeholder="Enter your comment" />
+</TextField>
+```
+
+### TextArea [#textarea]
 
 <PropTable />
 
@@ -6173,158 +6192,6 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 <PropTable />
 
 
-# TextLockup
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Six coordinated sizes, from a `2xl` page title down to `xs`
-* An eyebrow that takes plain text or a `Tag`, sized to match the lockup
-* Slotted parts, so nested components keep their own type
-* Any heading level, chosen independently of the visual size
-* Start or center alignment
-* A legible line-length clamp, on by default
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A lockup stacks an optional eyebrow, a title and body text as one coordinated type
-group. You supply the parts, so the title can be any heading level and the body any
-number of paragraphs; `size` sets the tier for all of them at once.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextLockup>\n      <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n      <Heading slot=\&#x22;title\&#x22;>Text Lockup</Heading>\n      <Text slot=\&#x22;body\&#x22;>\n        She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n      </Text>\n    </TextLockup>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-`size` sets every part, each on its own role ramp. Without it, the lockup follows the size
-scope.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup, type TextLockupSize } from '@godaddy/antares';\n\nconst SIZES: TextLockupSize[] = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      {SIZES.map(function renderSize(size) {\n        return (\n          <TextLockup key={size} size={size}>\n            <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n            <Heading slot=\&#x22;title\&#x22;>Text Lockup</Heading>\n            <Text slot=\&#x22;body\&#x22;>\n              She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n            </Text>\n          </TextLockup>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
-
-### Tag Eyebrow [#tag-eyebrow]
-
-The eyebrow takes either plain text or a `Tag`. Both use `slot="eyebrow"`, so the two
-forms swap freely, and the lockup pairs the tag's `size` with its own.
-
-<Story of="TagEyebrowExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function TagEyebrowExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <TextLockup size=\&#x22;xl\&#x22;>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n          New\n        </Tag>\n        <Heading slot=\&#x22;title\&#x22;>Tag eyebrow</Heading>\n        <Text slot=\&#x22;body\&#x22;>The tag is sized to match the lockup, so changing `size` keeps them in step.</Text>\n      </TextLockup>\n\n      <TextLockup size=\&#x22;sm\&#x22;>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n          New\n        </Tag>\n        <Heading slot=\&#x22;title\&#x22;>The same lockup, smaller</Heading>\n        <Text slot=\&#x22;body\&#x22;>The tag steps down with it.</Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
-
-### Alignment [#alignment]
-
-`align` centers the parts as well as the text, so a `Tag` eyebrow stays centered too.
-
-<Story of="AlignmentExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <TextLockup align=\&#x22;start\&#x22;>\n        <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n        <Heading slot=\&#x22;title\&#x22;>Start aligned</Heading>\n        <Text slot=\&#x22;body\&#x22;>\n          She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n        </Text>\n      </TextLockup>\n\n      <TextLockup align=\&#x22;center\&#x22;>\n        <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n        <Heading slot=\&#x22;title\&#x22;>Center aligned</Heading>\n        <Text slot=\&#x22;body\&#x22;>\n          She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n        </Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
-
-### Legible Lines [#legible-lines]
-
-The text parts are constrained to a comfortable line length by default. Set
-`legibleLines={false}` to let them run the full width of their container, which suits a
-lockup already inside a narrow column. Both lockups below share one wide container, so the
-clamp is what makes the first one narrower.
-
-<Story of="LegibleLinesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';\n\nconst COPY =\n  'She expressed her gratitude again, but it was too painful a subject to be dwelt on farther. ' +\n  'Elizabeth was pleased to find that he had not betrayed the interference of his friend, and she ' +\n  'was glad of it, for she could not have borne the reflection.';\n\nexport function LegibleLinesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; style={{ inlineSize: '46rem', maxInlineSize: '100%' }}>\n      <TextLockup>\n        <Heading slot=\&#x22;title\&#x22;>Constrained by default</Heading>\n        <Text slot=\&#x22;body\&#x22;>{COPY}</Text>\n      </TextLockup>\n\n      <TextLockup legibleLines={false}>\n        <Heading slot=\&#x22;title\&#x22;>Full width</Heading>\n        <Text slot=\&#x22;body\&#x22;>{COPY}</Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
-
-### With Actions [#with-actions]
-
-Because you compose the parts, anything else can sit alongside them — a call to action
-here. Controls keep their own type: the buttons are unaffected by the lockup's `size`.
-
-<Story of="WithActionsExample" />
-
-<Source language="tsx" code="&#x22;import { Button, ButtonGroup, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function WithActionsExample() {\n  return (\n    <TextLockup size=\&#x22;xl\&#x22;>\n      <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n        Pro\n      </Tag>\n      <Heading slot=\&#x22;title\&#x22; level={1}>\n        Upgrade your plan\n      </Heading>\n      <Text slot=\&#x22;body\&#x22;>Unlock advanced reporting, priority support, and unlimited seats for your whole team.</Text>\n      <ButtonGroup inlinePadding=\&#x22;0\&#x22; blockPadding=\&#x22;0\&#x22;>\n        <Button variant=\&#x22;primary\&#x22;>Upgrade</Button>\n        <Button variant=\&#x22;secondary\&#x22;>Compare plans</Button>\n      </ButtonGroup>\n    </TextLockup>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-`TextLockup` positions and type-sets its parts; you supply them. That means anything else can
-sit alongside them — a call to action, a second paragraph, an image — without the component
-growing a prop for it.
-
-* **Every part names its role with a slot**: `eyebrow`, `title`, `body`. Unslotted text follows
-  the lockup's tier too: a bare `Heading` takes the title tier and a bare `Text` the body tier.
-* **The eyebrow is `slot="eyebrow"`**, on either a `Text` or a `Tag`. The two forms swap
-  freely, and a `Tag` is sized to pair with the lockup.
-* **The title is `<Heading slot="title">`.** Pick the level from the document outline, not the
-  visual size: `size` handles the visuals, so `level={1}` in an `xs` lockup is perfectly valid.
-* **The body is `<Text slot="body">`**, once or as many times as the copy needs.
-* **An explicit prop on a child always wins** over what the lockup supplies. Pass
-  `<Tag slot="eyebrow" size="sm">` to break the pairing, for instance.
-* **Controls keep the scale size.** A `Button` inside a lockup follows the surrounding
-  `SizeProvider` or its own `size` prop, never the lockup's tier.
-* **`size` is the tier.** The eyebrow reads it on the `detail` ramp, the title on `heading`, and
-  the body on `body`, so there is no table to memorize. Without `size`, the lockup follows the
-  surrounding size scope. A tier is the same at every container width.
-* Pass `className` to extend the styles, or select on `[data-align]`.
-
-## Accessibility [#accessibility]
-
-* The title carries the heading semantics. Choose `level` so the page outline stays correct
-  rather than to achieve a size.
-* Slots resolve against the lockup, so `slot="title"` names the lockup's title, not an outer
-  container's. Inside a
-  `Modal`, `Drawer` or `Popover`, give the dialog its own `<Heading slot="title">` as a direct
-  child for the accessible name, and use the lockup for the body.
-* The eyebrow is decorative in most designs. If it carries meaning, make sure the title still
-  reads sensibly on its own, since screen reader users often navigate by heading.
-
-## Best Practices [#best-practices]
-
-* Use one `2xl` lockup per page at most — it is the page title.
-* Keep `legibleLines` on for running prose. Turn it off only when the lockup already sits in a
-  narrow column, where the clamp does nothing but complicate the layout.
-* Prefer a `Tag` eyebrow for status or category, and plain text for a kicker or section label.
-* Reach for `MetricsLockup` instead when the emphasis is a single number rather than prose.
-
-## Props [#props]
-
-```tsx
-<TextLockup>
-  <Tag slot="eyebrow" />
-  <Heading slot="title" />
-  <Text slot="body" />
-  {/* ... */}
-</TextLockup>
-```
-
-### TextLockup [#textlockup]
-
-<PropTable />
-
-
 # Tooltip
 
 
@@ -6411,6 +6278,139 @@ To position a tooltip relative to a different focusable element, use the `trigge
 <PropTable />
 
 ### TooltipTrigger [#tooltiptrigger]
+
+<PropTable />
+
+
+# Modal
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
+
+The modal is a `SizeProvider`. It opens at the size of the scope around its trigger, even though it renders in a portal, and `size` overrides that.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Compose a Modal from a `Heading slot="title"`, a `CloseButton`, `Content`, and a
+`ButtonGroup`. `ModalTrigger` opens the Modal and manages its open/close state.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Delete file?</Heading>\n        <CloseButton />\n        <Content>This action cannot be undone. The file will be permanently removed.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;critical\&#x22;>\n            Delete\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Flex, Text } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal>\n          <Heading slot=\&#x22;title\&#x22;>Modal title</Heading>\n          <CloseButton />\n          <Content>\n            She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n          </Content>\n          <ButtonGroup>\n            <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Close\n            </Button>\n          </ButtonGroup>\n        </Modal>\n      </ModalTrigger>\n\n      <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>\n\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setIsOpen(true)}>\n        Open from outside\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
+
+### Scrollable [#scrollable]
+
+When the content is taller than the viewport, the `Content` region scrolls while the title
+row and the `ButtonGroup` stay pinned.
+
+<Story of="ScrollableExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Terms of service</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 24 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n            Decline\n          </Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Accept\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### Triggerless [#triggerless]
+
+`Modal` accepts `isOpen` and `onOpenChange` directly, so it can be controlled without a
+`ModalTrigger`. Useful when the modal is opened from several places at once.
+
+<Story of="TriggerlessExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, ButtonGroup, CloseButton, Content, Heading, Modal } from '@godaddy/antares';\n\nexport function TriggerlessExample() {\n  const [isOpen, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open modal\n      </Button>\n      <Modal isOpen={isOpen} onOpenChange={setOpen}>\n        <Heading slot=\&#x22;title\&#x22;>Triggerless modal</Heading>\n        <CloseButton />\n        <Content>This is the content of the modal.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Done\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </>\n  );\n}&#x22;" />
+
+### Size [#size]
+
+`size` sets the modal's text, controls, and spacing. Without it, the modal follows the size
+scope around its trigger.
+
+<Story of="SizeExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function SizeExample() {\n  return (\n    <ModalTrigger>\n      <Button>Open small modal</Button>\n      <Modal size=\&#x22;sm\&#x22;>\n        <Heading slot=\&#x22;title\&#x22;>Rename file</Heading>\n        <CloseButton />\n        <Content>\n          <Text>The new name applies everywhere the file is shared.</Text>\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Rename\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### With Text Lockup [#with-text-lockup]
+
+A `TextLockup` in the content keeps its own title. The modal's `Heading slot="title"` still names
+the dialog.
+
+<Story of="WithTextLockupExample" />
+
+<Source language="tsx" code="&#x22;import {\n  ModalTrigger,\n  Modal,\n  Button,\n  CloseButton,\n  Heading,\n  Content,\n  ButtonGroup,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function WithTextLockupExample() {\n  return (\n    <ModalTrigger>\n      <Button>Compare plans</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Compare plans</Heading>\n        <CloseButton />\n        <Content>\n          <TextLockup size=\&#x22;sm\&#x22;>\n            <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n              Pro\n            </Tag>\n            <Heading slot=\&#x22;title\&#x22;>Unlimited seats</Heading>\n            <Text slot=\&#x22;body\&#x22;>Add your whole team with priority support.</Text>\n          </TextLockup>\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Close</Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard interaction [#keyboard-interaction]
+
+| Key      | Action                                                     |
+| -------- | ---------------------------------------------------------- |
+| `Tab`    | Moves focus to the next focusable element inside the modal |
+| `Escape` | Closes the modal (unless `isKeyboardDismissDisabled`)      |
+
+### ARIA [#aria]
+
+* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+* Focus is trapped within the modal while open and returned to the trigger on close
+
+## Best Practices [#best-practices]
+
+* Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
+* Pair every action button with `slot="close"` when it should dismiss the modal
+* Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
+
+## Props [#props]
+
+```tsx
+<ModalTrigger>
+  <Button />
+  <Modal>
+    <Heading slot="title" />
+    <CloseButton />
+    <Header />
+    <Content />
+    <Footer />
+    <ButtonGroup />
+    {/* ... */}
+  </Modal>
+</ModalTrigger>
+```
+
+### Modal [#modal]
+
+<PropTable />
+
+### ModalTrigger [#modaltrigger]
 
 <PropTable />
 
