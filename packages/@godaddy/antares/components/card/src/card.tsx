@@ -1,107 +1,90 @@
-import { forwardRef, useRef, useState, type ReactNode, type Ref } from 'react';
-import { mergeProps, useFocusVisible, useHover } from 'react-aria';
+import { forwardRef, type PointerEvent, type ReactNode, type Ref } from 'react';
 import {
-  Button as RACButton,
-  type ButtonProps as RACButtonProps,
+  GridListItem as RACGridListItem,
+  type GridListItemProps as RACGridListItemProps,
   Link as RACLink,
-  type LinkProps as RACLinkProps,
-  CheckboxButton as RACCheckboxButton,
-  CheckboxField as RACCheckboxField,
-  RadioButton as RACRadioButton,
-  RadioField as RACRadioField,
-  type CheckboxFieldProps as RACCheckboxFieldProps
+  type LinkProps as RACLinkProps
 } from 'react-aria-components';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { composeClassName } from '#utils/render-props.ts';
+import { OutsideCardGroup, useIsInCardGroup } from './card-group.tsx';
 import { SelectionProvider } from './card-selection-indicator.tsx';
-import { useSurfacePress } from './use-surface-press.ts';
 import styles from './index.module.css';
 
+/** Plain DOM controls that keep their own press inside a CardGroup row. */
+const NESTED_CONTROL =
+  'a, button, input, textarea, select, summary, label, audio[controls], video[controls], [contenteditable]:not([contenteditable="false"])';
+
 /**
- * Props for Card. A Card has a primary action (`href` or `onPress`) or `selection`, not both.
- * When both are set, `selection` wins.
+ * React Aria controls stop the row press themselves, and stopping it here would cut off their own
+ * handlers. Plain DOM controls get no such protection, so give it to them.
+ */
+function keepNestedControlPress(event: PointerEvent<HTMLDivElement>) {
+  const target = event.target as Element;
+  const pressable = target.closest('[data-react-aria-pressable]');
+  if (pressable && pressable !== event.currentTarget) return;
+  if (target.closest(NESTED_CONTROL)) event.stopPropagation();
+}
+
+/**
+ * Props for Card. Standalone, a Card is a static surface, or a link when `href` is set. Inside a
+ * `CardGroup` it is a row that the group selects, and `onAction` and `href` act on the row.
  */
 export interface CardProps extends Omit<FlexProps, 'as' | 'children' | 'onClick'> {
   /** Card contents. */
   children?: ReactNode;
 
-  /** Accessible name for the primary action or selection, else the surface. */
+  /** Accessible name for the link or row, else the surface. */
   'aria-label'?: string;
 
-  /** Accessible labelled-by reference for the primary action or selection, else the surface. */
+  /** Accessible labelled-by reference for the link or row, else the surface. */
   'aria-labelledby'?: string;
 
-  /** Disable the Card, including its primary action or selection. */
+  /** Disable the link or row and fade the Card. */
   isDisabled?: boolean;
 
-  /** Primary navigation destination. The Card itself renders as the native link. */
+  /**
+   * Navigation destination. A standalone Card renders as the native link and must not contain
+   * controls. Inside a `CardGroup`, the row navigates.
+   */
   href?: RACLinkProps['href'];
 
-  /** Primary action callback. */
-  onPress?: RACButtonProps['onPress'];
+  /** Row action inside a `CardGroup`. Ignored on a standalone Card. */
+  onAction?: RACGridListItemProps['onAction'];
 
-  /** Native selection. Radio cards go inside a `RadioGroup`. */
-  selection?: 'checkbox' | 'radio';
+  /** Row key inside a `CardGroup`. Required for selection. */
+  id?: string;
 
-  /** Selection value submitted by a form or group. Required for radio cards. */
-  value?: string;
-
-  /** Form field name for a standalone checkbox card. Groups own their field name. */
-  name?: string;
-
-  /** Controlled standalone checkbox selection. Groups own grouped selection. */
-  isSelected?: boolean;
-
-  /** Initial selection for an uncontrolled standalone checkbox card. */
-  defaultSelected?: boolean;
-
-  /** Called when standalone checkbox selection changes. Groups own grouped changes. */
-  onSelectionChange?: RACCheckboxFieldProps['onChange'];
-
-  /** Make checkbox selection read-only. For radio cards, set this on `RadioGroup`. */
-  isReadOnly?: boolean;
+  /** Typeahead text inside a `CardGroup`. Defaults to the row's text content. */
+  textValue?: string;
 }
 
 /**
- * A composed surface with optional primary action and native selection.
+ * A composed surface. Selection and row actions come from `CardGroup`.
  *
  * @param props - {@link CardProps}
  */
 export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref) {
   const {
-    selection,
-    value,
-    name,
-    isSelected,
-    defaultSelected,
-    onSelectionChange,
-    isReadOnly,
     className,
     children,
     href,
-    onPress,
+    onAction,
     isDisabled,
+    id,
+    textValue,
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
     'aria-describedby': ariaDescribedBy,
     ...surfaceProps
   } = props;
 
-  const hasPrimary = selection == null && (href != null || onPress != null);
-  const isLink = hasPrimary && href != null;
-  const SelectionButton = selection === 'radio' ? RACRadioButton : RACCheckboxButton;
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const isInGroup = useIsInCardGroup();
   const ariaProps = {
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
     'aria-describedby': ariaDescribedBy
   };
-
-  const surfacePress = useSurfacePress(selection == null ? buttonRef : inputRef);
-  const hover = useHover({});
-  const [isSelectionFocused, setSelectionFocused] = useState(false);
-  const focusVisible = useFocusVisible();
   const surface = {
     padding: 'lg',
     gap: 'lg',
@@ -110,7 +93,37 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
     className: composeClassName(className, styles.card)
   } satisfies FlexProps;
 
-  if (isLink) {
+  if (isInGroup) {
+    return (
+      <Flex
+        {...(surface as FlexProps<typeof RACGridListItem>)}
+        {...ariaProps}
+        as={RACGridListItem}
+        ref={ref as Ref<HTMLDivElement>}
+        id={id}
+        textValue={textValue}
+        href={href}
+        isDisabled={isDisabled}
+        onAction={onAction}
+        onPointerDownCapture={keepNestedControlPress}
+        data-card="interactive"
+      >
+        {(state) => (
+          <SelectionProvider
+            isSelected={state.isSelected}
+            isDisabled={state.isDisabled}
+            isFocusVisible={state.isFocusVisible}
+            isHovered={state.isHovered}
+            isPressed={state.isPressed}
+          >
+            <OutsideCardGroup>{children}</OutsideCardGroup>
+          </SelectionProvider>
+        )}
+      </Flex>
+    );
+  }
+
+  if (href != null) {
     return (
       <Flex
         {...(surface as FlexProps<typeof RACLink>)}
@@ -118,7 +131,6 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
         as={RACLink}
         ref={ref as Ref<HTMLAnchorElement>}
         href={href}
-        onPress={onPress}
         isDisabled={isDisabled}
         data-card={isDisabled ? 'static' : 'interactive'}
       >
@@ -127,79 +139,15 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
     );
   }
 
-  function renderSurface(state = { isSelected: false, isDisabled: false, isReadOnly: false }) {
-    const canSelect = selection != null && !state.isDisabled && !state.isReadOnly;
-    const isInteractive = (hasPrimary && !isDisabled) || canSelect;
-    const isHovered = isInteractive && hover.isHovered;
-    const isPressed = isInteractive && surfacePress.isPressed;
-
-    return (
-      <SelectionProvider
-        isSelected={state.isSelected}
-        isDisabled={state.isDisabled}
-        isReadOnly={state.isReadOnly}
-        isFocusVisible={isSelectionFocused && focusVisible.isFocusVisible}
-        isHovered={isHovered}
-        isPressed={isPressed}
-      >
-        <Flex
-          {...mergeProps(surface, hover.hoverProps, isInteractive ? surfacePress.pressProps : null)}
-          {...(hasPrimary || selection != null ? undefined : ariaProps)}
-          ref={ref as Ref<HTMLDivElement>}
-          data-card-selected={state.isSelected || undefined}
-          data-disabled={isDisabled || state.isDisabled || undefined}
-          data-hovered={isHovered || undefined}
-          data-pressed={isPressed || undefined}
-          data-card={isInteractive ? 'interactive' : 'static'}
-        >
-          {selection != null ? (
-            <SelectionButton className={styles.selection} />
-          ) : hasPrimary ? (
-            <RACButton
-              ref={buttonRef}
-              onPress={onPress}
-              {...ariaProps}
-              isDisabled={isDisabled}
-              className={styles.primary}
-            />
-          ) : null}
-          {children}
-        </Flex>
-      </SelectionProvider>
-    );
-  }
-
-  const fieldProps = {
-    value,
-    isDisabled,
-    ...ariaProps,
-    onFocusChange: setSelectionFocused,
-    inputRef,
-    style: { display: 'contents' }
-  };
-
-  if (selection === 'checkbox') {
-    return (
-      <RACCheckboxField
-        {...fieldProps}
-        name={name}
-        isSelected={isSelected}
-        defaultSelected={defaultSelected}
-        onChange={onSelectionChange}
-        isReadOnly={isReadOnly}
-      >
-        {renderSurface}
-      </RACCheckboxField>
-    );
-  }
-
-  if (selection === 'radio') {
-    return (
-      <RACRadioField {...fieldProps} value={value ?? ''}>
-        {renderSurface}
-      </RACRadioField>
-    );
-  }
-
-  return renderSurface();
+  return (
+    <Flex
+      {...surface}
+      {...ariaProps}
+      ref={ref as Ref<HTMLDivElement>}
+      data-disabled={isDisabled || undefined}
+      data-card="static"
+    >
+      {children}
+    </Flex>
+  );
 });

@@ -1,34 +1,18 @@
-import { useState } from 'react';
-import { Card, CardSelectionIndicator, Text } from '@godaddy/antares';
+import { Card, CardGroup, Text } from '@godaddy/antares';
 
 /**
- * Nested Cards keep their own primary. A press on inner content must not activate the outer Card.
+ * A Card nested in a CardGroup row renders as a static Card, not another row.
  * @ignore
  */
-export function NestedExample({
-  selection,
-  showOuterIndicator = true
-}: {
-  selection?: 'checkbox';
-  showOuterIndicator?: boolean;
-}) {
-  const [outer, setOuter] = useState(0);
-  const [inner, setInner] = useState(0);
-  const outerProps = selection ? { selection } : { onPress: () => setOuter((count) => count + 1) };
-  const innerProps = selection ? { selection } : { onPress: () => setInner((count) => count + 1) };
-
+export function NestedExample() {
   return (
-    <>
-      <Card aria-label="Outer card" {...outerProps}>
+    <CardGroup aria-label="Outer group" selectionMode="multiple">
+      <Card id="outer" textValue="Outer card">
         <Text>Outer copy</Text>
-        <Card aria-label="Inner card" {...innerProps}>
+        <Card aria-label="Inner card">
           <Text>Inner copy</Text>
-          {selection && <CardSelectionIndicator />}
         </Card>
-        {selection && showOuterIndicator && <CardSelectionIndicator />}
       </Card>
-      <Text>Outer activations: {outer}</Text>
-      <Text>Inner activations: {inner}</Text>
-    </>
+    </CardGroup>
   );
 }

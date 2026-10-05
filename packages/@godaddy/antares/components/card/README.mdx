@@ -9,9 +9,10 @@ import * as Stories from './card.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-Card groups related content, like media, text, and actions, on a single surface. Use a primary
-action (`href` or `onPress`) or selection (`selection="checkbox"` or `selection="radio"`). If
-combined, `selection` takes precedence and `href` and `onPress` are ignored.
+Card groups related content, like media, text, and actions, on a single surface. On its own, a Card
+is a static surface, or a link when you pass `href`. Put Cards in a `CardGroup` to make them
+selectable or to give them an action: the group owns selection, row actions, focus, and arrow-key
+navigation.
 
 ## Installation
 
@@ -25,45 +26,55 @@ npm install @godaddy/antares
 
 ## Customization
 
-`CardSelectionIndicator` only shows the selection state. The Card owns the native checkbox or
-radio, so a selection Card keeps its keyboard stop and form value without an indicator. Pass
-non-interactive children or a selection-state render function to replace the default circle and
-icon. See the Checkbox example.
+`CardSelectionIndicator` only shows a Card's selection state. The `CardGroup` owns selection, so a
+Card stays selectable without an indicator. Pass non-interactive children or a selection-state
+render function to replace the default circle and icon. See the Multiple selection example.
 
-To style the Card by state, target `[data-card-selected]` and `[data-disabled]` from your
-`className`.
+To style a Card by state, target `[data-selected]`, `[data-hovered]`, `[data-pressed]`,
+`[data-focus-visible]`, and `[data-disabled]` from your `className`.
 
 ## Accessibility
 
-- Name an `onPress` action or selection with `aria-label` or `aria-labelledby`. The stretched
-  control and the selection input have no visible label of their own.
-- On a Card without a primary action or selection, `aria-label`, `aria-labelledby`, and
-  `aria-describedby` apply to the surface, for example with `role="region"`.
-- `href` renders the Card itself as a native link, named by its content unless you pass
-  `aria-label`. A link Card cannot contain controls, so do not put CornerActions, buttons,
-  inputs, or selection in an `href` Card. Clicking body text on an `onPress` or
-  selection Card activates it; dragging that text selects it.
-- `isDisabled` disables the primary action or selection and fades the Card. Controls you nest
-  inside keep their own disabled state. Required and invalid state belong on `CheckboxGroup` or
-  `RadioGroup`, and so does radio read-only state.
+- A `CardGroup` is a grid: each Card is a row, Tab moves into and out of the group, and arrow keys
+  move between Cards. Name the group with `aria-label` or `aria-labelledby`. Each Card takes its
+  accessible name from `textValue`, which also drives typeahead.
+- In a selectable group, Space toggles the focused Card. Without selection, `onAction` runs on Enter
+  or a press. Do not combine them: with both, a press runs the action and only Space selects, so
+  pointer users cannot select.
+- Controls nested in a Card in a `CardGroup` keep their own presses and do not select the Card or
+  run its action.
+- A `CardGroup` does not submit form values. Read the selection from `onSelectionChange`.
+- `href` on a standalone Card renders the Card itself as a native link, named by its content unless
+  you pass `aria-label`. A link Card cannot contain controls, so do not put CornerActions, buttons,
+  or inputs in it. Inside a `CardGroup`, `href` navigates from the row instead.
+- `isDisabled` fades the Card. On a link Card it stops navigation. In a `CardGroup` it also stops
+  selection, the action, and focus, as does listing the Card's `id` in `disabledKeys`.
+- On a static Card, `aria-label`, `aria-labelledby`, and `aria-describedby` apply to the surface,
+  for example with `role="region"`.
 
 ## Props
 
 ```tsx
-<Card>
-  <CornerActions>
-    <CardSelectionIndicator />
-  </CornerActions>
+<CardGroup selectionMode="multiple">
+  <Card id="privacy" textValue="Domain privacy">
+    <CornerActions>
+      <CardSelectionIndicator />
+    </CornerActions>
 
-  <Image />
-  <TextLockup />
-  {/* ... */}
-</Card>
+    <Image />
+    <TextLockup />
+    {/* ... */}
+  </Card>
+</CardGroup>
 ```
 
 ### Card
 
 <ArgTypes of={Stories.Props} />
+
+### CardGroup
+
+<ArgTypes of={Stories.CardGroupProps} />
 
 ### CardSelectionIndicator
 

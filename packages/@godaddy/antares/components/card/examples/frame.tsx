@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Card, CardSelectionIndicator, Text } from '@godaddy/antares';
+import { Card, CardGroup, CardSelectionIndicator, Text } from '@godaddy/antares';
 
 /**
- * Cards portaled into an iframe document keep body activation.
+ * A CardGroup portaled into an iframe document keeps selection and row actions.
  * @ignore
  */
 export function FrameExample() {
   const [frameBody, setFrameBody] = useState<HTMLElement | null>(null);
-  const [presses, setPresses] = useState(0);
+  const [actions, setActions] = useState(0);
 
   function attachFrame(frame: HTMLIFrameElement | null) {
     setFrameBody(frame?.contentDocument?.body ?? null);
@@ -20,17 +20,21 @@ export function FrameExample() {
       {frameBody &&
         createPortal(
           <>
-            <Card aria-label="Framed action" onPress={() => setPresses((count) => count + 1)}>
-              <Text>Framed action copy</Text>
-            </Card>
-            <Card selection="checkbox" aria-label="Framed selection">
-              <Text>Framed selection copy</Text>
-              <CardSelectionIndicator />
-            </Card>
+            <CardGroup aria-label="Framed actions">
+              <Card id="action" textValue="Framed action" onAction={() => setActions((count) => count + 1)}>
+                <Text>Framed action copy</Text>
+              </Card>
+            </CardGroup>
+            <CardGroup aria-label="Framed selection" selectionMode="multiple">
+              <Card id="selection" textValue="Framed selection">
+                <Text>Framed selection copy</Text>
+                <CardSelectionIndicator />
+              </Card>
+            </CardGroup>
           </>,
           frameBody
         )}
-      <Text>Framed activations: {presses}</Text>
+      <Text>Framed activations: {actions}</Text>
     </>
   );
 }

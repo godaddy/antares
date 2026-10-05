@@ -12,13 +12,12 @@ interface SelectionContextValue extends CardSelectionIndicatorRenderProps {
 const SelectionContext = createContext<SelectionContextValue>({
   isSelected: false,
   isDisabled: false,
-  isReadOnly: false,
   isFocusVisible: false,
   isHovered: false,
   isPressed: false
 });
 
-/** Card-owned selection, interaction, and text context, below the native field provider. */
+/** Row selection, interaction, and text context for a Card inside a CardGroup. */
 export function SelectionProvider({ children, ...value }: SelectionContextValue & { children: ReactNode }) {
   const text = useContext(TextContext);
   const slots = text && 'slots' in text ? text.slots : undefined;
@@ -30,7 +29,7 @@ export function SelectionProvider({ children, ...value }: SelectionContextValue 
   );
 }
 
-/** Props for the visual indicator of a Card's native selection control. */
+/** Props for the visual indicator of a Card's selection in a CardGroup. */
 export interface CardSelectionIndicatorProps
   extends Omit<HTMLAttributes<HTMLSpanElement>, 'children' | 'dangerouslySetInnerHTML' | 'aria-hidden'> {
   /** Custom visual content or a state render function. Omit for the default circular indicator. */
@@ -40,7 +39,7 @@ export interface CardSelectionIndicatorProps
   className?: string;
 }
 
-/** Native selection state available to custom indicator content. */
+/** Row selection state available to custom indicator content. */
 export interface CardSelectionIndicatorRenderProps {
   /** Whether the card is selected. */
   isSelected: boolean;
@@ -48,16 +47,13 @@ export interface CardSelectionIndicatorRenderProps {
   /** Whether selection is disabled. */
   isDisabled: boolean;
 
-  /** Whether selection is read-only. */
-  isReadOnly: boolean;
-
-  /** Whether the selection control shows keyboard focus. */
+  /** Whether the row shows keyboard focus. */
   isFocusVisible: boolean;
 }
 
 /**
- * An explicitly placed visual for a Card's native selection control. The Card owns the control, so
- * selection works without an indicator.
+ * An explicitly placed visual for a Card's selection. The CardGroup owns selection, so it works
+ * without an indicator.
  *
  * @param props - {@link CardSelectionIndicatorProps}
  */
@@ -75,7 +71,6 @@ export const CardSelectionIndicator = forwardRef<HTMLSpanElement, CardSelectionI
         data-custom={isCustom || undefined}
         data-selected={state.isSelected || undefined}
         data-disabled={state.isDisabled || undefined}
-        data-readonly={state.isReadOnly || undefined}
         data-focus-visible={state.isFocusVisible || undefined}
         data-hovered={isHovered || undefined}
         data-pressed={isPressed || undefined}

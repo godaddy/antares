@@ -5,8 +5,8 @@ import { TextLockupExample } from '../examples/text-lockup.tsx';
 import { CornerActionsExample } from '../examples/corner-actions.tsx';
 import { LinkExample } from '../examples/link.tsx';
 import { ActionsExample } from '../examples/actions.tsx';
-import { CheckboxExample } from '../examples/checkbox.tsx';
-import { RadioExample } from '../examples/radio.tsx';
+import { MultipleSelectionExample } from '../examples/multiple-selection.tsx';
+import { SingleSelectionExample } from '../examples/single-selection.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { LayoutExample } from '../examples/layout.tsx';
 import { MediaExample } from '../examples/media.tsx';
@@ -31,19 +31,19 @@ describe('@godaddy/antares', function packageTests() {
       expect(renderToString(<LinkExample />)).toMatchSnapshot();
     });
 
-    it('renders independent primary and child actions', function renderActions() {
+    it('renders row actions with independent child actions', function renderActions() {
       expect(renderToString(<ActionsExample />)).toMatchSnapshot();
     });
 
-    it('renders standalone and grouped checkbox selection', function renderCheckbox() {
-      expect(renderToString(<CheckboxExample />)).toMatchSnapshot();
+    it('renders multiple selection', function renderMultiple() {
+      expect(renderToString(<MultipleSelectionExample />)).toMatchSnapshot();
     });
 
-    it('renders grouped radio selection', function renderRadio() {
-      expect(renderToString(<RadioExample />)).toMatchSnapshot();
+    it('renders single selection', function renderSingle() {
+      expect(renderToString(<SingleSelectionExample />)).toMatchSnapshot();
     });
 
-    it('renders disabled and read-only interactions', function renderDisabled() {
+    it('renders disabled links and rows', function renderDisabled() {
       expect(renderToString(<DisabledExample />)).toMatchSnapshot();
     });
 
@@ -55,7 +55,7 @@ describe('@godaddy/antares', function packageTests() {
       expect(renderToString(<InteractionsExample indicatorChildren={null} />)).toMatchSnapshot();
     });
 
-    it('renders selection validation examples', function renderTypes() {
+    it('renders typed group and link examples', function renderTypes() {
       expect(renderToString(<TypesExample />)).toMatchSnapshot();
     });
 

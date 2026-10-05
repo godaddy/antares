@@ -1,102 +1,73 @@
-import { useEffect, useRef, useState } from 'react';
-import {
-  Card,
-  CardSelectionIndicator,
-  CheckboxGroup,
-  CornerActions,
-  Group,
-  LinkButton,
-  RadioGroup,
-  Text
-} from '@godaddy/antares';
+import { useRef, useState } from 'react';
+import { Button, Card, CardGroup, CardSelectionIndicator, CornerActions, LinkButton, Text } from '@godaddy/antares';
 
 /**
- * Internal review coverage for Card refs, layout props, selection attributes, controlled groups, and an
- * indicator on a Card without selection.
+ * Internal review coverage for Card refs, layout props on rows, controlled selection, and an
+ * indicator on a Card outside a CardGroup.
  * @ignore
  */
 export function CustomizationExample() {
-  const checkboxCardRef = useRef<HTMLDivElement>(null);
-  const radioCardRef = useRef<HTMLDivElement>(null);
-  const customLinkRef = useRef<HTMLAnchorElement>(null);
-  const [selectedCheckboxes, setSelectedCheckboxes] = useState<string[]>([]);
-  const [checkboxChanges, setCheckboxChanges] = useState(0);
-  const [selectedRadio, setSelectedRadio] = useState('');
+  const rowRef = useRef<HTMLDivElement>(null);
+  const linkRef = useRef<HTMLAnchorElement>(null);
+  const staticRef = useRef<HTMLDivElement>(null);
+  const contentLinkRef = useRef<HTMLAnchorElement>(null);
+  const [selected, setSelected] = useState<'all' | Set<string | number>>(new Set());
+  const [changes, setChanges] = useState(0);
   const [refsReady, setRefsReady] = useState(false);
 
-  function handleCheckboxChange(nextSelection: string[]) {
-    setSelectedCheckboxes(nextSelection);
-    setCheckboxChanges(function increment(count) {
-      return count + 1;
-    });
+  function changeSelection(keys: 'all' | Set<string | number>) {
+    setSelected(keys);
+    setChanges((count) => count + 1);
   }
 
-  function handleRadioChange(nextSelection: string) {
-    setSelectedRadio(nextSelection);
-  }
-
-  useEffect(function checkForwardedRefs() {
+  // GridList attaches rows after its collection pass, so check on demand rather than on mount.
+  function checkForwardedRefs() {
     setRefsReady(
-      checkboxCardRef.current?.hasAttribute('data-card') === true &&
-        radioCardRef.current?.hasAttribute('data-card') === true &&
-        customLinkRef.current?.tagName === 'A'
+      rowRef.current?.getAttribute('role') === 'row' &&
+        linkRef.current?.tagName === 'A' &&
+        staticRef.current?.getAttribute('data-card') === 'static' &&
+        contentLinkRef.current?.tagName === 'A'
     );
-  }, []);
+  }
 
   return (
     <>
-      <CheckboxGroup value={selectedCheckboxes} onChange={handleCheckboxChange} aria-label="Review checkbox cards">
-        <Group>
-          <Card
-            selection="checkbox"
-            ref={checkboxCardRef}
-            value="checkbox-card"
-            aria-label="Checkbox props card"
-            className="review-checkbox-card"
-            padding="sm"
-            gap="xs"
-            direction="row"
-          >
-            <Text>Checkbox props card</Text>
-            <CornerActions>
-              <CardSelectionIndicator data-testid="props-checkbox-indicator" />
-            </CornerActions>
-          </Card>
-        </Group>
-      </CheckboxGroup>
-      <Text>Checkbox changes: {checkboxChanges}</Text>
+      <CardGroup
+        aria-label="Review cards"
+        selectionMode="multiple"
+        selectedKeys={selected}
+        onSelectionChange={changeSelection}
+      >
+        <Card
+          ref={rowRef}
+          id="row"
+          textValue="Row props card"
+          className="review-row-card"
+          padding="sm"
+          gap="xs"
+          direction="row"
+        >
+          <Text>Row props card</Text>
+          <CornerActions>
+            <CardSelectionIndicator data-testid="props-row-indicator" />
+          </CornerActions>
+        </Card>
+      </CardGroup>
+      <Text>Selection changes: {changes}</Text>
 
-      <RadioGroup value={selectedRadio} onChange={handleRadioChange} aria-label="Review radio cards">
-        <Group>
-          <Card
-            selection="radio"
-            ref={radioCardRef}
-            value="radio-card"
-            aria-label="Radio props card"
-            className="review-radio-card"
-            padding="md"
-            gap="lg"
-          >
-            <Text>Radio props card</Text>
-            <CornerActions>
-              <CardSelectionIndicator data-testid="props-radio-indicator" />
-            </CornerActions>
-          </Card>
-        </Group>
-      </RadioGroup>
-
-      <Card href="/props-review-linked" aria-label="Linked content ref">
+      <Card ref={linkRef} href="/props-review-linked" aria-label="Linked content ref">
         Linked content ref
       </Card>
-      <Text data-testid="props-ref-status">{refsReady ? 'Refs ready' : 'Refs pending'}</Text>
 
-      <Card>
-        <LinkButton href="#custom-content-link" ref={customLinkRef}>
+      <Card ref={staticRef}>
+        <LinkButton href="#custom-content-link" ref={contentLinkRef}>
           Custom content link
         </LinkButton>
       </Card>
+      <Button onPress={checkForwardedRefs}>Check refs</Button>
+      <Text data-testid="props-ref-status">{refsReady ? 'Refs ready' : 'Refs pending'}</Text>
 
-      <Card role="region" aria-label="Card without selection" aria-describedby="props-static-description">
+      <Card role="region" aria-label="Card without group" aria-describedby="props-static-description">
         <Text id="props-static-description">Static surface description</Text>
         <CornerActions>
           <CardSelectionIndicator data-testid="props-static-indicator" />

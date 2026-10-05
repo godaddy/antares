@@ -1,34 +1,26 @@
-import { Card, CardSelectionIndicator, RadioGroup, Text } from '@godaddy/antares';
+import { Card, CardGroup, CardSelectionIndicator, Text } from '@godaddy/antares';
 
 /**
- * Validation and mixed state belong to groups; Card classes are strings; selection wins over a
- * primary action.
+ * Selection and actions belong to CardGroup, and Card classes are strings.
  * @ignore
  */
 export function TypesExample({ invalidProps = false }: { invalidProps?: boolean }) {
   return (
     <>
-      <Card selection="checkbox" aria-label="Checkbox">
-        <CardSelectionIndicator />
-      </Card>
-      <RadioGroup isInvalid aria-label="Radio choices">
-        <Card selection="radio" value="one" aria-label="Radio">
+      <CardGroup aria-label="Typed group" selectionMode="single">
+        <Card id="one" textValue="One">
           <CardSelectionIndicator />
         </Card>
-      </RadioGroup>
-      <Card selection="checkbox" href="#ignored" aria-label="Selection over link">
-        <Text>Selection wins over a link.</Text>
+      </CardGroup>
+      <Card href="#typed-link">
+        <Text>A standalone link Card.</Text>
       </Card>
       {invalidProps ? (
         <>
-          {/* @ts-expect-error - validation belongs on CheckboxGroup */}
-          <Card selection="checkbox" isInvalid />
-          {/* @ts-expect-error - required state belongs on CheckboxGroup */}
-          <Card selection="checkbox" isRequired />
-          {/* @ts-expect-error - Cards have no mixed state */}
-          <Card selection="checkbox" isIndeterminate />
-          {/* @ts-expect-error - radio validation belongs on RadioGroup */}
-          <Card selection="radio" value="one" isInvalid />
+          {/* @ts-expect-error - selection belongs on CardGroup */}
+          <Card selection="checkbox" />
+          {/* @ts-expect-error - actions run through onAction inside a CardGroup */}
+          <Card onPress={() => undefined} />
           {/* @ts-expect-error - Card classes are strings; style selection with data attributes */}
           <Card className={() => 'selected'} />
         </>

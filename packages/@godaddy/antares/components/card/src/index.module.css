@@ -19,12 +19,12 @@
   box-shadow: var(--shadow-surface-card, 0 2px 8px rgba(17, 17, 17, 0.12));
 }
 
-.card:where([data-focus-visible], :has(> :where(.primary, .selection)[data-focus-visible])) {
+.card:where([data-focus-visible]) {
   outline: 2px solid Highlight;
   outline-offset: 2px;
 }
 
-.card:where([data-pressed], [data-card-selected]) {
+.card:where([data-pressed], [data-selected]) {
   border-color: var(--ux-8qoawt, #09757a);
 }
 
@@ -33,23 +33,18 @@
   cursor: not-allowed;
 }
 
+/* A CardGroup row wraps its content in a `display: contents` gridcell. Its padding never renders,
+   but passing it through lets CornerActions inherit the Card's padding. */
+.card > :where([role="gridcell"]) {
+  padding: inherit;
+}
+
 /* Direct CornerActions sit in the padding box at the top-end. Nest them to keep them in flow. */
-.card > :where([data-corner-actions]) {
+.card > :where([data-corner-actions]),
+.card > :where([role="gridcell"]) > :where([data-corner-actions]) {
   position: absolute;
   inset-block-start: 0;
   inset-inline-end: 0;
   padding-block-start: inherit;
   padding-inline-end: inherit;
-}
-
-.primary,
-.selection {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-}
-
-.primary {
-  opacity: 0;
 }

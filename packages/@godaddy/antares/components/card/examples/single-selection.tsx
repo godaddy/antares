@@ -1,23 +1,24 @@
 import {
   Card,
+  CardGroup,
   CardSelectionIndicator,
   CornerActions,
   Heading,
-  RadioGroup,
   Tag,
   Text,
   TextLockup
 } from '@godaddy/antares';
 
 /**
- * Radio Cards require a value and live in RadioGroup, which owns selection and arrow-key movement.
- * @title Radio
+ * `selectionMode="single"` keeps one Card selected at a time. Arrow keys move between Cards, and
+ * Space selects the focused one.
+ * @title Single selection
  * @order 8
  */
-export function RadioExample() {
+export function SingleSelectionExample() {
   return (
-    <RadioGroup aria-label="Choose a plan" defaultValue="starter">
-      <Card selection="radio" value="starter" aria-label="Starter plan">
+    <CardGroup aria-label="Choose a plan" selectionMode="single" defaultSelectedKeys={['starter']}>
+      <Card id="starter" textValue="Starter plan">
         <TextLockup>
           <Tag slot="eyebrow" emphasis="success">
             Popular
@@ -28,10 +29,10 @@ export function RadioExample() {
           <Text slot="body">For getting started with a single project.</Text>
         </TextLockup>
         <CornerActions>
-          <CardSelectionIndicator data-testid="radio-starter-indicator" />
+          <CardSelectionIndicator data-testid="starter-indicator" />
         </CornerActions>
       </Card>
-      <Card selection="radio" value="pro" aria-label="Pro plan">
+      <Card id="pro" textValue="Pro plan">
         <TextLockup>
           <Tag slot="eyebrow" emphasis="premium">
             Upgrade
@@ -42,9 +43,9 @@ export function RadioExample() {
           <Text slot="body">For teams that need more room to grow.</Text>
         </TextLockup>
         <CornerActions>
-          <CardSelectionIndicator data-testid="radio-pro-indicator" />
+          <CardSelectionIndicator data-testid="pro-indicator" />
         </CornerActions>
       </Card>
-    </RadioGroup>
+    </CardGroup>
   );
 }

@@ -38,12 +38,8 @@
   --_card-selection-indicator-check-opacity: 1;
 }
 
-.indicator:where([data-disabled], [data-readonly]) {
+.indicator:where([data-disabled]) {
   cursor: not-allowed;
-}
-
-.indicator:where([data-readonly]) {
-  opacity: 0.4;
 }
 
 .checkmark {

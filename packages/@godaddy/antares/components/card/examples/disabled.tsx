@@ -1,40 +1,52 @@
-import { Card, CardSelectionIndicator, CornerActions, Grid, Heading, Text, TextLockup } from '@godaddy/antares';
+import {
+  Card,
+  CardGroup,
+  CardSelectionIndicator,
+  CornerActions,
+  Flex,
+  Heading,
+  Text,
+  TextLockup
+} from '@godaddy/antares';
 
 /**
- * `isDisabled` disables the Card's primary action or selection and fades the whole Card. A
- * disabled CheckboxGroup or RadioGroup does the same. Read-only selection keeps its value visible.
+ * `isDisabled` fades the Card. A disabled link Card does not navigate, and a disabled Card in a
+ * CardGroup cannot be selected, run its action, or take focus. `disabledKeys` on the group does
+ * the same by key.
  * @title Disabled
  * @order 9
  */
 export function DisabledExample() {
   return (
-    <Grid columns="repeat(auto-fit, minmax(min(100%, 16rem), 1fr))" gap="md" alignItems="start">
-      <Card aria-label="Open billing" onPress={() => undefined} isDisabled>
+    <Flex direction="column" gap="lg">
+      <Card href="#billing" isDisabled>
         <TextLockup>
-          <Heading slot="title">Disabled action</Heading>
+          <Heading slot="title">Disabled link</Heading>
           <Text slot="body">Pressing the Card does nothing.</Text>
         </TextLockup>
       </Card>
 
-      <Card selection="checkbox" aria-label="Backup" isDisabled>
-        <TextLockup>
-          <Heading slot="title">Disabled selection</Heading>
-          <Text slot="body">The Card cannot be selected.</Text>
-        </TextLockup>
-        <CornerActions>
-          <CardSelectionIndicator />
-        </CornerActions>
-      </Card>
+      <CardGroup aria-label="Backups" selectionMode="multiple" disabledKeys={['ssl']}>
+        <Card id="backup" textValue="Backup" isDisabled>
+          <TextLockup>
+            <Heading slot="title">Disabled with isDisabled</Heading>
+            <Text slot="body">The Card cannot be selected.</Text>
+          </TextLockup>
+          <CornerActions>
+            <CardSelectionIndicator />
+          </CornerActions>
+        </Card>
 
-      <Card selection="checkbox" aria-label="SSL" isReadOnly defaultSelected>
-        <TextLockup>
-          <Heading slot="title">Read-only selection</Heading>
-          <Text slot="body">The selection is visible but cannot change.</Text>
-        </TextLockup>
-        <CornerActions>
-          <CardSelectionIndicator />
-        </CornerActions>
-      </Card>
-    </Grid>
+        <Card id="ssl" textValue="SSL">
+          <TextLockup>
+            <Heading slot="title">Disabled with disabledKeys</Heading>
+            <Text slot="body">The group disables this Card by key.</Text>
+          </TextLockup>
+          <CornerActions>
+            <CardSelectionIndicator />
+          </CornerActions>
+        </Card>
+      </CardGroup>
+    </Flex>
   );
 }

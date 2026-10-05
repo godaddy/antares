@@ -1,7 +1,7 @@
 'use client';
 
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { Card, CardSelectionIndicator } from './src/index.tsx';
+import { Card, CardGroup, CardSelectionIndicator } from './src/index.tsx';
 import { PlaygroundExample } from './examples/card-playground.tsx';
 
 export default getMeta({
@@ -9,6 +9,8 @@ export default getMeta({
 });
 
 export const Props = getComponentDocs(Card);
+
+export const CardGroupProps = getComponentDocs(CardGroup);
 
 export const CardSelectionIndicatorProps = getComponentDocs(CardSelectionIndicator);
 
