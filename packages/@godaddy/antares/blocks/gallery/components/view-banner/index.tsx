@@ -47,7 +47,9 @@ export function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: 
       {errorCount > 0 ? (
         <Flex justifyContent="center" alignItems="center" gap="xs" role="alert" aria-live="assertive">
           <Icon icon="alert" aria-hidden="true" />
-          <Text emphasis="critical">{errorCount} file upload failed.</Text>
+          <Text emphasis="critical">
+            {errorCount} file{errorCount === 1 ? '' : 's'} upload failed.
+          </Text>
         </Flex>
       ) : null}
     </Flex>

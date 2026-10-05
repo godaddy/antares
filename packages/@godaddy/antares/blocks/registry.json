@@ -6,7 +6,6 @@
       "name": "blocks/gallery",
       "type": "registry:block",
       "title": "Gallery",
-      "description": "Browse images in a list or grid with local file upload.",
       "dependencies": ["@godaddy/antares"],
       "files": [
         {
@@ -18,6 +17,16 @@
           "path": "gallery/components/drop-overlay/index.tsx",
           "type": "registry:component",
           "target": "components/blocks/gallery/components/drop-overlay/index.tsx"
+        },
+        {
+          "path": "gallery/components/empty-state/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/gallery/components/empty-state/index.module.css"
+        },
+        {
+          "path": "gallery/components/empty-state/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/empty-state/index.tsx"
         },
         {
           "path": "gallery/components/file-cover/index.module.css",
@@ -115,19 +124,8 @@
       "name": "blocks/project-inquiry-form",
       "type": "registry:block",
       "title": "Project inquiry form",
-      "description": "A responsive inquiry form with transparent drag-and-drop file upload.",
       "dependencies": ["@godaddy/antares"],
       "files": [
-        {
-          "path": "project-inquiry-form/components/drop-overlay/index.module.css",
-          "type": "registry:style",
-          "target": "components/blocks/project-inquiry-form/components/drop-overlay/index.module.css"
-        },
-        {
-          "path": "project-inquiry-form/components/drop-overlay/index.tsx",
-          "type": "registry:component",
-          "target": "components/blocks/project-inquiry-form/components/drop-overlay/index.tsx"
-        },
         {
           "path": "project-inquiry-form/components/attached-files/index.module.css",
           "type": "registry:style",
@@ -147,6 +145,16 @@
           "path": "project-inquiry-form/components/benefits/index.tsx",
           "type": "registry:component",
           "target": "components/blocks/project-inquiry-form/components/benefits/index.tsx"
+        },
+        {
+          "path": "project-inquiry-form/components/drop-overlay/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/project-inquiry-form/components/drop-overlay/index.module.css"
+        },
+        {
+          "path": "project-inquiry-form/components/drop-overlay/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/components/drop-overlay/index.tsx"
         },
         {
           "path": "project-inquiry-form/components/fields/index.tsx",

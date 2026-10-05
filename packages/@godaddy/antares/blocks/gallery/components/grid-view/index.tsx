@@ -17,10 +17,13 @@ interface GridViewProps {
 
   /** Retries a failed upload. */
   onRetry: (image: ImageItem) => void;
+
+  /** Reports an image decode or network failure. */
+  onLoadError: (id: string) => void;
 }
 
 /** Full-width responsive image grid with gallery-sized cards. */
-export function GridView({ images, onOpen, onRemove, onRetry }: GridViewProps) {
+export function GridView({ images, onOpen, onRemove, onRetry, onLoadError }: GridViewProps) {
   return (
     <Grid
       as="ul"
@@ -40,6 +43,7 @@ export function GridView({ images, onOpen, onRemove, onRetry }: GridViewProps) {
             onOpen={onOpen}
             onRemove={onRemove}
             onRetry={onRetry}
+            onLoadError={onLoadError}
           />
         );
       })}

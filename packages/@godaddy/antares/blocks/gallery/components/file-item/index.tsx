@@ -23,6 +23,9 @@ interface FileItemProps {
 
   /** Retries an error item. */
   onRetry: (image: ImageItem) => void;
+
+  /** Reports an image decode or network failure. */
+  onLoadError: (id: string) => void;
 }
 
 const coverVariants: Record<FileItemVariant, FileCoverVariant> = {
@@ -32,7 +35,7 @@ const coverVariants: Record<FileItemVariant, FileCoverVariant> = {
 };
 
 /** One file item with the same actions and states across list and grid views. */
-export function FileItem({ image, variant, onOpen, onRemove, onRetry }: FileItemProps) {
+export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadError }: FileItemProps) {
   const size = image.size === undefined ? 'Sample image' : `${(image.size / (1024 * 1024)).toFixed(0)}MB`;
   const isError = image.status === 'error';
 
@@ -62,7 +65,12 @@ export function FileItem({ image, variant, onOpen, onRemove, onRetry }: FileItem
       data-variant={variant}
     >
       <Box className={styles.coverSlot} data-variant={variant}>
-        <FileCover image={image} variant={coverVariants[variant]} onOpen={isError ? undefined : onOpen} />
+        <FileCover
+          image={image}
+          variant={coverVariants[variant]}
+          onOpen={isError ? undefined : onOpen}
+          onLoadError={onLoadError}
+        />
         {isError && variant === 'thumbnail' ? (
           <Button
             variant="minimal"

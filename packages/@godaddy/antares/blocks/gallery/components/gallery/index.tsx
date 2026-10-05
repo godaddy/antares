@@ -157,6 +157,14 @@ export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: 
     setNotice(`${image.name} is ready to view.`);
   }, []);
 
+  const handleImageLoadError = useCallback(function handleImageLoadError(id: string) {
+    setImages(function markImageError(previous) {
+      return previous.map(function updateImage(item) {
+        return item.id === id ? { ...item, status: 'error', errorMessage: `Couldn’t load ${item.name}.` } : item;
+      });
+    });
+  }, []);
+
   const handleCloseViewer = useCallback(function handleCloseViewer() {
     setActiveId(null);
   }, []);
@@ -199,9 +207,21 @@ export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: 
               {images.length === 0 ? (
                 <EmptyState />
               ) : view === 'list' ? (
-                <ListView images={images} onOpen={handleOpenImage} onRemove={removeImage} onRetry={handleRetryImage} />
+                <ListView
+                  images={images}
+                  onOpen={handleOpenImage}
+                  onRemove={removeImage}
+                  onRetry={handleRetryImage}
+                  onLoadError={handleImageLoadError}
+                />
               ) : (
-                <GridView images={images} onOpen={handleOpenImage} onRemove={removeImage} onRetry={handleRetryImage} />
+                <GridView
+                  images={images}
+                  onOpen={handleOpenImage}
+                  onRemove={removeImage}
+                  onRetry={handleRetryImage}
+                  onLoadError={handleImageLoadError}
+                />
               )}
             </Box>
 
@@ -210,7 +230,18 @@ export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: 
         </TextContext.Provider>
       );
     },
-    [addFiles, error, handleOpenImage, handleRetryImage, handleViewChange, images, notice, removeImage, view]
+    [
+      addFiles,
+      error,
+      handleImageLoadError,
+      handleOpenImage,
+      handleRetryImage,
+      handleViewChange,
+      images,
+      notice,
+      removeImage,
+      view
+    ]
   );
 
   return (

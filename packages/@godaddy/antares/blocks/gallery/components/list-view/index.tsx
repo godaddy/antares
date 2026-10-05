@@ -20,12 +20,15 @@ interface ListViewProps {
   /** Retries a failed upload. */
   onRetry: (image: ImageItem) => void;
 
+  /** Reports an image decode or network failure. */
+  onLoadError: (id: string) => void;
+
   /** Number of items visible before Show all is activated. */
   maxVisibleItems?: number;
 }
 
 /** Figma-aligned horizontal file list with counter and error banner. */
-export function ListView({ images, onOpen, onRemove, onRetry, maxVisibleItems = 5 }: ListViewProps) {
+export function ListView({ images, onOpen, onRemove, onRetry, onLoadError, maxVisibleItems = 5 }: ListViewProps) {
   const [showAll, setShowAll] = useState(false);
   const visibleImages = showAll ? images : images.slice(0, maxVisibleItems);
   const errorCount = images.filter(function countError(image) {
@@ -48,6 +51,7 @@ export function ListView({ images, onOpen, onRemove, onRetry, maxVisibleItems = 
               onOpen={onOpen}
               onRemove={onRemove}
               onRetry={onRetry}
+              onLoadError={onLoadError}
             />
           );
         })}

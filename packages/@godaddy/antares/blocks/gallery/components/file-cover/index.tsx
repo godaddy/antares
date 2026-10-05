@@ -16,10 +16,13 @@ interface FileCoverProps {
 
   /** Opens a successful image in the viewer. */
   onOpen?: (id: string) => void;
+
+  /** Reports an image decode or network failure to the owning gallery. */
+  onLoadError?: (id: string) => void;
 }
 
 /** A small, reusable image/error surface shared by every Gallery presentation. */
-export function FileCover({ image, variant, onOpen }: FileCoverProps) {
+export function FileCover({ image, variant, onOpen, onLoadError }: FileCoverProps) {
   const [loadError, setLoadError] = useState(false);
   const hasError = image.status === 'error' || loadError;
 
@@ -37,9 +40,13 @@ export function FileCover({ image, variant, onOpen }: FileCoverProps) {
     [image.id, onOpen]
   );
 
-  const handleImageError = useCallback(function handleImageError() {
-    setLoadError(true);
-  }, []);
+  const handleImageError = useCallback(
+    function handleImageError() {
+      setLoadError(true);
+      onLoadError?.(image.id);
+    },
+    [image.id, onLoadError]
+  );
 
   if (hasError) {
     return (
