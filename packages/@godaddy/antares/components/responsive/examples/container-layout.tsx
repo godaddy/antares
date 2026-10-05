@@ -1,43 +1,71 @@
-import { Box, Grid, Text } from '@godaddy/antares';
+import { Box, Button, Flex, Heading, Text } from '@godaddy/antares';
 
-interface ContainerLayoutExampleProps {
-  width?: number;
+interface DomainCardProps {
+  domain: string;
+  renewal: string;
+}
+
+function DomainCard({ domain, renewal }: DomainCardProps) {
+  return (
+    <Box as="article" aria-label={domain} padding="md" elevation="card" className="responsive-domain-card">
+      <Flex gap="sm" className="responsive-domain-card-body">
+        <Flex direction="column" gap="xs">
+          <Heading level={3}>{domain}</Heading>
+          <Text>{renewal}</Text>
+        </Flex>
+        <Flex wrap="wrap" gap="sm">
+          <Button variant="secondary">Manage DNS</Button>
+          <Button>Renew</Button>
+        </Flex>
+      </Flex>
+    </Box>
+  );
 }
 
 /**
- * The cards respond to their named container, independently of the viewport. The local
- * 30rem threshold belongs to this layout, not the shared viewport scale.
- * @order 4
+ * The same domain card sits in a narrow sidebar and a wide main area. It stacks in the sidebar and
+ * lines up in the main area at the same viewport width, because it queries its own container. The
+ * 28rem threshold belongs to the card. Its CSS owns the direction and alignment, so those props stay
+ * unset.
+ * @title Container query
+ * @order 2
  */
-export function ContainerLayoutExample({ width = 640 }: ContainerLayoutExampleProps) {
+export function ContainerLayoutExample() {
   return (
     <>
       <style>{`
-        .responsive-container-example {
-          container: responsive-example / inline-size;
-          inline-size: 100%;
+        .responsive-container-example-sidebar {
+          flex: 1 1 14rem;
         }
 
-        .responsive-container-example-grid {
-          grid-template-columns: minmax(0, 1fr);
+        .responsive-container-example-main {
+          flex: 3 1 28rem;
         }
 
-        @container responsive-example (min-width: 30rem) {
-          .responsive-container-example-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+        .responsive-domain-card {
+          container: domain-card / inline-size;
+        }
+
+        .responsive-domain-card-body {
+          flex-direction: column;
+        }
+
+        @container domain-card (min-width: 28rem) {
+          .responsive-domain-card-body {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
           }
         }
       `}</style>
-      <Box className="responsive-container-example" style={{ maxInlineSize: width }}>
-        <Grid as="section" aria-label="Container layout" gap="md" className="responsive-container-example-grid">
-          <Box padding="md" elevation="card">
-            <Text>Account settings</Text>
-          </Box>
-          <Box padding="md" elevation="card">
-            <Text>Billing settings</Text>
-          </Box>
-        </Grid>
-      </Box>
+      <Flex wrap="wrap" gap="md">
+        <Box as="aside" aria-label="Sidebar" className="responsive-container-example-sidebar">
+          <DomainCard domain="shop.example" renewal="Renews on March 2, 2027" />
+        </Box>
+        <Box as="main" aria-label="Domains" className="responsive-container-example-main">
+          <DomainCard domain="example.com" renewal="Renews on January 12, 2027" />
+        </Box>
+      </Flex>
     </>
   );
 }

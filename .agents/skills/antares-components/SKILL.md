@@ -119,8 +119,8 @@ export interface ButtonProps extends Omit<RACButtonProps, 'className'> {
 ## Responsive
 
 **Read `references/responsive.md` when a component adapts to its space, the viewport, or input devices.**
-It covers choosing between CSS, container queries, media queries, and `useMediaQuery`, plus breakpoints and
-tests.
+It covers choosing between intrinsic CSS, container queries, and media queries, the overlay-only viewport
+rule, and tests.
 
 ## Styling
 

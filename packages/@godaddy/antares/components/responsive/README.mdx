@@ -1,6 +1,6 @@
 ---
 title: Responsive
-description: Shared viewport breakpoints, native CSS patterns, and a media-query hook for responsive behavior.
+description: How Antares components adapt, and how to build responsive layouts around them with native CSS.
 ---
 
 import { Meta } from '@storybook/addon-docs/blocks';
@@ -11,9 +11,10 @@ import * as Stories from './responsive.stories.tsx';
 
 ## Features
 
-- Shared, mobile-first viewport widths and query strings.
-- Native CSS media and container queries for styling.
-- `useMediaQuery` for media-dependent React behavior, with an explicit server fallback.
+- Components adapt to the space they are given with intrinsic CSS and container queries.
+- Page layout stays in your CSS, with your own media queries and breakpoints.
+- Component sizes can follow `--antares-size`, so your CSS can change them at any breakpoint.
+- Responsive styles are plain CSS, so server rendering needs no viewport guess.
 
 ## Examples
 
@@ -21,37 +22,38 @@ import * as Stories from './responsive.stories.tsx';
 
 ## Customization
 
-Exports are available from `@godaddy/antares` and `@godaddy/antares/Responsive`. Pass any valid
-media-query string to `useMediaQuery`, including device preferences such as reduced motion.
-Viewport widths describe available space; each component chooses the thresholds it needs.
-In media queries, `rem` uses the browser's initial font size.
+Antares publishes no viewport breakpoints. Components don't change by viewport width, except overlays
+such as Modal and Drawer, which document their own thresholds. Choose the breakpoints your layout needs,
+and write them in your own media or container queries.
 
 The examples include their CSS in `<style>` blocks so the complete code is visible. Applications can
-place those rules in their own stylesheets. Let responsive CSS own both the base and query values
-for a property; leave its corresponding layout prop and inline `style` unset. Normal cascade rules
-still apply. A named container controls its descendants; portaled content needs a suitable
-container in its own DOM ancestry. A container can't take its width from its content, so give it one
-from its parent, as the container example does with `inline-size: 100%`. Otherwise it collapses in flex
-rows and other shrink-to-fit layouts.
+place those rules in their own stylesheets. Layout props such as `columns` and `gap` write inline styles,
+which beat stylesheet rules. When your CSS changes a property across a query, set it in CSS for every
+width and leave the prop unset.
 
-## Server rendering
+A container can't take its width from its content, so give it one from its parent, as the container
+example does with the `flex` basis of its sidebar and main area. Otherwise it collapses in flex rows and
+other shrink-to-fit layouts. Portaled content is outside the container, so it needs a container in its
+own DOM ancestry.
 
-Use the same `ssrMatch` value on the server and client. It is returned on the server, during initial
-hydration, and when `matchMedia` is unavailable. After hydration the hook adopts the browser result;
-client-only rendering uses it immediately. Changing the query replaces the subscription, and
-unmounting removes it.
+In media queries, `rem` uses the browser's initial font size.
+
+### Responsive size
+
+Component props, including `size`, take a single value. For a size that changes with the layout, leave
+`size` unset and set `--antares-size` in your CSS on a parent, as the responsive size example does. A
+component can't read the variable from its own element. The nearest value wins, and an explicit `size` beats it. Without the variable, components
+follow the surrounding `SizeProvider`. Browsers without container style queries ignore the variable.
+
+These components follow `--antares-size`:
+
+| Component    | Values     | Notes                               |
+| ------------ | ---------- | ----------------------------------- |
+| `TextLockup` | `xs`-`2xl` | A `Tag` eyebrow keeps its own size. |
 
 ## Accessibility
 
-Preserve reading order, keyboard focus, and entered values as layouts change. If a component swaps
-React trees, it must manage state and focus across that transition. Validate its chosen behavior
-with long text, RTL, narrow widths, text enlargement, and browser zoom. Resizing the viewport alone
-does not test every effect of zoom. Use pointer and hover media features to detect input capabilities.
-
-## API
-
-```ts
-useMediaQuery(query: string, options: { ssrMatch: boolean }): boolean
-```
-
-Breakpoint values are listed in the Breakpoints example above. Types: `ViewportBreakpoint` and `UseMediaQueryOptions`.
+Preserve reading order, keyboard focus, and entered values as layouts change: reflow one DOM tree with
+CSS instead of rendering different trees. Validate layouts with long text, RTL, narrow widths, text
+enlargement, and browser zoom. Resizing the viewport alone does not test every effect of zoom. Use
+pointer and hover media features to detect input capabilities, not widths.

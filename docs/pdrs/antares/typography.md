@@ -257,4 +257,3 @@ provides inherited component sizing.
   adopt the scale, and how.
 
 Out of scope: prose styling for rendered Markdown, leading trim, tabular figures, and a public theme API.
-Responsive behavior follows [the responsive foundation](./responsive.md).

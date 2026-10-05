@@ -10,10 +10,9 @@ Take the first one that works:
 1. **Intrinsic CSS.** Wrapping, `minmax()`, `auto-fill`, `flex-wrap`, and `min-inline-size: 0` need no
    threshold.
 2. **Container query** when the component adapts to the space it is given.
-3. **Media query** for viewport or device conditions, such as an overlay that fills a small viewport,
-   `pointer`, or `prefers-reduced-motion`.
-4. **`useMediaQuery`** only when behavior changes, not styling. Pass the likely server result as
-   `ssrMatch`, and keep state and focus when the result changes after hydration.
+3. **Media feature** for device conditions: `pointer`, `hover`, `prefers-reduced-motion`, or
+   `forced-colors`.
+4. **Viewport width** only for overlays that fill a small viewport, such as Modal and Drawer.
 
 ## Container queries
 
@@ -22,26 +21,37 @@ Take the first one that works:
 - Write local thresholds in `rem`, mobile-first.
 - The root can't take its width from its content. It needs one from its parent, such as a block element
   or a stretched flex or grid item. Otherwise it collapses to zero.
-- Portaled content is outside the container. Give it its own container or use a media query.
+- Portaled content is outside the container. Give it its own container in its DOM ancestry.
 
-## Media queries
+## Viewport widths
 
-Use `viewportBreakpoints` values as literals, mobile-first: base styles first, then
-`@media (min-width: 64rem)`. For styles below a breakpoint, use `(width < 64rem)`. A node test in
-`components/responsive` fails on any other viewport width in component CSS or examples.
+Components don't use viewport widths, and Antares publishes no breakpoints. Overlays share one internal
+threshold and document it in their README. A node test in `components/responsive` fails on any
+viewport-width media query in component CSS; the overlay that introduces the threshold adds it to that
+test.
+
+## Responsive size
+
+A component that follows `--antares-size` reads it with container style queries only when `size` is
+unset, so an explicit `size` wins. TextLockup's `followSize` class is the reference. Document it in two
+places: add a row to the table in `components/responsive/README.mdx`, and mention the variable in the
+`size` prop's JSDoc. Don't add a responsive example to the component. Cover the variable, an explicit
+`size`, and an unset variable in an `@ignore` fixture with browser tests.
 
 ## Props and structure
 
-- Props stay scalar. Don't add per-breakpoint props, and don't switch prop values with `useMediaQuery`.
+- Props stay scalar. Don't add per-breakpoint props, and don't switch props by viewport in JavaScript.
 - Layout props write inline styles, which beat module CSS. If a value changes across a query, set it in
   CSS and leave the prop unset.
 - Reflow one DOM tree with CSS instead of rendering different trees, so reading order, focus, and entered
   values survive.
+- Behavior that depends on a media feature reads it on the client after hydration, and keeps state and
+  focus when the result changes.
 
 ## Tests
 
-- Browser: cover both sides of each threshold, `page.viewport(width - 1)` and `page.viewport(width)`. For
-  containers, change the container's width at a fixed viewport.
+- Browser: cover both sides of each threshold. For viewports, `page.viewport(width - 1)` and
+  `page.viewport(width)`; for containers, change the container's width at a fixed viewport.
 - Visual: when the look changes, screenshot the example at a mobile viewport (`320px`) and on each side of
   its threshold.
 - Check the README's accessibility cases: long text, RTL, text enlargement, and zoom.

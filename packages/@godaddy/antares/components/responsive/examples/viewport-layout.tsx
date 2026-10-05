@@ -1,8 +1,17 @@
-import { Box, Grid, Text } from '@godaddy/antares';
+import { Box, Flex, Grid, Heading, LinkButton, Text } from '@godaddy/antares';
+
+const sections = [
+  { name: 'Profile', href: '#profile' },
+  { name: 'Security', href: '#security' },
+  { name: 'Payment methods', href: '#payment-methods' },
+  { name: 'Notifications', href: '#notifications' }
+];
 
 /**
- * CSS changes this layout from one column to two at the shared `lg` viewport threshold.
- * Leave `columns` unset so it does not place a competing value in inline styles.
+ * Page layout belongs to the app, so its CSS picks the breakpoint. This settings page shows its
+ * navigation beside the content from `64rem` and stacks it above the content below that. Leave
+ * `columns` unset so it does not place a competing value in inline styles.
+ * @title Viewport media query
  * @order 3
  */
 export function ViewportLayoutExample() {
@@ -15,17 +24,26 @@ export function ViewportLayoutExample() {
 
         @media (min-width: 64rem) {
           .responsive-viewport-example {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: 16rem minmax(0, 1fr);
           }
         }
       `}</style>
-      <Grid as="section" aria-label="Viewport layout" gap="md" className="responsive-viewport-example">
-        <Box padding="md" elevation="card">
-          <Text>Account settings</Text>
+      <Grid as="section" aria-label="Account settings" gap="lg" className="responsive-viewport-example">
+        <Box as="nav" aria-label="Settings">
+          <Flex direction="column" alignItems="start" gap="xs">
+            {sections.map(function section({ name, href }) {
+              return (
+                <LinkButton key={name} variant="minimal" href={href}>
+                  {name}
+                </LinkButton>
+              );
+            })}
+          </Flex>
         </Box>
-        <Box padding="md" elevation="card">
-          <Text>Billing settings</Text>
-        </Box>
+        <Flex as="section" aria-label="Profile" direction="column" gap="sm" padding="md" elevation="card">
+          <Heading level={2}>Profile</Heading>
+          <Text>Update the name and contact details on your account.</Text>
+        </Flex>
       </Grid>
     </>
   );
