@@ -8,7 +8,7 @@ import {
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { composeClassName } from '#utils/render-props.ts';
 import { OutsideCardGroup, useIsInCardGroup } from './card-group.tsx';
-import { SelectionProvider } from './card-selection-indicator.tsx';
+import { OutsideCardSelection, SelectionProvider } from './card-selection-indicator.tsx';
 import styles from './index.module.css';
 
 /** Plain DOM controls that keep their own press inside a CardGroup row. */
@@ -16,14 +16,11 @@ const NESTED_CONTROL =
   'a, button, input, textarea, select, summary, label, audio[controls], video[controls], [contenteditable]:not([contenteditable="false"])';
 
 /**
- * React Aria controls stop the row press themselves, and stopping it here would cut off their own
- * handlers. Plain DOM controls get no such protection, so give it to them.
+ * React Aria controls stop the row press themselves. Plain DOM controls get no such protection, so
+ * stop it for them once it bubbles out of the control, after the control's own handlers have run.
  */
 function keepNestedControlPress(event: PointerEvent<HTMLDivElement>) {
-  const target = event.target as Element;
-  const pressable = target.closest('[data-react-aria-pressable]');
-  if (pressable && pressable !== event.currentTarget) return;
-  if (target.closest(NESTED_CONTROL)) event.stopPropagation();
+  if ((event.target as Element).closest(NESTED_CONTROL)) event.stopPropagation();
 }
 
 /**
@@ -52,10 +49,13 @@ export interface CardProps extends Omit<FlexProps, 'as' | 'children' | 'onClick'
   /** Row action inside a `CardGroup`. Ignored on a standalone Card. */
   onAction?: RACGridListItemProps['onAction'];
 
-  /** Row key inside a `CardGroup`. Required for selection. */
+  /** Row key inside a `CardGroup`, required for selection. Standalone, the element `id`. */
   id?: string;
 
-  /** Typeahead text inside a `CardGroup`. Defaults to the row's text content. */
+  /**
+   * Accessible name and typeahead text inside a `CardGroup`. Defaults to plain-text children, so set
+   * it when the content is composed.
+   */
   textValue?: string;
 }
 
@@ -101,11 +101,10 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
         as={RACGridListItem}
         ref={ref as Ref<HTMLDivElement>}
         id={id}
-        textValue={textValue}
+        textValue={textValue ?? (typeof children === 'string' ? children : undefined)}
         href={href}
         isDisabled={isDisabled}
         onAction={onAction}
-        onPointerDownCapture={keepNestedControlPress}
         data-card="interactive"
       >
         {(state) => (
@@ -116,12 +115,16 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
             isHovered={state.isHovered}
             isPressed={state.isPressed}
           >
-            <OutsideCardGroup>{children}</OutsideCardGroup>
+            <div className={styles.content} onPointerDown={keepNestedControlPress}>
+              <OutsideCardGroup>{children}</OutsideCardGroup>
+            </div>
           </SelectionProvider>
         )}
       </Flex>
     );
   }
+
+  const content = <OutsideCardSelection>{children}</OutsideCardSelection>;
 
   if (href != null) {
     return (
@@ -130,11 +133,12 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
         {...ariaProps}
         as={RACLink}
         ref={ref as Ref<HTMLAnchorElement>}
+        id={id}
         href={href}
         isDisabled={isDisabled}
         data-card={isDisabled ? 'static' : 'interactive'}
       >
-        {children}
+        {content}
       </Flex>
     );
   }
@@ -144,10 +148,11 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
       {...surface}
       {...ariaProps}
       ref={ref as Ref<HTMLDivElement>}
+      id={id}
       data-disabled={isDisabled || undefined}
       data-card="static"
     >
-      {children}
+      {content}
     </Flex>
   );
 });

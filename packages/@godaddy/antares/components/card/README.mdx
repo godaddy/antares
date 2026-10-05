@@ -37,7 +37,8 @@ To style a Card by state, target `[data-selected]`, `[data-hovered]`, `[data-pre
 
 - A `CardGroup` is a grid: each Card is a row, Tab moves into and out of the group, and arrow keys
   move between Cards. Name the group with `aria-label` or `aria-labelledby`. Each Card takes its
-  accessible name from `textValue`, which also drives typeahead.
+  accessible name from `textValue`, which also drives typeahead. Plain-text children supply it by
+  default, so set `textValue` when a Card's content is composed.
 - In a selectable group, Space toggles the focused Card. Without selection, `onAction` runs on Enter
   or a press. Do not combine them: with both, a press runs the action and only Space selects, so
   pointer users cannot select.

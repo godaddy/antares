@@ -9,13 +9,20 @@ interface SelectionContextValue extends CardSelectionIndicatorRenderProps {
   isPressed: boolean;
 }
 
-const SelectionContext = createContext<SelectionContextValue>({
+const UNSELECTED: SelectionContextValue = {
   isSelected: false,
   isDisabled: false,
   isFocusVisible: false,
   isHovered: false,
   isPressed: false
-});
+};
+
+const SelectionContext = createContext(UNSELECTED);
+
+/** Renders children outside any row's selection, so a Card nested in a row shows it as unselected. */
+export function OutsideCardSelection({ children }: { children: ReactNode }) {
+  return <SelectionContext.Provider value={UNSELECTED}>{children}</SelectionContext.Provider>;
+}
 
 /** Row selection, interaction, and text context for a Card inside a CardGroup. */
 export function SelectionProvider({ children, ...value }: SelectionContextValue & { children: ReactNode }) {

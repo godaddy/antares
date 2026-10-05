@@ -70,6 +70,12 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(indicator).not.toHaveAttribute('data-selected');
       });
 
+      it('sets the element id on link and static Cards', async function standaloneIds() {
+        const { getByRole } = await render(<CustomizationExample />);
+        await expect.element(getByRole('link', { name: 'Linked content ref' })).toHaveAttribute('id', 'props-link');
+        await expect.element(getByRole('region', { name: 'Card without group' })).toHaveAttribute('id', 'props-static');
+      });
+
       it('forwards refs for rows, links, and static Cards', async function refs() {
         const { getByRole, getByTestId } = await render(<CustomizationExample />);
         await userEvent.click(getByRole('button', { name: 'Check refs' }));
@@ -113,6 +119,13 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(getByRole('row', { name: 'Pro plan' })).toHaveFocus();
         await userEvent.keyboard(' ');
         await expect.element(getByRole('row', { name: 'Pro plan' })).toHaveAttribute('aria-selected', 'true');
+      });
+
+      it('names and type-selects a Card by its plain-text children', async function plainTextRow() {
+        const { getByRole } = await render(<CustomizationExample />);
+        await userEvent.click(getByRole('row', { name: 'Row props card' }));
+        await userEvent.keyboard('p');
+        await expect.element(getByRole('row', { name: 'Plain text card' })).toHaveFocus();
       });
 
       it('shares row hover and focus with the indicator', async function indicatorState() {
@@ -194,9 +207,10 @@ describe('@godaddy/antares', function packageTests() {
       });
 
       it('lets a native checkbox toggle without selecting the row', async function nativeCheckbox() {
-        const { getByRole, getByTestId } = await render(<InteractionsExample />);
+        const { getByRole, getByTestId, getByText } = await render(<InteractionsExample />);
         await userEvent.click(getByTestId('native-One'));
         await expect.element(getByTestId('native-One')).toBeChecked();
+        await expect.element(getByText('Independent activations: 1')).toBeInTheDocument();
         await expect.element(getByRole('row', { name: 'Option one' })).toHaveAttribute('aria-selected', 'false');
 
         await userEvent.click(getByRole('row', { name: 'Option one' }).getByText('Remember One'));
@@ -234,10 +248,12 @@ describe('@godaddy/antares', function packageTests() {
 
     describe('composition', function compositionTests() {
       it('renders a Card nested in a row as a static Card', async function nested() {
-        const { getByRole } = await render(<NestedExample />);
+        const { getByRole, getByTestId } = await render(<NestedExample />);
         const outer = getByRole('row', { name: 'Outer card' }).element();
         expect(outer.querySelectorAll('[role="row"]')).toHaveLength(0);
         expect(outer.querySelector('[aria-label="Inner card"]')).toHaveAttribute('data-card', 'static');
+        await expect.element(getByTestId('outer-indicator')).toHaveAttribute('data-selected', 'true');
+        await expect.element(getByTestId('inner-indicator')).not.toHaveAttribute('data-selected');
       });
 
       it('runs actions and selection inside an iframe', async function framed() {

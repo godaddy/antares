@@ -2,8 +2,8 @@ import { useRef, useState } from 'react';
 import { Button, Card, CardGroup, CardSelectionIndicator, CornerActions, LinkButton, Text } from '@godaddy/antares';
 
 /**
- * Internal review coverage for Card refs, layout props on rows, controlled selection, and an
- * indicator on a Card outside a CardGroup.
+ * Internal review coverage for Card refs, ids, layout props on rows, plain-text rows, controlled
+ * selection, and an indicator on a Card outside a CardGroup.
  * @ignore
  */
 export function CustomizationExample() {
@@ -52,10 +52,11 @@ export function CustomizationExample() {
             <CardSelectionIndicator data-testid="props-row-indicator" />
           </CornerActions>
         </Card>
+        <Card id="plain-text">Plain text card</Card>
       </CardGroup>
       <Text>Selection changes: {changes}</Text>
 
-      <Card ref={linkRef} href="/props-review-linked" aria-label="Linked content ref">
+      <Card ref={linkRef} id="props-link" href="/props-review-linked" aria-label="Linked content ref">
         Linked content ref
       </Card>
 
@@ -67,7 +68,7 @@ export function CustomizationExample() {
       <Button onPress={checkForwardedRefs}>Check refs</Button>
       <Text data-testid="props-ref-status">{refsReady ? 'Refs ready' : 'Refs pending'}</Text>
 
-      <Card role="region" aria-label="Card without group" aria-describedby="props-static-description">
+      <Card id="props-static" role="region" aria-label="Card without group" aria-describedby="props-static-description">
         <Text id="props-static-description">Static surface description</Text>
         <CornerActions>
           <CardSelectionIndicator data-testid="props-static-indicator" />

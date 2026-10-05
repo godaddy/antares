@@ -63,7 +63,7 @@ export function InteractionsExample({
           <Button onPress={act}>Independent One</Button>
           <label>
             Remember One
-            <input type="checkbox" data-testid="native-One" />
+            <input type="checkbox" data-testid="native-One" onPointerDown={act} />
           </label>
           <LinkButton href="#independent-destination" onPress={act}>
             Independent link One

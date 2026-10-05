@@ -33,15 +33,20 @@
   cursor: not-allowed;
 }
 
-/* A CardGroup row wraps its content in a `display: contents` gridcell. Its padding never renders,
-   but passing it through lets CornerActions inherit the Card's padding. */
+/* A CardGroup row wraps its content in a `display: contents` gridcell and content box. Their
+   padding never renders, but passing it through lets CornerActions inherit the Card's padding. */
 .card > :where([role="gridcell"]) {
+  padding: inherit;
+}
+
+.content {
+  display: contents;
   padding: inherit;
 }
 
 /* Direct CornerActions sit in the padding box at the top-end. Nest them to keep them in flow. */
 .card > :where([data-corner-actions]),
-.card > :where([role="gridcell"]) > :where([data-corner-actions]) {
+.content > :where([data-corner-actions]) {
   position: absolute;
   inset-block-start: 0;
   inset-inline-end: 0;
