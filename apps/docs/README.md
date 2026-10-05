@@ -40,6 +40,13 @@ in pure JSX/TypeScript. These examples can then be re-used for testing to
 ensure that the examples that we present in our documentation are fully tested
 and working as intended.
 
+### Blocks
+
+Blocks demonstrate how components work together to create complete UI patterns.
+Each block includes a working preview and browsable source files, so you can
+understand the composition, copy its code, or install it as a starting point
+for your application.
+
 ### Story Title Naming Conventions
 
 Story titles follow the format `[category]/[element]` where:

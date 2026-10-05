@@ -96,15 +96,15 @@
   }
 
   &:where(.secondary) {
-    --_button-bg: var(--color-action-background-secondary-default, var(--ux-1r87102, #e6e6fa));
-    --_button-bg-hovered: var(--color-action-background-secondary-hovered, var(--ux-azkxzs, #d3d3d3));
-    --_button-bg-pressed: var(--color-action-background-secondary-pressed, var(--ux-1c4iwhv, #c0c0c0));
-    --_button-border: var(--color-action-border-secondary-default, var(--ux-15jttct, transparent));
-    --_button-border-hovered: var(--color-action-border-secondary-hovered, var(--ux-1akzvve, transparent));
-    --_button-border-pressed: var(--color-action-border-secondary-pressed, var(--ux-im7up, transparent));
-    --_button-text: var(--color-action-text-secondary-default, var(--ux-h6sgq2, #000000));
-    --_button-text-hovered: var(--color-action-text-secondary-hovered, var(--ux-a0o0wd, #000000));
-    --_button-text-pressed: var(--color-action-text-secondary-pressed, var(--ux-1ly125y, #000000));
+    --_button-bg: var(--color-action-background-secondary-default, var(--ux-1r87102, #fff));
+    --_button-bg-hovered: var(--color-action-background-secondary-hovered, var(--ux-c624hh, #fff));
+    --_button-bg-pressed: var(--color-action-background-secondary-pressed, var(--ux-ix2s5q, #00a4a6));
+    --_button-border: var(--color-action-border-secondary-default, var(--ux-1p5s1n4, #767676));
+    --_button-border-hovered: var(--color-action-border-secondary-hovered, var(--ux-kkdx4n, #09757a));
+    --_button-border-pressed: var(--color-action-border-secondary-pressed, var(--ux-1ixzvrg, #00a4a6));
+    --_button-text: var(--color-action-text-secondary-default, var(--ux-w7826f, #111));
+    --_button-text-hovered: var(--color-action-text-secondary-hovered, var(--ux-1e7hthc, #09757a));
+    --_button-text-pressed: var(--color-action-text-secondary-pressed, var(--ux-19ykcyj, #fff));
   }
 
   &:where(.tertiary, .minimal) {
