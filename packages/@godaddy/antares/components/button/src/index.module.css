@@ -17,7 +17,6 @@
   display: inline-flex;
   gap: var(--_button-gap);
   align-items: center;
-  justify-content: center;
   flex-shrink: 0;
   min-width: min-content;
   white-space: nowrap;
@@ -46,6 +45,7 @@
     border-style: solid;
     font-size: var(--_button-font-size);
     padding: var(--_button-padding-block) var(--_button-padding-inline);
+    justify-content: center;
 
     /* only-icon buttons */
     &:has(> :where([data-icon]:only-child)) {
@@ -162,6 +162,7 @@
     line-height: var(--ux-hm1ty7, 1.375);
     font-size: var(--_button-font-size);
     padding: var(--_button-padding-block);
+    justify-content: center;
   }
 
   &:where(.trigger) {
