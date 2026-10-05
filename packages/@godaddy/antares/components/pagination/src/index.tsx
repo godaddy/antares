@@ -1,4 +1,12 @@
-import { createContext, forwardRef, type ReactNode, useCallback, useContext, useState } from 'react';
+import {
+  createContext,
+  forwardRef,
+  type CSSProperties,
+  type ReactNode,
+  useCallback,
+  useContext,
+  useState
+} from 'react';
 import { DEFAULT_SLOT, Provider as RACProvider } from 'react-aria-components';
 import { ButtonContext, type ButtonProps } from '#components/button';
 import { Box } from '#components/layout/box';
@@ -7,7 +15,7 @@ import { Icon } from '#components/icon';
 import { InputContext } from '#components/input';
 import { SizeProvider } from '#components/size-provider';
 import { useTypographyClassName } from '#components/_internal/typography';
-import { composeClassName } from '#utils/render-props.ts';
+import { composeClassName, composeStyle } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
 type PaginationSize = 'sm' | 'md';
@@ -58,7 +66,7 @@ export interface PaginationDotsProps extends Omit<FlexProps<'div'>, 'as' | 'chil
  * `undefined` represents an unknown page count.
  */
 function normalizePageCount(pageCount?: number) {
-  if (pageCount == null) return undefined;
+  if (pageCount == null || !Number.isFinite(pageCount)) return undefined;
 
   return Math.max(0, Math.floor(pageCount));
 }
@@ -90,6 +98,7 @@ export function Pagination(props: PaginationProps) {
     onChange,
     pageCount,
     size = 'md',
+    style,
     value: controlledValue,
     ...rest
   } = props;
@@ -102,6 +111,7 @@ export function Pagination(props: PaginationProps) {
   const canGoPrevious = resolvedPageCount !== 0 && value > 1;
   const canGoNext = resolvedPageCount == null ? true : resolvedPageCount > 0 && value < resolvedPageCount;
   const inputTypography = useTypographyClassName('label', { size: 'md' });
+  const inputDigits = String(resolvedPageCount ?? value).length;
 
   const goTo = useCallback(
     function goTo(nextValue: number) {
@@ -172,6 +182,9 @@ export function Pagination(props: PaginationProps) {
           alignItems="center"
           className={composeClassName(className, styles.pagination)}
           data-size={size}
+          style={composeStyle(style, {
+            '--_pagination-input-digits': `${inputDigits}ch`
+          } as CSSProperties)}
         >
           {children}
         </Flex>

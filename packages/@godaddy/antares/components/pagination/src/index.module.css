@@ -2,7 +2,12 @@
   /* MD Space is expressed as 2 GU in the Antares spacing scale. */
   --_pagination-gap: var(--size-space-md, calc(var(--ux-1sbfig8, 0.25rem) * 2));
   --_pagination-input-padding: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
-  --_pagination-input-width: calc((var(--_pagination-input-padding) * 2) + 2ch + 2px);
+  --_pagination-input-digits: 2ch;
+  --_pagination-input-width: calc(
+    (var(--_pagination-input-padding) * 2) +
+    max(2ch, var(--_pagination-input-digits)) +
+    2px
+  );
 
   gap: var(--_pagination-gap);
 
@@ -34,7 +39,7 @@
   text-align: center;
   appearance: textfield;
 
-  &:where([data-focused]) {
+  &:where([data-focus-visible]) {
     outline: 2px solid Highlight;
   }
 

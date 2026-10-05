@@ -161,6 +161,7 @@ describe('@godaddy/antares', function antares() {
       expect(prev).not.toBeInTheDocument();
       expect(next).not.toBeInTheDocument();
       expect(dots).toHaveLength(0);
+      expect(container.querySelector('nav')).toBeNull();
     });
 
     it('fires onChange when navigating slides', async function firesOnChange() {

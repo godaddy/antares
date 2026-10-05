@@ -101,6 +101,7 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(function Carousel
   const { uncontrolledActiveIndex, scrollSnaps, atFirstSlide, atLastSlide, onNextButtonPress, onPrevButtonPress } =
     useNavigationControls({ emblaApi, activeIndex, defaultActiveIndex, onChange, onPrev, onNext });
   const finalActiveIndex = controlledMode ? activeIndex : uncontrolledActiveIndex;
+  const shouldRenderPagination = !hideNavigationControls || !hideDots;
 
   useAccessibility({
     emblaApi,
@@ -142,31 +143,33 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(function Carousel
         />
       )}
 
-      <Pagination value={finalActiveIndex + 1} pageCount={scrollSnaps.length}>
-        {hideNavigationControls ? null : (
-          <Button
-            variant="secondary"
-            {...prevButtonProps}
-            ref={prevButtonRef}
-            slot="previous"
-            aria-label={prevButtonProps?.['aria-label'] ?? 'Go to previous page'}
-            onPress={onPrevButtonPress}
-            className={composeClassName(prevButtonProps?.className, styles.prev, atFirstSlide && styles.hide)}
-          />
-        )}
-        {hideDots ? null : <PaginationDots />}
-        {hideNavigationControls ? null : (
-          <Button
-            variant="secondary"
-            {...nextButtonProps}
-            ref={nextButtonRef}
-            slot="next"
-            aria-label={nextButtonProps?.['aria-label'] ?? 'Go to next page'}
-            onPress={onNextButtonPress}
-            className={composeClassName(nextButtonProps?.className, styles.next, atLastSlide && styles.hide)}
-          />
-        )}
-      </Pagination>
+      {shouldRenderPagination ? (
+        <Pagination value={finalActiveIndex + 1} pageCount={scrollSnaps.length}>
+          {hideNavigationControls ? null : (
+            <Button
+              variant="secondary"
+              {...prevButtonProps}
+              ref={prevButtonRef}
+              slot="previous"
+              aria-label={prevButtonProps?.['aria-label'] ?? 'Go to previous slide'}
+              onPress={onPrevButtonPress}
+              className={composeClassName(prevButtonProps?.className, styles.prev, atFirstSlide && styles.hide)}
+            />
+          )}
+          {hideDots ? null : <PaginationDots />}
+          {hideNavigationControls ? null : (
+            <Button
+              variant="secondary"
+              {...nextButtonProps}
+              ref={nextButtonRef}
+              slot="next"
+              aria-label={nextButtonProps?.['aria-label'] ?? 'Go to next slide'}
+              onPress={onNextButtonPress}
+              className={composeClassName(nextButtonProps?.className, styles.next, atLastSlide && styles.hide)}
+            />
+          )}
+        </Pagination>
+      ) : null}
 
       <VisuallyHidden>
         <Box ref={liveRegionRef} aria-live="polite" aria-atomic="true" />

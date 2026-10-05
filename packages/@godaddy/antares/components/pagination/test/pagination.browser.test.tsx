@@ -45,12 +45,22 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('starts the uncontrolled input at page one', async function startsInputAtPageOne() {
-      const { getByRole } = await render(<PageCountKnownExample />);
+      const { getByRole } = await render(<DefaultExample />);
       await expect.element(getByRole('spinbutton', { name: 'Current page' })).toHaveValue(1);
     });
 
     it('keeps next available when pageCount is unknown', async function keepsUnknownNextAvailable() {
       const { getByRole } = await render(<PageCountUnknownExample />);
+      await expect.element(getByRole('button', { name: 'Next' })).not.toBeDisabled();
+    });
+
+    it.each([
+      Number.NaN,
+      Number.POSITIVE_INFINITY
+    ])('treats non-finite pageCount as unknown (%s)', async function handlesNonFinitePageCount(pageCount) {
+      const { container, getByRole } = await render(<PlaygroundExample composition="dots" pageCount={pageCount} />);
+
+      expect(container.querySelectorAll('[data-pagination-dot]')).toHaveLength(0);
       await expect.element(getByRole('button', { name: 'Next' })).not.toBeDisabled();
     });
 
