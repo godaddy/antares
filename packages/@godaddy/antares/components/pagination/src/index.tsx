@@ -22,7 +22,7 @@ import styles from './index.module.css';
 type PaginationSize = 'sm' | 'md';
 
 interface PaginationContextValue {
-  /** The current 1-based page. */
+  /** The current 1-based page; 0 represents an empty known page set. */
   value: number;
 
   /** The known page count, when available. */

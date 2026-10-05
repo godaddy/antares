@@ -13,8 +13,8 @@ describe('@godaddy/antares', function antares() {
   describe('#Carousel', function carouselTests() {
     it('renders the default carousel', async function rendersDefault() {
       const { container, getByRole, getByText } = await render(<DefaultExample />);
-      const prev = getByRole('button', { name: 'Go to previous Slide', includeHidden: true });
-      const next = getByRole('button', { name: 'Go to next Slide', includeHidden: true });
+      const prev = getByRole('button', { name: 'Go to previous slide', includeHidden: true });
+      const next = getByRole('button', { name: 'Go to next slide', includeHidden: true });
       const dots = container.querySelectorAll('[data-pagination-dot]');
 
       await expect.element(getByRole('navigation', { name: 'Carousel navigation' })).toBeInTheDocument();
@@ -34,8 +34,8 @@ describe('@godaddy/antares', function antares() {
     it('skips hidden controls during tab navigation', async function skipsHiddenControls() {
       const user = userEvent.setup();
       const { getByRole } = await render(<DefaultExample />);
-      const prev = getByRole('button', { name: 'Go to previous Slide', includeHidden: true });
-      const next = getByRole('button', { name: 'Go to next Slide', includeHidden: true });
+      const prev = getByRole('button', { name: 'Go to previous slide', includeHidden: true });
+      const next = getByRole('button', { name: 'Go to next slide', includeHidden: true });
 
       await expect.element(prev).toBeDisabled();
       next.element().focus();
@@ -54,8 +54,8 @@ describe('@godaddy/antares', function antares() {
 
     it('reveals the previous button after navigating forward', async function revealsPrev() {
       const { getByRole } = await render(<DefaultExample />);
-      const prev = getByRole('button', { name: 'Go to previous Slide', includeHidden: true });
-      const next = getByRole('button', { name: 'Go to next Slide' });
+      const prev = getByRole('button', { name: 'Go to previous slide', includeHidden: true });
+      const next = getByRole('button', { name: 'Go to next slide' });
 
       await expect.element(prev).not.toBeVisible();
       await next.click();
@@ -64,8 +64,8 @@ describe('@godaddy/antares', function antares() {
 
     it('keeps the control painted while it fades out', async function fadesOut() {
       const { getByRole } = await render(<DefaultExample />);
-      const next = getByRole('button', { name: 'Go to next Slide' });
-      const prev = getByRole('button', { name: 'Go to previous Slide', includeHidden: true });
+      const next = getByRole('button', { name: 'Go to next slide' });
+      const prev = getByRole('button', { name: 'Go to previous slide', includeHidden: true });
 
       await next.click();
       await expect.element(prev).toBeVisible();
@@ -80,7 +80,7 @@ describe('@godaddy/antares', function antares() {
     it('hides the next button on the last slide', async function hidesNextAtLast() {
       const { getByRole, getByText } = await render(<DefaultExample />);
 
-      const next = getByRole('button', { name: 'Go to next Slide', includeHidden: true });
+      const next = getByRole('button', { name: 'Go to next slide', includeHidden: true });
 
       await expect.element(next).toBeVisible();
       await next.click();
@@ -94,8 +94,8 @@ describe('@godaddy/antares', function antares() {
 
     it('navigates controlled carousel via built-in buttons', async function controlledNav() {
       const { getByRole } = await render(<ControlledExample />);
-      const prev = getByRole('button', { name: 'Go to previous Slide', includeHidden: true });
-      const next = getByRole('button', { name: 'Go to next Slide', includeHidden: true });
+      const prev = getByRole('button', { name: 'Go to previous slide', includeHidden: true });
+      const next = getByRole('button', { name: 'Go to next slide', includeHidden: true });
 
       await expect.element(prev).toBeVisible();
       await expect.element(next).toBeVisible();
@@ -156,8 +156,8 @@ describe('@godaddy/antares', function antares() {
 
     it('hides the navigation controls', async function hidesNavigationControls() {
       const { container, getByRole, getByText } = await render(<HideControlsExample />);
-      const prev = getByRole('button', { name: 'Go to previous Slide', includeHidden: true });
-      const next = getByRole('button', { name: 'Go to next Slide', includeHidden: true });
+      const prev = getByRole('button', { name: 'Go to previous slide', includeHidden: true });
+      const next = getByRole('button', { name: 'Go to next slide', includeHidden: true });
       const dots = container.querySelectorAll('[data-pagination-dot]');
 
       await expect.element(getByText('Slide 1', { exact: true })).not.toHaveAttribute('aria-hidden');
@@ -172,8 +172,8 @@ describe('@godaddy/antares', function antares() {
 
     it('fires onChange when navigating slides', async function firesOnChange() {
       const { getByRole, getByText } = await render(<EventsExample />);
-      const prev = getByRole('button', { name: 'Go to previous Slide', includeHidden: true });
-      const next = getByRole('button', { name: 'Go to next Slide', includeHidden: true });
+      const prev = getByRole('button', { name: 'Go to previous slide', includeHidden: true });
+      const next = getByRole('button', { name: 'Go to next slide', includeHidden: true });
 
       await expect.element(getByText('Listening for change events...')).toBeInTheDocument();
       await expect.element(getByText('Listening for prev events...')).toBeInTheDocument();
@@ -197,8 +197,8 @@ describe('@godaddy/antares', function antares() {
 
   it('renders the rtl direction example', async function rendersRtlDirection() {
     const { getByRole } = await render(<RTLDirectionExample />);
-    const prev = getByRole('button', { name: 'Go to previous Slide', includeHidden: true });
-    const next = getByRole('button', { name: 'Go to next Slide', includeHidden: true });
+    const prev = getByRole('button', { name: 'Go to previous slide', includeHidden: true });
+    const next = getByRole('button', { name: 'Go to next slide', includeHidden: true });
 
     await expect.element(prev).not.toBeVisible();
     await expect.element(prev).toBeDisabled();
