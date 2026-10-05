@@ -507,9 +507,15 @@ When an Avatar triggers an action, compose it with `Pressable` so the Avatar kee
 
 
 
+
+
 <Meta of="Stories" name="Overview" />
 
 Use the `LinkButton` component instead when you need navigation functionality with a button-like appearance.
+
+Use `target="_blank"` to open a link in a new tab without an icon. `isExternal` adds an icon and defaults
+to `target="_blank"` and `rel="noopener noreferrer"`; explicit `target` and `rel` override those defaults.
+You can also compose an `Icon` as a child independently of navigation behavior.
 
 Use the `CloseButton` preset to dismiss an overlay (such as a `Modal`). It defaults to `slot="close"`, so it picks up the overlay's close behavior with no wiring, and always renders an `x` icon with `aria-label="Close"`. For a labelled dismiss action (e.g. "Cancel"), use a raw `<Button slot="close">Cancel</Button>`.
 
@@ -580,6 +586,14 @@ You may provide an optional `Icon` component to the button. Wrap the text beside
 <Story of="IconExample" />
 
 <Source language="tsx" code="&#x22;import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function IconExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <div>\n        <Button variant=\&#x22;primary\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n          <Text>With an icon!</Text>\n        </Button>\n      </div>\n\n      <div>\n        <LinkButton variant=\&#x22;secondary\&#x22; href=\&#x22;#\&#x22; isExternal>\n          An external link!\n        </LinkButton>\n      </div>\n\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Icon only button:</Text>\n        <Button variant=\&#x22;primary\&#x22; aria-label=\&#x22;Star\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n        </Button>\n      </Flex>\n\n      <div>\n        <Text>\n          Hey look at me!{' '}\n          <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;inline\&#x22; isExternal>\n            link button\n          </LinkButton>{' '}\n          I have an icon!\n        </Text>\n      </div>\n    </Flex>\n  );\n}&#x22;" />
+
+### Icons And Alignment [#icons-and-alignment]
+
+Control navigation with `target` and `rel`, and compose icons independently. Stretched inline content follows the browser's default alignment; other variants stay centered.
+
+<Story of="IconsAndAlignmentExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, type FlexProps, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function IconsAndAlignmentExample({ dir }: Pick<FlexProps, 'dir'> = {}) {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; dir={dir} style={{ width: '20rem' }}>\n      <Button variant=\&#x22;inline\&#x22;>\n        <Text>Inline action</Text>\n      </Button>\n      <LinkButton href=\&#x22;#report\&#x22; variant=\&#x22;inline\&#x22; target=\&#x22;_blank\&#x22; rel=\&#x22;noopener noreferrer\&#x22;>\n        <Text>View report</Text>\n      </LinkButton>\n      <LinkButton href=\&#x22;#help\&#x22; variant=\&#x22;inline\&#x22; isExternal target=\&#x22;_self\&#x22; rel=\&#x22;external\&#x22;>\n        Read help\n      </LinkButton>\n      <LinkButton href=\&#x22;#documentation\&#x22; variant=\&#x22;inline\&#x22;>\n        <Text>Read documentation</Text>\n        <Icon icon=\&#x22;window-new\&#x22; />\n      </LinkButton>\n      <Button variant=\&#x22;primary\&#x22;>\n        <Text>Centered action</Text>\n      </Button>\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22;>\n        <Text>Centered link</Text>\n      </LinkButton>\n    </Flex>\n  );\n}&#x22;" />
 
 ### Inline [#inline]
 
