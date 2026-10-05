@@ -1,75 +1,140 @@
 1:"$Sreact.fragment"
-2:I[838538,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/1118q75ark82x.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"DocsPage"]
-3:I[838538,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/1118q75ark82x.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"DocsTitle"]
-4:I[838538,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/1118q75ark82x.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"DocsDescription"]
-5:I[748747,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/1118q75ark82x.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"LLMCopyButton"]
-6:I[748747,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/1118q75ark82x.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"ViewOptions"]
-7:I[838538,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/1118q75ark82x.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"DocsBody"]
-8:I[836838,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/1118q75ark82x.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"Heading"]
-9:I[403113,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/1118q75ark82x.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"StoryRenderer"]
-a:I[700498,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/1118q75ark82x.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"DefaultExample"]
-b:I[156905,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/1118q75ark82x.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"DynamicCodeBlock"]
-c:I[861442,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/1118q75ark82x.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"BreakpointsExample"]
-d:I[459766,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/1118q75ark82x.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"ViewportLayoutExample"]
-24:X
-29:X
-29:C
-0:{"buildId":"Q4aMn4R6pvwIgF9TydFSn","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"toc":[{"depth":2,"url":"#features","title":"Features"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#default","title":"Default"},{"depth":3,"url":"#breakpoints","title":"Breakpoints"},{"depth":3,"url":"#viewport-layout","title":"Viewport Layout"},{"depth":3,"url":"#container-layout","title":"Container Layout"},{"depth":3,"url":"#form","title":"Form"},{"depth":2,"url":"#customization","title":"Customization"},{"depth":2,"url":"#server-rendering","title":"Server rendering"},{"depth":2,"url":"#accessibility","title":"Accessibility"},{"depth":2,"url":"#api","title":"API"}],"footer":{"enabled":true},"children":[["$","$L3",null,{"children":"Responsive"}],["$","$L4",null,{"className":"mb-0","children":"Shared viewport breakpoints, native CSS patterns, and a media-query hook for responsive behavior."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L5",null,{"markdownUrl":"/docs/components/responsive.mdx"}],["$","$L6",null,{"markdownUrl":"/docs/components/responsive.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/responsive/README.mdx"}]]}],["$","$L7",null,{"children":[null,"\n",["$","$L8",null,{"as":"h2","id":"features","children":"Features"}],"\n",["$","ul",null,{"children":["\n",["$","li",null,{"children":"Shared, mobile-first viewport widths and query strings."}],"\n",["$","li",null,{"children":"Native CSS media and container queries for styling."}],"\n",["$","li",null,{"children":[["$","code",null,{"children":"useMediaQuery"}]," for media-dependent React behavior, with an explicit server fallback."]}],"\n"]}],"\n",["$","$L8",null,{"as":"h2","id":"examples","children":"Examples"}],"\n",["$","$L8",null,{"as":"h3","id":"default","children":"Default"}],"\n",["$","p",null,{"children":["Resize the viewport across ",["$","code",null,{"children":"lg"}]," to see the query change. Use this hook for behavior that\nneeds JavaScript; ordinary responsive styles belong in CSS."]}],"\n",["$","$L9",null,{"component":"$a"}],"\n",["$","$Lb",null,{"lang":"tsx","code":"import { Text, useMediaQuery, viewportQueries } from '@godaddy/antares';\n\ninterface DefaultExampleProps {\n  query?: string;\n  ssrMatch?: boolean;\n}\n\nexport function DefaultExample({ query = viewportQueries.lg, ssrMatch = false }: DefaultExampleProps) {\n  const matches = useMediaQuery(query, { ssrMatch });\n  return <Text role=\"status\">{matches ? 'Matches' : 'Does not match'}</Text>;\n}"}],"\n",["$","$L8",null,{"as":"h3","id":"breakpoints","children":"Breakpoints"}],"\n",["$","p",null,{"children":"Widths and inclusive minimum-width query strings come from the same definitions."}],"\n",["$","$L9",null,{"component":"$c"}],"\n",["$","$Lb",null,{"lang":"tsx","code":"import { Fragment } from 'react';\nimport { viewportBreakpoints, viewportQueries, type ViewportBreakpoint } from '@godaddy/antares';\n\nexport function BreakpointsExample() {\n  return (\n    <dl>\n      {Object.entries(viewportBreakpoints).map(function breakpoint([name, width]) {\n        return (\n          <Fragment key={name}>\n            <dt>{name}</dt>\n            <dd>\n              {width}: <code>{viewportQueries[name as ViewportBreakpoint]}</code>\n            </dd>\n          </Fragment>\n        );\n      })}\n    </dl>\n  );\n}"}],"\n",["$","$L8",null,{"as":"h3","id":"viewport-layout","children":"Viewport Layout"}],"\n",["$","p",null,{"children":["CSS changes this layout from one column to two at the shared ",["$","code",null,{"children":"lg"}]," viewport threshold.\nLeave ",["$","code",null,{"children":"columns"}]," unset so it does not place a competing value in inline styles."]}],"\n",["$","$L9",null,{"component":"$d"}],"\n",["$","$Lb",null,{"lang":"tsx","code":"import { Box, Grid, Text } from '@godaddy/antares';\n\nexport function ViewportLayoutExample() {\n  return (\n    <>\n      <style>{`\n        .responsive-viewport-example {\n          grid-template-columns: minmax(0, 1fr);\n        }\n\n        @media (min-width: 64rem) {\n          .responsive-viewport-example {\n            grid-template-columns: repeat(2, minmax(0, 1fr));\n          }\n        }\n      `}</style>\n      <Grid as=\"section\" aria-label=\"Viewport layout\" gap=\"md\" className=\"responsive-viewport-example\">\n        <Box padding=\"md\" elevation=\"card\">\n          <Text>Account settings</Text>\n        </Box>\n        <Box padding=\"md\" elevation=\"card\">\n          <Text>Billing settings</Text>\n        </Box>\n      </Grid>\n    </>\n  );\n}"}],"\n","$Le","\n","$Lf","\n","$L10","\n","$L11","\n","$L12","\n","$L13","\n","$L14","\n","$L15","\n","$L16","\n","$L17","\n","$L18","\n","$L19","\n","$L1a","\n","$L1b","\n","$L1c","\n","$L1d","\n","$L1e","\n","$L1f"]}]]}],["$L20","$L21"],"$L22"]}],"isPartial":"$@23","staleTime":"$24","varyParams":null},{"rsc":"$L25","isPartial":"$@26","staleTime":"$24","varyParams":null},{"rsc":"$L27","isPartial":"$@28","staleTime":"$24","varyParams":"$29"}],"isUpgradeableISRFallback":false,"a":"$@2a","rootVaryParams":null,"needsRuntimeRequest":"$@2b"}
-2c:I[714320,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/1118q75ark82x.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"ContainerLayoutExample"]
-2e:I[747164,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/1118q75ark82x.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"FormExample"]
-30:I[195232,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/1118q75ark82x.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"CodeBlock"]
-32:I[195232,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/1118q75ark82x.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"Pre"]
-33:I[897367,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js"],"OutletBoundary"]
-34:"$Sreact.suspense"
-36:I[897367,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js"],"ViewportBoundary"]
-37:I[897367,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js"],"MetadataBoundary"]
-38:I[339756,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js"],"default"]
-39:I[837457,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js"],"default"]
-e:["$","$L8",null,{"as":"h3","id":"container-layout","children":"Container Layout"}]
-f:["$","p",null,{"children":"The cards respond to their named container, independently of the viewport. The local\n30rem threshold belongs to this layout, not the shared viewport scale."}]
-10:["$","$L9",null,{"component":"$2c"}]
-2d:T46e,import { Box, Grid, Text } from '@godaddy/antares';
+2:I[838538,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/3_iw6gtrt5-94.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"DocsPage"]
+3:I[838538,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/3_iw6gtrt5-94.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"DocsTitle"]
+4:I[838538,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/3_iw6gtrt5-94.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"DocsDescription"]
+5:I[748747,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/3_iw6gtrt5-94.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"LLMCopyButton"]
+6:I[748747,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/3_iw6gtrt5-94.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"ViewOptions"]
+7:I[838538,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/3_iw6gtrt5-94.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"DocsBody"]
+8:I[836838,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/3_iw6gtrt5-94.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"Heading"]
+9:I[403113,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/3_iw6gtrt5-94.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"StoryRenderer"]
+a:I[700498,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/3_iw6gtrt5-94.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"DefaultExample"]
+b:I[156905,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/3_iw6gtrt5-94.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"DynamicCodeBlock"]
+c:I[714320,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/3_iw6gtrt5-94.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"ContainerLayoutExample"]
+d:T70a,import { Box, Button, Flex, Heading, Text } from '@godaddy/antares';
 
-interface ContainerLayoutExampleProps {
-  width?: number;
+interface DomainCardProps {
+  domain: string;
+  renewal: string;
 }
 
-export function ContainerLayoutExample({ width = 640 }: ContainerLayoutExampleProps) {
+function DomainCard({ domain, renewal }: DomainCardProps) {
+  return (
+    <Box as="article" aria-label={domain} padding="md" elevation="card" className="responsive-domain-card">
+      <Flex gap="sm" className="responsive-domain-card-body">
+        <Flex direction="column" gap="xs">
+          <Heading level={3}>{domain}</Heading>
+          <Text>{renewal}</Text>
+        </Flex>
+        <Flex wrap="wrap" gap="sm">
+          <Button variant="secondary">Manage DNS</Button>
+          <Button>Renew</Button>
+        </Flex>
+      </Flex>
+    </Box>
+  );
+}
+
+export function ContainerLayoutExample() {
   return (
     <>
       <style>{`
-        .responsive-container-example {
-          container: responsive-example / inline-size;
-          inline-size: 100%;
+        .responsive-container-example-sidebar {
+          flex: 1 1 14rem;
         }
 
-        .responsive-container-example-grid {
-          grid-template-columns: minmax(0, 1fr);
+        .responsive-container-example-main {
+          flex: 3 1 28rem;
         }
 
-        @container responsive-example (min-width: 30rem) {
-          .responsive-container-example-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+        .responsive-domain-card {
+          container: domain-card / inline-size;
+        }
+
+        .responsive-domain-card-body {
+          flex-direction: column;
+        }
+
+        @container domain-card (min-width: 28rem) {
+          .responsive-domain-card-body {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
           }
         }
       `}</style>
-      <Box className="responsive-container-example" style={{ maxInlineSize: width }}>
-        <Grid as="section" aria-label="Container layout" gap="md" className="responsive-container-example-grid">
-          <Box padding="md" elevation="card">
-            <Text>Account settings</Text>
-          </Box>
-          <Box padding="md" elevation="card">
-            <Text>Billing settings</Text>
-          </Box>
-        </Grid>
-      </Box>
+      <Flex wrap="wrap" gap="md">
+        <Box as="aside" aria-label="Sidebar" className="responsive-container-example-sidebar">
+          <DomainCard domain="shop.example" renewal="Renews on March 2, 2027" />
+        </Box>
+        <Box as="main" aria-label="Domains" className="responsive-container-example-main">
+          <DomainCard domain="example.com" renewal="Renews on January 12, 2027" />
+        </Box>
+      </Flex>
     </>
   );
-}11:["$","$Lb",null,{"lang":"tsx","code":"$2d"}]
-12:["$","$L8",null,{"as":"h3","id":"form","children":"Form"}]
-13:["$","p",null,{"children":["Type into a field and resize across ",["$","code",null,{"children":"lg"}],". CSS reflows the same inputs, preserving their\nvalues, focus, and selection. Let CSS own columns and allow long descriptions to wrap."]}]
-14:["$","$L9",null,{"component":"$2e"}]
-2f:T52b,import { Grid, Input, Label, Text, TextField } from '@godaddy/antares';
+}29:X
+2e:X
+2e:C
+0:{"buildId":"XYY5f7BYPwcGkDuNUFUka","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"toc":[{"depth":2,"url":"#features","title":"Features"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#intrinsic-layout","title":"Intrinsic layout"},{"depth":3,"url":"#container-query","title":"Container query"},{"depth":3,"url":"#viewport-media-query","title":"Viewport media query"},{"depth":3,"url":"#form-reflow","title":"Form reflow"},{"depth":3,"url":"#responsive-size","title":"Responsive size"},{"depth":2,"url":"#customization","title":"Customization"},{"depth":3,"url":"#responsive-size-1","title":"Responsive size"},{"depth":2,"url":"#accessibility","title":"Accessibility"}],"footer":{"enabled":true},"children":[["$","$L3",null,{"children":"Responsive"}],["$","$L4",null,{"className":"mb-0","children":"How Antares components adapt, and how to build responsive layouts around them with native CSS."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L5",null,{"markdownUrl":"/docs/components/responsive.mdx"}],["$","$L6",null,{"markdownUrl":"/docs/components/responsive.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/responsive/README.mdx"}]]}],["$","$L7",null,{"children":[null,"\n",["$","$L8",null,{"as":"h2","id":"features","children":"Features"}],"\n",["$","ul",null,{"children":["\n",["$","li",null,{"children":"Components adapt to the space they are given with intrinsic CSS and container queries."}],"\n",["$","li",null,{"children":"Page layout stays in your CSS, with your own media queries and breakpoints."}],"\n",["$","li",null,{"children":["Component sizes can follow ",["$","code",null,{"children":"--antares-size"}],", so your CSS can change them at any breakpoint."]}],"\n",["$","li",null,{"children":"Responsive styles are plain CSS, so server rendering needs no viewport guess."}],"\n"]}],"\n",["$","$L8",null,{"as":"h2","id":"examples","children":"Examples"}],"\n",["$","$L8",null,{"as":"h3","id":"intrinsic-layout","children":"Intrinsic layout"}],"\n",["$","p",null,{"children":["Hosting plans wrap into as many columns as fit, with no breakpoint. ",["$","code",null,{"children":"auto-fill"}]," and ",["$","code",null,{"children":"minmax()"}],"\npick the column count from the available width. Start here before reaching for a query."]}],"\n",["$","$L9",null,{"component":"$a"}],"\n",["$","$Lb",null,{"lang":"tsx","code":"import { Button, Flex, Grid, Heading, Text } from '@godaddy/antares';\n\nconst plans = [\n  { name: 'Economy', summary: 'One website with 25 GB of storage.' },\n  { name: 'Deluxe', summary: 'Ten websites with 50 GB of storage.' },\n  { name: 'Ultimate', summary: 'Twenty-five websites with 75 GB of storage.' }\n];\n\nexport function DefaultExample() {\n  return (\n    <Grid as=\"section\" aria-label=\"Hosting plans\" columns=\"repeat(auto-fill, minmax(min(16rem, 100%), 1fr))\" gap=\"md\">\n      {plans.map(function plan({ name, summary }) {\n        return (\n          <Flex key={name} direction=\"column\" alignItems=\"start\" gap=\"sm\" padding=\"md\" elevation=\"card\">\n            <Heading level={3}>{name}</Heading>\n            <Text>{summary}</Text>\n            <Button variant=\"secondary\">Choose {name}</Button>\n          </Flex>\n        );\n      })}\n    </Grid>\n  );\n}"}],"\n",["$","$L8",null,{"as":"h3","id":"container-query","children":"Container query"}],"\n",["$","p",null,{"children":"The same domain card sits in a narrow sidebar and a wide main area. It stacks in the sidebar and\nlines up in the main area at the same viewport width, because it queries its own container. The\n28rem threshold belongs to the card. Its CSS owns the direction and alignment, so those props stay\nunset."}],"\n",["$","$L9",null,{"component":"$c"}],"\n",["$","$Lb",null,{"lang":"tsx","code":"$d"}],"\n","$Le","\n","$Lf","\n","$L10","\n","$L11","\n","$L12","\n","$L13","\n","$L14","\n","$L15","\n","$L16","\n","$L17","\n","$L18","\n","$L19","\n","$L1a","\n","$L1b","\n","$L1c","\n","$L1d","\n","$L1e","\n","$L1f","\n","$L20","\n","$L21","\n","$L22","\n","$L23","\n","$L24"]}]]}],["$L25","$L26"],"$L27"]}],"isPartial":"$@28","staleTime":"$29","varyParams":null},{"rsc":"$L2a","isPartial":"$@2b","staleTime":"$29","varyParams":null},{"rsc":"$L2c","isPartial":"$@2d","staleTime":"$29","varyParams":"$2e"}],"isUpgradeableISRFallback":false,"a":"$@2f","rootVaryParams":null,"needsRuntimeRequest":"$@30"}
+31:I[459766,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/3_iw6gtrt5-94.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"ViewportLayoutExample"]
+33:I[747164,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/3_iw6gtrt5-94.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"FormExample"]
+35:I[603387,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js","/antares/pr-360-site/_next/static/chunks/0d9_4gjl0_oql.js","/antares/pr-360-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-360-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-360-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-360-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-360-site/_next/static/chunks/3_iw6gtrt5-94.js","/antares/pr-360-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js"],"ResponsiveSizeExample"]
+36:I[897367,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js"],"OutletBoundary"]
+37:"$Sreact.suspense"
+39:I[897367,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js"],"ViewportBoundary"]
+3a:I[897367,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js"],"MetadataBoundary"]
+3b:I[339756,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js"],"default"]
+3c:I[837457,["/antares/pr-360-site/_next/static/chunks/1z7wj2s1xfvm6.js","/antares/pr-360-site/_next/static/chunks/360dpj4m7gyh9.js"],"default"]
+e:["$","$L8",null,{"as":"h3","id":"viewport-media-query","children":"Viewport media query"}]
+f:["$","p",null,{"children":["Page layout belongs to the app, so its CSS picks the breakpoint. This settings page shows its\nnavigation beside the content from ",["$","code",null,{"children":"64rem"}]," and stacks it above the content below that. Leave\n",["$","code",null,{"children":"columns"}]," unset so it does not place a competing value in inline styles."]}]
+10:["$","$L9",null,{"component":"$31"}]
+32:T57f,import { Box, Flex, Grid, Heading, LinkButton, Text } from '@godaddy/antares';
+
+const sections = [
+  { name: 'Profile', href: '#profile' },
+  { name: 'Security', href: '#security' },
+  { name: 'Payment methods', href: '#payment-methods' },
+  { name: 'Notifications', href: '#notifications' }
+];
+
+export function ViewportLayoutExample() {
+  return (
+    <>
+      <style>{`
+        .responsive-viewport-example {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        @media (min-width: 64rem) {
+          .responsive-viewport-example {
+            grid-template-columns: 16rem minmax(0, 1fr);
+          }
+        }
+      `}</style>
+      <Grid as="section" aria-label="Account settings" gap="lg" className="responsive-viewport-example">
+        <Box as="nav" aria-label="Settings">
+          <Flex direction="column" alignItems="start" gap="xs">
+            {sections.map(function section({ name, href }) {
+              return (
+                <LinkButton key={name} variant="minimal" href={href}>
+                  {name}
+                </LinkButton>
+              );
+            })}
+          </Flex>
+        </Box>
+        <Flex as="section" aria-label="Profile" direction="column" gap="sm" padding="md" elevation="card">
+          <Heading level={2}>Profile</Heading>
+          <Text>Update the name and contact details on your account.</Text>
+        </Flex>
+      </Grid>
+    </>
+  );
+}11:["$","$Lb",null,{"lang":"tsx","code":"$32"}]
+12:["$","$L8",null,{"as":"h3","id":"form-reflow","children":"Form reflow"}]
+13:["$","p",null,{"children":["Billing details in one column on small screens and two from ",["$","code",null,{"children":"64rem"}],". Type into a field and resize:\nCSS reflows the same inputs, preserving their values, focus, and selection. Let CSS own the columns\nand allow long descriptions to wrap."]}]
+14:["$","$L9",null,{"component":"$33"}]
+34:T7e6,import { Grid, Input, Label, Text, TextField } from '@godaddy/antares';
 
 interface FormExampleProps {
   /** Help text that can wrap onto multiple lines. */
@@ -79,10 +144,7 @@ interface FormExampleProps {
   dir?: 'ltr' | 'rtl';
 }
 
-export function FormExample({
-  description = 'Use the name customers recognize on invoices and receipts.',
-  dir
-}: FormExampleProps) {
+export function FormExample({ description = 'Use the name on your payment card.', dir }: FormExampleProps) {
   return (
     <>
       <style>{`
@@ -99,42 +161,67 @@ export function FormExample({
           .responsive-form-example {
             grid-template-columns: repeat(2, minmax(0, 1fr));
           }
+
+          .responsive-form-example-wide {
+            grid-column: 1 / -1;
+          }
         }
       `}</style>
-      <Grid as="form" aria-label="Account details" dir={dir} gap="md" className="responsive-form-example">
-        <TextField name="displayName" className="responsive-form-example-field">
-          <Label>Account display name</Label>
+      <Grid as="form" aria-label="Billing details" dir={dir} gap="md" className="responsive-form-example">
+        <TextField name="name" autoComplete="name" className="responsive-form-example-field">
+          <Label>Full name</Label>
           <Input />
           <Text slot="description">{description}</Text>
         </TextField>
-        <TextField name="email" type="email" className="responsive-form-example-field">
+        <TextField name="email" type="email" autoComplete="email" className="responsive-form-example-field">
           <Label>Email</Label>
+          <Input />
+        </TextField>
+        <TextField
+          name="address"
+          autoComplete="street-address"
+          className="responsive-form-example-field responsive-form-example-wide"
+        >
+          <Label>Street address</Label>
+          <Input />
+        </TextField>
+        <TextField name="city" autoComplete="address-level2" className="responsive-form-example-field">
+          <Label>City</Label>
+          <Input />
+        </TextField>
+        <TextField name="postalCode" autoComplete="postal-code" className="responsive-form-example-field">
+          <Label>Postal code</Label>
           <Input />
         </TextField>
       </Grid>
     </>
   );
-}15:["$","$Lb",null,{"lang":"tsx","code":"$2f"}]
-16:["$","$L8",null,{"as":"h2","id":"customization","children":"Customization"}]
-17:["$","p",null,{"children":["Exports are available from ",["$","code",null,{"children":"@godaddy/antares"}]," and ",["$","code",null,{"children":"@godaddy/antares/Responsive"}],". Pass any valid\nmedia-query string to ",["$","code",null,{"children":"useMediaQuery"}],", including device preferences such as reduced motion.\nViewport widths describe available space; each component chooses the thresholds it needs.\nIn media queries, ",["$","code",null,{"children":"rem"}]," uses the browser's initial font size."]}]
-18:["$","p",null,{"children":["The examples include their CSS in ",["$","code",null,{"children":"<style>"}]," blocks so the complete code is visible. Applications can\nplace those rules in their own stylesheets. Let responsive CSS own both the base and query values\nfor a property; leave its corresponding layout prop and inline ",["$","code",null,{"children":"style"}]," unset. Normal cascade rules\nstill apply. A named container controls its descendants; portaled content needs a suitable\ncontainer in its own DOM ancestry. A container can't take its width from its content, so give it one\nfrom its parent, as the container example does with ",["$","code",null,{"children":"inline-size: 100%"}],". Otherwise it collapses in flex\nrows and other shrink-to-fit layouts."]}]
-19:["$","$L8",null,{"as":"h2","id":"server-rendering","children":"Server rendering"}]
-1a:["$","p",null,{"children":["Use the same ",["$","code",null,{"children":"ssrMatch"}]," value on the server and client. It is returned on the server, during initial\nhydration, and when ",["$","code",null,{"children":"matchMedia"}]," is unavailable. After hydration the hook adopts the browser result;\nclient-only rendering uses it immediately. Changing the query replaces the subscription, and\nunmounting removes it."]}]
-1b:["$","$L8",null,{"as":"h2","id":"accessibility","children":"Accessibility"}]
-1c:["$","p",null,{"children":"Preserve reading order, keyboard focus, and entered values as layouts change. If a component swaps\nReact trees, it must manage state and focus across that transition. Validate its chosen behavior\nwith long text, RTL, narrow widths, text enlargement, and browser zoom. Resizing the viewport alone\ndoes not test every effect of zoom. Use pointer and hover media features to detect input capabilities."}]
-1d:["$","$L8",null,{"as":"h2","id":"api","children":"API"}]
-31:T4dc,<svg viewBox="0 0 24 24"><path d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z" fill="currentColor" /></svg>1e:["$","$L30",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"$31","children":["$","$L32",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"useMediaQuery"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"(query: string, options: { ssrMatch: boolean }): boolean"}]]}]}]}]}]
-1f:["$","p",null,{"children":["Breakpoint values are listed in the Breakpoints example above. Types: ",["$","code",null,{"children":"ViewportBreakpoint"}]," and ",["$","code",null,{"children":"UseMediaQueryOptions"}],"."]}]
-20:["$","script","script-0",{"src":"/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","async":true}]
-21:["$","script","script-1",{"src":"/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js","async":true}]
-22:["$","$L33",null,{"children":["$","$34",null,{"name":"Next.MetadataOutlet","children":"$@35"}]}]
-25:["$","$1","h",{"children":[null,["$","$L36",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L37",null,{"children":["$","$34",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Responsive"}],["$","meta","1",{"name":"description","content":"Shared viewport breakpoints, native CSS patterns, and a media-query hook for responsive behavior."}],["$","meta","2",{"property":"og:title","content":"Responsive"}],["$","meta","3",{"property":"og:description","content":"Shared viewport breakpoints, native CSS patterns, and a media-query hook for responsive behavior."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/components/responsive/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Responsive"}],["$","meta","7",{"name":"twitter:description","content":"Shared viewport breakpoints, native CSS patterns, and a media-query hook for responsive behavior."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/components/responsive/image.png"}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}]
-27:["$","$1","c",{"children":[null,["$","$L38",null,{"parallelRouterKey":"children","template":["$","$L39",null,{}]}]]}]
-2b:true
-35:null
-24:300
-24:C
-2a:0
-26:"$undefined"
+}15:["$","$Lb",null,{"lang":"tsx","code":"$34"}]
+16:["$","$L8",null,{"as":"h3","id":"responsive-size","children":"Responsive size"}]
+17:["$","p",null,{"children":["A ",["$","code",null,{"children":"TextLockup"}]," without ",["$","code",null,{"children":"size"}]," follows ",["$","code",null,{"children":"--antares-size"}]," from a parent, so the app's CSS can change it\nat its own breakpoint. This dashboard greeting is ",["$","code",null,{"children":"md"}]," on small screens and ",["$","code",null,{"children":"xl"}]," from ",["$","code",null,{"children":"80rem"}],".\nBrowsers without container style queries keep the lockup's JSX size."]}]
+18:["$","$L9",null,{"component":"$35"}]
+19:["$","$Lb",null,{"lang":"tsx","code":"import { Box, Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function ResponsiveSizeExample() {\n  return (\n    <>\n      <style>{`\n        .responsive-size-example {\n          --antares-size: md;\n        }\n\n        @media (min-width: 80rem) {\n          .responsive-size-example {\n            --antares-size: xl;\n          }\n        }\n      `}</style>\n      <Box as=\"header\" className=\"responsive-size-example\">\n        <TextLockup>\n          <Text slot=\"eyebrow\">Dashboard</Text>\n          <Heading slot=\"title\" level={1}>\n            Welcome back, Ada\n          </Heading>\n          <Text slot=\"body\">Two domains renew this month. Review them to keep your sites online.</Text>\n        </TextLockup>\n      </Box>\n    </>\n  );\n}"}]
+1a:["$","$L8",null,{"as":"h2","id":"customization","children":"Customization"}]
+1b:["$","p",null,{"children":"Antares publishes no viewport breakpoints. Components don't change by viewport width, except overlays\nsuch as Modal and Drawer, which document their own thresholds. Choose the breakpoints your layout needs,\nand write them in your own media or container queries."}]
+1c:["$","p",null,{"children":["The examples include their CSS in ",["$","code",null,{"children":"<style>"}]," blocks so the complete code is visible. Applications can\nplace those rules in their own stylesheets. Layout props such as ",["$","code",null,{"children":"columns"}]," and ",["$","code",null,{"children":"gap"}]," write inline styles,\nwhich beat stylesheet rules. When your CSS changes a property across a query, set it in CSS for every\nwidth and leave the prop unset."]}]
+1d:["$","p",null,{"children":["A container can't take its width from its content, so give it one from its parent, as the container\nexample does with the ",["$","code",null,{"children":"flex"}]," basis of its sidebar and main area. Otherwise it collapses in flex rows and\nother shrink-to-fit layouts. Portaled content is outside the container, so it needs a container in its\nown DOM ancestry."]}]
+1e:["$","p",null,{"children":["In media queries, ",["$","code",null,{"children":"rem"}]," uses the browser's initial font size."]}]
+1f:["$","$L8",null,{"as":"h3","id":"responsive-size-1","children":"Responsive size"}]
+20:["$","p",null,{"children":["Component props, including ",["$","code",null,{"children":"size"}],", take a single value. For a size that changes with the layout, leave\n",["$","code",null,{"children":"size"}]," unset and set ",["$","code",null,{"children":"--antares-size"}]," in your CSS on a parent, as the responsive size example does. A\ncomponent can't read the variable from its own element. The nearest value wins, and an explicit ",["$","code",null,{"children":"size"}]," beats it. Without the variable, components\nfollow the surrounding ",["$","code",null,{"children":"SizeProvider"}],". Browsers without container style queries ignore the variable."]}]
+21:["$","p",null,{"children":["These components follow ",["$","code",null,{"children":"--antares-size"}],":"]}]
+22:["$","div",null,{"className":"relative overflow-auto prose-no-margin my-6","children":["$","table",null,{"children":[["$","thead",null,{"children":["$","tr",null,{"children":[["$","th",null,{"children":"Component"}],["$","th",null,{"children":"Values"}],["$","th",null,{"children":"Notes"}]]}]}],["$","tbody",null,{"children":["$","tr",null,{"children":[["$","td",null,{"children":["$","code",null,{"children":"TextLockup"}]}],["$","td",null,{"children":[["$","code",null,{"children":"xs"}],"-",["$","code",null,{"children":"2xl"}]]}],["$","td",null,{"children":["A ",["$","code",null,{"children":"Tag"}]," eyebrow keeps its own size."]}]]}]}]]}]}]
+23:["$","$L8",null,{"as":"h2","id":"accessibility","children":"Accessibility"}]
+24:["$","p",null,{"children":"Preserve reading order, keyboard focus, and entered values as layouts change: reflow one DOM tree with\nCSS instead of rendering different trees. Validate layouts with long text, RTL, narrow widths, text\nenlargement, and browser zoom. Resizing the viewport alone does not test every effect of zoom. Use\npointer and hover media features to detect input capabilities, not widths."}]
+25:["$","script","script-0",{"src":"/antares/pr-360-site/_next/static/chunks/0kwv-w3yo6vff.js","async":true}]
+26:["$","script","script-1",{"src":"/antares/pr-360-site/_next/static/chunks/29aiel4oul_0_.js","async":true}]
+27:["$","$L36",null,{"children":["$","$37",null,{"name":"Next.MetadataOutlet","children":"$@38"}]}]
+2a:["$","$1","h",{"children":[null,["$","$L39",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L3a",null,{"children":["$","$37",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Responsive"}],["$","meta","1",{"name":"description","content":"How Antares components adapt, and how to build responsive layouts around them with native CSS."}],["$","meta","2",{"property":"og:title","content":"Responsive"}],["$","meta","3",{"property":"og:description","content":"How Antares components adapt, and how to build responsive layouts around them with native CSS."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/components/responsive/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Responsive"}],["$","meta","7",{"name":"twitter:description","content":"How Antares components adapt, and how to build responsive layouts around them with native CSS."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/components/responsive/image.png"}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}]
+2c:["$","$1","c",{"children":[null,["$","$L3b",null,{"parallelRouterKey":"children","template":["$","$L3c",null,{}]}]]}]
+30:true
+38:null
+29:300
+29:C
+2f:0
+2b:"$undefined"
+2d:"$undefined"
 28:"$undefined"
-23:"$undefined"
