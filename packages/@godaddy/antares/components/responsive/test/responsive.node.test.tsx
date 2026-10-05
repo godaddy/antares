@@ -35,6 +35,19 @@ describe('@godaddy/antares', function packageTests() {
       expect(renderToString(<FormExample />)).toMatchSnapshot();
     });
 
+    it.each([
+      { query: '(min-width: 64rem) and (min-resolution: 2dppx)', widths: ['64rem'] },
+      { query: '(min-width: 64rem) and (min-height: 50rem)', widths: ['64rem'] },
+      { query: '((min-width: 64rem) and (min-resolution: 2dppx))', widths: ['64rem'] },
+      { query: '(min-width: calc(max(63rem, 48rem))) and (min-resolution: 2dppx)', widths: ['63rem', '48rem'] },
+      { query: '(40rem <= width < 64rem)', widths: ['40rem', '64rem'] },
+      { query: '(calc(40rem) <= width)', widths: ['40rem'] },
+      { query: '(max-width: 40rem), (min-width: 64rem)', widths: ['40rem', '64rem'] },
+      { query: '(min-resolution: 2dppx) and (min-height: 50rem)', widths: [] }
+    ])('extracts only viewport widths from $query', function featureWidths({ query, widths }) {
+      expect(mediaQueryWidths(`@media ${query} { .example { display: grid; } }`)).toEqual(widths);
+    });
+
     it('uses published widths in every viewport media query', function publishedWidths() {
       const components = new URL('../../', import.meta.url);
       const files = globSync('**/{*.module.css,examples/*.tsx}', { cwd: fileURLToPath(components) });
@@ -56,13 +69,31 @@ describe('@godaddy/antares', function packageTests() {
 });
 
 /**
- * Collects every length in the `@media` preludes of a source file that test width.
+ * Collects lengths only from width features in `@media` preludes.
  * @param source - CSS, or a module with inline CSS.
  * @returns The lengths, such as `64rem`.
  */
 function mediaQueryWidths(source: string) {
   const preludes = source.match(/@media[^{]*/g) ?? [];
   return preludes.flatMap(function lengths(prelude) {
-    return prelude.includes('width') ? (prelude.match(/[\d.]+[a-z]+/g) ?? []) : [];
+    const features: { start: number; value: string }[] = [];
+    const widths: string[] = [];
+
+    for (let index = 0; index < prelude.length; index++) {
+      const character = prelude[index];
+      if (character === '(') {
+        features.push({ start: index + 1, value: '' });
+      } else if (character === ')') {
+        const feature = features.pop();
+        if (feature && /(?:^|[\s<>=])(?:min-|max-)?width(?=$|[\s:<>=])/.test(feature.value)) {
+          widths.push(...(prelude.slice(feature.start, index).match(/[\d.]+[a-z]+/g) ?? []));
+        }
+      } else {
+        const feature = features.at(-1);
+        if (feature) feature.value += character;
+      }
+    }
+
+    return widths;
   });
 }
