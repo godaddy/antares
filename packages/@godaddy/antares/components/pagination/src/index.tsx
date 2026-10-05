@@ -5,6 +5,7 @@ import {
   type ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useState
 } from 'react';
 import { DEFAULT_SLOT, Provider as RACProvider } from 'react-aria-components';
@@ -112,6 +113,15 @@ export function Pagination(props: PaginationProps) {
   const canGoNext = resolvedPageCount == null ? true : resolvedPageCount > 0 && value < resolvedPageCount;
   const inputTypography = useTypographyClassName('label', { size: 'md' });
   const inputDigits = String(resolvedPageCount ?? value).length;
+
+  useEffect(
+    function syncUncontrolledValue() {
+      if (controlledValue === undefined && uncontrolledValue !== value) {
+        setUncontrolledValue(value);
+      }
+    },
+    [controlledValue, uncontrolledValue, value]
+  );
 
   const goTo = useCallback(
     function goTo(nextValue: number) {

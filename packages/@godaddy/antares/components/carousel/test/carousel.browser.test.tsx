@@ -17,6 +17,8 @@ describe('@godaddy/antares', function antares() {
       const next = getByRole('button', { name: 'Go to next Slide', includeHidden: true });
       const dots = container.querySelectorAll('[data-pagination-dot]');
 
+      await expect.element(getByRole('navigation', { name: 'Carousel navigation' })).toBeInTheDocument();
+
       await expect.element(getByText('Slide 1', { exact: true })).not.toHaveAttribute('aria-hidden');
       await expect.element(getByText('Slide 2', { exact: true })).toHaveAttribute('aria-hidden', 'true');
       await expect.element(getByText('Slide 3', { exact: true })).toHaveAttribute('aria-hidden', 'true');
@@ -124,9 +126,13 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('navigates external uncontrolled carousel via external buttons', async function navigatesExternalUncontrolled() {
-      const { getByRole, getByText } = await render(<ExternalControlsUncontrolledExample />);
+      const { container, getByRole, getByText } = await render(<ExternalControlsUncontrolledExample />);
       const prev = getByRole('button', { name: 'External prev slide' });
       const next = getByRole('button', { name: 'External next slide' });
+      const pagination = container.querySelector('nav');
+
+      expect(pagination?.getAttribute('aria-label')).toBe('Carousel navigation');
+      expect(pagination?.getAttribute('aria-hidden')).toBe('true');
 
       await expect.element(getByText('Slide 1', { exact: true })).not.toHaveAttribute('aria-hidden');
       await expect.element(getByText('Slide 2', { exact: true })).toHaveAttribute('aria-hidden', 'true');

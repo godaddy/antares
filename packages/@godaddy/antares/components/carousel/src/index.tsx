@@ -144,7 +144,12 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(function Carousel
       )}
 
       {shouldRenderPagination ? (
-        <Pagination value={finalActiveIndex + 1} pageCount={scrollSnaps.length}>
+        <Pagination
+          value={finalActiveIndex + 1}
+          pageCount={scrollSnaps.length}
+          aria-label="Carousel navigation"
+          aria-hidden={hideNavigationControls ? true : undefined}
+        >
           {hideNavigationControls ? null : (
             <Button
               variant="secondary"

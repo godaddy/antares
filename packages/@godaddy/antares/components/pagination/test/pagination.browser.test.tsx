@@ -6,6 +6,7 @@ import { PageCountKnownExample } from '../examples/page-count-known.tsx';
 import { PageCountUnknownExample } from '../examples/page-count-unknown.tsx';
 import { PaginationDotsExample } from '../examples/dots.tsx';
 import { PlaygroundExample } from '../examples/pagination-playground.tsx';
+import { DynamicPageCountExample } from '../examples/dynamic-page-count.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Pagination', function paginationTests() {
@@ -47,6 +48,24 @@ describe('@godaddy/antares', function antares() {
     it('starts the uncontrolled input at page one', async function startsInputAtPageOne() {
       const { getByRole } = await render(<DefaultExample />);
       await expect.element(getByRole('spinbutton', { name: 'Current page' })).toHaveValue(1);
+    });
+
+    it('keeps uncontrolled state clamped when pageCount changes', async function keepsUncontrolledStateClamped() {
+      const { getByRole } = await render(<DynamicPageCountExample />);
+      const next = getByRole('button', { name: 'Next' });
+      const input = getByRole('spinbutton', { name: 'Current page' });
+
+      await next.click();
+      await next.click();
+      await next.click();
+      await next.click();
+      await expect.element(input).toHaveValue(5);
+
+      await getByRole('button', { name: 'Use 3 pages' }).click();
+      await expect.element(input).toHaveValue(3);
+
+      await getByRole('button', { name: 'Use 5 pages' }).click();
+      await expect.element(input).toHaveValue(3);
     });
 
     it('keeps next available when pageCount is unknown', async function keepsUnknownNextAvailable() {
