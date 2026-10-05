@@ -52,5 +52,7 @@ export * from './exports/Chip';
 export * from './exports/TextLockup';
 export * from './exports/Card';
 export * from './exports/SizeProvider';
+export * from './exports/Accordion';
+export * from './exports/Collapsible';
 
 export { FocusScope, type FocusScopeProps } from '@react-aria/focus';
