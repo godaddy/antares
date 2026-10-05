@@ -43,9 +43,14 @@ describe('@godaddy/antares', function packageTests() {
       { query: '(40rem <= width < 64rem)', widths: ['40rem', '64rem'] },
       { query: '(calc(40rem) <= width)', widths: ['40rem'] },
       { query: '(max-width: 40rem), (min-width: 64rem)', widths: ['40rem', '64rem'] },
-      { query: '(min-resolution: 2dppx) and (min-height: 50rem)', widths: [] }
+      { query: '(min-resolution: 2dppx) and (min-height: 50rem)', widths: [] },
+      { query: '(MIN-WIDTH: 63REM) AND (MIN-RESOLUTION: 2DPPX)', widths: ['63rem'] }
     ])('extracts only viewport widths from $query', function featureWidths({ query, widths }) {
       expect(mediaQueryWidths(`@media ${query} { .example { display: grid; } }`)).toEqual(widths);
+    });
+
+    it('matches the at-rule name case-insensitively', function atRuleCase() {
+      expect(mediaQueryWidths('@MEDIA (min-width: 63rem) { .example { display: grid; } }')).toEqual(['63rem']);
     });
 
     it('uses published widths in every viewport media query', function publishedWidths() {
@@ -69,12 +74,13 @@ describe('@godaddy/antares', function packageTests() {
 });
 
 /**
- * Collects lengths only from width features in `@media` preludes.
+ * Collects lengths only from width features in `@media` preludes. CSS at-rules, feature names, and units are
+ * case-insensitive, so lengths are returned lowercased.
  * @param source - CSS, or a module with inline CSS.
  * @returns The lengths, such as `64rem`.
  */
 function mediaQueryWidths(source: string) {
-  const preludes = source.match(/@media[^{]*/g) ?? [];
+  const preludes = source.match(/@media[^{]*/gi) ?? [];
   return preludes.flatMap(function lengths(prelude) {
     const features: { start: number; value: string }[] = [];
     const widths: string[] = [];
@@ -85,8 +91,13 @@ function mediaQueryWidths(source: string) {
         features.push({ start: index + 1, value: '' });
       } else if (character === ')') {
         const feature = features.pop();
-        if (feature && /(?:^|[\s<>=])(?:min-|max-)?width(?=$|[\s:<>=])/.test(feature.value)) {
-          widths.push(...(prelude.slice(feature.start, index).match(/[\d.]+[a-z]+/g) ?? []));
+        if (feature && /(?:^|[\s<>=])(?:min-|max-)?width(?=$|[\s:<>=])/i.test(feature.value)) {
+          const lengths = prelude.slice(feature.start, index).match(/[\d.]+[a-z]+/gi) ?? [];
+          widths.push(
+            ...lengths.map(function lowercase(length) {
+              return length.toLowerCase();
+            })
+          );
         }
       } else {
         const feature = features.at(-1);
