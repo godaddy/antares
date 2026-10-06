@@ -9,6 +9,7 @@ import { PrimaryExample } from '../examples/primary.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
 import { IconExample } from '../examples/icon.tsx';
+import { IconsAndAlignmentExample } from '../examples/icons-and-alignment.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
@@ -120,6 +121,65 @@ describe('@godaddy/antares', function antares() {
       const labeled = getByRole('button', { name: 'With an icon!' }).element();
 
       expect(getComputedStyle(link).padding).toEqual(getComputedStyle(labeled).padding);
+    });
+
+    it('controls navigation independently of the external icon', async function linkNavigation() {
+      const { getByRole } = await render(<IconsAndAlignmentExample />);
+      const report = getByRole('link', { name: 'View report' });
+      const help = getByRole('link', { name: 'Read help' });
+      const documentation = getByRole('link', { name: 'Read documentation' });
+
+      expect(report).toHaveAttribute('target', '_blank');
+      expect(report).toHaveAttribute('rel', 'noopener noreferrer');
+      expect(report.element().querySelector('[data-icon]')).toBeNull();
+
+      expect(help).toHaveAttribute('target', '_self');
+      expect(help).toHaveAttribute('rel', 'external');
+      expect(help.element().querySelector('[data-icon="window-new"]')).not.toBeNull();
+
+      expect(documentation).not.toHaveAttribute('target');
+      expect(documentation).not.toHaveAttribute('rel');
+      expect(documentation.element().querySelector('[data-icon="window-new"]')).not.toBeNull();
+    });
+
+    it('preserves the external link shortcut', async function externalShortcut() {
+      const { getByRole } = await render(<IconExample />);
+      const link = getByRole('link', { name: 'An external link!' });
+
+      expect(link).toHaveAttribute('target', '_blank');
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+      expect(link.element().querySelector('[data-icon="window-new"]')).not.toBeNull();
+    });
+
+    it('aligns stretched inline controls at the start in LTR and RTL while regular controls stay centered', async function inlineAlignment() {
+      for (const dir of ['ltr', 'rtl'] as const) {
+        const { getByRole, unmount } = await render(<IconsAndAlignmentExample dir={dir} />);
+
+        for (const [role, name] of [
+          ['button', 'Inline action'],
+          ['link', 'View report'],
+          ['link', 'Read help'],
+          ['link', 'Read documentation']
+        ] as const) {
+          const control = getByRole(role, { name }).element();
+          const label = control.querySelector('span') as Element;
+          const edge = dir === 'rtl' ? 'right' : 'left';
+
+          expect(label.getBoundingClientRect()[edge]).toBeCloseTo(control.getBoundingClientRect()[edge], 0);
+        }
+
+        for (const [role, name] of [
+          ['button', 'Centered action'],
+          ['link', 'Centered link']
+        ] as const) {
+          const control = getByRole(role, { name }).element().getBoundingClientRect();
+          const label = (getByRole(role, { name }).element().querySelector('span') as Element).getBoundingClientRect();
+
+          expect(label.left + label.width / 2).toBeCloseTo(control.left + control.width / 2, 0);
+        }
+
+        await unmount();
+      }
     });
 
     it('shadows an ancestor TextContext so the label keeps the button type', async function isolatedLabel() {
