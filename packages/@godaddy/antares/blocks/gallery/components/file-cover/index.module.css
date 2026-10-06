@@ -24,6 +24,7 @@
 }
 
 .error {
+  display: flex;
   border-color: var(--color-feedback-critical-strong, #db1802);
   background: var(--color-feedback-critical-background, #fde8e7);
   color: var(--color-feedback-critical-strong, #db1802);

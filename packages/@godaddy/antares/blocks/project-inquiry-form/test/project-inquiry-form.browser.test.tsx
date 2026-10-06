@@ -48,7 +48,7 @@ describe('@godaddy/antares', function packageTests() {
           // Assert activation without opening the operating system's file picker.
         });
 
-      await userEvent.click(screen.getByText('The file must be less than 256MB'));
+      await userEvent.click(screen.getByText('The file must be less than 256 MiB'));
       expect(openPicker).toHaveBeenCalledTimes(1);
 
       screen.getByRole('button', { name: 'Add files', exact: true }).element().focus();
@@ -150,6 +150,20 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(checkbox).toBeChecked();
     });
 
+    it('selects and clears the optional due date', async function changesDueDate() {
+      const screen = await render(<ProjectInquiryForm />);
+      const trigger = screen.getByRole('button', { name: /Calendar/ });
+
+      await userEvent.click(trigger);
+      await userEvent.click(screen.getByRole('button', { name: /15, \d{4}$/ }));
+      await expect.element(screen.getByRole('button', { name: 'Clear date' })).toBeVisible();
+      await expect.element(trigger).not.toHaveTextContent('Select a date');
+
+      await userEvent.click(screen.getByRole('button', { name: 'Clear date' }));
+      await expect.element(trigger).toHaveTextContent('Select a date');
+      await expect.element(screen.getByRole('button', { name: 'Clear date' })).not.toBeInTheDocument();
+    });
+
     it('validates email and confirms locally without a date or consent', async function submits() {
       const screen = await render(<ProjectInquiryForm />);
       const email = screen.getByRole('textbox', { name: /Email/ });
@@ -233,6 +247,24 @@ describe('@godaddy/antares', function packageTests() {
         .toBe(true);
     });
 
+    it('shows the fallback when an image attachment preview fails', async function failedPreview() {
+      const screen = await render(<ProjectInquiryForm />);
+      const bytes = Uint8Array.from(
+        atob('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZ1EAAAAASUVORK5CYII='),
+        function toByte(character) {
+          return character.charCodeAt(0);
+        }
+      );
+
+      await userEvent.upload(fileInput(screen.container), new File([bytes], 'photo.png', { type: 'image/png' }));
+      const preview = screen.getByRole('img', { name: 'photo.png' });
+      await expect.element(preview).toBeVisible();
+      preview.element().dispatchEvent(new Event('error'));
+
+      await expect.element(screen.getByText('IMG', { exact: true })).toBeVisible();
+      await expect.element(screen.getByRole('img', { name: 'photo.png' })).not.toBeInTheDocument();
+    });
+
     it('rejects files at the size limit', async function rejectsOversizedFile() {
       const screen = await render(<ProjectInquiryForm />);
       const input = fileInput(screen.container);
@@ -249,7 +281,7 @@ describe('@godaddy/antares', function packageTests() {
 
       await expect
         .element(screen.getByRole('alert'))
-        .toHaveTextContent('Use PDF, JPG, GIF, or PNG files smaller than 256MB.');
+        .toHaveTextContent('Use PDF, JPG, GIF, or PNG files smaller than 256 MiB.');
       await expect.element(screen.getByRole('button', { name: 'Remove large.pdf' })).not.toBeInTheDocument();
     });
 

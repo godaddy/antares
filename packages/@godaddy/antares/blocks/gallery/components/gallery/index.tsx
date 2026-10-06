@@ -26,6 +26,17 @@ import styles from './index.module.css';
 
 const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 const maximumSize = 256 * 1024 * 1024;
+let localImageCounter = 0;
+
+/** Creates a unique ID for a locally added image with a Web Crypto fallback. */
+function createLocalImageId() {
+  const uuid = globalThis.crypto?.randomUUID?.();
+  if (uuid) return `local-${uuid}`;
+
+  const random = new Uint32Array(2);
+  globalThis.crypto?.getRandomValues?.(random);
+  return `local-${Date.now()}-${localImageCounter++}-${random[0]}-${random[1]}`;
+}
 
 export interface GalleryProps {
   /** Initial images; read once on mount. Pass [] to start empty. IDs must be unique. */
@@ -48,16 +59,19 @@ export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: 
   const [notice, setNotice] = useState('');
   const mounted = useRef(false);
   const addButton = useRef<HTMLButtonElement>(null);
-  const owned = useRef(new Map<string, { id: string; url: string }>());
+  const ownedByKey = useRef(new Map<string, { id: string; url: string }>());
+  const keyById = useRef(new Map<string, string>());
 
   useEffect(function manageLifecycle() {
     mounted.current = true;
-    const urls = owned.current;
+    const urls = ownedByKey.current;
+    const ids = keyById.current;
 
     return function releaseOwnedImages() {
       mounted.current = false;
       for (const entry of urls.values()) URL.revokeObjectURL(entry.url);
       urls.clear();
+      ids.clear();
     };
   }, []);
 
@@ -75,30 +89,36 @@ export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: 
       }
 
       const key = JSON.stringify([file.name, file.size, file.type, file.lastModified]);
-      if (owned.current.has(key)) {
+      if (ownedByKey.current.has(key)) {
         duplicates++;
         continue;
       }
 
-      const id = `local-${crypto.randomUUID()}`;
+      const id = createLocalImageId();
       const url = URL.createObjectURL(file);
-      owned.current.set(key, { id, url });
+      ownedByKey.current.set(key, { id, url });
+      keyById.current.set(id, key);
       added.push({ id, name: file.name, size: file.size, src: url });
     }
 
     setImages(function appendImages(previous) {
       return [...previous, ...added];
     });
-    setError(rejected ? 'Use JPG, PNG, GIF, or WebP images smaller than 256MB.' : '');
-    setNotice(`${added.length} images added.${duplicates ? ` ${duplicates} duplicates skipped.` : ''}`);
+    setError(rejected ? 'Use JPG, PNG, GIF, or WebP images smaller than 256 MiB.' : '');
+    const messages = [];
+    if (added.length > 0) messages.push(`${added.length} images added.`);
+    if (duplicates > 0) messages.push(`${duplicates} duplicates skipped.`);
+    setNotice(messages.join(' '));
   }, []);
 
   const removeImage = useCallback(function removeImage(image: ImageItem) {
-    for (const [key, entry] of owned.current) {
-      if (entry.id === image.id) {
-        URL.revokeObjectURL(entry.url);
-        owned.current.delete(key);
-      }
+    const key = keyById.current.get(image.id);
+    const entry = key ? ownedByKey.current.get(key) : undefined;
+
+    if (key && entry) {
+      URL.revokeObjectURL(entry.url);
+      ownedByKey.current.delete(key);
+      keyById.current.delete(image.id);
     }
 
     setImages(function removeFromCollection(previous) {
@@ -158,6 +178,10 @@ export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: 
   }, []);
 
   const handleImageLoadError = useCallback(function handleImageLoadError(id: string) {
+    setActiveId(function clearFailedActiveImage(current) {
+      return current === id ? null : current;
+    });
+
     setImages(function markImageError(previous) {
       return previous.map(function updateImage(item) {
         return item.id === id ? { ...item, status: 'error', errorMessage: `Couldn’t load ${item.name}.` } : item;

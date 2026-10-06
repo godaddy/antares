@@ -5,6 +5,7 @@ import { Button, Detail, FileTrigger, Flex, Icon, Text } from '@godaddy/antares'
 import { FilePreview } from '../file-preview/index.tsx';
 import styles from './index.module.css';
 
+/** MIME types accepted by the project inquiry attachment picker. */
 export const acceptedTypes = ['application/pdf', 'image/jpeg', 'image/gif', 'image/png'];
 
 interface AttachedFilesProps {
@@ -21,6 +22,7 @@ interface AttachedFilesProps {
   onRemove: (file: File) => void;
 }
 
+/** Returns the stable identity used to deduplicate and remove an attachment. */
 export function fileKey(file: File) {
   return JSON.stringify([file.name, file.size, file.type, file.lastModified]);
 }
@@ -28,10 +30,14 @@ export function fileKey(file: File) {
 const fileSizeFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
 interface AttachmentRowProps {
+  /** Attachment represented by the row. */
   file: File;
+
+  /** Removes the represented attachment from the form. */
   onRemove: (file: File) => void;
 }
 
+/** Renders a selected attachment with its preview, size, and remove action. */
 function AttachmentRow({ file, onRemove }: AttachmentRowProps) {
   const handleRemove = useCallback(
     function handleRemove() {
@@ -45,7 +51,7 @@ function AttachmentRow({ file, onRemove }: AttachmentRowProps) {
       <FilePreview file={file} />
       <Flex direction="column" gap="sm" flex="1" className={styles.details}>
         <Text className={styles.fileName}>{file.name}</Text>
-        <Detail size="sm">{fileSizeFormatter.format(file.size / (1024 * 1024))} MB</Detail>
+        <Detail size="sm">{fileSizeFormatter.format(file.size / (1024 * 1024))} MiB</Detail>
       </Flex>
       <Button type="button" variant="minimal" size="sm" aria-label={`Remove ${file.name}`} onPress={handleRemove}>
         <Icon icon="x" aria-hidden="true" />
@@ -81,7 +87,7 @@ export function AttachedFiles({ files, error, onSelect, onRemove }: AttachedFile
               <Text>or drag them here.</Text>
             </Flex>
             <Detail id={sizeHintId} align="center" size="sm">
-              The file must be less than 256MB
+              The file must be less than 256 MiB
             </Detail>
           </Flex>
         </Button>

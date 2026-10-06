@@ -38,5 +38,13 @@ export const sampleImages: ImageItem[] = [
   { id: 'sample-1050', name: 'Photo_7.png', src: 'https://picsum.photos/id/1050/960/640', size: 5 * 1024 * 1024 },
   { id: 'sample-1069', name: 'Photo_8.png', src: 'https://picsum.photos/id/1069/960/640', size: 3 * 1024 * 1024 },
   { id: 'sample-1068', name: 'Photo_9.png', src: 'https://picsum.photos/id/1068/960/640', size: 4 * 1024 * 1024 },
-  { id: 'sample-1074', name: 'Photo_10.png', src: 'https://picsum.photos/id/1074/960/640', size: 6 * 1024 * 1024 }
+  { id: 'sample-1074', name: 'Photo_10.png', src: 'https://picsum.photos/id/1074/960/640', size: 6 * 1024 * 1024 },
+  {
+    id: 'sample-error',
+    name: 'Photo_error.png',
+    src: 'https://picsum.photos/id/1084/960/640',
+    size: 5 * 1024 * 1024,
+    status: 'error',
+    errorMessage: 'Couldn’t load Photo_error.png.'
+  }
 ];

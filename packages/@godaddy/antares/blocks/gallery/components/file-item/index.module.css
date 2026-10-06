@@ -7,6 +7,7 @@
 
 .item:where([data-variant="horizontal"]) {
   inline-size: 100%;
+  block-size: 4.625rem;
   min-block-size: 4.625rem;
 }
 
@@ -48,6 +49,10 @@
   overflow: hidden;
 }
 
+.details:where([data-variant="vertical"]) {
+  min-block-size: 5.5rem;
+}
+
 .details:where([data-variant="horizontal"]) {
   padding-inline-end: 2rem;
 }
@@ -56,6 +61,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.errorDetails {
+  min-inline-size: 0;
+}
+
+.errorDetails:where([data-variant="horizontal"]) {
+  flex-wrap: nowrap;
 }
 
 .remove {

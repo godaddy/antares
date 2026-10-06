@@ -36,7 +36,7 @@ const coverVariants: Record<FileItemVariant, FileCoverVariant> = {
 
 /** One file item with the same actions and states across list and grid views. */
 export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadError }: FileItemProps) {
-  const size = image.size === undefined ? 'Sample image' : `${(image.size / (1024 * 1024)).toFixed(0)}MB`;
+  const size = image.size === undefined ? 'Sample image' : `${(image.size / (1024 * 1024)).toFixed(0)} MiB`;
   const isError = image.status === 'error';
 
   const handleRemove = useCallback(
@@ -95,8 +95,16 @@ export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadErro
         >
           <Text className={styles.name}>{image.name}</Text>
           {isError ? (
-            <Flex direction="column" gap="xs" alignItems="start">
-              <Detail emphasis="critical">{image.errorMessage ?? 'File upload failed.'}</Detail>
+            <Flex
+              direction={variant === 'horizontal' ? 'row' : 'column'}
+              gap="xs"
+              alignItems={variant === 'horizontal' ? 'center' : 'start'}
+              className={styles.errorDetails}
+              data-variant={variant}
+            >
+              <Detail emphasis="critical" maxLines={1}>
+                {image.errorMessage ?? 'File upload failed.'}
+              </Detail>
               <Button variant="inline" size="sm" aria-label={`Retry ${image.name}`} onPress={handleRetry}>
                 <Icon icon="refresh" aria-hidden="true" />
                 Retry

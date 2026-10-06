@@ -22,6 +22,7 @@ export const UploadError = getStory(Gallery, {
         id: 'upload-error',
         name: 'upload-error.png',
         src: 'https://picsum.photos/id/1025/960/640',
+        size: 5 * 1024 * 1024,
         status: errorStatus,
         errorMessage: 'File upload failed. Please try again.'
       }

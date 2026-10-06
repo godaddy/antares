@@ -60,7 +60,7 @@ export function ProjectInquiryForm() {
         return acceptedTypes.includes(file.type) && file.size < maximumSize;
       });
 
-      setFileError(valid.length === incoming.length ? '' : 'Use PDF, JPG, GIF, or PNG files smaller than 256MB.');
+      setFileError(valid.length === incoming.length ? '' : 'Use PDF, JPG, GIF, or PNG files smaller than 256 MiB.');
       if (valid.length === 0) return;
 
       setFiles(function appendFiles(previous) {

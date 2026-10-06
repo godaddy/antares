@@ -25,6 +25,7 @@ const fields = [
   { name: 'phone', label: 'Phone Number', type: 'tel', autoComplete: 'tel' }
 ] as const;
 
+/** Names of the required contact fields rendered by the form. */
 type FieldName = (typeof fields)[number]['name'];
 
 interface FieldsProps {
@@ -48,11 +49,17 @@ interface FieldsProps {
 }
 
 interface ContactFieldProps {
+  /** Field metadata used to render the contact input. */
   field: (typeof fields)[number];
+
+  /** Current value for the contact input. */
   value: string;
+
+  /** Updates the field value in the parent form. */
   onChange: (name: FieldName, value: string) => void;
 }
 
+/** Renders one required contact field from the form's field metadata. */
 function ContactField({ field, value, onChange }: ContactFieldProps) {
   const handleChange = useCallback(
     function handleChange(nextValue: string) {

@@ -57,11 +57,106 @@ describe('@godaddy/antares', function packageTests() {
     it('shows an active sample gallery and available upload and view controls', async function defaultGallery() {
       const screen = await render(<Gallery />);
 
-      await expect.element(screen.getByText('10 images', { exact: true })).toBeVisible();
+      await expect.element(screen.getByText('11 images', { exact: true })).toBeVisible();
       await expect.element(screen.getByRole('button', { name: 'Add files', exact: true })).toBeEnabled();
       await expect.element(screen.getByRole('radio', { name: 'Grid', exact: true })).toBeEnabled();
       await expect.element(screen.getByRole('button', { name: 'Open Photo_2.png' })).toBeVisible();
-      expect(screen.getByRole('button', { name: /^Retry / }).all()).toHaveLength(0);
+      await expect.element(screen.getByRole('button', { name: 'Retry Photo_error.png' })).toBeVisible();
+    });
+
+    it('keeps the error card height stable while showing its message', async function stableErrorCard() {
+      const longName = 'a-very-long-image-name-that-needs-truncation.png';
+      const screen = await render(
+        <Gallery
+          initialImages={[
+            { id: 'ready', name: 'ready.png', src: `data:image/png;base64,${pixel}` },
+            {
+              id: 'failed',
+              name: longName,
+              src: `data:image/png;base64,${pixel}`,
+              status: 'error',
+              errorMessage: `Couldn’t load ${longName}.`
+            }
+          ]}
+        />
+      );
+
+      const cards = Array.from(screen.container.querySelectorAll<HTMLElement>('li[data-variant="vertical"]'));
+      expect(cards).toHaveLength(2);
+      await expect.element(screen.getByRole('button', { name: `Retry ${longName}` })).toBeVisible();
+      expect(cards[0].getBoundingClientRect().height).toBe(cards[1].getBoundingClientRect().height);
+    });
+
+    it('keeps the error row height stable while showing retry controls', async function stableErrorRow() {
+      const screen = await render(
+        <Gallery
+          defaultView="list"
+          initialImages={[
+            { id: 'ready', name: 'ready.png', src: `data:image/png;base64,${pixel}` },
+            {
+              id: 'failed',
+              name: 'failed.png',
+              src: `data:image/png;base64,${pixel}`,
+              status: 'error',
+              errorMessage: 'Couldn’t load failed.png.'
+            }
+          ]}
+        />
+      );
+
+      const rows = Array.from(screen.container.querySelectorAll<HTMLElement>('li[data-variant="horizontal"]'));
+      expect(rows).toHaveLength(2);
+      await expect.element(screen.getByRole('button', { name: 'Retry failed.png' })).toBeVisible();
+      expect(rows[0].getBoundingClientRect().height).toBe(rows[1].getBoundingClientRect().height);
+    });
+
+    it('restores the image size after retrying an error item', async function retryPreservesMetadata() {
+      const screen = await render(
+        <Gallery
+          initialImages={[
+            {
+              id: 'failed',
+              name: 'failed.png',
+              src: `data:image/png;base64,${pixel}`,
+              size: 5 * 1024 * 1024,
+              status: 'error',
+              errorMessage: 'Couldn’t load failed.png.'
+            }
+          ]}
+        />
+      );
+
+      await userEvent.click(screen.getByRole('button', { name: 'Retry failed.png' }));
+      await expect.element(screen.getByRole('button', { name: 'Open failed.png' })).toBeVisible();
+      await expect.element(screen.getByText('5 MiB', { exact: true })).toBeVisible();
+    });
+
+    it('centers the error icon in grid and list views', async function centeredErrorIcon() {
+      const failed: ImageItem = {
+        id: 'failed',
+        name: 'failed.png',
+        src: `data:image/png;base64,${pixel}`,
+        status: 'error',
+        errorMessage: 'Couldn’t load failed.png.'
+      };
+      const screen = await render(<Gallery initialImages={[failed]} />);
+
+      function expectCenteredIcon() {
+        const surface = screen.container.querySelector<HTMLElement>(
+          '[role="img"][aria-label="failed.png failed to upload"]'
+        );
+        const icon = surface?.querySelector<SVGElement>('svg');
+        if (!surface || !icon) throw new Error('Expected the error surface and icon');
+
+        const surfaceRect = surface.getBoundingClientRect();
+        const iconRect = icon.getBoundingClientRect();
+        expect(iconRect.x + iconRect.width / 2).toBeCloseTo(surfaceRect.x + surfaceRect.width / 2, 1);
+        expect(iconRect.y + iconRect.height / 2).toBeCloseTo(surfaceRect.y + surfaceRect.height / 2, 1);
+      }
+
+      expectCenteredIcon();
+      await userEvent.click(screen.getByRole('radio', { name: 'List', exact: true }));
+      expectCenteredIcon();
     });
 
     it('shows retry feedback when an image fails to load', async function imageLoadError() {
@@ -136,7 +231,7 @@ describe('@godaddy/antares', function packageTests() {
       const large = png('large.png');
       Object.defineProperty(large, 'size', { value: 256 * 1024 * 1024 });
       selectFiles(screen.container, [png(), large, new File(['text'], 'notes.txt', { type: 'text/plain' })]);
-      await expect.element(screen.getByRole('alert')).toHaveTextContent('smaller than 256MB');
+      await expect.element(screen.getByRole('alert')).toHaveTextContent('smaller than 256 MiB');
       await expect.element(screen.getByRole('button', { name: 'Open local.png' })).toBeVisible();
       expect(screen.getByRole('button', { name: /^Remove / }).all()).toHaveLength(1);
     });
@@ -238,6 +333,19 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(dialog).not.toBeInTheDocument();
     });
 
+    it('closes the viewer when its active image fails', async function closesFailedViewer() {
+      const screen = await render(<Gallery initialImages={samples} />);
+      await userEvent.click(screen.getByRole('button', { name: 'Open one.png' }));
+      await expect.element(screen.getByRole('dialog', { name: 'Media gallery' })).toBeVisible();
+
+      const cardImage = screen.container.querySelector<HTMLImageElement>('img[alt=""]');
+      if (!cardImage) throw new Error('Expected the gallery card image');
+      cardImage.dispatchEvent(new Event('error'));
+
+      await expect.element(screen.getByRole('dialog', { name: 'Media gallery' })).not.toBeInTheDocument();
+      await expect.element(screen.getByRole('button', { name: 'Add files', exact: true })).toBeEnabled();
+    });
+
     it('removes preloaded images and reaches the empty state', async function removeSamples() {
       const screen = await render(<Gallery initialImages={samples} />);
       await userEvent.click(screen.getByRole('button', { name: 'Remove one.png' }));
@@ -266,6 +374,19 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(picture).toBeVisible();
       picture.element().dispatchEvent(new Event('load'));
       await expect.element(screen.getByRole('button', { name: 'Retry one.png' })).not.toBeInTheDocument();
+    });
+
+    it('provides a fallback name for an interactive image', async function interactiveImageName() {
+      const screen = await render(
+        <Image
+          image={samples[0]}
+          onOpen={function openImage() {
+            // The test only verifies the fallback accessible name.
+          }}
+        />
+      );
+
+      await expect.element(screen.getByRole('button', { name: 'View one.png' })).toBeVisible();
     });
   });
 });

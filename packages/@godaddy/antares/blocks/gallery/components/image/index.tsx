@@ -87,7 +87,7 @@ export function Image({ image, variant = 'default', onOpen, label, selected }: I
       {onOpen ? (
         <Button
           variant="minimal"
-          aria-label={label}
+          aria-label={label ?? `View ${image.name}`}
           aria-current={selected ? 'true' : undefined}
           onPress={handleOpen}
           className={styles.openButton}
