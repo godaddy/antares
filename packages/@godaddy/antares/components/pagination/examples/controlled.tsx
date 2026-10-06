@@ -10,7 +10,7 @@ export function ControlledExample() {
   const [page, setPage] = useState(2);
 
   return (
-    <Pagination value={page} pageCount={3} onChange={setPage}>
+    <Pagination value={page} pageCount={3} onChange={setPage} aria-label="Page navigation">
       <Button slot="previous" aria-label="Previous" />
       <Input aria-label="Current page" />
       <Text size="sm" aria-hidden>

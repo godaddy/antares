@@ -37,7 +37,7 @@ export const Playground = getStory(PlaygroundExample, {
     },
     isDisabled: {
       control: 'boolean',
-      description: 'Disables the composed Pagination controls.'
+      description: 'Provides a default disabled state for the composed Pagination controls.'
     }
   }
 });

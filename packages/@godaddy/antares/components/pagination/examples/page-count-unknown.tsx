@@ -11,7 +11,7 @@ export function PageCountUnknownExample() {
   const hasNextPage = true;
 
   return (
-    <Pagination value={page} onChange={setPage}>
+    <Pagination value={page} onChange={setPage} aria-label="Page navigation">
       <Button slot="previous" aria-label="Previous" />
       <Input aria-label="Current page" />
       <Button slot="next" aria-label="Next" isDisabled={!hasNextPage} />

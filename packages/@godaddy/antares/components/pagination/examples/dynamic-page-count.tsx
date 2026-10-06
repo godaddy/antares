@@ -20,7 +20,7 @@ export function DynamicPageCountExample() {
     <>
       <Button onPress={showThreePages}>Use 3 pages</Button>
       <Button onPress={showFivePages}>Use 5 pages</Button>
-      <Pagination pageCount={pageCount} defaultValue={1}>
+      <Pagination pageCount={pageCount} defaultValue={1} aria-label="Page navigation">
         <Button slot="previous" aria-label="Previous" />
         <Input aria-label="Current page" />
         <Button slot="next" aria-label="Next" />

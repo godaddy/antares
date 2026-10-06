@@ -13,7 +13,7 @@ export interface PlaygroundExampleProps {
   /** Visual scale applied to Pagination and its composed controls. @default 'md' */
   size?: 'sm' | 'md';
 
-  /** Disables the composed Pagination controls. */
+  /** Provides a default disabled state for the composed Pagination controls. */
   isDisabled?: boolean;
 }
 
@@ -34,7 +34,14 @@ export function PlaygroundExample({
   const showPageCount = composition === 'known';
 
   return (
-    <Pagination value={page} pageCount={knownPageCount} onChange={setPage} size={size} isDisabled={isDisabled}>
+    <Pagination
+      value={page}
+      pageCount={knownPageCount}
+      onChange={setPage}
+      size={size}
+      isDisabled={isDisabled}
+      aria-label="Page navigation"
+    >
       <Button slot="previous" aria-label="Previous" />
 
       {composition === 'dots' ? <PaginationDots /> : null}

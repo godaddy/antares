@@ -11,7 +11,7 @@ export function PaginationDotsExample() {
   const pageCount = 5;
 
   return (
-    <Pagination value={page} pageCount={pageCount} onChange={setPage}>
+    <Pagination value={page} pageCount={pageCount} onChange={setPage} aria-label="Page navigation">
       <Button slot="previous" aria-label="Previous" />
       <PaginationDots />
       <Button slot="next" aria-label="Next" />

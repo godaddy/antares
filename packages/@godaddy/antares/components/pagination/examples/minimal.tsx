@@ -7,7 +7,7 @@ import { Button, Pagination } from '@godaddy/antares';
  */
 export function MinimalExample() {
   return (
-    <Pagination pageCount={8} defaultValue={1}>
+    <Pagination pageCount={8} defaultValue={1} aria-label="Page navigation">
       <Button slot="previous" aria-label="Previous" />
       <Button slot="next" aria-label="Next" />
     </Pagination>

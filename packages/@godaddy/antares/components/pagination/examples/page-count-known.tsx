@@ -20,7 +20,7 @@ export function PageCountKnownExample() {
   }
 
   return (
-    <Pagination value={page} pageCount={pageCount} onChange={setPage}>
+    <Pagination value={page} pageCount={pageCount} onChange={setPage} aria-label="Page navigation">
       <Button slot="previous" aria-label="Previous" />
       <Input aria-label="Current page" />
       <Text size="sm" aria-hidden>

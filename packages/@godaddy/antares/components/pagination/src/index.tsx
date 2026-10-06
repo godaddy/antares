@@ -49,7 +49,10 @@ export interface PaginationProps extends Omit<FlexProps<'nav'>, 'as' | 'children
   /** Called with the next 1-based page when navigation changes the current page. */
   onChange?: (value: number) => void;
 
-  /** Disables the controls and page input provided through Pagination contexts. */
+  /**
+   * Provides a default disabled state for controls and page input provided through Pagination contexts.
+   * Explicit child props may override this value.
+   */
   isDisabled?: boolean;
 
   /** The visual size of the composed controls. @default 'md' */
