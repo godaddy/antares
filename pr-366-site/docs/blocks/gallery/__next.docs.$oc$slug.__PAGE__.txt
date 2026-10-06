@@ -1,20 +1,20 @@
 1:"$Sreact.fragment"
-2:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsPage"]
-3:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsTitle"]
-4:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsDescription"]
-5:I[748747,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"LLMCopyButton"]
-6:I[748747,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"ViewOptions"]
-7:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsBody"]
-8:I[696229,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"SiteBlockExplorer"]
-9:T92d,'use client';
+2:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsPage"]
+3:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsTitle"]
+4:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsDescription"]
+5:I[748747,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"LLMCopyButton"]
+6:I[748747,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"ViewOptions"]
+7:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsBody"]
+8:I[696229,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"SiteBlockExplorer"]
+9:T913,'use client';
 
 import { useCallback, useEffect, useState } from 'react';
 import { Box, Button, Flex, Icon, Image } from '@godaddy/antares';
 import type { ImageItem } from '../../data/sample-images.ts';
 import styles from './index.module.css';
 
-/** Cover geometry used by Gallery's list, grid, and thumbnail presentations. */
-export type FileCoverVariant = 'horizontal' | 'vertical' | 'thumbnail';
+/** Cover geometry used by Gallery's list and grid presentations. */
+export type FileCoverVariant = 'horizontal' | 'vertical';
 
 interface FileCoverProps {
   /** File represented by the cover. */
@@ -96,7 +96,7 @@ export function FileCover({ image, variant, onOpen, onLoadError }: FileCoverProp
     </Button>
   );
 }
-a:T7bb,.item {
+a:T5ea,.item {
   position: relative;
   box-sizing: border-box;
   border: 1px solid var(--ux-box-border-color, #e5e5e5);
@@ -124,12 +124,6 @@ a:T7bb,.item {
   .item:where([data-variant="vertical"]:hover) {
     border-color: var(--color-action-border-secondary-hovered, var(--ux-kkdx4n, #09757a));
   }
-}
-
-.item:where([data-variant="thumbnail"]) {
-  inline-size: 5.125rem;
-  block-size: 5.125rem;
-  border: 0;
 }
 
 .coverSlot {
@@ -178,23 +172,7 @@ a:T7bb,.item {
   padding: 0;
   background: var(--ux-control-backgroundColor, #ffffff);
 }
-
-.remove:where([data-variant="thumbnail"]) {
-  inset-block-start: 0;
-  inset-inline-end: 0;
-}
-
-.thumbnailRetry {
-  position: absolute;
-  inset-block-end: 0;
-  inset-inline-start: 0;
-  inline-size: 1.5rem;
-  block-size: 1.5rem;
-  padding: 0;
-  background: var(--ux-control-backgroundColor, #ffffff);
-  color: var(--color-feedback-critical-strong, #db1802);
-}
-b:Tfa8,'use client';
+b:Tdb5,'use client';
 
 import { useCallback } from 'react';
 import { Box, Button, Detail, Flex, Icon, Text } from '@godaddy/antares';
@@ -202,7 +180,7 @@ import { FileCover, type FileCoverVariant } from '../file-cover/index.tsx';
 import type { ImageItem } from '../../data/sample-images.ts';
 import styles from './index.module.css';
 
-type FileItemVariant = 'horizontal' | 'vertical' | 'thumbnail';
+type FileItemVariant = 'horizontal' | 'vertical';
 
 interface FileItemProps {
   /** File to render. */
@@ -226,8 +204,7 @@ interface FileItemProps {
 
 const coverVariants: Record<FileItemVariant, FileCoverVariant> = {
   horizontal: 'horizontal',
-  vertical: 'vertical',
-  thumbnail: 'thumbnail'
+  vertical: 'vertical'
 };
 
 const fileSizeFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
@@ -270,50 +247,37 @@ export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadErro
           onOpen={isError ? undefined : onOpen}
           onLoadError={onLoadError}
         />
-        {isError && variant === 'thumbnail' ? (
-          <Button
-            variant="minimal"
-            size="sm"
-            aria-label={`Retry ${image.name}`}
-            onPress={handleRetry}
-            className={styles.thumbnailRetry}
-          >
-            <Icon icon="refresh" aria-hidden="true" />
-          </Button>
-        ) : null}
       </Box>
 
-      {variant === 'thumbnail' ? null : (
-        <Flex
-          direction="column"
-          gap="xs"
-          justifyContent="center"
-          padding={variant === 'vertical' ? 'sm' : undefined}
-          className={styles.details}
-          data-variant={variant}
-        >
-          <Text className={styles.name}>{image.name}</Text>
-          {isError ? (
-            <Flex
-              direction={variant === 'horizontal' ? 'row' : 'column'}
-              gap="xs"
-              alignItems={variant === 'horizontal' ? 'center' : 'start'}
-              className={styles.errorDetails}
-              data-variant={variant}
-            >
-              <Detail emphasis="critical" maxLines={1}>
-                {image.errorMessage ?? 'File upload failed.'}
-              </Detail>
-              <Button variant="inline" size="sm" aria-label={`Retry ${image.name}`} onPress={handleRetry}>
-                <Icon icon="refresh" aria-hidden="true" />
-                Retry
-              </Button>
-            </Flex>
-          ) : (
-            <Detail>{size}</Detail>
-          )}
-        </Flex>
-      )}
+      <Flex
+        direction="column"
+        gap="xs"
+        justifyContent="center"
+        padding={variant === 'vertical' ? 'sm' : undefined}
+        className={styles.details}
+        data-variant={variant}
+      >
+        <Text className={styles.name}>{image.name}</Text>
+        {isError ? (
+          <Flex
+            direction={variant === 'horizontal' ? 'row' : 'column'}
+            gap="xs"
+            alignItems={variant === 'horizontal' ? 'center' : 'start'}
+            className={styles.errorDetails}
+            data-variant={variant}
+          >
+            <Detail emphasis="critical" maxLines={1}>
+              {image.errorMessage ?? 'File upload failed.'}
+            </Detail>
+            <Button variant="inline" size="sm" aria-label={`Retry ${image.name}`} onPress={handleRetry}>
+              <Icon icon="refresh" aria-hidden="true" />
+              Retry
+            </Button>
+          </Flex>
+        ) : (
+          <Detail>{size}</Detail>
+        )}
+      </Flex>
 
       <Button
         variant="minimal"
@@ -328,7 +292,7 @@ export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadErro
     </Flex>
   );
 }
-c:T270b,'use client';
+c:T2793,'use client';
 
 import { useCallback, useEffect, useRef, useState, type ComponentProps } from 'react';
 import {
@@ -546,7 +510,13 @@ export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: 
               </Flex>
 
               <Flex alignItems="center" gap="sm" wrap="wrap" className={styles.toolbarActions}>
-                <UploadPrompt ref={addButton} isDropTarget={isDropTarget} error={error} onSelect={addFiles} />
+                <UploadPrompt
+                  ref={addButton}
+                  isDropTarget={isDropTarget}
+                  error={error}
+                  acceptedTypes={acceptedTypes}
+                  onSelect={addFiles}
+                />
                 <SegmentedController aria-label="Layout" value={view} onSelectionChange={handleViewChange}>
                   <SegmentedControllerItem value="list">
                     <Icon icon="bulleted-list" />
@@ -684,7 +654,7 @@ export function GridView({ images, onOpen, onRemove, onRetry, onLoadError }: Gri
     </Grid>
   );
 }
-e:Tc9d,'use client';
+e:Tcda,'use client';
 
 import { useCallback, useState } from 'react';
 import { Box, Button, Flex, Icon, Image, Text } from '@godaddy/antares';
@@ -696,7 +666,7 @@ interface GalleryImageProps {
   image: ImageItem;
 
   /** Presentation size for the image. */
-  variant?: 'default' | 'grid' | 'list' | 'viewer' | 'thumbnail';
+  variant?: 'default' | 'viewer' | 'thumbnail';
 
   /** Optional activation for cards and the viewer's thumbnail strip. */
   onOpen?: (id: string) => void;
@@ -706,10 +676,20 @@ interface GalleryImageProps {
 
   /** Marks the viewer's current thumbnail. */
   selected?: boolean;
+
+  /** Loading strategy for the image resource. */
+  loading?: 'eager' | 'lazy';
 }
 
 /** Handles image loading failures without simulating an upload. */
-export function GalleryImage({ image, variant = 'default', onOpen, label, selected }: GalleryImageProps) {
+export function GalleryImage({
+  image,
+  variant = 'default',
+  onOpen,
+  label,
+  selected,
+  loading = 'lazy'
+}: GalleryImageProps) {
   const [attempt, setAttempt] = useState(0);
   const [state, setState] = useState<'loading' | 'ready' | 'error'>('loading');
   const inspectLoadedImage = useCallback(function inspectLoadedImage(element: HTMLImageElement | null) {
@@ -763,7 +743,7 @@ export function GalleryImage({ image, variant = 'default', onOpen, label, select
       className={styles.image}
       data-variant={variant}
       rounding="md"
-      loading={variant === 'viewer' ? 'eager' : 'lazy'}
+      loading={loading}
       decoding="async"
       onLoad={handleLoad}
       onError={handleError}
@@ -790,7 +770,7 @@ export function GalleryImage({ image, variant = 'default', onOpen, label, select
     </Flex>
   );
 }
-f:T82d,'use client';
+f:T7dc,'use client';
 
 import { useCallback, useState } from 'react';
 import { Flex } from '@godaddy/antares';
@@ -814,15 +794,14 @@ interface ListViewProps {
 
   /** Reports an image decode or network failure. */
   onLoadError: (id: string) => void;
-
-  /** Number of items visible before Show all is activated. */
-  maxVisibleItems?: number;
 }
 
+const MAX_VISIBLE_ITEMS = 5;
+
 /** Figma-aligned horizontal file list with counter and error banner. */
-export function ListView({ images, onOpen, onRemove, onRetry, onLoadError, maxVisibleItems = 5 }: ListViewProps) {
+export function ListView({ images, onOpen, onRemove, onRetry, onLoadError }: ListViewProps) {
   const [showAll, setShowAll] = useState(false);
-  const visibleImages = showAll ? images : images.slice(0, maxVisibleItems);
+  const visibleImages = showAll ? images : images.slice(0, MAX_VISIBLE_ITEMS);
   const errorCount = images.filter(function countError(image) {
     return image.status === 'error';
   }).length;
@@ -857,7 +836,7 @@ export function ListView({ images, onOpen, onRemove, onRetry, onLoadError, maxVi
     </Flex>
   );
 }
-10:T668,'use client';
+10:T678,'use client';
 
 import { forwardRef, useId } from 'react';
 import { Button, FileTrigger, Flex, Icon, Text } from '@godaddy/antares';
@@ -869,15 +848,16 @@ interface UploadPromptProps {
   /** Validation message shared with the picker and drop target. */
   error: string;
 
+  /** MIME types accepted by the gallery picker. */
+  acceptedTypes: string[];
+
   /** Adds files selected from the native picker. */
   onSelect: (files: FileList | null) => void;
 }
 
-const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-
 /** Compact file-upload action shared by Gallery's list and grid views. */
 export const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(function UploadPrompt(
-  { isDropTarget, error, onSelect },
+  { isDropTarget, error, acceptedTypes, onSelect },
   ref
 ) {
   const helpId = useId();
@@ -907,9 +887,8 @@ export const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(fun
     </Flex>
   );
 });
-11:T67c,'use client';
+11:T5df,'use client';
 
-import { useCallback } from 'react';
 import { Button, Flex, Icon, Text } from '@godaddy/antares';
 
 interface ViewBannerProps {
@@ -929,13 +908,6 @@ interface ViewBannerProps {
 /** Counter and upload-error feedback used below the Figma list layouts. */
 export function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: ViewBannerProps) {
   const hasMore = visibleCount < totalCount;
-  const handleShowAll = useCallback(
-    function handleShowAll() {
-      onShowAll();
-    },
-    [onShowAll]
-  );
-
   if (!hasMore && errorCount === 0) return null;
 
   return (
@@ -946,7 +918,7 @@ export function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: 
             {visibleCount} of {totalCount} files
           </Text>
           {hasMore ? (
-            <Button variant="inline" onPress={handleShowAll}>
+            <Button variant="inline" onPress={onShowAll}>
               Show all
             </Button>
           ) : null}
@@ -964,7 +936,7 @@ export function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: 
     </Flex>
   );
 }
-12:T1790,'use client';
+12:T17e8,'use client';
 
 import { useCallback, useEffect, useRef, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Button, Carousel, CloseButton, Content, Flex, Heading, Icon, Modal, Text } from '@godaddy/antares';
@@ -1075,13 +1047,16 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
     [activeId, images, onSelectImage]
   );
 
-  const renderSlide = useCallback(function renderSlide(slideImage: ImageItem) {
-    return (
-      <Flex key={slideImage.id} alignItems="center" justifyContent="center" className={styles.slide}>
-        <GalleryImage image={slideImage} variant="viewer" />
-      </Flex>
-    );
-  }, []);
+  const renderSlide = useCallback(
+    function renderSlide(slideImage: ImageItem) {
+      return (
+        <Flex key={slideImage.id} alignItems="center" justifyContent="center" className={styles.slide}>
+          <GalleryImage image={slideImage} variant="viewer" loading={slideImage.id === activeId ? 'eager' : 'lazy'} />
+        </Flex>
+      );
+    },
+    [activeId]
+  );
 
   const renderThumbnail = useCallback(
     function renderThumbnail(thumbnailImage: ImageItem) {
@@ -1202,8 +1177,8 @@ export const sampleImages: ImageItem[] = [
 19:X
 1e:X
 1e:C
-0:{"buildId":"QOqZgLZMquF4NA-S0Kxze","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"toc":[],"footer":{"enabled":true},"children":[["$","$L3",null,{"children":"Gallery"}],["$","$L4",null,{"className":"mb-0","children":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L5",null,{"markdownUrl":"/docs/blocks/gallery.mdx"}],["$","$L6",null,{"markdownUrl":"/docs/blocks/gallery.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/gallery/README.mdx"}]]}],["$","$L7",null,{"children":[null,"\n",["$","$L8",null,{"block":{"id":"gallery","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/drop-overlay/index.module.css","language":"css","source":".overlay {\n  position: absolute;\n  z-index: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: 1.5px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  pointer-events: none;\n  inset: 0;\n}\n"},{"path":"components/drop-overlay/index.tsx","language":"tsx","source":"import { Box, Flex, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\ninterface DropOverlayProps {\n  /** Whether an accepted file is currently over the gallery. */\n  isDropTarget: boolean;\n}\n\n/** Shows the green drop feedback while files are over the gallery. */\nexport function DropOverlay({ isDropTarget }: DropOverlayProps) {\n  if (!isDropTarget) return null;\n\n  return (\n    <Box role=\"status\" aria-live=\"polite\" className={styles.overlay}>\n      <Flex direction=\"column\" alignItems=\"center\" gap=\"sm\" padding=\"xl\">\n        <Icon icon=\"upload\" aria-hidden=\"true\" />\n        <Text as=\"strong\">Drop Files to upload.</Text>\n      </Flex>\n    </Box>\n  );\n}\n"},{"path":"components/empty-state/index.module.css","language":"css","source":".emptyState {\n  min-block-size: 16rem;\n  border: 1px dashed var(--color-border-low-contrast, #d4dbe0);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: var(--color-surface-background-passive, var(--ux-l7zq7p, #ffffff));\n  text-align: center;\n}\n\n.iconSurface {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: 1px solid var(--color-border-low-contrast, #d4dbe0);\n  background-color: var(--color-action-background-secondary-default, var(--ux-1r87102, #ffffff));\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/empty-state/index.tsx","language":"tsx","source":"import { Box, Flex, Heading, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Welcomes users to an empty gallery and points them to the upload action. */\nexport function EmptyState() {\n  return (\n    <Flex\n      direction=\"column\"\n      alignItems=\"center\"\n      justifyContent=\"center\"\n      gap=\"sm\"\n      padding=\"2xl\"\n      role=\"region\"\n      aria-label=\"Empty gallery\"\n      className={styles.emptyState}\n    >\n      <Box padding=\"md\" rounding=\"full\" aria-hidden=\"true\" className={styles.iconSurface}>\n        <Icon icon=\"upload\" />\n      </Box>\n      <Heading level={3}>Start your gallery</Heading>\n      <Text className={styles.description}>Drop images here or choose Add files above to upload.</Text>\n    </Flex>\n  );\n}\n"},{"path":"components/file-cover/index.module.css","language":"css","source":".surface {\n  display: block;\n  box-sizing: border-box;\n  overflow: hidden;\n  max-inline-size: 100%;\n  border: 1px solid var(--ux-box-border-color, #e5e5e5);\n  background: var(--uxFileUpload-backgroundColor, #f5f5f5);\n  object-fit: cover;\n}\n\n.surface:where([data-variant=\"horizontal\"]) {\n  inline-size: 3.5rem;\n  block-size: 3.5rem;\n}\n\n.surface:where([data-variant=\"vertical\"]) {\n  inline-size: 100%;\n  aspect-ratio: 1;\n}\n\n.surface:where([data-variant=\"thumbnail\"]) {\n  inline-size: 5.125rem;\n  block-size: 5.125rem;\n}\n\n.error {\n  display: flex;\n  border-color: var(--color-feedback-critical-strong, #db1802);\n  background: var(--color-feedback-critical-background, #fde8e7);\n  color: var(--color-feedback-critical-strong, #db1802);\n}\n\n.openButton {\n  display: block;\n  inline-size: 100%;\n  padding: 0;\n}\n"},{"path":"components/file-cover/index.tsx","language":"tsx","source":"$9"},{"path":"components/file-item/index.module.css","language":"css","source":"$a"},{"path":"components/file-item/index.tsx","language":"tsx","source":"$b"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  position: relative;\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.toolbar {\n  align-items: center;\n  justify-content: space-between;\n}\n\n.toolbarActions {\n  justify-content: flex-end;\n}\n\n.dropZone {\n  inline-size: 100%;\n  background: transparent;\n  border: 0;\n  border-radius: 0;\n}\n\n@media (max-width: 48rem) {\n  .toolbarActions {\n    flex-basis: 100%;\n    inline-size: 100%;\n    justify-content: space-between;\n  }\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$c"},{"path":"components/grid-view/index.module.css","language":"css","source":".items {\n  inline-size: 100%;\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/grid-view/index.tsx","language":"tsx","source":"$d"},{"path":"components/image/index.module.css","language":"css","source":".image {\n  display: block;\n  max-inline-size: 100%;\n}\n\n.image:where([data-variant=\"grid\"]) {\n  inline-size: 100%;\n  aspect-ratio: 4 / 3;\n  object-fit: cover;\n}\n\n.image:where([data-variant=\"list\"]) {\n  inline-size: 3.5rem;\n  block-size: 3.5rem;\n  flex-shrink: 0;\n  object-fit: cover;\n}\n\n.image:where([data-variant=\"viewer\"]) {\n  inline-size: 100%;\n  max-block-size: 55dvh;\n  object-fit: contain;\n}\n\n.image:where([data-variant=\"thumbnail\"]) {\n  inline-size: 5rem;\n  block-size: 3.75rem;\n  object-fit: cover;\n}\n\n.container {\n  min-inline-size: 0;\n}\n\n.openButton {\n  inline-size: 100%;\n  min-inline-size: 0;\n  padding: 0;\n}\n\n.openButton:where([data-selected=\"true\"]) {\n  outline: 2px solid currentColor;\n}\n"},{"path":"components/image/index.tsx","language":"tsx","source":"$e"},{"path":"components/list-view/index.module.css","language":"css","source":".root {\n  inline-size: 100%;\n}\n\n.items {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/list-view/index.tsx","language":"tsx","source":"$f"},{"path":"components/upload-prompt/index.tsx","language":"tsx","source":"$10"},{"path":"components/view-banner/index.tsx","language":"tsx","source":"$11"},{"path":"components/viewer/index.module.css","language":"css","source":".modal {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n}\n\n.slide {\n  min-inline-size: 0;\n}\n\n.visuallyHidden {\n  position: absolute;\n  inline-size: 1px;\n  block-size: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  clip-path: inset(50%);\n  white-space: nowrap;\n  border: 0;\n}\n\n.name {\n  overflow-wrap: anywhere;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  margin: 0;\n  padding: 0;\n  overflow-x: auto;\n  list-style: none;\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$12"},{"path":"data/sample-images.ts","language":"ts","source":"$13"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery/index.tsx';\nexport type { ImageItem, ImageStatus } from './data/sample-images';\n"}]},"children":"$L14"}]]}]]}],["$L15","$L16"],"$L17"]}],"isPartial":"$@18","staleTime":"$19","varyParams":null},{"rsc":"$L1a","isPartial":"$@1b","staleTime":"$19","varyParams":null},{"rsc":"$L1c","isPartial":"$@1d","staleTime":"$19","varyParams":"$1e"}],"isUpgradeableISRFallback":false,"a":"$@1f","rootVaryParams":null,"needsRuntimeRequest":"$@20"}
-21:I[128903,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"Preview"]
+0:{"buildId":"bX8pLXxwzQbWqaK3GoVEe","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"toc":[],"footer":{"enabled":true},"children":[["$","$L3",null,{"children":"Gallery"}],["$","$L4",null,{"className":"mb-0","children":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L5",null,{"markdownUrl":"/docs/blocks/gallery.mdx"}],["$","$L6",null,{"markdownUrl":"/docs/blocks/gallery.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/gallery/README.mdx"}]]}],["$","$L7",null,{"children":[null,"\n",["$","$L8",null,{"block":{"id":"gallery","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/drop-overlay/index.module.css","language":"css","source":".overlay {\n  position: absolute;\n  z-index: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: 1.5px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  pointer-events: none;\n  inset: 0;\n}\n"},{"path":"components/drop-overlay/index.tsx","language":"tsx","source":"import { Box, Flex, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\ninterface DropOverlayProps {\n  /** Whether an accepted file is currently over the gallery. */\n  isDropTarget: boolean;\n}\n\n/** Shows the green drop feedback while files are over the gallery. */\nexport function DropOverlay({ isDropTarget }: DropOverlayProps) {\n  if (!isDropTarget) return null;\n\n  return (\n    <Box role=\"status\" aria-live=\"polite\" className={styles.overlay}>\n      <Flex direction=\"column\" alignItems=\"center\" gap=\"sm\" padding=\"xl\">\n        <Icon icon=\"upload\" aria-hidden=\"true\" />\n        <Text as=\"strong\">Drop Files to upload.</Text>\n      </Flex>\n    </Box>\n  );\n}\n"},{"path":"components/empty-state/index.module.css","language":"css","source":".emptyState {\n  min-block-size: 16rem;\n  border: 1px dashed var(--color-border-low-contrast, #d4dbe0);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: var(--color-surface-background-passive, var(--ux-l7zq7p, #ffffff));\n  text-align: center;\n}\n\n.iconSurface {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: 1px solid var(--color-border-low-contrast, #d4dbe0);\n  background-color: var(--color-action-background-secondary-default, var(--ux-1r87102, #ffffff));\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/empty-state/index.tsx","language":"tsx","source":"import { Box, Flex, Heading, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Welcomes users to an empty gallery and points them to the upload action. */\nexport function EmptyState() {\n  return (\n    <Flex\n      direction=\"column\"\n      alignItems=\"center\"\n      justifyContent=\"center\"\n      gap=\"sm\"\n      padding=\"2xl\"\n      role=\"region\"\n      aria-label=\"Empty gallery\"\n      className={styles.emptyState}\n    >\n      <Box padding=\"md\" rounding=\"full\" aria-hidden=\"true\" className={styles.iconSurface}>\n        <Icon icon=\"upload\" />\n      </Box>\n      <Heading level={3}>Start your gallery</Heading>\n      <Text className={styles.description}>Drop images here or choose Add files above to upload.</Text>\n    </Flex>\n  );\n}\n"},{"path":"components/file-cover/index.module.css","language":"css","source":".surface {\n  display: block;\n  box-sizing: border-box;\n  overflow: hidden;\n  max-inline-size: 100%;\n  border: 1px solid var(--ux-box-border-color, #e5e5e5);\n  background: var(--uxFileUpload-backgroundColor, #f5f5f5);\n  object-fit: cover;\n}\n\n.surface:where([data-variant=\"horizontal\"]) {\n  inline-size: 3.5rem;\n  block-size: 3.5rem;\n}\n\n.surface:where([data-variant=\"vertical\"]) {\n  inline-size: 100%;\n  aspect-ratio: 1;\n}\n\n.error {\n  display: flex;\n  border-color: var(--color-feedback-critical-strong, #db1802);\n  background: var(--color-feedback-critical-background, #fde8e7);\n  color: var(--color-feedback-critical-strong, #db1802);\n}\n\n.openButton {\n  display: block;\n  inline-size: 100%;\n  padding: 0;\n}\n"},{"path":"components/file-cover/index.tsx","language":"tsx","source":"$9"},{"path":"components/file-item/index.module.css","language":"css","source":"$a"},{"path":"components/file-item/index.tsx","language":"tsx","source":"$b"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  position: relative;\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.toolbar {\n  align-items: center;\n  justify-content: space-between;\n}\n\n.toolbarActions {\n  justify-content: flex-end;\n}\n\n.dropZone {\n  inline-size: 100%;\n  background: transparent;\n  border: 0;\n  border-radius: 0;\n}\n\n@media (max-width: 48rem) {\n  .toolbarActions {\n    flex-basis: 100%;\n    inline-size: 100%;\n    justify-content: space-between;\n  }\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$c"},{"path":"components/grid-view/index.module.css","language":"css","source":".items {\n  inline-size: 100%;\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/grid-view/index.tsx","language":"tsx","source":"$d"},{"path":"components/image/index.module.css","language":"css","source":".image {\n  display: block;\n  max-inline-size: 100%;\n}\n\n.image:where([data-variant=\"viewer\"]) {\n  inline-size: 100%;\n  max-block-size: 55dvh;\n  object-fit: contain;\n}\n\n.image:where([data-variant=\"thumbnail\"]) {\n  inline-size: 5rem;\n  block-size: 3.75rem;\n  object-fit: cover;\n}\n\n.container {\n  min-inline-size: 0;\n}\n\n.openButton {\n  inline-size: 100%;\n  min-inline-size: 0;\n  padding: 0;\n}\n\n.openButton:where([data-selected=\"true\"]) {\n  outline: 2px solid currentColor;\n}\n"},{"path":"components/image/index.tsx","language":"tsx","source":"$e"},{"path":"components/list-view/index.module.css","language":"css","source":".root {\n  inline-size: 100%;\n}\n\n.items {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/list-view/index.tsx","language":"tsx","source":"$f"},{"path":"components/upload-prompt/index.tsx","language":"tsx","source":"$10"},{"path":"components/view-banner/index.tsx","language":"tsx","source":"$11"},{"path":"components/viewer/index.module.css","language":"css","source":".modal {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n}\n\n.slide {\n  min-inline-size: 0;\n}\n\n.visuallyHidden {\n  position: absolute;\n  inline-size: 1px;\n  block-size: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  clip-path: inset(50%);\n  white-space: nowrap;\n  border: 0;\n}\n\n.name {\n  overflow-wrap: anywhere;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  margin: 0;\n  padding: 0;\n  overflow-x: auto;\n  list-style: none;\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$12"},{"path":"data/sample-images.ts","language":"ts","source":"$13"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery/index.tsx';\nexport type { ImageItem, ImageStatus } from './data/sample-images';\n"}]},"children":"$L14"}]]}]]}],["$L15","$L16"],"$L17"]}],"isPartial":"$@18","staleTime":"$19","varyParams":null},{"rsc":"$L1a","isPartial":"$@1b","staleTime":"$19","varyParams":null},{"rsc":"$L1c","isPartial":"$@1d","staleTime":"$19","varyParams":"$1e"}],"isUpgradeableISRFallback":false,"a":"$@1f","rootVaryParams":null,"needsRuntimeRequest":"$@20"}
+21:I[128903,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"Preview"]
 22:I[897367,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js"],"OutletBoundary"]
 23:"$Sreact.suspense"
 25:I[897367,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js"],"ViewportBoundary"]

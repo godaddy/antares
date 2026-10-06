@@ -1,14 +1,14 @@
 1:"$Sreact.fragment"
-2:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsPage"]
-3:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsTitle"]
-4:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsDescription"]
-5:I[748747,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"LLMCopyButton"]
-6:I[748747,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"ViewOptions"]
-7:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsBody"]
-8:I[836838,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"Heading"]
-9:I[195232,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"CodeBlock"]
-a:I[195232,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"Pre"]
-b:I[696229,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"SiteBlockExplorer"]
+2:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsPage"]
+3:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsTitle"]
+4:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsDescription"]
+5:I[748747,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"LLMCopyButton"]
+6:I[748747,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"ViewOptions"]
+7:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsBody"]
+8:I[836838,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"Heading"]
+9:I[195232,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"CodeBlock"]
+a:I[195232,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"Pre"]
+b:I[696229,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"SiteBlockExplorer"]
 c:Teca,'use client';
 
 import { useCallback, useId } from 'react';
@@ -120,9 +120,8 @@ export function AttachedFiles({ files, error, onSelect, onRemove }: AttachedFile
     </Flex>
   );
 }
-d:T541,'use client';
+d:T4f0,'use client';
 
-import { useCallback } from 'react';
 import { Detail, Flex, Icon, Text } from '@godaddy/antares';
 import styles from './index.module.css';
 
@@ -143,25 +142,23 @@ const benefits = [
 
 /** Lists the services that can support the visitor alongside the inquiry form. */
 export function Benefits() {
-  const renderBenefit = useCallback(function renderBenefit(benefit: (typeof benefits)[number]) {
-    return (
-      <Flex as="li" key={benefit.title} gap="sm" alignItems="start">
-        <Icon icon="checkmark" width={18} height={18} aria-hidden="true" />
-        <Flex direction="column" gap="xs">
-          <Text as="strong">{benefit.title}</Text>
-          <Detail size="sm">{benefit.description}</Detail>
-        </Flex>
-      </Flex>
-    );
-  }, []);
-
   return (
     <Flex as="ul" direction="column" gap="lg" aria-label="Services we can help with" className={styles.list}>
-      {benefits.map(renderBenefit)}
+      {benefits.map(function renderBenefit(benefit) {
+        return (
+          <Flex as="li" key={benefit.title} gap="sm" alignItems="start">
+            <Icon icon="checkmark" width={18} height={18} aria-hidden="true" />
+            <Flex direction="column" gap="xs">
+              <Text as="strong">{benefit.title}</Text>
+              <Detail size="sm">{benefit.description}</Detail>
+            </Flex>
+          </Flex>
+        );
+      })}
     </Flex>
   );
 }
-e:Teff,'use client';
+e:Te5c,'use client';
 
 import { useCallback } from 'react';
 import {
@@ -249,13 +246,6 @@ function ContactField({ field, value, onChange }: ContactFieldProps) {
 
 /** Composes the required contact fields with the optional project metadata. */
 export function Fields({ values, dueDate, onChange, onProjectTypeChange, onDateChange, onClearDate }: FieldsProps) {
-  const handleDateChange = useCallback(
-    function handleDateChange(value: CalendarDate | null) {
-      onDateChange(value);
-    },
-    [onDateChange]
-  );
-
   return (
     <>
       {fields.map(function renderField(field) {
@@ -274,7 +264,7 @@ export function Fields({ values, dueDate, onChange, onProjectTypeChange, onDateC
       </Select>
 
       <Flex direction="column" gap="sm">
-        <DatePicker name="dueDate" value={dueDate} onChange={handleDateChange}>
+        <DatePicker name="dueDate" value={dueDate} onChange={onDateChange}>
           <Label>Due date</Label>
           <Button slot="trigger" />
           <Text slot="description">Leave blank if there’s no set date.</Text>
@@ -627,9 +617,9 @@ export function ProjectInquiryForm() {
 1a:X
 1f:X
 1f:C
-0:{"buildId":"QOqZgLZMquF4NA-S0Kxze","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"toc":[{"depth":2,"url":"#install-a-block","title":"Install a block"},{"depth":2,"url":"#blocks","title":"Blocks"},{"depth":3,"url":"#project-inquiry-form","title":"Project inquiry form"},{"depth":3,"url":"#gallery","title":"Gallery"},{"depth":3,"url":"#sign-in-form","title":"Sign-in form"}],"footer":{"enabled":true},"children":[["$","$L3",null,{"children":"Build product experiences with Antares."}],["$","$L4",null,{"className":"mb-0","children":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L5",null,{"markdownUrl":"/docs/blocks.mdx"}],["$","$L6",null,{"markdownUrl":"/docs/blocks.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/README.mdx"}]]}],["$","$L7",null,{"children":[null,"\n",["$","$L8",null,{"as":"h2","id":"install-a-block","children":"Install a block"}],"\n",["$","p",null,{"children":"From the root of your application, run the command copied by the block's Install button:"}],"\n",["$","$L9",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$La",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npx"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" shadcn@latest"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" add"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" godaddy/antares/blocks/sign-in-form"}]]}]}]}]}],"\n",["$","$L8",null,{"as":"h2","id":"blocks","children":"Blocks"}],"\n",["$","$L8",null,{"as":"h3","id":"project-inquiry-form","children":"Project inquiry form"}],"\n",["$","$Lb",null,{"block":{"id":"project-inquiry-form","description":"A responsive project inquiry page with local file previews.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/project-inquiry-form","files":[{"path":"components/attached-files/index.module.css","language":"css","source":".row {\n  border: 1px solid var(--ux-box-border-color, #d0d5dd);\n}\n\n.details {\n  min-inline-size: 0;\n}\n\n.fileName {\n  overflow-wrap: anywhere;\n}\n\n.pickerButton {\n  display: flex;\n  inline-size: 100%;\n  min-block-size: 5rem;\n  padding: 0.75rem 1rem;\n  border: 1px dashed var(--ux-box-border-color, #8d8d8d);\n  border-radius: var(--ux-2jubes, 6px);\n  background: var(--ux-box-backgroundColor, #f7f7f7);\n  white-space: normal;\n}\n"},{"path":"components/attached-files/index.tsx","language":"tsx","source":"$c"},{"path":"components/benefits/index.module.css","language":"css","source":".list {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/benefits/index.tsx","language":"tsx","source":"$d"},{"path":"components/drop-overlay/index.module.css","language":"css","source":".overlay {\n  position: absolute;\n  z-index: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: 1.5px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  pointer-events: none;\n  inset: 0;\n}\n"},{"path":"components/drop-overlay/index.tsx","language":"tsx","source":"import { Box, Flex, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\ninterface DropOverlayProps {\n  /** Whether an accepted file is currently over the inquiry form. */\n  isDropTarget: boolean;\n}\n\n/** Shows the green drop feedback while files are over the inquiry form. */\nexport function DropOverlay({ isDropTarget }: DropOverlayProps) {\n  if (!isDropTarget) return null;\n\n  return (\n    <Box role=\"status\" aria-live=\"polite\" className={styles.overlay}>\n      <Flex direction=\"column\" alignItems=\"center\" gap=\"sm\" padding=\"xl\">\n        <Icon icon=\"upload\" aria-hidden=\"true\" />\n        <Text as=\"strong\">Drop Files to upload.</Text>\n      </Flex>\n    </Box>\n  );\n}\n"},{"path":"components/fields/index.tsx","language":"tsx","source":"$e"},{"path":"components/file-preview/index.module.css","language":"css","source":".preview {\n  inline-size: 3.5rem;\n  block-size: 3.5rem;\n  flex-shrink: 0;\n  object-fit: cover;\n}\n"},{"path":"components/file-preview/index.tsx","language":"tsx","source":"$f"},{"path":"components/project-inquiry-form/index.module.css","language":"css","source":".root {\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.columns {\n  min-inline-size: 0;\n}\n\n.visualColumn {\n  min-inline-size: 0;\n}\n\n.heroImage {\n  display: block;\n  inline-size: 100%;\n  block-size: auto;\n  aspect-ratio: 16 / 9;\n  object-fit: cover;\n}\n\n.form {\n  position: relative;\n  min-inline-size: 0;\n}\n\n.dropZone {\n  inline-size: 100%;\n  max-inline-size: 100%;\n  min-inline-size: 0;\n  margin: 0;\n  background: transparent;\n  border: 0;\n  border-radius: 0;\n  justify-self: stretch;\n}\n"},{"path":"components/project-inquiry-form/index.tsx","language":"tsx","source":"$10"},{"path":"index.tsx","language":"tsx","source":"export { ProjectInquiryForm } from './components/project-inquiry-form/index.tsx';\n"}]},"children":"$L11"}],"\n","$L12","\n","$L13","\n","$L14","\n","$L15"]}]]}],["$L16","$L17"],"$L18"]}],"isPartial":"$@19","staleTime":"$1a","varyParams":null},{"rsc":"$L1b","isPartial":"$@1c","staleTime":"$1a","varyParams":null},{"rsc":"$L1d","isPartial":"$@1e","staleTime":"$1a","varyParams":"$1f"}],"isUpgradeableISRFallback":false,"a":"$@20","rootVaryParams":null,"needsRuntimeRequest":"$@21"}
-22:I[828315,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"Preview"]
-2f:I[342785,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"Preview"]
+0:{"buildId":"bX8pLXxwzQbWqaK3GoVEe","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"toc":[{"depth":2,"url":"#install-a-block","title":"Install a block"},{"depth":2,"url":"#blocks","title":"Blocks"},{"depth":3,"url":"#project-inquiry-form","title":"Project inquiry form"},{"depth":3,"url":"#gallery","title":"Gallery"},{"depth":3,"url":"#sign-in-form","title":"Sign-in form"}],"footer":{"enabled":true},"children":[["$","$L3",null,{"children":"Build product experiences with Antares."}],["$","$L4",null,{"className":"mb-0","children":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L5",null,{"markdownUrl":"/docs/blocks.mdx"}],["$","$L6",null,{"markdownUrl":"/docs/blocks.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/README.mdx"}]]}],["$","$L7",null,{"children":[null,"\n",["$","$L8",null,{"as":"h2","id":"install-a-block","children":"Install a block"}],"\n",["$","p",null,{"children":"From the root of your application, run the command copied by the block's Install button:"}],"\n",["$","$L9",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$La",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npx"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" shadcn@latest"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" add"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" godaddy/antares/blocks/sign-in-form"}]]}]}]}]}],"\n",["$","$L8",null,{"as":"h2","id":"blocks","children":"Blocks"}],"\n",["$","$L8",null,{"as":"h3","id":"project-inquiry-form","children":"Project inquiry form"}],"\n",["$","$Lb",null,{"block":{"id":"project-inquiry-form","description":"A responsive project inquiry page with local file previews.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/project-inquiry-form","files":[{"path":"components/attached-files/index.module.css","language":"css","source":".row {\n  border: 1px solid var(--ux-box-border-color, #d0d5dd);\n}\n\n.details {\n  min-inline-size: 0;\n}\n\n.fileName {\n  overflow-wrap: anywhere;\n}\n\n.pickerButton {\n  display: flex;\n  inline-size: 100%;\n  min-block-size: 5rem;\n  padding: 0.75rem 1rem;\n  border: 1px dashed var(--ux-box-border-color, #8d8d8d);\n  border-radius: var(--ux-2jubes, 6px);\n  background: var(--ux-box-backgroundColor, #f7f7f7);\n  white-space: normal;\n}\n"},{"path":"components/attached-files/index.tsx","language":"tsx","source":"$c"},{"path":"components/benefits/index.module.css","language":"css","source":".list {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/benefits/index.tsx","language":"tsx","source":"$d"},{"path":"components/drop-overlay/index.module.css","language":"css","source":".overlay {\n  position: absolute;\n  z-index: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: 1.5px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  pointer-events: none;\n  inset: 0;\n}\n"},{"path":"components/drop-overlay/index.tsx","language":"tsx","source":"import { Box, Flex, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\ninterface DropOverlayProps {\n  /** Whether an accepted file is currently over the inquiry form. */\n  isDropTarget: boolean;\n}\n\n/** Shows the green drop feedback while files are over the inquiry form. */\nexport function DropOverlay({ isDropTarget }: DropOverlayProps) {\n  if (!isDropTarget) return null;\n\n  return (\n    <Box role=\"status\" aria-live=\"polite\" className={styles.overlay}>\n      <Flex direction=\"column\" alignItems=\"center\" gap=\"sm\" padding=\"xl\">\n        <Icon icon=\"upload\" aria-hidden=\"true\" />\n        <Text as=\"strong\">Drop Files to upload.</Text>\n      </Flex>\n    </Box>\n  );\n}\n"},{"path":"components/fields/index.tsx","language":"tsx","source":"$e"},{"path":"components/file-preview/index.module.css","language":"css","source":".preview {\n  inline-size: 3.5rem;\n  block-size: 3.5rem;\n  flex-shrink: 0;\n  object-fit: cover;\n}\n"},{"path":"components/file-preview/index.tsx","language":"tsx","source":"$f"},{"path":"components/project-inquiry-form/index.module.css","language":"css","source":".root {\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.columns {\n  min-inline-size: 0;\n}\n\n.visualColumn {\n  min-inline-size: 0;\n}\n\n.heroImage {\n  display: block;\n  inline-size: 100%;\n  block-size: auto;\n  aspect-ratio: 16 / 9;\n  object-fit: cover;\n}\n\n.form {\n  position: relative;\n  min-inline-size: 0;\n}\n\n.dropZone {\n  inline-size: 100%;\n  max-inline-size: 100%;\n  min-inline-size: 0;\n  margin: 0;\n  background: transparent;\n  border: 0;\n  border-radius: 0;\n  justify-self: stretch;\n}\n"},{"path":"components/project-inquiry-form/index.tsx","language":"tsx","source":"$10"},{"path":"index.tsx","language":"tsx","source":"export { ProjectInquiryForm } from './components/project-inquiry-form/index.tsx';\n"}]},"children":"$L11"}],"\n","$L12","\n","$L13","\n","$L14","\n","$L15"]}]]}],["$L16","$L17"],"$L18"]}],"isPartial":"$@19","staleTime":"$1a","varyParams":null},{"rsc":"$L1b","isPartial":"$@1c","staleTime":"$1a","varyParams":null},{"rsc":"$L1d","isPartial":"$@1e","staleTime":"$1a","varyParams":"$1f"}],"isUpgradeableISRFallback":false,"a":"$@20","rootVaryParams":null,"needsRuntimeRequest":"$@21"}
+22:I[828315,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"Preview"]
+2f:I[342785,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"Preview"]
 30:I[897367,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js"],"OutletBoundary"]
 31:"$Sreact.suspense"
 33:I[897367,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js"],"ViewportBoundary"]
@@ -638,15 +628,15 @@ export function ProjectInquiryForm() {
 36:I[837457,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js"],"default"]
 11:["$","$L22",null,{}]
 12:["$","$L8",null,{"as":"h3","id":"gallery","children":"Gallery"}]
-23:T92d,'use client';
+23:T913,'use client';
 
 import { useCallback, useEffect, useState } from 'react';
 import { Box, Button, Flex, Icon, Image } from '@godaddy/antares';
 import type { ImageItem } from '../../data/sample-images.ts';
 import styles from './index.module.css';
 
-/** Cover geometry used by Gallery's list, grid, and thumbnail presentations. */
-export type FileCoverVariant = 'horizontal' | 'vertical' | 'thumbnail';
+/** Cover geometry used by Gallery's list and grid presentations. */
+export type FileCoverVariant = 'horizontal' | 'vertical';
 
 interface FileCoverProps {
   /** File represented by the cover. */
@@ -728,7 +718,7 @@ export function FileCover({ image, variant, onOpen, onLoadError }: FileCoverProp
     </Button>
   );
 }
-24:T7bb,.item {
+24:T5ea,.item {
   position: relative;
   box-sizing: border-box;
   border: 1px solid var(--ux-box-border-color, #e5e5e5);
@@ -756,12 +746,6 @@ export function FileCover({ image, variant, onOpen, onLoadError }: FileCoverProp
   .item:where([data-variant="vertical"]:hover) {
     border-color: var(--color-action-border-secondary-hovered, var(--ux-kkdx4n, #09757a));
   }
-}
-
-.item:where([data-variant="thumbnail"]) {
-  inline-size: 5.125rem;
-  block-size: 5.125rem;
-  border: 0;
 }
 
 .coverSlot {
@@ -810,23 +794,7 @@ export function FileCover({ image, variant, onOpen, onLoadError }: FileCoverProp
   padding: 0;
   background: var(--ux-control-backgroundColor, #ffffff);
 }
-
-.remove:where([data-variant="thumbnail"]) {
-  inset-block-start: 0;
-  inset-inline-end: 0;
-}
-
-.thumbnailRetry {
-  position: absolute;
-  inset-block-end: 0;
-  inset-inline-start: 0;
-  inline-size: 1.5rem;
-  block-size: 1.5rem;
-  padding: 0;
-  background: var(--ux-control-backgroundColor, #ffffff);
-  color: var(--color-feedback-critical-strong, #db1802);
-}
-25:Tfa8,'use client';
+25:Tdb5,'use client';
 
 import { useCallback } from 'react';
 import { Box, Button, Detail, Flex, Icon, Text } from '@godaddy/antares';
@@ -834,7 +802,7 @@ import { FileCover, type FileCoverVariant } from '../file-cover/index.tsx';
 import type { ImageItem } from '../../data/sample-images.ts';
 import styles from './index.module.css';
 
-type FileItemVariant = 'horizontal' | 'vertical' | 'thumbnail';
+type FileItemVariant = 'horizontal' | 'vertical';
 
 interface FileItemProps {
   /** File to render. */
@@ -858,8 +826,7 @@ interface FileItemProps {
 
 const coverVariants: Record<FileItemVariant, FileCoverVariant> = {
   horizontal: 'horizontal',
-  vertical: 'vertical',
-  thumbnail: 'thumbnail'
+  vertical: 'vertical'
 };
 
 const fileSizeFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
@@ -902,50 +869,37 @@ export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadErro
           onOpen={isError ? undefined : onOpen}
           onLoadError={onLoadError}
         />
-        {isError && variant === 'thumbnail' ? (
-          <Button
-            variant="minimal"
-            size="sm"
-            aria-label={`Retry ${image.name}`}
-            onPress={handleRetry}
-            className={styles.thumbnailRetry}
-          >
-            <Icon icon="refresh" aria-hidden="true" />
-          </Button>
-        ) : null}
       </Box>
 
-      {variant === 'thumbnail' ? null : (
-        <Flex
-          direction="column"
-          gap="xs"
-          justifyContent="center"
-          padding={variant === 'vertical' ? 'sm' : undefined}
-          className={styles.details}
-          data-variant={variant}
-        >
-          <Text className={styles.name}>{image.name}</Text>
-          {isError ? (
-            <Flex
-              direction={variant === 'horizontal' ? 'row' : 'column'}
-              gap="xs"
-              alignItems={variant === 'horizontal' ? 'center' : 'start'}
-              className={styles.errorDetails}
-              data-variant={variant}
-            >
-              <Detail emphasis="critical" maxLines={1}>
-                {image.errorMessage ?? 'File upload failed.'}
-              </Detail>
-              <Button variant="inline" size="sm" aria-label={`Retry ${image.name}`} onPress={handleRetry}>
-                <Icon icon="refresh" aria-hidden="true" />
-                Retry
-              </Button>
-            </Flex>
-          ) : (
-            <Detail>{size}</Detail>
-          )}
-        </Flex>
-      )}
+      <Flex
+        direction="column"
+        gap="xs"
+        justifyContent="center"
+        padding={variant === 'vertical' ? 'sm' : undefined}
+        className={styles.details}
+        data-variant={variant}
+      >
+        <Text className={styles.name}>{image.name}</Text>
+        {isError ? (
+          <Flex
+            direction={variant === 'horizontal' ? 'row' : 'column'}
+            gap="xs"
+            alignItems={variant === 'horizontal' ? 'center' : 'start'}
+            className={styles.errorDetails}
+            data-variant={variant}
+          >
+            <Detail emphasis="critical" maxLines={1}>
+              {image.errorMessage ?? 'File upload failed.'}
+            </Detail>
+            <Button variant="inline" size="sm" aria-label={`Retry ${image.name}`} onPress={handleRetry}>
+              <Icon icon="refresh" aria-hidden="true" />
+              Retry
+            </Button>
+          </Flex>
+        ) : (
+          <Detail>{size}</Detail>
+        )}
+      </Flex>
 
       <Button
         variant="minimal"
@@ -960,7 +914,7 @@ export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadErro
     </Flex>
   );
 }
-26:T270b,'use client';
+26:T2793,'use client';
 
 import { useCallback, useEffect, useRef, useState, type ComponentProps } from 'react';
 import {
@@ -1178,7 +1132,13 @@ export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: 
               </Flex>
 
               <Flex alignItems="center" gap="sm" wrap="wrap" className={styles.toolbarActions}>
-                <UploadPrompt ref={addButton} isDropTarget={isDropTarget} error={error} onSelect={addFiles} />
+                <UploadPrompt
+                  ref={addButton}
+                  isDropTarget={isDropTarget}
+                  error={error}
+                  acceptedTypes={acceptedTypes}
+                  onSelect={addFiles}
+                />
                 <SegmentedController aria-label="Layout" value={view} onSelectionChange={handleViewChange}>
                   <SegmentedControllerItem value="list">
                     <Icon icon="bulleted-list" />
@@ -1316,7 +1276,7 @@ export function GridView({ images, onOpen, onRemove, onRetry, onLoadError }: Gri
     </Grid>
   );
 }
-28:Tc9d,'use client';
+28:Tcda,'use client';
 
 import { useCallback, useState } from 'react';
 import { Box, Button, Flex, Icon, Image, Text } from '@godaddy/antares';
@@ -1328,7 +1288,7 @@ interface GalleryImageProps {
   image: ImageItem;
 
   /** Presentation size for the image. */
-  variant?: 'default' | 'grid' | 'list' | 'viewer' | 'thumbnail';
+  variant?: 'default' | 'viewer' | 'thumbnail';
 
   /** Optional activation for cards and the viewer's thumbnail strip. */
   onOpen?: (id: string) => void;
@@ -1338,10 +1298,20 @@ interface GalleryImageProps {
 
   /** Marks the viewer's current thumbnail. */
   selected?: boolean;
+
+  /** Loading strategy for the image resource. */
+  loading?: 'eager' | 'lazy';
 }
 
 /** Handles image loading failures without simulating an upload. */
-export function GalleryImage({ image, variant = 'default', onOpen, label, selected }: GalleryImageProps) {
+export function GalleryImage({
+  image,
+  variant = 'default',
+  onOpen,
+  label,
+  selected,
+  loading = 'lazy'
+}: GalleryImageProps) {
   const [attempt, setAttempt] = useState(0);
   const [state, setState] = useState<'loading' | 'ready' | 'error'>('loading');
   const inspectLoadedImage = useCallback(function inspectLoadedImage(element: HTMLImageElement | null) {
@@ -1395,7 +1365,7 @@ export function GalleryImage({ image, variant = 'default', onOpen, label, select
       className={styles.image}
       data-variant={variant}
       rounding="md"
-      loading={variant === 'viewer' ? 'eager' : 'lazy'}
+      loading={loading}
       decoding="async"
       onLoad={handleLoad}
       onError={handleError}
@@ -1422,7 +1392,7 @@ export function GalleryImage({ image, variant = 'default', onOpen, label, select
     </Flex>
   );
 }
-29:T82d,'use client';
+29:T7dc,'use client';
 
 import { useCallback, useState } from 'react';
 import { Flex } from '@godaddy/antares';
@@ -1446,15 +1416,14 @@ interface ListViewProps {
 
   /** Reports an image decode or network failure. */
   onLoadError: (id: string) => void;
-
-  /** Number of items visible before Show all is activated. */
-  maxVisibleItems?: number;
 }
 
+const MAX_VISIBLE_ITEMS = 5;
+
 /** Figma-aligned horizontal file list with counter and error banner. */
-export function ListView({ images, onOpen, onRemove, onRetry, onLoadError, maxVisibleItems = 5 }: ListViewProps) {
+export function ListView({ images, onOpen, onRemove, onRetry, onLoadError }: ListViewProps) {
   const [showAll, setShowAll] = useState(false);
-  const visibleImages = showAll ? images : images.slice(0, maxVisibleItems);
+  const visibleImages = showAll ? images : images.slice(0, MAX_VISIBLE_ITEMS);
   const errorCount = images.filter(function countError(image) {
     return image.status === 'error';
   }).length;
@@ -1489,7 +1458,7 @@ export function ListView({ images, onOpen, onRemove, onRetry, onLoadError, maxVi
     </Flex>
   );
 }
-2a:T668,'use client';
+2a:T678,'use client';
 
 import { forwardRef, useId } from 'react';
 import { Button, FileTrigger, Flex, Icon, Text } from '@godaddy/antares';
@@ -1501,15 +1470,16 @@ interface UploadPromptProps {
   /** Validation message shared with the picker and drop target. */
   error: string;
 
+  /** MIME types accepted by the gallery picker. */
+  acceptedTypes: string[];
+
   /** Adds files selected from the native picker. */
   onSelect: (files: FileList | null) => void;
 }
 
-const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-
 /** Compact file-upload action shared by Gallery's list and grid views. */
 export const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(function UploadPrompt(
-  { isDropTarget, error, onSelect },
+  { isDropTarget, error, acceptedTypes, onSelect },
   ref
 ) {
   const helpId = useId();
@@ -1539,9 +1509,8 @@ export const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(fun
     </Flex>
   );
 });
-2b:T67c,'use client';
+2b:T5df,'use client';
 
-import { useCallback } from 'react';
 import { Button, Flex, Icon, Text } from '@godaddy/antares';
 
 interface ViewBannerProps {
@@ -1561,13 +1530,6 @@ interface ViewBannerProps {
 /** Counter and upload-error feedback used below the Figma list layouts. */
 export function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: ViewBannerProps) {
   const hasMore = visibleCount < totalCount;
-  const handleShowAll = useCallback(
-    function handleShowAll() {
-      onShowAll();
-    },
-    [onShowAll]
-  );
-
   if (!hasMore && errorCount === 0) return null;
 
   return (
@@ -1578,7 +1540,7 @@ export function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: 
             {visibleCount} of {totalCount} files
           </Text>
           {hasMore ? (
-            <Button variant="inline" onPress={handleShowAll}>
+            <Button variant="inline" onPress={onShowAll}>
               Show all
             </Button>
           ) : null}
@@ -1596,7 +1558,7 @@ export function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: 
     </Flex>
   );
 }
-2c:T1790,'use client';
+2c:T17e8,'use client';
 
 import { useCallback, useEffect, useRef, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Button, Carousel, CloseButton, Content, Flex, Heading, Icon, Modal, Text } from '@godaddy/antares';
@@ -1707,13 +1669,16 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
     [activeId, images, onSelectImage]
   );
 
-  const renderSlide = useCallback(function renderSlide(slideImage: ImageItem) {
-    return (
-      <Flex key={slideImage.id} alignItems="center" justifyContent="center" className={styles.slide}>
-        <GalleryImage image={slideImage} variant="viewer" />
-      </Flex>
-    );
-  }, []);
+  const renderSlide = useCallback(
+    function renderSlide(slideImage: ImageItem) {
+      return (
+        <Flex key={slideImage.id} alignItems="center" justifyContent="center" className={styles.slide}>
+          <GalleryImage image={slideImage} variant="viewer" loading={slideImage.id === activeId ? 'eager' : 'lazy'} />
+        </Flex>
+      );
+    },
+    [activeId]
+  );
 
   const renderThumbnail = useCallback(
     function renderThumbnail(thumbnailImage: ImageItem) {
@@ -1831,7 +1796,7 @@ export const sampleImages: ImageItem[] = [
     errorMessage: 'Couldn’t load Photo_error.png.'
   }
 ];
-13:["$","$Lb",null,{"block":{"id":"gallery","description":"Browse images in a list or grid, add local files, and open a media viewer.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/drop-overlay/index.module.css","language":"css","source":".overlay {\n  position: absolute;\n  z-index: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: 1.5px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  pointer-events: none;\n  inset: 0;\n}\n"},{"path":"components/drop-overlay/index.tsx","language":"tsx","source":"import { Box, Flex, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\ninterface DropOverlayProps {\n  /** Whether an accepted file is currently over the gallery. */\n  isDropTarget: boolean;\n}\n\n/** Shows the green drop feedback while files are over the gallery. */\nexport function DropOverlay({ isDropTarget }: DropOverlayProps) {\n  if (!isDropTarget) return null;\n\n  return (\n    <Box role=\"status\" aria-live=\"polite\" className={styles.overlay}>\n      <Flex direction=\"column\" alignItems=\"center\" gap=\"sm\" padding=\"xl\">\n        <Icon icon=\"upload\" aria-hidden=\"true\" />\n        <Text as=\"strong\">Drop Files to upload.</Text>\n      </Flex>\n    </Box>\n  );\n}\n"},{"path":"components/empty-state/index.module.css","language":"css","source":".emptyState {\n  min-block-size: 16rem;\n  border: 1px dashed var(--color-border-low-contrast, #d4dbe0);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: var(--color-surface-background-passive, var(--ux-l7zq7p, #ffffff));\n  text-align: center;\n}\n\n.iconSurface {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: 1px solid var(--color-border-low-contrast, #d4dbe0);\n  background-color: var(--color-action-background-secondary-default, var(--ux-1r87102, #ffffff));\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/empty-state/index.tsx","language":"tsx","source":"import { Box, Flex, Heading, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Welcomes users to an empty gallery and points them to the upload action. */\nexport function EmptyState() {\n  return (\n    <Flex\n      direction=\"column\"\n      alignItems=\"center\"\n      justifyContent=\"center\"\n      gap=\"sm\"\n      padding=\"2xl\"\n      role=\"region\"\n      aria-label=\"Empty gallery\"\n      className={styles.emptyState}\n    >\n      <Box padding=\"md\" rounding=\"full\" aria-hidden=\"true\" className={styles.iconSurface}>\n        <Icon icon=\"upload\" />\n      </Box>\n      <Heading level={3}>Start your gallery</Heading>\n      <Text className={styles.description}>Drop images here or choose Add files above to upload.</Text>\n    </Flex>\n  );\n}\n"},{"path":"components/file-cover/index.module.css","language":"css","source":".surface {\n  display: block;\n  box-sizing: border-box;\n  overflow: hidden;\n  max-inline-size: 100%;\n  border: 1px solid var(--ux-box-border-color, #e5e5e5);\n  background: var(--uxFileUpload-backgroundColor, #f5f5f5);\n  object-fit: cover;\n}\n\n.surface:where([data-variant=\"horizontal\"]) {\n  inline-size: 3.5rem;\n  block-size: 3.5rem;\n}\n\n.surface:where([data-variant=\"vertical\"]) {\n  inline-size: 100%;\n  aspect-ratio: 1;\n}\n\n.surface:where([data-variant=\"thumbnail\"]) {\n  inline-size: 5.125rem;\n  block-size: 5.125rem;\n}\n\n.error {\n  display: flex;\n  border-color: var(--color-feedback-critical-strong, #db1802);\n  background: var(--color-feedback-critical-background, #fde8e7);\n  color: var(--color-feedback-critical-strong, #db1802);\n}\n\n.openButton {\n  display: block;\n  inline-size: 100%;\n  padding: 0;\n}\n"},{"path":"components/file-cover/index.tsx","language":"tsx","source":"$23"},{"path":"components/file-item/index.module.css","language":"css","source":"$24"},{"path":"components/file-item/index.tsx","language":"tsx","source":"$25"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  position: relative;\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.toolbar {\n  align-items: center;\n  justify-content: space-between;\n}\n\n.toolbarActions {\n  justify-content: flex-end;\n}\n\n.dropZone {\n  inline-size: 100%;\n  background: transparent;\n  border: 0;\n  border-radius: 0;\n}\n\n@media (max-width: 48rem) {\n  .toolbarActions {\n    flex-basis: 100%;\n    inline-size: 100%;\n    justify-content: space-between;\n  }\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$26"},{"path":"components/grid-view/index.module.css","language":"css","source":".items {\n  inline-size: 100%;\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/grid-view/index.tsx","language":"tsx","source":"$27"},{"path":"components/image/index.module.css","language":"css","source":".image {\n  display: block;\n  max-inline-size: 100%;\n}\n\n.image:where([data-variant=\"grid\"]) {\n  inline-size: 100%;\n  aspect-ratio: 4 / 3;\n  object-fit: cover;\n}\n\n.image:where([data-variant=\"list\"]) {\n  inline-size: 3.5rem;\n  block-size: 3.5rem;\n  flex-shrink: 0;\n  object-fit: cover;\n}\n\n.image:where([data-variant=\"viewer\"]) {\n  inline-size: 100%;\n  max-block-size: 55dvh;\n  object-fit: contain;\n}\n\n.image:where([data-variant=\"thumbnail\"]) {\n  inline-size: 5rem;\n  block-size: 3.75rem;\n  object-fit: cover;\n}\n\n.container {\n  min-inline-size: 0;\n}\n\n.openButton {\n  inline-size: 100%;\n  min-inline-size: 0;\n  padding: 0;\n}\n\n.openButton:where([data-selected=\"true\"]) {\n  outline: 2px solid currentColor;\n}\n"},{"path":"components/image/index.tsx","language":"tsx","source":"$28"},{"path":"components/list-view/index.module.css","language":"css","source":".root {\n  inline-size: 100%;\n}\n\n.items {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/list-view/index.tsx","language":"tsx","source":"$29"},{"path":"components/upload-prompt/index.tsx","language":"tsx","source":"$2a"},{"path":"components/view-banner/index.tsx","language":"tsx","source":"$2b"},{"path":"components/viewer/index.module.css","language":"css","source":".modal {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n}\n\n.slide {\n  min-inline-size: 0;\n}\n\n.visuallyHidden {\n  position: absolute;\n  inline-size: 1px;\n  block-size: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  clip-path: inset(50%);\n  white-space: nowrap;\n  border: 0;\n}\n\n.name {\n  overflow-wrap: anywhere;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  margin: 0;\n  padding: 0;\n  overflow-x: auto;\n  list-style: none;\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$2c"},{"path":"data/sample-images.ts","language":"ts","source":"$2d"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery/index.tsx';\nexport type { ImageItem, ImageStatus } from './data/sample-images';\n"}]},"children":"$L2e"}]
+13:["$","$Lb",null,{"block":{"id":"gallery","description":"Browse images in a list or grid, add local files, and open a media viewer.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/drop-overlay/index.module.css","language":"css","source":".overlay {\n  position: absolute;\n  z-index: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: 1.5px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  pointer-events: none;\n  inset: 0;\n}\n"},{"path":"components/drop-overlay/index.tsx","language":"tsx","source":"import { Box, Flex, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\ninterface DropOverlayProps {\n  /** Whether an accepted file is currently over the gallery. */\n  isDropTarget: boolean;\n}\n\n/** Shows the green drop feedback while files are over the gallery. */\nexport function DropOverlay({ isDropTarget }: DropOverlayProps) {\n  if (!isDropTarget) return null;\n\n  return (\n    <Box role=\"status\" aria-live=\"polite\" className={styles.overlay}>\n      <Flex direction=\"column\" alignItems=\"center\" gap=\"sm\" padding=\"xl\">\n        <Icon icon=\"upload\" aria-hidden=\"true\" />\n        <Text as=\"strong\">Drop Files to upload.</Text>\n      </Flex>\n    </Box>\n  );\n}\n"},{"path":"components/empty-state/index.module.css","language":"css","source":".emptyState {\n  min-block-size: 16rem;\n  border: 1px dashed var(--color-border-low-contrast, #d4dbe0);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: var(--color-surface-background-passive, var(--ux-l7zq7p, #ffffff));\n  text-align: center;\n}\n\n.iconSurface {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: 1px solid var(--color-border-low-contrast, #d4dbe0);\n  background-color: var(--color-action-background-secondary-default, var(--ux-1r87102, #ffffff));\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/empty-state/index.tsx","language":"tsx","source":"import { Box, Flex, Heading, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Welcomes users to an empty gallery and points them to the upload action. */\nexport function EmptyState() {\n  return (\n    <Flex\n      direction=\"column\"\n      alignItems=\"center\"\n      justifyContent=\"center\"\n      gap=\"sm\"\n      padding=\"2xl\"\n      role=\"region\"\n      aria-label=\"Empty gallery\"\n      className={styles.emptyState}\n    >\n      <Box padding=\"md\" rounding=\"full\" aria-hidden=\"true\" className={styles.iconSurface}>\n        <Icon icon=\"upload\" />\n      </Box>\n      <Heading level={3}>Start your gallery</Heading>\n      <Text className={styles.description}>Drop images here or choose Add files above to upload.</Text>\n    </Flex>\n  );\n}\n"},{"path":"components/file-cover/index.module.css","language":"css","source":".surface {\n  display: block;\n  box-sizing: border-box;\n  overflow: hidden;\n  max-inline-size: 100%;\n  border: 1px solid var(--ux-box-border-color, #e5e5e5);\n  background: var(--uxFileUpload-backgroundColor, #f5f5f5);\n  object-fit: cover;\n}\n\n.surface:where([data-variant=\"horizontal\"]) {\n  inline-size: 3.5rem;\n  block-size: 3.5rem;\n}\n\n.surface:where([data-variant=\"vertical\"]) {\n  inline-size: 100%;\n  aspect-ratio: 1;\n}\n\n.error {\n  display: flex;\n  border-color: var(--color-feedback-critical-strong, #db1802);\n  background: var(--color-feedback-critical-background, #fde8e7);\n  color: var(--color-feedback-critical-strong, #db1802);\n}\n\n.openButton {\n  display: block;\n  inline-size: 100%;\n  padding: 0;\n}\n"},{"path":"components/file-cover/index.tsx","language":"tsx","source":"$23"},{"path":"components/file-item/index.module.css","language":"css","source":"$24"},{"path":"components/file-item/index.tsx","language":"tsx","source":"$25"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  position: relative;\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.toolbar {\n  align-items: center;\n  justify-content: space-between;\n}\n\n.toolbarActions {\n  justify-content: flex-end;\n}\n\n.dropZone {\n  inline-size: 100%;\n  background: transparent;\n  border: 0;\n  border-radius: 0;\n}\n\n@media (max-width: 48rem) {\n  .toolbarActions {\n    flex-basis: 100%;\n    inline-size: 100%;\n    justify-content: space-between;\n  }\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$26"},{"path":"components/grid-view/index.module.css","language":"css","source":".items {\n  inline-size: 100%;\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/grid-view/index.tsx","language":"tsx","source":"$27"},{"path":"components/image/index.module.css","language":"css","source":".image {\n  display: block;\n  max-inline-size: 100%;\n}\n\n.image:where([data-variant=\"viewer\"]) {\n  inline-size: 100%;\n  max-block-size: 55dvh;\n  object-fit: contain;\n}\n\n.image:where([data-variant=\"thumbnail\"]) {\n  inline-size: 5rem;\n  block-size: 3.75rem;\n  object-fit: cover;\n}\n\n.container {\n  min-inline-size: 0;\n}\n\n.openButton {\n  inline-size: 100%;\n  min-inline-size: 0;\n  padding: 0;\n}\n\n.openButton:where([data-selected=\"true\"]) {\n  outline: 2px solid currentColor;\n}\n"},{"path":"components/image/index.tsx","language":"tsx","source":"$28"},{"path":"components/list-view/index.module.css","language":"css","source":".root {\n  inline-size: 100%;\n}\n\n.items {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/list-view/index.tsx","language":"tsx","source":"$29"},{"path":"components/upload-prompt/index.tsx","language":"tsx","source":"$2a"},{"path":"components/view-banner/index.tsx","language":"tsx","source":"$2b"},{"path":"components/viewer/index.module.css","language":"css","source":".modal {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n}\n\n.slide {\n  min-inline-size: 0;\n}\n\n.visuallyHidden {\n  position: absolute;\n  inline-size: 1px;\n  block-size: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  clip-path: inset(50%);\n  white-space: nowrap;\n  border: 0;\n}\n\n.name {\n  overflow-wrap: anywhere;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  margin: 0;\n  padding: 0;\n  overflow-x: auto;\n  list-style: none;\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$2c"},{"path":"data/sample-images.ts","language":"ts","source":"$2d"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery/index.tsx';\nexport type { ImageItem, ImageStatus } from './data/sample-images';\n"}]},"children":"$L2e"}]
 14:["$","$L8",null,{"as":"h3","id":"sign-in-form","children":"Sign-in form"}]
 15:["$","$Lb",null,{"block":{"id":"sign-in-form","description":"A simple Antares sign-in experience.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/sign-in-form","files":[{"path":"components/sign-in-fields.tsx","language":"tsx","source":"import { Flex, Input, Label, TextField } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\n\n/** Groups the accessible fields used by the sign-in form block. */\nexport function SignInFields() {\n  return (\n    <Flex direction=\"column\" gap=\"md\">\n      <TextField name=\"email\" isRequired>\n        <Label>{signInCopy.emailLabel}</Label>\n        <Input type=\"email\" autoComplete=\"email\" placeholder=\"you@example.com\" />\n      </TextField>\n      <TextField name=\"password\" isRequired>\n        <Label>{signInCopy.passwordLabel}</Label>\n        <Input type=\"password\" autoComplete=\"current-password\" />\n      </TextField>\n    </Flex>\n  );\n}\n"},{"path":"components/sign-in-form.tsx","language":"tsx","source":"'use client';\n\nimport { Box, Button, Flex, Heading, Text } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\nimport { SignInFields } from './sign-in-fields';\n\n/**\n * Provides a sign-in form composition to copy and adapt. Submission is prevented\n * until the consuming application supplies its authentication behavior.\n *\n * @example\n * ```tsx\n * <SignInForm />\n * ```\n */\nexport function SignInForm() {\n  return (\n    <Flex justifyContent=\"center\">\n      <Box flex=\"0 1 28rem\" padding=\"xl\" rounding=\"md\" elevation=\"card\">\n        <Flex\n          as=\"form\"\n          direction=\"column\"\n          gap=\"lg\"\n          onSubmit={function handleSubmit(event) {\n            event.preventDefault();\n          }}\n        >\n          <Heading level={2}>{signInCopy.title}</Heading>\n          <Text>{signInCopy.description}</Text>\n          <SignInFields />\n          <Button type=\"submit\" variant=\"primary\">\n            {signInCopy.submitLabel}\n          </Button>\n        </Flex>\n      </Box>\n    </Flex>\n  );\n}\n"},{"path":"data/copy.ts","language":"ts","source":"export const signInCopy = {\n  title: 'Sign in to your account',\n  description: 'Use your email and password to continue.',\n  emailLabel: 'Email',\n  passwordLabel: 'Password',\n  submitLabel: 'Sign in'\n} as const;\n"},{"path":"index.tsx","language":"tsx","source":"export { SignInForm } from './components/sign-in-form';\n"}]},"children":["$","$L2f",null,{}]}]
 16:["$","script","script-0",{"src":"/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","async":true}]
@@ -1840,7 +1805,7 @@ export const sampleImages: ImageItem[] = [
 1b:["$","$1","h",{"children":[null,["$","$L33",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L34",null,{"children":["$","$31",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Build product experiences with Antares."}],["$","meta","1",{"name":"description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","2",{"property":"og:title","content":"Build product experiences with Antares."}],["$","meta","3",{"property":"og:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Build product experiences with Antares."}],["$","meta","7",{"name":"twitter:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/image.png"}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}]
 1d:["$","$1","c",{"children":[null,["$","$L35",null,{"parallelRouterKey":"children","template":["$","$L36",null,{}]}]]}]
 21:true
-37:I[128903,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0xo50yoq6cphy.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"Preview"]
+37:I[128903,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/0jm5ufe64omzi.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"Preview"]
 2e:["$","$L37",null,{}]
 32:null
 1a:300
