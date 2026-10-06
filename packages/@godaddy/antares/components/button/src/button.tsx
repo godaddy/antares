@@ -98,7 +98,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 });
 
 export interface LinkButtonProps extends BaseButtonProps<LinkButtonVariant>, Omit<RACLinkProps, 'children'> {
-  /** Whether the link is external. It will show an external icon if true. */
+  /** Shows an external icon and defaults to opening a new tab. Explicit target and rel override the defaults. */
   isExternal?: boolean;
 }
 
@@ -108,7 +108,16 @@ export interface LinkButtonProps extends BaseButtonProps<LinkButtonVariant>, Omi
  * @param props - The properties {@link LinkButtonProps} passed to the component.
  */
 export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(function LinkButton(props, ref) {
-  const { variant, size, className, children, isExternal, ...rest } = props;
+  const {
+    variant,
+    size,
+    className,
+    children,
+    isExternal,
+    target = isExternal ? '_blank' : undefined,
+    rel = isExternal ? 'noopener noreferrer' : undefined,
+    ...rest
+  } = props;
   const resolvedSize = useDeclaredSize(size ?? undefined);
 
   return (
@@ -116,8 +125,8 @@ export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(functio
       {...rest}
       ref={ref}
       className={composeClassName(className, buttonVariants({ variant, size: resolvedSize }))}
-      target={isExternal ? '_blank' : undefined}
-      rel={isExternal ? 'noopener noreferrer' : undefined}
+      target={target}
+      rel={rel}
     >
       {buttonLabel(isExternal && typeof children === 'string' ? <Text>{children}</Text> : children)}
       {isExternal ? <Icon icon="window-new" /> : null}
