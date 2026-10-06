@@ -1,18 +1,19 @@
 1:"$Sreact.fragment"
-2:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/1hndw1obfgru7.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsPage"]
-3:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/1hndw1obfgru7.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsTitle"]
-4:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/1hndw1obfgru7.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsDescription"]
-5:I[748747,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/1hndw1obfgru7.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"LLMCopyButton"]
-6:I[748747,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/1hndw1obfgru7.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"ViewOptions"]
-7:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/1hndw1obfgru7.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsBody"]
-8:I[696229,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/1hndw1obfgru7.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"SiteBlockExplorer"]
-9:T8a7,'use client';
+2:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/2pus7l4c1w2w1.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsPage"]
+3:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/2pus7l4c1w2w1.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsTitle"]
+4:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/2pus7l4c1w2w1.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsDescription"]
+5:I[748747,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/2pus7l4c1w2w1.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"LLMCopyButton"]
+6:I[748747,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/2pus7l4c1w2w1.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"ViewOptions"]
+7:I[838538,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/2pus7l4c1w2w1.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"DocsBody"]
+8:I[696229,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/2pus7l4c1w2w1.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"SiteBlockExplorer"]
+9:T8f8,'use client';
 
 import { useCallback, useEffect, useState } from 'react';
 import { Box, Button, Flex, Icon } from '@godaddy/antares';
 import type { ImageItem } from '../../data/sample-images.ts';
 import styles from './index.module.css';
 
+/** Cover geometry used by Gallery's list, grid, and thumbnail presentations. */
 export type FileCoverVariant = 'horizontal' | 'vertical' | 'thumbnail';
 
 interface FileCoverProps {
@@ -93,7 +94,7 @@ export function FileCover({ image, variant, onOpen, onLoadError }: FileCoverProp
     </Button>
   );
 }
-a:T6e6,.item {
+a:T7bb,.item {
   position: relative;
   box-sizing: border-box;
   border: 1px solid var(--ux-box-border-color, #e5e5e5);
@@ -102,6 +103,7 @@ a:T6e6,.item {
 
 .item:where([data-variant="horizontal"]) {
   inline-size: 100%;
+  block-size: 4.625rem;
   min-block-size: 4.625rem;
 }
 
@@ -143,6 +145,10 @@ a:T6e6,.item {
   overflow: hidden;
 }
 
+.details:where([data-variant="vertical"]) {
+  min-block-size: 5.5rem;
+}
+
 .details:where([data-variant="horizontal"]) {
   padding-inline-end: 2rem;
 }
@@ -151,6 +157,14 @@ a:T6e6,.item {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.errorDetails {
+  min-inline-size: 0;
+}
+
+.errorDetails:where([data-variant="horizontal"]) {
+  flex-wrap: nowrap;
 }
 
 .remove {
@@ -178,7 +192,7 @@ a:T6e6,.item {
   background: var(--ux-control-backgroundColor, #ffffff);
   color: var(--color-feedback-critical-strong, #db1802);
 }
-b:Te38,'use client';
+b:Tf3e,'use client';
 
 import { useCallback } from 'react';
 import { Box, Button, Detail, Flex, Icon, Text } from '@godaddy/antares';
@@ -216,7 +230,7 @@ const coverVariants: Record<FileItemVariant, FileCoverVariant> = {
 
 /** One file item with the same actions and states across list and grid views. */
 export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadError }: FileItemProps) {
-  const size = image.size === undefined ? 'Sample image' : `${(image.size / (1024 * 1024)).toFixed(0)}MB`;
+  const size = image.size === undefined ? 'Sample image' : `${(image.size / (1024 * 1024)).toFixed(0)} MiB`;
   const isError = image.status === 'error';
 
   const handleRemove = useCallback(
@@ -275,8 +289,16 @@ export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadErro
         >
           <Text className={styles.name}>{image.name}</Text>
           {isError ? (
-            <Flex direction="column" gap="xs" alignItems="start">
-              <Detail emphasis="critical">{image.errorMessage ?? 'File upload failed.'}</Detail>
+            <Flex
+              direction={variant === 'horizontal' ? 'row' : 'column'}
+              gap="xs"
+              alignItems={variant === 'horizontal' ? 'center' : 'start'}
+              className={styles.errorDetails}
+              data-variant={variant}
+            >
+              <Detail emphasis="critical" maxLines={1}>
+                {image.errorMessage ?? 'File upload failed.'}
+              </Detail>
               <Button variant="inline" size="sm" aria-label={`Retry ${image.name}`} onPress={handleRetry}>
                 <Icon icon="refresh" aria-hidden="true" />
                 Retry
@@ -301,7 +323,7 @@ export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadErro
     </Flex>
   );
 }
-c:T229c,'use client';
+c:T25f3,'use client';
 
 import { useCallback, useEffect, useRef, useState, type ComponentProps } from 'react';
 import {
@@ -329,6 +351,17 @@ import styles from './index.module.css';
 
 const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 const maximumSize = 256 * 1024 * 1024;
+let localImageCounter = 0;
+
+/** Creates a unique ID for a locally added image with a Web Crypto fallback. */
+function createLocalImageId() {
+  const uuid = globalThis.crypto?.randomUUID?.();
+  if (uuid) return `local-${uuid}`;
+
+  const random = new Uint32Array(2);
+  globalThis.crypto?.getRandomValues?.(random);
+  return `local-${Date.now()}-${localImageCounter++}-${random[0]}-${random[1]}`;
+}
 
 export interface GalleryProps {
   /** Initial images; read once on mount. Pass [] to start empty. IDs must be unique. */
@@ -351,16 +384,19 @@ export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: 
   const [notice, setNotice] = useState('');
   const mounted = useRef(false);
   const addButton = useRef<HTMLButtonElement>(null);
-  const owned = useRef(new Map<string, { id: string; url: string }>());
+  const ownedByKey = useRef(new Map<string, { id: string; url: string }>());
+  const keyById = useRef(new Map<string, string>());
 
   useEffect(function manageLifecycle() {
     mounted.current = true;
-    const urls = owned.current;
+    const urls = ownedByKey.current;
+    const ids = keyById.current;
 
     return function releaseOwnedImages() {
       mounted.current = false;
       for (const entry of urls.values()) URL.revokeObjectURL(entry.url);
       urls.clear();
+      ids.clear();
     };
   }, []);
 
@@ -378,30 +414,36 @@ export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: 
       }
 
       const key = JSON.stringify([file.name, file.size, file.type, file.lastModified]);
-      if (owned.current.has(key)) {
+      if (ownedByKey.current.has(key)) {
         duplicates++;
         continue;
       }
 
-      const id = `local-${crypto.randomUUID()}`;
+      const id = createLocalImageId();
       const url = URL.createObjectURL(file);
-      owned.current.set(key, { id, url });
+      ownedByKey.current.set(key, { id, url });
+      keyById.current.set(id, key);
       added.push({ id, name: file.name, size: file.size, src: url });
     }
 
     setImages(function appendImages(previous) {
       return [...previous, ...added];
     });
-    setError(rejected ? 'Use JPG, PNG, GIF, or WebP images smaller than 256MB.' : '');
-    setNotice(`${added.length} images added.${duplicates ? ` ${duplicates} duplicates skipped.` : ''}`);
+    setError(rejected ? 'Use JPG, PNG, GIF, or WebP images smaller than 256 MiB.' : '');
+    const messages = [];
+    if (added.length > 0) messages.push(`${added.length} images added.`);
+    if (duplicates > 0) messages.push(`${duplicates} duplicates skipped.`);
+    setNotice(messages.join(' '));
   }, []);
 
   const removeImage = useCallback(function removeImage(image: ImageItem) {
-    for (const [key, entry] of owned.current) {
-      if (entry.id === image.id) {
-        URL.revokeObjectURL(entry.url);
-        owned.current.delete(key);
-      }
+    const key = keyById.current.get(image.id);
+    const entry = key ? ownedByKey.current.get(key) : undefined;
+
+    if (key && entry) {
+      URL.revokeObjectURL(entry.url);
+      ownedByKey.current.delete(key);
+      keyById.current.delete(image.id);
     }
 
     setImages(function removeFromCollection(previous) {
@@ -461,6 +503,10 @@ export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: 
   }, []);
 
   const handleImageLoadError = useCallback(function handleImageLoadError(id: string) {
+    setActiveId(function clearFailedActiveImage(current) {
+      return current === id ? null : current;
+    });
+
     setImages(function markImageError(previous) {
       return previous.map(function updateImage(item) {
         return item.id === id ? { ...item, status: 'error', errorMessage: `Couldn’t load ${item.name}.` } : item;
@@ -624,7 +670,7 @@ export function GridView({ images, onOpen, onRemove, onRetry, onLoadError }: Gri
     </Grid>
   );
 }
-e:Tc18,'use client';
+e:Tc30,'use client';
 
 import { useCallback, useState } from 'react';
 import { Box, Button, Flex, Icon, Text } from '@godaddy/antares';
@@ -713,7 +759,7 @@ export function Image({ image, variant = 'default', onOpen, label, selected }: I
       {onOpen ? (
         <Button
           variant="minimal"
-          aria-label={label}
+          aria-label={label ?? `View ${image.name}`}
           aria-current={selected ? 'true' : undefined}
           onPress={handleOpen}
           className={styles.openButton}
@@ -1087,7 +1133,7 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
     </Modal>
   );
 }
-13:T797,/** The upload state shown by a gallery file item. */
+13:T86c,/** The upload state shown by a gallery file item. */
 export type ImageStatus = 'ready' | 'error';
 
 /** An image shown by the gallery. IDs must be unique and stable. */
@@ -1127,13 +1173,21 @@ export const sampleImages: ImageItem[] = [
   { id: 'sample-1050', name: 'Photo_7.png', src: 'https://picsum.photos/id/1050/960/640', size: 5 * 1024 * 1024 },
   { id: 'sample-1069', name: 'Photo_8.png', src: 'https://picsum.photos/id/1069/960/640', size: 3 * 1024 * 1024 },
   { id: 'sample-1068', name: 'Photo_9.png', src: 'https://picsum.photos/id/1068/960/640', size: 4 * 1024 * 1024 },
-  { id: 'sample-1074', name: 'Photo_10.png', src: 'https://picsum.photos/id/1074/960/640', size: 6 * 1024 * 1024 }
+  { id: 'sample-1074', name: 'Photo_10.png', src: 'https://picsum.photos/id/1074/960/640', size: 6 * 1024 * 1024 },
+  {
+    id: 'sample-error',
+    name: 'Photo_error.png',
+    src: 'https://picsum.photos/id/1084/960/640',
+    size: 5 * 1024 * 1024,
+    status: 'error',
+    errorMessage: 'Couldn’t load Photo_error.png.'
+  }
 ];
 19:X
 1e:X
 1e:C
-0:{"buildId":"3R6YRyvAld7f2w9Iqoty3","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"toc":[],"footer":{"enabled":true},"children":[["$","$L3",null,{"children":"Gallery"}],["$","$L4",null,{"className":"mb-0","children":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L5",null,{"markdownUrl":"/docs/blocks/gallery.mdx"}],["$","$L6",null,{"markdownUrl":"/docs/blocks/gallery.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/gallery/README.mdx"}]]}],["$","$L7",null,{"children":[null,"\n",["$","$L8",null,{"block":{"id":"gallery","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/drop-overlay/index.module.css","language":"css","source":".overlay {\n  position: absolute;\n  z-index: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: 1.5px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  pointer-events: none;\n  inset: 0;\n}\n"},{"path":"components/drop-overlay/index.tsx","language":"tsx","source":"import { Box, Flex, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\ninterface DropOverlayProps {\n  /** Whether an accepted file is currently over the gallery. */\n  isDropTarget: boolean;\n}\n\n/** Shows the green drop feedback while files are over the gallery. */\nexport function DropOverlay({ isDropTarget }: DropOverlayProps) {\n  if (!isDropTarget) return null;\n\n  return (\n    <Box role=\"status\" aria-live=\"polite\" aria-label=\"Drop Files to upload.\" className={styles.overlay}>\n      <Flex direction=\"column\" alignItems=\"center\" gap=\"sm\" padding=\"xl\">\n        <Icon icon=\"upload\" aria-hidden=\"true\" />\n        <Text as=\"strong\">Drop Files to upload.</Text>\n      </Flex>\n    </Box>\n  );\n}\n"},{"path":"components/empty-state/index.module.css","language":"css","source":".emptyState {\n  min-block-size: 16rem;\n  border: 1px dashed var(--color-border-low-contrast, #d4dbe0);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: var(--color-surface-background-passive, var(--ux-l7zq7p, #ffffff));\n  text-align: center;\n}\n\n.iconSurface {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: 1px solid var(--color-border-low-contrast, #d4dbe0);\n  background-color: var(--color-action-background-secondary-default, var(--ux-1r87102, #ffffff));\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/empty-state/index.tsx","language":"tsx","source":"import { Box, Flex, Heading, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Welcomes users to an empty gallery and points them to the upload action. */\nexport function EmptyState() {\n  return (\n    <Flex\n      direction=\"column\"\n      alignItems=\"center\"\n      justifyContent=\"center\"\n      gap=\"sm\"\n      padding=\"2xl\"\n      role=\"region\"\n      aria-label=\"Empty gallery\"\n      className={styles.emptyState}\n    >\n      <Box padding=\"md\" rounding=\"full\" aria-hidden=\"true\" className={styles.iconSurface}>\n        <Icon icon=\"upload\" />\n      </Box>\n      <Heading level={3}>Start your gallery</Heading>\n      <Text className={styles.description}>Drop images here or choose Add files above to upload.</Text>\n    </Flex>\n  );\n}\n"},{"path":"components/file-cover/index.module.css","language":"css","source":".surface {\n  display: block;\n  box-sizing: border-box;\n  overflow: hidden;\n  max-inline-size: 100%;\n  border: 1px solid var(--ux-box-border-color, #e5e5e5);\n  background: var(--uxFileUpload-backgroundColor, #f5f5f5);\n  object-fit: cover;\n}\n\n.surface:where([data-variant=\"horizontal\"]) {\n  inline-size: 3.5rem;\n  block-size: 3.5rem;\n}\n\n.surface:where([data-variant=\"vertical\"]) {\n  inline-size: 100%;\n  aspect-ratio: 1;\n}\n\n.surface:where([data-variant=\"thumbnail\"]) {\n  inline-size: 5.125rem;\n  block-size: 5.125rem;\n}\n\n.error {\n  border-color: var(--color-feedback-critical-strong, #db1802);\n  background: var(--color-feedback-critical-background, #fde8e7);\n  color: var(--color-feedback-critical-strong, #db1802);\n}\n\n.openButton {\n  display: block;\n  inline-size: 100%;\n  padding: 0;\n}\n"},{"path":"components/file-cover/index.tsx","language":"tsx","source":"$9"},{"path":"components/file-item/index.module.css","language":"css","source":"$a"},{"path":"components/file-item/index.tsx","language":"tsx","source":"$b"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  position: relative;\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.toolbar {\n  align-items: center;\n  justify-content: space-between;\n}\n\n.toolbarActions {\n  justify-content: flex-end;\n}\n\n.dropZone {\n  inline-size: 100%;\n  background: transparent;\n  border: 0;\n  border-radius: 0;\n}\n\n@media (max-width: 48rem) {\n  .toolbarActions {\n    flex-basis: 100%;\n    inline-size: 100%;\n    justify-content: space-between;\n  }\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$c"},{"path":"components/grid-view/index.module.css","language":"css","source":".items {\n  inline-size: 100%;\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/grid-view/index.tsx","language":"tsx","source":"$d"},{"path":"components/image/index.module.css","language":"css","source":".image {\n  display: block;\n  max-inline-size: 100%;\n}\n\n.image:where([data-variant=\"grid\"]) {\n  inline-size: 100%;\n  aspect-ratio: 4 / 3;\n  object-fit: cover;\n}\n\n.image:where([data-variant=\"list\"]) {\n  inline-size: 3.5rem;\n  block-size: 3.5rem;\n  flex-shrink: 0;\n  object-fit: cover;\n}\n\n.image:where([data-variant=\"viewer\"]) {\n  inline-size: 100%;\n  max-block-size: 55dvh;\n  object-fit: contain;\n}\n\n.image:where([data-variant=\"thumbnail\"]) {\n  inline-size: 5rem;\n  block-size: 3.75rem;\n  object-fit: cover;\n}\n\n.container {\n  min-inline-size: 0;\n}\n\n.openButton {\n  inline-size: 100%;\n  min-inline-size: 0;\n  padding: 0;\n}\n\n.openButton:where([data-selected=\"true\"]) {\n  outline: 2px solid currentColor;\n}\n"},{"path":"components/image/index.tsx","language":"tsx","source":"$e"},{"path":"components/list-view/index.module.css","language":"css","source":".root {\n  inline-size: 100%;\n}\n\n.items {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/list-view/index.tsx","language":"tsx","source":"$f"},{"path":"components/upload-prompt/index.tsx","language":"tsx","source":"$10"},{"path":"components/view-banner/index.tsx","language":"tsx","source":"$11"},{"path":"components/viewer/index.module.css","language":"css","source":".modal {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n}\n\n.slide {\n  min-inline-size: 0;\n}\n\n.visuallyHidden {\n  position: absolute;\n  inline-size: 1px;\n  block-size: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  clip-path: inset(50%);\n  white-space: nowrap;\n  border: 0;\n}\n\n.name {\n  overflow-wrap: anywhere;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  margin: 0;\n  padding: 0;\n  overflow-x: auto;\n  list-style: none;\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$12"},{"path":"data/sample-images.ts","language":"ts","source":"$13"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery/index.tsx';\nexport type { ImageItem, ImageStatus } from './data/sample-images';\n"}]},"children":"$L14"}]]}]]}],["$L15","$L16"],"$L17"]}],"isPartial":"$@18","staleTime":"$19","varyParams":null},{"rsc":"$L1a","isPartial":"$@1b","staleTime":"$19","varyParams":null},{"rsc":"$L1c","isPartial":"$@1d","staleTime":"$19","varyParams":"$1e"}],"isUpgradeableISRFallback":false,"a":"$@1f","rootVaryParams":null,"needsRuntimeRequest":"$@20"}
-21:I[128903,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/1hndw1obfgru7.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"Preview"]
+0:{"buildId":"sBQqhiCK-UBWdQK-QGCkf","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"toc":[],"footer":{"enabled":true},"children":[["$","$L3",null,{"children":"Gallery"}],["$","$L4",null,{"className":"mb-0","children":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L5",null,{"markdownUrl":"/docs/blocks/gallery.mdx"}],["$","$L6",null,{"markdownUrl":"/docs/blocks/gallery.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/gallery/README.mdx"}]]}],["$","$L7",null,{"children":[null,"\n",["$","$L8",null,{"block":{"id":"gallery","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/drop-overlay/index.module.css","language":"css","source":".overlay {\n  position: absolute;\n  z-index: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: 1.5px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  pointer-events: none;\n  inset: 0;\n}\n"},{"path":"components/drop-overlay/index.tsx","language":"tsx","source":"import { Box, Flex, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\ninterface DropOverlayProps {\n  /** Whether an accepted file is currently over the gallery. */\n  isDropTarget: boolean;\n}\n\n/** Shows the green drop feedback while files are over the gallery. */\nexport function DropOverlay({ isDropTarget }: DropOverlayProps) {\n  if (!isDropTarget) return null;\n\n  return (\n    <Box role=\"status\" aria-live=\"polite\" className={styles.overlay}>\n      <Flex direction=\"column\" alignItems=\"center\" gap=\"sm\" padding=\"xl\">\n        <Icon icon=\"upload\" aria-hidden=\"true\" />\n        <Text as=\"strong\">Drop Files to upload.</Text>\n      </Flex>\n    </Box>\n  );\n}\n"},{"path":"components/empty-state/index.module.css","language":"css","source":".emptyState {\n  min-block-size: 16rem;\n  border: 1px dashed var(--color-border-low-contrast, #d4dbe0);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: var(--color-surface-background-passive, var(--ux-l7zq7p, #ffffff));\n  text-align: center;\n}\n\n.iconSurface {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: 1px solid var(--color-border-low-contrast, #d4dbe0);\n  background-color: var(--color-action-background-secondary-default, var(--ux-1r87102, #ffffff));\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/empty-state/index.tsx","language":"tsx","source":"import { Box, Flex, Heading, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Welcomes users to an empty gallery and points them to the upload action. */\nexport function EmptyState() {\n  return (\n    <Flex\n      direction=\"column\"\n      alignItems=\"center\"\n      justifyContent=\"center\"\n      gap=\"sm\"\n      padding=\"2xl\"\n      role=\"region\"\n      aria-label=\"Empty gallery\"\n      className={styles.emptyState}\n    >\n      <Box padding=\"md\" rounding=\"full\" aria-hidden=\"true\" className={styles.iconSurface}>\n        <Icon icon=\"upload\" />\n      </Box>\n      <Heading level={3}>Start your gallery</Heading>\n      <Text className={styles.description}>Drop images here or choose Add files above to upload.</Text>\n    </Flex>\n  );\n}\n"},{"path":"components/file-cover/index.module.css","language":"css","source":".surface {\n  display: block;\n  box-sizing: border-box;\n  overflow: hidden;\n  max-inline-size: 100%;\n  border: 1px solid var(--ux-box-border-color, #e5e5e5);\n  background: var(--uxFileUpload-backgroundColor, #f5f5f5);\n  object-fit: cover;\n}\n\n.surface:where([data-variant=\"horizontal\"]) {\n  inline-size: 3.5rem;\n  block-size: 3.5rem;\n}\n\n.surface:where([data-variant=\"vertical\"]) {\n  inline-size: 100%;\n  aspect-ratio: 1;\n}\n\n.surface:where([data-variant=\"thumbnail\"]) {\n  inline-size: 5.125rem;\n  block-size: 5.125rem;\n}\n\n.error {\n  display: flex;\n  border-color: var(--color-feedback-critical-strong, #db1802);\n  background: var(--color-feedback-critical-background, #fde8e7);\n  color: var(--color-feedback-critical-strong, #db1802);\n}\n\n.openButton {\n  display: block;\n  inline-size: 100%;\n  padding: 0;\n}\n"},{"path":"components/file-cover/index.tsx","language":"tsx","source":"$9"},{"path":"components/file-item/index.module.css","language":"css","source":"$a"},{"path":"components/file-item/index.tsx","language":"tsx","source":"$b"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  position: relative;\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.toolbar {\n  align-items: center;\n  justify-content: space-between;\n}\n\n.toolbarActions {\n  justify-content: flex-end;\n}\n\n.dropZone {\n  inline-size: 100%;\n  background: transparent;\n  border: 0;\n  border-radius: 0;\n}\n\n@media (max-width: 48rem) {\n  .toolbarActions {\n    flex-basis: 100%;\n    inline-size: 100%;\n    justify-content: space-between;\n  }\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$c"},{"path":"components/grid-view/index.module.css","language":"css","source":".items {\n  inline-size: 100%;\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/grid-view/index.tsx","language":"tsx","source":"$d"},{"path":"components/image/index.module.css","language":"css","source":".image {\n  display: block;\n  max-inline-size: 100%;\n}\n\n.image:where([data-variant=\"grid\"]) {\n  inline-size: 100%;\n  aspect-ratio: 4 / 3;\n  object-fit: cover;\n}\n\n.image:where([data-variant=\"list\"]) {\n  inline-size: 3.5rem;\n  block-size: 3.5rem;\n  flex-shrink: 0;\n  object-fit: cover;\n}\n\n.image:where([data-variant=\"viewer\"]) {\n  inline-size: 100%;\n  max-block-size: 55dvh;\n  object-fit: contain;\n}\n\n.image:where([data-variant=\"thumbnail\"]) {\n  inline-size: 5rem;\n  block-size: 3.75rem;\n  object-fit: cover;\n}\n\n.container {\n  min-inline-size: 0;\n}\n\n.openButton {\n  inline-size: 100%;\n  min-inline-size: 0;\n  padding: 0;\n}\n\n.openButton:where([data-selected=\"true\"]) {\n  outline: 2px solid currentColor;\n}\n"},{"path":"components/image/index.tsx","language":"tsx","source":"$e"},{"path":"components/list-view/index.module.css","language":"css","source":".root {\n  inline-size: 100%;\n}\n\n.items {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/list-view/index.tsx","language":"tsx","source":"$f"},{"path":"components/upload-prompt/index.tsx","language":"tsx","source":"$10"},{"path":"components/view-banner/index.tsx","language":"tsx","source":"$11"},{"path":"components/viewer/index.module.css","language":"css","source":".modal {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n}\n\n.slide {\n  min-inline-size: 0;\n}\n\n.visuallyHidden {\n  position: absolute;\n  inline-size: 1px;\n  block-size: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  clip-path: inset(50%);\n  white-space: nowrap;\n  border: 0;\n}\n\n.name {\n  overflow-wrap: anywhere;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  margin: 0;\n  padding: 0;\n  overflow-x: auto;\n  list-style: none;\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$12"},{"path":"data/sample-images.ts","language":"ts","source":"$13"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery/index.tsx';\nexport type { ImageItem, ImageStatus } from './data/sample-images';\n"}]},"children":"$L14"}]]}]]}],["$L15","$L16"],"$L17"]}],"isPartial":"$@18","staleTime":"$19","varyParams":null},{"rsc":"$L1a","isPartial":"$@1b","staleTime":"$19","varyParams":null},{"rsc":"$L1c","isPartial":"$@1d","staleTime":"$19","varyParams":"$1e"}],"isUpgradeableISRFallback":false,"a":"$@1f","rootVaryParams":null,"needsRuntimeRequest":"$@20"}
+21:I[128903,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js","/antares/pr-366-site/_next/static/chunks/0bcticpplz9hz.js","/antares/pr-366-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-366-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-366-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-366-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-366-site/_next/static/chunks/2pus7l4c1w2w1.js","/antares/pr-366-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-366-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-366-site/_next/static/chunks/0qefaaijsm_le.js"],"Preview"]
 22:I[897367,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js"],"OutletBoundary"]
 23:"$Sreact.suspense"
 25:I[897367,["/antares/pr-366-site/_next/static/chunks/3iuoe6-6hd1t4.js","/antares/pr-366-site/_next/static/chunks/3fzu6832b9s5z.js"],"ViewportBoundary"]
