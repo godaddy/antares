@@ -28,6 +28,11 @@ const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 const maximumSize = 256 * 1024 * 1024;
 let localImageCounter = 0;
 
+/** Returns the singular or plural label matching a count. */
+function pluralize(count: number, singular: string, plural: string) {
+  return count === 1 ? singular : plural;
+}
+
 /** Creates a unique ID for a locally added image with a Web Crypto fallback. */
 function createLocalImageId() {
   const uuid = globalThis.crypto?.randomUUID?.();
@@ -106,8 +111,12 @@ export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: 
     });
     setError(rejected ? 'Use JPG, PNG, GIF, or WebP images smaller than 256 MiB.' : '');
     const messages = [];
-    if (added.length > 0) messages.push(`${added.length} images added.`);
-    if (duplicates > 0) messages.push(`${duplicates} duplicates skipped.`);
+    if (added.length > 0) {
+      messages.push(`${added.length} ${pluralize(added.length, 'image', 'images')} added.`);
+    }
+    if (duplicates > 0) {
+      messages.push(`${duplicates} ${pluralize(duplicates, 'duplicate', 'duplicates')} skipped.`);
+    }
     setNotice(messages.join(' '));
   }, []);
 
@@ -174,7 +183,7 @@ export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: 
         return item.id === image.id ? { ...item, status: 'ready', errorMessage: undefined } : item;
       });
     });
-    setNotice(`${image.name} is ready to view.`);
+    setNotice(`${image.name} is retrying.`);
   }, []);
 
   const handleImageLoadError = useCallback(function handleImageLoadError(id: string) {

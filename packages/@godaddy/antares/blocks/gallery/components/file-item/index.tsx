@@ -34,9 +34,12 @@ const coverVariants: Record<FileItemVariant, FileCoverVariant> = {
   thumbnail: 'thumbnail'
 };
 
+const fileSizeFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+
 /** One file item with the same actions and states across list and grid views. */
 export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadError }: FileItemProps) {
-  const size = image.size === undefined ? 'Sample image' : `${(image.size / (1024 * 1024)).toFixed(0)} MiB`;
+  const size =
+    image.size === undefined ? 'Sample image' : `${fileSizeFormatter.format(image.size / (1024 * 1024))} MiB`;
   const isError = image.status === 'error';
 
   const handleRemove = useCallback(

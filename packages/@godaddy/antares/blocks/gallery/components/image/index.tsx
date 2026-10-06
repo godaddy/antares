@@ -1,11 +1,11 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { Box, Button, Flex, Icon, Text } from '@godaddy/antares';
+import { Box, Button, Flex, Icon, Image, Text } from '@godaddy/antares';
 import type { ImageItem } from '../../data/sample-images.ts';
 import styles from './index.module.css';
 
-interface ImageProps {
+interface GalleryImageProps {
   /** Image to load; remount this component when its identity changes. */
   image: ImageItem;
 
@@ -23,7 +23,7 @@ interface ImageProps {
 }
 
 /** Handles image loading failures without simulating an upload. */
-export function Image({ image, variant = 'default', onOpen, label, selected }: ImageProps) {
+export function GalleryImage({ image, variant = 'default', onOpen, label, selected }: GalleryImageProps) {
   const [attempt, setAttempt] = useState(0);
   const [state, setState] = useState<'loading' | 'ready' | 'error'>('loading');
   const inspectLoadedImage = useCallback(function inspectLoadedImage(element: HTMLImageElement | null) {
@@ -69,7 +69,7 @@ export function Image({ image, variant = 'default', onOpen, label, selected }: I
 
   const picture = (
     <Box
-      as="img"
+      as={Image}
       ref={inspectLoadedImage}
       key={attempt}
       src={src}
@@ -77,6 +77,8 @@ export function Image({ image, variant = 'default', onOpen, label, selected }: I
       className={styles.image}
       data-variant={variant}
       rounding="md"
+      loading={variant === 'viewer' ? 'eager' : 'lazy'}
+      decoding="async"
       onLoad={handleLoad}
       onError={handleError}
     />

@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Button, Flex, Icon } from '@godaddy/antares';
+import { Box, Button, Flex, Icon, Image } from '@godaddy/antares';
 import type { ImageItem } from '../../data/sample-images.ts';
 import styles from './index.module.css';
 
@@ -67,13 +67,15 @@ export function FileCover({ image, variant, onOpen, onLoadError }: FileCoverProp
 
   const picture = (
     <Box
-      as="img"
+      as={Image}
       src={image.src}
       alt={onOpen ? '' : image.name}
       aria-hidden={onOpen ? true : undefined}
       rounding="md"
       className={styles.surface}
       data-variant={variant}
+      loading="lazy"
+      decoding="async"
       onError={handleImageError}
     />
   );

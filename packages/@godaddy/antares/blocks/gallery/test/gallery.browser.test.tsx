@@ -3,7 +3,7 @@ import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
 import { Gallery, type ImageItem } from '../index.tsx';
-import { Image } from '../components/image/index.tsx';
+import { GalleryImage } from '../components/image/index.tsx';
 
 const pixel = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZ1EAAAAASUVORK5CYII=';
 const samples: ImageItem[] = [
@@ -129,6 +129,22 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.click(screen.getByRole('button', { name: 'Retry failed.png' }));
       await expect.element(screen.getByRole('button', { name: 'Open failed.png' })).toBeVisible();
       await expect.element(screen.getByText('5 MiB', { exact: true })).toBeVisible();
+      await expect.element(screen.getByRole('status')).toHaveTextContent('failed.png is retrying.');
+      await expect.element(screen.getByRole('status')).not.toHaveTextContent('is ready to view');
+    });
+
+    it('formats image sizes with fractional MiB precision', async function fractionalSizes() {
+      const screen = await render(
+        <Gallery
+          initialImages={[
+            { id: 'small', name: 'small.png', src: `data:image/png;base64,${pixel}`, size: 100 * 1024 },
+            { id: 'fractional', name: 'fractional.png', src: `data:image/png;base64,${pixel}`, size: 1.5 * 1024 * 1024 }
+          ]}
+        />
+      );
+
+      await expect.element(screen.getByText('0.1 MiB', { exact: true })).toBeVisible();
+      await expect.element(screen.getByText('1.5 MiB', { exact: true })).toBeVisible();
     });
 
     it('centers the error icon in grid and list views', async function centeredErrorIcon() {
@@ -204,8 +220,9 @@ describe('@godaddy/antares', function packageTests() {
       const file = png();
       selectFiles(screen.container, [file, file]);
       await expect.element(screen.getByRole('button', { name: 'Open local.png' })).toBeVisible();
+      await expect.element(screen.getByRole('status')).toHaveTextContent('1 image added. 1 duplicate skipped.');
       selectFiles(screen.container, [file]);
-      await expect.element(screen.getByRole('status')).toHaveTextContent('1 duplicates skipped.');
+      await expect.element(screen.getByRole('status')).toHaveTextContent('1 duplicate skipped.');
       expect(screen.getByRole('button', { name: 'Remove local.png' }).all()).toHaveLength(1);
       expect(create).toHaveBeenCalledTimes(1);
       await userEvent.click(screen.getByRole('button', { name: 'Remove local.png' }));
@@ -357,7 +374,7 @@ describe('@godaddy/antares', function packageTests() {
     it('recognizes an image that finished loading before handlers attached', async function cachedImage() {
       vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(true);
       vi.spyOn(HTMLImageElement.prototype, 'naturalWidth', 'get').mockReturnValue(1);
-      const screen = await render(<Image image={samples[0]} />);
+      const screen = await render(<GalleryImage image={samples[0]} />);
 
       await expect.element(screen.getByRole('img', { name: 'one.png' })).toBeVisible();
       await expect.element(screen.getByText('Loading image…')).not.toBeInTheDocument();
@@ -365,7 +382,7 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('retries an actual image error and restores the loaded image', async function retry() {
-      const screen = await render(<Image image={samples[0]} />);
+      const screen = await render(<GalleryImage image={samples[0]} />);
       const picture = screen.getByRole('img', { name: 'one.png' });
       await expect.element(picture).toBeVisible();
       picture.element().dispatchEvent(new Event('error'));
@@ -378,7 +395,7 @@ describe('@godaddy/antares', function packageTests() {
 
     it('provides a fallback name for an interactive image', async function interactiveImageName() {
       const screen = await render(
-        <Image
+        <GalleryImage
           image={samples[0]}
           onOpen={function openImage() {
             // The test only verifies the fallback accessible name.

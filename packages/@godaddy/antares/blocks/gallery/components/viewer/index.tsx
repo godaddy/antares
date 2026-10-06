@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Button, Carousel, CloseButton, Content, Flex, Heading, Icon, Modal, Text } from '@godaddy/antares';
-import { Image } from '../image/index.tsx';
+import { GalleryImage } from '../image/index.tsx';
 import type { ImageItem } from '../../data/sample-images.ts';
 import styles from './index.module.css';
 
@@ -112,7 +112,7 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
   const renderSlide = useCallback(function renderSlide(slideImage: ImageItem) {
     return (
       <Flex key={slideImage.id} alignItems="center" justifyContent="center" className={styles.slide}>
-        <Image image={slideImage} variant="viewer" />
+        <GalleryImage image={slideImage} variant="viewer" />
       </Flex>
     );
   }, []);
@@ -121,7 +121,7 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
     function renderThumbnail(thumbnailImage: ImageItem) {
       return (
         <Flex as="li" key={thumbnailImage.id} flex="0 0 5rem">
-          <Image
+          <GalleryImage
             image={thumbnailImage}
             variant="thumbnail"
             selected={thumbnailImage.id === activeId}
