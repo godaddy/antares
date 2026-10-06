@@ -18,11 +18,6 @@
   aspect-ratio: 1;
 }
 
-.surface:where([data-variant="thumbnail"]) {
-  inline-size: 5.125rem;
-  block-size: 5.125rem;
-}
-
 .error {
   display: flex;
   border-color: var(--color-feedback-critical-strong, #db1802);

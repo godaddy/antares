@@ -5,8 +5,8 @@ import { Box, Button, Flex, Icon, Image } from '@godaddy/antares';
 import type { ImageItem } from '../../data/sample-images.ts';
 import styles from './index.module.css';
 
-/** Cover geometry used by Gallery's list, grid, and thumbnail presentations. */
-export type FileCoverVariant = 'horizontal' | 'vertical' | 'thumbnail';
+/** Cover geometry used by Gallery's list and grid presentations. */
+export type FileCoverVariant = 'horizontal' | 'vertical';
 
 interface FileCoverProps {
   /** File represented by the cover. */

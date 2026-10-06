@@ -1,6 +1,5 @@
 'use client';
 
-import { useCallback } from 'react';
 import { Detail, Flex, Icon, Text } from '@godaddy/antares';
 import styles from './index.module.css';
 
@@ -21,21 +20,19 @@ const benefits = [
 
 /** Lists the services that can support the visitor alongside the inquiry form. */
 export function Benefits() {
-  const renderBenefit = useCallback(function renderBenefit(benefit: (typeof benefits)[number]) {
-    return (
-      <Flex as="li" key={benefit.title} gap="sm" alignItems="start">
-        <Icon icon="checkmark" width={18} height={18} aria-hidden="true" />
-        <Flex direction="column" gap="xs">
-          <Text as="strong">{benefit.title}</Text>
-          <Detail size="sm">{benefit.description}</Detail>
-        </Flex>
-      </Flex>
-    );
-  }, []);
-
   return (
     <Flex as="ul" direction="column" gap="lg" aria-label="Services we can help with" className={styles.list}>
-      {benefits.map(renderBenefit)}
+      {benefits.map(function renderBenefit(benefit) {
+        return (
+          <Flex as="li" key={benefit.title} gap="sm" alignItems="start">
+            <Icon icon="checkmark" width={18} height={18} aria-hidden="true" />
+            <Flex direction="column" gap="xs">
+              <Text as="strong">{benefit.title}</Text>
+              <Detail size="sm">{benefit.description}</Detail>
+            </Flex>
+          </Flex>
+        );
+      })}
     </Flex>
   );
 }

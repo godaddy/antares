@@ -6,7 +6,7 @@ import { FileCover, type FileCoverVariant } from '../file-cover/index.tsx';
 import type { ImageItem } from '../../data/sample-images.ts';
 import styles from './index.module.css';
 
-type FileItemVariant = 'horizontal' | 'vertical' | 'thumbnail';
+type FileItemVariant = 'horizontal' | 'vertical';
 
 interface FileItemProps {
   /** File to render. */
@@ -30,8 +30,7 @@ interface FileItemProps {
 
 const coverVariants: Record<FileItemVariant, FileCoverVariant> = {
   horizontal: 'horizontal',
-  vertical: 'vertical',
-  thumbnail: 'thumbnail'
+  vertical: 'vertical'
 };
 
 const fileSizeFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
@@ -74,50 +73,37 @@ export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadErro
           onOpen={isError ? undefined : onOpen}
           onLoadError={onLoadError}
         />
-        {isError && variant === 'thumbnail' ? (
-          <Button
-            variant="minimal"
-            size="sm"
-            aria-label={`Retry ${image.name}`}
-            onPress={handleRetry}
-            className={styles.thumbnailRetry}
-          >
-            <Icon icon="refresh" aria-hidden="true" />
-          </Button>
-        ) : null}
       </Box>
 
-      {variant === 'thumbnail' ? null : (
-        <Flex
-          direction="column"
-          gap="xs"
-          justifyContent="center"
-          padding={variant === 'vertical' ? 'sm' : undefined}
-          className={styles.details}
-          data-variant={variant}
-        >
-          <Text className={styles.name}>{image.name}</Text>
-          {isError ? (
-            <Flex
-              direction={variant === 'horizontal' ? 'row' : 'column'}
-              gap="xs"
-              alignItems={variant === 'horizontal' ? 'center' : 'start'}
-              className={styles.errorDetails}
-              data-variant={variant}
-            >
-              <Detail emphasis="critical" maxLines={1}>
-                {image.errorMessage ?? 'File upload failed.'}
-              </Detail>
-              <Button variant="inline" size="sm" aria-label={`Retry ${image.name}`} onPress={handleRetry}>
-                <Icon icon="refresh" aria-hidden="true" />
-                Retry
-              </Button>
-            </Flex>
-          ) : (
-            <Detail>{size}</Detail>
-          )}
-        </Flex>
-      )}
+      <Flex
+        direction="column"
+        gap="xs"
+        justifyContent="center"
+        padding={variant === 'vertical' ? 'sm' : undefined}
+        className={styles.details}
+        data-variant={variant}
+      >
+        <Text className={styles.name}>{image.name}</Text>
+        {isError ? (
+          <Flex
+            direction={variant === 'horizontal' ? 'row' : 'column'}
+            gap="xs"
+            alignItems={variant === 'horizontal' ? 'center' : 'start'}
+            className={styles.errorDetails}
+            data-variant={variant}
+          >
+            <Detail emphasis="critical" maxLines={1}>
+              {image.errorMessage ?? 'File upload failed.'}
+            </Detail>
+            <Button variant="inline" size="sm" aria-label={`Retry ${image.name}`} onPress={handleRetry}>
+              <Icon icon="refresh" aria-hidden="true" />
+              Retry
+            </Button>
+          </Flex>
+        ) : (
+          <Detail>{size}</Detail>
+        )}
+      </Flex>
 
       <Button
         variant="minimal"

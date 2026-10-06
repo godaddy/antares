@@ -1,6 +1,5 @@
 'use client';
 
-import { useCallback } from 'react';
 import { Button, Flex, Icon, Text } from '@godaddy/antares';
 
 interface ViewBannerProps {
@@ -20,13 +19,6 @@ interface ViewBannerProps {
 /** Counter and upload-error feedback used below the Figma list layouts. */
 export function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: ViewBannerProps) {
   const hasMore = visibleCount < totalCount;
-  const handleShowAll = useCallback(
-    function handleShowAll() {
-      onShowAll();
-    },
-    [onShowAll]
-  );
-
   if (!hasMore && errorCount === 0) return null;
 
   return (
@@ -37,7 +29,7 @@ export function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: 
             {visibleCount} of {totalCount} files
           </Text>
           {hasMore ? (
-            <Button variant="inline" onPress={handleShowAll}>
+            <Button variant="inline" onPress={onShowAll}>
               Show all
             </Button>
           ) : null}

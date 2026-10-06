@@ -216,7 +216,13 @@ export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: 
               </Flex>
 
               <Flex alignItems="center" gap="sm" wrap="wrap" className={styles.toolbarActions}>
-                <UploadPrompt ref={addButton} isDropTarget={isDropTarget} error={error} onSelect={addFiles} />
+                <UploadPrompt
+                  ref={addButton}
+                  isDropTarget={isDropTarget}
+                  error={error}
+                  acceptedTypes={acceptedTypes}
+                  onSelect={addFiles}
+                />
                 <SegmentedController aria-label="Layout" value={view} onSelectionChange={handleViewChange}>
                   <SegmentedControllerItem value="list">
                     <Icon icon="bulleted-list" />

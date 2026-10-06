@@ -10,15 +10,16 @@ interface UploadPromptProps {
   /** Validation message shared with the picker and drop target. */
   error: string;
 
+  /** MIME types accepted by the gallery picker. */
+  acceptedTypes: string[];
+
   /** Adds files selected from the native picker. */
   onSelect: (files: FileList | null) => void;
 }
 
-const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-
 /** Compact file-upload action shared by Gallery's list and grid views. */
 export const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(function UploadPrompt(
-  { isDropTarget, error, onSelect },
+  { isDropTarget, error, acceptedTypes, onSelect },
   ref
 ) {
   const helpId = useId();

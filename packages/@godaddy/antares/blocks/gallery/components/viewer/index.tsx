@@ -109,13 +109,16 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
     [activeId, images, onSelectImage]
   );
 
-  const renderSlide = useCallback(function renderSlide(slideImage: ImageItem) {
-    return (
-      <Flex key={slideImage.id} alignItems="center" justifyContent="center" className={styles.slide}>
-        <GalleryImage image={slideImage} variant="viewer" />
-      </Flex>
-    );
-  }, []);
+  const renderSlide = useCallback(
+    function renderSlide(slideImage: ImageItem) {
+      return (
+        <Flex key={slideImage.id} alignItems="center" justifyContent="center" className={styles.slide}>
+          <GalleryImage image={slideImage} variant="viewer" loading={slideImage.id === activeId ? 'eager' : 'lazy'} />
+        </Flex>
+      );
+    },
+    [activeId]
+  );
 
   const renderThumbnail = useCallback(
     function renderThumbnail(thumbnailImage: ImageItem) {

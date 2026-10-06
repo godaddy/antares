@@ -310,6 +310,13 @@ describe('@godaddy/antares', function packageTests() {
       const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
       await expect.element(dialog).toBeVisible();
       await expect.element(dialog.getByText('1 of 2', { exact: true })).not.toBeInTheDocument();
+      const viewerImages = () =>
+        Array.from(dialog.element().querySelectorAll<HTMLImageElement>('img[data-variant="viewer"]'));
+      expect(
+        viewerImages().map(function getLoadingStrategy(image) {
+          return image.getAttribute('loading');
+        })
+      ).toEqual(['eager', 'lazy']);
       await expect
         .element(dialog.getByRole('button', { name: 'View one.png' }))
         .toHaveAttribute('aria-current', 'true');
@@ -327,6 +334,11 @@ describe('@godaddy/antares', function packageTests() {
       await expect
         .element(dialog.getByRole('button', { name: 'View two.png' }))
         .toHaveAttribute('aria-current', 'true');
+      expect(
+        viewerImages().map(function getLoadingStrategy(image) {
+          return image.getAttribute('loading');
+        })
+      ).toEqual(['lazy', 'eager']);
       await expect.element(screen.getByRole('button', { name: 'Next image' })).toBeDisabled();
       await userEvent.keyboard('{ArrowLeft}');
       await expect

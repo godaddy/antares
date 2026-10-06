@@ -10,7 +10,7 @@ interface GalleryImageProps {
   image: ImageItem;
 
   /** Presentation size for the image. */
-  variant?: 'default' | 'grid' | 'list' | 'viewer' | 'thumbnail';
+  variant?: 'default' | 'viewer' | 'thumbnail';
 
   /** Optional activation for cards and the viewer's thumbnail strip. */
   onOpen?: (id: string) => void;
@@ -20,10 +20,20 @@ interface GalleryImageProps {
 
   /** Marks the viewer's current thumbnail. */
   selected?: boolean;
+
+  /** Loading strategy for the image resource. */
+  loading?: 'eager' | 'lazy';
 }
 
 /** Handles image loading failures without simulating an upload. */
-export function GalleryImage({ image, variant = 'default', onOpen, label, selected }: GalleryImageProps) {
+export function GalleryImage({
+  image,
+  variant = 'default',
+  onOpen,
+  label,
+  selected,
+  loading = 'lazy'
+}: GalleryImageProps) {
   const [attempt, setAttempt] = useState(0);
   const [state, setState] = useState<'loading' | 'ready' | 'error'>('loading');
   const inspectLoadedImage = useCallback(function inspectLoadedImage(element: HTMLImageElement | null) {
@@ -77,7 +87,7 @@ export function GalleryImage({ image, variant = 'default', onOpen, label, select
       className={styles.image}
       data-variant={variant}
       rounding="md"
-      loading={variant === 'viewer' ? 'eager' : 'lazy'}
+      loading={loading}
       decoding="async"
       onLoad={handleLoad}
       onError={handleError}

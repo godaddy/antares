@@ -28,12 +28,6 @@
   }
 }
 
-.item:where([data-variant="thumbnail"]) {
-  inline-size: 5.125rem;
-  block-size: 5.125rem;
-  border: 0;
-}
-
 .coverSlot {
   position: relative;
 }
@@ -79,20 +73,4 @@
   block-size: 1.5rem;
   padding: 0;
   background: var(--ux-control-backgroundColor, #ffffff);
-}
-
-.remove:where([data-variant="thumbnail"]) {
-  inset-block-start: 0;
-  inset-inline-end: 0;
-}
-
-.thumbnailRetry {
-  position: absolute;
-  inset-block-end: 0;
-  inset-inline-start: 0;
-  inline-size: 1.5rem;
-  block-size: 1.5rem;
-  padding: 0;
-  background: var(--ux-control-backgroundColor, #ffffff);
-  color: var(--color-feedback-critical-strong, #db1802);
 }

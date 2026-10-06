@@ -3,19 +3,6 @@
   max-inline-size: 100%;
 }
 
-.image:where([data-variant="grid"]) {
-  inline-size: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-}
-
-.image:where([data-variant="list"]) {
-  inline-size: 3.5rem;
-  block-size: 3.5rem;
-  flex-shrink: 0;
-  object-fit: cover;
-}
-
 .image:where([data-variant="viewer"]) {
   inline-size: 100%;
   max-block-size: 55dvh;

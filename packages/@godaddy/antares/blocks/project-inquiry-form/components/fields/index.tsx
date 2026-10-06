@@ -86,13 +86,6 @@ function ContactField({ field, value, onChange }: ContactFieldProps) {
 
 /** Composes the required contact fields with the optional project metadata. */
 export function Fields({ values, dueDate, onChange, onProjectTypeChange, onDateChange, onClearDate }: FieldsProps) {
-  const handleDateChange = useCallback(
-    function handleDateChange(value: CalendarDate | null) {
-      onDateChange(value);
-    },
-    [onDateChange]
-  );
-
   return (
     <>
       {fields.map(function renderField(field) {
@@ -111,7 +104,7 @@ export function Fields({ values, dueDate, onChange, onProjectTypeChange, onDateC
       </Select>
 
       <Flex direction="column" gap="sm">
-        <DatePicker name="dueDate" value={dueDate} onChange={handleDateChange}>
+        <DatePicker name="dueDate" value={dueDate} onChange={onDateChange}>
           <Label>Due date</Label>
           <Button slot="trigger" />
           <Text slot="description">Leave blank if there’s no set date.</Text>
