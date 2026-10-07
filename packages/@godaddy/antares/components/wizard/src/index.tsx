@@ -2,6 +2,7 @@ import React, { createContext, forwardRef, isValidElement, useContext, type Reac
 import {
   Collection,
   CollectionBuilder,
+  type CollectionProps,
   createLeafComponent,
   DialogTrigger as RACDialogTrigger,
   type DialogTriggerProps as RACDialogTriggerProps,
@@ -76,11 +77,11 @@ export const Wizard = forwardRef<HTMLElement, WizardProps>(function Wizard(props
   // Extract only this direct structural region, never inspect individual step elements.
   const regions = React.Children.toArray(children);
   const collectionRegion = regions.find(
-    (region): region is ReactElement<WizardStepsProps> => isValidElement(region) && region.type === WizardSteps
+    (region): region is ReactElement<WizardStepsProps<unknown>> => isValidElement(region) && region.type === WizardSteps
   );
   const dialogChildren = collectionRegion ? (
     <WizardCollection
-      steps={collectionRegion.props.children}
+      steps={collectionRegion.props}
       options={{ activeStep, defaultActiveStep, onStepChange }}
       renderLayout={(content) => regions.map((region) => (region === collectionRegion ? content : region))}
     />
@@ -111,27 +112,30 @@ export const Wizard = forwardRef<HTMLElement, WizardProps>(function Wizard(props
 
 const ActiveStepContext = createContext(false);
 
-export interface WizardStepsProps {
-  /** Static steps in their declared order. */
-  children?: ReactNode;
-}
+export interface WizardStepsProps<T> extends Pick<CollectionProps<T>, 'items' | 'children' | 'dependencies'> {}
 
 /** Builds the ordered collection of steps. */
-export function WizardSteps({ children }: WizardStepsProps) {
-  return <WizardCollection steps={children} options={{}} renderLayout={(content) => content} />;
+export function WizardSteps<T>(props: WizardStepsProps<T>) {
+  return <WizardCollection steps={props} options={{}} renderLayout={(content) => content} />;
 }
 
-function WizardCollection({
-  steps: children,
+function WizardCollection<T>({
+  steps: { items, children, dependencies },
   options,
   renderLayout
 }: {
-  steps?: ReactNode;
+  steps: WizardStepsProps<T>;
   options: Omit<WizardStateOptions, 'collection'>;
   renderLayout: (content: ReactNode) => ReactNode;
 }) {
   return (
-    <CollectionBuilder content={<Collection>{children}</Collection>}>
+    <CollectionBuilder
+      content={
+        <Collection items={items} dependencies={dependencies}>
+          {children}
+        </Collection>
+      }
+    >
       {function renderCollection(collection) {
         const steps = [...collection];
         return (
