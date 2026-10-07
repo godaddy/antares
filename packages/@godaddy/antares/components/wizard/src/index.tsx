@@ -2,6 +2,7 @@ import { createContext, forwardRef, useContext, type ReactNode } from 'react';
 import {
   Collection,
   CollectionBuilder,
+  type CollectionProps,
   createLeafComponent,
   DialogTrigger as RACDialogTrigger,
   type DialogTriggerProps as RACDialogTriggerProps,
@@ -96,16 +97,19 @@ export const Wizard = forwardRef<HTMLElement, WizardProps>(function Wizard(props
 const ActiveStepContext = createContext(false);
 const WizardOptionsContext = createContext<Omit<WizardStateOptions, 'collection'>>({});
 
-export interface WizardStepsProps {
-  /** Static steps in their declared order. */
-  children?: ReactNode;
-}
+export interface WizardStepsProps<T> extends Pick<CollectionProps<T>, 'items' | 'children' | 'dependencies'> {}
 
 /** Builds the ordered collection of steps. */
-export function WizardSteps({ children }: WizardStepsProps) {
+export function WizardSteps<T>({ items, children, dependencies }: WizardStepsProps<T>) {
   const options = useContext(WizardOptionsContext);
   return (
-    <CollectionBuilder content={<Collection>{children}</Collection>}>
+    <CollectionBuilder
+      content={
+        <Collection items={items} dependencies={dependencies}>
+          {children}
+        </Collection>
+      }
+    >
       {function renderCollection(collection) {
         const steps = [...collection];
         return (

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import { DefaultExample } from '../examples/default.tsx';
+import { DynamicExample } from '../examples/dynamic.tsx';
 import { EmptyExample } from '../examples/empty.tsx';
 import { LayerPropsExample } from '../examples/layer-props.tsx';
 import { NavigationExample } from '../examples/navigation.tsx';
@@ -140,6 +141,121 @@ describe('@godaddy/antares', function packageTests() {
       const details = page.getByRole('dialog', { name: 'Navigation' }).getByRole('region', { name: 'Details' });
       await expect.element(details).toBeVisible();
       await expect.element(details.getByLabelText('Visited steps')).toHaveTextContent('details');
+    });
+
+    it('renders data-driven steps and retains surviving input values when reordered', async function reorderItems() {
+      const details = { id: 'details', label: 'Details' };
+      const review = { id: 'review', label: 'Review' };
+      const screen = await render(<DynamicExample items={[details, review]} />);
+      await userEvent.click(page.getByRole('button', { name: 'Open dynamic wizard' }));
+      const dialog = page.getByRole('dialog', { name: 'Dynamic workflow' });
+      const first = dialog.getByRole('region', { name: 'Details' });
+      await expect.element(first).toBeVisible();
+      await userEvent.type(first.getByRole('textbox', { name: 'Details value' }), 'kept');
+      await screen.rerender(<DynamicExample items={[review, details]} />);
+      await expect.element(first).toBeVisible();
+      await expect.element(first.getByRole('textbox', { name: 'Details value' })).toHaveValue('kept');
+      await expect.element(first.getByLabelText('Step order')).toHaveTextContent('review, details');
+      const extra = { id: 'extra', label: 'Extra' };
+      await screen.rerender(<DynamicExample items={[review, extra, details]} />);
+      await expect.element(first).toBeVisible();
+      await expect.element(first.getByRole('textbox', { name: 'Details value' })).toHaveValue('kept');
+      await expect.element(first.getByLabelText('Visited steps')).toHaveTextContent('details');
+      await expect.element(first.getByLabelText('Step order')).toHaveTextContent('review, extra, details');
+    });
+
+    it('activates a preferred step when items arrive in an initially empty collection', async function arrivingItems() {
+      const screen = await render(<DynamicExample items={[]} defaultActiveStep="review" />);
+      await userEvent.click(page.getByRole('button', { name: 'Open dynamic wizard' }));
+      const dialog = page.getByRole('dialog', { name: 'Dynamic workflow' });
+      expect(dialog.element().querySelectorAll('[role="region"]')).toHaveLength(0);
+      await screen.rerender(
+        <DynamicExample
+          items={[
+            { id: 'details', label: 'Details' },
+            { id: 'review', label: 'Review' }
+          ]}
+          defaultActiveStep="review"
+        />
+      );
+      const review = dialog.getByRole('region', { name: 'Review' });
+      await expect.element(review).toBeVisible();
+      await expect.element(review.getByLabelText('Visited steps')).toHaveTextContent('review');
+      await expect.element(review.getByRole('button', { name: 'Next' })).toBeDisabled();
+    });
+
+    it('falls back at the removed active position, prunes deleted visits, and does not request navigation', async function removeActiveItem() {
+      const details = { id: 'details', label: 'Details' };
+      const review = { id: 'review', label: 'Review' };
+      const confirm = { id: 'confirm', label: 'Confirm' };
+      const extra = { id: 'extra', label: 'Extra' };
+      const requests: unknown[] = [];
+      const onStepChange = (key: unknown, detail: unknown) => requests.push([key, detail]);
+      const screen = await render(<DynamicExample items={[details, review, confirm]} onStepChange={onStepChange} />);
+      await userEvent.click(page.getByRole('button', { name: 'Open dynamic wizard' }));
+      const dialog = page.getByRole('dialog', { name: 'Dynamic workflow' });
+      await userEvent.click(dialog.getByRole('region', { name: 'Details' }).getByRole('button', { name: 'Next' }));
+      await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
+      requests.length = 0;
+
+      await screen.rerender(<DynamicExample items={[details, confirm, extra]} onStepChange={onStepChange} />);
+      const next = dialog.getByRole('region', { name: 'Confirm' });
+      await expect.element(next).toBeVisible();
+      await expect.element(next.getByLabelText('Visited steps')).toHaveTextContent('details, confirm');
+      expect(requests).toEqual([]);
+      await screen.rerender(<DynamicExample items={[details, extra]} onStepChange={onStepChange} />);
+      const last = dialog.getByRole('region', { name: 'Extra' });
+      await expect.element(last).toBeVisible();
+      await expect.element(last.getByLabelText('Visited steps')).toHaveTextContent('details, extra');
+      await screen.rerender(<DynamicExample items={[details]} onStepChange={onStepChange} />);
+      await expect.element(dialog.getByRole('region', { name: 'Details' })).toBeVisible();
+      await screen.rerender(<DynamicExample items={[]} onStepChange={onStepChange} />);
+      expect(dialog.element().querySelectorAll('[role="region"]')).toHaveLength(0);
+      expect(requests).toEqual([]);
+    });
+
+    it('forgets a removed visit when that key is reinserted and excludes inactive fields from interaction', async function reinsertStep() {
+      const details = { id: 'details', label: 'Details' };
+      const review = { id: 'review', label: 'Review' };
+      const screen = await render(<DynamicExample items={[details, review]} />);
+      await userEvent.click(page.getByRole('button', { name: 'Open dynamic wizard' }));
+      const dialog = page.getByRole('dialog', { name: 'Dynamic workflow' });
+      const first = dialog.getByRole('region', { name: 'Details' });
+      await userEvent.type(first.getByRole('textbox', { name: 'Details value' }), 'saved');
+      await userEvent.click(first.getByRole('button', { name: 'Next' }));
+      const second = dialog.getByRole('region', { name: 'Review' });
+      await expect.element(second).toBeVisible();
+      await expect.element(dialog.getByRole('textbox', { name: 'Details value' })).not.toBeInTheDocument();
+      expect(
+        dialog.element().querySelector<HTMLInputElement>('[role="region"][aria-label="Details"] input')?.value
+      ).toBe('saved');
+      await screen.rerender(<DynamicExample items={[details]} />);
+      await expect.element(first).toBeVisible();
+      await screen.rerender(<DynamicExample items={[details, review]} />);
+      await expect.element(first.getByLabelText('Visited steps')).toHaveTextContent('details');
+      await userEvent.click(first.getByRole('button', { name: 'Review directly' }));
+      await expect.element(first).toBeVisible();
+      await expect.element(first.getByRole('textbox', { name: 'Details value' })).toHaveValue('saved');
+    });
+
+    it('leaves a removed controlled key invalid until the consumer chooses a valid key', async function removedControlledStep() {
+      const details = { id: 'details', label: 'Details' };
+      const review = { id: 'review', label: 'Review' };
+      const requests: unknown[] = [];
+      const onStepChange = (key: unknown, detail: unknown) => requests.push([key, detail]);
+      const screen = await render(
+        <DynamicExample items={[details, review]} activeStep="review" onStepChange={onStepChange} />
+      );
+      await userEvent.click(page.getByRole('button', { name: 'Open dynamic wizard' }));
+      const dialog = page.getByRole('dialog', { name: 'Dynamic workflow' });
+      await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
+      await screen.rerender(<DynamicExample items={[details]} activeStep="review" onStepChange={onStepChange} />);
+      await expect.element(dialog.getByRole('region', { name: 'Details', includeHidden: true })).not.toBeVisible();
+      await screen.rerender(<DynamicExample items={[details]} activeStep="details" onStepChange={onStepChange} />);
+      const first = dialog.getByRole('region', { name: 'Details' });
+      await expect.element(first).toBeVisible();
+      await expect.element(first.getByLabelText('Visited steps')).toHaveTextContent('details');
+      expect(requests).toEqual([]);
     });
   });
 });

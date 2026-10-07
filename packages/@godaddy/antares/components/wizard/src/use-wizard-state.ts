@@ -54,17 +54,36 @@ export function useWizardState({
     defaultActiveStep !== undefined && collection.includes(defaultActiveStep)
       ? defaultActiveStep
       : (collection[0] ?? null);
+  const [previousCollection, setPreviousCollection] = useState<readonly Key[]>(() => [...collection]);
   const [selectedStep, setSelectedStep] = useState<Key | null>(() => initialStep);
+  const [visits, setVisits] = useState<ReadonlySet<Key>>(function initialVisits() {
+    const firstStep = controlledStep === undefined ? initialStep : controlledStep;
+    return new Set(firstStep !== null && firstStep !== undefined && collection.includes(firstStep) ? [firstStep] : []);
+  });
+  const collectionChanged =
+    collection.length !== previousCollection.length ||
+    collection.some((key, index) => key !== previousCollection[index]);
+  let reconciledStep = selectedStep;
+  if (collectionChanged) {
+    setPreviousCollection([...collection]);
+    if (controlledStep === undefined && (selectedStep === null || !collection.includes(selectedStep))) {
+      const removedPosition = selectedStep === null ? -1 : previousCollection.indexOf(selectedStep);
+      reconciledStep =
+        removedPosition < 0 ? initialStep : (collection[Math.min(removedPosition, collection.length - 1)] ?? null);
+      setSelectedStep(reconciledStep);
+    }
+    const remainingVisits = new Set([...visits].filter((key) => collection.includes(key)));
+    if (remainingVisits.size !== visits.size) setVisits(remainingVisits);
+  }
   const activeStep =
     controlledStep !== undefined
       ? controlledStep !== null && collection.includes(controlledStep)
         ? controlledStep
         : null
-      : selectedStep !== null && collection.includes(selectedStep)
-        ? selectedStep
+      : reconciledStep !== null && collection.includes(reconciledStep)
+        ? reconciledStep
         : initialStep;
   const activePosition = activeStep === null ? -1 : collection.indexOf(activeStep);
-  const [visits, setVisits] = useState<ReadonlySet<Key>>(() => new Set(activeStep === null ? [] : [activeStep]));
   const visitedSteps = new Set([...visits].filter((step) => collection.includes(step)));
   if (activeStep !== null) visitedSteps.add(activeStep);
 
