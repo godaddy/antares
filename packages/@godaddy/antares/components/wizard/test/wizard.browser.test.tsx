@@ -6,9 +6,63 @@ import { EmptyExample } from '../examples/empty.tsx';
 import { LayerPropsExample } from '../examples/layer-props.tsx';
 import { NavigationExample } from '../examples/navigation.tsx';
 import { NoStepsExample } from '../examples/no-steps.tsx';
+import { ComposedNavigationExample } from '../examples/composed-navigation.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Wizard', function wizardTests() {
+    it('wires reordered navigation slots, raised footer, and both close slots', async function composedControls() {
+      await render(<ComposedNavigationExample />);
+      const trigger = page.getByRole('button', { name: 'Open composed wizard' });
+      await userEvent.click(trigger);
+      const dialog = page.getByRole('dialog', { name: 'Composed workflow' });
+      const footer = dialog.getByTestId('wizard-footer');
+      expect(footer.element().getAttribute('data-elevation')).toBe('raised');
+      expect(footer.element().textContent).toContain('NextPreviousRevisit reviewCancel');
+      await expect.element(dialog.getByRole('button', { name: 'Previous' })).toBeDisabled();
+      await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
+      await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
+      await userEvent.click(dialog.getByRole('button', { name: 'Cancel' }));
+      await expect.element(dialog).not.toBeInTheDocument();
+      await expect.element(trigger).toHaveFocus();
+
+      await userEvent.click(trigger);
+      await userEvent.click(page.getByRole('button', { name: 'Close' }));
+      await expect.element(page.getByRole('dialog', { name: 'Composed workflow' })).not.toBeInTheDocument();
+    });
+
+    it('merges an authored press handler and lets local Footer presentation override the context', async function consumerOverrides() {
+      let presses = 0;
+      await render(<ComposedNavigationExample footerElevation="base" onNextPress={() => presses++} />);
+      await userEvent.click(page.getByRole('button', { name: 'Open composed wizard' }));
+      const dialog = page.getByRole('dialog', { name: 'Composed workflow' });
+      expect(dialog.getByTestId('wizard-footer').element().getAttribute('data-elevation')).toBe('base');
+      await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
+      expect(presses).toBe(1);
+      await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
+    });
+
+    it('disables unvisited destinations and lets the menu and custom control revisit displayed steps', async function visitedMenu() {
+      await render(<ComposedNavigationExample />);
+      await userEvent.click(page.getByRole('button', { name: 'Open composed wizard' }));
+      const dialog = page.getByRole('dialog', { name: 'Composed workflow' });
+      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await expect.element(page.getByRole('menuitemradio', { name: 'Review' })).toBeDisabled();
+      await expect.element(page.getByRole('menuitemradio', { name: 'Confirm' })).toBeDisabled();
+      await userEvent.keyboard('{Escape}');
+      await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
+      await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
+      await expect.element(dialog.getByRole('button', { name: 'Next' })).toBeDisabled();
+      await userEvent.click(dialog.getByRole('button', { name: 'Previous' }));
+      await userEvent.click(dialog.getByRole('button', { name: 'Previous' }));
+      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await expect.element(page.getByRole('menuitemradio', { name: 'Confirm' })).toBeEnabled();
+      await userEvent.click(page.getByRole('menuitemradio', { name: 'Confirm' }));
+      await expect.element(dialog.getByRole('region', { name: 'Confirm' })).toBeVisible();
+      await userEvent.click(dialog.getByRole('button', { name: 'Previous' }));
+      await userEvent.click(dialog.getByRole('button', { name: 'Previous' }));
+      await userEvent.click(dialog.getByRole('button', { name: 'Revisit review' }));
+      await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
+    });
     it('opens a named full-screen dialog with the first labeled static step and restores focus on close', async function openAndClose() {
       await render(<DefaultExample />);
       const trigger = page.getByRole('button', { name: 'Start setup' });
