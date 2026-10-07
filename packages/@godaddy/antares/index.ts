@@ -35,6 +35,7 @@ export * from './exports/MetricsLockup';
 export * from './exports/Drawer';
 export * from './exports/InlineDrawer';
 export * from './exports/Modal';
+export * from './exports/Wizard';
 export * from './exports/ProgressBar';
 export * from './exports/ProgressSteps';
 export * from './exports/ToggleButton';

@@ -1,0 +1,18 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--modal-overlay-bg, rgba(0, 0, 0, 0.6));
+}
+
+.modal {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.dialog {
+  inline-size: 100%;
+  block-size: 100%;
+  max-inline-size: none;
+  max-block-size: none;
+  border-radius: 0;
+}

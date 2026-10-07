@@ -1,0 +1,44 @@
+---
+title: Wizard
+description: A full-screen dialog with an ordered collection of named steps.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './wizard.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Full-screen modal with React Aria focus and dismissal behavior
+- Static, named steps with only the first step exposed to assistive technology
+- Empty collections supported
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Accessibility
+
+Give the dialog a name with a composed `Heading slot="title"` or an `aria-label`. Each step's `label` names its content region. Compose a `CloseButton` or `Button slot="close"` when a visible exit is needed. Escape closes by default; backdrop clicks do not.
+
+## Props
+
+```tsx
+<DialogTrigger>
+  <Button />
+  <Wizard>
+    <Heading slot="title" />
+    <WizardSteps>
+      <WizardStep id="first" label="First" />
+    </WizardSteps>
+    {/* ... */}
+  </Wizard>
+</DialogTrigger>
+```
+
+<ArgTypes of={Stories.Props} />
+<ArgTypes of={Stories.DialogTriggerProps} />
+<ArgTypes of={Stories.WizardStepsProps} />
+<ArgTypes of={Stories.WizardStepProps} />
