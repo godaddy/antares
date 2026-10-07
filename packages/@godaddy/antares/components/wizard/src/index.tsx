@@ -1,4 +1,13 @@
-import React, { createContext, forwardRef, isValidElement, useContext, type ReactElement, type ReactNode } from 'react';
+import React, {
+  createContext,
+  forwardRef,
+  isValidElement,
+  useContext,
+  useEffect,
+  useRef,
+  type ReactElement,
+  type ReactNode
+} from 'react';
 import {
   Collection,
   CollectionBuilder,
@@ -110,7 +119,8 @@ export const Wizard = forwardRef<HTMLElement, WizardProps>(function Wizard(props
   );
 });
 
-const ActiveStepContext = createContext(false);
+const ActiveStepContext = createContext<{ key: Key; isActive: boolean } | null>(null);
+const StepFocusContext = createContext<((key: Key, node: HTMLDivElement | null) => void) | null>(null);
 
 export interface WizardStepsProps<T> extends Pick<CollectionProps<T>, 'items' | 'children' | 'dependencies'> {}
 
@@ -146,7 +156,7 @@ function WizardCollection<T>({
             renderLayout={renderLayout}
             renderSteps={(activeStep) =>
               steps.map((step) => (
-                <ActiveStepContext.Provider key={step.key} value={step.key === activeStep}>
+                <ActiveStepContext.Provider key={step.key} value={{ key: step.key, isActive: step.key === activeStep }}>
                   {step.render?.(step)}
                 </ActiveStepContext.Provider>
               ))
@@ -172,10 +182,28 @@ function WizardStepContent({
   renderSteps: (activeStep: Key | null) => ReactNode;
 }) {
   const state = useWizardState({ ...options, collection });
+  const stepElements = useRef(new Map<Key, HTMLDivElement>());
+  const previousActiveStep = useRef(state.activeStep);
+  useEffect(
+    function focusActivatedStep() {
+      if (previousActiveStep.current !== state.activeStep) {
+        previousActiveStep.current = state.activeStep;
+        if (state.activeStep !== null) stepElements.current.get(state.activeStep)?.focus();
+      }
+    },
+    [state.activeStep]
+  );
+
+  function registerStep(key: Key, node: HTMLDivElement | null) {
+    if (node) stepElements.current.set(key, node);
+    else stepElements.current.delete(key);
+  }
   return (
     <WizardProvider state={state}>
       <WizardStepLabelsContext.Provider value={labels}>
-        {renderLayout(<Content>{renderSteps(state.activeStep)}</Content>)}
+        <StepFocusContext.Provider value={registerStep}>
+          {renderLayout(<Content>{renderSteps(state.activeStep)}</Content>)}
+        </StepFocusContext.Provider>
       </WizardStepLabelsContext.Provider>
     </WizardProvider>
   );
@@ -196,9 +224,22 @@ export interface WizardStepProps {
 export const WizardStep = createLeafComponent<unknown, WizardStepProps, HTMLDivElement>(
   'item',
   function WizardStep(props, ref) {
-    const isActive = useContext(ActiveStepContext);
+    const step = useContext(ActiveStepContext);
+    const isActive = step?.isActive ?? false;
+    const registerStep = useContext(StepFocusContext);
     return (
-      <div ref={ref} role="region" aria-label={props.label} hidden={!isActive} inert={!isActive}>
+      <div
+        ref={function registerStepElement(node) {
+          if (step) registerStep?.(step.key, node);
+          if (typeof ref === 'function') ref(node);
+          else if (ref) ref.current = node;
+        }}
+        role="region"
+        aria-label={props.label}
+        tabIndex={-1}
+        hidden={!isActive}
+        inert={!isActive}
+      >
         {props.children}
       </div>
     );

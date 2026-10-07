@@ -8,9 +8,74 @@ import { LayerPropsExample } from '../examples/layer-props.tsx';
 import { NavigationExample } from '../examples/navigation.tsx';
 import { NoStepsExample } from '../examples/no-steps.tsx';
 import { ComposedNavigationExample } from '../examples/composed-navigation.tsx';
+import { LifecycleExample } from '../examples/lifecycle.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Wizard', function wizardTests() {
+    it('resets selection and visited destinations on each uncontrolled opening', async function reopen() {
+      const screen = await render(<LifecycleExample defaultActiveStep="review" />);
+      const trigger = page.getByRole('button', { name: 'Open lifecycle' });
+      await userEvent.click(trigger);
+      const dialog = page.getByRole('dialog', { name: 'Lifecycle workflow' });
+      await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
+      await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
+      await expect.element(dialog.getByRole('region', { name: 'Confirm' })).toHaveFocus();
+      await userEvent.click(dialog.getByRole('button', { name: 'Close workflow' }));
+      await expect.element(trigger).toHaveFocus();
+      await userEvent.click(trigger);
+      await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
+      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await expect.element(page.getByRole('menuitemradio', { name: 'Confirm' })).toBeDisabled();
+      await userEvent.keyboard('{Escape}');
+      await userEvent.click(dialog.getByRole('button', { name: 'Close workflow' }));
+      await screen.rerender(<LifecycleExample defaultActiveStep="details" />);
+      await userEvent.click(trigger);
+      await expect.element(dialog.getByRole('region', { name: 'Details' })).toBeVisible();
+    });
+
+    it('keeps the run and focus when the app rejects navigation and dismissal', async function rejectedRun() {
+      const screen = await render(<LifecycleExample controlled allowNavigation={false} allowClose={false} />);
+      const trigger = page.getByRole('button', { name: 'Open lifecycle' });
+      await userEvent.click(trigger);
+      const dialog = page.getByRole('dialog', { name: 'Lifecycle workflow' });
+      await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
+      await expect.element(dialog.getByRole('button', { name: 'Next' })).toHaveFocus();
+      await expect.element(dialog.getByRole('region', { name: 'Details' })).toBeVisible();
+      await screen.rerender(<LifecycleExample controlled allowClose={false} />);
+      await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
+      await expect.element(dialog.getByRole('region', { name: 'Review' })).toHaveFocus();
+      await userEvent.click(dialog.getByRole('button', { name: 'Close workflow' }));
+      await expect.element(dialog).toBeVisible();
+      await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
+      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await expect.element(page.getByRole('menuitemradio', { name: 'Review' })).toBeEnabled();
+      await expect.element(page.getByRole('menuitemradio', { name: 'Confirm' })).toBeDisabled();
+      await userEvent.keyboard('{Escape}');
+      await screen.rerender(<LifecycleExample controlled />);
+      await userEvent.click(dialog.getByRole('button', { name: 'Close workflow' }));
+      await expect.element(trigger).toHaveFocus();
+      await userEvent.click(trigger);
+      await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
+      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await expect.element(page.getByRole('menuitemradio', { name: 'Details' })).toBeDisabled();
+    });
+
+    it('uses RAC keyboard dismissal opt-out and keeps keyboard focus inside the dialog', async function focusTrap() {
+      const screen = await render(<LifecycleExample isKeyboardDismissDisabled />);
+      const trigger = page.getByRole('button', { name: 'Open lifecycle' });
+      await userEvent.click(trigger);
+      const dialog = page.getByRole('dialog', { name: 'Lifecycle workflow' });
+      await userEvent.keyboard('{Escape}');
+      await expect.element(dialog).toBeVisible();
+      for (let index = 0; index < 12; index++) {
+        await userEvent.tab();
+        expect(dialog.element().contains(document.activeElement)).toBe(true);
+      }
+      await screen.rerender(<LifecycleExample />);
+      await userEvent.keyboard('{Escape}');
+      await expect.element(dialog).not.toBeInTheDocument();
+      await expect.element(trigger).toHaveFocus();
+    });
     it('wires reordered navigation slots, raised footer, and both close slots', async function composedControls() {
       await render(<ComposedNavigationExample />);
       const trigger = page.getByRole('button', { name: 'Open composed wizard' });
@@ -59,6 +124,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(page.getByRole('menuitemradio', { name: 'Confirm' })).toBeEnabled();
       await userEvent.click(page.getByRole('menuitemradio', { name: 'Confirm' }));
       await expect.element(dialog.getByRole('region', { name: 'Confirm' })).toBeVisible();
+      await expect.element(dialog.getByRole('region', { name: 'Confirm' })).toHaveFocus();
       await userEvent.click(dialog.getByRole('button', { name: 'Previous' }));
       await userEvent.click(dialog.getByRole('button', { name: 'Previous' }));
       await userEvent.click(dialog.getByRole('button', { name: 'Revisit review' }));
@@ -163,6 +229,7 @@ describe('@godaddy/antares', function packageTests() {
       const details = dialog.getByRole('region', { name: 'Details' });
       await userEvent.click(details.getByRole('button', { name: 'Next' }));
       await expect.element(details).toBeVisible();
+      await expect.element(details.getByRole('button', { name: 'Next' })).toHaveFocus();
       await expect.element(details.getByLabelText('Visited steps')).toHaveTextContent('details');
       await userEvent.click(details.getByRole('button', { name: 'Review directly' }));
       expect(requests).toEqual([['review', { previousStep: 'details', reason: 'next' }]]);
@@ -170,6 +237,7 @@ describe('@godaddy/antares', function packageTests() {
       await screen.rerender(<NavigationExample activeStep="review" onStepChange={onStepChange} />);
       const review = dialog.getByRole('region', { name: 'Review' });
       await expect.element(review).toBeVisible();
+      await expect.element(review).toHaveFocus();
       await expect.element(review.getByLabelText('Visited steps')).toHaveTextContent('details, review');
       await screen.rerender(<NavigationExample activeStep="unknown" onStepChange={onStepChange} />);
       await expect.element(dialog.getByRole('region', { name: 'Review', includeHidden: true })).not.toBeVisible();

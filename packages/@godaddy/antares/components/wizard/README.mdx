@@ -14,6 +14,8 @@ import * as Stories from './wizard.stories.tsx';
 - Full-screen modal with React Aria focus and dismissal behavior
 - Static, named steps with only the first step exposed to assistive technology
 - Empty collections supported
+- Actual step changes focus the newly active named region; rejected controlled navigation leaves focus in place
+- Each new opening starts with fresh visit history and the current default step (unless `activeStep` is app-owned)
 
 ## Examples
 
@@ -22,6 +24,8 @@ import * as Stories from './wizard.stories.tsx';
 ## Accessibility
 
 Give the dialog a name with a composed `Heading slot="title"` or an `aria-label`. Each step's `label` names its content region. Compose a `CloseButton` or `Button slot="close"` when a visible exit is needed. Escape closes by default; backdrop clicks do not.
+
+Set `isKeyboardDismissDisabled` to prevent Escape dismissal. React Aria contains focus while open and restores it to the trigger after closing. A controlled `onOpenChange` may decline a close request without resetting the active step or visits.
 
 ## Props
 
