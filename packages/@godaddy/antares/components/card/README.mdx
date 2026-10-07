@@ -42,8 +42,11 @@ To style a Card by state, target `[data-selected]`, `[data-hovered]`, `[data-pre
 - In a selectable group, Space toggles the focused Card. Without selection, `onAction` runs on Enter
   or a press. Do not combine them: with both, a press runs the action and only Space selects, so
   pointer users cannot select.
-- Controls nested in a Card in a `CardGroup` keep their own presses and do not select the Card or
-  run its action.
+- Use Antares controls such as `Button`, `LinkButton`, and `Checkbox` inside a grouped Card. React
+  Aria keeps their presses independent of row selection and actions. For a custom press target,
+  use `Pressable` and forward its props and ref to the target.
+- Set `keyboardNavigationBehavior="tab"` on `CardGroup` to move through controls within a row with
+  Tab. Native controls follow React Aria's event propagation rules.
 - A `CardGroup` does not submit form values. Read the selection from `onSelectionChange`.
 - `href` on a standalone Card renders the Card itself as a native link, named by its content unless
   you pass `aria-label`. A link Card cannot contain controls, so do not put CornerActions, buttons,

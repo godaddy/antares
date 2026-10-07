@@ -4,6 +4,7 @@ import { DefaultExample } from '../examples/default.tsx';
 import { TextLockupExample } from '../examples/text-lockup.tsx';
 import { CornerActionsExample } from '../examples/corner-actions.tsx';
 import { LinkExample } from '../examples/link.tsx';
+import { GroupedLinksExample } from '../examples/grouped-links.tsx';
 import { ActionsExample } from '../examples/actions.tsx';
 import { MultipleSelectionExample } from '../examples/multiple-selection.tsx';
 import { SingleSelectionExample } from '../examples/single-selection.tsx';
@@ -29,6 +30,10 @@ describe('@godaddy/antares', function packageTests() {
 
     it('renders a link card', function renderLink() {
       expect(renderToString(<LinkExample />)).toMatchSnapshot();
+    });
+
+    it('renders grouped links with independent controls and disabled navigation', function renderGroupedLinks() {
+      expect(renderToString(<GroupedLinksExample />)).toMatchSnapshot();
     });
 
     it('renders row actions with independent child actions', function renderActions() {

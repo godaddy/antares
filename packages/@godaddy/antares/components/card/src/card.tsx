@@ -1,4 +1,4 @@
-import { forwardRef, type PointerEvent, type ReactNode, type Ref } from 'react';
+import { forwardRef, type ReactNode, type Ref } from 'react';
 import {
   GridListItem as RACGridListItem,
   type GridListItemProps as RACGridListItemProps,
@@ -10,18 +10,6 @@ import { composeClassName } from '#utils/render-props.ts';
 import { OutsideCardGroup, useIsInCardGroup } from './card-group.tsx';
 import { OutsideCardSelection, SelectionProvider } from './card-selection-indicator.tsx';
 import styles from './index.module.css';
-
-/** Plain DOM controls that keep their own press inside a CardGroup row. */
-const NESTED_CONTROL =
-  'a, button, input, textarea, select, summary, label, audio[controls], video[controls], [contenteditable]:not([contenteditable="false"])';
-
-/**
- * React Aria controls stop the row press themselves. Plain DOM controls get no such protection, so
- * stop it for them once it bubbles out of the control, after the control's own handlers have run.
- */
-function keepNestedControlPress(event: PointerEvent<HTMLDivElement>) {
-  if ((event.target as Element).closest(NESTED_CONTROL)) event.stopPropagation();
-}
 
 /**
  * Props for Card. Standalone, a Card is a static surface, or a link when `href` is set. Inside a
@@ -115,9 +103,7 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
             isHovered={state.isHovered}
             isPressed={state.isPressed}
           >
-            <div className={styles.content} onPointerDown={keepNestedControlPress}>
-              <OutsideCardGroup>{children}</OutsideCardGroup>
-            </div>
+            <OutsideCardGroup>{children}</OutsideCardGroup>
           </SelectionProvider>
         )}
       </Flex>

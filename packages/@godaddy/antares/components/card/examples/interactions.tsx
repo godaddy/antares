@@ -6,11 +6,13 @@ import {
   CardGroup,
   CardSelectionIndicator,
   type CardSelectionIndicatorProps,
+  Checkbox,
   CornerActions,
   LinkButton,
   Menu,
   MenuItem,
   MenuTrigger,
+  Pressable,
   RangeField,
   Text
 } from '@godaddy/antares';
@@ -23,14 +25,12 @@ export function InteractionsExample({
   selectionMode = 'multiple',
   withAction,
   isDisabled,
-  media,
   slider,
   indicatorChildren
 }: {
   selectionMode?: 'single' | 'multiple' | 'none';
   withAction?: boolean;
   isDisabled?: boolean;
-  media?: 'audio' | 'video';
   slider?: boolean;
   indicatorChildren?: CardSelectionIndicatorProps['children'];
 }) {
@@ -52,7 +52,12 @@ export function InteractionsExample({
 
   return (
     <>
-      <CardGroup aria-label="Choose an option" selectionMode={selectionMode} onSelectionChange={changeSelection}>
+      <CardGroup
+        aria-label="Choose an option"
+        selectionMode={selectionMode}
+        keyboardNavigationBehavior="tab"
+        onSelectionChange={changeSelection}
+      >
         <Card
           id="one"
           textValue="Option one"
@@ -61,10 +66,10 @@ export function InteractionsExample({
         >
           <Text>One: copy this text.</Text>
           <Button onPress={act}>Independent One</Button>
-          <label>
-            Remember One
-            <input type="checkbox" data-testid="native-One" onPointerDown={act} />
-          </label>
+          <Pressable onPress={act}>
+            <Box role="button">Custom action One</Box>
+          </Pressable>
+          <Checkbox onChange={act}>Remember One</Checkbox>
           <LinkButton href="#independent-destination" onPress={act}>
             Independent link One
           </LinkButton>
@@ -77,15 +82,6 @@ export function InteractionsExample({
           <CornerActions data-testid="corner-One" padding="sm">
             <CardSelectionIndicator data-testid="indicator-One">{indicatorChildren}</CardSelectionIndicator>
           </CornerActions>
-          <Box contentEditable suppressContentEditableWarning data-testid="editor-One">
-            Editable One
-          </Box>
-          {media === 'audio' ? <audio controls aria-label="Audio preview" /> : null}
-          {media === 'video' ? (
-            <video controls aria-label="Video preview" width={300} height={150}>
-              <track kind="captions" />
-            </video>
-          ) : null}
           {slider ? <RangeField label="Volume" defaultValue={10} /> : null}
         </Card>
         <Card id="two" textValue="Option two" onAction={withAction ? () => runRowAction('two') : undefined}>
