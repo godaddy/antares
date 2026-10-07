@@ -111,7 +111,12 @@ export const Wizard = forwardRef<HTMLElement, WizardProps>(function Wizard(props
       className={composeClassName(overlayProps?.className, styles.overlay)}
     >
       <Flex as={RACModal} {...containerProps} className={composeClassName(containerProps?.className, styles.modal)}>
-        <OverlayDialog elevation="base" {...dialogProps} ref={ref} className={composeClassName(className, styles.dialog)}>
+        <OverlayDialog
+          elevation="base"
+          {...dialogProps}
+          ref={ref}
+          className={composeClassName(className, styles.dialog)}
+        >
           {dialogChildren}
         </OverlayDialog>
       </Flex>
