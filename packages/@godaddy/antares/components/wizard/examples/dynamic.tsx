@@ -34,7 +34,7 @@ function StepControls() {
   );
 }
 
-/** Change keyed items while a composed Wizard remains open. */
+/** Change keyed items while a composed Wizard remains open. @ignore */
 export function DynamicExample({
   items,
   activeStep,

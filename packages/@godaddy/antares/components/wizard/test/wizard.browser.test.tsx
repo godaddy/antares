@@ -9,9 +9,38 @@ import { NavigationExample } from '../examples/navigation.tsx';
 import { NoStepsExample } from '../examples/no-steps.tsx';
 import { ComposedNavigationExample } from '../examples/composed-navigation.tsx';
 import { LifecycleExample } from '../examples/lifecycle.tsx';
+import { ControlledValidationExample } from '../examples/controlled-validation.tsx';
+import { ItemsExample } from '../examples/items.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Wizard', function wizardTests() {
+    it('lets the app reject navigation until its field is valid and submit only on the final action', async function validation() {
+      await render(<ControlledValidationExample />);
+      await userEvent.click(page.getByRole('button', { name: 'Create account' }));
+      const dialog = page.getByRole('dialog', { name: 'Create an account' });
+      await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
+      await expect.element(dialog.getByText('Enter an account name to continue.')).toBeVisible();
+      await expect.element(dialog.getByRole('region', { name: 'Account details' })).toBeVisible();
+      await expect.element(dialog.getByRole('button', { name: 'Next' })).toHaveFocus();
+      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await expect.element(page.getByRole('menuitemradio', { name: 'Review' })).toBeDisabled();
+      await userEvent.keyboard('{Escape}');
+
+      await userEvent.type(dialog.getByRole('textbox', { name: 'Account name' }), 'Ada');
+      await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
+      await expect.element(dialog.getByRole('region', { name: 'Review' })).toHaveFocus();
+      await expect.element(dialog.getByText('Account: Ada')).toBeVisible();
+      await expect.element(dialog.getByRole('button', { name: 'Next' })).toBeDisabled();
+      await expect.element(page.getByText('Account created for Ada')).not.toBeInTheDocument();
+      await userEvent.click(dialog.getByRole('button', { name: 'Previous' }));
+      await expect.element(dialog.getByRole('textbox', { name: 'Account name' })).toHaveValue('Ada');
+      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await userEvent.click(page.getByRole('menuitemradio', { name: 'Review' }));
+      await userEvent.click(dialog.getByRole('button', { name: 'Create' }));
+      await expect.element(page.getByText('Account created for Ada')).toBeVisible();
+      await expect.element(dialog).not.toBeInTheDocument();
+    });
+
     it('resets selection and visited destinations on each uncontrolled opening', async function reopen() {
       const screen = await render(<LifecycleExample defaultActiveStep="review" />);
       const trigger = page.getByRole('button', { name: 'Open lifecycle' });
@@ -145,6 +174,42 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.click(dialog.getByRole('button', { name: 'Close' }));
       await expect.element(dialog).not.toBeInTheDocument();
       await expect.element(trigger).toHaveFocus();
+    });
+
+    it('keeps the canonical footer in place and retains an uncontrolled field across steps', async function canonicalFlow() {
+      await render(<DefaultExample />);
+      await userEvent.click(page.getByRole('button', { name: 'Start setup' }));
+      const dialog = page.getByRole('dialog', { name: 'Setup' });
+      await expect.element(dialog.getByRole('button', { name: 'Previous' })).toBeDisabled();
+      await userEvent.type(dialog.getByRole('textbox', { name: 'Account name' }), 'Ada');
+      await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
+      await expect.element(dialog.getByRole('region', { name: 'Review' })).toHaveFocus();
+      await expect.element(dialog.getByRole('button', { name: 'Next' })).toBeDisabled();
+      await expect.element(dialog.getByRole('textbox', { name: 'Account name' })).not.toBeInTheDocument();
+      await userEvent.click(dialog.getByRole('button', { name: 'Previous' }));
+      await expect.element(dialog.getByRole('textbox', { name: 'Account name' })).toHaveValue('Ada');
+    });
+
+    it('isolates the page while open and restores access after closing', async function isolation() {
+      await render(<LifecycleExample />);
+      await userEvent.click(page.getByRole('button', { name: 'Open lifecycle' }));
+      const outside = page.getByRole('button', { name: 'Outside workflow' }).element();
+      expect(outside.closest('[aria-hidden="true"], [inert]')).not.toBeNull();
+      await userEvent.click(page.getByRole('button', { name: 'Close workflow' }));
+      expect(outside.closest('[aria-hidden="true"], [inert]')).toBeNull();
+    });
+
+    it('keeps keyed field values and collection order when the public items example changes', async function items() {
+      await render(<ItemsExample />);
+      await userEvent.click(page.getByRole('button', { name: 'Open items workflow' }));
+      const dialog = page.getByRole('dialog', { name: 'Items workflow' });
+      await userEvent.type(dialog.getByRole('textbox', { name: 'Details notes' }), 'saved');
+      await userEvent.click(dialog.getByRole('button', { name: 'Reorder and add step' }));
+      await expect.element(dialog.getByRole('textbox', { name: 'Details notes' })).toHaveValue('saved');
+      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      const names = (await page.getByRole('menuitemradio').all()).map((item) => item.element().textContent);
+      expect(names).toEqual(['Review', 'Details', 'Confirm']);
+      await expect.element(page.getByRole('menuitemradio', { name: 'Confirm' })).toBeDisabled();
     });
 
     it('closes on Escape and does not dismiss on backdrop interaction', async function dismissal() {
