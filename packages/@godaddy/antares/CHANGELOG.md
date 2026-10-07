@@ -1,5 +1,11 @@
 # @godaddy/antares
 
+## 0.10.1
+
+### Patch Changes
+
+- Honor explicit `LinkButton` target and rel attributes so links can open in a new tab without an icon. Restore browser-default content alignment for inline buttons while preserving other variants' alignment. ([#369](https://github.com/godaddy/bento/pull/369) by @egaitan-godaddy)
+
 ## 0.10.0
 
 ### Minor Changes
