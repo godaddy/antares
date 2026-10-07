@@ -1,28 +1,39 @@
-import { createContext, forwardRef, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
+import {
+  createContext,
+  forwardRef,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactNode
+} from 'react';
 import {
   Collection,
   CollectionBuilder,
   type CollectionProps,
-  createBranchComponent,
   createLeafComponent,
-  DEFAULT_SLOT,
   DialogTrigger as RACDialogTrigger,
   type DialogTriggerProps as RACDialogTriggerProps,
   type DialogProps as RACDialogProps,
   Modal as RACModal,
   ModalOverlay as RACModalOverlay,
   type ModalOverlayProps as RACModalOverlayProps,
-  Provider as RACProvider,
   type Key
 } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
-import { ButtonContext } from '#components/button';
 import { Content } from '#components/structure';
 import { OverlayDialog } from '#components/_internal/overlay-dialog';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
-import { useWizardState, type WizardState, type WizardStateOptions } from './use-wizard-state.ts';
+import { useWizardState, WizardStateContext, type WizardStateOptions } from './use-wizard-state.ts';
 import { WizardProvider, WizardStepLabelsContext } from './wizard-provider.tsx';
+import {
+  createWizardCollectionStore,
+  WizardCollectionContext,
+  type StepCollection
+} from './wizard-collection-store.ts';
 
 export { useWizardState, WizardStateContext } from './use-wizard-state.ts';
 export { WizardStepsMenu } from './wizard-steps-menu.tsx';
@@ -89,164 +100,113 @@ export const Wizard = forwardRef<HTMLElement, WizardProps>(function Wizard(props
       {...overlayProps}
       className={composeClassName(overlayProps?.className, styles.overlay)}
     >
-      <CollectionBuilder
-        content={
-          <RACProvider values={[[ButtonContext, { slots: { [DEFAULT_SLOT]: {}, close: {} } }]]}>
-            <WizardProvider state={discoveryState}>
-              <CollectionDiscoveryContext.Provider value>
-                <Collection>{children}</Collection>
-              </CollectionDiscoveryContext.Provider>
-            </WizardProvider>
-          </RACProvider>
-        }
-      >
-        {function renderCollection(collection) {
-          return (
-            <Flex
-              as={RACModal}
-              {...containerProps}
-              className={composeClassName(containerProps?.className, styles.modal)}
+      <Flex as={RACModal} {...containerProps} className={composeClassName(containerProps?.className, styles.modal)}>
+        <WizardRun
+          options={{ activeStep, defaultActiveStep, onStepChange }}
+          renderDialog={(content) => (
+            <OverlayDialog
+              elevation="base"
+              {...dialogProps}
+              ref={ref}
+              className={composeClassName(className, styles.dialog)}
             >
-              <WizardCollectionView
-                collection={collection}
-                options={{ activeStep, defaultActiveStep, onStepChange }}
-                renderLayout={(content) => (
-                  <OverlayDialog
-                    elevation="base"
-                    {...dialogProps}
-                    ref={ref}
-                    className={composeClassName(className, styles.dialog)}
-                  >
-                    {content}
-                  </OverlayDialog>
-                )}
-              >
-                {children}
-              </WizardCollectionView>
-            </Flex>
-          );
-        }}
-      </CollectionBuilder>
+              {content}
+            </OverlayDialog>
+          )}
+        >
+          {children}
+        </WizardRun>
+      </Flex>
     </Flex>
   );
 });
 
 const ActiveStepContext = createContext<{ key: Key; isActive: boolean } | null>(null);
 const StepFocusContext = createContext<((key: Key, node: HTMLDivElement | null) => void) | null>(null);
-const CollectionDiscoveryContext = createContext(false);
-const StepContentContext = createContext<ReactNode>(null);
-const noAction = () => undefined;
-// The collection builder shallow-renders the layout. Give composed controls inert context in that hidden tree.
-const discoveryState: WizardState = {
-  activeStep: null,
-  collection: [],
-  activePosition: -1,
-  visitedSteps: new Set(),
-  canPrevious: false,
-  canNext: false,
-  previous: noAction,
-  next: noAction,
-  goToStep: noAction
-};
 
-function WizardCollectionView({
-  collection,
+function WizardRun({
   options,
-  renderLayout,
+  renderDialog,
   children
 }: {
-  collection: Parameters<Parameters<typeof CollectionBuilder>[0]['children']>[0];
   options: Omit<WizardStateOptions, 'collection'>;
-  renderLayout: (content: ReactNode) => ReactNode;
+  renderDialog: (content: ReactNode) => ReactNode;
   children: ReactNode;
 }) {
-  // On the client the hidden collection portal publishes its first snapshot after mounting.
-  const [ready, setReady] = useState(false);
-  useEffect(() => setReady(true), []);
-  const nodes = [...collection.getKeys()].map((key) => collection.getItem(key));
-  const regions = nodes.filter((node): node is NonNullable<typeof node> => node?.type === 'wizard-steps');
-  if (regions.length === 0 && !ready) return null;
-  if (regions.length !== 1) throw new Error('Wizard requires exactly one WizardSteps collection.');
-  const steps = [...collection.getChildren(regions[0].key)];
-  return renderLayout(
-    <WizardStepContent
-      collection={steps.map((step) => step.key)}
-      labels={steps.map((step) => ({ key: step.key, label: (step.props as WizardStepProps).label }))}
-      options={options}
-      renderSteps={(activeKey) =>
-        steps.map((step) => (
-          <ActiveStepContext.Provider key={step.key} value={{ key: step.key, isActive: step.key === activeKey }}>
-            {step.render?.(step)}
-          </ActiveStepContext.Provider>
-        ))
-      }
-    >
-      {children}
-    </WizardStepContent>
-  );
-}
-
-export interface WizardStepsProps<T> extends Pick<CollectionProps<T>, 'items' | 'children' | 'dependencies'> {}
-
-const StepsCollection = createBranchComponent<unknown, WizardStepsProps<unknown>, HTMLElement>(
-  'wizard-steps',
-  function StepsCollection() {
-    return null;
-  },
-  function buildStepChildren({ items, children, dependencies }) {
-    return (
-      <Collection items={items} dependencies={dependencies}>
-        {children}
-      </Collection>
-    );
-  }
-);
-
-/** Builds the ordered collection of steps. */
-export function WizardSteps<T>(props: WizardStepsProps<T>) {
-  const discovering = useContext(CollectionDiscoveryContext);
-  const content = useContext(StepContentContext);
-  return discovering ? <StepsCollection {...(props as WizardStepsProps<unknown>)} /> : <Content>{content}</Content>;
-}
-
-function WizardStepContent({
-  collection,
-  labels,
-  options,
-  renderSteps,
-  children
-}: {
-  collection: Key[];
-  labels: { key: Key; label: string }[];
-  options: Omit<WizardStateOptions, 'collection'>;
-  renderSteps: (activeStep: Key | null) => ReactNode;
-  children: ReactNode;
-}) {
-  const state = useWizardState({ ...options, collection });
+  const [store] = useState(createWizardCollectionStore);
+  const collections = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getSnapshot);
+  const collection = collections.length === 1 ? collections[0] : null;
+  const steps = collection ? [...collection] : [];
+  const state = useWizardState({ ...options, collection: steps.map((step) => step.key) });
   const stepElements = useRef(new Map<Key, HTMLDivElement>());
   const previousActiveStep = useRef(state.activeStep);
+  const hadCollection = useRef(false);
+  const [ready, setReady] = useState(false);
+  useEffect(() => setReady(true), []);
   useEffect(
-    function focusActivatedStep() {
+    function focusChangedStep() {
       if (previousActiveStep.current !== state.activeStep) {
+        if (hadCollection.current && state.activeStep !== null) stepElements.current.get(state.activeStep)?.focus();
         previousActiveStep.current = state.activeStep;
-        if (state.activeStep !== null) stepElements.current.get(state.activeStep)?.focus();
       }
+      if (collection) hadCollection.current = true;
     },
-    [state.activeStep]
+    [collection, state.activeStep]
   );
 
   function registerStep(key: Key, node: HTMLDivElement | null) {
     if (node) stepElements.current.set(key, node);
     else stepElements.current.delete(key);
   }
+
+  if (ready && collections.length !== 1) throw new Error('Wizard requires exactly one WizardSteps collection.');
+  return renderDialog(
+    <WizardCollectionContext.Provider value={store}>
+      <WizardProvider state={state}>
+        <WizardStepLabelsContext.Provider
+          value={steps.map((step) => ({ key: step.key, label: (step.props as WizardStepProps).label }))}
+        >
+          <StepFocusContext.Provider value={registerStep}>{children}</StepFocusContext.Provider>
+        </WizardStepLabelsContext.Provider>
+      </WizardProvider>
+    </WizardCollectionContext.Provider>
+  );
+}
+
+export interface WizardStepsProps<T> extends Pick<CollectionProps<T>, 'items' | 'children' | 'dependencies'> {}
+
+/** Builds the ordered collection of steps. */
+export function WizardSteps<T>(props: WizardStepsProps<T>) {
   return (
-    <WizardProvider state={state}>
-      <WizardStepLabelsContext.Provider value={labels}>
-        <StepFocusContext.Provider value={registerStep}>
-          <StepContentContext.Provider value={renderSteps(state.activeStep)}>{children}</StepContentContext.Provider>
-        </StepFocusContext.Provider>
-      </WizardStepLabelsContext.Provider>
-    </WizardProvider>
+    <CollectionBuilder content={<Collection {...props} />}>
+      {function renderCollection(collection) {
+        return <WizardStepsContent collection={collection} />;
+      }}
+    </CollectionBuilder>
+  );
+}
+
+function WizardStepsContent({ collection }: { collection: StepCollection }) {
+  const store = useContext(WizardCollectionContext);
+  const state = useContext(WizardStateContext);
+  const [source] = useState(() => ({}));
+  // Transfer the RAC collection snapshot as a unit; item identity and order stay with CollectionBuilder.
+  useLayoutEffect(
+    function publishCollection() {
+      store?.publish(source, collection);
+    },
+    [store, source, collection]
+  );
+  useLayoutEffect(() => () => store?.remove(source), [store, source]);
+
+  return (
+    <Content>
+      {[...collection].map((step) => (
+        <ActiveStepContext.Provider key={step.key} value={{ key: step.key, isActive: step.key === state?.activeStep }}>
+          {step.render?.(step)}
+        </ActiveStepContext.Provider>
+      ))}
+    </Content>
   );
 }
 

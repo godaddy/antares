@@ -12,9 +12,34 @@ import { LifecycleExample } from '../examples/lifecycle.tsx';
 import { ControlledValidationExample } from '../examples/controlled-validation.tsx';
 import { ItemsExample } from '../examples/items.tsx';
 import { WrappedStepsExample } from '../examples/wrapped-steps.tsx';
+import { EffectfulLayoutExample } from '../examples/effectful-layout.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Wizard', function wizardTests() {
+    it('mounts an effectful Footer sibling once per opening with wrapped and updated steps', async function effectfulLayout() {
+      await render(<EffectfulLayoutExample />);
+      const trigger = page.getByRole('button', { name: 'Open effectful workflow' });
+      await userEvent.click(trigger);
+      const dialog = page.getByRole('dialog', { name: 'Effectful workflow' });
+      await expect.element(page.getByTestId('footer-mounts')).toHaveTextContent('1');
+      await expect.element(dialog.getByRole('region', { name: 'Details' })).toBeVisible();
+      await userEvent.click(dialog.getByRole('button', { name: 'Add step' }));
+      await expect.element(page.getByTestId('footer-mounts')).toHaveTextContent('1');
+      await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
+      await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
+      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      expect((await page.getByRole('menuitemradio').all()).map((item) => item.element().textContent)).toEqual([
+        'Details',
+        'Review'
+      ]);
+      expect(dialog.element().textContent?.indexOf('Before steps')).toBeLessThan(
+        dialog.element().textContent?.indexOf('Review content') ?? -1
+      );
+      await userEvent.keyboard('{Escape}');
+      await userEvent.click(dialog.getByRole('button', { name: 'Close workflow' }));
+      await userEvent.click(trigger);
+      await expect.element(page.getByTestId('footer-mounts')).toHaveTextContent('2');
+    });
     it('discovers a wrapped collection and keeps surrounding content in authored order', async function wrappedSteps() {
       await render(<WrappedStepsExample />);
       await userEvent.click(page.getByRole('button', { name: 'Open wrapped workflow' }));
