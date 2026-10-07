@@ -1,4 +1,12 @@
-export { DialogTrigger, Wizard, WizardSteps, WizardStep, useWizardState, WizardStateContext } from '#components/wizard';
+export {
+  DialogTrigger,
+  Wizard,
+  WizardSteps,
+  WizardStep,
+  WizardStepsMenu,
+  useWizardState,
+  WizardStateContext
+} from '#components/wizard';
 export type {
   DialogTriggerProps,
   WizardProps,
