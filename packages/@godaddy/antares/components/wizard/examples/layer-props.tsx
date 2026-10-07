@@ -12,7 +12,9 @@ export function LayerPropsExample() {
         containerProps={{ className: 'custom-container' }}
       >
         <WizardSteps>
-          <WizardStep id={42} label="First step">First content</WizardStep>
+          <WizardStep id={42} label="First step">
+            First content
+          </WizardStep>
         </WizardSteps>
       </Wizard>
     </DialogTrigger>
