@@ -15,7 +15,7 @@ import {
   type WizardProps
 } from '@godaddy/antares';
 
-/** Validate in the application before accepting a navigation request; submit only through the application's final action. */
+/** Validate in the application before accepting navigation; submit through the final action. */
 export function ControlledValidationExample() {
   const [isOpen, setOpen] = useState(false);
   const [activeStep, setActiveStep] = useState<NonNullable<WizardProps['activeStep']>>('details');
@@ -36,7 +36,14 @@ export function ControlledValidationExample() {
     <>
       <DialogTrigger isOpen={isOpen} onOpenChange={setOpen}>
         <Button>Create account</Button>
-        <Wizard activeStep={activeStep} onStepChange={requestStep}>
+        <Wizard
+          activeStep={activeStep}
+          onStepChange={requestStep}
+          onFinish={function createAccount() {
+            setSubmittedName(accountName);
+            setOpen(false);
+          }}
+        >
           <Heading slot="title">Create an account</Heading>
           <WizardSteps>
             <WizardStep id="details" label="Account details">
@@ -56,17 +63,7 @@ export function ControlledValidationExample() {
             <WizardStepsMenu />
             <ButtonGroup>
               <Button slot="previous">Previous</Button>
-              <Button slot="next">Next</Button>
-              {activeStep === 'review' && (
-                <Button
-                  onPress={function createAccount() {
-                    setSubmittedName(accountName);
-                    setOpen(false);
-                  }}
-                >
-                  Create
-                </Button>
-              )}
+              <Button slot="next">{activeStep === 'review' ? 'Finish' : 'Next'}</Button>
               <Button slot="close">Cancel</Button>
             </ButtonGroup>
           </Footer>

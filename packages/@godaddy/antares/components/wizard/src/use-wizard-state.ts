@@ -21,6 +21,9 @@ export interface WizardStateOptions {
 
   /** Called when navigation requests a different step. */
   onStepChange?: (step: Key, detail: WizardStepChangeDetail) => void;
+
+  /** Called when the final action is pressed; the application decides whether to close. */
+  onFinish?: () => void;
 }
 
 export interface WizardState {
@@ -42,11 +45,17 @@ export interface WizardState {
   /** Whether a step follows the active step in collection order. */
   canNext: boolean;
 
+  /** Whether the active step is the last step and a finish action is available. */
+  canFinish: boolean;
+
   /** Move to the preceding step, or request it when controlled. No-op at the first step. */
   previous: () => void;
 
   /** Move to the following step, or request it when controlled. No-op at the last step. */
   next: () => void;
+
+  /** Request the application's final action, only from the last step. */
+  finish: () => void;
 
   /** Return to a previously displayed step. Unvisited and unavailable keys are ignored. */
   goToStep: (step: Key) => void;
@@ -57,7 +66,8 @@ export function useWizardState({
   collection,
   activeStep: controlledStep,
   defaultActiveStep,
-  onStepChange
+  onStepChange,
+  onFinish
 }: WizardStateOptions): WizardState {
   const initialStep =
     defaultActiveStep !== undefined && collection.includes(defaultActiveStep)
@@ -93,6 +103,7 @@ export function useWizardState({
         ? reconciledStep
         : initialStep;
   const activePosition = activeStep === null ? -1 : collection.indexOf(activeStep);
+  const canFinish = activePosition === collection.length - 1 && activePosition >= 0 && onFinish !== undefined;
   const visitedSteps = new Set([...visits].filter((step) => collection.includes(step)));
   if (activeStep !== null) visitedSteps.add(activeStep);
 
@@ -119,12 +130,16 @@ export function useWizardState({
     visitedSteps,
     canPrevious: activePosition > 0,
     canNext: activePosition >= 0 && activePosition < collection.length - 1,
+    canFinish,
     previous: function previous() {
       if (activePosition > 0) request(collection[activePosition - 1], 'previous');
     },
     next: function next() {
       if (activePosition >= 0 && activePosition < collection.length - 1)
         request(collection[activePosition + 1], 'next');
+    },
+    finish: function finish() {
+      if (canFinish) onFinish?.();
     },
     goToStep: function goToStep(step) {
       if (visitedSteps.has(step)) request(step, 'menu');

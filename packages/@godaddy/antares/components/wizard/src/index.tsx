@@ -85,6 +85,7 @@ export const Wizard = forwardRef<HTMLElement, WizardProps>(function Wizard(props
     activeStep,
     defaultActiveStep,
     onStepChange,
+    onFinish,
     ...dialogProps
   } = props;
 
@@ -102,7 +103,7 @@ export const Wizard = forwardRef<HTMLElement, WizardProps>(function Wizard(props
     >
       <Flex as={RACModal} {...containerProps} className={composeClassName(containerProps?.className, styles.modal)}>
         <WizardRun
-          options={{ activeStep, defaultActiveStep, onStepChange }}
+          options={{ activeStep, defaultActiveStep, onStepChange, onFinish }}
           renderDialog={(content) => (
             <OverlayDialog
               elevation="base"

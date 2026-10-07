@@ -2,6 +2,7 @@ import { createContext, useContext, type ReactNode } from 'react';
 import { mergeProps } from 'react-aria';
 import { DEFAULT_SLOT, Provider as RACProvider, type Key } from 'react-aria-components';
 import { ButtonContext, type ButtonProps } from '#components/button';
+import { ButtonGroupContext } from '#components/structure';
 import { FooterContext, type FooterProps } from '#components/structure';
 import { WizardStateContext, type WizardState } from './use-wizard-state.ts';
 
@@ -17,7 +18,8 @@ export function WizardProvider({ state, children }: { state: WizardState; childr
     <RACProvider
       values={[
         [WizardStateContext, state],
-        [FooterContext, { ...inheritedFooter, elevation: 'raised' }],
+        [FooterContext, { ...inheritedFooter, elevation: 'raised', inlinePadding: 'lg', blockPadding: 'lg' }],
+        [ButtonGroupContext, { gap: 'lg' }],
         [
           ButtonContext,
           {
@@ -26,9 +28,14 @@ export function WizardProvider({ state, children }: { state: WizardState; childr
               [DEFAULT_SLOT]: inheritedSlots[DEFAULT_SLOT] ?? {},
               previous: mergeProps(inheritedSlots.previous, {
                 onPress: state.previous,
-                isDisabled: !state.canPrevious
+                isDisabled: !state.canPrevious,
+                variant: 'secondary'
               }),
-              next: mergeProps(inheritedSlots.next, { onPress: state.next, isDisabled: !state.canNext })
+              next: mergeProps(inheritedSlots.next, {
+                variant: 'primary',
+                onPress: state.canFinish ? state.finish : state.next,
+                isDisabled: !state.canNext && !state.canFinish
+              })
             }
           }
         ]

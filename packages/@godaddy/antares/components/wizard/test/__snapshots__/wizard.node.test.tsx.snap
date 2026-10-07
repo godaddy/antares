@@ -4,4 +4,4 @@ exports[`@godaddy/antares > #Wizard > renders an empty collection before opening
 
 exports[`@godaddy/antares > #Wizard > renders the app-owned controlled workflow before opening 1`] = `"<button class="button tertiary" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_1H1_" data-react-aria-pressable="true">Create account</button>"`;
 
-exports[`@godaddy/antares > #Wizard > renders the trigger before opening 1`] = `"<button class="button tertiary" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true">Start setup</button>"`;
+exports[`@godaddy/antares > #Wizard > renders the trigger before opening 1`] = `"<button class="button tertiary" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_1H1_" data-react-aria-pressable="true">Start setup</button>"`;

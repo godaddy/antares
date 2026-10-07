@@ -21,15 +21,17 @@ function CustomControl() {
 /** Consumer-composed navigation, menu, and close controls. */
 export function ComposedNavigationExample({
   footerElevation,
-  onNextPress
+  onNextPress,
+  onFinish
 }: {
   footerElevation?: 'base';
   onNextPress?: () => void;
+  onFinish?: () => void;
 } = {}) {
   return (
     <DialogTrigger>
       <Button>Open composed wizard</Button>
-      <Wizard aria-label="Composed workflow">
+      <Wizard aria-label="Composed workflow" onFinish={onFinish}>
         <CloseButton />
         <WizardSteps>
           <WizardStep id="details" label="Details">

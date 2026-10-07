@@ -27,7 +27,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(page.getByTestId('footer-mounts')).toHaveTextContent('1');
       await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
       await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
-      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await userEvent.click(dialog.getByRole('button', { name: /^Step \d+ of \d+$/ }));
       expect((await page.getByRole('menuitemradio').all()).map((item) => item.element().textContent)).toEqual([
         'Details',
         'Review'
@@ -48,7 +48,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(dialog.getByText('Before steps')).toBeVisible();
       await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
       await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
-      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await userEvent.click(dialog.getByRole('button', { name: /^Step \d+ of \d+$/ }));
       expect((await page.getByRole('menuitemradio').all()).map((item) => item.element().textContent)).toEqual([
         'Details',
         'Review'
@@ -57,7 +57,7 @@ describe('@godaddy/antares', function packageTests() {
         dialog.element().textContent?.indexOf('Review content') ?? -1
       );
     });
-    it('lets the app reject navigation until its field is valid and submit only on the final action', async function validation() {
+    it('lets the app reject navigation until its field is valid and submit through Finish', async function validation() {
       await render(<ControlledValidationExample />);
       await userEvent.click(page.getByRole('button', { name: 'Create account' }));
       const dialog = page.getByRole('dialog', { name: 'Create an account' });
@@ -65,7 +65,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(dialog.getByText('Enter an account name to continue.')).toBeVisible();
       await expect.element(dialog.getByRole('region', { name: 'Account details' })).toBeVisible();
       await expect.element(dialog.getByRole('button', { name: 'Next' })).toHaveFocus();
-      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await userEvent.click(dialog.getByRole('button', { name: /^Step \d+ of \d+$/ }));
       await expect.element(page.getByRole('menuitemradio', { name: 'Review' })).toBeDisabled();
       await userEvent.keyboard('{Escape}');
 
@@ -73,13 +73,13 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
       await expect.element(dialog.getByRole('region', { name: 'Review' })).toHaveFocus();
       await expect.element(dialog.getByText('Account: Ada')).toBeVisible();
-      await expect.element(dialog.getByRole('button', { name: 'Next' })).toBeDisabled();
+      await expect.element(dialog.getByRole('button', { name: 'Finish' })).toBeEnabled();
       await expect.element(page.getByText('Account created for Ada')).not.toBeInTheDocument();
       await userEvent.click(dialog.getByRole('button', { name: 'Previous' }));
       await expect.element(dialog.getByRole('textbox', { name: 'Account name' })).toHaveValue('Ada');
-      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await userEvent.click(dialog.getByRole('button', { name: /^Step \d+ of \d+$/ }));
       await userEvent.click(page.getByRole('menuitemradio', { name: 'Review' }));
-      await userEvent.click(dialog.getByRole('button', { name: 'Create' }));
+      await userEvent.click(dialog.getByRole('button', { name: 'Finish' }));
       await expect.element(page.getByText('Account created for Ada')).toBeVisible();
       await expect.element(dialog).not.toBeInTheDocument();
     });
@@ -96,7 +96,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(trigger).toHaveFocus();
       await userEvent.click(trigger);
       await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
-      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await userEvent.click(dialog.getByRole('button', { name: /^Step \d+ of \d+$/ }));
       await expect.element(page.getByRole('menuitemradio', { name: 'Confirm' })).toBeDisabled();
       await userEvent.keyboard('{Escape}');
       await userEvent.click(dialog.getByRole('button', { name: 'Close workflow' }));
@@ -119,7 +119,7 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.click(dialog.getByRole('button', { name: 'Close workflow' }));
       await expect.element(dialog).toBeVisible();
       await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
-      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await userEvent.click(dialog.getByRole('button', { name: /^Step \d+ of \d+$/ }));
       await expect.element(page.getByRole('menuitemradio', { name: 'Review' })).toBeEnabled();
       await expect.element(page.getByRole('menuitemradio', { name: 'Confirm' })).toBeDisabled();
       await userEvent.keyboard('{Escape}');
@@ -128,7 +128,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(trigger).toHaveFocus();
       await userEvent.click(trigger);
       await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
-      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await userEvent.click(dialog.getByRole('button', { name: /^Step \d+ of \d+$/ }));
       await expect.element(page.getByRole('menuitemradio', { name: 'Details' })).toBeDisabled();
     });
 
@@ -179,11 +179,29 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
     });
 
+    it('runs the app finish callback once on the last step without closing automatically', async function finish() {
+      let finishes = 0;
+      let presses = 0;
+      await render(<ComposedNavigationExample onFinish={() => finishes++} onNextPress={() => presses++} />);
+      await userEvent.click(page.getByRole('button', { name: 'Open composed wizard' }));
+      const dialog = page.getByRole('dialog', { name: 'Composed workflow' });
+      await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
+      await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
+      expect(finishes).toBe(0);
+      await expect.element(dialog.getByRole('region', { name: 'Confirm' })).toBeVisible();
+      await expect.element(dialog.getByRole('button', { name: 'Next' })).toBeEnabled();
+      await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
+      expect(finishes).toBe(1);
+      expect(presses).toBe(3);
+      await expect.element(dialog).toBeVisible();
+      await expect.element(dialog.getByRole('region', { name: 'Confirm' })).toBeVisible();
+    });
+
     it('disables unvisited destinations and lets the menu and custom control revisit displayed steps', async function visitedMenu() {
       await render(<ComposedNavigationExample />);
       await userEvent.click(page.getByRole('button', { name: 'Open composed wizard' }));
       const dialog = page.getByRole('dialog', { name: 'Composed workflow' });
-      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await userEvent.click(dialog.getByRole('button', { name: /^Step \d+ of \d+$/ }));
       await expect.element(page.getByRole('menuitemradio', { name: 'Review' })).toBeDisabled();
       await expect.element(page.getByRole('menuitemradio', { name: 'Confirm' })).toBeDisabled();
       await userEvent.keyboard('{Escape}');
@@ -192,7 +210,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(dialog.getByRole('button', { name: 'Next' })).toBeDisabled();
       await userEvent.click(dialog.getByRole('button', { name: 'Previous' }));
       await userEvent.click(dialog.getByRole('button', { name: 'Previous' }));
-      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await userEvent.click(dialog.getByRole('button', { name: /^Step \d+ of \d+$/ }));
       await expect.element(page.getByRole('menuitemradio', { name: 'Confirm' })).toBeEnabled();
       await userEvent.click(page.getByRole('menuitemradio', { name: 'Confirm' }));
       await expect.element(dialog.getByRole('region', { name: 'Confirm' })).toBeVisible();
@@ -227,10 +245,14 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.type(dialog.getByRole('textbox', { name: 'Account name' }), 'Ada');
       await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
       await expect.element(dialog.getByRole('region', { name: 'Review' })).toHaveFocus();
-      await expect.element(dialog.getByRole('button', { name: 'Next' })).toBeDisabled();
+      await expect.element(dialog.getByRole('button', { name: 'Finish' })).toBeEnabled();
       await expect.element(dialog.getByRole('textbox', { name: 'Account name' })).not.toBeInTheDocument();
       await userEvent.click(dialog.getByRole('button', { name: 'Previous' }));
       await expect.element(dialog.getByRole('textbox', { name: 'Account name' })).toHaveValue('Ada');
+      await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
+      await userEvent.click(dialog.getByRole('button', { name: 'Finish' }));
+      await expect.element(dialog).not.toBeInTheDocument();
+      await expect.element(page.getByRole('status')).toHaveTextContent('Setup finished');
     });
 
     it('isolates the page while open and restores access after closing', async function isolation() {
@@ -249,7 +271,7 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.type(dialog.getByRole('textbox', { name: 'Details notes' }), 'saved');
       await userEvent.click(dialog.getByRole('button', { name: 'Reorder and add step' }));
       await expect.element(dialog.getByRole('textbox', { name: 'Details notes' })).toHaveValue('saved');
-      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      await userEvent.click(dialog.getByRole('button', { name: /^Step \d+ of \d+$/ }));
       const names = (await page.getByRole('menuitemradio').all()).map((item) => item.element().textContent);
       expect(names).toEqual(['Review', 'Details', 'Confirm']);
       await expect.element(page.getByRole('menuitemradio', { name: 'Confirm' })).toBeDisabled();

@@ -15,6 +15,7 @@ import * as Stories from './wizard.stories.tsx';
 - Static or `items`/render-function collections with stable step IDs and labels
 - Optional Footer, visited-step menu, navigation slots, and close controls
 - Controlled or uncontrolled overlay opening and step navigation
+- Optional app-owned `onFinish` action for the final step
 - Empty collections supported
 - Actual step changes focus the newly active named region; rejected controlled navigation leaves focus in place
 - Each new opening starts with fresh visit history and the current default step (unless `activeStep` is app-owned)
@@ -35,9 +36,9 @@ The backdrop uses the shared `--modal-overlay-bg` property, with the same fallba
 
 Compose exactly one `WizardSteps` inside `Wizard`. Each `WizardStep` needs a stable `id` and a `label`; the label names its menu entry and step region. Place your own headings, fields, and other content inside each step. An empty collection is valid. For dynamic steps, pass `items` and a render function to `WizardSteps` as shown in the Items example. Surviving keyed steps keep their local state across reorders while the dialog is open.
 
-`Wizard` supplies a full-screen modal and dialog; the ordinary `Button` inside `DialogTrigger` opens it. Use `DialogTrigger`'s `isOpen`, `defaultOpen`, and `onOpenChange` to manage opening. Use `activeStep`, `defaultActiveStep`, and `onStepChange` on `Wizard` to manage navigation independently. The callback receives `(destination, { previousStep, reason })`, where `reason` is `next`, `previous`, or `menu`. In controlled mode it is a **request**: the displayed step changes only after the app updates `activeStep`. The Controlled Validation example checks its own field before doing so. The app also owns submission and closure; Next at the last step never submits or closes.
+`Wizard` supplies a full-screen modal and dialog; the ordinary `Button` inside `DialogTrigger` opens it. Use `DialogTrigger`'s `isOpen`, `defaultOpen`, and `onOpenChange` to manage opening. Use `activeStep`, `defaultActiveStep`, and `onStepChange` on `Wizard` to manage navigation independently. The callback receives `(destination, { previousStep, reason })`, where `reason` is `next`, `previous`, or `menu`. In controlled mode it is a **request**: the displayed step changes only after the app updates `activeStep`. The Controlled Validation example checks its own field before doing so. Supply `onFinish` to enable the final step's next-slot action; the callback decides whether to submit or close the dialog. Without `onFinish`, the next-slot button remains disabled on the last step.
 
-Compose `Footer`, `WizardStepsMenu`, and `Button slot="previous"` / `Button slot="next"` where you need them. Slot buttons are disabled at collection boundaries and keep their authored position. The menu only permits previously displayed destinations; visits are recorded on activation, not on a rejected request. `Footer` receives raised elevation by default and can be overridden with its own `elevation`. `Button slot="close"` and `CloseButton` use the dialog's close action. To build other navigation controls, read `WizardStateContext` with React's `useContext` and use `previous`, `next`, or `goToStep` (the latter permits visited destinations only). `useWizardState` creates state; it is not a context reader.
+Compose `Footer`, `WizardStepsMenu`, and `Button slot="previous"` / `Button slot="next"` where you need them. Slot buttons are disabled when their action is unavailable and keep their authored position. The next slot invokes `onFinish` on the final step when supplied; you choose its label (for example, "Finish") in your composed button. The menu only permits previously displayed destinations; visits are recorded on activation, not on a rejected request. `Footer` receives raised elevation by default and can be overridden with its own `elevation`. `Button slot="close"` and `CloseButton` use the dialog's close action. To build other navigation controls, read `WizardStateContext` with React's `useContext` and use `previous`, `next`, `finish`, or `goToStep` (the latter permits visited destinations only). `canFinish` identifies an available final action; `useWizardState` creates state, not a context reader.
 
 ## Accessibility
 
@@ -49,7 +50,7 @@ Inactive steps remain mounted but are hidden and inert. Their local field values
 
 ## Best Practices
 
-Keep validation and submission in the consuming app. Check the requested step and navigation reason before accepting controlled navigation; do not rely on a button's local `onPress` to cancel the navigation slot's handler. Use a stable item ID rather than a position for steps that can move or be removed. Add a visible exit control when users need to leave without using Escape.
+Keep validation and submission in the consuming app. Check the requested step and navigation reason before accepting controlled navigation; do not rely on a button's local `onPress` to cancel the navigation slot's handler. Supply `onFinish` for the app's final action; it does not automatically close the dialog. Use a stable item ID rather than a position for steps that can move or be removed. Add a visible exit control when users need to leave without using Escape.
 
 ## Props
 
