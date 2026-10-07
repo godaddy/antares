@@ -1,0 +1,32 @@
+---
+name: antares-patterns
+description: 'Use when designing or implementing stateful Antares collection or overlay components: hook contracts, controlled state, RAC contexts and slots, collection identity, trigger ownership, or consumer-facing verification. Pair with antares-components for component layout, styling, docs, and tests.'
+---
+
+# Stateful Antares composition
+
+Read [antares-components](../antares-components/SKILL.md) for component structure, imports, exports, and checks. Its [composition](../antares-components/references/composition.md) and [docs](../antares-components/references/docs.md) references own region defaults, prop destinations, and public-example format. Use the patterns below to decide **who owns behavior** before writing the component.
+
+## Design the state seam
+
+1. Define an exported options interface for the state-creating hook and an exported state interface for consumers. Keep the hook headless: collection identity, selection, derived capabilities, and transitions belong here; overlay state, validation, and submission belong to their respective owners. Export the hook and types through the component barrel and area export.
+2. Accept stable collection keys (RAC `Key`), a controlled value, an uncontrolled default, and a change callback where selection is app-controllable. Treat a supplied controlled value as authoritative: a transition requests a change and reports its reason/previous value, but the displayed value changes only when the prop changes. In uncontrolled mode, update local state. A callback return value does not approve or reject a transition.
+3. Store the minimal authoritative state. Derive the active position and boundary capabilities from the current ordered collection and active key. Expose transition methods that check availability and no-op at boundaries; avoid parallel stored indexes or wrapping by accident. Reconcile keyed additions, removals, reorders, and empty collections without emitting user-action callbacks.
+4. Publish the **existing** state through an exported state context for descendant custom controls. `useContext(StateContext)` reads that state; calling the state-creating hook again creates a separate owner. Keep a component props context separate: `FooterContext` supplies presentation defaults, while a state context supplies navigation capabilities. A generic region should not need to understand the parent's state machine.
+
+## Compose context and slots with RAC
+
+RAC `Provider` publishes component contexts together. A component using `useContextProps(props, ref, SomeContext)` merges inherited context with its local props and ref. The effective order for ordinary region props is **component defaults < context defaults < explicitly authored props**. See `components/structure/src/footer.tsx`: `useContextProps` runs before the `Flex` defaults, and `{...props}` follows those defaults so a caller can override them.
+
+Publishing a new value for an existing context replaces that value; inspect and carry forward inherited fields you still need. In particular, publishing `ButtonContext` slots must preserve ancestor slots (including `close` when inside a dialog), then add the new named entries. Include `[DEFAULT_SLOT]: {}` when otherwise unslotted children would have no default in a slots-only context. An explicit `slot={null}` opts a descendant out of context. See `components/number-field/src/index.tsx` for republishing RAC's stepper slots with Antares presentation, and `components/button/src/button.tsx` for the Antares Button forwarding `slot` to RAC while resolving its own variant and size.
+
+For slotted actions, use `mergeProps` from `react-aria` when combining inherited and newly provided handlers: RAC merges event callbacks rather than treating the child's callback as a cancellation mechanism. A local `onPress` and a context-provided `onPress` both run; for conditional navigation, have the app control the state and decide whether to accept the requested value. Ordinary explicitly authored props take precedence over context defaults; do not describe event handlers as simple last-write-wins values. Check disabled state separately from event composition. Use a named `slot="close"` button or `CloseButton` to retain RAC's dialog close behavior; overlay dismissal belongs to the overlay, not a custom navigation button.
+
+## Build collections, keep overlay ownership
+
+- For a RAC collection, expose static item children and `items` plus a render function. Use the collection APIs (`Collection`, `CollectionBuilder`, `createLeafComponent` when authoring a collection) to get ordered keys and rendering; avoid recursively searching JSX for item components or registering items in effects. `ListBox` / `ListBoxItem` in `components/listbox/src/index.tsx` expose RAC's generic collection props and show a static item example; see `components/listbox/examples/default.tsx` for public usage. Derive labels and available actions from the same collection; use stable `id` keys through insertion and reordering. An empty `items` array is a valid collection, not an omitted region.
+- For an overlay, use a RAC `DialogTrigger` around the opening Antares `Button` and the overlay component; let RAC own open state, press coordination, focus containment, dismissal, and focus restoration. `components/modal/src/index.tsx` and `components/modal/examples/default.tsx` show trigger, modal layers, dialog, title, and close slots. Keep dialog-level props/ref on the dialog and layer props on their actual layer, following the component composition reference. Keep collection navigation state independent of the trigger's open state.
+
+## Prove the public composition
+
+Start from an example in `examples/` importing from `@godaddy/antares`, as `components/number-field/examples/default.tsx` and `components/modal/examples/default.tsx` do. Exercise the same example in node and browser tests through public exports, including static and data-driven collections, controlled rejection and acceptance, boundary-disabled actions, named slots, composed close, and focus restoration where those behaviors apply. Check the consumer-visible result (rendered content, enabled actions, callback arguments, focus) rather than private providers or CSS names. Follow [the component testing guide](../antares-components/references/testing.md) for target selection and generated artifacts; verify that stories and README render the public examples.
