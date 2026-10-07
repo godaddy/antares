@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { Card, CardGroup, CardSelectionIndicator, Text } from '@godaddy/antares';
 
 /**
@@ -5,12 +6,16 @@ import { Card, CardGroup, CardSelectionIndicator, Text } from '@godaddy/antares'
  * @ignore
  */
 export function TypesExample({ invalidProps = false }: { invalidProps?: boolean }) {
+  const groupRef = useRef<HTMLDivElement>(null);
+
   return (
     <>
-      <CardGroup aria-label="Typed group" selectionMode="single">
-        <Card id="one" textValue="One">
-          <CardSelectionIndicator />
-        </Card>
+      <CardGroup ref={groupRef} aria-label="Typed group" selectionMode="single" items={[{ id: 'one', label: 'One' }]}>
+        {(item) => (
+          <Card id={item.id} textValue={item.label}>
+            <CardSelectionIndicator />
+          </Card>
+        )}
       </CardGroup>
       <Card href="#typed-link">
         <Text>A standalone link Card.</Text>

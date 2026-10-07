@@ -1,4 +1,5 @@
-import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { RouterProvider } from 'react-aria-components';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
@@ -11,6 +12,7 @@ import { InteractionsExample } from '../examples/interactions.tsx';
 import { LayoutExample } from '../examples/layout.tsx';
 import { LinkExample } from '../examples/link.tsx';
 import { MultipleSelectionExample } from '../examples/multiple-selection.tsx';
+import { NavigationExample } from '../examples/navigation.tsx';
 import { NestedExample } from '../examples/nested.tsx';
 import { SingleSelectionExample } from '../examples/single-selection.tsx';
 
@@ -77,7 +79,13 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(getByRole('region', { name: 'Card without group' })).toHaveAttribute('id', 'props-static');
       });
 
-      it('forwards refs for rows, links, and static Cards', async function refs() {
+      it('focuses the collection through its forwarded ref', async function groupRefFocus() {
+        const { getByRole } = await render(<CustomizationExample />);
+        await userEvent.click(getByRole('button', { name: 'Focus cards' }));
+        expect(getByRole('grid', { name: 'Review cards' }).element().contains(document.activeElement)).toBe(true);
+      });
+
+      it('forwards refs for the collection, rows, links, and static Cards', async function refs() {
         const { getByRole, getByTestId } = await render(<CustomizationExample />);
         await userEvent.click(getByRole('button', { name: 'Check refs' }));
         await expect.element(getByTestId('props-ref-status')).toHaveTextContent('Refs ready');
@@ -243,6 +251,42 @@ describe('@godaddy/antares', function packageTests() {
         await userEvent.click(getByRole('row', { name: 'Email' }), { force: true });
         expect(location.hash).toBe('');
         await expect.element(getByText('Opened: none')).toBeInTheDocument();
+      });
+    });
+
+    describe('navigation options', function navigationOptionsTests() {
+      it('forwards link options and routes standalone and grouped Cards', async function navigationOptions() {
+        const navigate = vi.fn();
+        const routerOptions = { replace: true };
+        // RAC types routerOptions as never until the app augments RouterConfig.
+        const { getByRole } = await render(
+          <RouterProvider navigate={navigate}>
+            <NavigationExample routerOptions={routerOptions as never} />
+          </RouterProvider>
+        );
+        const standalone = getByRole('link', { name: 'Standalone navigation' });
+        const grouped = getByRole('row', { name: 'Grouped navigation' });
+        await expect.element(standalone).toHaveAttribute('target', '_self');
+        await expect.element(standalone).toHaveAttribute('rel', 'help');
+        await expect.element(standalone).toHaveAttribute('referrerpolicy', 'no-referrer');
+        await expect
+          .element(getByRole('link', { name: 'Standalone download' }))
+          .toHaveAttribute('download', 'standalone.txt');
+        await expect.element(grouped).toHaveAttribute('data-target', '_self');
+        await expect.element(grouped).toHaveAttribute('data-rel', 'help');
+        await expect.element(grouped).toHaveAttribute('data-referrer-policy', 'no-referrer');
+        await expect
+          .element(getByRole('row', { name: 'Grouped download' }))
+          .toHaveAttribute('data-download', 'grouped.txt');
+
+        await userEvent.click(standalone);
+        expect(navigate).toHaveBeenCalledExactlyOnceWith('#standalone', routerOptions);
+        navigate.mockClear();
+        await userEvent.click(grouped);
+        expect(navigate).toHaveBeenCalledExactlyOnceWith('#grouped', routerOptions);
+        navigate.mockClear();
+        await userEvent.keyboard('{Enter}');
+        expect(navigate).toHaveBeenCalledExactlyOnceWith('#grouped', routerOptions);
       });
     });
 

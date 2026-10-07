@@ -7,6 +7,7 @@ import { Button, Card, CardGroup, CardSelectionIndicator, CornerActions, LinkBut
  * @ignore
  */
 export function CustomizationExample() {
+  const groupRef = useRef<HTMLDivElement>(null);
   const rowRef = useRef<HTMLDivElement>(null);
   const linkRef = useRef<HTMLAnchorElement>(null);
   const staticRef = useRef<HTMLDivElement>(null);
@@ -23,7 +24,8 @@ export function CustomizationExample() {
   // GridList attaches rows after its collection pass, so check on demand rather than on mount.
   function checkForwardedRefs() {
     setRefsReady(
-      rowRef.current?.getAttribute('role') === 'row' &&
+      groupRef.current?.getAttribute('role') === 'grid' &&
+        rowRef.current?.getAttribute('role') === 'row' &&
         linkRef.current?.tagName === 'A' &&
         staticRef.current?.getAttribute('data-card') === 'static' &&
         contentLinkRef.current?.tagName === 'A'
@@ -33,6 +35,7 @@ export function CustomizationExample() {
   return (
     <>
       <CardGroup
+        ref={groupRef}
         aria-label="Review cards"
         selectionMode="multiple"
         selectedKeys={selected}
@@ -65,6 +68,7 @@ export function CustomizationExample() {
           Custom content link
         </LinkButton>
       </Card>
+      <Button onPress={() => groupRef.current?.focus()}>Focus cards</Button>
       <Button onPress={checkForwardedRefs}>Check refs</Button>
       <Text data-testid="props-ref-status">{refsReady ? 'Refs ready' : 'Refs pending'}</Text>
 

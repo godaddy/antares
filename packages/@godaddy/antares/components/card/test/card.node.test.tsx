@@ -12,6 +12,7 @@ import { DisabledExample } from '../examples/disabled.tsx';
 import { LayoutExample } from '../examples/layout.tsx';
 import { MediaExample } from '../examples/media.tsx';
 import { TypesExample } from '../examples/types.tsx';
+import { NavigationExample } from '../examples/navigation.tsx';
 import { InteractionsExample } from '../examples/interactions.tsx';
 
 describe('@godaddy/antares', function packageTests() {
@@ -34,6 +35,10 @@ describe('@godaddy/antares', function packageTests() {
 
     it('renders grouped links with independent controls and disabled navigation', function renderGroupedLinks() {
       expect(renderToString(<GroupedLinksExample />)).toMatchSnapshot();
+    });
+
+    it('renders standalone and grouped navigation options', function renderNavigationOptions() {
+      expect(renderToString(<NavigationExample />)).toMatchSnapshot();
     });
 
     it('renders row actions with independent child actions', function renderActions() {

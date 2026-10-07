@@ -15,7 +15,9 @@ import styles from './index.module.css';
  * Props for Card. Standalone, a Card is a static surface, or a link when `href` is set. Inside a
  * `CardGroup` it is a row that the group selects, and `onAction` and `href` act on the row.
  */
-export interface CardProps extends Omit<FlexProps, 'as' | 'children' | 'onClick'> {
+export interface CardProps
+  extends Omit<FlexProps, 'as' | 'children' | 'onClick'>,
+    Pick<RACLinkProps, 'hrefLang' | 'target' | 'rel' | 'download' | 'ping' | 'referrerPolicy' | 'routerOptions'> {
   /** Card contents. */
   children?: ReactNode;
 
@@ -57,6 +59,13 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
     className,
     children,
     href,
+    hrefLang,
+    target,
+    rel,
+    download,
+    ping,
+    referrerPolicy,
+    routerOptions,
     onAction,
     isDisabled,
     id,
@@ -73,6 +82,7 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
     'aria-labelledby': ariaLabelledBy,
     'aria-describedby': ariaDescribedBy
   };
+  const navigationProps = { href, hrefLang, target, rel, download, ping, referrerPolicy, routerOptions };
   const surface = {
     padding: 'lg',
     gap: 'lg',
@@ -90,7 +100,7 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
         ref={ref as Ref<HTMLDivElement>}
         id={id}
         textValue={textValue ?? (typeof children === 'string' ? children : undefined)}
-        href={href}
+        {...navigationProps}
         isDisabled={isDisabled}
         onAction={onAction}
         data-card="interactive"
@@ -120,7 +130,7 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
         as={RACLink}
         ref={ref as Ref<HTMLAnchorElement>}
         id={id}
-        href={href}
+        {...navigationProps}
         isDisabled={isDisabled}
         data-card={isDisabled ? 'static' : 'interactive'}
       >

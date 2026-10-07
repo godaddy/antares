@@ -1,4 +1,4 @@
-import { createContext, useContext, type ReactNode } from 'react';
+import { createContext, forwardRef, useContext, type ForwardedRef, type ReactNode } from 'react';
 import { GridList as RACGridList, type GridListProps as RACGridListProps } from 'react-aria-components';
 import { Grid, type GridOwnProps } from '#components/layout/grid';
 import { composeClassName } from '#utils/render-props.ts';
@@ -30,7 +30,10 @@ export interface CardGroupProps<T extends object>
  *
  * @param props - {@link CardGroupProps}
  */
-export function CardGroup<T extends object>(props: CardGroupProps<T>) {
+export const CardGroup = forwardRef(function CardGroup<T extends object>(
+  props: CardGroupProps<T>,
+  ref: ForwardedRef<HTMLDivElement>
+) {
   const { children, className, ...rest } = props;
 
   return (
@@ -40,6 +43,7 @@ export function CardGroup<T extends object>(props: CardGroupProps<T>) {
         alignItems="start"
         gap="lg"
         {...rest}
+        ref={ref}
         as={RACGridList<T>}
         layout="grid"
         className={composeClassName(className, styles.group)}
@@ -48,4 +52,4 @@ export function CardGroup<T extends object>(props: CardGroupProps<T>) {
       </Grid>
     </CardGroupContext.Provider>
   );
-}
+}) as <T extends object>(props: CardGroupProps<T> & { ref?: React.Ref<HTMLDivElement> }) => React.ReactElement | null;
