@@ -36,10 +36,19 @@ export interface WizardState {
   /** Keys displayed so far in this run. */
   visitedSteps: ReadonlySet<Key>;
 
+  /** Whether a step precedes the active step in collection order. */
   canPrevious: boolean;
+
+  /** Whether a step follows the active step in collection order. */
   canNext: boolean;
+
+  /** Move to the preceding step, or request it when controlled. No-op at the first step. */
   previous: () => void;
+
+  /** Move to the following step, or request it when controlled. No-op at the last step. */
   next: () => void;
+
+  /** Return to a previously displayed step. Unvisited and unavailable keys are ignored. */
   goToStep: (step: Key) => void;
 }
 
