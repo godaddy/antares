@@ -35,7 +35,7 @@ export function NavigationExample({
   defaultActiveStep,
   activeStep,
   onStepChange
-}: Pick<WizardProps, 'defaultActiveStep' | 'activeStep' | 'onStepChange'>) {
+}: Pick<WizardProps, 'defaultActiveStep' | 'activeStep' | 'onStepChange'> = {}) {
   return (
     <DialogTrigger>
       <Button>Open navigation</Button>

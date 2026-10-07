@@ -1,7 +1,21 @@
-import { Button, CloseButton, DialogTrigger, Heading, Wizard, WizardStep, WizardSteps } from '@godaddy/antares';
+import {
+  Button,
+  ButtonGroup,
+  CloseButton,
+  DialogTrigger,
+  Footer,
+  Heading,
+  Input,
+  Label,
+  TextField,
+  Wizard,
+  WizardStep,
+  WizardSteps,
+  WizardStepsMenu
+} from '@godaddy/antares';
 
 /**
- * Open a full-screen workflow with consumer-owned content and a close control.
+ * Open a full-screen workflow with one step collection and optional consumer-composed navigation.
  * @order 1
  */
 export function DefaultExample() {
@@ -13,12 +27,24 @@ export function DefaultExample() {
         <CloseButton />
         <WizardSteps>
           <WizardStep id="details" label="Details">
-            <input aria-label="Account name" />
+            <Heading>Details</Heading>
+            <TextField>
+              <Label>Account name</Label>
+              <Input />
+            </TextField>
           </WizardStep>
           <WizardStep id="review" label="Review">
+            <Heading>Review</Heading>
             <p>Review your account</p>
           </WizardStep>
         </WizardSteps>
+        <Footer>
+          <WizardStepsMenu />
+          <ButtonGroup>
+            <Button slot="previous">Previous</Button>
+            <Button slot="next">Next</Button>
+          </ButtonGroup>
+        </Footer>
       </Wizard>
     </DialogTrigger>
   );
