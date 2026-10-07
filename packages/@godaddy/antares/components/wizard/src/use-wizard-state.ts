@@ -71,10 +71,11 @@ export function useWizardState({
   useEffect(
     function recordActiveStep() {
       if (activeStep !== null) {
+        if (controlledStep === undefined && selectedStep === null) setSelectedStep(activeStep);
         setVisits((previous) => (previous.has(activeStep) ? previous : new Set([...previous, activeStep])));
       }
     },
-    [activeStep]
+    [activeStep, controlledStep, selectedStep]
   );
 
   function request(step: Key, reason: WizardStepChangeDetail['reason']) {

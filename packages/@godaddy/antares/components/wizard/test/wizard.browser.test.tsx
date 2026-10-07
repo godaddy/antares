@@ -122,14 +122,16 @@ describe('@godaddy/antares', function packageTests() {
       expect(requests).toHaveLength(1);
     });
 
-    it('starts at a valid default key', async function defaults() {
-      await render(<NavigationExample defaultActiveStep="review" />);
+    it('starts at a valid default key and ignores later changes to the default', async function defaults() {
+      const screen = await render(<NavigationExample defaultActiveStep="review" />);
       await userEvent.click(page.getByRole('button', { name: 'Open navigation' }));
       const dialog = page.getByRole('dialog', { name: 'Navigation' });
       const review = dialog.getByRole('region', { name: 'Review' });
       await expect.element(review).toBeVisible();
       await expect.element(review.getByLabelText('Visited steps')).toHaveTextContent('review');
       await expect.element(review.getByLabelText('Position')).toHaveTextContent('1');
+      await screen.rerender(<NavigationExample defaultActiveStep="details" />);
+      await expect.element(review).toBeVisible();
     });
 
     it('uses the first collection key when the default key is unavailable', async function missingDefault() {
