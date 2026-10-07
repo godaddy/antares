@@ -6,5 +6,13 @@ import { ProgressBar, type ProgressBarProps } from '@godaddy/antares';
  * @order 4
  */
 export function IndeterminateExample(props: ProgressBarProps) {
-  return <ProgressBar label="Preparing upload…" helperText="Calculating the total size" isIndeterminate {...props} />;
+  return (
+    <ProgressBar
+      label="Preparing upload…"
+      helperText="Calculating the total size"
+      valueLabel
+      isIndeterminate
+      {...props}
+    />
+  );
 }

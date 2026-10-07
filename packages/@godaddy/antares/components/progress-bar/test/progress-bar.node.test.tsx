@@ -4,9 +4,32 @@ import { IndeterminateExample } from '../examples/indeterminate.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 import { StatusesExample } from '../examples/statuses.tsx';
+import { WithoutValueLabelExample } from '../examples/without-value-label.tsx';
+import { WithoutLabelExample } from '../examples/without-label.tsx';
+import { ValueDisplayExample } from '../examples/value-display.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#ProgressBar', function progressBarTests() {
+    it('renders a label without visible value text', function rendersWithoutValueLabel() {
+      expect(renderToString(<WithoutValueLabelExample />)).toMatchSnapshot();
+    });
+
+    it('renders only the track', function rendersWithoutLabel() {
+      expect(renderToString(<WithoutLabelExample />)).toMatchSnapshot();
+    });
+
+    it('renders custom value text without a visible label', function rendersValueOnly() {
+      expect(renderToString(<WithoutLabelExample valueLabel="3 of 5 files" />)).toMatchSnapshot();
+    });
+
+    it('renders formatted value text without a visible label', function rendersFormattedValueOnly() {
+      expect(renderToString(<WithoutLabelExample valueLabel />)).toMatchSnapshot();
+    });
+
+    it('renders formatted, static, and state-based value labels', function rendersValueDisplay() {
+      expect(renderToString(<ValueDisplayExample />)).toMatchSnapshot();
+    });
+
     it('renders indeterminate progress', function rendersIndeterminate() {
       expect(renderToString(<IndeterminateExample />)).toMatchSnapshot();
     });

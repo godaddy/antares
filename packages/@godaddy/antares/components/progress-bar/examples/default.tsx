@@ -5,5 +5,5 @@ import { ProgressBar } from '@godaddy/antares';
  * @order 1
  */
 export function DefaultExample() {
-  return <ProgressBar label="Loading…" value={60} helperText="Please wait while we process your request" />;
+  return <ProgressBar label="Loading…" value={60} valueLabel helperText="Please wait while we process your request" />;
 }

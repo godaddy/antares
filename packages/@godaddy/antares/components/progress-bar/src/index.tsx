@@ -9,12 +9,18 @@ import { composeClassName } from '#utils/render-props.ts';
 import { cx } from 'cva';
 import { textTreatmentClassName } from '#components/_internal/typography';
 
-export interface ProgressBarProps extends Omit<RACProgressBarProps, 'children'> {
+export interface ProgressBarProps extends Omit<RACProgressBarProps, 'children' | 'valueLabel'> {
   /** Show ongoing activity when progress cannot be measured. Ignores value and hides value text. @default false */
   isIndeterminate?: boolean;
 
   /** Visible label text rendered above the track. */
   label?: string;
+
+  /**
+   * Optional visible value output. Pass true for the formatted value, a React node for static
+   * content, or a render function to access progress state. Omit it, or pass null or false, to hide it.
+   */
+  valueLabel?: RACProgressBarProps['children'];
 
   /** Helper or notice text rendered below the track. */
   helperText?: ReactNode;
@@ -33,7 +39,7 @@ export interface ProgressBarProps extends Omit<RACProgressBarProps, 'children'> 
  *
  * @example
  * ```tsx
- * <ProgressBar label="Uploading…" value={60} status="default" helperText="3 of 5 files uploaded" />
+ * <ProgressBar label="Uploading…" value={60} valueLabel status="default" helperText="3 of 5 files uploaded" />
  * ```
  */
 export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(function ProgressBar(props, ref) {
@@ -42,6 +48,7 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(function
     status = 'default',
     className,
     label,
+    valueLabel,
     helperText,
     'aria-describedby': describedByProp,
     ...rest
@@ -52,6 +59,7 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(function
   return (
     <Flex
       {...rest}
+      valueLabel={typeof valueLabel === 'string' ? valueLabel : undefined}
       direction="column"
       gap="xs"
       ref={ref}
@@ -61,30 +69,38 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(function
       aria-describedby={describedBy}
       as={RACProgressBar}
     >
-      {({ percentage, valueText, isIndeterminate }) => (
-        <>
-          {label ? (
-            <Flex justifyContent="space-between" alignItems="baseline">
-              <Label className={styles.label}>{label}</Label>
-              {!isIndeterminate && valueText ? (
-                <Text className={cx(styles.valueLabel, textTreatmentClassName('inherit'))}>{valueText}</Text>
-              ) : null}
-            </Flex>
-          ) : null}
-          <div
-            className={styles.track}
-            data-indeterminate={isIndeterminate || undefined}
-            style={
-              isIndeterminate ? undefined : ({ '--progress-bar-progress': `${percentage ?? 0}%` } as CSSProperties)
-            }
-          />
-          {helperText ? (
-            <Text id={helperTextId} className={cx(styles.helperText, textTreatmentClassName('inherit'))}>
-              {helperText}
-            </Text>
-          ) : null}
-        </>
-      )}
+      {function renderContent(renderProps) {
+        const { percentage, valueText, isIndeterminate } = renderProps;
+        const valueContent = typeof valueLabel === 'function' ? valueLabel(renderProps) : valueLabel;
+        const valueLabelVisible = !isIndeterminate && valueContent != null && valueContent !== false;
+
+        return (
+          <>
+            {label || valueLabelVisible ? (
+              <Flex justifyContent={label ? 'space-between' : 'flex-end'} alignItems="baseline">
+                {label ? <Label className={styles.label}>{label}</Label> : null}
+                {valueLabelVisible ? (
+                  <Text className={cx(styles.valueLabel, textTreatmentClassName('inherit'))}>
+                    {valueContent === true ? valueText : valueContent}
+                  </Text>
+                ) : null}
+              </Flex>
+            ) : null}
+            <div
+              className={styles.track}
+              data-indeterminate={isIndeterminate || undefined}
+              style={
+                isIndeterminate ? undefined : ({ '--progress-bar-progress': `${percentage ?? 0}%` } as CSSProperties)
+              }
+            />
+            {helperText ? (
+              <Text id={helperTextId} className={cx(styles.helperText, textTreatmentClassName('inherit'))}>
+                {helperText}
+              </Text>
+            ) : null}
+          </>
+        );
+      }}
     </Flex>
   );
 });

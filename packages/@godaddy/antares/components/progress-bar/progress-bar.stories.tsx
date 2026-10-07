@@ -16,6 +16,7 @@ export const Playground = getStory(PlaygroundExample, {
     size: 'md',
     status: 'default',
     value: 60,
+    valueLabel: false,
     isIndeterminate: false,
     label: 'Progress',
     helperText: 'Notice/helper text'
@@ -38,6 +39,12 @@ export const Playground = getStory(PlaygroundExample, {
     value: {
       control: { type: 'range', min: 0, max: 100, step: 1 },
       description: 'Current progress value (0–100)'
+    },
+    valueLabel: {
+      control: 'select',
+      options: ['Formatted value', 'Hidden value', 'Custom value'],
+      mapping: { 'Formatted value': true, 'Hidden value': false, 'Custom value': '3 of 5 files' },
+      description: 'Optional visible value output; true shows the formatted value, custom content replaces it'
     },
     label: {
       control: 'text',

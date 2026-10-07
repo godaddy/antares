@@ -18,6 +18,20 @@ npm install --save @godaddy/antares
 
 <Examples of={Stories.Examples} />
 
+## Customization
+
+`label` and the visible value can be controlled independently:
+
+- Visible value output is hidden by default. Omitted, `null`, and `false` values for `valueLabel` hide it.
+- Pass `valueLabel={true}` to show the formatted value, a React node for static content, or a render function for content derived from progress state.
+- Without a `label` or `valueLabel`, only the track is shown. A value label can also appear without a visible label.
+- Use `aria-label` or `aria-labelledby` to provide an accessible name when there is no visible label.
+
+Hiding visible value text does not remove `aria-valuenow` or the formatted `aria-valuetext`.
+Use `valueLabel` for custom value text.
+
+To retain percentage text from earlier versions, add `valueLabel={true}` to existing progress bars.
+
 ## Accessibility
 
 ### ARIA Support
