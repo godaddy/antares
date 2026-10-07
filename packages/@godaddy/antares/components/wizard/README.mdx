@@ -31,6 +31,8 @@ npm install @godaddy/antares
 
 ## Customization
 
+The backdrop uses the shared `--modal-overlay-bg` property, with the same fallback as `Modal`.
+
 Compose exactly one `WizardSteps` inside `Wizard`. Each `WizardStep` needs a stable `id` and a `label`; the label names its menu entry and step region. Place your own headings, fields, and other content inside each step. An empty collection is valid. For dynamic steps, pass `items` and a render function to `WizardSteps` as shown in the Items example. Surviving keyed steps keep their local state across reorders while the dialog is open.
 
 `Wizard` supplies a full-screen modal and dialog; the ordinary `Button` inside `DialogTrigger` opens it. Use `DialogTrigger`'s `isOpen`, `defaultOpen`, and `onOpenChange` to manage opening. Use `activeStep`, `defaultActiveStep`, and `onStepChange` on `Wizard` to manage navigation independently. The callback receives `(destination, { previousStep, reason })`, where `reason` is `next`, `previous`, or `menu`. In controlled mode it is a **request**: the displayed step changes only after the app updates `activeStep`. The Controlled Validation example checks its own field before doing so. The app also owns submission and closure; Next at the last step never submits or closes.

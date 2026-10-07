@@ -11,9 +11,27 @@ import { ComposedNavigationExample } from '../examples/composed-navigation.tsx';
 import { LifecycleExample } from '../examples/lifecycle.tsx';
 import { ControlledValidationExample } from '../examples/controlled-validation.tsx';
 import { ItemsExample } from '../examples/items.tsx';
+import { WrappedStepsExample } from '../examples/wrapped-steps.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Wizard', function wizardTests() {
+    it('discovers a wrapped collection and keeps surrounding content in authored order', async function wrappedSteps() {
+      await render(<WrappedStepsExample />);
+      await userEvent.click(page.getByRole('button', { name: 'Open wrapped workflow' }));
+      const dialog = page.getByRole('dialog', { name: 'Wrapped workflow' });
+      await expect.element(dialog.getByRole('region', { name: 'Details' })).toBeVisible();
+      await expect.element(dialog.getByText('Before steps')).toBeVisible();
+      await userEvent.click(dialog.getByRole('button', { name: 'Next' }));
+      await expect.element(dialog.getByRole('region', { name: 'Review' })).toBeVisible();
+      await userEvent.click(dialog.getByRole('button', { name: 'Steps' }));
+      expect((await page.getByRole('menuitemradio').all()).map((item) => item.element().textContent)).toEqual([
+        'Details',
+        'Review'
+      ]);
+      expect(dialog.element().textContent?.indexOf('Before steps')).toBeLessThan(
+        dialog.element().textContent?.indexOf('Review content') ?? -1
+      );
+    });
     it('lets the app reject navigation until its field is valid and submit only on the final action', async function validation() {
       await render(<ControlledValidationExample />);
       await userEvent.click(page.getByRole('button', { name: 'Create account' }));
@@ -235,10 +253,12 @@ describe('@godaddy/antares', function packageTests() {
       expect(dialog.element().querySelectorAll('[role="region"]')).toHaveLength(0);
     });
 
-    it('opens without a step collection', async function missingSteps() {
+    it('reports a missing collection rather than treating it as an empty one', async function missingSteps() {
       await render(<NoStepsExample />);
       await userEvent.click(page.getByRole('button', { name: 'Open without steps' }));
-      await expect.element(page.getByRole('dialog', { name: 'No steps yet' })).toBeVisible();
+      await expect
+        .element(page.getByRole('alert'))
+        .toHaveTextContent('Wizard requires exactly one WizardSteps collection.');
     });
 
     it('routes the primary props to the dialog and the layer bags to their layers', async function layers() {
@@ -443,6 +463,22 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(first).toBeVisible();
       await expect.element(first.getByLabelText('Visited steps')).toHaveTextContent('details');
       expect(requests).toEqual([]);
+    });
+
+    it('records a controlled step introduced in the same update as its activation', async function controlledInsertion() {
+      const details = { id: 'details', label: 'Details' };
+      const review = { id: 'review', label: 'Review' };
+      const screen = await render(<DynamicExample items={[details]} activeStep="details" />);
+      await userEvent.click(page.getByRole('button', { name: 'Open dynamic wizard' }));
+      const dialog = page.getByRole('dialog', { name: 'Dynamic workflow' });
+      await screen.rerender(<DynamicExample items={[details, review]} activeStep="review" />);
+      const active = dialog.getByRole('region', { name: 'Review' });
+      await expect.element(active).toBeVisible();
+      await expect.element(active.getByLabelText('Visited steps')).toHaveTextContent('details, review');
+      await screen.rerender(<DynamicExample items={[review, details]} activeStep="details" />);
+      await expect
+        .element(dialog.getByRole('region', { name: 'Details' }).getByLabelText('Visited steps'))
+        .toHaveTextContent('details, review');
     });
   });
 });
