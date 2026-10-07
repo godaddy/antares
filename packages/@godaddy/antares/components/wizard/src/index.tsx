@@ -16,6 +16,10 @@ import { Content } from '#components/structure';
 import { OverlayDialog } from '#components/_internal/overlay-dialog';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
+import { useWizardState, WizardStateContext, type WizardStateOptions } from './use-wizard-state.ts';
+
+export { useWizardState, WizardStateContext } from './use-wizard-state.ts';
+export type { WizardStateOptions, WizardState, WizardStepChangeDetail } from './use-wizard-state.ts';
 
 export interface DialogTriggerProps extends RACDialogTriggerProps {}
 
@@ -33,7 +37,10 @@ type WizardFlatKeys =
   | 'shouldCloseOnInteractOutside';
 type WizardLayerProps = Omit<RACModalOverlayProps, 'children' | WizardFlatKeys>;
 
-export interface WizardProps extends Omit<RACDialogProps, 'children'>, Pick<RACModalOverlayProps, WizardFlatKeys> {
+export interface WizardProps
+  extends Omit<RACDialogProps, 'children'>,
+    Pick<RACModalOverlayProps, WizardFlatKeys>,
+    Omit<WizardStateOptions, 'collection'> {
   /** Props for the backdrop layer. */
   overlayProps?: WizardLayerProps;
 
@@ -57,6 +64,9 @@ export const Wizard = forwardRef<HTMLElement, WizardProps>(function Wizard(props
     overlayProps,
     containerProps,
     children,
+    activeStep,
+    defaultActiveStep,
+    onStepChange,
     ...dialogProps
   } = props;
 
@@ -74,7 +84,9 @@ export const Wizard = forwardRef<HTMLElement, WizardProps>(function Wizard(props
     >
       <Flex as={RACModal} {...containerProps} className={composeClassName(containerProps?.className, styles.modal)}>
         <OverlayDialog {...dialogProps} ref={ref} className={composeClassName(className, styles.dialog)}>
-          {children}
+          <WizardOptionsContext.Provider value={{ activeStep, defaultActiveStep, onStepChange }}>
+            {children}
+          </WizardOptionsContext.Provider>
         </OverlayDialog>
       </Flex>
     </Flex>
@@ -82,6 +94,7 @@ export const Wizard = forwardRef<HTMLElement, WizardProps>(function Wizard(props
 });
 
 const ActiveStepContext = createContext(false);
+const WizardOptionsContext = createContext<Omit<WizardStateOptions, 'collection'>>({});
 
 export interface WizardStepsProps {
   /** Static steps in their declared order. */
@@ -90,18 +103,43 @@ export interface WizardStepsProps {
 
 /** Builds the ordered collection of steps. */
 export function WizardSteps({ children }: WizardStepsProps) {
+  const options = useContext(WizardOptionsContext);
   return (
     <CollectionBuilder content={<Collection>{children}</Collection>}>
-      {(collection) => (
-        <Content>
-          {[...collection].map((step) => (
-            <ActiveStepContext.Provider key={step.key} value={step.key === collection.getFirstKey()}>
-              {step.render?.(step)}
-            </ActiveStepContext.Provider>
-          ))}
-        </Content>
-      )}
+      {function renderCollection(collection) {
+        const steps = [...collection];
+        return (
+          <WizardStepContent
+            collection={steps.map((step) => step.key)}
+            options={options}
+            renderSteps={(activeStep) =>
+              steps.map((step) => (
+                <ActiveStepContext.Provider key={step.key} value={step.key === activeStep}>
+                  {step.render?.(step)}
+                </ActiveStepContext.Provider>
+              ))
+            }
+          />
+        );
+      }}
     </CollectionBuilder>
+  );
+}
+
+function WizardStepContent({
+  collection,
+  options,
+  renderSteps
+}: {
+  collection: Key[];
+  options: Omit<WizardStateOptions, 'collection'>;
+  renderSteps: (activeStep: Key | null) => ReactNode;
+}) {
+  const state = useWizardState({ ...options, collection });
+  return (
+    <WizardStateContext.Provider value={state}>
+      <Content>{renderSteps(state.activeStep)}</Content>
+    </WizardStateContext.Provider>
   );
 }
 

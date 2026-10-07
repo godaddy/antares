@@ -4,6 +4,7 @@ import { page, userEvent } from 'vitest/browser';
 import { DefaultExample } from '../examples/default.tsx';
 import { EmptyExample } from '../examples/empty.tsx';
 import { LayerPropsExample } from '../examples/layer-props.tsx';
+import { NavigationExample } from '../examples/navigation.tsx';
 import { NoStepsExample } from '../examples/no-steps.tsx';
 
 describe('@godaddy/antares', function packageTests() {
@@ -62,6 +63,81 @@ describe('@godaddy/antares', function packageTests() {
       expect(dialog.parentElement?.classList.contains('custom-container')).toBe(true);
       expect(dialog.parentElement?.parentElement?.classList.contains('custom-overlay')).toBe(true);
       await expect.element(page.getByRole('region', { name: 'First step' })).toBeVisible();
+    });
+
+    it('navigates adjacent steps, records actual visits, and revisits visited steps through public state', async function navigation() {
+      const requests: unknown[] = [];
+      await render(<NavigationExample onStepChange={(key, detail) => requests.push([key, detail])} />);
+      await userEvent.click(page.getByRole('button', { name: 'Open navigation' }));
+      const dialog = page.getByRole('dialog', { name: 'Navigation' });
+      const details = dialog.getByRole('region', { name: 'Details' });
+      await expect.element(details).toBeVisible();
+      await expect.element(details.getByLabelText('Position')).toHaveTextContent('0');
+      await expect.element(details.getByLabelText('Step order')).toHaveTextContent('details, review, confirm');
+      await expect.element(details.getByLabelText('Visited steps')).toHaveTextContent('details');
+      await expect.element(details.getByRole('button', { name: 'Previous' })).toBeDisabled();
+      await userEvent.click(details.getByRole('button', { name: 'Review directly' }));
+      expect(requests).toHaveLength(0);
+
+      await userEvent.click(details.getByRole('button', { name: 'Next' }));
+      const review = dialog.getByRole('region', { name: 'Review' });
+      await expect.element(review).toBeVisible();
+      await expect.element(review.getByLabelText('Visited steps')).toHaveTextContent('details, review');
+      await userEvent.click(review.getByRole('button', { name: 'Next' }));
+      const confirm = dialog.getByRole('region', { name: 'Confirm' });
+      await expect.element(confirm.getByRole('button', { name: 'Next' })).toBeDisabled();
+      await userEvent.click(confirm.getByRole('button', { name: 'Previous' }));
+      await userEvent.click(review.getByRole('button', { name: 'Previous' }));
+      await userEvent.click(details.getByRole('button', { name: 'Review directly' }));
+      await expect.element(review).toBeVisible();
+      expect(requests).toEqual([
+        ['review', { previousStep: 'details', reason: 'next' }],
+        ['confirm', { previousStep: 'review', reason: 'next' }],
+        ['review', { previousStep: 'confirm', reason: 'previous' }],
+        ['details', { previousStep: 'review', reason: 'previous' }],
+        ['review', { previousStep: 'details', reason: 'menu' }]
+      ]);
+    });
+
+    it('treats controlled navigation as a request until accepted, without recording rejected visits', async function controlledNavigation() {
+      const requests: unknown[] = [];
+      const onStepChange = (key: unknown, detail: unknown) => requests.push([key, detail]);
+      const screen = await render(<NavigationExample activeStep="details" onStepChange={onStepChange} />);
+      await userEvent.click(page.getByRole('button', { name: 'Open navigation' }));
+      const dialog = page.getByRole('dialog', { name: 'Navigation' });
+      const details = dialog.getByRole('region', { name: 'Details' });
+      await userEvent.click(details.getByRole('button', { name: 'Next' }));
+      await expect.element(details).toBeVisible();
+      await expect.element(details.getByLabelText('Visited steps')).toHaveTextContent('details');
+      await userEvent.click(details.getByRole('button', { name: 'Review directly' }));
+      expect(requests).toEqual([['review', { previousStep: 'details', reason: 'next' }]]);
+
+      await screen.rerender(<NavigationExample activeStep="review" onStepChange={onStepChange} />);
+      const review = dialog.getByRole('region', { name: 'Review' });
+      await expect.element(review).toBeVisible();
+      await expect.element(review.getByLabelText('Visited steps')).toHaveTextContent('details, review');
+      await screen.rerender(<NavigationExample activeStep="unknown" onStepChange={onStepChange} />);
+      await expect.element(dialog.getByRole('region', { name: 'Review', includeHidden: true })).not.toBeVisible();
+      await expect.element(dialog.getByRole('region', { name: 'Details', includeHidden: true })).not.toBeVisible();
+      expect(requests).toHaveLength(1);
+    });
+
+    it('starts at a valid default key', async function defaults() {
+      await render(<NavigationExample defaultActiveStep="review" />);
+      await userEvent.click(page.getByRole('button', { name: 'Open navigation' }));
+      const dialog = page.getByRole('dialog', { name: 'Navigation' });
+      const review = dialog.getByRole('region', { name: 'Review' });
+      await expect.element(review).toBeVisible();
+      await expect.element(review.getByLabelText('Visited steps')).toHaveTextContent('review');
+      await expect.element(review.getByLabelText('Position')).toHaveTextContent('1');
+    });
+
+    it('uses the first collection key when the default key is unavailable', async function missingDefault() {
+      await render(<NavigationExample defaultActiveStep="absent" />);
+      await userEvent.click(page.getByRole('button', { name: 'Open navigation' }));
+      const details = page.getByRole('dialog', { name: 'Navigation' }).getByRole('region', { name: 'Details' });
+      await expect.element(details).toBeVisible();
+      await expect.element(details.getByLabelText('Visited steps')).toHaveTextContent('details');
     });
   });
 });
