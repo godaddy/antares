@@ -1,36 +1,36 @@
-import { DefaultActiveExample } from '../examples/default-active.tsx';
-import { ControlledExample } from '../examples/controlled.tsx';
-import { WithLimitExample } from '../examples/with-limit.tsx';
-import { OnChangeExample } from '../examples/on-change.tsx';
-import { DefaultExample } from '../examples/default.tsx';
 import { renderToString } from 'react-dom/server';
-import { expect, describe, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { ControlledExample } from '../examples/controlled.tsx';
+import { DefaultExample } from '../examples/default.tsx';
+import { MinimalExample } from '../examples/minimal.tsx';
+import { PageCountKnownExample } from '../examples/page-count-known.tsx';
+import { PageCountUnknownExample } from '../examples/page-count-unknown.tsx';
+import { PaginationDotsExample } from '../examples/dots.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Pagination', function paginationTests() {
     it('renders the default example', function rendersDefault() {
-      const result = renderToString(<DefaultExample />);
-      expect(result).toMatchSnapshot();
+      expect(renderToString(<DefaultExample />)).toMatchSnapshot();
     });
 
     it('renders the controlled example', function rendersControlled() {
-      const result = renderToString(<ControlledExample />);
-      expect(result).toMatchSnapshot();
+      expect(renderToString(<ControlledExample />)).toMatchSnapshot();
     });
 
-    it('renders the default active example', function rendersDefaultActive() {
-      const result = renderToString(<DefaultActiveExample />);
-      expect(result).toMatchSnapshot();
+    it('renders the page count known example', function rendersPageCountKnown() {
+      expect(renderToString(<PageCountKnownExample />)).toMatchSnapshot();
     });
 
-    it('renders the on change example', function rendersOnChange() {
-      const result = renderToString(<OnChangeExample />);
-      expect(result).toMatchSnapshot();
+    it('renders the page count unknown example', function rendersPageCountUnknown() {
+      expect(renderToString(<PageCountUnknownExample />)).toMatchSnapshot();
     });
 
-    it('renders the with limit example', function rendersWithLimit() {
-      const result = renderToString(<WithLimitExample />);
-      expect(result).toMatchSnapshot();
+    it('renders the minimal example', function rendersMinimal() {
+      expect(renderToString(<MinimalExample />)).toMatchSnapshot();
+    });
+
+    it('renders the PaginationDots example', function rendersPaginationDots() {
+      expect(renderToString(<PaginationDotsExample />)).toMatchSnapshot();
     });
   });
 });
