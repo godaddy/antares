@@ -17,8 +17,6 @@ export default mergeConfig(
         })
       })
     ],
-    // Hydration tests need the server renderer in the initial dependency bundle.
-    optimizeDeps: { include: ['react-dom/server'] },
     test: {
       projects: [ssr, browser, visual]
     }
