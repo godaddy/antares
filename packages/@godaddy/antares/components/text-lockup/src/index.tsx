@@ -74,10 +74,7 @@ export const TextLockup = forwardRef<HTMLDivElement, TextLockupProps>(function T
     >
       <RACProvider
         values={[
-          [
-            HeaderContext,
-            { padding: '0', alignSelf: 'stretch', style: { display: 'flow-root' }, className: styles.header }
-          ],
+          [HeaderContext, { padding: '0', alignSelf: 'stretch', className: styles.header }],
           [
             HeadingContext,
             { slots: { [DEFAULT_SLOT]: { className: tier }, title: { className: cx(styles.part, tier) } } }

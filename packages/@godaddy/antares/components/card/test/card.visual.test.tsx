@@ -20,6 +20,9 @@ async function matchUnclippedScreenshot(container: HTMLElement, name: string) {
 
 describe('@godaddy/antares', function packageTests() {
   beforeAll(preloadTestIcons);
+  beforeEach(async function resetViewport() {
+    await page.viewport(414, 896);
+  });
   beforeEach(resetHover);
 
   describe('#Card', function cardVisualTests() {

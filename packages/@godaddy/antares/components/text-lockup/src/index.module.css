@@ -21,6 +21,10 @@
   max-width: var(--_text-lockup-measure);
 }
 
+.header:where(:has(> [data-corner-actions])) {
+  display: flow-root;
+}
+
 .header > :where([data-corner-actions]) {
   float: inline-end;
   margin-inline-start: var(--_text-lockup-actions-gap);

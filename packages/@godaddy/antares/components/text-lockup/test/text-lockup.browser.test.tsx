@@ -12,6 +12,15 @@ describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
 
   describe('#TextLockup', function textLockupTests() {
+    it('keeps an ordinary header title and action on one row', async function headerRow() {
+      const { getByRole } = await render(<SelfContainedExample />);
+      const title = getByRole('heading', { name: 'Account settings' }).element().getBoundingClientRect();
+      const action = getByRole('button', { name: 'Manage' }).element().getBoundingClientRect();
+      expect(title.right).toBeLessThanOrEqual(action.left);
+      expect(title.top).toBeLessThan(action.bottom);
+      expect(action.top).toBeLessThan(title.bottom);
+    });
+
     it('wraps a standalone heading while keeping its typography and level', async function cornerActions() {
       const { getByRole, getByText } = await render(<CornerActionsExample />);
       const heading = getByRole('heading', { level: 2 }).element();
