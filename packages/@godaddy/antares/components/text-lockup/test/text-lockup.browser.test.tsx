@@ -4,6 +4,11 @@ import { TagEyebrowExample } from '../examples/tag-eyebrow.tsx';
 import { OverridesExample } from '../examples/overrides.tsx';
 import { WithActionsExample } from '../examples/with-actions.tsx';
 import { SelfContainedExample } from '../examples/self-contained.tsx';
+import { SizeVariableExample } from '../examples/size-variable.tsx';
+
+function fontSize(locator: { element: () => Element }) {
+  return getComputedStyle(locator.element()).fontSize;
+}
 
 describe('@godaddy/antares', function antares() {
   describe('#TextLockup', function textLockupTests() {
@@ -63,6 +68,27 @@ describe('@godaddy/antares', function antares() {
       expect(unslotted).toEqual('24px');
       expect(unslotted).toEqual(getComputedStyle(getByText('Body paragraph').element()).fontSize);
       expect(unslotted).not.toEqual(getComputedStyle(getByText('Outside every lockup').element()).fontSize);
+    });
+
+    it.each([
+      ['sm', '18px', '14px'],
+      ['lg', '24px', '18px'],
+      ['2xl', '36px', '24px']
+    ])('sizes its parts from --antares-size %s', async function sizeVariable(size, title, body) {
+      const screen = await render(<SizeVariableExample />);
+
+      expect(fontSize(screen.getByRole('heading', { name: `Variable ${size}` }))).toEqual(title);
+      expect(fontSize(screen.getByText(`Body ${size}`))).toEqual(body);
+    });
+
+    it.each([
+      ['Explicit size wins', '18px'],
+      ['Nearest wins', '18px'],
+      ['Unset follows the scope', '24px']
+    ])('resolves --antares-size precedence: %s', async function sizePrecedence(name, title) {
+      const screen = await render(<SizeVariableExample />);
+
+      expect(fontSize(screen.getByRole('heading', { name }))).toEqual(title);
     });
 
     it('resolves slots against itself, not an outer container', async function ownsSlots() {

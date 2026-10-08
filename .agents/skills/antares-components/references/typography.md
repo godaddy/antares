@@ -39,7 +39,7 @@ TextFieldBody and OverlayRegions. When the component owns its slots, define them
 `DEFAULT_SLOT` entry for unslotted children, as TextLockup does:
 
 ```tsx
-const tier = size && textSlotSizeClassName(size);
+const tier = size ? textSlotSizeClassName(size) : styles.followSize;
 
 const slots = {
   [DEFAULT_SLOT]: { className: tier },
@@ -53,10 +53,12 @@ parent's React Aria context, not the size scope.
 
 ## Overrides
 
-- Text size resolves in this order: the child's explicit `size`, the owner's slot tier, then the
-  role's scoped tier (`md` outside a scope).
+- Text size resolves in this order: the child's explicit `size`, the owner's slot tier, the nearest
+  `--antares-size` for an owner that reads it, then the role's scoped tier (`md` outside a scope).
 - TextLockup's `size` sets text tiers through slot classes. It does not create a SizeProvider, so a
-  nested Button keeps the surrounding control size.
+  nested Button keeps the surrounding control size. Without `size`, `followSize` reads
+  `--antares-size` through container style queries, one per tier. The variable is unset by default, so
+  the scope still applies unless an application sets it.
 - An explicit text size applies only to that element. Do not make it cascade into nested text or tie
   it to heading level.
 

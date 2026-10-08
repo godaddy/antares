@@ -24,7 +24,10 @@ const TAG_SIZE: Record<TextLockupSize, TagSize> = {
  * Props for the {@link TextLockup} component.
  */
 export interface TextLockupProps extends Omit<FlexProps, 'as' | 'direction' | 'alignItems'> {
-  /** Type size of every part, each on its own role ramp. Follows the size scope when omitted. */
+  /**
+   * Type size of every part, each on its own role ramp. When omitted, follows `--antares-size`, then the
+   * size scope.
+   */
   size?: TextLockupSize;
 
   /** How the parts are aligned within the lockup. @default 'start' */
@@ -59,7 +62,7 @@ export interface TextLockupProps extends Omit<FlexProps, 'as' | 'direction' | 'a
  */
 export const TextLockup = forwardRef<HTMLDivElement, TextLockupProps>(function TextLockup(props, ref) {
   const { size, align = 'start', legibleLines = true, className, children, ...rest } = props;
-  const tier = size && textSlotSizeClassName(size);
+  const tier = size ? textSlotSizeClassName(size) : styles.followSize;
 
   return (
     <Flex

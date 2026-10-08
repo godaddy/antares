@@ -19,3 +19,39 @@
 .part {
   max-width: var(--_text-lockup-measure);
 }
+
+@container style(--antares-size: xs) {
+  .followSize {
+    --_type-slot-size: var(--_type-xs);
+  }
+}
+
+@container style(--antares-size: sm) {
+  .followSize {
+    --_type-slot-size: var(--_type-sm);
+  }
+}
+
+@container style(--antares-size: md) {
+  .followSize {
+    --_type-slot-size: var(--_type-md);
+  }
+}
+
+@container style(--antares-size: lg) {
+  .followSize {
+    --_type-slot-size: var(--_type-lg);
+  }
+}
+
+@container style(--antares-size: xl) {
+  .followSize {
+    --_type-slot-size: var(--_type-xl);
+  }
+}
+
+@container style(--antares-size: 2xl) {
+  .followSize {
+    --_type-slot-size: var(--_type-2xl);
+  }
+}
