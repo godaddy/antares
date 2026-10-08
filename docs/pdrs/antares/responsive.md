@@ -42,7 +42,8 @@ Applications drive size from CSS with an inherited variable, `--antares-size`. T
 }
 ```
 
-A TextLockup without `size` sizes its parts from the nearest `--antares-size` on a parent. The values are its sizes, `xs` to `2xl`, and it ignores any other. An explicit `size` wins, and
+A TextLockup without `size` sizes its parts from the nearest `--antares-size` on the lockup itself or an
+ancestor. The values are its sizes, `xs` to `2xl`, and it ignores any other. An explicit `size` wins, and
 without the variable the lockup follows the size scope as before. A Tag eyebrow keeps its own size.
 
 This PR adds variable support only to TextLockup. Its explicit `size` sets typography and Tag slot props;
@@ -87,5 +88,6 @@ prop, without a responsive example of its own. A follow-up PDR will design the a
   major browsers since May 2026, so older browsers don't switch. Each component writes its sizes twice,
   as style queries and as the context fallback. Future adoption would require overlays to copy the value
   and SizeProvider to gain an element.
-- **Parent, not self.** An element's styles can only query its parent's variable, so a variable set on a
-  component sizes its contents but not the component itself. Setting it on a parent keeps both in step.
+- **Queries read ancestors.** Style queries size descendants of the element carrying the variable.
+  TextLockup applies them to its text parts, so a variable on its root can size those parts. A component
+  that applies size queries to its own root needs the variable on an ancestor.

@@ -41,9 +41,10 @@ In media queries, `rem` uses the browser's initial font size.
 ### Responsive size
 
 Component props, including `size`, take a single value. For a size that changes with the layout, leave
-`size` unset and set `--antares-size` in your CSS on a parent, as the responsive size example does. A
-component can't read the variable from its own element. The nearest value wins, and an explicit `size` beats it. Without the variable, components
-follow the surrounding `SizeProvider`. Browsers without container style queries ignore the variable.
+`size` unset and set `--antares-size` in your CSS. TextLockup reads it for its text parts, so you can set
+the variable on the lockup itself or an ancestor. The responsive size example sets it on a parent. The
+nearest value wins, and an explicit `size` beats it. Without the variable, components follow the
+surrounding `SizeProvider`. Browsers without container style queries ignore the variable.
 
 These components follow `--antares-size`:
 
