@@ -26,10 +26,14 @@ describe('@godaddy/antares', function packageTests() {
 
   describe('#Card', function cardTests() {
     beforeEach(resetHover);
+    beforeEach(async function resetViewport() {
+      await page.viewport(414, 896);
+    });
 
-    afterEach(function resetInteractions() {
+    afterEach(async function resetInteractions() {
       window.getSelection()?.removeAllRanges();
       history.replaceState(null, '', `${location.pathname}${location.search}`);
+      await page.viewport(414, 896);
     });
 
     describe('standalone', function standaloneTests() {
