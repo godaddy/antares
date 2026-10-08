@@ -17,51 +17,52 @@ interface CompositionExampleProps extends ProgressBarProps, RefAttributes<HTMLDi
 
   /** Props for the visible value. */
   valueProps?: ProgressBarValueProps & RefAttributes<HTMLElement>;
+
+  /** Include a nested progress bar to check context isolation. */
+  nested?: boolean;
 }
 
-/**
- * Parts keep their association through wrappers and fragments. Named areas allow a different source order.
- * The description can appear or disappear independently of the root.
- * @order 8
- */
-export function CompositionExample({ trackProps, valueProps, ...props }: CompositionExampleProps) {
-  const [showDescription, setShowDescription] = useState(true);
-  const [descriptionId, setDescriptionId] = useState('upload-description');
+/** @ignore */
+export function CompositionExample({ trackProps, valueProps, nested, ...props }: CompositionExampleProps) {
+  const [descriptionId, setDescriptionId] = useState<string | undefined>('upload-description');
   return (
     <>
       <Text id="external-description">Keep this window open.</Text>
       <ProgressBar value={60} aria-describedby="external-description" {...props}>
-        {function renderParts({ valueText }) {
-          return (
-            <>
-              <ProgressBarTrack {...trackProps} />
-              <div style={{ display: 'contents' }}>
-                <Text slot={null}>Additional content</Text>
-                {showDescription ? (
-                  <Text id={descriptionId} slot="description">
-                    {valueText} uploaded
-                  </Text>
-                ) : null}
-                <ProgressBarValue {...valueProps} />
-                <Label>Uploading</Label>
+        {({ valueText }) => (
+          <>
+            <ProgressBarTrack {...trackProps} />
+            <div style={{ display: 'contents' }}>
+              <Text slot={null}>Additional content</Text>
+              {descriptionId && (
+                <Text id={descriptionId} slot="description">
+                  {valueText} uploaded
+                </Text>
+              )}
+              <ProgressBarValue {...valueProps} />
+              <Label>Uploading</Label>
+            </div>
+            {nested && (
+              <div>
+                <ProgressBar value={20} size="xs" status="success">
+                  <Label>Current file</Label>
+                  <ProgressBarValue />
+                  <ProgressBarTrack />
+                  <Text slot="description">One file</Text>
+                </ProgressBar>
               </div>
-            </>
-          );
-        }}
+            )}
+          </>
+        )}
       </ProgressBar>
       <Button
-        onPress={function toggleDescription() {
-          setShowDescription(!showDescription);
-        }}
+        onPress={() =>
+          setDescriptionId((id) =>
+            id === 'upload-description' ? 'renamed-description' : id ? undefined : 'upload-description'
+          )
+        }
       >
-        Toggle description
-      </Button>
-      <Button
-        onPress={function changeDescriptionId() {
-          setDescriptionId('renamed-description');
-        }}
-      >
-        Change description ID
+        Change description
       </Button>
     </>
   );

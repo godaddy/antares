@@ -1,5 +1,4 @@
-import { createContext, forwardRef, type ComponentPropsWithoutRef, type CSSProperties } from 'react';
-import { type ContextValue, useContextProps } from 'react-aria-components';
+import { forwardRef, type ComponentPropsWithoutRef, type CSSProperties } from 'react';
 import { Box, type BoxOwnProps } from '#components/layout/box';
 import { composeClassName, composeStyle } from '#utils/render-props.ts';
 import { useProgressBarState } from './state.ts';
@@ -9,12 +8,9 @@ export interface ProgressBarTrackProps
   extends Omit<ComponentPropsWithoutRef<'div'>, 'children'>,
     Omit<BoxOwnProps, 'as'> {}
 
-export const ProgressBarTrackContext = createContext<ContextValue<ProgressBarTrackProps, HTMLDivElement>>(null);
-
 /** Decorative track and fill. Reads the range, size, status, and indeterminate state from ProgressBar. */
 export const ProgressBarTrack = forwardRef<HTMLDivElement, ProgressBarTrackProps>(
   function ProgressBarTrack(props, ref) {
-    [props, ref] = useContextProps(props, ref, ProgressBarTrackContext);
     const { className, style, ...rest } = props;
     const { percentage, isIndeterminate } = useProgressBarState();
     const progressStyle = {

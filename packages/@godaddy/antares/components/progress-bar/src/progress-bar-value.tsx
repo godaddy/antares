@@ -1,5 +1,5 @@
-import { createContext, forwardRef, type ReactNode } from 'react';
-import { type ContextValue, type ProgressBarRenderProps, useContextProps } from 'react-aria-components';
+import { forwardRef, type ReactNode } from 'react';
+import type { ProgressBarRenderProps } from 'react-aria-components';
 import { Text, type TextProps } from '#components/text';
 import { textTreatmentClassName } from '#components/_internal/typography';
 import { composeClassName } from '#utils/render-props.ts';
@@ -11,11 +11,8 @@ export interface ProgressBarValueProps extends Omit<TextProps, 'children'> {
   children?: ReactNode | ((state: ProgressBarRenderProps) => ReactNode);
 }
 
-export const ProgressBarValueContext = createContext<ContextValue<ProgressBarValueProps, HTMLElement>>(null);
-
 /** Optional visible value output. Hidden while progress is indeterminate. */
 export const ProgressBarValue = forwardRef<HTMLElement, ProgressBarValueProps>(function ProgressBarValue(props, ref) {
-  [props, ref] = useContextProps(props, ref, ProgressBarValueContext);
   const { children, className, ...rest } = props;
   const state = useProgressBarState();
   if (state.isIndeterminate) return null;

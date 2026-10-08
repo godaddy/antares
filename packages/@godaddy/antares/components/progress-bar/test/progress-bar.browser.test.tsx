@@ -8,9 +8,7 @@ import { StatusesExample } from '../examples/statuses.tsx';
 import { WithoutValueLabelExample } from '../examples/without-value-label.tsx';
 import { WithoutLabelExample } from '../examples/without-label.tsx';
 import { ValueDisplayExample } from '../examples/value-display.tsx';
-import { ValueOnlyExample } from '../examples/value-only.tsx';
 import { CompositionExample } from '../examples/composition.tsx';
-import { NestedExample } from '../examples/nested.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#ProgressBar', function progressBarTests() {
@@ -35,7 +33,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('formats values independently of visible labels and respects custom ranges', async function formattedValues() {
-      const screen = await render(<ValueOnlyExample minValue={20} maxValue={100} />);
+      const screen = await render(<WithoutLabelExample showValue minValue={20} maxValue={100} />);
       const progress = screen.getByRole('progressbar', { name: 'Upload progress' });
       await expect.element(screen.getByText('50%')).toBeVisible();
       await expect.element(progress).toHaveAttribute('aria-valuenow', '60');
@@ -43,46 +41,50 @@ describe('@godaddy/antares', function antares() {
       const track = progress.element().querySelector('[aria-hidden="true"]') as HTMLElement;
       expect(track.style.getPropertyValue('--progress-bar-progress')).toBe('50%');
       await screen.rerender(
-        <ValueOnlyExample value={60} formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }} />
+        <WithoutLabelExample
+          showValue
+          value={60}
+          formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}
+        />
       );
       await expect.element(screen.getByText('$60')).toBeVisible();
       await expect.element(progress).toHaveAttribute('aria-valuetext', '$60');
-      await screen.rerender(<ValueOnlyExample value={120} maxValue={80} />);
+      await screen.rerender(<WithoutLabelExample showValue value={120} maxValue={80} />);
       await expect.element(progress).toHaveAttribute('aria-valuenow', '80');
       await expect.element(screen.getByText('100%')).toBeVisible();
       expect(track.style.getPropertyValue('--progress-bar-progress')).toBe('100%');
     });
 
     it('separates static visual content from accessible value text', async function staticValues() {
-      const screen = await render(<ValueOnlyExample valueContent="3 of 5 files" />);
+      const screen = await render(<WithoutLabelExample showValue valueContent="3 of 5 files" />);
       const progress = screen.getByRole('progressbar');
       await expect.element(screen.getByText('3 of 5 files')).toBeVisible();
       await expect.element(progress).toHaveAttribute('aria-valuetext', '60%');
-      await screen.rerender(<ValueOnlyExample valueLabel="3 of 5 files" />);
+      await screen.rerender(<WithoutLabelExample showValue valueLabel="3 of 5 files" />);
       await expect.element(progress).toHaveAttribute('aria-valuetext', '3 of 5 files');
       await expect.element(screen.getByText('3 of 5 files')).toBeVisible();
-      await screen.rerender(<ValueOnlyExample valueContent={0} />);
+      await screen.rerender(<WithoutLabelExample showValue valueContent={0} />);
       await expect.element(screen.getByText('0', { exact: true })).toBeVisible();
-      await screen.rerender(<ValueOnlyExample valueContent={null} />);
+      await screen.rerender(<WithoutLabelExample showValue valueContent={null} />);
       expect(progress.element().textContent).toBe('');
-      expect(progress.element().getBoundingClientRect().height).toBe(24);
-      await screen.rerender(<ValueOnlyExample valueContent={false} />);
+      expect(progress.element().getBoundingClientRect().height).toBe(12);
+      await screen.rerender(<WithoutLabelExample showValue valueContent={false} />);
       expect(progress.element().textContent).toBe('');
     });
 
     it('updates render-function output when progress changes', async function renderFunctionValues() {
-      const renderValue: NonNullable<Parameters<typeof ValueOnlyExample>[0]['valueContent']> = function renderValue({
+      const renderValue: NonNullable<Parameters<typeof WithoutLabelExample>[0]['valueContent']> = function renderValue({
         percentage
       }) {
         return percentage === 0 ? null : `Current: ${percentage}%`;
       };
-      const screen = await render(<ValueOnlyExample valueContent={renderValue} />);
+      const screen = await render(<WithoutLabelExample showValue valueContent={renderValue} />);
       const progress = screen.getByRole('progressbar');
       await expect.element(screen.getByText('Current: 60%')).toBeVisible();
-      await screen.rerender(<ValueOnlyExample value={80} valueContent={renderValue} />);
+      await screen.rerender(<WithoutLabelExample showValue value={80} valueContent={renderValue} />);
       await expect.element(screen.getByText('Current: 80%')).toBeVisible();
       await expect.element(progress).toHaveAttribute('aria-valuetext', '80%');
-      await screen.rerender(<ValueOnlyExample value={0} valueContent={renderValue} />);
+      await screen.rerender(<WithoutLabelExample showValue value={0} valueContent={renderValue} />);
       expect(progress.element().textContent).toBe('');
     });
 
@@ -118,12 +120,12 @@ describe('@godaddy/antares', function antares() {
       const progress = screen.getByRole('progressbar', { name: 'Uploading' });
       await expect.element(progress).toHaveAccessibleDescription('Keep this window open. 60% uploaded');
       await expect.element(progress).toHaveAttribute('aria-describedby', 'external-description upload-description');
-      await userEvent.click(screen.getByRole('button', { name: 'Change description ID' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Change description' }));
       await expect.element(progress).toHaveAttribute('aria-describedby', 'external-description renamed-description');
-      await userEvent.click(screen.getByRole('button', { name: 'Toggle description' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Change description' }));
       await expect.element(progress).toHaveAttribute('aria-describedby', 'external-description');
       await expect.element(progress).toHaveAccessibleDescription('Keep this window open.');
-      await userEvent.click(screen.getByRole('button', { name: 'Toggle description' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Change description' }));
       await expect.element(progress).toHaveAccessibleDescription('Keep this window open. 60% uploaded');
       await screen.rerender(<CompositionExample value={80} />);
       await expect.element(progress).toHaveAccessibleDescription('Keep this window open. 80% uploaded');
@@ -174,12 +176,12 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('isolates nested progress state, labels, descriptions, and track styling', async function nestedComposition() {
-      const screen = await render(<NestedExample />);
-      const outer = screen.getByRole('progressbar', { name: 'Overall upload' });
+      const screen = await render(<CompositionExample nested />);
+      const outer = screen.getByRole('progressbar', { name: 'Uploading' });
       const inner = screen.getByRole('progressbar', { name: 'Current file' });
       await expect.element(outer).toHaveAttribute('aria-valuetext', '60%');
       await expect.element(inner).toHaveAttribute('aria-valuetext', '20%');
-      await expect.element(outer).toHaveAccessibleDescription('All files');
+      await expect.element(outer).toHaveAccessibleDescription('Keep this window open. 60% uploaded');
       await expect.element(inner).toHaveAccessibleDescription('One file');
       await expect.element(screen.getByText('60%', { exact: true })).toBeVisible();
       await expect.element(screen.getByText('20%', { exact: true })).toBeVisible();
@@ -245,30 +247,18 @@ describe('@godaddy/antares', function antares() {
       }
     });
 
-    it('renders with role progressbar', async function rendersRole() {
-      const { getByRole } = await render(<DefaultExample />);
-      await expect.element(getByRole('progressbar')).toBeVisible();
-    });
-
-    it('applies aria-valuenow from value prop', async function ariaValueNow() {
-      const { getByRole } = await render(<DefaultExample />);
-      expect(getByRole('progressbar')).toHaveAttribute('aria-valuenow', '60');
-    });
-
-    it('applies aria-valuemin and aria-valuemax', async function ariaMinMax() {
-      const { getByRole } = await render(<DefaultExample />);
-      expect(getByRole('progressbar')).toHaveAttribute('aria-valuemin', '0');
-      expect(getByRole('progressbar')).toHaveAttribute('aria-valuemax', '100');
-    });
-
-    it('renders the label text', async function rendersLabel() {
-      const { getByText } = await render(<DefaultExample />);
-      await expect.element(getByText('Loading…')).toBeVisible();
-    });
-
-    it('renders the helper text', async function rendersHelperText() {
-      const { getByText } = await render(<DefaultExample />);
-      await expect.element(getByText('Please wait while we process your request')).toBeVisible();
+    it('exposes the default label, description, range, and progress', async function defaultProgress() {
+      const screen = await render(<DefaultExample />);
+      const progress = screen.getByRole('progressbar', { name: 'Loading…' });
+      await expect.element(progress).toBeVisible();
+      await expect.element(progress).toHaveAttribute('aria-valuenow', '60');
+      await expect.element(progress).toHaveAttribute('aria-valuemin', '0');
+      await expect.element(progress).toHaveAttribute('aria-valuemax', '100');
+      await expect.element(progress).toHaveAccessibleDescription('Please wait while we process your request');
+      await expect.element(screen.getByText('Loading…')).toBeVisible();
+      await expect.element(screen.getByText('Please wait while we process your request')).toBeVisible();
+      const track = progress.element().querySelector('[aria-hidden="true"]') as HTMLElement;
+      expect(track.style.getPropertyValue('--progress-bar-progress')).toBe('60%');
     });
 
     it('sets data-size for each size variant', async function dataSizeVariants() {
@@ -278,15 +268,6 @@ describe('@godaddy/antares', function antares() {
       expect(bars[0]).toHaveAttribute('data-size', 'xs');
       expect(bars[1]).toHaveAttribute('data-size', 'sm');
       expect(bars[2]).toHaveAttribute('data-size', 'md');
-    });
-
-    it('sets --progress-bar-progress CSS variable on the track', async function progressCssVariable() {
-      const { getByRole } = await render(<DefaultExample />);
-      const track = getByRole('progressbar')
-        .element()
-        .querySelector('[style*="--progress-bar-progress"]') as HTMLElement;
-
-      expect(track.style.getPropertyValue('--progress-bar-progress')).toBe('60%');
     });
 
     it('sets data-status for each status variant', async function dataStatusVariants() {

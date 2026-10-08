@@ -1,12 +1,10 @@
-import { createContext, forwardRef, useCallback, useState, type ReactNode, type Ref } from 'react';
+import { forwardRef, useCallback, useState, type ReactNode, type Ref } from 'react';
 import { useId } from 'react-aria';
 import {
   DEFAULT_SLOT,
   ProgressBar as RACProgressBar,
   Provider as RACProvider,
-  type ContextValue,
   type ProgressBarProps as RACProgressBarProps,
-  useContextProps,
   useSlottedContext
 } from 'react-aria-components';
 import { LabelContext } from '#components/label';
@@ -21,9 +19,6 @@ export interface ProgressBarProps extends RACProgressBarProps, Omit<GridOwnProps
   /** Composed label, value, track, and description. A function receives progress state. */
   children?: RACProgressBarProps['children'];
 
-  /** Show ongoing activity when progress cannot be measured. Ignores value and hides value text. @default false */
-  isIndeterminate?: boolean;
-
   /** Accessible value text, also used by ProgressBarValue's default output. Does not add visible output. */
   valueLabel?: string;
 
@@ -33,8 +28,6 @@ export interface ProgressBarProps extends RACProgressBarProps, Omit<GridOwnProps
   /** Color intent of the fill. @default 'default' */
   status?: 'default' | 'success' | 'warning' | 'critical';
 }
-
-export const ProgressBarContext = createContext<ContextValue<ProgressBarProps, HTMLDivElement>>(null);
 
 interface ProgressBarBodyProps {
   /** ID for the description slot. */
@@ -75,21 +68,8 @@ function ProgressBarBody({ descriptionId, descriptionRef, children }: ProgressBa
   );
 }
 
-/**
- * Shows determinate or indeterminate progress. Compose only the parts you need.
- *
- * @example
- * ```tsx
- * <ProgressBar value={60}>
- *   <Label>Uploading</Label>
- *   <ProgressBarValue />
- *   <ProgressBarTrack />
- *   <Text slot="description">3 of 5 files uploaded</Text>
- * </ProgressBar>
- * ```
- */
+/** Shows determinate or indeterminate progress. Compose only the parts you need. */
 export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(function ProgressBar(props, ref) {
-  [props, ref] = useContextProps(props, ref, ProgressBarContext);
   const { size = 'md', status = 'default', className, children, 'aria-describedby': describedBy, ...rest } = props;
   // React Aria merges a consumer's description ID back into this ID via TextContext.
   const descriptionId = useId();

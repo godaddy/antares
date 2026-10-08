@@ -7,9 +7,7 @@ import { StatusesExample } from '../examples/statuses.tsx';
 import { WithoutValueLabelExample } from '../examples/without-value-label.tsx';
 import { WithoutLabelExample } from '../examples/without-label.tsx';
 import { ValueDisplayExample } from '../examples/value-display.tsx';
-import { ValueOnlyExample } from '../examples/value-only.tsx';
 import { CompositionExample } from '../examples/composition.tsx';
-import { NestedExample } from '../examples/nested.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#ProgressBar', function progressBarTests() {
@@ -22,11 +20,11 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('renders custom value text without a visible label', function rendersValueOnly() {
-      expect(renderToString(<ValueOnlyExample valueContent="3 of 5 files" />)).toMatchSnapshot();
+      expect(renderToString(<WithoutLabelExample showValue valueContent="3 of 5 files" />)).toMatchSnapshot();
     });
 
     it('renders formatted value text without a visible label', function rendersFormattedValueOnly() {
-      expect(renderToString(<ValueOnlyExample />)).toMatchSnapshot();
+      expect(renderToString(<WithoutLabelExample showValue />)).toMatchSnapshot();
     });
 
     it('renders formatted, static, and state-based value labels', function rendersValueDisplay() {
@@ -46,7 +44,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('renders nested composition', function rendersNested() {
-      expect(renderToString(<NestedExample />)).toMatchSnapshot();
+      expect(renderToString(<CompositionExample nested />)).toMatchSnapshot();
     });
 
     it('renders the default progress bar', function rendersDefault() {
