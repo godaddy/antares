@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { Button, Card, CardGroup, Heading, LinkButton, Text, TextLockup } from '@godaddy/antares';
+import { Card, CardGroup, Flex, Heading, LinkButton, Switch, Text, TextLockup } from '@godaddy/antares';
 
 /**
- * Linked Cards in a CardGroup navigate on a press or Enter. Arrow keys move between rows, and
- * nested controls keep their own actions. Disable a Card to prevent its navigation.
+ * Open a domain's settings by pressing its Card or Enter. Toggle auto-renew or manage DNS without
+ * opening the Card. Arrow keys move between domains, skipping the domain being transferred.
  * @title Grouped links
  * @order 5
  */
 export function GroupedLinksExample() {
   const [opened, setOpened] = useState<string[]>([]);
-  const [saved, setSaved] = useState(false);
+  const [autoRenew, setAutoRenew] = useState(false);
 
   function open(key: string) {
     setOpened((keys) => [...keys, key]);
@@ -17,22 +17,44 @@ export function GroupedLinksExample() {
 
   return (
     <>
-      <CardGroup aria-label="Project links" selectionMode="none">
-        <Card id="domains" textValue="Domains" href="#domain-overview" onAction={() => open('domains')}>
+      <CardGroup aria-label="Domain names" selectionMode="none">
+        <Card
+          id="example-com"
+          textValue="example.com"
+          href="#example-com-settings"
+          onAction={() => open('example.com')}
+        >
           <TextLockup>
-            <Heading slot="title">Domains</Heading>
-            <Text slot="body">Manage your domain names.</Text>
+            <Heading slot="title">example.com</Heading>
+            <Text slot="body">Auto-renew is {autoRenew ? 'on' : 'off'}. Open this domain to view its settings.</Text>
           </TextLockup>
-          <Button onPress={() => setSaved(true)}>{saved ? 'Domain saved' : 'Save domain'}</Button>
-          <LinkButton href="#domain-help">Help with domains</LinkButton>
+          <Flex alignItems="center" justifyContent="space-between" gap="md" wrap="wrap">
+            <Switch isSelected={autoRenew} onChange={setAutoRenew}>
+              Auto-renew
+            </Switch>
+            <LinkButton variant="primary" href="#example-com-dns">
+              Manage DNS
+            </LinkButton>
+          </Flex>
         </Card>
-        <Card id="hosting" textValue="Hosting" href="#hosting-overview" onAction={() => open('hosting')}>
-          <Heading>Hosting</Heading>
-          <Text>Manage your web hosting.</Text>
+        <Card
+          id="example-net"
+          textValue="example.net"
+          href="#example-net-settings"
+          onAction={() => open('example.net')}
+        >
+          <Heading>example.net</Heading>
+          <Text>Auto-renew is on. Open this domain to view its settings.</Text>
         </Card>
-        <Card id="email" textValue="Email" href="#email-overview" onAction={() => open('email')} isDisabled>
-          <Heading>Email</Heading>
-          <Text>Email is unavailable.</Text>
+        <Card
+          id="example-org"
+          textValue="example.org"
+          href="#example-org-settings"
+          onAction={() => open('example.org')}
+          isDisabled
+        >
+          <Heading>example.org</Heading>
+          <Text>Transfer in progress. Settings will be available when the transfer is complete.</Text>
         </Card>
       </CardGroup>
       <Text>Opened: {opened.join(',') || 'none'}</Text>

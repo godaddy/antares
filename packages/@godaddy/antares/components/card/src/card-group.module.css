@@ -1,3 +1,0 @@
-.group:where([data-empty]) {
-  display: block;
-}

@@ -225,7 +225,7 @@ describe('@godaddy/antares', function packageTests() {
 
       it('opens a subscribe Card inside a modal but not from a nested button', async function subscribeModal() {
         const { getByRole } = await render(<ActionsExample />);
-        await userEvent.click(getByRole('button', { name: 'Save' }).first());
+        await userEvent.click(getByRole('button', { name: 'Save' }));
         await expect.element(getByRole('button', { name: 'Saved' })).toBeInTheDocument();
         await expect.element(getByRole('dialog')).not.toBeInTheDocument();
 
@@ -237,41 +237,54 @@ describe('@godaddy/antares', function packageTests() {
     describe('grouped links', function groupedLinkTests() {
       it('navigates and runs the row action once from a body press', async function groupedLinkPress() {
         const { getByText } = await render(<GroupedLinksExample />);
-        await userEvent.click(getByText('Manage your domain names.'));
-        expect(location.hash).toBe('#domain-overview');
-        await expect.element(getByText('Opened: domains')).toBeInTheDocument();
+        await userEvent.click(getByText('Auto-renew is off. Open this domain to view its settings.'));
+        expect(location.hash).toBe('#example-com-settings');
+        await expect.element(getByText('Opened: example.com')).toBeInTheDocument();
       });
 
       it('moves between linked rows with arrow keys and navigates with Enter', async function groupedLinkKeyboard() {
         const { getByRole, getByText } = await render(<GroupedLinksExample />);
-        const domains = getByRole('row', { name: 'Domains' });
-        const hosting = getByRole('row', { name: 'Hosting' });
+        const firstDomain = getByRole('row', { name: 'example.com' });
+        const secondDomain = getByRole('row', { name: 'example.net' });
         await userEvent.tab();
-        await expect.element(domains).toHaveFocus();
+        await expect.element(firstDomain).toHaveFocus();
         await userEvent.keyboard('{ArrowDown}');
-        await expect.element(hosting).toHaveFocus();
+        await expect.element(secondDomain).toHaveFocus();
         await userEvent.keyboard('{ArrowDown}');
-        await expect.element(hosting).toHaveFocus();
+        await expect.element(secondDomain).toHaveFocus();
         await userEvent.keyboard('{Enter}');
-        expect(location.hash).toBe('#hosting-overview');
-        await expect.element(getByText('Opened: hosting')).toBeInTheDocument();
+        expect(location.hash).toBe('#example-net-settings');
+        await expect.element(getByText('Opened: example.net')).toBeInTheDocument();
       });
 
-      it('keeps nested buttons and links independent of grouped navigation', async function groupedLinkControls() {
+      it('keeps nested switches and links independent of grouped navigation', async function groupedLinkControls() {
         const { getByRole, getByText } = await render(<GroupedLinksExample />);
-        await userEvent.click(getByRole('button', { name: 'Save domain' }));
-        await expect.element(getByRole('button', { name: 'Domain saved' })).toBeInTheDocument();
+        const autoRenew = getByRole('switch', { name: 'Auto-renew' });
+        await expect.element(autoRenew).not.toBeChecked();
+        await userEvent.click(getByText('Auto-renew', { exact: true }));
+        await expect.element(autoRenew).toBeChecked();
+        await expect
+          .element(getByText('Auto-renew is on. Open this domain to view its settings.').first())
+          .toBeInTheDocument();
         expect(location.hash).toBe('');
         await expect.element(getByText('Opened: none')).toBeInTheDocument();
 
-        await userEvent.click(getByRole('link', { name: 'Help with domains' }));
-        expect(location.hash).toBe('#domain-help');
+        await userEvent.keyboard(' ');
+        await expect.element(autoRenew).not.toBeChecked();
+        await expect
+          .element(getByText('Auto-renew is off. Open this domain to view its settings.'))
+          .toBeInTheDocument();
+        expect(location.hash).toBe('');
+        await expect.element(getByText('Opened: none')).toBeInTheDocument();
+
+        await userEvent.click(getByRole('link', { name: 'Manage DNS' }));
+        expect(location.hash).toBe('#example-com-dns');
         await expect.element(getByText('Opened: none')).toBeInTheDocument();
       });
 
       it('does not navigate or run the action of a disabled linked row', async function disabledGroupedLink() {
         const { getByRole, getByText } = await render(<GroupedLinksExample />);
-        await userEvent.click(getByRole('row', { name: 'Email' }), { force: true });
+        await userEvent.click(getByRole('row', { name: 'example.org' }), { force: true });
         expect(location.hash).toBe('');
         await expect.element(getByText('Opened: none')).toBeInTheDocument();
       });

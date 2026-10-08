@@ -1,8 +1,6 @@
 import { createContext, forwardRef, useContext, type ForwardedRef, type ReactNode } from 'react';
 import { GridList as RACGridList, type GridListProps as RACGridListProps } from 'react-aria-components';
 import { Grid, type GridOwnProps } from '#components/layout/grid';
-import { composeClassName } from '#utils/render-props.ts';
-import styles from './card-group.module.css';
 
 /** True while rendering inside a CardGroup, so Card renders as a collection row. */
 const CardGroupContext = createContext(false);
@@ -34,7 +32,7 @@ export const CardGroup = forwardRef(function CardGroup<T extends object>(
   props: CardGroupProps<T>,
   ref: ForwardedRef<HTMLDivElement>
 ) {
-  const { children, className, ...rest } = props;
+  const { children, ...rest } = props;
 
   return (
     <CardGroupContext.Provider value={true}>
@@ -46,7 +44,6 @@ export const CardGroup = forwardRef(function CardGroup<T extends object>(
         ref={ref}
         as={RACGridList<T>}
         layout="grid"
-        className={composeClassName(className, styles.group)}
       >
         {children}
       </Grid>
