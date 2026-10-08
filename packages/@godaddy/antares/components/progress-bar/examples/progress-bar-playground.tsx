@@ -1,32 +1,37 @@
-import { ProgressBar, type ProgressBarProps } from '@godaddy/antares';
+import { Label, ProgressBar, ProgressBarTrack, ProgressBarValue, Text, type ProgressBarProps } from '@godaddy/antares';
 
-export interface PlaygroundExampleProps
-  extends Pick<ProgressBarProps, 'size' | 'status' | 'value' | 'valueLabel' | 'isIndeterminate'> {
-  /** The label for the progress bar. */
+interface PlaygroundExampleProps extends Pick<ProgressBarProps, 'size' | 'status' | 'value' | 'isIndeterminate'> {
+  /** Visible label text. */
   label?: string;
-  /** Helper text below the track. */
-  helperText?: string;
+
+  /** Description below the track. */
+  description?: string;
+
+  /** Whether to render ProgressBarValue. */
+  showValue?: boolean;
 }
 
 export function PlaygroundExample({
   size = 'md',
   status = 'default',
   value = 60,
-  valueLabel = false,
   isIndeterminate = false,
   label = 'Progress',
-  helperText = 'Notice/helper text'
+  description = 'Notice/helper text',
+  showValue = false
 }: PlaygroundExampleProps) {
   return (
     <ProgressBar
-      label={label}
+      aria-label={label ? undefined : 'Progress'}
       size={size}
       status={status}
       value={value}
-      valueLabel={valueLabel}
       isIndeterminate={isIndeterminate}
-      helperText={helperText}
-      formatOptions={{ currency: 'USD', style: 'currency' }}
-    />
+    >
+      {label ? <Label>{label}</Label> : null}
+      {showValue ? <ProgressBarValue /> : null}
+      <ProgressBarTrack />
+      {description ? <Text slot="description">{description}</Text> : null}
+    </ProgressBar>
   );
 }

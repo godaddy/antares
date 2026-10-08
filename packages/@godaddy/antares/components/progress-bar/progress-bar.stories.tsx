@@ -1,13 +1,15 @@
 'use client';
 import { PlaygroundExample } from './examples/progress-bar-playground.tsx';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { ProgressBar } from './src/index.tsx';
+import { ProgressBar, ProgressBarTrack, ProgressBarValue } from './src/index.tsx';
 
 export default getMeta({
   title: 'components/ProgressBar'
 });
 
 export const Props = getComponentDocs(ProgressBar);
+export const TrackProps = getComponentDocs(ProgressBarTrack);
+export const ValueProps = getComponentDocs(ProgressBarValue);
 
 export const Examples = getExamples('./examples');
 
@@ -16,10 +18,10 @@ export const Playground = getStory(PlaygroundExample, {
     size: 'md',
     status: 'default',
     value: 60,
-    valueLabel: false,
+    showValue: false,
     isIndeterminate: false,
     label: 'Progress',
-    helperText: 'Notice/helper text'
+    description: 'Notice/helper text'
   },
   argTypes: {
     size: {
@@ -40,17 +42,15 @@ export const Playground = getStory(PlaygroundExample, {
       control: { type: 'range', min: 0, max: 100, step: 1 },
       description: 'Current progress value (0–100)'
     },
-    valueLabel: {
-      control: 'select',
-      options: ['Formatted value', 'Hidden value', 'Custom value'],
-      mapping: { 'Formatted value': true, 'Hidden value': false, 'Custom value': '3 of 5 files' },
-      description: 'Optional visible value output; true shows the formatted value, custom content replaces it'
+    showValue: {
+      control: 'boolean',
+      description: 'Render the optional ProgressBarValue'
     },
     label: {
       control: 'text',
       description: 'Label text for the progress bar'
     },
-    helperText: {
+    description: {
       control: 'text',
       description: 'Helper or notice text below the track'
     }

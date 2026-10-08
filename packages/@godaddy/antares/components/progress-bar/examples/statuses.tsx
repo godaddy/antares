@@ -1,16 +1,36 @@
-import { ProgressBar, Flex } from '@godaddy/antares';
+import { Flex, Label, ProgressBar, ProgressBarTrack, ProgressBarValue, Text } from '@godaddy/antares';
 
 /**
- * Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
+ * Use `status` to communicate intent and a description for additional context.
  * @order 3
  */
 export function StatusesExample() {
   return (
     <Flex direction="column" gap="md">
-      <ProgressBar label="Default" status="default" value={50} valueLabel helperText="In progress" />
-      <ProgressBar label="Success" status="success" value={100} valueLabel helperText="Complete" />
-      <ProgressBar label="Warning" status="warning" value={70} valueLabel helperText="Storage almost full" />
-      <ProgressBar label="Critical" status="critical" value={30} valueLabel helperText="Action required" />
+      <ProgressBar status="default" value={50}>
+        <Label>Default</Label>
+        <ProgressBarValue />
+        <ProgressBarTrack />
+        <Text slot="description">In progress</Text>
+      </ProgressBar>
+      <ProgressBar status="success" value={100}>
+        <Label>Success</Label>
+        <ProgressBarValue />
+        <ProgressBarTrack />
+        <Text slot="description">Complete</Text>
+      </ProgressBar>
+      <ProgressBar status="warning" value={70}>
+        <Label>Warning</Label>
+        <ProgressBarValue />
+        <ProgressBarTrack />
+        <Text slot="description">Storage almost full</Text>
+      </ProgressBar>
+      <ProgressBar status="critical" value={30}>
+        <Label>Critical</Label>
+        <ProgressBarValue />
+        <ProgressBarTrack />
+        <Text slot="description">Action required</Text>
+      </ProgressBar>
     </Flex>
   );
 }

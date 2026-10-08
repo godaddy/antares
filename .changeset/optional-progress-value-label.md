@@ -2,4 +2,4 @@
 '@godaddy/antares': minor
 ---
 
-Make ProgressBar value output opt-in, following RangeField. Add `valueLabel={true}` to keep the formatted value visible, or pass custom content or a render function. Omitting `valueLabel`, or passing `null` or `false`, hides visible value output while preserving accessible progress. Labels and value output can be displayed independently.
+Rebuild ProgressBar with a composed interior. Replace `label` and `helperText` with `Label` and `Text slot="description"`, and render `ProgressBarTrack` explicitly. Visible value output is opt-in through `ProgressBarValue`, which accepts formatted, static, or state-based content and hides during indeterminate progress. The root's `valueLabel` remains a string for accessible value text. Omit label and value children for compact, track-only progress.

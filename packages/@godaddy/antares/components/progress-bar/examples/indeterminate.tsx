@@ -1,18 +1,16 @@
-import { ProgressBar, type ProgressBarProps } from '@godaddy/antares';
+import { Label, ProgressBar, ProgressBarTrack, ProgressBarValue, Text, type ProgressBarProps } from '@godaddy/antares';
 
 /**
- * Use indeterminate progress while preparing an upload whose total size is unknown.
- * Once the total is known, set `isIndeterminate` to false and supply a measured value.
+ * Use indeterminate progress while the total is unknown. Value output is hidden automatically.
  * @order 4
  */
 export function IndeterminateExample(props: ProgressBarProps) {
   return (
-    <ProgressBar
-      label="Preparing upload…"
-      helperText="Calculating the total size"
-      valueLabel
-      isIndeterminate
-      {...props}
-    />
+    <ProgressBar isIndeterminate {...props}>
+      <Label>Preparing upload…</Label>
+      <ProgressBarValue />
+      <ProgressBarTrack />
+      <Text slot="description">Calculating the total size</Text>
+    </ProgressBar>
   );
 }
