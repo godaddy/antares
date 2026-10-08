@@ -1,0 +1,1 @@
+import{i as e,s as t}from"./preload-helper-CYPGu_IH.js";import{st as n}from"./iframe-A_uFBwce.js";import{n as r,t as i}from"./src-BqoQrSRQ.js";import{a,t as o}from"./src-S2Usu3yR.js";var s,c,l=e((()=>{o(),s=t(n(),1),i(),c=a(`BentoContainer`,function(...e){let{props:t,apply:n}=r(e),{children:i,as:a=`div`}=t;return s.createElement(a,{...n({},[`as`])},i)})}));export{l as n,c as t};
