@@ -1,32 +1,64 @@
-import { Button, ButtonGroup, Card, CornerActions, Header, Heading, Icon, Text, TextLockup } from '@godaddy/antares';
+import { useState } from 'react';
+import {
+  Button,
+  ButtonGroup,
+  Card,
+  CornerActions,
+  Header,
+  Heading,
+  Icon,
+  LinkButton,
+  Menu,
+  MenuItem,
+  MenuTrigger,
+  Tag,
+  Text,
+  TextLockup
+} from '@godaddy/antares';
 
 /**
- * A text card with corner actions.
+ * Save a business guide for later, mark it as read from the menu, or open the guide.
  * @title Corner actions
  * @order 3
  */
 export function CornerActionsExample({ dir }: { dir?: 'ltr' | 'rtl' } = {}) {
+  const [saved, setSaved] = useState(false);
+  const [read, setRead] = useState(false);
+
   return (
     <Card dir={dir} style={{ maxWidth: '24rem' }}>
       <TextLockup>
         <Header>
           <CornerActions>
-            <Button aria-label="Favorite">
+            <Button aria-label="Favorite" aria-pressed={saved} onPress={() => setSaved(!saved)}>
               <Icon icon="star" />
             </Button>
-            <Button aria-label="More options">
-              <Icon icon="ellipsis" />
-            </Button>
+            <MenuTrigger popoverProps={{ placement: 'bottom end' }}>
+              <Button aria-label="More options">
+                <Icon icon="ellipsis" />
+              </Button>
+              <Menu aria-label="Guide actions">
+                <MenuItem id="read" onAction={() => setRead(!read)}>
+                  {read ? 'Mark as unread' : 'Mark as read'}
+                </MenuItem>
+              </Menu>
+            </MenuTrigger>
           </CornerActions>
           <Heading slot="title">
-            A longer card title that wraps around its corner actions and uses the full width below them
+            Everything you need to launch your first online store and turn new visitors into returning customers
           </Heading>
         </Header>
-        <Text slot="body">Cards provide a surface while consumers own the interior layout.</Text>
+        <Text slot="body">
+          A practical checklist for your products, payments, shipping, and first marketing campaign.
+        </Text>
+        {read && <Tag>Read</Tag>}
+        <Text role="status">{saved ? 'Saved to your reading list' : '5 min read'}</Text>
       </TextLockup>
 
       <ButtonGroup>
-        <Button variant="primary">Confirm</Button>
+        <LinkButton variant="primary" href="#store-launch-guide">
+          Read guide
+        </LinkButton>
       </ButtonGroup>
     </Card>
   );

@@ -71,23 +71,15 @@ growing a prop for it.
 
 ## Props
 
-Put `CornerActions` before `Heading` in a `Header` to wrap text around the actions.
-
-```tsx
-<TextLockup>
-  <Tag slot="eyebrow" />
-  <Heading slot="title" />
-  <Text slot="body" />
-  {/* ... */}
-</TextLockup>
-```
-
 ```tsx
 <TextLockup>
   <Header>
     <CornerActions />
     <Heading slot="title" />
   </Header>
+
+  <Tag slot="eyebrow" />
+  <Heading slot="title" />
   <Text slot="body" />
   {/* ... */}
 </TextLockup>

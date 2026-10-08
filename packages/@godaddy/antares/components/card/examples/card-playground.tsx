@@ -8,8 +8,8 @@ export interface PlaygroundExampleProps {
 }
 
 export function PlaygroundExample({
-  heading = 'Playground card',
-  description = 'Compose any content inside the surface.'
+  heading = 'Connect your domain',
+  description = 'Give your website a memorable address so customers can find your business.'
 }: PlaygroundExampleProps) {
   return (
     <Card>
@@ -17,9 +17,7 @@ export function PlaygroundExample({
         <Tag slot="eyebrow" emphasis="info">
           Preview
         </Tag>
-        <Heading slot="title" level={3}>
-          {heading}
-        </Heading>
+        <Heading slot="title">{heading}</Heading>
         <Text slot="body">{description}</Text>
       </TextLockup>
     </Card>

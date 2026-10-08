@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Box,
   Button,
@@ -10,6 +11,7 @@ import {
   Heading,
   Icon,
   Image,
+  LinkButton,
   Tag,
   Text,
   TextLockup
@@ -19,11 +21,23 @@ const image =
   'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 240%22%3E%3Crect width=%22320%22 height=%22240%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%22220%22 cy=%2270%22 r=%2250%22 fill=%22%234ecdc4%22/%3E%3C/svg%3E';
 
 /**
- * Use Grid for responsiveness.
+ * A featured business guide and a responsive reading list. Grid adapts the layout to the
+ * available space, while each guide keeps its own height.
  * @title Layout
  * @order 10
  */
 export function LayoutExample() {
+  const [saved, setSaved] = useState(new Set<string>());
+
+  function toggleSaved(id: string) {
+    setSaved(function updateSaved(current) {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
   return (
     <Flex direction="column" gap="xl">
       <Box style={{ maxWidth: '48rem', width: '100%' }}>
@@ -36,9 +50,11 @@ export function LayoutExample() {
               style={{ display: 'block', width: '100%', height: 'auto' }}
             />
             <TextLockup data-testid="container-query-content">
-              <Tag slot="eyebrow">Responsive</Tag>
-              <Heading slot="title">Grid-owned responsiveness</Heading>
-              <Text slot="body">Auto-fit columns decide when this composition stacks or becomes horizontal.</Text>
+              <Tag slot="eyebrow">Featured guide</Tag>
+              <Heading slot="title">Build a website that works for your business</Heading>
+              <Text slot="body">
+                Choose your pages, tell your story, and make it easy for customers to get in touch.
+              </Text>
             </TextLockup>
           </Grid>
         </Card>
@@ -46,21 +62,22 @@ export function LayoutExample() {
 
       <Grid columns="repeat(auto-fit, minmax(min(100%, 16rem), 1fr))" gap="md" alignItems="start">
         {[
-          ['Card 1', 'Short description'],
-          ['Card 2', 'A medium description gives this card more content.'],
+          ['domain', 'Find your domain', 'Choose a name customers will remember.'],
+          ['brand', 'Build your brand', 'Bring your colors, logo, and business story together.'],
           [
-            'A longer title that wraps across lines',
-            'A longer description demonstrates that each card can grow while its action stays aligned.'
+            'store',
+            'Turn your first online store into a place customers want to come back to',
+            'Build trust with clear product photos, straightforward shipping, and a checkout that is easy to use.'
           ]
-        ].map(function renderCard([title, body], index) {
+        ].map(function renderCard([id, title, body], index) {
           return (
-            <Card key={title} gap="md" data-testid={`collection-card-${index}`}>
+            <Card key={id} gap="md" data-testid={`collection-card-${index}`}>
               <TextLockup>
                 <Tag slot="eyebrow">Recommended</Tag>
                 <Header>
                   <CornerActions>
-                    <Button aria-label="More options">
-                      <Icon icon="ellipsis" />
+                    <Button aria-label={`Save ${title}`} aria-pressed={saved.has(id)} onPress={() => toggleSaved(id)}>
+                      <Icon icon="star" />
                     </Button>
                   </CornerActions>
                   <Heading slot="title">{title}</Heading>
@@ -69,7 +86,9 @@ export function LayoutExample() {
               </TextLockup>
 
               <ButtonGroup justifyContent="end">
-                <Button variant="primary">View details</Button>
+                <LinkButton variant="primary" href={`#${id}-guide`}>
+                  Read guide
+                </LinkButton>
               </ButtonGroup>
             </Card>
           );

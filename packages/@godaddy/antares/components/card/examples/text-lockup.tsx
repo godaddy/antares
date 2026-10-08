@@ -1,7 +1,7 @@
 import { Card, Heading, Tag, Text, TextLockup } from '@godaddy/antares';
 
 /**
- * Compose Card with TextLockup for eyebrow, title, and body.
+ * Introduce the next step in setting up a business website.
  * @title Text lockup
  * @order 2
  */
@@ -12,8 +12,8 @@ export function TextLockupExample() {
         <Tag slot="eyebrow" emphasis="info">
           New
         </Tag>
-        <Heading slot="title">A composed card</Heading>
-        <Text slot="body">Cards provide a surface while consumers own the interior layout.</Text>
+        <Heading slot="title">Connect your domain</Heading>
+        <Text slot="body">Give your website a memorable address so customers can find your business.</Text>
       </TextLockup>
     </Card>
   );

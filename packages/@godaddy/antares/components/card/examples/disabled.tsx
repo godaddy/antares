@@ -11,9 +11,8 @@ import {
 } from '@godaddy/antares';
 
 /**
- * `isDisabled` fades the Card. A disabled link Card does not navigate, and a disabled Card in a
- * CardGroup cannot be selected, run its action, or take focus. `disabledKeys` on the group does
- * the same by key.
+ * Explain why billing or add-ons are unavailable. Disable an individual Card with `isDisabled`,
+ * or disable Cards by key with `disabledKeys` on the group.
  * @title Disabled
  * @order 9
  */
@@ -22,33 +21,33 @@ export function DisabledExample() {
     <Flex direction="column" gap="lg">
       <Card href="#billing" isDisabled>
         <TextLockup>
-          <Heading slot="title">Disabled link</Heading>
-          <Text slot="body">Pressing the Card does nothing.</Text>
+          <Heading slot="title">Billing temporarily unavailable</Heading>
+          <Text slot="body">Finish transferring your account to manage billing.</Text>
         </TextLockup>
       </Card>
 
-      <CardGroup aria-label="Backups" selectionMode="multiple" disabledKeys={['ssl']}>
-        <Card id="backup" textValue="Backup" isDisabled>
+      <CardGroup aria-label="Available add-ons" selectionMode="multiple" disabledKeys={['ssl']}>
+        <Card id="backup" textValue="Automatic backups" isDisabled>
           <TextLockup>
             <Header>
               <CornerActions>
                 <CardSelectionIndicator />
               </CornerActions>
-              <Heading slot="title">Disabled with isDisabled</Heading>
+              <Heading slot="title">Automatic backups</Heading>
             </Header>
-            <Text slot="body">The Card cannot be selected.</Text>
+            <Text slot="body">Add a hosting plan to enable daily backups.</Text>
           </TextLockup>
         </Card>
 
-        <Card id="ssl" textValue="SSL">
+        <Card id="ssl" textValue="SSL certificate">
           <TextLockup>
             <Header>
               <CornerActions>
                 <CardSelectionIndicator />
               </CornerActions>
-              <Heading slot="title">Disabled with disabledKeys</Heading>
+              <Heading slot="title">SSL certificate</Heading>
             </Header>
-            <Text slot="body">The group disables this Card by key.</Text>
+            <Text slot="body">Connect a domain to activate your SSL certificate.</Text>
           </TextLockup>
         </Card>
       </CardGroup>

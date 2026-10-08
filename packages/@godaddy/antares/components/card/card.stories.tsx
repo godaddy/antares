@@ -18,8 +18,8 @@ export const Examples = getExamples('./examples');
 
 export const Playground = getStory(PlaygroundExample, {
   args: {
-    heading: 'Playground card',
-    description: 'Compose any content inside the surface.'
+    heading: 'Connect your domain',
+    description: 'Give your website a memorable address so customers can find your business.'
   },
   argTypes: {
     heading: {

@@ -1,5 +1,6 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
+import { userEvent } from 'vitest/browser';
 import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
 import { CornerActionsExample } from '../examples/corner-actions.tsx';
 import { TagEyebrowExample } from '../examples/tag-eyebrow.tsx';
@@ -26,8 +27,20 @@ describe('@godaddy/antares', function antares() {
       expect(getComputedStyle(heading).fontSize).toBe('24px');
       expect(getComputedStyle(button).fontSize).toBe('16px');
       expect(
-        getByText('The lockup owns the text layout, wherever you place it.').element().getBoundingClientRect().top
+        getByText('Check your product photos, payment options, and shipping details before opening your doors.')
+          .element()
+          .getBoundingClientRect().top
       ).toBeGreaterThanOrEqual(heading.parentElement!.getBoundingClientRect().bottom);
+    });
+
+    it('marks the business guide as read from its menu', async function articleMenu() {
+      const { getByRole } = await render(<CornerActionsExample />);
+      await userEvent.click(getByRole('button', { name: 'More options' }));
+      await userEvent.click(getByRole('menuitem', { name: 'Mark as read' }));
+      await expect.element(getByRole('status')).toHaveTextContent('Marked as read');
+      await userEvent.click(getByRole('button', { name: 'More options' }));
+      await userEvent.click(getByRole('menuitem', { name: 'Mark as unread' }));
+      await expect.element(getByRole('status')).toHaveTextContent('5 min read');
     });
 
     it('pairs a tag eyebrow size with the lockup size', async function tagSize() {

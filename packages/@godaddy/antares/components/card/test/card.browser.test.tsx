@@ -12,6 +12,7 @@ import { GroupedLinksExample } from '../examples/grouped-links.tsx';
 import { InteractionsExample } from '../examples/interactions.tsx';
 import { LayoutExample } from '../examples/layout.tsx';
 import { LinkExample } from '../examples/link.tsx';
+import { MediaExample } from '../examples/media.tsx';
 import { MultipleSelectionExample } from '../examples/multiple-selection.tsx';
 import { NavigationExample } from '../examples/navigation.tsx';
 import { NumericExample } from '../examples/numeric.tsx';
@@ -38,19 +39,43 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     describe('standalone', function standaloneTests() {
+      it('bookmarks a guide and marks it as read from its menu', async function bookmarkGuide() {
+        const { getByRole, getByText } = await render(<CornerActionsExample />);
+        const favorite = getByRole('button', { name: 'Favorite' });
+        await userEvent.click(favorite);
+        await expect.element(favorite).toHaveAttribute('aria-pressed', 'true');
+        await expect.element(getByText('Saved to your reading list')).toBeVisible();
+        await userEvent.click(favorite);
+        await expect.element(favorite).toHaveAttribute('aria-pressed', 'false');
+
+        await userEvent.click(getByRole('button', { name: 'More options' }));
+        await userEvent.click(getByRole('menuitem', { name: 'Mark as read' }));
+        await expect.element(getByText('Read', { exact: true })).toBeVisible();
+      });
+
+      it('saves a website template from its media overlay', async function saveTemplate() {
+        const { getByRole } = await render(<MediaExample />);
+        const favorite = getByRole('button', { name: 'Favorite' });
+        await userEvent.click(favorite);
+        await expect.element(favorite).toHaveAttribute('aria-pressed', 'true');
+        await expect.element(getByRole('status')).toHaveTextContent('Saved to your templates');
+        await userEvent.click(favorite);
+        await expect.element(favorite).toHaveAttribute('aria-pressed', 'false');
+      });
+
       it('renders the Card itself as the native link', async function nativeLink() {
         const { getByRole, getByText } = await render(<LinkExample />);
-        const link = getByRole('link', { name: 'Link card' });
-        await expect.element(link).toHaveAttribute('href', '/');
+        const link = getByRole('link', { name: 'Manage billing' });
+        await expect.element(link).toHaveAttribute('href', '#billing');
         expect(link.element()).toHaveAttribute('data-card', 'interactive');
         await expect.element(getByRole('link', { name: /Find your domain/ })).toHaveAttribute('href', '#domains');
-        await userEvent.click(getByText('Layered content'));
+        await userEvent.click(getByText('99.9% uptime'));
         expect(location.hash).toBe('#hosting');
       });
 
       it('rings a focused link Card', async function linkFocusRing() {
         const { getByRole } = await render(<LinkExample />);
-        const link = getByRole('link', { name: 'Link card' });
+        const link = getByRole('link', { name: 'Manage billing' });
         await userEvent.click(getByRole('link', { name: /Find your domain/ }));
         await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
         await expect.element(link).toHaveFocus();
@@ -59,7 +84,7 @@ describe('@godaddy/antares', function packageTests() {
 
       it('disables a link Card', async function disabledLink() {
         const { getByRole } = await render(<DisabledExample />);
-        const link = getByRole('link', { name: /Disabled link/ });
+        const link = getByRole('link', { name: /Billing temporarily unavailable/ });
         await expect.element(link).toHaveAttribute('aria-disabled', 'true');
         await userEvent.click(link, { force: true });
         expect(location.hash).toBe('');
@@ -113,24 +138,31 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(privacy).toHaveAttribute('aria-selected', 'true');
         await expect.element(getByTestId('privacy-indicator')).toHaveAttribute('data-selected', 'true');
         await expect.element(getByTestId('email-indicator')).toHaveTextContent('Add');
+        await expect.element(getByRole('status')).toHaveTextContent('Add-ons total: $5/month');
 
         await userEvent.click(email);
         await expect.element(email).toHaveAttribute('aria-selected', 'true');
         await expect.element(getByTestId('email-indicator')).toHaveTextContent('Added');
         await expect.element(privacy).toHaveAttribute('aria-selected', 'true');
+        await expect.element(getByRole('status')).toHaveTextContent('Add-ons total: $13/month');
 
         await userEvent.click(privacy);
         await expect.element(privacy).toHaveAttribute('aria-selected', 'false');
         expect(getComputedStyle(email.element()).borderColor).not.toBe(getComputedStyle(privacy.element()).borderColor);
+        await expect.element(getByRole('status')).toHaveTextContent('Add-ons total: $8/month');
+        await userEvent.click(email);
+        await expect.element(getByRole('status')).toHaveTextContent('Add-ons total: $0/month');
       });
 
       it('keeps one Card selected in a single selection group', async function single() {
         const { getByRole, getByTestId } = await render(<SingleSelectionExample />);
         const pro = getByRole('row', { name: 'Pro plan' });
+        await expect.element(getByRole('status')).toHaveTextContent('Selected plan: Starter - $10/month');
         await userEvent.click(pro);
         await expect.element(pro).toHaveAttribute('aria-selected', 'true');
         await expect.element(getByRole('row', { name: 'Starter plan' })).toHaveAttribute('aria-selected', 'false');
         await expect.element(getByTestId('starter-indicator')).not.toHaveAttribute('data-selected');
+        await expect.element(getByRole('status')).toHaveTextContent('Selected plan: Pro - $25/month');
 
         await userEvent.click(pro);
         await expect.element(pro).toHaveAttribute('aria-selected', 'true');
@@ -209,12 +241,9 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(getByTestId('props-row-indicator')).toHaveAttribute('data-selected', 'true');
       });
 
-      it.each([
-        'Disabled with isDisabled',
-        'Disabled with disabledKeys'
-      ])('does not select a Card %s', async function disabled(name) {
+      it.each(['Automatic backups', 'SSL certificate'])('does not select a Card %s', async function disabled(name) {
         const { getByRole } = await render(<DisabledExample />);
-        const row = getByRole('row', { name: name === 'Disabled with isDisabled' ? 'Backup' : 'SSL' });
+        const row = getByRole('row', { name });
         await expect.element(row).toHaveAttribute('aria-disabled', 'true');
         await expect.element(row).toHaveAttribute('data-disabled', 'true');
         await userEvent.click(row, { force: true });
@@ -223,6 +252,21 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     describe('row actions', function rowActionTests() {
+      it('validates the newsletter email and confirms a subscription locally', async function subscribeForm() {
+        const { getByRole } = await render(<ActionsExample />);
+        await userEvent.click(getByRole('row', { name: 'Join our mailing list' }));
+        const dialog = getByRole('dialog', { name: 'Join our mailing list' });
+        await userEvent.click(getByRole('button', { name: 'Subscribe', exact: true }));
+        await expect.element(dialog).toBeVisible();
+        await userEvent.fill(getByRole('textbox', { name: /Email/ }), 'invalid');
+        await userEvent.click(getByRole('button', { name: 'Subscribe', exact: true }));
+        await expect.element(dialog).toBeVisible();
+        await userEvent.fill(getByRole('textbox', { name: /Email/ }), 'owner@example.com');
+        await userEvent.click(getByRole('button', { name: 'Subscribe', exact: true }));
+        await expect.element(dialog).not.toBeInTheDocument();
+        await expect.element(getByRole('status')).toHaveTextContent('Subscribed with owner@example.com');
+      });
+
       it('runs a row action from a press or Enter', async function rowAction() {
         const { getByRole, getByText } = await render(<InteractionsExample selectionMode="none" withAction />);
         await userEvent.click(getByText('One: copy this text.'));
@@ -242,6 +286,14 @@ describe('@godaddy/antares', function packageTests() {
 
         await userEvent.click(getByRole('row', { name: 'Join our mailing list' }));
         await expect.element(getByRole('dialog', { name: 'Join our mailing list' })).toBeInTheDocument();
+        await userEvent.click(getByRole('button', { name: 'Cancel' }));
+        await expect.element(getByRole('dialog')).not.toBeInTheDocument();
+
+        await userEvent.click(getByRole('row', { name: 'Join our mailing list' }));
+        await userEvent.fill(getByRole('textbox', { name: /Email/ }), 'owner@example.com');
+        await userEvent.keyboard('{Enter}');
+        await expect.element(getByRole('dialog')).not.toBeInTheDocument();
+        await expect.element(getByRole('status')).toHaveTextContent('Subscribed with owner@example.com');
       });
     });
 
@@ -511,7 +563,11 @@ describe('@godaddy/antares', function packageTests() {
           true
         );
         expect(
-          bounds(getByText('Cards provide a surface while consumers own the interior layout.').element()).top
+          bounds(
+            getByText(
+              'A practical checklist for your products, payments, shipping, and first marketing campaign.'
+            ).element()
+          ).top
         ).toBeGreaterThanOrEqual(bounds(heading.parentElement!).bottom);
       });
 
