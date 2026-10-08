@@ -1,0 +1,8 @@
+.value {
+  grid-area: value;
+  justify-self: end;
+  margin-block-end: var(--progress-bar-content-gap);
+  font-size: var(--_type-size, var(--progress-bar-font-size));
+  line-height: var(--progress-bar-label-lh);
+  --_type-slot-color: var(--progress-bar-label-color);
+}

@@ -32,80 +32,18 @@
 }
 
 .label {
-  font-size: var(--progress-bar-font-size);
+  grid-area: label;
+  margin-block-end: var(--progress-bar-content-gap);
+  font-size: var(--_type-size, var(--progress-bar-font-size));
   font-weight: bolder;
   line-height: var(--progress-bar-label-lh);
-  color: var(--progress-bar-label-color);
+  --_type-slot-color: var(--progress-bar-label-color);
 }
 
-.valueLabel {
-  font-size: var(--progress-bar-font-size);
-  line-height: var(--progress-bar-label-lh);
-  color: var(--progress-bar-label-color);
-}
-
-.track {
-  position: relative;
-  height: var(--progress-bar-track-height);
-  border-radius: var(--progress-bar-track-radius);
-  background: var(--progress-bar-track-bg);
-  overflow: hidden;
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: var(--progress-bar-fill-bg);
-    width: var(--progress-bar-progress, 0%);
-  }
-
-  &:where([data-indeterminate]) {
-    --_progress-bar-direction: 1;
-
-    &::after {
-      inset-inline: 30% auto;
-      width: 40%;
-    }
-  }
-
-  &:where([data-indeterminate]:dir(rtl)) {
-    --_progress-bar-direction: -1;
-  }
-}
-
-.helperText {
-  font-size: var(--progress-bar-font-size);
+.description {
+  grid-area: description;
+  margin-block-start: var(--progress-bar-content-gap);
+  font-size: var(--_type-size, var(--progress-bar-font-size));
   line-height: var(--progress-bar-helper-lh);
-  color: var(--progress-bar-helper-color);
-}
-
-/* Transform percentages are relative to the 40% fill: -175% and 175% fully clear the track. */
-@keyframes progress-bar-sweep {
-  from {
-    transform: translateX(calc(-175% * var(--_progress-bar-direction)));
-  }
-
-  to {
-    transform: translateX(calc(175% * var(--_progress-bar-direction)));
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .track:where([data-indeterminate])::after {
-    animation: progress-bar-sweep 1500ms cubic-bezier(0.77, 0, 0.175, 1) infinite;
-  }
-}
-
-@media (forced-colors: active) {
-  .track:where([data-indeterminate]) {
-    forced-color-adjust: none;
-    background: Canvas;
-    outline: 1px solid CanvasText;
-    outline-offset: -1px;
-
-    &::after {
-      background: Highlight;
-    }
-  }
+  --_type-slot-color: var(--progress-bar-helper-color);
 }
