@@ -3,7 +3,7 @@ import { Box, Heading, Text, TextLockup } from '@godaddy/antares';
 /**
  * A `TextLockup` without `size` follows `--antares-size` from a parent, so the app's CSS can change it
  * at its own breakpoint. This dashboard greeting is `md` on small screens and `xl` from `80rem`.
- * Browsers without container style queries keep the lockup's JSX size.
+ * Browsers without container style queries fall back to the surrounding size scope (`md` here).
  * @title Responsive size
  * @order 5
  */

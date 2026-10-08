@@ -8,9 +8,9 @@ application.
 - **Components adapt to their space.** Start with intrinsic CSS, such as wrapping, `minmax()`, and
   `flex-wrap`. Use container queries when a component changes with the space it is given, and media
   features such as `pointer`, `hover`, or `prefers-reduced-motion` for device conditions.
-- **Viewport widths only in overlays.** Modal and Drawer may fill a small viewport. They share one internal
-  threshold and document it in their READMEs, with an example. No other component changes by viewport
-  width, and Antares publishes no breakpoints.
+- **Viewport widths only in overlays.** Modal and Drawer may fill a small viewport. When they adopt viewport
+  rules, they will share one internal threshold and document it in their READMEs, with an example. No other
+  component changes by viewport width, and Antares publishes no breakpoints.
 - **Applications own page layout.** They write their own media and container queries with their own
   breakpoints. Layout props write inline styles, so a property that changes across a query is set in CSS
   and its prop is left unset.
@@ -45,7 +45,13 @@ Applications drive size from CSS with an inherited variable, `--antares-size`. T
 A TextLockup without `size` sizes its parts from the nearest `--antares-size` on a parent. The values are its sizes, `xs` to `2xl`, and it ignores any other. An explicit `size` wins, and
 without the variable the lockup follows the size scope as before. A Tag eyebrow keeps its own size.
 
-The other components follow the same model:
+This PR adds variable support only to TextLockup. Its explicit `size` sets typography and Tag slot props;
+it does not write `--antares-size` or change the size of nested controls. SizeProvider and overlays still
+use React context for sizing.
+
+### Future adoption
+
+The following model is proposed for a follow-up and is not implemented in this PR:
 
 - **Every component with `size` is a scope.** Its `size` sets its own sizing and writes `--antares-size`
   for everything inside it. A TextLockup sized `sm` makes a Button inside it `sm`. Text, Heading, and Label
@@ -63,7 +69,7 @@ The other components follow the same model:
 
 The Responsive docs explain the variable once, with a real-world example, and list the components that
 follow it. A component that adopts it adds itself to that list and mentions the variable in its `size`
-prop, without a responsive example of its own. A follow-up PDR designs the details.
+prop, without a responsive example of its own. A follow-up PDR will design the adoption details.
 
 ## Tradeoffs
 
@@ -79,7 +85,7 @@ prop, without a responsive example of its own. A follow-up PDR designs the detai
   need breakpoints owned by Antares. The variable works with any query the application writes, with no
   JavaScript and no flash after server rendering. It relies on container style queries, available in all
   major browsers since May 2026, so older browsers don't switch. Each component writes its sizes twice,
-  as style queries and as the context fallback. Overlays need a step to copy the value, and SizeProvider
-  gains an element.
+  as style queries and as the context fallback. Future adoption would require overlays to copy the value
+  and SizeProvider to gain an element.
 - **Parent, not self.** An element's styles can only query its parent's variable, so a variable set on a
   component sizes its contents but not the component itself. Setting it on a parent keeps both in step.
