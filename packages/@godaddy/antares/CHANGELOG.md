@@ -1,5 +1,11 @@
 # @godaddy/antares
 
+## 0.11.0
+
+### Minor Changes
+
+- Rebuild Pagination as a composed component with controlled and uncontrolled page state, React Aria contexts, and the PaginationDots primitive. ([#367](https://github.com/godaddy/bento/pull/367) by @rmojica-godaddy)
+
 ## 0.10.1
 
 ### Patch Changes
