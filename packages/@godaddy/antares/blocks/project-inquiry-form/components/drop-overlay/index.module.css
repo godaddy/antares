@@ -1,0 +1,12 @@
+.overlay {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px dashed var(--ux-f7kpiw, #00a4a6);
+  border-radius: var(--ux-2jubes, 16px);
+  background-color: rgba(216, 239, 239, 0.9);
+  pointer-events: none;
+  inset: 0;
+}

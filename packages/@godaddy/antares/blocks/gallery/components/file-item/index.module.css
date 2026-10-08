@@ -1,0 +1,76 @@
+.item {
+  position: relative;
+  box-sizing: border-box;
+  border: 1px solid var(--ux-box-border-color, #e5e5e5);
+  border-radius: var(--ux-2jubes, 6px);
+}
+
+.item:where([data-variant="horizontal"]) {
+  inline-size: 100%;
+  block-size: 4.625rem;
+  min-block-size: 4.625rem;
+}
+
+.item:where([data-variant="vertical"]) {
+  inline-size: 100%;
+  min-inline-size: 0;
+  background-color: var(--color-surface-background-passive, var(--ux-l7zq7p, #ffffff));
+}
+
+.item:where([data-variant="vertical"]:focus-within) {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .item:where([data-variant="vertical"]:hover) {
+    border-color: var(--color-action-border-secondary-hovered, var(--ux-kkdx4n, #09757a));
+  }
+}
+
+.coverSlot {
+  position: relative;
+}
+
+.coverSlot:where([data-variant="horizontal"]) {
+  flex: 0 0 3.5rem;
+  inline-size: 3.5rem;
+}
+
+.details {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  overflow: hidden;
+}
+
+.details:where([data-variant="vertical"]) {
+  min-block-size: 5.5rem;
+}
+
+.details:where([data-variant="horizontal"]) {
+  padding-inline-end: 2rem;
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.errorDetails {
+  min-inline-size: 0;
+}
+
+.errorDetails:where([data-variant="horizontal"]) {
+  flex-wrap: nowrap;
+}
+
+.remove {
+  position: absolute;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 0.5rem;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  padding: 0;
+  background: var(--ux-control-backgroundColor, #ffffff);
+}

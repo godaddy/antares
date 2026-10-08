@@ -1,0 +1,32 @@
+.surface {
+  display: block;
+  box-sizing: border-box;
+  overflow: hidden;
+  max-inline-size: 100%;
+  border: 1px solid var(--ux-box-border-color, #e5e5e5);
+  background: var(--uxFileUpload-backgroundColor, #f5f5f5);
+  object-fit: cover;
+}
+
+.surface:where([data-variant="horizontal"]) {
+  inline-size: 3.5rem;
+  block-size: 3.5rem;
+}
+
+.surface:where([data-variant="vertical"]) {
+  inline-size: 100%;
+  aspect-ratio: 1;
+}
+
+.error {
+  display: flex;
+  border-color: var(--color-feedback-critical-strong, #db1802);
+  background: var(--color-feedback-critical-background, #fde8e7);
+  color: var(--color-feedback-critical-strong, #db1802);
+}
+
+.openButton {
+  display: block;
+  inline-size: 100%;
+  padding: 0;
+}
