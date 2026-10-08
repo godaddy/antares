@@ -10,14 +10,19 @@ import {
 } from '@godaddy/antares';
 
 /**
- * `selectionMode="single"` keeps one Card selected at a time. Arrow keys move between Cards, and
- * Space selects the focused one.
+ * `selectionMode="single"` allows one selected Card, and `disallowEmptySelection` keeps the plan
+ * picker from becoming empty. Arrow keys move between Cards, and Space selects the focused one.
  * @title Single selection
  * @order 8
  */
 export function SingleSelectionExample() {
   return (
-    <CardGroup aria-label="Choose a plan" selectionMode="single" defaultSelectedKeys={['starter']}>
+    <CardGroup
+      aria-label="Choose a plan"
+      selectionMode="single"
+      disallowEmptySelection
+      defaultSelectedKeys={['starter']}
+    >
       <Card id="starter" textValue="Starter plan">
         <TextLockup>
           <Tag slot="eyebrow" emphasis="success">

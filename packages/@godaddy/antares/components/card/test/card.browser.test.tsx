@@ -125,10 +125,16 @@ describe('@godaddy/antares', function packageTests() {
 
       it('keeps one Card selected in a single selection group', async function single() {
         const { getByRole, getByTestId } = await render(<SingleSelectionExample />);
-        await userEvent.click(getByRole('row', { name: 'Pro plan' }));
-        await expect.element(getByRole('row', { name: 'Pro plan' })).toHaveAttribute('aria-selected', 'true');
+        const pro = getByRole('row', { name: 'Pro plan' });
+        await userEvent.click(pro);
+        await expect.element(pro).toHaveAttribute('aria-selected', 'true');
         await expect.element(getByRole('row', { name: 'Starter plan' })).toHaveAttribute('aria-selected', 'false');
         await expect.element(getByTestId('starter-indicator')).not.toHaveAttribute('data-selected');
+
+        await userEvent.click(pro);
+        await expect.element(pro).toHaveAttribute('aria-selected', 'true');
+        await userEvent.keyboard(' ');
+        await expect.element(pro).toHaveAttribute('aria-selected', 'true');
       });
 
       it('moves between Cards with arrow keys and selects with Space', async function keyboard() {
