@@ -3,10 +3,10 @@ import type { EmblaOptionsType, EmblaCarouselType } from 'embla-carousel';
 import { VisuallyHidden, useLocale } from 'react-aria-components';
 import useEmblaCarousel from 'embla-carousel-react';
 import EmblaAccessibility, { type AccessibilityOptionsType } from 'embla-carousel-accessibility';
-import type { ButtonProps } from '#components/button';
+import { Button, type ButtonProps } from '#components/button';
 import { Box } from '#components/layout/box';
 import { Flex, type FlexProps } from '#components/layout/flex';
-import { Pagination } from '#components/pagination';
+import { Pagination, PaginationDots } from '#components/pagination';
 import { cx } from 'cva';
 import { composeClassName } from '#utils/render-props.ts';
 import { useNavigationControls, type UseNavigationControlsProps } from './use-navigation-controls.tsx';
@@ -86,7 +86,6 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(function Carousel
   const containerRef = useRef<HTMLDivElement>(null);
   const prevButtonRef = useRef<HTMLButtonElement>(null);
   const nextButtonRef = useRef<HTMLButtonElement>(null);
-  const paginationDotsRef = useRef<HTMLDivElement>(null);
   const liveRegionRef = useRef<HTMLDivElement>(null);
 
   const children = Array.isArray(props.children) ? props.children : [props.children];
@@ -102,12 +101,12 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(function Carousel
   const { uncontrolledActiveIndex, scrollSnaps, atFirstSlide, atLastSlide, onNextButtonPress, onPrevButtonPress } =
     useNavigationControls({ emblaApi, activeIndex, defaultActiveIndex, onChange, onPrev, onNext });
   const finalActiveIndex = controlledMode ? activeIndex : uncontrolledActiveIndex;
+  const shouldRenderPagination = !hideNavigationControls || !hideDots;
 
   useAccessibility({
     emblaApi,
     previousButton: prevButtonRef.current,
     nextButton: nextButtonRef.current,
-    paginationDots: paginationDotsRef.current,
     liveRegion: liveRegionRef.current
   });
 
@@ -144,24 +143,38 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(function Carousel
         />
       )}
 
-      <Pagination
-        activeIndex={finalActiveIndex}
-        total={scrollSnaps.length}
-        hideControls={hideNavigationControls}
-        variant={hideDots ? null : 'dots'}
-        prevButtonProps={{
-          ...prevButtonProps,
-          onPress: onPrevButtonPress,
-          className: composeClassName(prevButtonProps?.className, styles.prev, atFirstSlide && styles.hide)
-        }}
-        nextButtonProps={{
-          ...nextButtonProps,
-          onPress: onNextButtonPress,
-          className: composeClassName(nextButtonProps?.className, styles.next, atLastSlide && styles.hide)
-        }}
-        prevButtonRef={prevButtonRef}
-        nextButtonRef={nextButtonRef}
-      />
+      {shouldRenderPagination ? (
+        <Pagination
+          value={finalActiveIndex + 1}
+          pageCount={scrollSnaps.length}
+          aria-label="Carousel navigation"
+          aria-hidden={hideNavigationControls ? true : undefined}
+        >
+          {hideNavigationControls ? null : (
+            <Button
+              variant="secondary"
+              {...prevButtonProps}
+              ref={prevButtonRef}
+              slot="previous"
+              aria-label={prevButtonProps?.['aria-label'] ?? 'Go to previous slide'}
+              onPress={onPrevButtonPress}
+              className={composeClassName(prevButtonProps?.className, styles.prev, atFirstSlide && styles.hide)}
+            />
+          )}
+          {hideDots ? null : <PaginationDots />}
+          {hideNavigationControls ? null : (
+            <Button
+              variant="secondary"
+              {...nextButtonProps}
+              ref={nextButtonRef}
+              slot="next"
+              aria-label={nextButtonProps?.['aria-label'] ?? 'Go to next slide'}
+              onPress={onNextButtonPress}
+              className={composeClassName(nextButtonProps?.className, styles.next, atLastSlide && styles.hide)}
+            />
+          )}
+        </Pagination>
+      ) : null}
 
       <VisuallyHidden>
         <Box ref={liveRegionRef} aria-live="polite" aria-atomic="true" />
