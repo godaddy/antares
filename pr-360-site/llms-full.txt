@@ -1702,6 +1702,220 @@ Panel content stays mounted when collapsed. Reset form state explicitly when the
 <PropTable />
 
 
+# DatePicker
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `DatePickerCalendar`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in. `children` also accepts a function for picker state
+* **Trigger and calendar**: An empty `Button slot="trigger"` renders a calendar icon and the formatted value from the field. `DatePickerCalendar` (and `DateRangePickerCalendar`) is the calendar in the popover it opens: it takes `Calendar` props plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `Calendar` yourself to replace the whole overlay
+* **Sizes**: Each picker is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, trigger, description, error, and the calendar it opens; without it, the picker follows the surrounding scope
+* `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
+* Built on React Aria - native form integration, validation, focus management, and screen-reader support
+* Label formatting via `formatOptions` / `placeholder` on the picker itself, or on `DatePickerValue` / `DateRangePickerValue` in a trigger you write
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate } from '@godaddy/antares/date';
+import { DatePicker, Label } from '@godaddy/antares';
+
+function EventDatePicker() {
+  return (
+    <DatePicker defaultValue={parseDate('2024-03-15')}>
+      <Label>Event date</Label>
+    </DatePicker>
+  );
+}
+```
+
+Import date helpers from `@godaddy/antares/date` (a re-export of
+[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/)).
+Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user's locale.
+
+## Examples [#examples]
+
+### Default [#default]
+
+A single date picker with a `Label`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DatePicker>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Range [#range]
+
+A start/end range picker.
+
+<Story of="RangeExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DateRangePicker, DateRangePickerCalendar, Label } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DateRangePickerCalendar />\n    </DateRangePicker>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Driving the value with `useState`.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { type CalendarDate, parseDate } from '@godaddy/antares/date';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<CalendarDate | null>(parseDate('2024-03-15'));\n\n  return (\n    <DatePicker value={value} onChange={setValue}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Format Options [#format-options]
+
+Controlling the trigger's label format via `formatOptions`.
+
+<Story of="FormatOptionsExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function FormatOptionsExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')} formatOptions={{ dateStyle: 'short' }}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates with `minValue` / `maxValue`.
+
+<Story of="MinMaxExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function MinMaxExample() {\n  return (\n    <DatePicker minValue={parseDate('2024-03-05')} maxValue={parseDate('2024-03-25')}>\n      <Label>Booking date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### With error [#with-error]
+
+An invalid picker showing a validation message via `isInvalid` and a `FieldError`.
+
+<Story of="WithErrorExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, FieldError, Label } from '@godaddy/antares';\n\nexport function WithErrorExample() {\n  return (\n    <DatePicker isInvalid>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <FieldError>Please choose a date</FieldError>\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+A disabled picker via `isDisabled`.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DatePicker isDisabled>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Composed [#composed]
+
+Write the trigger and the overlay yourself instead of composing `DatePickerCalendar`, for full
+control over the popover and the calendar.
+
+<Story of="ComposedExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Calendar, Content, DatePicker, DatePickerValue, Icon, Label, Popover, Text } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function ComposedExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DatePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose the event date</Text>\n      <Popover hideArrow>\n        <Content>\n          <Calendar />\n        </Content>\n      </Popover>\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Composed range [#composed-range]
+
+Write a DateRangePicker's trigger and overlay from lower-level pieces the same way.
+
+<Story of="ComposedRangeExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  DateRangePicker,\n  DateRangePickerValue,\n  Icon,\n  Label,\n  Popover,\n  RangeCalendar,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedRangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DateRangePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your start and end dates</Text>\n      <Popover hideArrow>\n        <Content>\n          <RangeCalendar />\n        </Content>\n      </Popover>\n    </DateRangePicker>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+`size` sets the label, trigger, and calendar. Without it, the picker follows the surrounding
+size scope.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Flex, Label } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function picker(size) {\n        return (\n          <DatePicker key={size} size={size}>\n            <Label>Event date ({size})</Label>\n            <Button slot=\&#x22;trigger\&#x22; />\n            <DatePickerCalendar />\n          </DatePicker>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<DatePicker>
+  <Label />
+  <Group>
+    <Button slot="trigger">
+      <DatePickerValue />
+    </Button>
+  </Group>
+  <Text slot="description" />
+  <Popover>
+    <Content>
+      <Calendar />
+    </Content>
+  </Popover>
+  <FieldError />
+</DatePicker>
+```
+
+```tsx
+<DateRangePicker>
+  <Label />
+  <Group>
+    <Button slot="trigger">
+      <DateRangePickerValue />
+    </Button>
+  </Group>
+  <Text slot="description" />
+  <Popover>
+    <Content>
+      <RangeCalendar />
+    </Content>
+  </Popover>
+  <FieldError />
+</DateRangePicker>
+```
+
+### DatePicker [#datepicker]
+
+<PropTable />
+
+### DateRangePicker [#daterangepicker]
+
+<PropTable />
+
+### DatePickerCalendar [#datepickercalendar]
+
+<PropTable />
+
+### DateRangePickerCalendar [#daterangepickercalendar]
+
+<PropTable />
+
+### DatePickerValue [#datepickervalue]
+
+<PropTable />
+
+### DateRangePickerValue [#daterangepickervalue]
+
+<PropTable />
+
+
 # Drawer
 
 
@@ -1937,259 +2151,6 @@ The button's accessible name is built from two sources, combined in order:
 <PropTable />
 
 
-# DatePicker
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `DatePickerCalendar`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in. `children` also accepts a function for picker state
-* **Trigger and calendar**: An empty `Button slot="trigger"` renders a calendar icon and the formatted value from the field. `DatePickerCalendar` (and `DateRangePickerCalendar`) is the calendar in the popover it opens: it takes `Calendar` props plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `Calendar` yourself to replace the whole overlay
-* **Sizes**: Each picker is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, trigger, description, error, and the calendar it opens; without it, the picker follows the surrounding scope
-* `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
-* Built on React Aria - native form integration, validation, focus management, and screen-reader support
-* Label formatting via `formatOptions` / `placeholder` on the picker itself, or on `DatePickerValue` / `DateRangePickerValue` in a trigger you write
-* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Working with dates [#working-with-dates]
-
-Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
-
-```tsx
-import { parseDate } from '@godaddy/antares/date';
-import { DatePicker, Label } from '@godaddy/antares';
-
-function EventDatePicker() {
-  return (
-    <DatePicker defaultValue={parseDate('2024-03-15')}>
-      <Label>Event date</Label>
-    </DatePicker>
-  );
-}
-```
-
-Import date helpers from `@godaddy/antares/date` (a re-export of
-[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/)).
-Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user's locale.
-
-## Examples [#examples]
-
-### Default [#default]
-
-A single date picker with a `Label`.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DatePicker>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Range [#range]
-
-A start/end range picker.
-
-<Story of="RangeExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DateRangePicker, DateRangePickerCalendar, Label } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DateRangePickerCalendar />\n    </DateRangePicker>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Driving the value with `useState`.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { type CalendarDate, parseDate } from '@godaddy/antares/date';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<CalendarDate | null>(parseDate('2024-03-15'));\n\n  return (\n    <DatePicker value={value} onChange={setValue}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Format Options [#format-options]
-
-Controlling the trigger's label format via `formatOptions`.
-
-<Story of="FormatOptionsExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function FormatOptionsExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')} formatOptions={{ dateStyle: 'short' }}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Min / Max [#min--max]
-
-Bounding selectable dates with `minValue` / `maxValue`.
-
-<Story of="MinMaxExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function MinMaxExample() {\n  return (\n    <DatePicker minValue={parseDate('2024-03-05')} maxValue={parseDate('2024-03-25')}>\n      <Label>Booking date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### With error [#with-error]
-
-An invalid picker showing a validation message via `isInvalid` and a `FieldError`.
-
-<Story of="WithErrorExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, FieldError, Label } from '@godaddy/antares';\n\nexport function WithErrorExample() {\n  return (\n    <DatePicker isInvalid>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <FieldError>Please choose a date</FieldError>\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-A disabled picker via `isDisabled`.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DatePicker isDisabled>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Composed [#composed]
-
-Write the trigger and the overlay yourself instead of composing `DatePickerCalendar`, for full
-control over the popover and the calendar.
-
-<Story of="ComposedExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Calendar, Content, DatePicker, DatePickerValue, Icon, Label, Popover, Text } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function ComposedExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DatePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose the event date</Text>\n      <Popover hideArrow>\n        <Content>\n          <Calendar />\n        </Content>\n      </Popover>\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Composed range [#composed-range]
-
-Write a DateRangePicker's trigger and overlay from lower-level pieces the same way.
-
-<Story of="ComposedRangeExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  DateRangePicker,\n  DateRangePickerValue,\n  Icon,\n  Label,\n  Popover,\n  RangeCalendar,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedRangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DateRangePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your start and end dates</Text>\n      <Popover hideArrow>\n        <Content>\n          <RangeCalendar />\n        </Content>\n      </Popover>\n    </DateRangePicker>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-`size` sets the label, trigger, and calendar. Without it, the picker follows the surrounding
-size scope.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Flex, Label } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function picker(size) {\n        return (\n          <DatePicker key={size} size={size}>\n            <Label>Event date ({size})</Label>\n            <Button slot=\&#x22;trigger\&#x22; />\n            <DatePickerCalendar />\n          </DatePicker>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<DatePicker>
-  <Label />
-  <Group>
-    <Button slot="trigger">
-      <DatePickerValue />
-    </Button>
-  </Group>
-  <Text slot="description" />
-  <Popover>
-    <Content>
-      <Calendar />
-    </Content>
-  </Popover>
-  <FieldError />
-</DatePicker>
-```
-
-```tsx
-<DateRangePicker>
-  <Label />
-  <Group>
-    <Button slot="trigger">
-      <DateRangePickerValue />
-    </Button>
-  </Group>
-  <Text slot="description" />
-  <Popover>
-    <Content>
-      <RangeCalendar />
-    </Content>
-  </Popover>
-  <FieldError />
-</DateRangePicker>
-```
-
-### DatePicker [#datepicker]
-
-<PropTable />
-
-### DateRangePicker [#daterangepicker]
-
-<PropTable />
-
-### DatePickerCalendar [#datepickercalendar]
-
-<PropTable />
-
-### DateRangePickerCalendar [#daterangepickercalendar]
-
-<PropTable />
-
-### DatePickerValue [#datepickervalue]
-
-<PropTable />
-
-### DateRangePickerValue [#daterangepickervalue]
-
-<PropTable />
-
-
-# FieldError
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Shown when the parent field is invalid (`isInvalid` or native constraint validation).
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-FieldError renders when the field is invalid.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { FieldError, Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### FieldError [#fielderror]
-
-<PropTable />
-
-
 # FileTrigger
 
 
@@ -2248,6 +2209,45 @@ Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow m
 ## Props [#props]
 
 ### FileTrigger [#filetrigger]
+
+<PropTable />
+
+
+# FieldError
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Shown when the parent field is invalid (`isInvalid` or native constraint validation).
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+FieldError renders when the field is invalid.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { FieldError, Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### FieldError [#fielderror]
 
 <PropTable />
 
@@ -3228,139 +3228,6 @@ Nested menus via `SubmenuTrigger`.
 <PropTable />
 
 
-# Modal
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
-
-The modal is a `SizeProvider`. It opens at the size of the scope around its trigger, even though it renders in a portal, and `size` overrides that.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Compose a Modal from a `Heading slot="title"`, a `CloseButton`, `Content`, and a
-`ButtonGroup`. `ModalTrigger` opens the Modal and manages its open/close state.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Delete file?</Heading>\n        <CloseButton />\n        <Content>This action cannot be undone. The file will be permanently removed.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;critical\&#x22;>\n            Delete\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Flex, Text } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal>\n          <Heading slot=\&#x22;title\&#x22;>Modal title</Heading>\n          <CloseButton />\n          <Content>\n            She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n          </Content>\n          <ButtonGroup>\n            <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Close\n            </Button>\n          </ButtonGroup>\n        </Modal>\n      </ModalTrigger>\n\n      <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>\n\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setIsOpen(true)}>\n        Open from outside\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
-
-### Scrollable [#scrollable]
-
-When the content is taller than the viewport, the `Content` region scrolls while the title
-row and the `ButtonGroup` stay pinned.
-
-<Story of="ScrollableExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Terms of service</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 24 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n            Decline\n          </Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Accept\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
-
-### Triggerless [#triggerless]
-
-`Modal` accepts `isOpen` and `onOpenChange` directly, so it can be controlled without a
-`ModalTrigger`. Useful when the modal is opened from several places at once.
-
-<Story of="TriggerlessExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, ButtonGroup, CloseButton, Content, Heading, Modal } from '@godaddy/antares';\n\nexport function TriggerlessExample() {\n  const [isOpen, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open modal\n      </Button>\n      <Modal isOpen={isOpen} onOpenChange={setOpen}>\n        <Heading slot=\&#x22;title\&#x22;>Triggerless modal</Heading>\n        <CloseButton />\n        <Content>This is the content of the modal.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Done\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </>\n  );\n}&#x22;" />
-
-### Size [#size]
-
-`size` sets the modal's text, controls, and spacing. Without it, the modal follows the size
-scope around its trigger.
-
-<Story of="SizeExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function SizeExample() {\n  return (\n    <ModalTrigger>\n      <Button>Open small modal</Button>\n      <Modal size=\&#x22;sm\&#x22;>\n        <Heading slot=\&#x22;title\&#x22;>Rename file</Heading>\n        <CloseButton />\n        <Content>\n          <Text>The new name applies everywhere the file is shared.</Text>\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Rename\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
-
-### With Text Lockup [#with-text-lockup]
-
-A `TextLockup` in the content keeps its own title. The modal's `Heading slot="title"` still names
-the dialog.
-
-<Story of="WithTextLockupExample" />
-
-<Source language="tsx" code="&#x22;import {\n  ModalTrigger,\n  Modal,\n  Button,\n  CloseButton,\n  Heading,\n  Content,\n  ButtonGroup,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function WithTextLockupExample() {\n  return (\n    <ModalTrigger>\n      <Button>Compare plans</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Compare plans</Heading>\n        <CloseButton />\n        <Content>\n          <TextLockup size=\&#x22;sm\&#x22;>\n            <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n              Pro\n            </Tag>\n            <Heading slot=\&#x22;title\&#x22;>Unlimited seats</Heading>\n            <Text slot=\&#x22;body\&#x22;>Add your whole team with priority support.</Text>\n          </TextLockup>\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Close</Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard interaction [#keyboard-interaction]
-
-| Key      | Action                                                     |
-| -------- | ---------------------------------------------------------- |
-| `Tab`    | Moves focus to the next focusable element inside the modal |
-| `Escape` | Closes the modal (unless `isKeyboardDismissDisabled`)      |
-
-### ARIA [#aria]
-
-* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
-* Focus is trapped within the modal while open and returned to the trigger on close
-
-## Best Practices [#best-practices]
-
-* Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
-* Pair every action button with `slot="close"` when it should dismiss the modal
-* Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
-
-## Props [#props]
-
-```tsx
-<ModalTrigger>
-  <Button />
-  <Modal>
-    <Heading slot="title" />
-    <CloseButton />
-    <Header />
-    <Content />
-    <Footer />
-    <ButtonGroup />
-    {/* ... */}
-  </Modal>
-</ModalTrigger>
-```
-
-### Modal [#modal]
-
-<PropTable />
-
-### ModalTrigger [#modaltrigger]
-
-<PropTable />
-
-
 # MetricsLockup
 
 
@@ -3575,6 +3442,139 @@ Compose with `children` to replace the stepper icons with your own content, such
 ```
 
 ### NumberField [#numberfield]
+
+<PropTable />
+
+
+# Modal
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
+
+The modal is a `SizeProvider`. It opens at the size of the scope around its trigger, even though it renders in a portal, and `size` overrides that.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Compose a Modal from a `Heading slot="title"`, a `CloseButton`, `Content`, and a
+`ButtonGroup`. `ModalTrigger` opens the Modal and manages its open/close state.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Delete file?</Heading>\n        <CloseButton />\n        <Content>This action cannot be undone. The file will be permanently removed.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;critical\&#x22;>\n            Delete\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Flex, Text } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal>\n          <Heading slot=\&#x22;title\&#x22;>Modal title</Heading>\n          <CloseButton />\n          <Content>\n            She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n          </Content>\n          <ButtonGroup>\n            <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Close\n            </Button>\n          </ButtonGroup>\n        </Modal>\n      </ModalTrigger>\n\n      <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>\n\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setIsOpen(true)}>\n        Open from outside\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
+
+### Scrollable [#scrollable]
+
+When the content is taller than the viewport, the `Content` region scrolls while the title
+row and the `ButtonGroup` stay pinned.
+
+<Story of="ScrollableExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Terms of service</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 24 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n            Decline\n          </Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Accept\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### Triggerless [#triggerless]
+
+`Modal` accepts `isOpen` and `onOpenChange` directly, so it can be controlled without a
+`ModalTrigger`. Useful when the modal is opened from several places at once.
+
+<Story of="TriggerlessExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, ButtonGroup, CloseButton, Content, Heading, Modal } from '@godaddy/antares';\n\nexport function TriggerlessExample() {\n  const [isOpen, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open modal\n      </Button>\n      <Modal isOpen={isOpen} onOpenChange={setOpen}>\n        <Heading slot=\&#x22;title\&#x22;>Triggerless modal</Heading>\n        <CloseButton />\n        <Content>This is the content of the modal.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Done\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </>\n  );\n}&#x22;" />
+
+### Size [#size]
+
+`size` sets the modal's text, controls, and spacing. Without it, the modal follows the size
+scope around its trigger.
+
+<Story of="SizeExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function SizeExample() {\n  return (\n    <ModalTrigger>\n      <Button>Open small modal</Button>\n      <Modal size=\&#x22;sm\&#x22;>\n        <Heading slot=\&#x22;title\&#x22;>Rename file</Heading>\n        <CloseButton />\n        <Content>\n          <Text>The new name applies everywhere the file is shared.</Text>\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Rename\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### With Text Lockup [#with-text-lockup]
+
+A `TextLockup` in the content keeps its own title. The modal's `Heading slot="title"` still names
+the dialog.
+
+<Story of="WithTextLockupExample" />
+
+<Source language="tsx" code="&#x22;import {\n  ModalTrigger,\n  Modal,\n  Button,\n  CloseButton,\n  Heading,\n  Content,\n  ButtonGroup,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function WithTextLockupExample() {\n  return (\n    <ModalTrigger>\n      <Button>Compare plans</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Compare plans</Heading>\n        <CloseButton />\n        <Content>\n          <TextLockup size=\&#x22;sm\&#x22;>\n            <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n              Pro\n            </Tag>\n            <Heading slot=\&#x22;title\&#x22;>Unlimited seats</Heading>\n            <Text slot=\&#x22;body\&#x22;>Add your whole team with priority support.</Text>\n          </TextLockup>\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Close</Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard interaction [#keyboard-interaction]
+
+| Key      | Action                                                     |
+| -------- | ---------------------------------------------------------- |
+| `Tab`    | Moves focus to the next focusable element inside the modal |
+| `Escape` | Closes the modal (unless `isKeyboardDismissDisabled`)      |
+
+### ARIA [#aria]
+
+* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+* Focus is trapped within the modal while open and returned to the trigger on close
+
+## Best Practices [#best-practices]
+
+* Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
+* Pair every action button with `slot="close"` when it should dismiss the modal
+* Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
+
+## Props [#props]
+
+```tsx
+<ModalTrigger>
+  <Button />
+  <Modal>
+    <Heading slot="title" />
+    <CloseButton />
+    <Header />
+    <Content />
+    <Footer />
+    <ButtonGroup />
+    {/* ... */}
+  </Modal>
+</ModalTrigger>
+```
+
+### Modal [#modal]
+
+<PropTable />
+
+### ModalTrigger [#modaltrigger]
 
 <PropTable />
 
@@ -3972,6 +3972,141 @@ Once the total is known, set `isIndeterminate` to false and supply a measured va
 <PropTable />
 
 
+# ProgressSteps
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Horizontal and vertical orientations
+* Four completion statuses (`none`, `partial`, `complete`, `error`) with status icons
+* Timeline (past / current / future) derived from a single `currentStep` prop
+* Auto-generated step numbers (opt out with `hideStepNumbers`)
+* Interactive (navigable) and inert (display-only) steps
+* Title truncation and RTL support
+* Rendered as a `<nav>` landmark with an ordered list for assistive technology
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A horizontal stepper. `currentStep` marks the active step; earlier steps are `past`, later are `future`. Each `status` sets the step's icon, and an `error` step turns its accent bar red.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22;>Cart</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Shipping</ProgressStep>\n      <ProgressStep status=\&#x22;error\&#x22;>Payment</ProgressStep>\n      <ProgressStep>Review</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+### Not started [#not-started]
+
+No `currentStep`: the flow hasn't started, so every step is `future` and none is marked current.
+
+<Story of="NotStartedExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function NotStartedExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22;>\n      <ProgressStep>Cart</ProgressStep>\n      <ProgressStep>Shipping</ProgressStep>\n      <ProgressStep>Payment</ProgressStep>\n      <ProgressStep>Review</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+### Vertical [#vertical]
+
+Vertical orientation: accent bar on the leading edge, steps stacked in a column.
+
+<Story of="VerticalExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function VerticalExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Onboarding\&#x22; orientation=\&#x22;vertical\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22;>Create account</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Verify email</ProgressStep>\n      <ProgressStep>Add payment method</ProgressStep>\n      <ProgressStep>Invite your team</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+### Interactive [#interactive]
+
+Interactive steps: each `onPress` navigates the wizard by updating `currentStep`.
+
+<Story of="InteractiveExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\nimport { useState } from 'react';\n\nconst steps = ['Cart', 'Shipping', 'Payment', 'Review'];\n\nexport function InteractiveExample() {\n  const [currentStep, setCurrentStep] = useState(1);\n\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={currentStep}>\n      {steps.map((label, index) => (\n        <ProgressStep\n          key={label}\n          status={index < currentStep ? 'complete' : index === currentStep ? 'partial' : 'none'}\n          onPress={() => setCurrentStep(index)}\n        >\n          {label}\n        </ProgressStep>\n      ))}\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+A disabled interactive step is muted, not focusable, and cannot be activated.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22; onPress={() => undefined}>\n        Cart\n      </ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22; onPress={() => undefined}>\n        Shipping\n      </ProgressStep>\n      <ProgressStep onPress={() => undefined} isDisabled>\n        Payment\n      </ProgressStep>\n      <ProgressStep onPress={() => undefined} isDisabled>\n        Review\n      </ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+### Hide Step Numbers [#hide-step-numbers]
+
+Step numbers are shown by default; `hideStepNumbers` omits the "N. " prefix.
+
+<Story of="HideStepNumbersExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function HideStepNumbersExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1} hideStepNumbers>\n      <ProgressStep status=\&#x22;complete\&#x22;>Cart</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Shipping</ProgressStep>\n      <ProgressStep>Payment</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+* Step numbers (`"N. "`) are prepended automatically — keep them where possible, as user testing shows people recognize the component better with them. Set `hideStepNumbers` to omit them.
+* `orientation` switches between `horizontal` (accent bar on top) and `vertical` (accent bar on the leading edge).
+* `currentStep` is the single source of truth for the timeline. Omit it for a not-yet-started flow where every step is `future`; pass the step count for a fully completed flow where every step is `past`.
+* `status` is independent of timeline and only controls the status icon and (for `error`) the accent bar color.
+* Pass `className` to the container or an individual step to extend the styles.
+
+## Accessibility [#accessibility]
+
+* The container renders a `<nav>` landmark; set `aria-label` to name it (defaults to `"Progress"`).
+* Steps are an ordered list (`<ol>`/`<li>`) so assistive technology conveys position and count.
+* The current step is marked with `aria-current="step"`.
+* Interactive steps are real buttons: focusable in the natural **Tab** order and activated with **Enter** or **Space**. Status icons are decorative (`aria-hidden`).
+* Focus is shown with a visible outline; disabled steps use `0.4` opacity and are not focusable.
+
+## Best Practices [#best-practices]
+
+* Drive the timeline from `currentStep` rather than styling individual steps.
+* Provide `onPress` only for steps a user can actually navigate to; leave it off for display-only steps.
+* Keep titles short — they truncate with an ellipsis when space is tight.
+* Always give the container an `aria-label` that describes the flow (e.g. `"Checkout progress"`).
+
+## Troubleshooting [#troubleshooting]
+
+* **No step is highlighted:** `currentStep` is omitted, negative, or out of range. Set it to the active step's 0-based index.
+* **A step isn't clickable:** it has no `onPress`, so it's inert by design. Add `onPress` to make it interactive.
+* **Titles overflow:** that's expected — titles truncate. Shorten the title.
+
+## Props [#props]
+
+```tsx
+<ProgressSteps>
+  <ProgressStep />
+  {/* ... */}
+</ProgressSteps>
+```
+
+### ProgressSteps [#progresssteps]
+
+<PropTable />
+
+### ProgressStep [#progressstep]
+
+<PropTable />
+
+
 # Radio
 
 
@@ -4264,331 +4399,6 @@ Always provide clear error messages:
 <PropTable />
 
 
-# RangeField
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Select one value or render one thumb for each value in an array
-* Supports controlled and uncontrolled values with typed change callbacks
-* Provides localized value output, endpoint labels, descriptions, and markers
-* Integrates with native forms, keyboard, pointer, and touch interaction through React Aria
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Minimal usage with a single value and min/max bounds.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} />;\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `onChange` for immediate updates and `onChangeEnd` for work that should run after interaction finishes.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState(50);\n  const [committedValue, setCommittedValue] = useState(50);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <RangeField<number>\n        aria-label=\&#x22;Volume\&#x22;\n        value={value}\n        onChange={setValue}\n        onChangeEnd={setCommittedValue}\n        step={10}\n      />\n      <p>Current value: {value}</p>\n      <p>Committed value: {committedValue}</p>\n    </Flex>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` when the value is visible but unavailable for interaction.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Volume\&#x22;\n      label=\&#x22;Volume\&#x22;\n      description=\&#x22;This is a description\&#x22;\n      minLabel=\&#x22;Low\&#x22;\n      maxLabel=\&#x22;High\&#x22;\n      defaultValue={50}\n      isDisabled\n    />\n  );\n}&#x22;" />
-
-### Labels [#labels]
-
-Combine an input label, value label, range labels, and helper text when users need additional context.
-
-<Story of="LabelsExample" />
-
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function LabelsExample() {\n  return (\n    <RangeField\n      label=\&#x22;Price limit\&#x22;\n      defaultValue={50}\n      formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n      valueLabel\n      minLabel=\&#x22;$0\&#x22;\n      maxLabel=\&#x22;$100\&#x22;\n      description=\&#x22;Choose the maximum price.\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Value Display [#value-display]
-
-Use `valueLabel` to show formatted values, static context, or output derived from the current slider state.
-
-<Story of="ValueDisplayExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\n\nexport function ValueDisplayExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <RangeField\n        label=\&#x22;Monthly budget\&#x22;\n        defaultValue={50}\n        formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n        valueLabel\n      />\n      <RangeField label=\&#x22;Storage quota\&#x22; defaultValue={50} valueLabel={<span>Recommended</span>} />\n      <RangeField\n        label=\&#x22;Volume\&#x22;\n        defaultValue={50}\n        valueLabel={function renderValue({ state }) {\n          return `Current: ${state.values[0]}%`;\n        }}\n      />\n    </Flex>\n  );\n}&#x22;" />
-
-### Markers [#markers]
-
-Use `markers` to expose a manageable set of discrete steps for a single value.
-
-<Story of="MarkersExample" />
-
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function MarkersExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} step={10} markers />;\n}&#x22;" />
-
-### Range [#range]
-
-Pass a `number[]` to render a range with two thumbs and step markers.
-
-<Story of="RangeExample" />
-
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Price range\&#x22;\n      defaultValue={[25, 75]}\n      thumbLabels={['Minimum price', 'Maximum price']}\n      minValue={0}\n      maxValue={100}\n      step={25}\n      markers\n    />\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Accessible names [#accessible-names]
-
-For a single value, prefer a visible `label`; use `aria-label` only when equivalent visible context already exists.
-
-For an array, provide one descriptive `thumbLabels` entry for every value. Entries are matched by index, so keep them aligned when values are added, removed, or reordered. Describe each thumb's purpose, such as `Lower warning threshold`, rather than its current number.
-
-`thumbNames` configures native form field names and does not provide accessible labels. Likewise, `valueLabel`, `minLabel`, and `maxLabel` are visual context rather than substitutes for accessible naming.
-
-### Keyboard interaction [#keyboard-interaction]
-
-Each thumb follows the React Aria slider keyboard model:
-
-* Tab and Shift+Tab move among thumbs and surrounding controls.
-* Arrow Right and Arrow Up increase the focused value by `step`.
-* Arrow Left and Arrow Down decrease the focused value by `step`.
-* Home and End move the focused thumb to its permitted bounds.
-* Page Up and Page Down make larger changes.
-
-Directional behavior follows the user's locale where appropriate. Pointer, touch, and keyboard interaction all use the same scale and constraints.
-
-Markers are decorative and hidden from the accessibility tree. Ensure the field label, thumb labels, bounds, step, and formatted values communicate all required information without relying on marker appearance.
-
-## Best Practices [#best-practices]
-
-* Use an array only when every entry has a clear, independently adjustable meaning.
-* Keep `value`, `thumbLabels`, and `thumbNames` aligned by index.
-* Use thumb labels that explain purpose instead of repeating the current number.
-* Keep array values in a stable semantic order. If crossing or reordering thumbs would make their meaning ambiguous, enforce the appropriate ordering in product state.
-* Avoid large value arrays. Every entry creates another focusable control, which increases keyboard effort and cognitive load.
-* Set meaningful `minValue`, `maxValue`, and `step` values. The scale should match the precision users actually need.
-* Use markers only when there are few enough steps to scan. Tiny steps across a large range can create an excessive number of DOM elements.
-* Use `formatOptions` for currency, percentages, measurements, and other locale-sensitive units so values display and announce their meaning.
-* Use `description` for persistent guidance and `isRequired` when a value is required.
-* Use `isDisabled` when the value should remain visible but unavailable for interaction.
-* Use `onChange` for lightweight immediate feedback and `onChangeEnd` for expensive requests, filtering, or calculations.
-* Use a text-entry control when exact numeric input is essential. A track is best for exploring or adjusting values within known bounds.
-
-## Props [#props]
-
-### RangeField [#rangefield]
-
-<PropTable />
-
-## Troubleshooting [#troubleshooting]
-
-### A thumb is missing a label or form value [#a-thumb-is-missing-a-label-or-form-value]
-
-Check the same index in `thumbLabels` and `thumbNames`. Each array entry renders a thumb, and its accessible label and form name are read from the corresponding positions. A form name does not replace an accessible label.
-
-### TypeScript reports the wrong callback value type [#typescript-reports-the-wrong-callback-value-type]
-
-Keep the controlled or default value and callback signatures consistent. When inference is unavailable, provide the generic explicitly: `<RangeField<number>>` for a scalar or `<RangeField<number[]>>` for an array.
-
-```tsx
-const [targets, setTargets] = useState<number[]>([20, 80]);
-
-<RangeField<number[]>
-  label="Target range"
-  value={targets}
-  onChange={setTargets}
-  thumbLabels={['Minimum target', 'Maximum target']}
-/>;
-```
-
-### The controlled thumbs do not move [#the-controlled-thumbs-do-not-move]
-
-The `value` prop is the source of truth. Update the scalar or array in `onChange` without changing its intended shape. For arrays, return a new array so application state observes the update.
-
-### Values snap unexpectedly [#values-snap-unexpectedly]
-
-Verify that `step` represents the intended interval from `minValue`. Every thumb snaps to valid positions on the same configured scale.
-
-### The final marker is missing [#the-final-marker-is-missing]
-
-Markers begin at `minValue` and appear at complete step positions. `maxValue` receives a marker only when the range is evenly divisible by `step`.
-
-### Markers are crowded or rendering is slow [#markers-are-crowded-or-rendering-is-slow]
-
-Increase `step` or omit `markers`. Large ranges with small steps can produce many decorative elements even when users cannot distinguish them visually.
-
-### The value or endpoint labels are blank [#the-value-or-endpoint-labels-are-blank]
-
-Enable automatic current-value output with `valueLabel={true}` or provide custom content. `minLabel` and `maxLabel` display only explicitly supplied content; neither defaults to a numeric bound or receives `formatOptions`.
-
-### Negative values do not behave as expected [#negative-values-do-not-behave-as-expected]
-
-Negative values are supported. Set a negative `minValue` and ensure every scalar or array value remains within the configured bounds.
-
-### The range configuration is invalid [#the-range-configuration-is-invalid]
-
-Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
-
-
-# ProgressSteps
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Horizontal and vertical orientations
-* Four completion statuses (`none`, `partial`, `complete`, `error`) with status icons
-* Timeline (past / current / future) derived from a single `currentStep` prop
-* Auto-generated step numbers (opt out with `hideStepNumbers`)
-* Interactive (navigable) and inert (display-only) steps
-* Title truncation and RTL support
-* Rendered as a `<nav>` landmark with an ordered list for assistive technology
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A horizontal stepper. `currentStep` marks the active step; earlier steps are `past`, later are `future`. Each `status` sets the step's icon, and an `error` step turns its accent bar red.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22;>Cart</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Shipping</ProgressStep>\n      <ProgressStep status=\&#x22;error\&#x22;>Payment</ProgressStep>\n      <ProgressStep>Review</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-### Not started [#not-started]
-
-No `currentStep`: the flow hasn't started, so every step is `future` and none is marked current.
-
-<Story of="NotStartedExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function NotStartedExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22;>\n      <ProgressStep>Cart</ProgressStep>\n      <ProgressStep>Shipping</ProgressStep>\n      <ProgressStep>Payment</ProgressStep>\n      <ProgressStep>Review</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-### Vertical [#vertical]
-
-Vertical orientation: accent bar on the leading edge, steps stacked in a column.
-
-<Story of="VerticalExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function VerticalExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Onboarding\&#x22; orientation=\&#x22;vertical\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22;>Create account</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Verify email</ProgressStep>\n      <ProgressStep>Add payment method</ProgressStep>\n      <ProgressStep>Invite your team</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-### Interactive [#interactive]
-
-Interactive steps: each `onPress` navigates the wizard by updating `currentStep`.
-
-<Story of="InteractiveExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\nimport { useState } from 'react';\n\nconst steps = ['Cart', 'Shipping', 'Payment', 'Review'];\n\nexport function InteractiveExample() {\n  const [currentStep, setCurrentStep] = useState(1);\n\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={currentStep}>\n      {steps.map((label, index) => (\n        <ProgressStep\n          key={label}\n          status={index < currentStep ? 'complete' : index === currentStep ? 'partial' : 'none'}\n          onPress={() => setCurrentStep(index)}\n        >\n          {label}\n        </ProgressStep>\n      ))}\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-A disabled interactive step is muted, not focusable, and cannot be activated.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22; onPress={() => undefined}>\n        Cart\n      </ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22; onPress={() => undefined}>\n        Shipping\n      </ProgressStep>\n      <ProgressStep onPress={() => undefined} isDisabled>\n        Payment\n      </ProgressStep>\n      <ProgressStep onPress={() => undefined} isDisabled>\n        Review\n      </ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-### Hide Step Numbers [#hide-step-numbers]
-
-Step numbers are shown by default; `hideStepNumbers` omits the "N. " prefix.
-
-<Story of="HideStepNumbersExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function HideStepNumbersExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1} hideStepNumbers>\n      <ProgressStep status=\&#x22;complete\&#x22;>Cart</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Shipping</ProgressStep>\n      <ProgressStep>Payment</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-* Step numbers (`"N. "`) are prepended automatically — keep them where possible, as user testing shows people recognize the component better with them. Set `hideStepNumbers` to omit them.
-* `orientation` switches between `horizontal` (accent bar on top) and `vertical` (accent bar on the leading edge).
-* `currentStep` is the single source of truth for the timeline. Omit it for a not-yet-started flow where every step is `future`; pass the step count for a fully completed flow where every step is `past`.
-* `status` is independent of timeline and only controls the status icon and (for `error`) the accent bar color.
-* Pass `className` to the container or an individual step to extend the styles.
-
-## Accessibility [#accessibility]
-
-* The container renders a `<nav>` landmark; set `aria-label` to name it (defaults to `"Progress"`).
-* Steps are an ordered list (`<ol>`/`<li>`) so assistive technology conveys position and count.
-* The current step is marked with `aria-current="step"`.
-* Interactive steps are real buttons: focusable in the natural **Tab** order and activated with **Enter** or **Space**. Status icons are decorative (`aria-hidden`).
-* Focus is shown with a visible outline; disabled steps use `0.4` opacity and are not focusable.
-
-## Best Practices [#best-practices]
-
-* Drive the timeline from `currentStep` rather than styling individual steps.
-* Provide `onPress` only for steps a user can actually navigate to; leave it off for display-only steps.
-* Keep titles short — they truncate with an ellipsis when space is tight.
-* Always give the container an `aria-label` that describes the flow (e.g. `"Checkout progress"`).
-
-## Troubleshooting [#troubleshooting]
-
-* **No step is highlighted:** `currentStep` is omitted, negative, or out of range. Set it to the active step's 0-based index.
-* **A step isn't clickable:** it has no `onPress`, so it's inert by design. Add `onPress` to make it interactive.
-* **Titles overflow:** that's expected — titles truncate. Shorten the title.
-
-## Props [#props]
-
-```tsx
-<ProgressSteps>
-  <ProgressStep />
-  {/* ... */}
-</ProgressSteps>
-```
-
-### ProgressSteps [#progresssteps]
-
-<PropTable />
-
-### ProgressStep [#progressstep]
-
-<PropTable />
-
-
 # Responsive
 
 
@@ -4862,7 +4672,7 @@ Components automatically add data attributes for styling different states:
 <PropTable />
 
 
-# SizeProvider
+# RangeField
 
 
 
@@ -4888,87 +4698,168 @@ Components automatically add data attributes for styling different states:
 
 ## Features [#features]
 
-* `sm`, `md`, or `lg` for the adopted components inside (listed below): their text, controls, and
-  default spacing.
-* The nearest scope wins, and nested scopes replace the size rather than compounding it.
-* A component's own `size` prop wins for that component only.
-* Overlays opened inside, such as Modal and Select options, open at the scope's size even though
-  they render in a portal.
-* Renders no element, so it never affects layout. Only Antares components follow it; plain HTML
-  keeps its own typography, so put copy in `Text`.
-* Without any scope, components use `md`.
-* Adopted so far by Text, Detail, Heading, Label, Button, LinkButton, TextField, NumberField, Select,
-  DatePicker, DateRangePicker, Calendar, TextLockup, Modal, Drawer, Popover, and Tooltip. Other
-  components keep their own size. Layout spacing props keep their meaning: `gap="md"` is the layout
-  `md` gap in any scope.
+* Select one value or render one thumb for each value in an array
+* Supports controlled and uncontrolled values with typed change callbacks
+* Provides localized value output, endpoint labels, descriptions, and markers
+* Integrates with native forms, keyboard, pointer, and touch interaction through React Aria
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-A scope sizes everything inside it: text, controls, and default spacing. A component's own
-`size` still wins.
+Minimal usage with a single value and min/max bounds.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Button, Flex, Heading, Input, Label, SizeProvider, Text, TextField, TextLockup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22; level={2}>\n            Billing\n          </Heading>\n          <Text slot=\&#x22;body\&#x22;>Manage your payment methods.</Text>\n        </TextLockup>\n\n        <TextField>\n          <Label>Email</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n        </TextField>\n\n        <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n          <Button variant=\&#x22;primary\&#x22;>Update payment method</Button>\n          <Button variant=\&#x22;primary\&#x22; size=\&#x22;md\&#x22;>\n            Contact support\n          </Button>\n        </Flex>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} />;\n}&#x22;" />
 
-### Sizes [#sizes]
+### Controlled [#controlled]
 
-The same section at each size. Without a scope, components use `md`.
+Use `onChange` for immediate updates and `onChangeEnd` for work that should run after interaction finishes.
 
-<Story of="SizesExample" />
+<Story of="ControlledExample" />
 
-<Source language="tsx" code="&#x22;import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      {SIZES.map(function section(size) {\n        return (\n          <SizeProvider key={size} size={size}>\n            <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n              <Heading>Size {size}</Heading>\n              <Text>Body copy follows the scope.</Text>\n              <Detail>Supporting copy too.</Detail>\n              <Button variant=\&#x22;primary\&#x22;>Save</Button>\n            </Flex>\n          </SizeProvider>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState(50);\n  const [committedValue, setCommittedValue] = useState(50);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <RangeField<number>\n        aria-label=\&#x22;Volume\&#x22;\n        value={value}\n        onChange={setValue}\n        onChangeEnd={setCommittedValue}\n        step={10}\n      />\n      <p>Current value: {value}</p>\n      <p>Committed value: {committedValue}</p>\n    </Flex>\n  );\n}&#x22;" />
 
-### Form [#form]
+### Disabled [#disabled]
 
-Wrap a whole form to size it at once. Fields, their labels and descriptions, choices, and
-buttons all follow the scope, so they stay aligned with each other.
+Use `isDisabled` when the value is visible but unavailable for interaction.
 
-<Story of="FormExample" />
+<Story of="DisabledExample" />
 
-<Source language="tsx" code="&#x22;import {\n  Button,\n  Checkbox,\n  Flex,\n  Heading,\n  Input,\n  Label,\n  Select,\n  SelectItem,\n  SelectOptions,\n  SizeProvider,\n  Text,\n  TextField\n} from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <Heading level={2}>Contact details</Heading>\n\n        <TextField>\n          <Label>Full name</Label>\n          <Input />\n        </TextField>\n\n        <TextField>\n          <Label>Email</Label>\n          <Input type=\&#x22;email\&#x22; />\n          <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n        </TextField>\n\n        <Select placeholder=\&#x22;Pick a country\&#x22;>\n          <Label>Country</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>United States</SelectItem>\n            <SelectItem id=\&#x22;ca\&#x22;>Canada</SelectItem>\n            <SelectItem id=\&#x22;mx\&#x22;>Mexico</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <Checkbox>Email me about offers</Checkbox>\n\n        <Flex gap=\&#x22;sm\&#x22;>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;primary\&#x22;>Save</Button>\n        </Flex>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Volume\&#x22;\n      label=\&#x22;Volume\&#x22;\n      description=\&#x22;This is a description\&#x22;\n      minLabel=\&#x22;Low\&#x22;\n      maxLabel=\&#x22;High\&#x22;\n      defaultValue={50}\n      isDisabled\n    />\n  );\n}&#x22;" />
 
-### Nested Scopes [#nested-scopes]
+### Labels [#labels]
 
-The nearest scope wins. An inner scope replaces the outer size rather than scaling it, so an
-`sm` section inside an `lg` page matches `sm` anywhere else.
+Combine an input label, value label, range labels, and helper text when users need additional context.
 
-<Story of="NestedScopesExample" />
+<Story of="LabelsExample" />
 
-<Source language="tsx" code="&#x22;import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nexport function NestedScopesExample() {\n  return (\n    <SizeProvider size=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <Heading level={2}>Your plan</Heading>\n        <Text>Premium hosting, renews on March 1.</Text>\n        <Button variant=\&#x22;primary\&#x22;>Manage plan</Button>\n\n        <SizeProvider size=\&#x22;sm\&#x22;>\n          <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n            <Detail>Need less? You can switch to Basic at any time.</Detail>\n            <Button variant=\&#x22;primary\&#x22;>Compare plans</Button>\n          </Flex>\n        </SizeProvider>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function LabelsExample() {\n  return (\n    <RangeField\n      label=\&#x22;Price limit\&#x22;\n      defaultValue={50}\n      formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n      valueLabel\n      minLabel=\&#x22;$0\&#x22;\n      maxLabel=\&#x22;$100\&#x22;\n      description=\&#x22;Choose the maximum price.\&#x22;\n    />\n  );\n}&#x22;" />
 
-### Explicit Size [#explicit-size]
+### Value Display [#value-display]
 
-A component's own `size` wins for that component and every part inside it, such as a field's
-label and description. Its siblings keep following the scope.
+Use `valueLabel` to show formatted values, static context, or output derived from the current slider state.
 
-<Story of="ExplicitSizeExample" />
+<Story of="ValueDisplayExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Input, Label, SizeProvider, Text, TextField } from '@godaddy/antares';\n\nexport function ExplicitSizeExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <TextField>\n          <Label>Coupon code</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>Follows the scope.</Text>\n        </TextField>\n\n        <TextField size=\&#x22;lg\&#x22;>\n          <Label>Domain name</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>Sized by the field.</Text>\n        </TextField>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\n\nexport function ValueDisplayExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <RangeField\n        label=\&#x22;Monthly budget\&#x22;\n        defaultValue={50}\n        formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n        valueLabel\n      />\n      <RangeField label=\&#x22;Storage quota\&#x22; defaultValue={50} valueLabel={<span>Recommended</span>} />\n      <RangeField\n        label=\&#x22;Volume\&#x22;\n        defaultValue={50}\n        valueLabel={function renderValue({ state }) {\n          return `Current: ${state.values[0]}%`;\n        }}\n      />\n    </Flex>\n  );\n}&#x22;" />
 
-### Overlays [#overlays]
+### Markers [#markers]
 
-Overlays open at the size of the scope around their trigger, even though they render in a
-portal. An explicit `size` on the owner sizes its overlay too.
+Use `markers` to expose a manageable set of discrete steps for a single value.
 
-<Story of="OverlaysExample" />
+<Story of="MarkersExample" />
 
-<Source language="tsx" code="&#x22;import {\n  Button,\n  ButtonGroup,\n  Content,\n  DatePicker,\n  DatePickerCalendar,\n  DateRangePicker,\n  DateRangePickerCalendar,\n  Flex,\n  Heading,\n  Label,\n  Modal,\n  ModalTrigger,\n  Select,\n  SelectItem,\n  SelectOptions,\n  SizeProvider,\n  Text,\n  Tooltip,\n  TooltipTrigger\n} from '@godaddy/antares';\n\nexport function OverlaysExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex gap=\&#x22;md\&#x22; alignItems=\&#x22;end\&#x22; wrap=\&#x22;wrap\&#x22;>\n        <Select placeholder=\&#x22;Pick a plan\&#x22;>\n          <Label>Plan</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;basic\&#x22;>Basic</SelectItem>\n            <SelectItem id=\&#x22;pro\&#x22;>Pro</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <Select size=\&#x22;lg\&#x22; placeholder=\&#x22;Pick a region\&#x22;>\n          <Label>Region</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>United States</SelectItem>\n            <SelectItem id=\&#x22;eu\&#x22;>Europe</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <DatePicker>\n          <Label>Renewal date</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <DatePickerCalendar />\n        </DatePicker>\n\n        <DateRangePicker size=\&#x22;lg\&#x22;>\n          <Label>Contract dates</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <DateRangePickerCalendar />\n        </DateRangePicker>\n\n        <ModalTrigger>\n          <Button variant=\&#x22;primary\&#x22;>Edit plan</Button>\n          <Modal>\n            <Heading slot=\&#x22;title\&#x22;>Edit plan</Heading>\n            <Content>\n              <Text>Changes apply at the next billing cycle.</Text>\n            </Content>\n            <ButtonGroup>\n              <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n              <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n                Save\n              </Button>\n            </ButtonGroup>\n          </Modal>\n        </ModalTrigger>\n\n        <TooltipTrigger>\n          <Button variant=\&#x22;primary\&#x22;>Help</Button>\n          <Tooltip>Billing questions</Tooltip>\n        </TooltipTrigger>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function MarkersExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} step={10} markers />;\n}&#x22;" />
 
-### Plain Html [#plain-html]
+### Range [#range]
 
-A scope sizes Antares components only. Plain HTML keeps its own typography, so put copy in
-`Text` to follow the scope.
+Pass a `number[]` to render a range with two thumbs and step markers.
 
-<Story of="PlainHtmlExample" />
+<Story of="RangeExample" />
 
-<Source language="tsx" code="&#x22;import { SizeProvider, Text } from '@godaddy/antares';\n\nexport function PlainHtmlExample() {\n  return (\n    <SizeProvider size=\&#x22;lg\&#x22;>\n      <p>A plain paragraph keeps the page's typography.</p>\n      <Text>Text follows the scope.</Text>\n    </SizeProvider>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Price range\&#x22;\n      defaultValue={[25, 75]}\n      thumbLabels={['Minimum price', 'Maximum price']}\n      minValue={0}\n      maxValue={100}\n      step={25}\n      markers\n    />\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Accessible names [#accessible-names]
+
+For a single value, prefer a visible `label`; use `aria-label` only when equivalent visible context already exists.
+
+For an array, provide one descriptive `thumbLabels` entry for every value. Entries are matched by index, so keep them aligned when values are added, removed, or reordered. Describe each thumb's purpose, such as `Lower warning threshold`, rather than its current number.
+
+`thumbNames` configures native form field names and does not provide accessible labels. Likewise, `valueLabel`, `minLabel`, and `maxLabel` are visual context rather than substitutes for accessible naming.
+
+### Keyboard interaction [#keyboard-interaction]
+
+Each thumb follows the React Aria slider keyboard model:
+
+* Tab and Shift+Tab move among thumbs and surrounding controls.
+* Arrow Right and Arrow Up increase the focused value by `step`.
+* Arrow Left and Arrow Down decrease the focused value by `step`.
+* Home and End move the focused thumb to its permitted bounds.
+* Page Up and Page Down make larger changes.
+
+Directional behavior follows the user's locale where appropriate. Pointer, touch, and keyboard interaction all use the same scale and constraints.
+
+Markers are decorative and hidden from the accessibility tree. Ensure the field label, thumb labels, bounds, step, and formatted values communicate all required information without relying on marker appearance.
+
+## Best Practices [#best-practices]
+
+* Use an array only when every entry has a clear, independently adjustable meaning.
+* Keep `value`, `thumbLabels`, and `thumbNames` aligned by index.
+* Use thumb labels that explain purpose instead of repeating the current number.
+* Keep array values in a stable semantic order. If crossing or reordering thumbs would make their meaning ambiguous, enforce the appropriate ordering in product state.
+* Avoid large value arrays. Every entry creates another focusable control, which increases keyboard effort and cognitive load.
+* Set meaningful `minValue`, `maxValue`, and `step` values. The scale should match the precision users actually need.
+* Use markers only when there are few enough steps to scan. Tiny steps across a large range can create an excessive number of DOM elements.
+* Use `formatOptions` for currency, percentages, measurements, and other locale-sensitive units so values display and announce their meaning.
+* Use `description` for persistent guidance and `isRequired` when a value is required.
+* Use `isDisabled` when the value should remain visible but unavailable for interaction.
+* Use `onChange` for lightweight immediate feedback and `onChangeEnd` for expensive requests, filtering, or calculations.
+* Use a text-entry control when exact numeric input is essential. A track is best for exploring or adjusting values within known bounds.
 
 ## Props [#props]
 
+### RangeField [#rangefield]
+
 <PropTable />
+
+## Troubleshooting [#troubleshooting]
+
+### A thumb is missing a label or form value [#a-thumb-is-missing-a-label-or-form-value]
+
+Check the same index in `thumbLabels` and `thumbNames`. Each array entry renders a thumb, and its accessible label and form name are read from the corresponding positions. A form name does not replace an accessible label.
+
+### TypeScript reports the wrong callback value type [#typescript-reports-the-wrong-callback-value-type]
+
+Keep the controlled or default value and callback signatures consistent. When inference is unavailable, provide the generic explicitly: `<RangeField<number>>` for a scalar or `<RangeField<number[]>>` for an array.
+
+```tsx
+const [targets, setTargets] = useState<number[]>([20, 80]);
+
+<RangeField<number[]>
+  label="Target range"
+  value={targets}
+  onChange={setTargets}
+  thumbLabels={['Minimum target', 'Maximum target']}
+/>;
+```
+
+### The controlled thumbs do not move [#the-controlled-thumbs-do-not-move]
+
+The `value` prop is the source of truth. Update the scalar or array in `onChange` without changing its intended shape. For arrays, return a new array so application state observes the update.
+
+### Values snap unexpectedly [#values-snap-unexpectedly]
+
+Verify that `step` represents the intended interval from `minValue`. Every thumb snaps to valid positions on the same configured scale.
+
+### The final marker is missing [#the-final-marker-is-missing]
+
+Markers begin at `minValue` and appear at complete step positions. `maxValue` receives a marker only when the range is evenly divisible by `step`.
+
+### Markers are crowded or rendering is slow [#markers-are-crowded-or-rendering-is-slow]
+
+Increase `step` or omit `markers`. Large ranges with small steps can produce many decorative elements even when users cannot distinguish them visually.
+
+### The value or endpoint labels are blank [#the-value-or-endpoint-labels-are-blank]
+
+Enable automatic current-value output with `valueLabel={true}` or provide custom content. `minLabel` and `maxLabel` display only explicitly supplied content; neither defaults to a numeric bound or receives `formatOptions`.
+
+### Negative values do not behave as expected [#negative-values-do-not-behave-as-expected]
+
+Negative values are supported. Set a negative `minValue` and ensure every scalar or array value remains within the configured bounds.
+
+### The range configuration is invalid [#the-range-configuration-is-invalid]
+
+Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
 
 
 # Select
@@ -5380,6 +5271,115 @@ Use the interactive root data attributes for state-based customization. The trac
 ## Props [#props]
 
 ### Switch [#switch]
+
+<PropTable />
+
+
+# SizeProvider
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* `sm`, `md`, or `lg` for the adopted components inside (listed below): their text, controls, and
+  default spacing.
+* The nearest scope wins, and nested scopes replace the size rather than compounding it.
+* A component's own `size` prop wins for that component only.
+* Overlays opened inside, such as Modal and Select options, open at the scope's size even though
+  they render in a portal.
+* Renders no element, so it never affects layout. Only Antares components follow it; plain HTML
+  keeps its own typography, so put copy in `Text`.
+* Without any scope, components use `md`.
+* Adopted so far by Text, Detail, Heading, Label, Button, LinkButton, TextField, NumberField, Select,
+  DatePicker, DateRangePicker, Calendar, TextLockup, Modal, Drawer, Popover, and Tooltip. Other
+  components keep their own size. Layout spacing props keep their meaning: `gap="md"` is the layout
+  `md` gap in any scope.
+
+## Examples [#examples]
+
+### Default [#default]
+
+A scope sizes everything inside it: text, controls, and default spacing. A component's own
+`size` still wins.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Heading, Input, Label, SizeProvider, Text, TextField, TextLockup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22; level={2}>\n            Billing\n          </Heading>\n          <Text slot=\&#x22;body\&#x22;>Manage your payment methods.</Text>\n        </TextLockup>\n\n        <TextField>\n          <Label>Email</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n        </TextField>\n\n        <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n          <Button variant=\&#x22;primary\&#x22;>Update payment method</Button>\n          <Button variant=\&#x22;primary\&#x22; size=\&#x22;md\&#x22;>\n            Contact support\n          </Button>\n        </Flex>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+The same section at each size. Without a scope, components use `md`.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      {SIZES.map(function section(size) {\n        return (\n          <SizeProvider key={size} size={size}>\n            <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n              <Heading>Size {size}</Heading>\n              <Text>Body copy follows the scope.</Text>\n              <Detail>Supporting copy too.</Detail>\n              <Button variant=\&#x22;primary\&#x22;>Save</Button>\n            </Flex>\n          </SizeProvider>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+
+### Form [#form]
+
+Wrap a whole form to size it at once. Fields, their labels and descriptions, choices, and
+buttons all follow the scope, so they stay aligned with each other.
+
+<Story of="FormExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Button,\n  Checkbox,\n  Flex,\n  Heading,\n  Input,\n  Label,\n  Select,\n  SelectItem,\n  SelectOptions,\n  SizeProvider,\n  Text,\n  TextField\n} from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <Heading level={2}>Contact details</Heading>\n\n        <TextField>\n          <Label>Full name</Label>\n          <Input />\n        </TextField>\n\n        <TextField>\n          <Label>Email</Label>\n          <Input type=\&#x22;email\&#x22; />\n          <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n        </TextField>\n\n        <Select placeholder=\&#x22;Pick a country\&#x22;>\n          <Label>Country</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>United States</SelectItem>\n            <SelectItem id=\&#x22;ca\&#x22;>Canada</SelectItem>\n            <SelectItem id=\&#x22;mx\&#x22;>Mexico</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <Checkbox>Email me about offers</Checkbox>\n\n        <Flex gap=\&#x22;sm\&#x22;>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;primary\&#x22;>Save</Button>\n        </Flex>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+
+### Nested Scopes [#nested-scopes]
+
+The nearest scope wins. An inner scope replaces the outer size rather than scaling it, so an
+`sm` section inside an `lg` page matches `sm` anywhere else.
+
+<Story of="NestedScopesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nexport function NestedScopesExample() {\n  return (\n    <SizeProvider size=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <Heading level={2}>Your plan</Heading>\n        <Text>Premium hosting, renews on March 1.</Text>\n        <Button variant=\&#x22;primary\&#x22;>Manage plan</Button>\n\n        <SizeProvider size=\&#x22;sm\&#x22;>\n          <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n            <Detail>Need less? You can switch to Basic at any time.</Detail>\n            <Button variant=\&#x22;primary\&#x22;>Compare plans</Button>\n          </Flex>\n        </SizeProvider>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+
+### Explicit Size [#explicit-size]
+
+A component's own `size` wins for that component and every part inside it, such as a field's
+label and description. Its siblings keep following the scope.
+
+<Story of="ExplicitSizeExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Input, Label, SizeProvider, Text, TextField } from '@godaddy/antares';\n\nexport function ExplicitSizeExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <TextField>\n          <Label>Coupon code</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>Follows the scope.</Text>\n        </TextField>\n\n        <TextField size=\&#x22;lg\&#x22;>\n          <Label>Domain name</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>Sized by the field.</Text>\n        </TextField>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+
+### Overlays [#overlays]
+
+Overlays open at the size of the scope around their trigger, even though they render in a
+portal. An explicit `size` on the owner sizes its overlay too.
+
+<Story of="OverlaysExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Button,\n  ButtonGroup,\n  Content,\n  DatePicker,\n  DatePickerCalendar,\n  DateRangePicker,\n  DateRangePickerCalendar,\n  Flex,\n  Heading,\n  Label,\n  Modal,\n  ModalTrigger,\n  Select,\n  SelectItem,\n  SelectOptions,\n  SizeProvider,\n  Text,\n  Tooltip,\n  TooltipTrigger\n} from '@godaddy/antares';\n\nexport function OverlaysExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex gap=\&#x22;md\&#x22; alignItems=\&#x22;end\&#x22; wrap=\&#x22;wrap\&#x22;>\n        <Select placeholder=\&#x22;Pick a plan\&#x22;>\n          <Label>Plan</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;basic\&#x22;>Basic</SelectItem>\n            <SelectItem id=\&#x22;pro\&#x22;>Pro</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <Select size=\&#x22;lg\&#x22; placeholder=\&#x22;Pick a region\&#x22;>\n          <Label>Region</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>United States</SelectItem>\n            <SelectItem id=\&#x22;eu\&#x22;>Europe</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <DatePicker>\n          <Label>Renewal date</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <DatePickerCalendar />\n        </DatePicker>\n\n        <DateRangePicker size=\&#x22;lg\&#x22;>\n          <Label>Contract dates</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <DateRangePickerCalendar />\n        </DateRangePicker>\n\n        <ModalTrigger>\n          <Button variant=\&#x22;primary\&#x22;>Edit plan</Button>\n          <Modal>\n            <Heading slot=\&#x22;title\&#x22;>Edit plan</Heading>\n            <Content>\n              <Text>Changes apply at the next billing cycle.</Text>\n            </Content>\n            <ButtonGroup>\n              <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n              <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n                Save\n              </Button>\n            </ButtonGroup>\n          </Modal>\n        </ModalTrigger>\n\n        <TooltipTrigger>\n          <Button variant=\&#x22;primary\&#x22;>Help</Button>\n          <Tooltip>Billing questions</Tooltip>\n        </TooltipTrigger>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+
+### Plain Html [#plain-html]
+
+A scope sizes Antares components only. Plain HTML keeps its own typography, so put copy in
+`Text` to follow the scope.
+
+<Story of="PlainHtmlExample" />
+
+<Source language="tsx" code="&#x22;import { SizeProvider, Text } from '@godaddy/antares';\n\nexport function PlainHtmlExample() {\n  return (\n    <SizeProvider size=\&#x22;lg\&#x22;>\n      <p>A plain paragraph keeps the page's typography.</p>\n      <Text>Text follows the scope.</Text>\n    </SizeProvider>\n  );\n}&#x22;" />
+
+## Props [#props]
 
 <PropTable />
 
@@ -6754,81 +6754,6 @@ For better performance:
 <PropTable />
 
 
-# DonutChart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Story of="SingleSliceExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Story of="LegendLayoutExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Story of="SmallSlicesExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Story of="FormatValueExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### DonutChart [#donutchart]
-
-<PropTable />
-
-
 # Gauge Chart
 
 
@@ -6941,6 +6866,81 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 ## Props [#props]
 
 ### GaugeChart [#gaugechart]
+
+<PropTable />
+
+
+# DonutChart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Story of="SingleSliceExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Story of="LegendLayoutExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Story of="SmallSlicesExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
+
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Story of="FormatValueExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### DonutChart [#donutchart]
 
 <PropTable />
 
@@ -7442,6 +7442,124 @@ All spacing, elevation, and rounding values are derived from the theme. If no th
 <PropTable />
 
 
+# Grid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component.
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic 3-column grid layout with gap.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex, type GridProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: GridProps) {\n  return (\n    <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; {...props}>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 1\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 2\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 3\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 4\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 5\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Columns [#columns]
+
+The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+
+<Story of="ColumnsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ColumnsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: repeat(2, 1fr)</Flex>\n        <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: 1fr 2fr 1fr</Flex>\n        <Grid columns=\&#x22;1fr 2fr 1fr\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Wide\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: auto 1fr auto</Flex>\n        <Grid columns=\&#x22;auto 1fr auto\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Flexible\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Gap [#gap]
+
+The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="GapExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function GapExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: md</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;md\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xl</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xl\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>rowGap: lg, columnGap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rowGap=\&#x22;lg\&#x22; columnGap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 5\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 6\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Named Areas [#named-areas]
+
+Use `areas` to define named grid regions. Children use the `gridArea` prop for placement.
+
+<Story of="AreasExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AreasExample() {\n  return (\n    <Grid\n      areas={['header header header', 'sidebar main main', 'footer footer footer']}\n      columns=\&#x22;200px 1fr 1fr\&#x22;\n      rows=\&#x22;auto 1fr auto\&#x22;\n      gap=\&#x22;sm\&#x22;\n      style={{ height: '300px' }}\n    >\n      <Flex gridArea=\&#x22;header\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Header\n      </Flex>\n      <Flex gridArea=\&#x22;sidebar\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#d0d0d0' }}>\n        Sidebar\n      </Flex>\n      <Flex gridArea=\&#x22;main\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Main Content\n      </Flex>\n      <Flex gridArea=\&#x22;footer\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Footer\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Responsive Grid [#responsive-grid]
+
+Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+
+<Story of="ResponsiveExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ResponsiveExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fill, minmax(150px, 1fr))\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 1\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 2\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 3\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 4\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 5\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Alignment [#alignment]
+
+Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+
+<Story of="AlignmentExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: center</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>alignItems: center (with fixed row height)</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;100px\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: end, alignItems: end</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;80px\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;end\&#x22; alignItems=\&#x22;end\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Form [#form]
+
+A common two-column form pattern with auto-sized label column.
+
+<Story of="FormExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <Grid columns=\&#x22;auto 1fr\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;center\&#x22; style={{ width: '400px' }}>\n      <Flex as=\&#x22;label\&#x22;>Name</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Email</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Message</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Textarea placeholder\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+## RTL Support [#rtl-support]
+
+Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
+
+## Grid vs Flex [#grid-vs-flex]
+
+| Use Case                   | Recommended      |
+| -------------------------- | ---------------- |
+| Single row/column of items | Flex             |
+| Two-dimensional layouts    | Grid             |
+| Named layout regions       | Grid             |
+| Auto-wrapping cards        | Grid (auto-fill) |
+| Navigation bars            | Flex             |
+| Form layouts               | Grid             |
+
+## Props [#props]
+
+### Grid [#grid]
+
+<PropTable />
+
+
 # Flex
 
 
@@ -7558,124 +7676,6 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 ## Props [#props]
 
 ### Flex [#flex]
-
-<PropTable />
-
-
-# Grid
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
-
-**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Scale Sizes [#scale-sizes]
-
-We use the same scale sizes as the `Box` component.
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic 3-column grid layout with gap.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex, type GridProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: GridProps) {\n  return (\n    <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; {...props}>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 1\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 2\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 3\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 4\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 5\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Columns [#columns]
-
-The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
-
-<Story of="ColumnsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ColumnsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: repeat(2, 1fr)</Flex>\n        <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: 1fr 2fr 1fr</Flex>\n        <Grid columns=\&#x22;1fr 2fr 1fr\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Wide\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: auto 1fr auto</Flex>\n        <Grid columns=\&#x22;auto 1fr auto\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Flexible\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Gap [#gap]
-
-The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
-
-<Story of="GapExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function GapExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: md</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;md\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xl</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xl\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>rowGap: lg, columnGap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rowGap=\&#x22;lg\&#x22; columnGap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 5\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 6\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Named Areas [#named-areas]
-
-Use `areas` to define named grid regions. Children use the `gridArea` prop for placement.
-
-<Story of="AreasExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AreasExample() {\n  return (\n    <Grid\n      areas={['header header header', 'sidebar main main', 'footer footer footer']}\n      columns=\&#x22;200px 1fr 1fr\&#x22;\n      rows=\&#x22;auto 1fr auto\&#x22;\n      gap=\&#x22;sm\&#x22;\n      style={{ height: '300px' }}\n    >\n      <Flex gridArea=\&#x22;header\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Header\n      </Flex>\n      <Flex gridArea=\&#x22;sidebar\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#d0d0d0' }}>\n        Sidebar\n      </Flex>\n      <Flex gridArea=\&#x22;main\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Main Content\n      </Flex>\n      <Flex gridArea=\&#x22;footer\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Footer\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Responsive Grid [#responsive-grid]
-
-Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
-
-<Story of="ResponsiveExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ResponsiveExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fill, minmax(150px, 1fr))\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 1\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 2\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 3\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 4\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 5\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Alignment [#alignment]
-
-Use `justifyItems` and `alignItems` to control default alignment of all grid children.
-
-<Story of="AlignmentExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: center</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>alignItems: center (with fixed row height)</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;100px\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: end, alignItems: end</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;80px\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;end\&#x22; alignItems=\&#x22;end\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Form [#form]
-
-A common two-column form pattern with auto-sized label column.
-
-<Story of="FormExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <Grid columns=\&#x22;auto 1fr\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;center\&#x22; style={{ width: '400px' }}>\n      <Flex as=\&#x22;label\&#x22;>Name</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Email</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Message</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Textarea placeholder\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-## RTL Support [#rtl-support]
-
-Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
-
-## Grid vs Flex [#grid-vs-flex]
-
-| Use Case                   | Recommended      |
-| -------------------------- | ---------------- |
-| Single row/column of items | Flex             |
-| Two-dimensional layouts    | Grid             |
-| Named layout regions       | Grid             |
-| Auto-wrapping cards        | Grid (auto-fill) |
-| Navigation bars            | Flex             |
-| Form layouts               | Grid             |
-
-## Props [#props]
-
-### Grid [#grid]
 
 <PropTable />
 
