@@ -4,6 +4,7 @@ import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
 import { ActionsExample } from '../examples/actions.tsx';
+import { CornerActionsExample } from '../examples/corner-actions.tsx';
 import { CustomizationExample } from '../examples/customization.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { FrameExample } from '../examples/frame.tsx';
@@ -487,6 +488,33 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     describe('layout', function layoutTests() {
+      it.each([
+        'ltr',
+        'rtl'
+      ] as const)('wraps heading lines around corner actions in %s', async function headingWrap(dir) {
+        const { getByRole, getByText } = await render(<CornerActionsExample dir={dir} />);
+        const heading = getByRole('heading').element();
+        const actions = bounds(getByRole('button', { name: 'Favorite' }).element().parentElement!);
+        const range = document.createRange();
+        range.selectNodeContents(heading);
+        const lines = [...range.getClientRects()];
+        const alongside = lines.filter((line) => line.top < actions.bottom && line.bottom > actions.top);
+        const below = lines.filter((line) => line.top >= actions.bottom);
+
+        expect(alongside.length).toBeGreaterThan(0);
+        expect(below.length).toBeGreaterThan(0);
+        for (const line of alongside) {
+          if (dir === 'ltr') expect(line.right).toBeLessThanOrEqual(actions.left);
+          else expect(line.left).toBeGreaterThanOrEqual(actions.right);
+        }
+        expect(below.some((line) => (dir === 'ltr' ? line.right > actions.left : line.left < actions.right))).toBe(
+          true
+        );
+        expect(
+          bounds(getByText('Cards provide a surface while consumers own the interior layout.').element()).top
+        ).toBeGreaterThanOrEqual(bounds(heading.parentElement!).bottom);
+      });
+
       it('stacks media in narrow containers and places it beside content in wide ones', async function containerQuery() {
         const { getByTestId } = await render(<LayoutExample />);
         const media = () => bounds(getByTestId('container-query-media').element());

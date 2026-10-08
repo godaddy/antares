@@ -2,6 +2,7 @@ import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
+import { CornerActionsExample } from '../examples/corner-actions.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { LayoutExample } from '../examples/layout.tsx';
 import { MediaExample } from '../examples/media.tsx';
@@ -22,6 +23,11 @@ describe('@godaddy/antares', function packageTests() {
   beforeEach(resetHover);
 
   describe('#Card', function cardVisualTests() {
+    it('renders multiline text around corner actions', async function cornerActions() {
+      const { container } = await render(<CornerActionsExample />);
+      await matchUnclippedScreenshot(container, 'corner-actions');
+    });
+
     it('renders selectable cards with top-end selection indicators', async function selection() {
       const { container } = await render(<MultipleSelectionExample />);
       await matchUnclippedScreenshot(container, 'multiple-selection');

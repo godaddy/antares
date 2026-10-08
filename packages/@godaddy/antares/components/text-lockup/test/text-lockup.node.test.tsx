@@ -6,6 +6,7 @@ import { TagEyebrowExample } from '../examples/tag-eyebrow.tsx';
 import { AlignmentExample } from '../examples/alignment.tsx';
 import { LegibleLinesExample } from '../examples/legible-lines.tsx';
 import { WithActionsExample } from '../examples/with-actions.tsx';
+import { CornerActionsExample } from '../examples/corner-actions.tsx';
 import { OverridesExample } from '../examples/overrides.tsx';
 import { SelfContainedExample } from '../examples/self-contained.tsx';
 
@@ -33,6 +34,10 @@ describe('@godaddy/antares', function antares() {
 
     it('renders alongside actions', function rendersWithActions() {
       expect(renderToString(<WithActionsExample />)).toMatchSnapshot();
+    });
+
+    it('renders text wrapping around corner actions', function rendersCornerActions() {
+      expect(renderToString(<CornerActionsExample />)).toMatchSnapshot();
     });
 
     it('lets explicit child props win over the injected defaults', function rendersOverrides() {

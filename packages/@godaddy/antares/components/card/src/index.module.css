@@ -38,7 +38,6 @@
   padding: inherit;
 }
 
-/* Direct CornerActions sit in the padding box at the top-end. Nest them to keep them in flow. */
 .card > :where([data-corner-actions]),
 .card > :where([role="gridcell"]) > :where([data-corner-actions]) {
   position: absolute;

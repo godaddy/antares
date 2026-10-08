@@ -1,4 +1,4 @@
-import { Box, Card, Grid, Heading, Image, Tag, Text, TextLockup } from '@godaddy/antares';
+import { Box, Button, Card, CornerActions, Grid, Heading, Icon, Image, Tag, Text, TextLockup } from '@godaddy/antares';
 
 const image =
   'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 640 360%22%3E%3Crect width=%22640%22 height=%22360%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%22480%22 cy=%22110%22 r=%2270%22 fill=%22%234ecdc4%22/%3E%3Cpath d=%22M0 300 180 150l120 100 90-75 250 185H0z%22 fill=%22%230b3d91%22/%3E%3C/svg%3E';
@@ -6,12 +6,18 @@ const image =
 /**
  * Use default padding for inset media, or zero Card padding with a padded lockup for full bleed.
  * Media can stand alone, follow the text, or be a custom Box. Clip only the media region.
+ * Direct CornerActions overlay the media at the Card's top-end corner.
  * @order 5
  */
 export function MediaExample() {
   return (
     <Grid columns="repeat(auto-fit, minmax(min(100%, 16rem), 1fr))" gap="lg" alignItems="start">
       <Card>
+        <CornerActions>
+          <Button aria-label="Favorite">
+            <Icon icon="star" />
+          </Button>
+        </CornerActions>
         <Image
           src={image}
           alt="Blue mountain landscape"

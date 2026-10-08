@@ -26,50 +26,29 @@ npm install @godaddy/antares
 
 ## Customization
 
-`CardSelectionIndicator` only shows a Card's selection state. The `CardGroup` owns selection, so a
-Card stays selectable without an indicator. Pass non-interactive children or a selection-state
-render function to replace the default circle and icon. See the Multiple selection example.
+Customize `CardSelectionIndicator` with non-interactive children or a selection-state render
+function. `CardGroup` owns selection, which works without an indicator.
 
-Card link options such as `target`, `rel`, `download`, and `routerOptions` apply to both standalone
-links and linked rows in a `CardGroup`. A `CardGroup` ref points to its collection surface. Card ids
-accept strings or numbers; numeric keys keep their type in group selection and become strings on
-standalone DOM elements.
-
-To style a Card by state, target `[data-selected]`, `[data-hovered]`, `[data-pressed]`,
-`[data-focus-visible]`, and `[data-disabled]` from your `className`.
+Use `className` with `[data-selected]`, `[data-hovered]`, `[data-pressed]`, `[data-focus-visible]`,
+and `[data-disabled]` to style Card states.
 
 ## Accessibility
 
-- A `CardGroup` is a grid: each Card is a row, Tab moves into and out of the group, and arrow keys
-  move between Cards. Name the group with `aria-label` or `aria-labelledby`. Each Card takes its
-  accessible name from `textValue`, which also drives typeahead. Plain-text children supply it by
-  default, so set `textValue` when a Card's content is composed.
-- In a selectable group, Space toggles the focused Card. Without selection, `onAction` runs on Enter
-  or a press. Do not combine them: with both, a press runs the action and only Space selects, so
-  pointer users cannot select.
-- Use Antares controls such as `Button`, `LinkButton`, and `Checkbox` inside a grouped Card. React
-  Aria keeps their presses independent of row selection and actions. For a custom press target,
-  use `Pressable` and forward its props and ref to the target.
-- Set `keyboardNavigationBehavior="tab"` on `CardGroup` to move through controls within a row with
-  Tab. Native controls follow React Aria's event propagation rules.
-- A `CardGroup` does not submit form values. Read the selection from `onSelectionChange`.
-- `href` on a standalone Card renders the Card itself as a native link, named by its content unless
-  you pass `aria-label`. A link Card cannot contain controls, so do not put CornerActions, buttons,
-  or inputs in it. Inside a `CardGroup`, `href` navigates from the row instead.
-- `isDisabled` fades the Card. On a link Card it stops navigation. In a `CardGroup` it also stops
-  selection, the action, and focus, as does listing the Card's `id` in `disabledKeys`.
-- On a static Card, `aria-label`, `aria-labelledby`, and `aria-describedby` apply to the surface,
-  for example with `role="region"`.
+- Name `CardGroup` with `aria-label` or `aria-labelledby`, and set `textValue` on Cards with composed
+  content for accessible names and typeahead.
+- `CardGroup` uses grid navigation: Tab enters or leaves, arrow keys move between Cards, and Space
+  changes selection. Enter activates row actions or links. Choose selection or `onAction`;
+  combining them prevents pointer selection.
+- Use `keyboardNavigationBehavior="tab"` for nested controls. Antares controls keep their actions
+  independent of the Card; use `Pressable` for custom controls.
+- A standalone Card with `href` is a link and must not contain buttons, inputs, or other controls.
 
 ## Props
 
 ```tsx
 <CardGroup selectionMode="multiple">
   <Card id="privacy" textValue="Domain privacy">
-    <CornerActions>
-      <CardSelectionIndicator />
-    </CornerActions>
-
+    <CornerActions />
     <Image />
     <TextLockup />
     {/* ... */}

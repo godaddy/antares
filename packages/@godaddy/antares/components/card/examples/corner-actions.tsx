@@ -1,27 +1,27 @@
-import { Button, ButtonGroup, Card, CornerActions, Heading, Icon, Tag, Text, TextLockup } from '@godaddy/antares';
+import { Button, ButtonGroup, Card, CornerActions, Header, Heading, Icon, Text, TextLockup } from '@godaddy/antares';
 
 /**
- * Direct CornerActions sit at the top-end of the Card.
+ * A text card with corner actions.
  * @title Corner actions
  * @order 3
  */
-export function CornerActionsExample() {
+export function CornerActionsExample({ dir }: { dir?: 'ltr' | 'rtl' } = {}) {
   return (
-    <Card>
-      <CornerActions>
-        <Button aria-label="Favorite">
-          <Icon icon="star" />
-        </Button>
-        <Button aria-label="More options">
-          <Icon icon="ellipsis" />
-        </Button>
-      </CornerActions>
-
+    <Card dir={dir} style={{ maxWidth: '24rem' }}>
       <TextLockup>
-        <Tag slot="eyebrow" emphasis="info">
-          New
-        </Tag>
-        <Heading slot="title">A composed card</Heading>
+        <Header>
+          <CornerActions>
+            <Button aria-label="Favorite">
+              <Icon icon="star" />
+            </Button>
+            <Button aria-label="More options">
+              <Icon icon="ellipsis" />
+            </Button>
+          </CornerActions>
+          <Heading slot="title">
+            A longer card title that wraps around its corner actions and uses the full width below them
+          </Heading>
+        </Header>
         <Text slot="body">Cards provide a surface while consumers own the interior layout.</Text>
       </TextLockup>
 

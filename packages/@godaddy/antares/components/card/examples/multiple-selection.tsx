@@ -4,6 +4,7 @@ import {
   CardGroup,
   CardSelectionIndicator,
   CornerActions,
+  Header,
   Heading,
   Icon,
   Text,
@@ -21,27 +22,31 @@ export function MultipleSelectionExample() {
     <CardGroup aria-label="Select add-ons" selectionMode="multiple" defaultSelectedKeys={['privacy']}>
       <Card id="privacy" textValue="Domain privacy">
         <TextLockup>
-          <Heading slot="title">Domain privacy</Heading>
+          <Header>
+            <CornerActions>
+              <Button aria-label="More options">
+                <Icon icon="ellipsis" />
+              </Button>
+              <CardSelectionIndicator data-testid="privacy-indicator" />
+            </CornerActions>
+            <Heading slot="title">Domain privacy</Heading>
+          </Header>
           <Text slot="body">Hide your contact details from the public directory.</Text>
         </TextLockup>
-        <CornerActions>
-          <Button aria-label="More options">
-            <Icon icon="ellipsis" />
-          </Button>
-          <CardSelectionIndicator data-testid="privacy-indicator" />
-        </CornerActions>
       </Card>
 
       <Card id="email" textValue="Professional email">
         <TextLockup>
-          <Heading slot="title">Professional email</Heading>
+          <Header>
+            <CornerActions>
+              <CardSelectionIndicator data-testid="email-indicator">
+                {({ isSelected }) => <Text>{isSelected ? 'Added' : 'Add'}</Text>}
+              </CardSelectionIndicator>
+            </CornerActions>
+            <Heading slot="title">Professional email</Heading>
+          </Header>
           <Text slot="body">Send from a mailbox at your domain.</Text>
         </TextLockup>
-        <CornerActions>
-          <CardSelectionIndicator data-testid="email-indicator">
-            {({ isSelected }) => <Text>{isSelected ? 'Added' : 'Add'}</Text>}
-          </CardSelectionIndicator>
-        </CornerActions>
       </Card>
     </CardGroup>
   );

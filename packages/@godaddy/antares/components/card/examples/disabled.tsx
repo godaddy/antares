@@ -4,6 +4,7 @@ import {
   CardSelectionIndicator,
   CornerActions,
   Flex,
+  Header,
   Heading,
   Text,
   TextLockup
@@ -29,22 +30,26 @@ export function DisabledExample() {
       <CardGroup aria-label="Backups" selectionMode="multiple" disabledKeys={['ssl']}>
         <Card id="backup" textValue="Backup" isDisabled>
           <TextLockup>
-            <Heading slot="title">Disabled with isDisabled</Heading>
+            <Header>
+              <CornerActions>
+                <CardSelectionIndicator />
+              </CornerActions>
+              <Heading slot="title">Disabled with isDisabled</Heading>
+            </Header>
             <Text slot="body">The Card cannot be selected.</Text>
           </TextLockup>
-          <CornerActions>
-            <CardSelectionIndicator />
-          </CornerActions>
         </Card>
 
         <Card id="ssl" textValue="SSL">
           <TextLockup>
-            <Heading slot="title">Disabled with disabledKeys</Heading>
+            <Header>
+              <CornerActions>
+                <CardSelectionIndicator />
+              </CornerActions>
+              <Heading slot="title">Disabled with disabledKeys</Heading>
+            </Header>
             <Text slot="body">The group disables this Card by key.</Text>
           </TextLockup>
-          <CornerActions>
-            <CardSelectionIndicator />
-          </CornerActions>
         </Card>
       </CardGroup>
     </Flex>

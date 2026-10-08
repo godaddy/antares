@@ -1,12 +1,35 @@
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
+import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
+import { CornerActionsExample } from '../examples/corner-actions.tsx';
 import { TagEyebrowExample } from '../examples/tag-eyebrow.tsx';
 import { OverridesExample } from '../examples/overrides.tsx';
 import { WithActionsExample } from '../examples/with-actions.tsx';
 import { SelfContainedExample } from '../examples/self-contained.tsx';
 
 describe('@godaddy/antares', function antares() {
+  beforeAll(preloadTestIcons);
+
   describe('#TextLockup', function textLockupTests() {
+    it('wraps a standalone heading while keeping its typography and level', async function cornerActions() {
+      const { getByRole, getByText } = await render(<CornerActionsExample />);
+      const heading = getByRole('heading', { level: 2 }).element();
+      const button = getByRole('button', { name: 'More options' }).element();
+      const actions = button.parentElement!.getBoundingClientRect();
+      const range = document.createRange();
+      range.selectNodeContents(heading);
+      const lines = [...range.getClientRects()];
+
+      expect(lines[0].right).toBeLessThanOrEqual(actions.left);
+      expect(lines[0].top).toBeLessThan(actions.bottom);
+      expect(lines.at(-1)!.top).toBeGreaterThanOrEqual(actions.bottom);
+      expect(getComputedStyle(heading).fontSize).toBe('24px');
+      expect(getComputedStyle(button).fontSize).toBe('16px');
+      expect(
+        getByText('The lockup owns the text layout, wherever you place it.').element().getBoundingClientRect().top
+      ).toBeGreaterThanOrEqual(heading.parentElement!.getBoundingClientRect().bottom);
+    });
+
     it('pairs a tag eyebrow size with the lockup size', async function tagSize() {
       const { container } = await render(<TagEyebrowExample />);
       const tags = container.querySelectorAll('[slot="eyebrow"][data-size]');

@@ -3,6 +3,7 @@ import {
   CardGroup,
   CardSelectionIndicator,
   CornerActions,
+  Header,
   Heading,
   Tag,
   Text,
@@ -28,28 +29,28 @@ export function SingleSelectionExample() {
           <Tag slot="eyebrow" emphasis="success">
             Popular
           </Tag>
-          <Heading slot="title" level={3}>
-            Starter plan
-          </Heading>
+          <Header>
+            <CornerActions>
+              <CardSelectionIndicator data-testid="starter-indicator" />
+            </CornerActions>
+            <Heading slot="title">Starter plan</Heading>
+          </Header>
           <Text slot="body">For getting started with a single project.</Text>
         </TextLockup>
-        <CornerActions>
-          <CardSelectionIndicator data-testid="starter-indicator" />
-        </CornerActions>
       </Card>
       <Card id="pro" textValue="Pro plan">
         <TextLockup>
           <Tag slot="eyebrow" emphasis="premium">
             Upgrade
           </Tag>
-          <Heading slot="title" level={3}>
-            Pro plan
-          </Heading>
+          <Header>
+            <CornerActions>
+              <CardSelectionIndicator data-testid="pro-indicator" />
+            </CornerActions>
+            <Heading slot="title">Pro plan</Heading>
+          </Header>
           <Text slot="body">For teams that need more room to grow.</Text>
         </TextLockup>
-        <CornerActions>
-          <CardSelectionIndicator data-testid="pro-indicator" />
-        </CornerActions>
       </Card>
     </CardGroup>
   );

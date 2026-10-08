@@ -6,6 +6,7 @@ import {
   CornerActions,
   Flex,
   Grid,
+  Header,
   Heading,
   Icon,
   Image,
@@ -54,15 +55,16 @@ export function LayoutExample() {
         ].map(function renderCard([title, body], index) {
           return (
             <Card key={title} gap="md" data-testid={`collection-card-${index}`}>
-              <CornerActions>
-                <Button aria-label="More options">
-                  <Icon icon="ellipsis" />
-                </Button>
-              </CornerActions>
-
               <TextLockup>
                 <Tag slot="eyebrow">Recommended</Tag>
-                <Heading slot="title">{title}</Heading>
+                <Header>
+                  <CornerActions>
+                    <Button aria-label="More options">
+                      <Icon icon="ellipsis" />
+                    </Button>
+                  </CornerActions>
+                  <Heading slot="title">{title}</Heading>
+                </Header>
                 <Text slot="body">{body}</Text>
               </TextLockup>
 
