@@ -31,19 +31,6 @@ Omitting `ProgressBarValue` hides visible value output while preserving accessib
 
 Custom visual value content does not change `aria-valuetext`. The root's `valueLabel` accepts a string for accessible value text and the default output of `ProgressBarValue`; it does not add a visible value by itself.
 
-### Migration
-
-Replace root `label` with `Label` and `helperText` with `Text slot="description"`. Add `ProgressBarTrack` explicitly, and add `ProgressBarValue` to retain visible percentage text:
-
-```tsx
-<ProgressBar value={60}>
-  <Label>Uploading</Label>
-  <ProgressBarValue />
-  <ProgressBarTrack />
-  <Text slot="description">3 of 5 files uploaded</Text>
-</ProgressBar>
-```
-
 ## Accessibility
 
 - The root has `role="progressbar"` and a range defined by `minValue` and `maxValue`, defaulting to 0 and 100.
