@@ -2,4 +2,6 @@
 '@godaddy/antares': minor
 ---
 
-Introduce a composable ProgressBar with optional `Label`, `ProgressBarValue`, and `Text slot="description"` around `ProgressBarTrack`. Value output supports formatted text, static content, and render functions. The component supports determinate and indeterminate progress, accessible naming and descriptions, custom ranges, track sizes, status colors, and compact track-only layouts.
+Introduce a composable ProgressBar with `Label`, `ProgressBarValue`, `ProgressBarTrack`, and `Text slot="description"`. Visible value output is optional and supports formatted text, static content, and render functions.
+
+API change: `Label` and `Text slot="description"` replace the root's `label` and `helperText` props. Add `ProgressBarTrack` explicitly and `ProgressBarValue` when visible value output is needed.
