@@ -1,4 +1,4 @@
-import { useId, useState, type RefAttributes } from 'react';
+import { useState, type RefAttributes } from 'react';
 import {
   Button,
   Label,
@@ -24,13 +24,11 @@ interface CompositionExampleProps extends ProgressBarProps, RefAttributes<HTMLDi
 
 /** @ignore */
 export function CompositionExample({ trackProps, valueProps, nested, ...props }: CompositionExampleProps) {
-  const nestedDescriptionId = useId();
-  const { 'aria-describedby': describedBy = 'external-description', ...rest } = props;
   const [descriptionId, setDescriptionId] = useState<string | undefined>('upload-description');
   return (
     <>
       <Text id="external-description">Keep this window open.</Text>
-      <ProgressBar value={60} aria-describedby={[describedBy, descriptionId].filter(Boolean).join(' ')} {...rest}>
+      <ProgressBar value={60} aria-describedby="external-description" {...props}>
         {({ valueText }) => (
           <>
             <ProgressBarTrack {...trackProps} />
@@ -46,13 +44,11 @@ export function CompositionExample({ trackProps, valueProps, nested, ...props }:
             </div>
             {nested && (
               <div>
-                <ProgressBar value={20} size="xs" status="success" aria-describedby={nestedDescriptionId}>
+                <ProgressBar value={20} size="xs" status="success">
                   <Label>Current file</Label>
                   <ProgressBarValue />
                   <ProgressBarTrack />
-                  <Text id={nestedDescriptionId} slot="description">
-                    One file
-                  </Text>
+                  <Text slot="description">One file</Text>
                 </ProgressBar>
               </div>
             )}

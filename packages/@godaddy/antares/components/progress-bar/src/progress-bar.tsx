@@ -1,4 +1,5 @@
-import { forwardRef, type ReactNode } from 'react';
+import { forwardRef, useCallback, useState, type ReactNode, type Ref } from 'react';
+import { useId } from 'react-aria';
 import {
   DEFAULT_SLOT,
   ProgressBar as RACProgressBar,
@@ -29,12 +30,18 @@ export interface ProgressBarProps extends RACProgressBarProps, Omit<GridOwnProps
 }
 
 interface ProgressBarBodyProps {
+  /** ID for the description slot. */
+  descriptionId: string;
+
+  /** Tracks whether a description is mounted. */
+  descriptionRef: Ref<HTMLElement>;
+
   /** Composed interior. */
   children: ReactNode;
 }
 
 // Read the context inside RACProgressBar so React Aria's label ID and ref survive styling.
-function ProgressBarBody({ children }: ProgressBarBodyProps) {
+function ProgressBarBody({ descriptionId, descriptionRef, children }: ProgressBarBodyProps) {
   const label = useSlottedContext(LabelContext) ?? {};
 
   return (
@@ -47,6 +54,8 @@ function ProgressBarBody({ children }: ProgressBarBodyProps) {
             slots: {
               [DEFAULT_SLOT]: {},
               description: {
+                id: descriptionId,
+                ref: descriptionRef,
                 className: composeClassName(undefined, styles.description, textTreatmentClassName('inherit'))
               }
             }
@@ -61,7 +70,14 @@ function ProgressBarBody({ children }: ProgressBarBodyProps) {
 
 /** Shows determinate or indeterminate progress. Compose only the parts you need. */
 export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(function ProgressBar(props, ref) {
-  const { size = 'md', status = 'default', className, children, ...rest } = props;
+  const { size = 'md', status = 'default', className, children, 'aria-describedby': describedBy, ...rest } = props;
+  // React Aria merges a consumer's description ID back into this ID via TextContext.
+  const descriptionId = useId();
+  const [hasDescription, setHasDescription] = useState(false);
+  const descriptionRef = useCallback(function descriptionRef(element: HTMLElement | null) {
+    setHasDescription(!!element);
+  }, []);
+  const description = [describedBy, hasDescription ? descriptionId : undefined].filter(Boolean).join(' ') || undefined;
 
   return (
     <Grid
@@ -75,11 +91,14 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(function
       className={composeClassName(className, styles.progressBar)}
       data-size={size}
       data-status={status}
+      aria-describedby={description}
     >
       {function renderContent(state) {
         return (
           <ProgressBarStateContext.Provider value={state}>
-            <ProgressBarBody>{typeof children === 'function' ? children(state) : children}</ProgressBarBody>
+            <ProgressBarBody descriptionId={descriptionId} descriptionRef={descriptionRef}>
+              {typeof children === 'function' ? children(state) : children}
+            </ProgressBarBody>
           </ProgressBarStateContext.Provider>
         );
       }}

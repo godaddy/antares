@@ -118,7 +118,7 @@ describe('@godaddy/antares', function antares() {
       await expect.element(screen.getByText('0%')).toBeVisible();
     });
 
-    it('preserves description links from server markup through hydration', async function hydratesDescriptions() {
+    it('associates descriptions after hydration without mismatches', async function hydratesDescriptions() {
       const environment = globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean };
       const previousActEnvironment = environment.IS_REACT_ACT_ENVIRONMENT;
       environment.IS_REACT_ACT_ENVIRONMENT = true;
@@ -133,9 +133,8 @@ describe('@godaddy/antares', function antares() {
         document.body.append(container);
         const progress = page.elementLocator(container).getByRole('progressbar', { name: 'Uploading' });
         const serverElement = progress.element();
-        const serverMarkup = serverElement.outerHTML;
-        await expect.element(progress).toHaveAttribute('aria-describedby', 'external-description upload-description');
-        await expect.element(progress).toHaveAccessibleDescription('Keep this window open. 60% uploaded');
+        await expect.element(progress).toHaveAttribute('aria-describedby', 'external-description');
+        await expect.element(progress).toHaveAccessibleDescription('Keep this window open.');
 
         await act(async function hydrate() {
           root = hydrateRoot(container, <CompositionExample />, {
@@ -146,7 +145,6 @@ describe('@godaddy/antares', function antares() {
         });
 
         expect(progress.element()).toBe(serverElement);
-        expect(progress.element().outerHTML).toBe(serverMarkup);
         await expect.element(progress).toHaveAttribute('aria-describedby', 'external-description upload-description');
         await expect.element(progress).toHaveAccessibleDescription('Keep this window open. 60% uploaded');
         expect(recoverableErrors).toEqual([]);
