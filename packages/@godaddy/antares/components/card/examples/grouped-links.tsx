@@ -17,7 +17,7 @@ export function GroupedLinksExample() {
 
   return (
     <>
-      <CardGroup aria-label="Domain names" selectionMode="none">
+      <CardGroup aria-label="Domain names" selectionMode="none" keyboardNavigationBehavior="tab">
         <Card
           id="example-com"
           textValue="example.com"

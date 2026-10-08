@@ -35,7 +35,7 @@ export function ActionsExample() {
 
   return (
     <>
-      <CardGroup aria-label="Newsletters">
+      <CardGroup aria-label="Newsletters" keyboardNavigationBehavior="tab">
         <Card id="newsletter" textValue="Join our mailing list" onAction={() => setSubscribing(true)}>
           <TextLockup>
             <Tag slot="eyebrow">Newsletter</Tag>
