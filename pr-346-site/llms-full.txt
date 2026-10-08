@@ -92,6 +92,96 @@ Any bundler that supports CSS imports will work with Antares. If your bundler do
 <ComponentCards />
 
 
+# Alert
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A minimal alert with a title and body text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Alert, type AlertProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<AlertProps>) {\n  return (\n    <Alert emphasis=\&#x22;info\&#x22; title=\&#x22;Your domain is ready\&#x22; {...props}>\n      You can now start building your website.\n    </Alert>\n  );\n}&#x22;" />
+
+### Emphasis Variants [#emphasis-variants]
+
+All 7 emphasis categories. Each variant carries a distinct visual accent and semantic icon so the type of message is never communicated by color alone.
+
+<Story of="EmphasesExample" />
+
+<Source language="tsx" code="&#x22;import { Alert, Flex } from '@godaddy/antares';\n\nconst emphases = ['critical', 'warning', 'success', 'info', 'highlight', 'premium', 'internal'] as const;\n\nexport function EmphasesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;1rem\&#x22;>\n      {emphases.map((emphasis) => (\n        <Alert key={emphasis} emphasis={emphasis} title={`This is a ${emphasis} alert`}>\n          Description for the {emphasis} emphasis variant.\n        </Alert>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+
+### Dismissible [#dismissible]
+
+When an `onClose` callback is provided, a dismiss button is rendered. The component does not manage its own visibility — the parent is responsible for unmounting or hiding the alert when `onClose` fires.
+
+<Story of="DismissibleExample" />
+
+<Source language="tsx" code="&#x22;import { Alert, type AlertProps, Button } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DismissibleExample(props?: Partial<AlertProps>) {\n  const [visible, setVisible] = useState(true);\n\n  if (!visible) return <Button onPress={() => setVisible(true)}>Show alert</Button>;\n\n  return (\n    <Alert emphasis=\&#x22;success\&#x22; title=\&#x22;Your account's been verified\&#x22; onClose={() => setVisible(false)} {...props}>\n      We've successfully verified your identity.\n    </Alert>\n  );\n}&#x22;" />
+
+### With Action [#with-action]
+
+Pass a `Button` to the `actions` slot to give the user a clear path to resolve the alert.
+
+<Story of="WithActionExample" />
+
+<Source language="tsx" code="&#x22;import { Alert, Button } from '@godaddy/antares';\n\nexport function WithActionExample() {\n  return (\n    <Alert\n      emphasis=\&#x22;warning\&#x22;\n      title=\&#x22;Your payment method is expiring\&#x22;\n      actions={\n        <Button variant=\&#x22;secondary\&#x22; size=\&#x22;sm\&#x22;>\n          Update Payment Method\n        </Button>\n      }\n      onClose={() => undefined}\n    >\n      Please update your payment method before it expires.\n    </Alert>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key               | Description                                        |
+| ----------------- | -------------------------------------------------- |
+| `Tab`             | Moves focus to the dismiss button or action button |
+| `Space` / `Enter` | Activates the focused button                       |
+
+### Screen readers [#screen-readers]
+
+The alert container uses `role="alert"`, which creates an ARIA live region. When an alert is rendered or its content changes, screen readers announce the message automatically — the user does not need to navigate to the alert to hear it.
+
+### Dismiss button label [#dismiss-button-label]
+
+The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels={{ close: '...' }}` to provide more specific context for screen readers (e.g. `"Dismiss payment warning"`). This is especially useful when multiple alerts are visible at the same time.
+
+## Best Practices [#best-practices]
+
+* Write alert content from the user's perspective: describe what happened and what they can do next, not the underlying technical error.
+* Use `critical` only when the user truly cannot continue without resolving the issue. Overusing it reduces its impact.
+* Always provide a `title` when the alert includes a dismiss button — it improves the reading experience for screen reader users.
+* When using `actions`, prefer `secondary` or `tertiary` Button variants. Avoid placing a primary action inside an alert.
+* Do not stack multiple alerts of the same emphasis; consolidate the message into a single alert.
+
+## Props [#props]
+
+### Alert [#alert]
+
+<PropTable />
+
+
 # Accordion
 
 
@@ -240,96 +330,6 @@ For a single independent section, use Collapsible without an Accordion.
   </Collapsible>
 </Accordion>;
 ```
-
-<PropTable />
-
-
-# Alert
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A minimal alert with a title and body text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Alert, type AlertProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<AlertProps>) {\n  return (\n    <Alert emphasis=\&#x22;info\&#x22; title=\&#x22;Your domain is ready\&#x22; {...props}>\n      You can now start building your website.\n    </Alert>\n  );\n}&#x22;" />
-
-### Emphasis Variants [#emphasis-variants]
-
-All 7 emphasis categories. Each variant carries a distinct visual accent and semantic icon so the type of message is never communicated by color alone.
-
-<Story of="EmphasesExample" />
-
-<Source language="tsx" code="&#x22;import { Alert, Flex } from '@godaddy/antares';\n\nconst emphases = ['critical', 'warning', 'success', 'info', 'highlight', 'premium', 'internal'] as const;\n\nexport function EmphasesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;1rem\&#x22;>\n      {emphases.map((emphasis) => (\n        <Alert key={emphasis} emphasis={emphasis} title={`This is a ${emphasis} alert`}>\n          Description for the {emphasis} emphasis variant.\n        </Alert>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
-
-### Dismissible [#dismissible]
-
-When an `onClose` callback is provided, a dismiss button is rendered. The component does not manage its own visibility — the parent is responsible for unmounting or hiding the alert when `onClose` fires.
-
-<Story of="DismissibleExample" />
-
-<Source language="tsx" code="&#x22;import { Alert, type AlertProps, Button } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DismissibleExample(props?: Partial<AlertProps>) {\n  const [visible, setVisible] = useState(true);\n\n  if (!visible) return <Button onPress={() => setVisible(true)}>Show alert</Button>;\n\n  return (\n    <Alert emphasis=\&#x22;success\&#x22; title=\&#x22;Your account's been verified\&#x22; onClose={() => setVisible(false)} {...props}>\n      We've successfully verified your identity.\n    </Alert>\n  );\n}&#x22;" />
-
-### With Action [#with-action]
-
-Pass a `Button` to the `actions` slot to give the user a clear path to resolve the alert.
-
-<Story of="WithActionExample" />
-
-<Source language="tsx" code="&#x22;import { Alert, Button } from '@godaddy/antares';\n\nexport function WithActionExample() {\n  return (\n    <Alert\n      emphasis=\&#x22;warning\&#x22;\n      title=\&#x22;Your payment method is expiring\&#x22;\n      actions={\n        <Button variant=\&#x22;secondary\&#x22; size=\&#x22;sm\&#x22;>\n          Update Payment Method\n        </Button>\n      }\n      onClose={() => undefined}\n    >\n      Please update your payment method before it expires.\n    </Alert>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key               | Description                                        |
-| ----------------- | -------------------------------------------------- |
-| `Tab`             | Moves focus to the dismiss button or action button |
-| `Space` / `Enter` | Activates the focused button                       |
-
-### Screen readers [#screen-readers]
-
-The alert container uses `role="alert"`, which creates an ARIA live region. When an alert is rendered or its content changes, screen readers announce the message automatically — the user does not need to navigate to the alert to hear it.
-
-### Dismiss button label [#dismiss-button-label]
-
-The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels={{ close: '...' }}` to provide more specific context for screen readers (e.g. `"Dismiss payment warning"`). This is especially useful when multiple alerts are visible at the same time.
-
-## Best Practices [#best-practices]
-
-* Write alert content from the user's perspective: describe what happened and what they can do next, not the underlying technical error.
-* Use `critical` only when the user truly cannot continue without resolving the issue. Overusing it reduces its impact.
-* Always provide a `title` when the alert includes a dismiss button — it improves the reading experience for screen reader users.
-* When using `actions`, prefer `secondary` or `tertiary` Button variants. Avoid placing a primary action inside an alert.
-* Do not stack multiple alerts of the same emphasis; consolidate the message into a single alert.
-
-## Props [#props]
-
-### Alert [#alert]
 
 <PropTable />
 
@@ -809,37 +809,36 @@ npm install @godaddy/antares
 
 ### Default [#default]
 
-A static Card just renders its children.
+A simple website status message.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Card } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Card>Sample children example</Card>;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Card } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Card>Your website is published and ready for visitors.</Card>;\n}&#x22;" />
 
 ### Text lockup [#text-lockup]
 
-Compose Card with TextLockup for eyebrow, title, and body.
+Introduce the next step in setting up a business website.
 
 <Story of="TextLockupExample" />
 
-<Source language="tsx" code="&#x22;import { Card, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function TextLockupExample() {\n  return (\n    <Card>\n      <TextLockup>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;info\&#x22;>\n          New\n        </Tag>\n        <Heading slot=\&#x22;title\&#x22;>A composed card</Heading>\n        <Text slot=\&#x22;body\&#x22;>Cards provide a surface while consumers own the interior layout.</Text>\n      </TextLockup>\n    </Card>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Card, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function TextLockupExample() {\n  return (\n    <Card>\n      <TextLockup>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;info\&#x22;>\n          New\n        </Tag>\n        <Heading slot=\&#x22;title\&#x22;>Connect your domain</Heading>\n        <Text slot=\&#x22;body\&#x22;>Give your website a memorable address so customers can find your business.</Text>\n      </TextLockup>\n    </Card>\n  );\n}&#x22;" />
 
 ### Corner actions [#corner-actions]
 
-Direct CornerActions sit at the top-end of the Card.
+Save a business guide for later, mark it as read from the menu, or open the guide.
 
 <Story of="CornerActionsExample" />
 
-<Source language="tsx" code="&#x22;import { Button, ButtonGroup, Card, CornerActions, Heading, Icon, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function CornerActionsExample() {\n  return (\n    <Card>\n      <CornerActions>\n        <Button aria-label=\&#x22;Favorite\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n        </Button>\n        <Button aria-label=\&#x22;More options\&#x22;>\n          <Icon icon=\&#x22;ellipsis\&#x22; />\n        </Button>\n      </CornerActions>\n\n      <TextLockup>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;info\&#x22;>\n          New\n        </Tag>\n        <Heading slot=\&#x22;title\&#x22;>A composed card</Heading>\n        <Text slot=\&#x22;body\&#x22;>Cards provide a surface while consumers own the interior layout.</Text>\n      </TextLockup>\n\n      <ButtonGroup>\n        <Button variant=\&#x22;primary\&#x22;>Confirm</Button>\n      </ButtonGroup>\n    </Card>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Button,\n  ButtonGroup,\n  Card,\n  CornerActions,\n  Header,\n  Heading,\n  Icon,\n  LinkButton,\n  Menu,\n  MenuItem,\n  MenuTrigger,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function CornerActionsExample({ dir }: { dir?: 'ltr' | 'rtl' } = {}) {\n  const [saved, setSaved] = useState(false);\n  const [read, setRead] = useState(false);\n\n  return (\n    <Card dir={dir} style={{ maxWidth: '24rem' }}>\n      <TextLockup>\n        <Header>\n          <CornerActions>\n            <Button aria-label=\&#x22;Favorite\&#x22; aria-pressed={saved} onPress={() => setSaved(!saved)}>\n              <Icon icon=\&#x22;star\&#x22; />\n            </Button>\n            <MenuTrigger popoverProps={{ placement: 'bottom end' }}>\n              <Button aria-label=\&#x22;More options\&#x22;>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n              <Menu aria-label=\&#x22;Guide actions\&#x22;>\n                <MenuItem id=\&#x22;read\&#x22; onAction={() => setRead(!read)}>\n                  {read ? 'Mark as unread' : 'Mark as read'}\n                </MenuItem>\n              </Menu>\n            </MenuTrigger>\n          </CornerActions>\n          <Heading slot=\&#x22;title\&#x22;>\n            Everything you need to launch your first online store and turn new visitors into returning customers\n          </Heading>\n        </Header>\n        <Text slot=\&#x22;body\&#x22;>\n          A practical checklist for your products, payments, shipping, and first marketing campaign.\n        </Text>\n        {read && <Tag>Read</Tag>}\n        <Text role=\&#x22;status\&#x22;>{saved ? 'Saved to your reading list' : '5 min read'}</Text>\n      </TextLockup>\n\n      <ButtonGroup>\n        <LinkButton variant=\&#x22;primary\&#x22; href=\&#x22;#store-launch-guide\&#x22;>\n          Read guide\n        </LinkButton>\n      </ButtonGroup>\n    </Card>\n  );\n}&#x22;" />
 
 ### Link [#link]
 
-`href` renders the Card itself as a native link, so layered content like an elevated Box stays
-clickable. The link takes its name from its content unless you pass `aria-label`. Do not nest
-controls in a link Card.
+Link to billing, domain search, or hosting from the whole Card. Keep nested controls out of
+standalone link Cards.
 
 <Story of="LinkExample" />
 
-<Source language="tsx" code="&#x22;import { Box, Card, Grid, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function LinkExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <Card href=\&#x22;/\&#x22; aria-label=\&#x22;Link card\&#x22;>\n        This is a link card\n      </Card>\n\n      <Card href=\&#x22;#domains\&#x22;>\n        <TextLockup>\n          <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;info\&#x22;>\n            Domains\n          </Tag>\n          <Heading slot=\&#x22;title\&#x22;>Find your domain</Heading>\n          <Text slot=\&#x22;body\&#x22;>Search for the perfect name for your business.</Text>\n        </TextLockup>\n      </Card>\n\n      <Card href=\&#x22;#hosting\&#x22;>\n        <Box elevation=\&#x22;raised\&#x22; rounding=\&#x22;md\&#x22; padding=\&#x22;md\&#x22;>\n          <Text>Layered content</Text>\n        </Box>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22;>Web hosting</Heading>\n          <Text slot=\&#x22;body\&#x22;>An elevated Box inside the Card still opens the link.</Text>\n        </TextLockup>\n      </Card>\n    </Grid>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Box, Card, Grid, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function LinkExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <Card href=\&#x22;#billing\&#x22; aria-label=\&#x22;Manage billing\&#x22;>\n        Manage your billing and payment methods\n      </Card>\n\n      <Card href=\&#x22;#domains\&#x22;>\n        <TextLockup>\n          <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;info\&#x22;>\n            Domains\n          </Tag>\n          <Heading slot=\&#x22;title\&#x22;>Find your domain</Heading>\n          <Text slot=\&#x22;body\&#x22;>Search for the perfect name for your business.</Text>\n        </TextLockup>\n      </Card>\n\n      <Card href=\&#x22;#hosting\&#x22;>\n        <Box elevation=\&#x22;raised\&#x22; rounding=\&#x22;md\&#x22; padding=\&#x22;md\&#x22;>\n          <Text>99.9% uptime</Text>\n        </Box>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22;>Web hosting</Heading>\n          <Text slot=\&#x22;body\&#x22;>Keep your website online with hosting that grows with your business.</Text>\n        </TextLockup>\n      </Card>\n    </Grid>\n  );\n}&#x22;" />
 
 ### Grouped links [#grouped-links]
 
@@ -852,105 +851,82 @@ opening the Card. Arrow keys move between domains, skipping the domain being tra
 
 ### Media [#media]
 
-Use default padding for inset media, or zero Card padding with a padded lockup for full bleed.
-Media can stand alone, follow the text, or be a custom Box. Clip only the media region.
+Preview website templates with inset, full bleed, or standalone media, and a brand palette
+with custom media. Direct CornerActions place the favorite action over the template preview.
 
 <Story of="MediaExample" />
 
-<Source language="tsx" code="&#x22;import { Box, Card, Grid, Heading, Image, Tag, Text, TextLockup } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 640 360%22%3E%3Crect width=%22640%22 height=%22360%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%22480%22 cy=%22110%22 r=%2270%22 fill=%22%234ecdc4%22/%3E%3Cpath d=%22M0 300 180 150l120 100 90-75 250 185H0z%22 fill=%22%230b3d91%22/%3E%3C/svg%3E';\n\nexport function MediaExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <Card>\n        <Image\n          src={image}\n          alt=\&#x22;Blue mountain landscape\&#x22;\n          style={{ display: 'block', width: '100%', borderRadius: 'inherit' }}\n        />\n        <TextLockup>\n          <Tag slot=\&#x22;eyebrow\&#x22;>Inset</Tag>\n          <Heading slot=\&#x22;title\&#x22;>Inset media</Heading>\n          <Text slot=\&#x22;body\&#x22;>The default Card padding keeps media inset.</Text>\n        </TextLockup>\n      </Card>\n\n      <Card padding=\&#x22;0\&#x22; gap=\&#x22;0\&#x22;>\n        <Box style={{ overflow: 'hidden', borderStartStartRadius: 'inherit', borderStartEndRadius: 'inherit' }}>\n          <Image src={image} alt=\&#x22;Blue mountain landscape\&#x22; style={{ display: 'block', width: '100%' }} />\n        </Box>\n\n        <TextLockup padding=\&#x22;lg\&#x22;>\n          <Tag slot=\&#x22;eyebrow\&#x22;>Full bleed</Tag>\n          <Heading slot=\&#x22;title\&#x22;>Full bleed media</Heading>\n          <Text slot=\&#x22;body\&#x22;>The lockup supplies its own padding beneath the edge-to-edge image.</Text>\n        </TextLockup>\n      </Card>\n\n      <Card padding=\&#x22;0\&#x22; gap=\&#x22;0\&#x22;>\n        <Box style={{ overflow: 'hidden', borderRadius: 'inherit' }}>\n          <Image\n            src={image}\n            alt=\&#x22;A media-only card showing a blue mountain landscape\&#x22;\n            style={{ display: 'block', width: '100%' }}\n          />\n        </Box>\n      </Card>\n\n      <Card>\n        <TextLockup>\n          <Tag slot=\&#x22;eyebrow\&#x22;>Custom</Tag>\n          <Heading slot=\&#x22;title\&#x22;>Custom media after content</Heading>\n          <Text slot=\&#x22;body\&#x22;>A plain Box can hold a gradient or illustration, before or after the text.</Text>\n        </TextLockup>\n        <Box rounding=\&#x22;lg\&#x22; style={{ aspectRatio: '16 / 9', background: 'linear-gradient(135deg, #145fa9, #4ecdc4)' }} />\n      </Card>\n    </Grid>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Box, Button, Card, CornerActions, Grid, Heading, Icon, Image, Tag, Text, TextLockup } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 640 360%22%3E%3Crect width=%22640%22 height=%22360%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%22480%22 cy=%22110%22 r=%2270%22 fill=%22%234ecdc4%22/%3E%3Cpath d=%22M0 300 180 150l120 100 90-75 250 185H0z%22 fill=%22%230b3d91%22/%3E%3C/svg%3E';\n\nexport function MediaExample() {\n  const [saved, setSaved] = useState(false);\n\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <Card>\n        <CornerActions>\n          <Button aria-label=\&#x22;Favorite\&#x22; aria-pressed={saved} onPress={() => setSaved(!saved)}>\n            <Icon icon=\&#x22;star\&#x22; />\n          </Button>\n        </CornerActions>\n        <Image\n          src={image}\n          alt=\&#x22;Blue mountain landscape\&#x22;\n          style={{ display: 'block', width: '100%', borderRadius: 'inherit' }}\n        />\n        <TextLockup>\n          <Tag slot=\&#x22;eyebrow\&#x22;>Portfolio</Tag>\n          <Heading slot=\&#x22;title\&#x22;>Lakeside portfolio</Heading>\n          <Text slot=\&#x22;body\&#x22;>A calm, spacious template that puts your work first.</Text>\n          <Text role=\&#x22;status\&#x22;>{saved ? 'Saved to your templates' : 'Free template'}</Text>\n        </TextLockup>\n      </Card>\n\n      <Card padding=\&#x22;0\&#x22; gap=\&#x22;0\&#x22;>\n        <Box style={{ overflow: 'hidden', borderStartStartRadius: 'inherit', borderStartEndRadius: 'inherit' }}>\n          <Image src={image} alt=\&#x22;Blue mountain landscape\&#x22; style={{ display: 'block', width: '100%' }} />\n        </Box>\n\n        <TextLockup padding=\&#x22;lg\&#x22;>\n          <Tag slot=\&#x22;eyebrow\&#x22;>Photography</Tag>\n          <Heading slot=\&#x22;title\&#x22;>Horizon photography</Heading>\n          <Text slot=\&#x22;body\&#x22;>Give your photos room to tell the story.</Text>\n        </TextLockup>\n      </Card>\n\n      <Card padding=\&#x22;0\&#x22; gap=\&#x22;0\&#x22;>\n        <Box style={{ overflow: 'hidden', borderRadius: 'inherit' }}>\n          <Image\n            src={image}\n            alt=\&#x22;Blue mountain landscape preview for the Horizon website template\&#x22;\n            style={{ display: 'block', width: '100%' }}\n          />\n        </Box>\n      </Card>\n\n      <Card>\n        <TextLockup>\n          <Tag slot=\&#x22;eyebrow\&#x22;>Branding</Tag>\n          <Heading slot=\&#x22;title\&#x22;>Find your brand colors</Heading>\n          <Text slot=\&#x22;body\&#x22;>A blue and turquoise palette for a fresh, confident first impression.</Text>\n        </TextLockup>\n        <Box\n          role=\&#x22;img\&#x22;\n          aria-label=\&#x22;Blue and turquoise brand palette\&#x22;\n          rounding=\&#x22;lg\&#x22;\n          style={{ aspectRatio: '16 / 9', background: 'linear-gradient(135deg, #145fa9, #4ecdc4)' }}\n        />\n      </Card>\n    </Grid>\n  );\n}&#x22;" />
 
 ### Actions [#actions]
 
-Inside a CardGroup, `onAction` runs when the row is pressed or activated with Enter. Nested
-buttons keep their own presses, so Save does not open the Modal. Compose a Card inside the Modal
-when the action is a focused form.
+Open a newsletter signup from the Card, or save it without opening the form. Submit a valid
+email to see a local confirmation.
 
 <Story of="ActionsExample" />
 
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Button,\n  ButtonGroup,\n  Card,\n  CardGroup,\n  Heading,\n  Input,\n  Label,\n  Modal,\n  Tag,\n  Text,\n  TextField,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function ActionsExample() {\n  const [subscribing, setSubscribing] = useState(false);\n  const [saved, setSaved] = useState(false);\n\n  return (\n    <>\n      <CardGroup aria-label=\&#x22;Newsletters\&#x22;>\n        <Card id=\&#x22;newsletter\&#x22; textValue=\&#x22;Join our mailing list\&#x22; onAction={() => setSubscribing(true)}>\n          <TextLockup>\n            <Tag slot=\&#x22;eyebrow\&#x22;>Newsletter</Tag>\n            <Heading slot=\&#x22;title\&#x22;>Join our mailing list</Heading>\n            <Text slot=\&#x22;body\&#x22;>\n              Stay up to date on the latest trends. Press the Card to subscribe, or save it for later.\n            </Text>\n          </TextLockup>\n\n          <ButtonGroup justifyContent=\&#x22;end\&#x22;>\n            <Button variant=\&#x22;primary\&#x22; onPress={() => setSaved(true)}>\n              {saved ? 'Saved' : 'Save'}\n            </Button>\n          </ButtonGroup>\n        </Card>\n      </CardGroup>\n\n      <Modal isOpen={subscribing} onOpenChange={setSubscribing} aria-label=\&#x22;Join our mailing list\&#x22;>\n        <Card elevation=\&#x22;base\&#x22;>\n          <TextLockup>\n            <Heading slot=\&#x22;title\&#x22;>Join our mailing list</Heading>\n            <Text slot=\&#x22;body\&#x22;>The market is evolving. Stay up to date on the latest trends.</Text>\n          </TextLockup>\n\n          <TextField type=\&#x22;email\&#x22;>\n            <Label>Email</Label>\n            <Input placeholder=\&#x22;you@example.com\&#x22; />\n          </TextField>\n\n          <ButtonGroup justifyContent=\&#x22;end\&#x22;>\n            <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n            <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Submit\n            </Button>\n          </ButtonGroup>\n        </Card>\n      </Modal>\n    </>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState, type FormEvent } from 'react';\nimport {\n  Box,\n  Button,\n  ButtonGroup,\n  Card,\n  CardGroup,\n  FieldError,\n  Heading,\n  Input,\n  Label,\n  Modal,\n  Tag,\n  Text,\n  TextField,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function ActionsExample() {\n  const [subscribing, setSubscribing] = useState(false);\n  const [saved, setSaved] = useState(false);\n  const [subscribedEmail, setSubscribedEmail] = useState('');\n\n  function subscribe(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    setSubscribedEmail(String(new FormData(event.currentTarget).get('email')));\n    setSubscribing(false);\n  }\n\n  return (\n    <>\n      <CardGroup aria-label=\&#x22;Newsletters\&#x22;>\n        <Card id=\&#x22;newsletter\&#x22; textValue=\&#x22;Join our mailing list\&#x22; onAction={() => setSubscribing(true)}>\n          <TextLockup>\n            <Tag slot=\&#x22;eyebrow\&#x22;>Newsletter</Tag>\n            <Heading slot=\&#x22;title\&#x22;>Join our mailing list</Heading>\n            <Text slot=\&#x22;body\&#x22;>Get practical tips for growing your business, delivered to your inbox every month.</Text>\n          </TextLockup>\n\n          <ButtonGroup justifyContent=\&#x22;end\&#x22;>\n            <Button variant=\&#x22;primary\&#x22; aria-pressed={saved} onPress={() => setSaved(!saved)}>\n              {saved ? 'Saved' : 'Save'}\n            </Button>\n          </ButtonGroup>\n        </Card>\n      </CardGroup>\n      <Text role=\&#x22;status\&#x22;>{subscribedEmail ? `Subscribed with ${subscribedEmail}` : ''}</Text>\n\n      <Modal isOpen={subscribing} onOpenChange={setSubscribing} aria-label=\&#x22;Join our mailing list\&#x22;>\n        <Box as=\&#x22;form\&#x22; onSubmit={subscribe}>\n          <Card elevation=\&#x22;base\&#x22;>\n            <TextLockup>\n              <Heading slot=\&#x22;title\&#x22;>Join our mailing list</Heading>\n              <Text slot=\&#x22;body\&#x22;>One email a month. Unsubscribe whenever you like.</Text>\n            </TextLockup>\n\n            <TextField type=\&#x22;email\&#x22; name=\&#x22;email\&#x22; isRequired>\n              <Label>Email</Label>\n              <Input placeholder=\&#x22;you@example.com\&#x22; />\n              <Box style={{ minHeight: '1.5em' }}>\n                <FieldError>Enter a valid email address.</FieldError>\n              </Box>\n            </TextField>\n\n            <ButtonGroup justifyContent=\&#x22;end\&#x22;>\n              <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n              <Button type=\&#x22;submit\&#x22; variant=\&#x22;primary\&#x22;>\n                Subscribe\n              </Button>\n            </ButtonGroup>\n          </Card>\n        </Box>\n      </Modal>\n    </>\n  );\n}&#x22;" />
 
 ### Multiple selection [#multiple-selection]
 
-`selectionMode="multiple"` lets each Card toggle on its own. CardSelectionIndicator shows the
-state, and its children can render custom content from it. Nested buttons keep their own presses.
+Choose optional add-ons and see the monthly total update. The indicators show selection,
+including a custom text indicator for email.
 
 <Story of="MultipleSelectionExample" />
 
-<Source language="tsx" code="&#x22;import {\n  Button,\n  Card,\n  CardGroup,\n  CardSelectionIndicator,\n  CornerActions,\n  Heading,\n  Icon,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function MultipleSelectionExample() {\n  return (\n    <CardGroup aria-label=\&#x22;Select add-ons\&#x22; selectionMode=\&#x22;multiple\&#x22; defaultSelectedKeys={['privacy']}>\n      <Card id=\&#x22;privacy\&#x22; textValue=\&#x22;Domain privacy\&#x22;>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22;>Domain privacy</Heading>\n          <Text slot=\&#x22;body\&#x22;>Hide your contact details from the public directory.</Text>\n        </TextLockup>\n        <CornerActions>\n          <Button aria-label=\&#x22;More options\&#x22;>\n            <Icon icon=\&#x22;ellipsis\&#x22; />\n          </Button>\n          <CardSelectionIndicator data-testid=\&#x22;privacy-indicator\&#x22; />\n        </CornerActions>\n      </Card>\n\n      <Card id=\&#x22;email\&#x22; textValue=\&#x22;Professional email\&#x22;>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22;>Professional email</Heading>\n          <Text slot=\&#x22;body\&#x22;>Send from a mailbox at your domain.</Text>\n        </TextLockup>\n        <CornerActions>\n          <CardSelectionIndicator data-testid=\&#x22;email-indicator\&#x22;>\n            {({ isSelected }) => <Text>{isSelected ? 'Added' : 'Add'}</Text>}\n          </CardSelectionIndicator>\n        </CornerActions>\n      </Card>\n    </CardGroup>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Card,\n  CardGroup,\n  CardSelectionIndicator,\n  CornerActions,\n  Flex,\n  Header,\n  Heading,\n  type Selection,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function MultipleSelectionExample() {\n  const [selected, setSelected] = useState<Selection>(new Set(['privacy']));\n  const privacyPrice = 5;\n  const emailPrice = 8;\n  const total =\n    (selected === 'all' || selected.has('privacy') ? privacyPrice : 0) +\n    (selected === 'all' || selected.has('email') ? emailPrice : 0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <CardGroup\n        aria-label=\&#x22;Select add-ons\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selected}\n        onSelectionChange={setSelected}\n      >\n        <Card id=\&#x22;privacy\&#x22; textValue=\&#x22;Domain privacy\&#x22;>\n          <TextLockup>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator data-testid=\&#x22;privacy-indicator\&#x22; />\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>Domain privacy</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>Hide your contact details from the public directory.</Text>\n            <Text>${privacyPrice}/month</Text>\n          </TextLockup>\n        </Card>\n\n        <Card id=\&#x22;email\&#x22; textValue=\&#x22;Professional email\&#x22;>\n          <TextLockup>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator data-testid=\&#x22;email-indicator\&#x22;>\n                  {({ isSelected }) => <Text>{isSelected ? 'Added' : 'Add'}</Text>}\n                </CardSelectionIndicator>\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>Professional email</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>Send from a mailbox at your domain.</Text>\n            <Text>${emailPrice}/month</Text>\n          </TextLockup>\n        </Card>\n      </CardGroup>\n      <Text role=\&#x22;status\&#x22;>Add-ons total: ${total}/month</Text>\n    </Flex>\n  );\n}&#x22;" />
 
 ### Single selection [#single-selection]
 
-`selectionMode="single"` allows one selected Card, and `disallowEmptySelection` keeps the plan
-picker from becoming empty. Arrow keys move between Cards, and Space selects the focused one.
+Pick a plan and see its monthly price. `disallowEmptySelection` keeps one plan selected.
 
 <Story of="SingleSelectionExample" />
 
-<Source language="tsx" code="&#x22;import {\n  Card,\n  CardGroup,\n  CardSelectionIndicator,\n  CornerActions,\n  Heading,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function SingleSelectionExample() {\n  return (\n    <CardGroup\n      aria-label=\&#x22;Choose a plan\&#x22;\n      selectionMode=\&#x22;single\&#x22;\n      disallowEmptySelection\n      defaultSelectedKeys={['starter']}\n    >\n      <Card id=\&#x22;starter\&#x22; textValue=\&#x22;Starter plan\&#x22;>\n        <TextLockup>\n          <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n            Popular\n          </Tag>\n          <Heading slot=\&#x22;title\&#x22; level={3}>\n            Starter plan\n          </Heading>\n          <Text slot=\&#x22;body\&#x22;>For getting started with a single project.</Text>\n        </TextLockup>\n        <CornerActions>\n          <CardSelectionIndicator data-testid=\&#x22;starter-indicator\&#x22; />\n        </CornerActions>\n      </Card>\n      <Card id=\&#x22;pro\&#x22; textValue=\&#x22;Pro plan\&#x22;>\n        <TextLockup>\n          <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n            Upgrade\n          </Tag>\n          <Heading slot=\&#x22;title\&#x22; level={3}>\n            Pro plan\n          </Heading>\n          <Text slot=\&#x22;body\&#x22;>For teams that need more room to grow.</Text>\n        </TextLockup>\n        <CornerActions>\n          <CardSelectionIndicator data-testid=\&#x22;pro-indicator\&#x22; />\n        </CornerActions>\n      </Card>\n    </CardGroup>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Card,\n  CardGroup,\n  CardSelectionIndicator,\n  CornerActions,\n  Flex,\n  Header,\n  Heading,\n  type Selection,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function SingleSelectionExample() {\n  const [selected, setSelected] = useState<Selection>(new Set(['starter']));\n  const starterPrice = 10;\n  const proPrice = 25;\n  const isPro = selected !== 'all' && selected.has('pro');\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <CardGroup\n        aria-label=\&#x22;Choose a plan\&#x22;\n        selectionMode=\&#x22;single\&#x22;\n        disallowEmptySelection\n        selectedKeys={selected}\n        onSelectionChange={setSelected}\n      >\n        <Card id=\&#x22;starter\&#x22; textValue=\&#x22;Starter plan\&#x22;>\n          <TextLockup>\n            <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n              Popular\n            </Tag>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator data-testid=\&#x22;starter-indicator\&#x22; />\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>Starter plan</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>For getting started with a single project.</Text>\n            <Text>${starterPrice}/month</Text>\n          </TextLockup>\n        </Card>\n        <Card id=\&#x22;pro\&#x22; textValue=\&#x22;Pro plan\&#x22;>\n          <TextLockup>\n            <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n              Upgrade\n            </Tag>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator data-testid=\&#x22;pro-indicator\&#x22; />\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>Pro plan</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>For teams that need more room to grow.</Text>\n            <Text>${proPrice}/month</Text>\n          </TextLockup>\n        </Card>\n      </CardGroup>\n      <Text role=\&#x22;status\&#x22;>\n        Selected plan: {isPro ? 'Pro' : 'Starter'} - ${isPro ? proPrice : starterPrice}/month\n      </Text>\n    </Flex>\n  );\n}&#x22;" />
 
 ### Disabled [#disabled]
 
-`isDisabled` fades the Card. A disabled link Card does not navigate, and a disabled Card in a
-CardGroup cannot be selected, run its action, or take focus. `disabledKeys` on the group does
-the same by key.
+Explain why billing or add-ons are unavailable. Disable an individual Card with `isDisabled`,
+or disable Cards by key with `disabledKeys` on the group.
 
 <Story of="DisabledExample" />
 
-<Source language="tsx" code="&#x22;import {\n  Card,\n  CardGroup,\n  CardSelectionIndicator,\n  CornerActions,\n  Flex,\n  Heading,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Card href=\&#x22;#billing\&#x22; isDisabled>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22;>Disabled link</Heading>\n          <Text slot=\&#x22;body\&#x22;>Pressing the Card does nothing.</Text>\n        </TextLockup>\n      </Card>\n\n      <CardGroup aria-label=\&#x22;Backups\&#x22; selectionMode=\&#x22;multiple\&#x22; disabledKeys={['ssl']}>\n        <Card id=\&#x22;backup\&#x22; textValue=\&#x22;Backup\&#x22; isDisabled>\n          <TextLockup>\n            <Heading slot=\&#x22;title\&#x22;>Disabled with isDisabled</Heading>\n            <Text slot=\&#x22;body\&#x22;>The Card cannot be selected.</Text>\n          </TextLockup>\n          <CornerActions>\n            <CardSelectionIndicator />\n          </CornerActions>\n        </Card>\n\n        <Card id=\&#x22;ssl\&#x22; textValue=\&#x22;SSL\&#x22;>\n          <TextLockup>\n            <Heading slot=\&#x22;title\&#x22;>Disabled with disabledKeys</Heading>\n            <Text slot=\&#x22;body\&#x22;>The group disables this Card by key.</Text>\n          </TextLockup>\n          <CornerActions>\n            <CardSelectionIndicator />\n          </CornerActions>\n        </Card>\n      </CardGroup>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import {\n  Card,\n  CardGroup,\n  CardSelectionIndicator,\n  CornerActions,\n  Flex,\n  Header,\n  Heading,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Card href=\&#x22;#billing\&#x22; isDisabled>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22;>Billing temporarily unavailable</Heading>\n          <Text slot=\&#x22;body\&#x22;>Finish transferring your account to manage billing.</Text>\n        </TextLockup>\n      </Card>\n\n      <CardGroup aria-label=\&#x22;Available add-ons\&#x22; selectionMode=\&#x22;multiple\&#x22; disabledKeys={['ssl']}>\n        <Card id=\&#x22;backup\&#x22; textValue=\&#x22;Automatic backups\&#x22; isDisabled>\n          <TextLockup>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator />\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>Automatic backups</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>Add a hosting plan to enable daily backups.</Text>\n          </TextLockup>\n        </Card>\n\n        <Card id=\&#x22;ssl\&#x22; textValue=\&#x22;SSL certificate\&#x22;>\n          <TextLockup>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator />\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>SSL certificate</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>Connect a domain to activate your SSL certificate.</Text>\n          </TextLockup>\n        </Card>\n      </CardGroup>\n    </Flex>\n  );\n}&#x22;" />
 
 ### Layout [#layout]
 
-Use Grid for responsiveness.
+A featured business guide and a responsive reading list. Grid adapts the layout to the
+available space, while each guide keeps its own height.
 
 <Story of="LayoutExample" />
 
-<Source language="tsx" code="&#x22;import {\n  Box,\n  Button,\n  ButtonGroup,\n  Card,\n  CornerActions,\n  Flex,\n  Grid,\n  Heading,\n  Icon,\n  Image,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 240%22%3E%3Crect width=%22320%22 height=%22240%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%22220%22 cy=%2270%22 r=%2250%22 fill=%22%234ecdc4%22/%3E%3C/svg%3E';\n\nexport function LayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <Box style={{ maxWidth: '48rem', width: '100%' }}>\n        <Card>\n          <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;center\&#x22;>\n            <Image\n              src={image}\n              alt=\&#x22;Blue abstract landscape\&#x22;\n              data-testid=\&#x22;container-query-media\&#x22;\n              style={{ display: 'block', width: '100%', height: 'auto' }}\n            />\n            <TextLockup data-testid=\&#x22;container-query-content\&#x22;>\n              <Tag slot=\&#x22;eyebrow\&#x22;>Responsive</Tag>\n              <Heading slot=\&#x22;title\&#x22;>Grid-owned responsiveness</Heading>\n              <Text slot=\&#x22;body\&#x22;>Auto-fit columns decide when this composition stacks or becomes horizontal.</Text>\n            </TextLockup>\n          </Grid>\n        </Card>\n      </Box>\n\n      <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        {[\n          ['Card 1', 'Short description'],\n          ['Card 2', 'A medium description gives this card more content.'],\n          [\n            'A longer title that wraps across lines',\n            'A longer description demonstrates that each card can grow while its action stays aligned.'\n          ]\n        ].map(function renderCard([title, body], index) {\n          return (\n            <Card key={title} gap=\&#x22;md\&#x22; data-testid={`collection-card-${index}`}>\n              <CornerActions>\n                <Button aria-label=\&#x22;More options\&#x22;>\n                  <Icon icon=\&#x22;ellipsis\&#x22; />\n                </Button>\n              </CornerActions>\n\n              <TextLockup>\n                <Tag slot=\&#x22;eyebrow\&#x22;>Recommended</Tag>\n                <Heading slot=\&#x22;title\&#x22;>{title}</Heading>\n                <Text slot=\&#x22;body\&#x22;>{body}</Text>\n              </TextLockup>\n\n              <ButtonGroup justifyContent=\&#x22;end\&#x22;>\n                <Button variant=\&#x22;primary\&#x22;>View details</Button>\n              </ButtonGroup>\n            </Card>\n          );\n        })}\n      </Grid>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Box,\n  Button,\n  ButtonGroup,\n  Card,\n  CornerActions,\n  Flex,\n  Grid,\n  Header,\n  Heading,\n  Icon,\n  Image,\n  LinkButton,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 240%22%3E%3Crect width=%22320%22 height=%22240%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%22220%22 cy=%2270%22 r=%2250%22 fill=%22%234ecdc4%22/%3E%3C/svg%3E';\n\nexport function LayoutExample() {\n  const [saved, setSaved] = useState(new Set<string>());\n\n  function toggleSaved(id: string) {\n    setSaved(function updateSaved(current) {\n      const next = new Set(current);\n      if (next.has(id)) next.delete(id);\n      else next.add(id);\n      return next;\n    });\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <Box style={{ maxWidth: '48rem', width: '100%' }}>\n        <Card>\n          <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;center\&#x22;>\n            <Image\n              src={image}\n              alt=\&#x22;Blue abstract landscape\&#x22;\n              data-testid=\&#x22;container-query-media\&#x22;\n              style={{ display: 'block', width: '100%', height: 'auto' }}\n            />\n            <TextLockup data-testid=\&#x22;container-query-content\&#x22;>\n              <Tag slot=\&#x22;eyebrow\&#x22;>Featured guide</Tag>\n              <Heading slot=\&#x22;title\&#x22;>Build a website that works for your business</Heading>\n              <Text slot=\&#x22;body\&#x22;>\n                Choose your pages, tell your story, and make it easy for customers to get in touch.\n              </Text>\n            </TextLockup>\n          </Grid>\n        </Card>\n      </Box>\n\n      <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        {[\n          ['domain', 'Find your domain', 'Choose a name customers will remember.'],\n          ['brand', 'Build your brand', 'Bring your colors, logo, and business story together.'],\n          [\n            'store',\n            'Turn your first online store into a place customers want to come back to',\n            'Build trust with clear product photos, straightforward shipping, and a checkout that is easy to use.'\n          ]\n        ].map(function renderCard([id, title, body], index) {\n          return (\n            <Card key={id} gap=\&#x22;md\&#x22; data-testid={`collection-card-${index}`}>\n              <TextLockup>\n                <Tag slot=\&#x22;eyebrow\&#x22;>Recommended</Tag>\n                <Header>\n                  <CornerActions>\n                    <Button aria-label={`Save ${title}`} aria-pressed={saved.has(id)} onPress={() => toggleSaved(id)}>\n                      <Icon icon=\&#x22;star\&#x22; />\n                    </Button>\n                  </CornerActions>\n                  <Heading slot=\&#x22;title\&#x22;>{title}</Heading>\n                </Header>\n                <Text slot=\&#x22;body\&#x22;>{body}</Text>\n              </TextLockup>\n\n              <ButtonGroup justifyContent=\&#x22;end\&#x22;>\n                <LinkButton variant=\&#x22;primary\&#x22; href={`#${id}-guide`}>\n                  Read guide\n                </LinkButton>\n              </ButtonGroup>\n            </Card>\n          );\n        })}\n      </Grid>\n    </Flex>\n  );\n}&#x22;" />
 
 ## Customization [#customization]
 
-`CardSelectionIndicator` only shows a Card's selection state. The `CardGroup` owns selection, so a
-Card stays selectable without an indicator. Pass non-interactive children or a selection-state
-render function to replace the default circle and icon. See the Multiple selection example.
+Customize `CardSelectionIndicator` with non-interactive children or a selection-state render
+function. `CardGroup` owns selection, which works without an indicator.
 
-Card link options such as `target`, `rel`, `download`, and `routerOptions` apply to both standalone
-links and linked rows in a `CardGroup`. A `CardGroup` ref points to its collection surface. Card ids
-accept strings or numbers; numeric keys keep their type in group selection and become strings on
-standalone DOM elements.
-
-To style a Card by state, target `[data-selected]`, `[data-hovered]`, `[data-pressed]`,
-`[data-focus-visible]`, and `[data-disabled]` from your `className`.
+Use `className` with `[data-selected]`, `[data-hovered]`, `[data-pressed]`, `[data-focus-visible]`,
+and `[data-disabled]` to style Card states.
 
 ## Accessibility [#accessibility]
 
-* A `CardGroup` is a grid: each Card is a row, Tab moves into and out of the group, and arrow keys
-  move between Cards. Name the group with `aria-label` or `aria-labelledby`. Each Card takes its
-  accessible name from `textValue`, which also drives typeahead. Plain-text children supply it by
-  default, so set `textValue` when a Card's content is composed.
-* In a selectable group, Space toggles the focused Card. Without selection, `onAction` runs on Enter
-  or a press. Do not combine them: with both, a press runs the action and only Space selects, so
-  pointer users cannot select.
-* Use Antares controls such as `Button`, `LinkButton`, and `Checkbox` inside a grouped Card. React
-  Aria keeps their presses independent of row selection and actions. For a custom press target,
-  use `Pressable` and forward its props and ref to the target.
-* Set `keyboardNavigationBehavior="tab"` on `CardGroup` to move through controls within a row with
-  Tab. Native controls follow React Aria's event propagation rules.
-* A `CardGroup` does not submit form values. Read the selection from `onSelectionChange`.
-* `href` on a standalone Card renders the Card itself as a native link, named by its content unless
-  you pass `aria-label`. A link Card cannot contain controls, so do not put CornerActions, buttons,
-  or inputs in it. Inside a `CardGroup`, `href` navigates from the row instead.
-* `isDisabled` fades the Card. On a link Card it stops navigation. In a `CardGroup` it also stops
-  selection, the action, and focus, as does listing the Card's `id` in `disabledKeys`.
-* On a static Card, `aria-label`, `aria-labelledby`, and `aria-describedby` apply to the surface,
-  for example with `role="region"`.
+* Name `CardGroup` with `aria-label` or `aria-labelledby`, and set `textValue` on Cards with composed
+  content for accessible names and typeahead.
+* `CardGroup` uses grid navigation: Tab enters or leaves, arrow keys move between Cards, and Space
+  changes selection. Enter activates row actions or links. Choose selection or `onAction`;
+  combining them prevents pointer selection.
+* Use `keyboardNavigationBehavior="tab"` for nested controls. Antares controls keep their actions
+  independent of the Card; use `Pressable` for custom controls.
+* A standalone Card with `href` is a link and must not contain buttons, inputs, or other controls.
 
 ## Props [#props]
 
 ```tsx
 <CardGroup selectionMode="multiple">
   <Card id="privacy" textValue="Domain privacy">
-    <CornerActions>
-      <CardSelectionIndicator />
-    </CornerActions>
-
+    <CornerActions />
     <Image />
     <TextLockup />
     {/* ... */}
@@ -2254,6 +2230,45 @@ stays pinned.
 <PropTable />
 
 
+# FieldError
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Shown when the parent field is invalid (`isInvalid` or native constraint validation).
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+FieldError renders when the field is invalid.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { FieldError, Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### FieldError [#fielderror]
+
+<PropTable />
+
+
 # DropZone
 
 
@@ -2356,45 +2371,6 @@ The button's accessible name is built from two sources, combined in order:
 ## Props [#props]
 
 ### DropZone [#dropzone]
-
-<PropTable />
-
-
-# FieldError
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Shown when the parent field is invalid (`isInvalid` or native constraint validation).
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-FieldError renders when the field is invalid.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { FieldError, Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### FieldError [#fielderror]
 
 <PropTable />
 
@@ -3162,6 +3138,82 @@ Label names a field. The required asterisk comes from Field CSS when the root is
 <PropTable />
 
 
+# ListBox
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Single or multiple selection**: Set `selectionMode="single"` or `"multiple"`.
+* **Controlled or uncontrolled**: Use `selectedKeys` and `onSelectionChange` for controlled state, or `defaultSelectedKeys` for uncontrolled.
+* **Layout primitive**: `ListBox` and `ListBoxItem` accept layout props (`gap`, `padding`, etc.) — they extend `FlexOwnProps`.
+* **Composes into other components**: `Select` uses `ListBox` internally; reach for `ListBox` directly when you need an inline list rather than a popover dropdown.
+* **React Aria integration**: Built on React Aria ListBox for accessibility, keyboard navigation, and typeahead.
+
+`ListBox` requires either `aria-label` or `aria-labelledby`. For a labeled, popover-style picker, prefer `Select`.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Single selection with static children. Use `aria-label` to give the listbox an accessible name.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ListBox, ListBoxItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ListBox aria-label=\&#x22;Coffee\&#x22; selectionMode=\&#x22;single\&#x22;>\n      <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n      <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n      <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n      <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n      <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n    </ListBox>\n  );\n}&#x22;" />
+
+### List Box Controlled [#list-box-controlled]
+
+Use `selectedKeys` and `onSelectionChange` for controlled state.
+
+<Story of="ListBoxControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxControlledExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<ListBoxKey>>(new Set(['latte']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffee\&#x22;\n        selectionMode=\&#x22;single\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? new Set() : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Value:</strong> {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### List Box Multiple [#list-box-multiple]
+
+Set `selectionMode="multiple"` to allow multiple values. `selectedKeys` is a `Set<Key>` (or the literal `'all'`).
+
+<Story of="ListBoxMultipleExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxMultipleExample() {\n  const [selectedKeys, setSelectedKeys] = useState<'all' | Set<ListBoxKey>>(new Set(['latte', 'mocha']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffees you like\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? 'all' : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Selected:</strong>{' '}\n        {selectedKeys === 'all' ? '(all)' : selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<ListBox>
+  <ListBoxItem />
+  {/* ... */}
+</ListBox>
+```
+
+### ListBox [#listbox]
+
+<PropTable />
+
+### ListBoxItem [#listboxitem]
+
+<PropTable />
+
+
 # Menu
 
 
@@ -3361,82 +3413,6 @@ Nested menus via `SubmenuTrigger`.
 <PropTable />
 
 
-# ListBox
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Single or multiple selection**: Set `selectionMode="single"` or `"multiple"`.
-* **Controlled or uncontrolled**: Use `selectedKeys` and `onSelectionChange` for controlled state, or `defaultSelectedKeys` for uncontrolled.
-* **Layout primitive**: `ListBox` and `ListBoxItem` accept layout props (`gap`, `padding`, etc.) — they extend `FlexOwnProps`.
-* **Composes into other components**: `Select` uses `ListBox` internally; reach for `ListBox` directly when you need an inline list rather than a popover dropdown.
-* **React Aria integration**: Built on React Aria ListBox for accessibility, keyboard navigation, and typeahead.
-
-`ListBox` requires either `aria-label` or `aria-labelledby`. For a labeled, popover-style picker, prefer `Select`.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Single selection with static children. Use `aria-label` to give the listbox an accessible name.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ListBox, ListBoxItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ListBox aria-label=\&#x22;Coffee\&#x22; selectionMode=\&#x22;single\&#x22;>\n      <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n      <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n      <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n      <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n      <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n    </ListBox>\n  );\n}&#x22;" />
-
-### List Box Controlled [#list-box-controlled]
-
-Use `selectedKeys` and `onSelectionChange` for controlled state.
-
-<Story of="ListBoxControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxControlledExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<ListBoxKey>>(new Set(['latte']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffee\&#x22;\n        selectionMode=\&#x22;single\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? new Set() : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Value:</strong> {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### List Box Multiple [#list-box-multiple]
-
-Set `selectionMode="multiple"` to allow multiple values. `selectedKeys` is a `Set<Key>` (or the literal `'all'`).
-
-<Story of="ListBoxMultipleExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxMultipleExample() {\n  const [selectedKeys, setSelectedKeys] = useState<'all' | Set<ListBoxKey>>(new Set(['latte', 'mocha']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffees you like\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? 'all' : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Selected:</strong>{' '}\n        {selectedKeys === 'all' ? '(all)' : selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<ListBox>
-  <ListBoxItem />
-  {/* ... */}
-</ListBox>
-```
-
-### ListBox [#listbox]
-
-<PropTable />
-
-### ListBoxItem [#listboxitem]
-
-<PropTable />
-
-
 # MetricsLockup
 
 
@@ -3512,6 +3488,139 @@ Use the `compact` prop to render the metric value and description inline rather 
 ## Props [#props]
 
 ### MetricsLockup [#metricslockup]
+
+<PropTable />
+
+
+# Modal
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
+
+The modal is a `SizeProvider`. It opens at the size of the scope around its trigger, even though it renders in a portal, and `size` overrides that.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Compose a Modal from a `Heading slot="title"`, a `CloseButton`, `Content`, and a
+`ButtonGroup`. `ModalTrigger` opens the Modal and manages its open/close state.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Delete file?</Heading>\n        <CloseButton />\n        <Content>This action cannot be undone. The file will be permanently removed.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;critical\&#x22;>\n            Delete\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Flex, Text } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal>\n          <Heading slot=\&#x22;title\&#x22;>Modal title</Heading>\n          <CloseButton />\n          <Content>\n            She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n          </Content>\n          <ButtonGroup>\n            <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Close\n            </Button>\n          </ButtonGroup>\n        </Modal>\n      </ModalTrigger>\n\n      <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>\n\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setIsOpen(true)}>\n        Open from outside\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
+
+### Scrollable [#scrollable]
+
+When the content is taller than the viewport, the `Content` region scrolls while the title
+row and the `ButtonGroup` stay pinned.
+
+<Story of="ScrollableExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Terms of service</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 24 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n            Decline\n          </Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Accept\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### Triggerless [#triggerless]
+
+`Modal` accepts `isOpen` and `onOpenChange` directly, so it can be controlled without a
+`ModalTrigger`. Useful when the modal is opened from several places at once.
+
+<Story of="TriggerlessExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, ButtonGroup, CloseButton, Content, Heading, Modal } from '@godaddy/antares';\n\nexport function TriggerlessExample() {\n  const [isOpen, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open modal\n      </Button>\n      <Modal isOpen={isOpen} onOpenChange={setOpen}>\n        <Heading slot=\&#x22;title\&#x22;>Triggerless modal</Heading>\n        <CloseButton />\n        <Content>This is the content of the modal.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Done\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </>\n  );\n}&#x22;" />
+
+### Size [#size]
+
+`size` sets the modal's text, controls, and spacing. Without it, the modal follows the size
+scope around its trigger.
+
+<Story of="SizeExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function SizeExample() {\n  return (\n    <ModalTrigger>\n      <Button>Open small modal</Button>\n      <Modal size=\&#x22;sm\&#x22;>\n        <Heading slot=\&#x22;title\&#x22;>Rename file</Heading>\n        <CloseButton />\n        <Content>\n          <Text>The new name applies everywhere the file is shared.</Text>\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Rename\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### With Text Lockup [#with-text-lockup]
+
+A `TextLockup` in the content keeps its own title. The modal's `Heading slot="title"` still names
+the dialog.
+
+<Story of="WithTextLockupExample" />
+
+<Source language="tsx" code="&#x22;import {\n  ModalTrigger,\n  Modal,\n  Button,\n  CloseButton,\n  Heading,\n  Content,\n  ButtonGroup,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function WithTextLockupExample() {\n  return (\n    <ModalTrigger>\n      <Button>Compare plans</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Compare plans</Heading>\n        <CloseButton />\n        <Content>\n          <TextLockup size=\&#x22;sm\&#x22;>\n            <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n              Pro\n            </Tag>\n            <Heading slot=\&#x22;title\&#x22;>Unlimited seats</Heading>\n            <Text slot=\&#x22;body\&#x22;>Add your whole team with priority support.</Text>\n          </TextLockup>\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Close</Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard interaction [#keyboard-interaction]
+
+| Key      | Action                                                     |
+| -------- | ---------------------------------------------------------- |
+| `Tab`    | Moves focus to the next focusable element inside the modal |
+| `Escape` | Closes the modal (unless `isKeyboardDismissDisabled`)      |
+
+### ARIA [#aria]
+
+* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+* Focus is trapped within the modal while open and returned to the trigger on close
+
+## Best Practices [#best-practices]
+
+* Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
+* Pair every action button with `slot="close"` when it should dismiss the modal
+* Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
+
+## Props [#props]
+
+```tsx
+<ModalTrigger>
+  <Button />
+  <Modal>
+    <Heading slot="title" />
+    <CloseButton />
+    <Header />
+    <Content />
+    <Footer />
+    <ButtonGroup />
+    {/* ... */}
+  </Modal>
+</ModalTrigger>
+```
+
+### Modal [#modal]
+
+<PropTable />
+
+### ModalTrigger [#modaltrigger]
 
 <PropTable />
 
@@ -3651,139 +3760,6 @@ Compose with `children` to replace the stepper icons with your own content, such
 ```
 
 ### NumberField [#numberfield]
-
-<PropTable />
-
-
-# Modal
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
-
-The modal is a `SizeProvider`. It opens at the size of the scope around its trigger, even though it renders in a portal, and `size` overrides that.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Compose a Modal from a `Heading slot="title"`, a `CloseButton`, `Content`, and a
-`ButtonGroup`. `ModalTrigger` opens the Modal and manages its open/close state.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Delete file?</Heading>\n        <CloseButton />\n        <Content>This action cannot be undone. The file will be permanently removed.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;critical\&#x22;>\n            Delete\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Flex, Text } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal>\n          <Heading slot=\&#x22;title\&#x22;>Modal title</Heading>\n          <CloseButton />\n          <Content>\n            She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n          </Content>\n          <ButtonGroup>\n            <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Close\n            </Button>\n          </ButtonGroup>\n        </Modal>\n      </ModalTrigger>\n\n      <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>\n\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setIsOpen(true)}>\n        Open from outside\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
-
-### Scrollable [#scrollable]
-
-When the content is taller than the viewport, the `Content` region scrolls while the title
-row and the `ButtonGroup` stay pinned.
-
-<Story of="ScrollableExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Terms of service</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 24 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n            Decline\n          </Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Accept\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
-
-### Triggerless [#triggerless]
-
-`Modal` accepts `isOpen` and `onOpenChange` directly, so it can be controlled without a
-`ModalTrigger`. Useful when the modal is opened from several places at once.
-
-<Story of="TriggerlessExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, ButtonGroup, CloseButton, Content, Heading, Modal } from '@godaddy/antares';\n\nexport function TriggerlessExample() {\n  const [isOpen, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open modal\n      </Button>\n      <Modal isOpen={isOpen} onOpenChange={setOpen}>\n        <Heading slot=\&#x22;title\&#x22;>Triggerless modal</Heading>\n        <CloseButton />\n        <Content>This is the content of the modal.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Done\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </>\n  );\n}&#x22;" />
-
-### Size [#size]
-
-`size` sets the modal's text, controls, and spacing. Without it, the modal follows the size
-scope around its trigger.
-
-<Story of="SizeExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function SizeExample() {\n  return (\n    <ModalTrigger>\n      <Button>Open small modal</Button>\n      <Modal size=\&#x22;sm\&#x22;>\n        <Heading slot=\&#x22;title\&#x22;>Rename file</Heading>\n        <CloseButton />\n        <Content>\n          <Text>The new name applies everywhere the file is shared.</Text>\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Rename\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
-
-### With Text Lockup [#with-text-lockup]
-
-A `TextLockup` in the content keeps its own title. The modal's `Heading slot="title"` still names
-the dialog.
-
-<Story of="WithTextLockupExample" />
-
-<Source language="tsx" code="&#x22;import {\n  ModalTrigger,\n  Modal,\n  Button,\n  CloseButton,\n  Heading,\n  Content,\n  ButtonGroup,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function WithTextLockupExample() {\n  return (\n    <ModalTrigger>\n      <Button>Compare plans</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Compare plans</Heading>\n        <CloseButton />\n        <Content>\n          <TextLockup size=\&#x22;sm\&#x22;>\n            <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n              Pro\n            </Tag>\n            <Heading slot=\&#x22;title\&#x22;>Unlimited seats</Heading>\n            <Text slot=\&#x22;body\&#x22;>Add your whole team with priority support.</Text>\n          </TextLockup>\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Close</Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard interaction [#keyboard-interaction]
-
-| Key      | Action                                                     |
-| -------- | ---------------------------------------------------------- |
-| `Tab`    | Moves focus to the next focusable element inside the modal |
-| `Escape` | Closes the modal (unless `isKeyboardDismissDisabled`)      |
-
-### ARIA [#aria]
-
-* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
-* Focus is trapped within the modal while open and returned to the trigger on close
-
-## Best Practices [#best-practices]
-
-* Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
-* Pair every action button with `slot="close"` when it should dismiss the modal
-* Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
-
-## Props [#props]
-
-```tsx
-<ModalTrigger>
-  <Button />
-  <Modal>
-    <Heading slot="title" />
-    <CloseButton />
-    <Header />
-    <Content />
-    <Footer />
-    <ButtonGroup />
-    {/* ... */}
-  </Modal>
-</ModalTrigger>
-```
-
-### Modal [#modal]
-
-<PropTable />
-
-### ModalTrigger [#modaltrigger]
 
 <PropTable />
 
@@ -4021,6 +3997,82 @@ also gives the dialog its accessible name.
 <PropTable />
 
 
+# ProgressBar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A determinate progress bar with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
+
+### Statuses [#statuses]
+
+Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
+
+<Story of="StatusesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Indeterminate [#indeterminate]
+
+Use indeterminate progress while preparing an upload whose total size is unknown.
+Once the total is known, set `isIndeterminate` to false and supply a measured value.
+
+<Story of="IndeterminateExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, type ProgressBarProps } from '@godaddy/antares';\n\nexport function IndeterminateExample(props: ProgressBarProps) {\n  return <ProgressBar label=\&#x22;Preparing upload…\&#x22; helperText=\&#x22;Calculating the total size\&#x22; isIndeterminate {...props} />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`)
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+
+## Props [#props]
+
+### ProgressBar [#progressbar]
+
+<PropTable />
+
+
 # Pressable
 
 
@@ -4101,82 +4153,6 @@ Do not add `role="button"` to a native `<button>` or `<a>` unless you intentiona
 ```
 
 ### Pressable [#pressable]
-
-<PropTable />
-
-
-# ProgressBar
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A determinate progress bar with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
-
-### Statuses [#statuses]
-
-Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
-
-<Story of="StatusesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Indeterminate [#indeterminate]
-
-Use indeterminate progress while preparing an upload whose total size is unknown.
-Once the total is known, set `isIndeterminate` to false and supply a measured value.
-
-<Story of="IndeterminateExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, type ProgressBarProps } from '@godaddy/antares';\n\nexport function IndeterminateExample(props: ProgressBarProps) {\n  return <ProgressBar label=\&#x22;Preparing upload…\&#x22; helperText=\&#x22;Calculating the total size\&#x22; isIndeterminate {...props} />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`)
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-
-## Props [#props]
-
-### ProgressBar [#progressbar]
 
 <PropTable />
 
@@ -4314,6 +4290,196 @@ Step numbers are shown by default; `hideStepNumbers` omits the "N. " prefix.
 ### ProgressStep [#progressstep]
 
 <PropTable />
+
+
+# RangeField
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Select one value or render one thumb for each value in an array
+* Supports controlled and uncontrolled values with typed change callbacks
+* Provides localized value output, endpoint labels, descriptions, and markers
+* Integrates with native forms, keyboard, pointer, and touch interaction through React Aria
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Minimal usage with a single value and min/max bounds.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} />;\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `onChange` for immediate updates and `onChangeEnd` for work that should run after interaction finishes.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState(50);\n  const [committedValue, setCommittedValue] = useState(50);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <RangeField<number>\n        aria-label=\&#x22;Volume\&#x22;\n        value={value}\n        onChange={setValue}\n        onChangeEnd={setCommittedValue}\n        step={10}\n      />\n      <p>Current value: {value}</p>\n      <p>Committed value: {committedValue}</p>\n    </Flex>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` when the value is visible but unavailable for interaction.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Volume\&#x22;\n      label=\&#x22;Volume\&#x22;\n      description=\&#x22;This is a description\&#x22;\n      minLabel=\&#x22;Low\&#x22;\n      maxLabel=\&#x22;High\&#x22;\n      defaultValue={50}\n      isDisabled\n    />\n  );\n}&#x22;" />
+
+### Labels [#labels]
+
+Combine an input label, value label, range labels, and helper text when users need additional context.
+
+<Story of="LabelsExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function LabelsExample() {\n  return (\n    <RangeField\n      label=\&#x22;Price limit\&#x22;\n      defaultValue={50}\n      formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n      valueLabel\n      minLabel=\&#x22;$0\&#x22;\n      maxLabel=\&#x22;$100\&#x22;\n      description=\&#x22;Choose the maximum price.\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Value Display [#value-display]
+
+Use `valueLabel` to show formatted values, static context, or output derived from the current slider state.
+
+<Story of="ValueDisplayExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\n\nexport function ValueDisplayExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <RangeField\n        label=\&#x22;Monthly budget\&#x22;\n        defaultValue={50}\n        formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n        valueLabel\n      />\n      <RangeField label=\&#x22;Storage quota\&#x22; defaultValue={50} valueLabel={<span>Recommended</span>} />\n      <RangeField\n        label=\&#x22;Volume\&#x22;\n        defaultValue={50}\n        valueLabel={function renderValue({ state }) {\n          return `Current: ${state.values[0]}%`;\n        }}\n      />\n    </Flex>\n  );\n}&#x22;" />
+
+### Markers [#markers]
+
+Use `markers` to expose a manageable set of discrete steps for a single value.
+
+<Story of="MarkersExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function MarkersExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} step={10} markers />;\n}&#x22;" />
+
+### Range [#range]
+
+Pass a `number[]` to render a range with two thumbs and step markers.
+
+<Story of="RangeExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Price range\&#x22;\n      defaultValue={[25, 75]}\n      thumbLabels={['Minimum price', 'Maximum price']}\n      minValue={0}\n      maxValue={100}\n      step={25}\n      markers\n    />\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Accessible names [#accessible-names]
+
+For a single value, prefer a visible `label`; use `aria-label` only when equivalent visible context already exists.
+
+For an array, provide one descriptive `thumbLabels` entry for every value. Entries are matched by index, so keep them aligned when values are added, removed, or reordered. Describe each thumb's purpose, such as `Lower warning threshold`, rather than its current number.
+
+`thumbNames` configures native form field names and does not provide accessible labels. Likewise, `valueLabel`, `minLabel`, and `maxLabel` are visual context rather than substitutes for accessible naming.
+
+### Keyboard interaction [#keyboard-interaction]
+
+Each thumb follows the React Aria slider keyboard model:
+
+* Tab and Shift+Tab move among thumbs and surrounding controls.
+* Arrow Right and Arrow Up increase the focused value by `step`.
+* Arrow Left and Arrow Down decrease the focused value by `step`.
+* Home and End move the focused thumb to its permitted bounds.
+* Page Up and Page Down make larger changes.
+
+Directional behavior follows the user's locale where appropriate. Pointer, touch, and keyboard interaction all use the same scale and constraints.
+
+Markers are decorative and hidden from the accessibility tree. Ensure the field label, thumb labels, bounds, step, and formatted values communicate all required information without relying on marker appearance.
+
+## Best Practices [#best-practices]
+
+* Use an array only when every entry has a clear, independently adjustable meaning.
+* Keep `value`, `thumbLabels`, and `thumbNames` aligned by index.
+* Use thumb labels that explain purpose instead of repeating the current number.
+* Keep array values in a stable semantic order. If crossing or reordering thumbs would make their meaning ambiguous, enforce the appropriate ordering in product state.
+* Avoid large value arrays. Every entry creates another focusable control, which increases keyboard effort and cognitive load.
+* Set meaningful `minValue`, `maxValue`, and `step` values. The scale should match the precision users actually need.
+* Use markers only when there are few enough steps to scan. Tiny steps across a large range can create an excessive number of DOM elements.
+* Use `formatOptions` for currency, percentages, measurements, and other locale-sensitive units so values display and announce their meaning.
+* Use `description` for persistent guidance and `isRequired` when a value is required.
+* Use `isDisabled` when the value should remain visible but unavailable for interaction.
+* Use `onChange` for lightweight immediate feedback and `onChangeEnd` for expensive requests, filtering, or calculations.
+* Use a text-entry control when exact numeric input is essential. A track is best for exploring or adjusting values within known bounds.
+
+## Props [#props]
+
+### RangeField [#rangefield]
+
+<PropTable />
+
+## Troubleshooting [#troubleshooting]
+
+### A thumb is missing a label or form value [#a-thumb-is-missing-a-label-or-form-value]
+
+Check the same index in `thumbLabels` and `thumbNames`. Each array entry renders a thumb, and its accessible label and form name are read from the corresponding positions. A form name does not replace an accessible label.
+
+### TypeScript reports the wrong callback value type [#typescript-reports-the-wrong-callback-value-type]
+
+Keep the controlled or default value and callback signatures consistent. When inference is unavailable, provide the generic explicitly: `<RangeField<number>>` for a scalar or `<RangeField<number[]>>` for an array.
+
+```tsx
+const [targets, setTargets] = useState<number[]>([20, 80]);
+
+<RangeField<number[]>
+  label="Target range"
+  value={targets}
+  onChange={setTargets}
+  thumbLabels={['Minimum target', 'Maximum target']}
+/>;
+```
+
+### The controlled thumbs do not move [#the-controlled-thumbs-do-not-move]
+
+The `value` prop is the source of truth. Update the scalar or array in `onChange` without changing its intended shape. For arrays, return a new array so application state observes the update.
+
+### Values snap unexpectedly [#values-snap-unexpectedly]
+
+Verify that `step` represents the intended interval from `minValue`. Every thumb snaps to valid positions on the same configured scale.
+
+### The final marker is missing [#the-final-marker-is-missing]
+
+Markers begin at `minValue` and appear at complete step positions. `maxValue` receives a marker only when the range is evenly divisible by `step`.
+
+### Markers are crowded or rendering is slow [#markers-are-crowded-or-rendering-is-slow]
+
+Increase `step` or omit `markers`. Large ranges with small steps can produce many decorative elements even when users cannot distinguish them visually.
+
+### The value or endpoint labels are blank [#the-value-or-endpoint-labels-are-blank]
+
+Enable automatic current-value output with `valueLabel={true}` or provide custom content. `minLabel` and `maxLabel` display only explicitly supplied content; neither defaults to a numeric bound or receives `formatOptions`.
+
+### Negative values do not behave as expected [#negative-values-do-not-behave-as-expected]
+
+Negative values are supported. Set a negative `minValue` and ensure every scalar or array value remains within the configured bounds.
+
+### The range configuration is invalid [#the-range-configuration-is-invalid]
+
+Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
 
 
 # Radio
@@ -4763,7 +4929,7 @@ Components automatically add data attributes for styling different states:
 <PropTable />
 
 
-# RangeField
+# SizeProvider
 
 
 
@@ -4789,168 +4955,87 @@ Components automatically add data attributes for styling different states:
 
 ## Features [#features]
 
-* Select one value or render one thumb for each value in an array
-* Supports controlled and uncontrolled values with typed change callbacks
-* Provides localized value output, endpoint labels, descriptions, and markers
-* Integrates with native forms, keyboard, pointer, and touch interaction through React Aria
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
+* `sm`, `md`, or `lg` for the adopted components inside (listed below): their text, controls, and
+  default spacing.
+* The nearest scope wins, and nested scopes replace the size rather than compounding it.
+* A component's own `size` prop wins for that component only.
+* Overlays opened inside, such as Modal and Select options, open at the scope's size even though
+  they render in a portal.
+* Renders no element, so it never affects layout. Only Antares components follow it; plain HTML
+  keeps its own typography, so put copy in `Text`.
+* Without any scope, components use `md`.
+* Adopted so far by Text, Detail, Heading, Label, Button, LinkButton, TextField, NumberField, Select,
+  DatePicker, DateRangePicker, Calendar, TextLockup, Modal, Drawer, Popover, and Tooltip. Other
+  components keep their own size. Layout spacing props keep their meaning: `gap="md"` is the layout
+  `md` gap in any scope.
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-Minimal usage with a single value and min/max bounds.
+A scope sizes everything inside it: text, controls, and default spacing. A component's own
+`size` still wins.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Flex, Heading, Input, Label, SizeProvider, Text, TextField, TextLockup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22; level={2}>\n            Billing\n          </Heading>\n          <Text slot=\&#x22;body\&#x22;>Manage your payment methods.</Text>\n        </TextLockup>\n\n        <TextField>\n          <Label>Email</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n        </TextField>\n\n        <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n          <Button variant=\&#x22;primary\&#x22;>Update payment method</Button>\n          <Button variant=\&#x22;primary\&#x22; size=\&#x22;md\&#x22;>\n            Contact support\n          </Button>\n        </Flex>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
 
-### Controlled [#controlled]
+### Sizes [#sizes]
 
-Use `onChange` for immediate updates and `onChangeEnd` for work that should run after interaction finishes.
+The same section at each size. Without a scope, components use `md`.
 
-<Story of="ControlledExample" />
+<Story of="SizesExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState(50);\n  const [committedValue, setCommittedValue] = useState(50);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <RangeField<number>\n        aria-label=\&#x22;Volume\&#x22;\n        value={value}\n        onChange={setValue}\n        onChangeEnd={setCommittedValue}\n        step={10}\n      />\n      <p>Current value: {value}</p>\n      <p>Committed value: {committedValue}</p>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      {SIZES.map(function section(size) {\n        return (\n          <SizeProvider key={size} size={size}>\n            <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n              <Heading>Size {size}</Heading>\n              <Text>Body copy follows the scope.</Text>\n              <Detail>Supporting copy too.</Detail>\n              <Button variant=\&#x22;primary\&#x22;>Save</Button>\n            </Flex>\n          </SizeProvider>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
 
-### Disabled [#disabled]
+### Form [#form]
 
-Use `isDisabled` when the value is visible but unavailable for interaction.
+Wrap a whole form to size it at once. Fields, their labels and descriptions, choices, and
+buttons all follow the scope, so they stay aligned with each other.
 
-<Story of="DisabledExample" />
+<Story of="FormExample" />
 
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Volume\&#x22;\n      label=\&#x22;Volume\&#x22;\n      description=\&#x22;This is a description\&#x22;\n      minLabel=\&#x22;Low\&#x22;\n      maxLabel=\&#x22;High\&#x22;\n      defaultValue={50}\n      isDisabled\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import {\n  Button,\n  Checkbox,\n  Flex,\n  Heading,\n  Input,\n  Label,\n  Select,\n  SelectItem,\n  SelectOptions,\n  SizeProvider,\n  Text,\n  TextField\n} from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <Heading level={2}>Contact details</Heading>\n\n        <TextField>\n          <Label>Full name</Label>\n          <Input />\n        </TextField>\n\n        <TextField>\n          <Label>Email</Label>\n          <Input type=\&#x22;email\&#x22; />\n          <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n        </TextField>\n\n        <Select placeholder=\&#x22;Pick a country\&#x22;>\n          <Label>Country</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>United States</SelectItem>\n            <SelectItem id=\&#x22;ca\&#x22;>Canada</SelectItem>\n            <SelectItem id=\&#x22;mx\&#x22;>Mexico</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <Checkbox>Email me about offers</Checkbox>\n\n        <Flex gap=\&#x22;sm\&#x22;>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;primary\&#x22;>Save</Button>\n        </Flex>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
 
-### Labels [#labels]
+### Nested Scopes [#nested-scopes]
 
-Combine an input label, value label, range labels, and helper text when users need additional context.
+The nearest scope wins. An inner scope replaces the outer size rather than scaling it, so an
+`sm` section inside an `lg` page matches `sm` anywhere else.
 
-<Story of="LabelsExample" />
+<Story of="NestedScopesExample" />
 
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function LabelsExample() {\n  return (\n    <RangeField\n      label=\&#x22;Price limit\&#x22;\n      defaultValue={50}\n      formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n      valueLabel\n      minLabel=\&#x22;$0\&#x22;\n      maxLabel=\&#x22;$100\&#x22;\n      description=\&#x22;Choose the maximum price.\&#x22;\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nexport function NestedScopesExample() {\n  return (\n    <SizeProvider size=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <Heading level={2}>Your plan</Heading>\n        <Text>Premium hosting, renews on March 1.</Text>\n        <Button variant=\&#x22;primary\&#x22;>Manage plan</Button>\n\n        <SizeProvider size=\&#x22;sm\&#x22;>\n          <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n            <Detail>Need less? You can switch to Basic at any time.</Detail>\n            <Button variant=\&#x22;primary\&#x22;>Compare plans</Button>\n          </Flex>\n        </SizeProvider>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
 
-### Value Display [#value-display]
+### Explicit Size [#explicit-size]
 
-Use `valueLabel` to show formatted values, static context, or output derived from the current slider state.
+A component's own `size` wins for that component and every part inside it, such as a field's
+label and description. Its siblings keep following the scope.
 
-<Story of="ValueDisplayExample" />
+<Story of="ExplicitSizeExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\n\nexport function ValueDisplayExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <RangeField\n        label=\&#x22;Monthly budget\&#x22;\n        defaultValue={50}\n        formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n        valueLabel\n      />\n      <RangeField label=\&#x22;Storage quota\&#x22; defaultValue={50} valueLabel={<span>Recommended</span>} />\n      <RangeField\n        label=\&#x22;Volume\&#x22;\n        defaultValue={50}\n        valueLabel={function renderValue({ state }) {\n          return `Current: ${state.values[0]}%`;\n        }}\n      />\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, Input, Label, SizeProvider, Text, TextField } from '@godaddy/antares';\n\nexport function ExplicitSizeExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <TextField>\n          <Label>Coupon code</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>Follows the scope.</Text>\n        </TextField>\n\n        <TextField size=\&#x22;lg\&#x22;>\n          <Label>Domain name</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>Sized by the field.</Text>\n        </TextField>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
 
-### Markers [#markers]
+### Overlays [#overlays]
 
-Use `markers` to expose a manageable set of discrete steps for a single value.
+Overlays open at the size of the scope around their trigger, even though they render in a
+portal. An explicit `size` on the owner sizes its overlay too.
 
-<Story of="MarkersExample" />
+<Story of="OverlaysExample" />
 
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function MarkersExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} step={10} markers />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import {\n  Button,\n  ButtonGroup,\n  Content,\n  DatePicker,\n  DatePickerCalendar,\n  DateRangePicker,\n  DateRangePickerCalendar,\n  Flex,\n  Heading,\n  Label,\n  Modal,\n  ModalTrigger,\n  Select,\n  SelectItem,\n  SelectOptions,\n  SizeProvider,\n  Text,\n  Tooltip,\n  TooltipTrigger\n} from '@godaddy/antares';\n\nexport function OverlaysExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex gap=\&#x22;md\&#x22; alignItems=\&#x22;end\&#x22; wrap=\&#x22;wrap\&#x22;>\n        <Select placeholder=\&#x22;Pick a plan\&#x22;>\n          <Label>Plan</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;basic\&#x22;>Basic</SelectItem>\n            <SelectItem id=\&#x22;pro\&#x22;>Pro</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <Select size=\&#x22;lg\&#x22; placeholder=\&#x22;Pick a region\&#x22;>\n          <Label>Region</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>United States</SelectItem>\n            <SelectItem id=\&#x22;eu\&#x22;>Europe</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <DatePicker>\n          <Label>Renewal date</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <DatePickerCalendar />\n        </DatePicker>\n\n        <DateRangePicker size=\&#x22;lg\&#x22;>\n          <Label>Contract dates</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <DateRangePickerCalendar />\n        </DateRangePicker>\n\n        <ModalTrigger>\n          <Button variant=\&#x22;primary\&#x22;>Edit plan</Button>\n          <Modal>\n            <Heading slot=\&#x22;title\&#x22;>Edit plan</Heading>\n            <Content>\n              <Text>Changes apply at the next billing cycle.</Text>\n            </Content>\n            <ButtonGroup>\n              <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n              <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n                Save\n              </Button>\n            </ButtonGroup>\n          </Modal>\n        </ModalTrigger>\n\n        <TooltipTrigger>\n          <Button variant=\&#x22;primary\&#x22;>Help</Button>\n          <Tooltip>Billing questions</Tooltip>\n        </TooltipTrigger>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
 
-### Range [#range]
+### Plain Html [#plain-html]
 
-Pass a `number[]` to render a range with two thumbs and step markers.
+A scope sizes Antares components only. Plain HTML keeps its own typography, so put copy in
+`Text` to follow the scope.
 
-<Story of="RangeExample" />
+<Story of="PlainHtmlExample" />
 
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Price range\&#x22;\n      defaultValue={[25, 75]}\n      thumbLabels={['Minimum price', 'Maximum price']}\n      minValue={0}\n      maxValue={100}\n      step={25}\n      markers\n    />\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Accessible names [#accessible-names]
-
-For a single value, prefer a visible `label`; use `aria-label` only when equivalent visible context already exists.
-
-For an array, provide one descriptive `thumbLabels` entry for every value. Entries are matched by index, so keep them aligned when values are added, removed, or reordered. Describe each thumb's purpose, such as `Lower warning threshold`, rather than its current number.
-
-`thumbNames` configures native form field names and does not provide accessible labels. Likewise, `valueLabel`, `minLabel`, and `maxLabel` are visual context rather than substitutes for accessible naming.
-
-### Keyboard interaction [#keyboard-interaction]
-
-Each thumb follows the React Aria slider keyboard model:
-
-* Tab and Shift+Tab move among thumbs and surrounding controls.
-* Arrow Right and Arrow Up increase the focused value by `step`.
-* Arrow Left and Arrow Down decrease the focused value by `step`.
-* Home and End move the focused thumb to its permitted bounds.
-* Page Up and Page Down make larger changes.
-
-Directional behavior follows the user's locale where appropriate. Pointer, touch, and keyboard interaction all use the same scale and constraints.
-
-Markers are decorative and hidden from the accessibility tree. Ensure the field label, thumb labels, bounds, step, and formatted values communicate all required information without relying on marker appearance.
-
-## Best Practices [#best-practices]
-
-* Use an array only when every entry has a clear, independently adjustable meaning.
-* Keep `value`, `thumbLabels`, and `thumbNames` aligned by index.
-* Use thumb labels that explain purpose instead of repeating the current number.
-* Keep array values in a stable semantic order. If crossing or reordering thumbs would make their meaning ambiguous, enforce the appropriate ordering in product state.
-* Avoid large value arrays. Every entry creates another focusable control, which increases keyboard effort and cognitive load.
-* Set meaningful `minValue`, `maxValue`, and `step` values. The scale should match the precision users actually need.
-* Use markers only when there are few enough steps to scan. Tiny steps across a large range can create an excessive number of DOM elements.
-* Use `formatOptions` for currency, percentages, measurements, and other locale-sensitive units so values display and announce their meaning.
-* Use `description` for persistent guidance and `isRequired` when a value is required.
-* Use `isDisabled` when the value should remain visible but unavailable for interaction.
-* Use `onChange` for lightweight immediate feedback and `onChangeEnd` for expensive requests, filtering, or calculations.
-* Use a text-entry control when exact numeric input is essential. A track is best for exploring or adjusting values within known bounds.
+<Source language="tsx" code="&#x22;import { SizeProvider, Text } from '@godaddy/antares';\n\nexport function PlainHtmlExample() {\n  return (\n    <SizeProvider size=\&#x22;lg\&#x22;>\n      <p>A plain paragraph keeps the page's typography.</p>\n      <Text>Text follows the scope.</Text>\n    </SizeProvider>\n  );\n}&#x22;" />
 
 ## Props [#props]
 
-### RangeField [#rangefield]
-
 <PropTable />
-
-## Troubleshooting [#troubleshooting]
-
-### A thumb is missing a label or form value [#a-thumb-is-missing-a-label-or-form-value]
-
-Check the same index in `thumbLabels` and `thumbNames`. Each array entry renders a thumb, and its accessible label and form name are read from the corresponding positions. A form name does not replace an accessible label.
-
-### TypeScript reports the wrong callback value type [#typescript-reports-the-wrong-callback-value-type]
-
-Keep the controlled or default value and callback signatures consistent. When inference is unavailable, provide the generic explicitly: `<RangeField<number>>` for a scalar or `<RangeField<number[]>>` for an array.
-
-```tsx
-const [targets, setTargets] = useState<number[]>([20, 80]);
-
-<RangeField<number[]>
-  label="Target range"
-  value={targets}
-  onChange={setTargets}
-  thumbLabels={['Minimum target', 'Maximum target']}
-/>;
-```
-
-### The controlled thumbs do not move [#the-controlled-thumbs-do-not-move]
-
-The `value` prop is the source of truth. Update the scalar or array in `onChange` without changing its intended shape. For arrays, return a new array so application state observes the update.
-
-### Values snap unexpectedly [#values-snap-unexpectedly]
-
-Verify that `step` represents the intended interval from `minValue`. Every thumb snaps to valid positions on the same configured scale.
-
-### The final marker is missing [#the-final-marker-is-missing]
-
-Markers begin at `minValue` and appear at complete step positions. `maxValue` receives a marker only when the range is evenly divisible by `step`.
-
-### Markers are crowded or rendering is slow [#markers-are-crowded-or-rendering-is-slow]
-
-Increase `step` or omit `markers`. Large ranges with small steps can produce many decorative elements even when users cannot distinguish them visually.
-
-### The value or endpoint labels are blank [#the-value-or-endpoint-labels-are-blank]
-
-Enable automatic current-value output with `valueLabel={true}` or provide custom content. `minLabel` and `maxLabel` display only explicitly supplied content; neither defaults to a numeric bound or receives `formatOptions`.
-
-### Negative values do not behave as expected [#negative-values-do-not-behave-as-expected]
-
-Negative values are supported. Set a negative `minValue` and ensure every scalar or array value remains within the configured bounds.
-
-### The range configuration is invalid [#the-range-configuration-is-invalid]
-
-Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
 
 
 # Select
@@ -5091,115 +5176,6 @@ over the popover and the list.
 <PropTable />
 
 ### SelectItem [#selectitem]
-
-<PropTable />
-
-
-# SizeProvider
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* `sm`, `md`, or `lg` for the adopted components inside (listed below): their text, controls, and
-  default spacing.
-* The nearest scope wins, and nested scopes replace the size rather than compounding it.
-* A component's own `size` prop wins for that component only.
-* Overlays opened inside, such as Modal and Select options, open at the scope's size even though
-  they render in a portal.
-* Renders no element, so it never affects layout. Only Antares components follow it; plain HTML
-  keeps its own typography, so put copy in `Text`.
-* Without any scope, components use `md`.
-* Adopted so far by Text, Detail, Heading, Label, Button, LinkButton, TextField, NumberField, Select,
-  DatePicker, DateRangePicker, Calendar, TextLockup, Modal, Drawer, Popover, and Tooltip. Other
-  components keep their own size. Layout spacing props keep their meaning: `gap="md"` is the layout
-  `md` gap in any scope.
-
-## Examples [#examples]
-
-### Default [#default]
-
-A scope sizes everything inside it: text, controls, and default spacing. A component's own
-`size` still wins.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Heading, Input, Label, SizeProvider, Text, TextField, TextLockup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22; level={2}>\n            Billing\n          </Heading>\n          <Text slot=\&#x22;body\&#x22;>Manage your payment methods.</Text>\n        </TextLockup>\n\n        <TextField>\n          <Label>Email</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n        </TextField>\n\n        <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n          <Button variant=\&#x22;primary\&#x22;>Update payment method</Button>\n          <Button variant=\&#x22;primary\&#x22; size=\&#x22;md\&#x22;>\n            Contact support\n          </Button>\n        </Flex>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-The same section at each size. Without a scope, components use `md`.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      {SIZES.map(function section(size) {\n        return (\n          <SizeProvider key={size} size={size}>\n            <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n              <Heading>Size {size}</Heading>\n              <Text>Body copy follows the scope.</Text>\n              <Detail>Supporting copy too.</Detail>\n              <Button variant=\&#x22;primary\&#x22;>Save</Button>\n            </Flex>\n          </SizeProvider>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
-
-### Form [#form]
-
-Wrap a whole form to size it at once. Fields, their labels and descriptions, choices, and
-buttons all follow the scope, so they stay aligned with each other.
-
-<Story of="FormExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Button,\n  Checkbox,\n  Flex,\n  Heading,\n  Input,\n  Label,\n  Select,\n  SelectItem,\n  SelectOptions,\n  SizeProvider,\n  Text,\n  TextField\n} from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <Heading level={2}>Contact details</Heading>\n\n        <TextField>\n          <Label>Full name</Label>\n          <Input />\n        </TextField>\n\n        <TextField>\n          <Label>Email</Label>\n          <Input type=\&#x22;email\&#x22; />\n          <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n        </TextField>\n\n        <Select placeholder=\&#x22;Pick a country\&#x22;>\n          <Label>Country</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>United States</SelectItem>\n            <SelectItem id=\&#x22;ca\&#x22;>Canada</SelectItem>\n            <SelectItem id=\&#x22;mx\&#x22;>Mexico</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <Checkbox>Email me about offers</Checkbox>\n\n        <Flex gap=\&#x22;sm\&#x22;>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;primary\&#x22;>Save</Button>\n        </Flex>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
-
-### Nested Scopes [#nested-scopes]
-
-The nearest scope wins. An inner scope replaces the outer size rather than scaling it, so an
-`sm` section inside an `lg` page matches `sm` anywhere else.
-
-<Story of="NestedScopesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nexport function NestedScopesExample() {\n  return (\n    <SizeProvider size=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <Heading level={2}>Your plan</Heading>\n        <Text>Premium hosting, renews on March 1.</Text>\n        <Button variant=\&#x22;primary\&#x22;>Manage plan</Button>\n\n        <SizeProvider size=\&#x22;sm\&#x22;>\n          <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n            <Detail>Need less? You can switch to Basic at any time.</Detail>\n            <Button variant=\&#x22;primary\&#x22;>Compare plans</Button>\n          </Flex>\n        </SizeProvider>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
-
-### Explicit Size [#explicit-size]
-
-A component's own `size` wins for that component and every part inside it, such as a field's
-label and description. Its siblings keep following the scope.
-
-<Story of="ExplicitSizeExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Input, Label, SizeProvider, Text, TextField } from '@godaddy/antares';\n\nexport function ExplicitSizeExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <TextField>\n          <Label>Coupon code</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>Follows the scope.</Text>\n        </TextField>\n\n        <TextField size=\&#x22;lg\&#x22;>\n          <Label>Domain name</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>Sized by the field.</Text>\n        </TextField>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
-
-### Overlays [#overlays]
-
-Overlays open at the size of the scope around their trigger, even though they render in a
-portal. An explicit `size` on the owner sizes its overlay too.
-
-<Story of="OverlaysExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Button,\n  ButtonGroup,\n  Content,\n  DatePicker,\n  DatePickerCalendar,\n  DateRangePicker,\n  DateRangePickerCalendar,\n  Flex,\n  Heading,\n  Label,\n  Modal,\n  ModalTrigger,\n  Select,\n  SelectItem,\n  SelectOptions,\n  SizeProvider,\n  Text,\n  Tooltip,\n  TooltipTrigger\n} from '@godaddy/antares';\n\nexport function OverlaysExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex gap=\&#x22;md\&#x22; alignItems=\&#x22;end\&#x22; wrap=\&#x22;wrap\&#x22;>\n        <Select placeholder=\&#x22;Pick a plan\&#x22;>\n          <Label>Plan</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;basic\&#x22;>Basic</SelectItem>\n            <SelectItem id=\&#x22;pro\&#x22;>Pro</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <Select size=\&#x22;lg\&#x22; placeholder=\&#x22;Pick a region\&#x22;>\n          <Label>Region</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>United States</SelectItem>\n            <SelectItem id=\&#x22;eu\&#x22;>Europe</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <DatePicker>\n          <Label>Renewal date</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <DatePickerCalendar />\n        </DatePicker>\n\n        <DateRangePicker size=\&#x22;lg\&#x22;>\n          <Label>Contract dates</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <DateRangePickerCalendar />\n        </DateRangePicker>\n\n        <ModalTrigger>\n          <Button variant=\&#x22;primary\&#x22;>Edit plan</Button>\n          <Modal>\n            <Heading slot=\&#x22;title\&#x22;>Edit plan</Heading>\n            <Content>\n              <Text>Changes apply at the next billing cycle.</Text>\n            </Content>\n            <ButtonGroup>\n              <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n              <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n                Save\n              </Button>\n            </ButtonGroup>\n          </Modal>\n        </ModalTrigger>\n\n        <TooltipTrigger>\n          <Button variant=\&#x22;primary\&#x22;>Help</Button>\n          <Tooltip>Billing questions</Tooltip>\n        </TooltipTrigger>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
-
-### Plain Html [#plain-html]
-
-A scope sizes Antares components only. Plain HTML keeps its own typography, so put copy in
-`Text` to follow the scope.
-
-<Story of="PlainHtmlExample" />
-
-<Source language="tsx" code="&#x22;import { SizeProvider, Text } from '@godaddy/antares';\n\nexport function PlainHtmlExample() {\n  return (\n    <SizeProvider size=\&#x22;lg\&#x22;>\n      <p>A plain paragraph keeps the page's typography.</p>\n      <Text>Text follows the scope.</Text>\n    </SizeProvider>\n  );\n}&#x22;" />
-
-## Props [#props]
 
 <PropTable />
 
@@ -6105,6 +6081,8 @@ Compose a telephone number input paired with a country-code select.
 
 
 
+
+
 <Meta of="Stories" name="Overview" />
 
 ## Features [#features]
@@ -6180,6 +6158,15 @@ here. Controls keep their own type: the buttons are unaffected by the lockup's `
 
 <Source language="tsx" code="&#x22;import { Button, ButtonGroup, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function WithActionsExample() {\n  return (\n    <TextLockup size=\&#x22;xl\&#x22;>\n      <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n        Pro\n      </Tag>\n      <Heading slot=\&#x22;title\&#x22; level={1}>\n        Upgrade your plan\n      </Heading>\n      <Text slot=\&#x22;body\&#x22;>Unlock advanced reporting, priority support, and unlimited seats for your whole team.</Text>\n      <ButtonGroup inlinePadding=\&#x22;0\&#x22; blockPadding=\&#x22;0\&#x22;>\n        <Button variant=\&#x22;primary\&#x22;>Upgrade</Button>\n        <Button variant=\&#x22;secondary\&#x22;>Compare plans</Button>\n      </ButtonGroup>\n    </TextLockup>\n  );\n}&#x22;" />
 
+### Corner Actions [#corner-actions]
+
+An article introduction with a menu to mark it as read. Put CornerActions before Heading
+inside Header so the title wraps around the menu button.
+
+<Story of="CornerActionsExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Button,\n  CornerActions,\n  Header,\n  Heading,\n  Icon,\n  Menu,\n  MenuItem,\n  MenuTrigger,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function CornerActionsExample() {\n  const [read, setRead] = useState(false);\n\n  return (\n    <TextLockup size=\&#x22;lg\&#x22; style={{ maxWidth: '24rem' }}>\n      <Tag slot=\&#x22;eyebrow\&#x22;>Business guide</Tag>\n      <Header>\n        <CornerActions>\n          <MenuTrigger popoverProps={{ placement: 'bottom end' }}>\n            <Button aria-label=\&#x22;More options\&#x22;>\n              <Icon icon=\&#x22;ellipsis\&#x22; />\n            </Button>\n            <Menu aria-label=\&#x22;Article actions\&#x22;>\n              <MenuItem id=\&#x22;read\&#x22; onAction={() => setRead(!read)}>\n                {read ? 'Mark as unread' : 'Mark as read'}\n              </MenuItem>\n            </Menu>\n          </MenuTrigger>\n        </CornerActions>\n        <Heading slot=\&#x22;title\&#x22; level={2}>\n          Prepare your online store for launch and make a great first impression on every customer\n        </Heading>\n      </Header>\n      <Text slot=\&#x22;body\&#x22;>\n        Check your product photos, payment options, and shipping details before opening your doors.\n      </Text>\n      <Text role=\&#x22;status\&#x22;>{read ? 'Marked as read' : '5 min read'}</Text>\n    </TextLockup>\n  );\n}&#x22;" />
+
 ## Customization [#customization]
 
 `TextLockup` positions and type-sets its parts; you supply them. That means anything else can
@@ -6225,6 +6212,11 @@ growing a prop for it.
 
 ```tsx
 <TextLockup>
+  <Header>
+    <CornerActions />
+    <Heading slot="title" />
+  </Header>
+
   <Tag slot="eyebrow" />
   <Heading slot="title" />
   <Text slot="body" />
