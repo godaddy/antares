@@ -26,6 +26,8 @@ export function TypesExample({ invalidProps = false }: { invalidProps?: boolean 
           <Card selection="checkbox" />
           {/* @ts-expect-error - actions run through onAction inside a CardGroup */}
           <Card onPress={() => undefined} />
+          {/* @ts-expect-error - RAC does not forward hrefLang for links or rows */}
+          <Card href="#unsupported-language" hrefLang="en" />
           {/* @ts-expect-error - Card classes are strings; style selection with data attributes */}
           <Card className={() => 'selected'} />
         </>

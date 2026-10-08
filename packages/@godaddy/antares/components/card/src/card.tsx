@@ -2,8 +2,7 @@ import { forwardRef, type ReactNode, type Ref } from 'react';
 import {
   GridListItem as RACGridListItem,
   type GridListItemProps as RACGridListItemProps,
-  Link as RACLink,
-  type LinkProps as RACLinkProps
+  Link as RACLink
 } from 'react-aria-components';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { composeClassName } from '#utils/render-props.ts';
@@ -16,8 +15,8 @@ import styles from './index.module.css';
  * `CardGroup` it is a row that the group selects, and `onAction` and `href` act on the row.
  */
 export interface CardProps
-  extends Omit<FlexProps, 'as' | 'children' | 'onClick'>,
-    Pick<RACLinkProps, 'hrefLang' | 'target' | 'rel' | 'download' | 'ping' | 'referrerPolicy' | 'routerOptions'> {
+  extends Omit<FlexProps, 'as' | 'children' | 'onClick' | 'id'>,
+    Pick<RACGridListItemProps, 'id' | 'target' | 'rel' | 'download' | 'ping' | 'referrerPolicy' | 'routerOptions'> {
   /** Card contents. */
   children?: ReactNode;
 
@@ -34,13 +33,10 @@ export interface CardProps
    * Navigation destination. A standalone Card renders as the native link and must not contain
    * controls. Inside a `CardGroup`, the row navigates.
    */
-  href?: RACLinkProps['href'];
+  href?: RACGridListItemProps['href'];
 
   /** Row action inside a `CardGroup`. Ignored on a standalone Card. */
   onAction?: RACGridListItemProps['onAction'];
-
-  /** Row key inside a `CardGroup`, required for selection. Standalone, the element `id`. */
-  id?: string;
 
   /**
    * Accessible name and typeahead text inside a `CardGroup`. Defaults to plain-text children, so set
@@ -59,7 +55,6 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
     className,
     children,
     href,
-    hrefLang,
     target,
     rel,
     download,
@@ -82,7 +77,7 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
     'aria-labelledby': ariaLabelledBy,
     'aria-describedby': ariaDescribedBy
   };
-  const navigationProps = { href, hrefLang, target, rel, download, ping, referrerPolicy, routerOptions };
+  const navigationProps = { href, target, rel, download, ping, referrerPolicy, routerOptions };
   const surface = {
     padding: 'lg',
     gap: 'lg',
@@ -99,7 +94,9 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
         as={RACGridListItem}
         ref={ref as Ref<HTMLDivElement>}
         id={id}
-        textValue={textValue ?? (typeof children === 'string' ? children : undefined)}
+        textValue={
+          textValue ?? (typeof children === 'string' || typeof children === 'number' ? String(children) : undefined)
+        }
         {...navigationProps}
         isDisabled={isDisabled}
         onAction={onAction}
@@ -129,7 +126,7 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
         {...ariaProps}
         as={RACLink}
         ref={ref as Ref<HTMLAnchorElement>}
-        id={id}
+        id={id?.toString()}
         {...navigationProps}
         isDisabled={isDisabled}
         data-card={isDisabled ? 'static' : 'interactive'}
@@ -144,7 +141,7 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
       {...surface}
       {...ariaProps}
       ref={ref as Ref<HTMLDivElement>}
-      id={id}
+      id={id?.toString()}
       data-disabled={isDisabled || undefined}
       data-card="static"
     >

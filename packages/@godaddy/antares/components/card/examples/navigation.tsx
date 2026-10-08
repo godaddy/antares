@@ -7,14 +7,7 @@ import { Card, CardGroup, type CardProps } from '@godaddy/antares';
 export function NavigationExample({ routerOptions }: { routerOptions?: CardProps['routerOptions'] }) {
   return (
     <>
-      <Card
-        href="#standalone"
-        target="_self"
-        rel="help"
-        hrefLang="en"
-        referrerPolicy="no-referrer"
-        routerOptions={routerOptions}
-      >
+      <Card href="#standalone" target="_self" rel="help" referrerPolicy="no-referrer" routerOptions={routerOptions}>
         Standalone navigation
       </Card>
       <Card href="#standalone-download" download="standalone.txt">
@@ -27,7 +20,6 @@ export function NavigationExample({ routerOptions }: { routerOptions?: CardProps
           href="#grouped"
           target="_self"
           rel="help"
-          hrefLang="en"
           referrerPolicy="no-referrer"
           routerOptions={routerOptions}
         >

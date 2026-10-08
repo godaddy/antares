@@ -12,6 +12,7 @@ import { DisabledExample } from '../examples/disabled.tsx';
 import { LayoutExample } from '../examples/layout.tsx';
 import { MediaExample } from '../examples/media.tsx';
 import { TypesExample } from '../examples/types.tsx';
+import { NumericExample } from '../examples/numeric.tsx';
 import { NavigationExample } from '../examples/navigation.tsx';
 import { InteractionsExample } from '../examples/interactions.tsx';
 
@@ -63,6 +64,10 @@ describe('@godaddy/antares', function packageTests() {
 
     it('allows an explicitly empty indicator', function renderEmptyIndicator() {
       expect(renderToString(<InteractionsExample indicatorChildren={null} />)).toMatchSnapshot();
+    });
+
+    it('renders numeric keys, text, and standalone ids', function renderNumeric() {
+      expect(renderToString(<NumericExample />)).toMatchSnapshot();
     });
 
     it('renders typed group and link examples', function renderTypes() {

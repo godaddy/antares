@@ -31,7 +31,9 @@ Card stays selectable without an indicator. Pass non-interactive children or a s
 render function to replace the default circle and icon. See the Multiple selection example.
 
 Card link options such as `target`, `rel`, `download`, and `routerOptions` apply to both standalone
-links and linked rows in a `CardGroup`. A `CardGroup` ref points to its collection surface.
+links and linked rows in a `CardGroup`. A `CardGroup` ref points to its collection surface. Card ids
+accept strings or numbers; numeric keys keep their type in group selection and become strings on
+standalone DOM elements.
 
 To style a Card by state, target `[data-selected]`, `[data-hovered]`, `[data-pressed]`,
 `[data-focus-visible]`, and `[data-disabled]` from your `className`.

@@ -13,6 +13,7 @@ import { LayoutExample } from '../examples/layout.tsx';
 import { LinkExample } from '../examples/link.tsx';
 import { MultipleSelectionExample } from '../examples/multiple-selection.tsx';
 import { NavigationExample } from '../examples/navigation.tsx';
+import { NumericExample } from '../examples/numeric.tsx';
 import { NestedExample } from '../examples/nested.tsx';
 import { SingleSelectionExample } from '../examples/single-selection.tsx';
 
@@ -79,6 +80,12 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(getByRole('region', { name: 'Card without group' })).toHaveAttribute('id', 'props-static');
       });
 
+      it('stringifies numeric ids for standalone surfaces and links', async function numericDomIds() {
+        const { getByRole } = await render(<NumericExample />);
+        await expect.element(getByRole('region', { name: 'Numeric static card' })).toHaveAttribute('id', '0');
+        await expect.element(getByRole('link', { name: 'Numeric link card' })).toHaveAttribute('id', '42');
+      });
+
       it('focuses the collection through its forwarded ref', async function groupRefFocus() {
         const { getByRole } = await render(<CustomizationExample />);
         await userEvent.click(getByRole('button', { name: 'Focus cards' }));
@@ -135,6 +142,22 @@ describe('@godaddy/antares', function packageTests() {
         await userEvent.click(getByRole('row', { name: 'Row props card' }));
         await userEvent.keyboard('p');
         await expect.element(getByRole('row', { name: 'Plain text card' })).toHaveFocus();
+      });
+
+      it('preserves numeric keys when selecting dynamic items', async function numericKeys() {
+        const { getByRole, getByText } = await render(<NumericExample />);
+        await expect.element(getByRole('row', { name: '42', exact: true })).toHaveAttribute('aria-selected', 'true');
+        await userEvent.click(getByRole('row', { name: '0', exact: true }));
+        await expect.element(getByText('Selected: number:2,number:1')).toBeInTheDocument();
+        await userEvent.click(getByRole('row', { name: '42', exact: true }));
+        await expect.element(getByText('Selected: number:1')).toBeInTheDocument();
+      });
+
+      it('type-selects rows from numeric children including zero', async function numericTypeahead() {
+        const { getByRole } = await render(<NumericExample />);
+        await userEvent.click(getByRole('row', { name: '42', exact: true }));
+        await userEvent.keyboard('0');
+        await expect.element(getByRole('row', { name: '0', exact: true })).toHaveFocus();
       });
 
       it('shares row hover and focus with the indicator', async function indicatorState() {
