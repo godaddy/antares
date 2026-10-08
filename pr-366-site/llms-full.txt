@@ -2258,6 +2258,62 @@ Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow m
 <PropTable />
 
 
+# Heading
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders `h1`-`h6` from the `level` prop (default `3`). The level never changes the visual size.
+* Without `size`, takes the heading tier of the surrounding `SizeProvider`.
+  `size` picks a step on the heading ramp (`xs` to `2xl`).
+* `emphasis` picks a feedback color and changes only the color.
+* `slot="title"` inside a `Modal` or `Dialog` sets the accessible name, and takes the overlay's
+  title tier, one step above the heading tier.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+`Heading` renders a semantic `h1`-`h6` element via the `level` prop.
+Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+`level` sets the semantics and `size` sets the look, so the two never have to match. Without
+`size`, a heading takes the size scope's heading tier at any level.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={2} size=\&#x22;2xl\&#x22;>\n        Level 2, 2xl\n      </Heading>\n      <Heading level={2} size=\&#x22;sm\&#x22;>\n        Level 2, sm\n      </Heading>\n      <Heading level={4} size=\&#x22;xl\&#x22;>\n        Level 4, xl\n      </Heading>\n      <Heading level={4}>Level 4, default tier</Heading>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### Heading [#heading]
+
+<PropTable />
+
+
 # Icon
 
 
@@ -2668,62 +2724,6 @@ For performance optimization:
 1. **Preload common icons**: Consider preloading frequently used icons
 2. **Use sprite mode**: For repeated icons, consider sprite mode which consolidates multiple icons into a single SVG sprite sheet, reducing DOM size and improving performance when the same icon appears multiple times
 3. **Minimize icon sets**: Only load icons that are actually used
-
-
-# Heading
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders `h1`-`h6` from the `level` prop (default `3`). The level never changes the visual size.
-* Without `size`, takes the heading tier of the surrounding `SizeProvider`.
-  `size` picks a step on the heading ramp (`xs` to `2xl`).
-* `emphasis` picks a feedback color and changes only the color.
-* `slot="title"` inside a `Modal` or `Dialog` sets the accessible name, and takes the overlay's
-  title tier, one step above the heading tier.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-`Heading` renders a semantic `h1`-`h6` element via the `level` prop.
-Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-`level` sets the semantics and `size` sets the look, so the two never have to match. Without
-`size`, a heading takes the size scope's heading tier at any level.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={2} size=\&#x22;2xl\&#x22;>\n        Level 2, 2xl\n      </Heading>\n      <Heading level={2} size=\&#x22;sm\&#x22;>\n        Level 2, sm\n      </Heading>\n      <Heading level={4} size=\&#x22;xl\&#x22;>\n        Level 4, xl\n      </Heading>\n      <Heading level={4}>Level 4, default tier</Heading>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### Heading [#heading]
-
-<PropTable />
 
 
 # Image
@@ -3313,145 +3313,6 @@ Use the `compact` prop to render the metric value and description inline rather 
 <PropTable />
 
 
-# NumberField
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Composable interior**: Compose `Label`, the control, `Text slot="description"`, and `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
-* **Steppers**: A stepper is a `Group` holding `Button slot="decrement"`, an `Input`, and `Button slot="increment"`. Left empty, each button takes its icon and `variant="control"` from the field, so no icon imports are needed. Compose a bare `Input` instead for a plain numeric input
-* **Sizes**: The field is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, input, steppers, description, and error; without it, the field follows the surrounding scope
-* **Value scale**: `minValue`, `maxValue`, `step`, and `formatOptions` configure the numeric behavior
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Minimal usage with a `Label`, min/max, and stepper `Button`s.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, type NumberFieldProps } from '@godaddy/antares';\n\nexport function DefaultExample({ defaultValue = 0 }: Pick<NumberFieldProps, 'defaultValue'> = {}) {\n  return (\n    <NumberField defaultValue={defaultValue} minValue={0} maxValue={100}>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState(10);\n\n  return (\n    <>\n      <NumberField minValue={0} maxValue={100} value={value} onChange={setValue}>\n        <Label>Quantity</Label>\n        <Group>\n          <Button slot=\&#x22;decrement\&#x22; />\n          <Input />\n          <Button slot=\&#x22;increment\&#x22; />\n        </Group>\n      </NumberField>\n      <Text>\n        <strong>Value:</strong> {value ?? '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Invalid [#invalid]
-
-Use `isInvalid` with a `FieldError` for validation feedback.
-
-<Story of="InvalidExample" />
-
-<Source language="tsx" code="&#x22;import { Button, FieldError, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <NumberField minValue={0} maxValue={100} isInvalid isRequired>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n      <FieldError>Please enter a value between 0 and 100</FieldError>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` to prevent input.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <NumberField defaultValue={42} minValue={0} maxValue={100} isDisabled>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Hide Stepper [#hide-stepper]
-
-Compose without stepper `Button`s for a plain numeric input.
-
-<Story of="HideStepperExample" />
-
-<Source language="tsx" code="&#x22;import { Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function HideStepperExample() {\n  return (\n    <NumberField minValue={0} maxValue={100}>\n      <Label>Quantity</Label>\n      <Input placeholder=\&#x22;0\&#x22; />\n      <Text slot=\&#x22;description\&#x22;>Enter a value between 0 and 100.</Text>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Value Scale [#value-scale]
-
-Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calculated from the minimum value.
-
-<Story of="ValueScaleExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function ValueScaleExample() {\n  return (\n    <NumberField minValue={2} maxValue={20} step={3}>\n      <Label>Step value</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>\n        Steps are from the minimum: minValue={'{2}'}, step={'{3}'} gives 2, 5, 8, 11, …\n      </Text>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Format options (numbering system) [#format-options-numbering-system]
-
-By default, NumberField displays the value using the numbering system for the user's locale. Use the `formatOptions` prop to override the numbering system by setting the Unicode numbering system locale extension.
-
-<Story of="FormatOptionsExample" />
-
-<Source language="tsx" code="&#x22;import { Input, Label, NumberField, Text } from '@godaddy/antares';\n\nconst devanagariFormatOptions = Intl.NumberFormat('hi-IN-u-nu-deva').resolvedOptions();\n\nexport function FormatOptionsExample() {\n  return (\n    <NumberField value={1024} formatOptions={devanagariFormatOptions}>\n      <Label>Number (Devanagari)</Label>\n      <Input />\n      <Text slot=\&#x22;description\&#x22;>\n        By default, NumberField uses the user's locale. Use formatOptions to override with a Unicode numbering system\n        locale extension (e.g. nu-deva).\n      </Text>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-`size` sets the label, input, and steppers. Without it, the field follows the surrounding size
-scope.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function field(size) {\n        return (\n          <NumberField key={size} minValue={0} maxValue={100} size={size}>\n            <Label>Quantity ({size})</Label>\n            <Group>\n              <Button slot=\&#x22;decrement\&#x22; />\n              <Input />\n              <Button slot=\&#x22;increment\&#x22; />\n            </Group>\n          </NumberField>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
-
-### Text Steppers [#text-steppers]
-
-Compose with `children` to replace the stepper icons with your own content, such as text.
-
-<Story of="TextSteppersExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function TextSteppersExample() {\n  return (\n    <NumberField defaultValue={1} minValue={0}>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22;>decrement</Button>\n        <Input />\n        <Button slot=\&#x22;increment\&#x22;>increment</Button>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Use decrement and increment to change the value.</Text>\n    </NumberField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<NumberField>
-  <Label />
-  <Group>
-    <Button slot="decrement" />
-    <Input />
-    <Button slot="increment" />
-  </Group>
-  {/* or a bare <Input /> for a plain numeric input */}
-  <Text slot="description" />
-  <FieldError />
-</NumberField>
-```
-
-### NumberField [#numberfield]
-
-<PropTable />
-
-
 # Modal
 
 
@@ -3603,7 +3464,17 @@ the dialog.
 
 
 
+
+
 <Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Controlled and uncontrolled 1-based page state.
+* Explicit composition with Antares `Button`, `Input`, `Text`, `Select` and `PaginationDots`.
+* Known and unknown page-count data sources.
+* React Aria context defaults for previous, next and the single page input.
+* Medium and small control sizes.
 
 ## Installation [#installation]
 
@@ -3615,47 +3486,237 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
+The default pagination for a known page count without a page-size selector.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DefaultExample() {\n  const [page, setPage] = useState(0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={5} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Input, Pagination, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Pagination pageCount={5} defaultValue={1} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Input aria-label=\&#x22;Current page\&#x22; />\n      <Text size=\&#x22;sm\&#x22; aria-hidden>\n        /\n      </Text>\n      <Text size=\&#x22;sm\&#x22;>5</Text>\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n    </Pagination>\n  );\n}&#x22;" />
 
 ### Controlled [#controlled]
 
-Pass `activeIndex` and `onChange` to control the active page externally.
+A controlled Pagination keeps the current page in consumer state.
 
 <Story of="ControlledExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={4} activeIndex={page} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Input, Pagination, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Pagination value={page} pageCount={3} onChange={setPage} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Input aria-label=\&#x22;Current page\&#x22; />\n      <Text size=\&#x22;sm\&#x22; aria-hidden>\n        /\n      </Text>\n      <Text size=\&#x22;sm\&#x22;>3</Text>\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n    </Pagination>\n  );\n}&#x22;" />
 
-### Default Active [#default-active]
+### Page Count Known [#page-count-known]
 
-Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
+Page navigation with a known page count and a consumer-owned page-size Select.
 
-<Story of="DefaultActiveExample" />
+<Story of="PageCountKnownExample" />
 
-<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function DefaultActiveExample() {\n  return <Pagination total={5} defaultActiveIndex={2} />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Input, Pagination, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function PageCountKnownExample() {\n  const total = 50;\n  const [page, setPage] = useState(1);\n  const [limit, setLimit] = useState(10);\n  const pageCount = Math.ceil(total / limit);\n\n  function handlePageSizeChange(value: string | number | null) {\n    if (value == null) return;\n\n    setLimit(Number(value));\n    setPage(1);\n  }\n\n  return (\n    <Pagination value={page} pageCount={pageCount} onChange={setPage} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Input aria-label=\&#x22;Current page\&#x22; />\n      <Text size=\&#x22;sm\&#x22; aria-hidden>\n        /\n      </Text>\n      <Text size=\&#x22;sm\&#x22;>{pageCount}</Text>\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n      <Select aria-label=\&#x22;Results per page\&#x22; value={String(limit)} onChange={handlePageSizeChange}>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;10\&#x22;>10</SelectItem>\n          <SelectItem id=\&#x22;25\&#x22;>25</SelectItem>\n          <SelectItem id=\&#x22;50\&#x22;>50</SelectItem>\n        </SelectOptions>\n      </Select>\n    </Pagination>\n  );\n}&#x22;" />
 
-### With Limit [#with-limit]
+### Page Count Unknown [#page-count-unknown]
 
-Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
+Page Count Unknown: the consumer controls the next boundary.
 
-<Story of="WithLimitExample" />
+<Story of="PageCountUnknownExample" />
 
-<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function WithLimitExample() {\n  return <Pagination total={10} limit={3} />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Input, Pagination } from '@godaddy/antares';\n\nexport function PageCountUnknownExample() {\n  const [page, setPage] = useState(1);\n  const hasNextPage = true;\n\n  return (\n    <Pagination value={page} onChange={setPage} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Input aria-label=\&#x22;Current page\&#x22; />\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; isDisabled={!hasNextPage} />\n    </Pagination>\n  );\n}&#x22;" />
 
-### onChange Event [#onchange-event]
+### Minimal [#minimal]
 
-The `onChange` callback fires with the new page index whenever the user navigates.
+Minimal previous/next pagination.
 
-<Story of="OnChangeExample" />
+<Story of="MinimalExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function OnChangeExample() {\n  const [onChangeValue, setOnChangeValue] = useState<number | undefined>(undefined);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={3} onChange={setOnChangeValue} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        onChange: {onChangeValue ?? 'none'}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Pagination } from '@godaddy/antares';\n\nexport function MinimalExample() {\n  return (\n    <Pagination pageCount={8} defaultValue={1} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n    </Pagination>\n  );\n}&#x22;" />
+
+### Pagination Dots [#pagination-dots]
+
+Opt-in visual PaginationDots between previous and next controls.
+
+<Story of="PaginationDotsExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Pagination, PaginationDots } from '@godaddy/antares';\n\nexport function PaginationDotsExample() {\n  const [page, setPage] = useState(1);\n  const pageCount = 5;\n\n  return (\n    <Pagination value={page} pageCount={pageCount} onChange={setPage} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <PaginationDots />\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n    </Pagination>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Pagination is composed: pass only the regions your layout needs. Previous and
+next `Button`s and the page `Input` receive navigation defaults from
+Pagination, while explicit child props—including disabled-state props—and
+`className` values remain available for local customization. Separator, page count,
+`Select` and
+`PaginationDots` are consumer-owned.
+
+Use `className` to extend styling without replacing the interaction behavior
+provided by Antares.
+
+## Accessibility [#accessibility]
+
+* Pagination does not add translated labels. Provide accessible names for the
+  navigation region, previous/next buttons and page input.
+* `PaginationDots` is decorative and does not replace interactive page
+  controls.
+* For interactive page links, compose explicit `Button` or `LinkButton` children and
+  provide the active state with `aria-current="page"`.
+
+## Best Practices [#best-practices]
+
+* Pass `pageCount` when the backend exposes a known number of pages.
+* Omit `pageCount` for cursor-based data and disable the composed next button
+  when the backend reports that there is no next page.
+* Keep total items, page size and result ranges in the consuming data layer.
+* Compose exactly one page `Input`; use a separate component for advanced range
+  navigation.
 
 ## Props [#props]
 
 ### Pagination [#pagination]
+
+```tsx
+<Pagination>
+  <Button slot="previous" />
+  <Input />
+  {/* separator, page count, Select, PaginationDots, or custom regions */}
+  <Button slot="next" />
+</Pagination>
+```
+
+<PropTable />
+
+### PaginationDots [#paginationdots]
+
+<PropTable />
+
+
+# NumberField
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Composable interior**: Compose `Label`, the control, `Text slot="description"`, and `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
+* **Steppers**: A stepper is a `Group` holding `Button slot="decrement"`, an `Input`, and `Button slot="increment"`. Left empty, each button takes its icon and `variant="control"` from the field, so no icon imports are needed. Compose a bare `Input` instead for a plain numeric input
+* **Sizes**: The field is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, input, steppers, description, and error; without it, the field follows the surrounding scope
+* **Value scale**: `minValue`, `maxValue`, `step`, and `formatOptions` configure the numeric behavior
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Minimal usage with a `Label`, min/max, and stepper `Button`s.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, type NumberFieldProps } from '@godaddy/antares';\n\nexport function DefaultExample({ defaultValue = 0 }: Pick<NumberFieldProps, 'defaultValue'> = {}) {\n  return (\n    <NumberField defaultValue={defaultValue} minValue={0} maxValue={100}>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState(10);\n\n  return (\n    <>\n      <NumberField minValue={0} maxValue={100} value={value} onChange={setValue}>\n        <Label>Quantity</Label>\n        <Group>\n          <Button slot=\&#x22;decrement\&#x22; />\n          <Input />\n          <Button slot=\&#x22;increment\&#x22; />\n        </Group>\n      </NumberField>\n      <Text>\n        <strong>Value:</strong> {value ?? '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with a `FieldError` for validation feedback.
+
+<Story of="InvalidExample" />
+
+<Source language="tsx" code="&#x22;import { Button, FieldError, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <NumberField minValue={0} maxValue={100} isInvalid isRequired>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n      <FieldError>Please enter a value between 0 and 100</FieldError>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent input.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <NumberField defaultValue={42} minValue={0} maxValue={100} isDisabled>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Hide Stepper [#hide-stepper]
+
+Compose without stepper `Button`s for a plain numeric input.
+
+<Story of="HideStepperExample" />
+
+<Source language="tsx" code="&#x22;import { Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function HideStepperExample() {\n  return (\n    <NumberField minValue={0} maxValue={100}>\n      <Label>Quantity</Label>\n      <Input placeholder=\&#x22;0\&#x22; />\n      <Text slot=\&#x22;description\&#x22;>Enter a value between 0 and 100.</Text>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Value Scale [#value-scale]
+
+Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calculated from the minimum value.
+
+<Story of="ValueScaleExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function ValueScaleExample() {\n  return (\n    <NumberField minValue={2} maxValue={20} step={3}>\n      <Label>Step value</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>\n        Steps are from the minimum: minValue={'{2}'}, step={'{3}'} gives 2, 5, 8, 11, …\n      </Text>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Format options (numbering system) [#format-options-numbering-system]
+
+By default, NumberField displays the value using the numbering system for the user's locale. Use the `formatOptions` prop to override the numbering system by setting the Unicode numbering system locale extension.
+
+<Story of="FormatOptionsExample" />
+
+<Source language="tsx" code="&#x22;import { Input, Label, NumberField, Text } from '@godaddy/antares';\n\nconst devanagariFormatOptions = Intl.NumberFormat('hi-IN-u-nu-deva').resolvedOptions();\n\nexport function FormatOptionsExample() {\n  return (\n    <NumberField value={1024} formatOptions={devanagariFormatOptions}>\n      <Label>Number (Devanagari)</Label>\n      <Input />\n      <Text slot=\&#x22;description\&#x22;>\n        By default, NumberField uses the user's locale. Use formatOptions to override with a Unicode numbering system\n        locale extension (e.g. nu-deva).\n      </Text>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+`size` sets the label, input, and steppers. Without it, the field follows the surrounding size
+scope.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function field(size) {\n        return (\n          <NumberField key={size} minValue={0} maxValue={100} size={size}>\n            <Label>Quantity ({size})</Label>\n            <Group>\n              <Button slot=\&#x22;decrement\&#x22; />\n              <Input />\n              <Button slot=\&#x22;increment\&#x22; />\n            </Group>\n          </NumberField>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+
+### Text Steppers [#text-steppers]
+
+Compose with `children` to replace the stepper icons with your own content, such as text.
+
+<Story of="TextSteppersExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function TextSteppersExample() {\n  return (\n    <NumberField defaultValue={1} minValue={0}>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22;>decrement</Button>\n        <Input />\n        <Button slot=\&#x22;increment\&#x22;>increment</Button>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Use decrement and increment to change the value.</Text>\n    </NumberField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<NumberField>
+  <Label />
+  <Group>
+    <Button slot="decrement" />
+    <Input />
+    <Button slot="increment" />
+  </Group>
+  {/* or a bare <Input /> for a plain numeric input */}
+  <Text slot="description" />
+  <FieldError />
+</NumberField>
+```
+
+### NumberField [#numberfield]
 
 <PropTable />
 
@@ -3837,6 +3898,82 @@ Do not add `role="button"` to a native `<button>` or `<a>` unless you intentiona
 ```
 
 ### Pressable [#pressable]
+
+<PropTable />
+
+
+# ProgressBar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A determinate progress bar with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
+
+### Statuses [#statuses]
+
+Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
+
+<Story of="StatusesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Indeterminate [#indeterminate]
+
+Use indeterminate progress while preparing an upload whose total size is unknown.
+Once the total is known, set `isIndeterminate` to false and supply a measured value.
+
+<Story of="IndeterminateExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, type ProgressBarProps } from '@godaddy/antares';\n\nexport function IndeterminateExample(props: ProgressBarProps) {\n  return <ProgressBar label=\&#x22;Preparing upload…\&#x22; helperText=\&#x22;Calculating the total size\&#x22; isIndeterminate {...props} />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`)
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+
+## Props [#props]
+
+### ProgressBar [#progressbar]
 
 <PropTable />
 
@@ -4268,237 +4405,6 @@ Always provide clear error messages:
 <PropTable />
 
 
-# ProgressBar
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A determinate progress bar with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
-
-### Statuses [#statuses]
-
-Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
-
-<Story of="StatusesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Indeterminate [#indeterminate]
-
-Use indeterminate progress while preparing an upload whose total size is unknown.
-Once the total is known, set `isIndeterminate` to false and supply a measured value.
-
-<Story of="IndeterminateExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, type ProgressBarProps } from '@godaddy/antares';\n\nexport function IndeterminateExample(props: ProgressBarProps) {\n  return <ProgressBar label=\&#x22;Preparing upload…\&#x22; helperText=\&#x22;Calculating the total size\&#x22; isIndeterminate {...props} />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`)
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-
-## Props [#props]
-
-### ProgressBar [#progressbar]
-
-<PropTable />
-
-
-# SegmentedController
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;View\&#x22; defaultValue=\&#x22;day\&#x22;>\n      <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [selected, setSelected] = useState('week');\n\n  return (\n    <>\n      <SegmentedController aria-label=\&#x22;View\&#x22; value={selected} onSelectionChange={setSelected}>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n      <p>Current selection: {selected}</p>\n    </>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Three sizes are available: `sm`, `md` (default), and `lg`.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <SegmentedController aria-label=\&#x22;View (small)\&#x22; size=\&#x22;sm\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day sm</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week sm</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month sm</SegmentedControllerItem>\n      </SegmentedController>\n\n      <SegmentedController aria-label=\&#x22;View (medium)\&#x22; size=\&#x22;md\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day md</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week md</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month md</SegmentedControllerItem>\n      </SegmentedController>\n\n      <SegmentedController aria-label=\&#x22;View (large)\&#x22; size=\&#x22;lg\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day lg</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week lg</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month lg</SegmentedControllerItem>\n      </SegmentedController>\n    </Flex>\n  );\n}&#x22;" />
-
-### Icon + Text [#icon--text]
-
-Segments can include an `Icon` alongside text for added visual context.
-
-<Story of="IconExample" />
-
-<Source language="tsx" code="&#x22;import { Icon, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function IconExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;Layout\&#x22; defaultValue=\&#x22;list\&#x22;>\n      <SegmentedControllerItem value=\&#x22;list\&#x22;>\n        <Icon icon=\&#x22;bulleted-list\&#x22; />\n        List\n      </SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;grid\&#x22;>\n        <Icon icon=\&#x22;grid\&#x22; />\n        Grid\n      </SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
-
-### Icon Only [#icon-only]
-
-For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
-
-<Story of="IconOnlyExample" />
-
-<Source language="tsx" code="&#x22;import { Icon, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function IconOnlyExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;Layout\&#x22;>\n      <SegmentedControllerItem value=\&#x22;list\&#x22; aria-label=\&#x22;List view\&#x22;>\n        <Icon icon=\&#x22;bulleted-list\&#x22; />\n      </SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;grid\&#x22; aria-label=\&#x22;Grid view\&#x22;>\n        <Icon icon=\&#x22;grid\&#x22; />\n      </SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
-
-### Overflow [#overflow]
-
-When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
-
-<Story of="OverflowExample" />
-
-<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function OverflowExample({ maxWidth = '300px' }: { maxWidth?: string }) {\n  return (\n    <SegmentedController aria-label=\&#x22;Category\&#x22; defaultValue=\&#x22;electronics\&#x22; style={{ maxWidth }}>\n      <SegmentedControllerItem value=\&#x22;electronics\&#x22;>Electronics</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;clothing\&#x22;>Clothing</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;home\&#x22;>Home</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;sports\&#x22;>Sports</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;toys\&#x22;>Toys</SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
-
-### RTL Direction [#rtl-direction]
-
-The segmented controller follows the current layout direction (LTR or RTL), detected automatically from the browser or system settings.
-
-<Story of="RTLExample" />
-
-<Source language="tsx" code="&#x22;import { RTLProvider } from '#utils/rtl-locale-provider.tsx';\nimport { OverflowExample } from './overflow.tsx';\n\nexport function RTLExample() {\n  return (\n    <RTLProvider>\n      <OverflowExample />\n    </RTLProvider>\n  );\n}&#x22;" />
-
-### Disabled States [#disabled-states]
-
-Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem, Flex } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <label>Disabled group</label>\n      <SegmentedController aria-label=\&#x22;Disabled group\&#x22; isDisabled defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n\n      <label>Individual disabled</label>\n      <SegmentedController aria-label=\&#x22;Individual disabled\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22; isDisabled>\n          Week\n        </SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n    </Flex>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-### Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**SegmentedController Container:** `data-disabled`
-
-**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
-
-## Accessibility [#accessibility]
-
-### Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to/from the segmented controller
-* **Arrow Left/Right**: Move to next/previous segment
-* **Space/Enter**: Select the focused segment
-
-### ARIA Support [#aria-support]
-
-* `role="radiogroup"` on the container
-* `role="radio"` on each segment
-* `aria-checked` indicates selection state
-* `aria-disabled` for disabled segments
-* `aria-label` required on the container for screen readers
-
-## Best Practices [#best-practices]
-
-### When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
-
-* When switching between 2-5 related views within the same context
-* When all options should be visible at once
-* When the selection immediately changes the displayed content
-
-### When Not to Use [#when-not-to-use]
-
-* For more than 5 options (use Tabs or Select instead)
-* For form input (use RadioGroup instead)
-
-## Props [#props]
-
-```tsx
-<SegmentedController>
-  <SegmentedControllerItem />
-  {/* ... */}
-</SegmentedController>
-```
-
-### SegmentedController [#segmentedcontroller]
-
-<PropTable />
-
-### SegmentedControllerItem [#segmentedcontrolleritem]
-
-<PropTable />
-
-
 # RangeField
 
 
@@ -4687,6 +4593,161 @@ Negative values are supported. Set a negative `minValue` and ensure every scalar
 ### The range configuration is invalid [#the-range-configuration-is-invalid]
 
 Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
+
+
+# SegmentedController
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;View\&#x22; defaultValue=\&#x22;day\&#x22;>\n      <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [selected, setSelected] = useState('week');\n\n  return (\n    <>\n      <SegmentedController aria-label=\&#x22;View\&#x22; value={selected} onSelectionChange={setSelected}>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n      <p>Current selection: {selected}</p>\n    </>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Three sizes are available: `sm`, `md` (default), and `lg`.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <SegmentedController aria-label=\&#x22;View (small)\&#x22; size=\&#x22;sm\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day sm</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week sm</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month sm</SegmentedControllerItem>\n      </SegmentedController>\n\n      <SegmentedController aria-label=\&#x22;View (medium)\&#x22; size=\&#x22;md\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day md</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week md</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month md</SegmentedControllerItem>\n      </SegmentedController>\n\n      <SegmentedController aria-label=\&#x22;View (large)\&#x22; size=\&#x22;lg\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day lg</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week lg</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month lg</SegmentedControllerItem>\n      </SegmentedController>\n    </Flex>\n  );\n}&#x22;" />
+
+### Icon + Text [#icon--text]
+
+Segments can include an `Icon` alongside text for added visual context.
+
+<Story of="IconExample" />
+
+<Source language="tsx" code="&#x22;import { Icon, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function IconExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;Layout\&#x22; defaultValue=\&#x22;list\&#x22;>\n      <SegmentedControllerItem value=\&#x22;list\&#x22;>\n        <Icon icon=\&#x22;bulleted-list\&#x22; />\n        List\n      </SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;grid\&#x22;>\n        <Icon icon=\&#x22;grid\&#x22; />\n        Grid\n      </SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
+
+### Icon Only [#icon-only]
+
+For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
+
+<Story of="IconOnlyExample" />
+
+<Source language="tsx" code="&#x22;import { Icon, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function IconOnlyExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;Layout\&#x22;>\n      <SegmentedControllerItem value=\&#x22;list\&#x22; aria-label=\&#x22;List view\&#x22;>\n        <Icon icon=\&#x22;bulleted-list\&#x22; />\n      </SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;grid\&#x22; aria-label=\&#x22;Grid view\&#x22;>\n        <Icon icon=\&#x22;grid\&#x22; />\n      </SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
+
+### Overflow [#overflow]
+
+When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
+
+<Story of="OverflowExample" />
+
+<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function OverflowExample({ maxWidth = '300px' }: { maxWidth?: string }) {\n  return (\n    <SegmentedController aria-label=\&#x22;Category\&#x22; defaultValue=\&#x22;electronics\&#x22; style={{ maxWidth }}>\n      <SegmentedControllerItem value=\&#x22;electronics\&#x22;>Electronics</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;clothing\&#x22;>Clothing</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;home\&#x22;>Home</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;sports\&#x22;>Sports</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;toys\&#x22;>Toys</SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
+
+### RTL Direction [#rtl-direction]
+
+The segmented controller follows the current layout direction (LTR or RTL), detected automatically from the browser or system settings.
+
+<Story of="RTLExample" />
+
+<Source language="tsx" code="&#x22;import { RTLProvider } from '#utils/rtl-locale-provider.tsx';\nimport { OverflowExample } from './overflow.tsx';\n\nexport function RTLExample() {\n  return (\n    <RTLProvider>\n      <OverflowExample />\n    </RTLProvider>\n  );\n}&#x22;" />
+
+### Disabled States [#disabled-states]
+
+Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem, Flex } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <label>Disabled group</label>\n      <SegmentedController aria-label=\&#x22;Disabled group\&#x22; isDisabled defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n\n      <label>Individual disabled</label>\n      <SegmentedController aria-label=\&#x22;Individual disabled\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22; isDisabled>\n          Week\n        </SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n    </Flex>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+### Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**SegmentedController Container:** `data-disabled`
+
+**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
+
+## Accessibility [#accessibility]
+
+### Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to/from the segmented controller
+* **Arrow Left/Right**: Move to next/previous segment
+* **Space/Enter**: Select the focused segment
+
+### ARIA Support [#aria-support]
+
+* `role="radiogroup"` on the container
+* `role="radio"` on each segment
+* `aria-checked` indicates selection state
+* `aria-disabled` for disabled segments
+* `aria-label` required on the container for screen readers
+
+## Best Practices [#best-practices]
+
+### When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
+
+* When switching between 2-5 related views within the same context
+* When all options should be visible at once
+* When the selection immediately changes the displayed content
+
+### When Not to Use [#when-not-to-use]
+
+* For more than 5 options (use Tabs or Select instead)
+* For form input (use RadioGroup instead)
+
+## Props [#props]
+
+```tsx
+<SegmentedController>
+  <SegmentedControllerItem />
+  {/* ... */}
+</SegmentedController>
+```
+
+### SegmentedController [#segmentedcontroller]
+
+<PropTable />
+
+### SegmentedControllerItem [#segmentedcontrolleritem]
+
+<PropTable />
 
 
 # Select
@@ -5211,6 +5272,141 @@ Use the interactive root data attributes for state-based customization. The trac
 <PropTable />
 
 
+# Tag
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A minimal tag with the default emphasis and size.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Tag, type TagProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<TagProps>) {\n  return <Tag {...props}>Tag</Tag>;\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Nine emphasis options are available. Choose the one that fits the visual tone of your context.
+
+<Story of="EmphasesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function EmphasesExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis}>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Choose a size that fits the surrounding content. Smaller tags work well in compact layouts like tables; larger tags suit headings or hero sections.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Tag size=\&#x22;sm\&#x22; emphasis=\&#x22;info\&#x22;>\n        Small\n      </Tag>\n      <Tag size=\&#x22;md\&#x22; emphasis=\&#x22;info\&#x22;>\n        Medium\n      </Tag>\n      <Tag size=\&#x22;lg\&#x22; emphasis=\&#x22;info\&#x22;>\n        Large\n      </Tag>\n    </Flex>\n  );\n}&#x22;" />
+
+### Inline [#inline]
+
+Use `design="inline"` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
+
+<Story of="InlineExample" />
+
+<Source language="tsx" code="&#x22;import { Tag } from '@godaddy/antares';\n\nexport function InlineExample() {\n  return (\n    <p>\n      This domain is{' '}\n      <Tag emphasis=\&#x22;success\&#x22; design=\&#x22;inline\&#x22;>\n        Active\n      </Tag>{' '}\n      and your plan is{' '}\n      <Tag emphasis=\&#x22;premium\&#x22; design=\&#x22;inline\&#x22;>\n        Pro\n      </Tag>\n      .\n    </p>\n  );\n}&#x22;" />
+
+### High Contrast [#high-contrast]
+
+A bolder color treatment for when tags need to stand out more - for example, on colored backgrounds.
+
+<Story of="HighContrastExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function HighContrastExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis} highContrast>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+
+### With Icon [#with-icon]
+
+Icons reinforce the tag's meaning at a glance. Add an `Icon` as a child - it inherits the tag's color and scales with its size.
+
+<Story of="IconsExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Icon, Tag } from '@godaddy/antares';\n\nexport function IconsExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Tag emphasis=\&#x22;critical\&#x22;>\n        <Icon icon=\&#x22;alert\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Critical\n      </Tag>\n      <Tag emphasis=\&#x22;success\&#x22;>\n        <Icon icon=\&#x22;checkmark\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Success\n      </Tag>\n      <Tag emphasis=\&#x22;warning\&#x22;>\n        <Icon icon=\&#x22;alert\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Warning\n      </Tag>\n      <Tag emphasis=\&#x22;info\&#x22;>\n        <Icon icon=\&#x22;information\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Info\n      </Tag>\n      <Tag emphasis=\&#x22;highlight\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Highlight\n      </Tag>\n      <Tag emphasis=\&#x22;premium\&#x22;>\n        <Icon icon=\&#x22;diamond\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Premium\n      </Tag>\n    </Flex>\n  );\n}&#x22;" />
+
+### Indicator [#indicator]
+
+A minimal style that pairs a small colored dot with a neutral background. Well suited for dense layouts like tables or dashboards where multiple tags in close proximity would otherwise compete for attention.
+
+<Story of="IndicatorExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function IndicatorExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis} indicator>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Screen readers [#screen-readers]
+
+Tags are `<span>` elements with no special ARIA role. Screen readers announce the tag's text as part of normal page content — no extra markup is needed.
+
+### Decorative icons [#decorative-icons]
+
+Icons passed as children must include `aria-hidden="true"` so they are skipped by screen readers. The text label is the sole carrier of meaning.
+
+```tsx
+<Tag emphasis="critical">
+  <Icon icon="alert" aria-hidden="true" />
+  Expired
+</Tag>
+```
+
+### Indicator dot [#indicator-dot]
+
+The colored dot is decorative and invisible to screen readers. The text label must convey the status on its own — never rely on the dot alone to communicate meaning.
+
+## Best Practices [#best-practices]
+
+* Use the indicator style in dense layouts like tables and dashboards. Use the filled style when the tag is a prominent, standalone element on a card or hero section.
+* Default to the small size in compact layouts like tables and lists. Use medium or large only when the tag needs to stand out as a primary piece of information.
+* Use the inline design only within running prose. In grouped or standalone contexts, the filled style provides better visual separation.
+* Do not stack multiple tags of different emphasis on the same item. Choose the most important one — too many competing labels lose their meaning.
+
+## When to Use [#when-to-use]
+
+* Showing the status of an item on a card, table row, or list entry (e.g. "Active", "Expired", "Pending")
+* Categorizing or grouping content so users can scan and filter quickly (e.g. "New", "Sale", "Beta")
+* Surfacing metadata about an item (e.g. "Pro", "Free trial", "Internal")
+* Communicating priority or category in project management and collaboration tools (e.g. "High priority", "In review")
+
+## When Not to Use [#when-not-to-use]
+
+* If users need to click or dismiss it — use a **Button** instead.
+* If the label is part of a sentence with no visual distinction — just use text.
+
+## Props [#props]
+
+### Tag [#tag]
+
+<PropTable />
+
+
 # Tabs
 
 
@@ -5354,141 +5550,6 @@ Use `TabList`'s `containerProps` to customize the outer tab list shell, such as 
 <PropTable />
 
 ### TabPanel [#tabpanel]
-
-<PropTable />
-
-
-# Tag
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A minimal tag with the default emphasis and size.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Tag, type TagProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<TagProps>) {\n  return <Tag {...props}>Tag</Tag>;\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Nine emphasis options are available. Choose the one that fits the visual tone of your context.
-
-<Story of="EmphasesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function EmphasesExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis}>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Choose a size that fits the surrounding content. Smaller tags work well in compact layouts like tables; larger tags suit headings or hero sections.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Tag size=\&#x22;sm\&#x22; emphasis=\&#x22;info\&#x22;>\n        Small\n      </Tag>\n      <Tag size=\&#x22;md\&#x22; emphasis=\&#x22;info\&#x22;>\n        Medium\n      </Tag>\n      <Tag size=\&#x22;lg\&#x22; emphasis=\&#x22;info\&#x22;>\n        Large\n      </Tag>\n    </Flex>\n  );\n}&#x22;" />
-
-### Inline [#inline]
-
-Use `design="inline"` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
-
-<Story of="InlineExample" />
-
-<Source language="tsx" code="&#x22;import { Tag } from '@godaddy/antares';\n\nexport function InlineExample() {\n  return (\n    <p>\n      This domain is{' '}\n      <Tag emphasis=\&#x22;success\&#x22; design=\&#x22;inline\&#x22;>\n        Active\n      </Tag>{' '}\n      and your plan is{' '}\n      <Tag emphasis=\&#x22;premium\&#x22; design=\&#x22;inline\&#x22;>\n        Pro\n      </Tag>\n      .\n    </p>\n  );\n}&#x22;" />
-
-### High Contrast [#high-contrast]
-
-A bolder color treatment for when tags need to stand out more - for example, on colored backgrounds.
-
-<Story of="HighContrastExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function HighContrastExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis} highContrast>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
-
-### With Icon [#with-icon]
-
-Icons reinforce the tag's meaning at a glance. Add an `Icon` as a child - it inherits the tag's color and scales with its size.
-
-<Story of="IconsExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Icon, Tag } from '@godaddy/antares';\n\nexport function IconsExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Tag emphasis=\&#x22;critical\&#x22;>\n        <Icon icon=\&#x22;alert\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Critical\n      </Tag>\n      <Tag emphasis=\&#x22;success\&#x22;>\n        <Icon icon=\&#x22;checkmark\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Success\n      </Tag>\n      <Tag emphasis=\&#x22;warning\&#x22;>\n        <Icon icon=\&#x22;alert\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Warning\n      </Tag>\n      <Tag emphasis=\&#x22;info\&#x22;>\n        <Icon icon=\&#x22;information\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Info\n      </Tag>\n      <Tag emphasis=\&#x22;highlight\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Highlight\n      </Tag>\n      <Tag emphasis=\&#x22;premium\&#x22;>\n        <Icon icon=\&#x22;diamond\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Premium\n      </Tag>\n    </Flex>\n  );\n}&#x22;" />
-
-### Indicator [#indicator]
-
-A minimal style that pairs a small colored dot with a neutral background. Well suited for dense layouts like tables or dashboards where multiple tags in close proximity would otherwise compete for attention.
-
-<Story of="IndicatorExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function IndicatorExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis} indicator>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Screen readers [#screen-readers]
-
-Tags are `<span>` elements with no special ARIA role. Screen readers announce the tag's text as part of normal page content — no extra markup is needed.
-
-### Decorative icons [#decorative-icons]
-
-Icons passed as children must include `aria-hidden="true"` so they are skipped by screen readers. The text label is the sole carrier of meaning.
-
-```tsx
-<Tag emphasis="critical">
-  <Icon icon="alert" aria-hidden="true" />
-  Expired
-</Tag>
-```
-
-### Indicator dot [#indicator-dot]
-
-The colored dot is decorative and invisible to screen readers. The text label must convey the status on its own — never rely on the dot alone to communicate meaning.
-
-## Best Practices [#best-practices]
-
-* Use the indicator style in dense layouts like tables and dashboards. Use the filled style when the tag is a prominent, standalone element on a card or hero section.
-* Default to the small size in compact layouts like tables and lists. Use medium or large only when the tag needs to stand out as a primary piece of information.
-* Use the inline design only within running prose. In grouped or standalone contexts, the filled style provides better visual separation.
-* Do not stack multiple tags of different emphasis on the same item. Choose the most important one — too many competing labels lose their meaning.
-
-## When to Use [#when-to-use]
-
-* Showing the status of an item on a card, table row, or list entry (e.g. "Active", "Expired", "Pending")
-* Categorizing or grouping content so users can scan and filter quickly (e.g. "New", "Sale", "Beta")
-* Surfacing metadata about an item (e.g. "Pro", "Free trial", "Internal")
-* Communicating priority or category in project management and collaboration tools (e.g. "High priority", "In review")
-
-## When Not to Use [#when-not-to-use]
-
-* If users need to click or dismiss it — use a **Button** instead.
-* If the label is part of a sentence with no visual distinction — just use text.
-
-## Props [#props]
-
-### Tag [#tag]
 
 <PropTable />
 
@@ -6581,6 +6642,81 @@ For better performance:
 <PropTable />
 
 
+# DonutChart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Story of="SingleSliceExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Story of="LegendLayoutExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Story of="SmallSlicesExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
+
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Story of="FormatValueExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### DonutChart [#donutchart]
+
+<PropTable />
+
+
 # Gauge Chart
 
 
@@ -7428,81 +7564,6 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 ## Props [#props]
 
 ### Flex [#flex]
-
-<PropTable />
-
-
-# DonutChart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Story of="SingleSliceExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Story of="LegendLayoutExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Story of="SmallSlicesExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Story of="FormatValueExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### DonutChart [#donutchart]
 
 <PropTable />
 
