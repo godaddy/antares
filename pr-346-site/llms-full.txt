@@ -2461,6 +2461,62 @@ Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow m
 <PropTable />
 
 
+# Heading
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders `h1`-`h6` from the `level` prop (default `3`). The level never changes the visual size.
+* Without `size`, takes the heading tier of the surrounding `SizeProvider`.
+  `size` picks a step on the heading ramp (`xs` to `2xl`).
+* `emphasis` picks a feedback color and changes only the color.
+* `slot="title"` inside a `Modal` or `Dialog` sets the accessible name, and takes the overlay's
+  title tier, one step above the heading tier.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+`Heading` renders a semantic `h1`-`h6` element via the `level` prop.
+Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+`level` sets the semantics and `size` sets the look, so the two never have to match. Without
+`size`, a heading takes the size scope's heading tier at any level.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={2} size=\&#x22;2xl\&#x22;>\n        Level 2, 2xl\n      </Heading>\n      <Heading level={2} size=\&#x22;sm\&#x22;>\n        Level 2, sm\n      </Heading>\n      <Heading level={4} size=\&#x22;xl\&#x22;>\n        Level 4, xl\n      </Heading>\n      <Heading level={4}>Level 4, default tier</Heading>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### Heading [#heading]
+
+<PropTable />
+
+
 # Icon
 
 
@@ -2873,9 +2929,7 @@ For performance optimization:
 3. **Minimize icon sets**: Only load icons that are actually used
 
 
-# Heading
-
-
+# Image
 
 
 
@@ -2889,42 +2943,35 @@ For performance optimization:
 
 ## Features [#features]
 
-* Renders `h1`-`h6` from the `level` prop (default `3`). The level never changes the visual size.
-* Without `size`, takes the heading tier of the surrounding `SizeProvider`.
-  `size` picks a step on the heading ramp (`xs` to `2xl`).
-* `emphasis` picks a feedback color and changes only the color.
-* `slot="title"` inside a `Modal` or `Dialog` sets the accessible name, and takes the overlay's
-  title tier, one step above the heading tier.
+* Renders a native `<img>` and accepts all of its attributes
+* Inherits presentation and behavior when composed inside Antares components such as Avatar
+* Ships no default styles, loading state, or fallback so it stays predictable everywhere
 
 ## Installation [#installation]
 
 ```bash
-npm install --save @godaddy/antares
+npm install @godaddy/antares
 ```
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-`Heading` renders a semantic `h1`-`h6` element via the `level` prop.
-Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
+Render an image with alternative text and explicit dimensions.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
 
-### Sizes [#sizes]
+## Accessibility [#accessibility]
 
-`level` sets the semantics and `size` sets the look, so the two never have to match. Without
-`size`, a heading takes the size scope's heading tier at any level.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={2} size=\&#x22;2xl\&#x22;>\n        Level 2, 2xl\n      </Heading>\n      <Heading level={2} size=\&#x22;sm\&#x22;>\n        Level 2, sm\n      </Heading>\n      <Heading level={4} size=\&#x22;xl\&#x22;>\n        Level 4, xl\n      </Heading>\n      <Heading level={4}>Level 4, default tier</Heading>\n    </Flex>\n  );\n}&#x22;" />
+* Provide concise, meaningful `alt` text when the image conveys information.
+* Use `alt=""` for decorative images or images already described by adjacent text.
+* Set `width` and `height` when known to reserve space and reduce layout shift.
 
 ## Props [#props]
 
-### Heading [#heading]
+### Image [#image]
 
 <PropTable />
 
@@ -3029,95 +3076,6 @@ A rail whose content stays visible when collapsed is a composition, not a mode: 
 <PropTable />
 
 
-# Image
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders a native `<img>` and accepts all of its attributes
-* Inherits presentation and behavior when composed inside Antares components such as Avatar
-* Ships no default styles, loading state, or fallback so it stays predictable everywhere
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Render an image with alternative text and explicit dimensions.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-* Provide concise, meaningful `alt` text when the image conveys information.
-* Use `alt=""` for decorative images or images already described by adjacent text.
-* Set `width` and `height` when known to reserve space and reduce layout shift.
-
-## Props [#props]
-
-### Image [#image]
-
-<PropTable />
-
-
-# Label
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Associates the visible name with the field control.
-* Applies the label treatment, medium weight, at the surrounding
-  `SizeProvider` tier. `size` and `emphasis` work as on `Text`.
-* Field CSS adds the required asterisk when the field root is `isRequired`. That is not a Label prop.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Label names a field. The required asterisk comes from Field CSS when the root is `isRequired`.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### Label [#label]
-
-<PropTable />
-
-
 # Input
 
 
@@ -3162,11 +3120,7 @@ Input inside TextField.
 <PropTable />
 
 
-# ListBox
-
-
-
-
+# Label
 
 
 
@@ -3180,13 +3134,10 @@ Input inside TextField.
 
 ## Features [#features]
 
-* **Single or multiple selection**: Set `selectionMode="single"` or `"multiple"`.
-* **Controlled or uncontrolled**: Use `selectedKeys` and `onSelectionChange` for controlled state, or `defaultSelectedKeys` for uncontrolled.
-* **Layout primitive**: `ListBox` and `ListBoxItem` accept layout props (`gap`, `padding`, etc.) — they extend `FlexOwnProps`.
-* **Composes into other components**: `Select` uses `ListBox` internally; reach for `ListBox` directly when you need an inline list rather than a popover dropdown.
-* **React Aria integration**: Built on React Aria ListBox for accessibility, keyboard navigation, and typeahead.
-
-`ListBox` requires either `aria-label` or `aria-labelledby`. For a labeled, popover-style picker, prefer `Select`.
+* Associates the visible name with the field control.
+* Applies the label treatment, medium weight, at the surrounding
+  `SizeProvider` tier. `size` and `emphasis` work as on `Text`.
+* Field CSS adds the required asterisk when the field root is `isRequired`. That is not a Label prop.
 
 ## Installation [#installation]
 
@@ -3198,42 +3149,15 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-Single selection with static children. Use `aria-label` to give the listbox an accessible name.
+Label names a field. The required asterisk comes from Field CSS when the root is `isRequired`.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { ListBox, ListBoxItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ListBox aria-label=\&#x22;Coffee\&#x22; selectionMode=\&#x22;single\&#x22;>\n      <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n      <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n      <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n      <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n      <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n    </ListBox>\n  );\n}&#x22;" />
-
-### List Box Controlled [#list-box-controlled]
-
-Use `selectedKeys` and `onSelectionChange` for controlled state.
-
-<Story of="ListBoxControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxControlledExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<ListBoxKey>>(new Set(['latte']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffee\&#x22;\n        selectionMode=\&#x22;single\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? new Set() : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Value:</strong> {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### List Box Multiple [#list-box-multiple]
-
-Set `selectionMode="multiple"` to allow multiple values. `selectedKeys` is a `Set<Key>` (or the literal `'all'`).
-
-<Story of="ListBoxMultipleExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxMultipleExample() {\n  const [selectedKeys, setSelectedKeys] = useState<'all' | Set<ListBoxKey>>(new Set(['latte', 'mocha']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffees you like\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? 'all' : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Selected:</strong>{' '}\n        {selectedKeys === 'all' ? '(all)' : selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
 
 ## Props [#props]
 
-```tsx
-<ListBox>
-  <ListBoxItem />
-  {/* ... */}
-</ListBox>
-```
-
-### ListBox [#listbox]
-
-<PropTable />
-
-### ListBoxItem [#listboxitem]
+### Label [#label]
 
 <PropTable />
 
@@ -3437,6 +3361,82 @@ Nested menus via `SubmenuTrigger`.
 <PropTable />
 
 
+# ListBox
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Single or multiple selection**: Set `selectionMode="single"` or `"multiple"`.
+* **Controlled or uncontrolled**: Use `selectedKeys` and `onSelectionChange` for controlled state, or `defaultSelectedKeys` for uncontrolled.
+* **Layout primitive**: `ListBox` and `ListBoxItem` accept layout props (`gap`, `padding`, etc.) — they extend `FlexOwnProps`.
+* **Composes into other components**: `Select` uses `ListBox` internally; reach for `ListBox` directly when you need an inline list rather than a popover dropdown.
+* **React Aria integration**: Built on React Aria ListBox for accessibility, keyboard navigation, and typeahead.
+
+`ListBox` requires either `aria-label` or `aria-labelledby`. For a labeled, popover-style picker, prefer `Select`.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Single selection with static children. Use `aria-label` to give the listbox an accessible name.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ListBox, ListBoxItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ListBox aria-label=\&#x22;Coffee\&#x22; selectionMode=\&#x22;single\&#x22;>\n      <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n      <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n      <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n      <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n      <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n    </ListBox>\n  );\n}&#x22;" />
+
+### List Box Controlled [#list-box-controlled]
+
+Use `selectedKeys` and `onSelectionChange` for controlled state.
+
+<Story of="ListBoxControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxControlledExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<ListBoxKey>>(new Set(['latte']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffee\&#x22;\n        selectionMode=\&#x22;single\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? new Set() : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Value:</strong> {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### List Box Multiple [#list-box-multiple]
+
+Set `selectionMode="multiple"` to allow multiple values. `selectedKeys` is a `Set<Key>` (or the literal `'all'`).
+
+<Story of="ListBoxMultipleExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxMultipleExample() {\n  const [selectedKeys, setSelectedKeys] = useState<'all' | Set<ListBoxKey>>(new Set(['latte', 'mocha']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffees you like\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? 'all' : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Selected:</strong>{' '}\n        {selectedKeys === 'all' ? '(all)' : selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<ListBox>
+  <ListBoxItem />
+  {/* ... */}
+</ListBox>
+```
+
+### ListBox [#listbox]
+
+<PropTable />
+
+### ListBoxItem [#listboxitem]
+
+<PropTable />
+
+
 # MetricsLockup
 
 
@@ -3512,6 +3512,145 @@ Use the `compact` prop to render the metric value and description inline rather 
 ## Props [#props]
 
 ### MetricsLockup [#metricslockup]
+
+<PropTable />
+
+
+# NumberField
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Composable interior**: Compose `Label`, the control, `Text slot="description"`, and `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
+* **Steppers**: A stepper is a `Group` holding `Button slot="decrement"`, an `Input`, and `Button slot="increment"`. Left empty, each button takes its icon and `variant="control"` from the field, so no icon imports are needed. Compose a bare `Input` instead for a plain numeric input
+* **Sizes**: The field is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, input, steppers, description, and error; without it, the field follows the surrounding scope
+* **Value scale**: `minValue`, `maxValue`, `step`, and `formatOptions` configure the numeric behavior
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Minimal usage with a `Label`, min/max, and stepper `Button`s.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, type NumberFieldProps } from '@godaddy/antares';\n\nexport function DefaultExample({ defaultValue = 0 }: Pick<NumberFieldProps, 'defaultValue'> = {}) {\n  return (\n    <NumberField defaultValue={defaultValue} minValue={0} maxValue={100}>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState(10);\n\n  return (\n    <>\n      <NumberField minValue={0} maxValue={100} value={value} onChange={setValue}>\n        <Label>Quantity</Label>\n        <Group>\n          <Button slot=\&#x22;decrement\&#x22; />\n          <Input />\n          <Button slot=\&#x22;increment\&#x22; />\n        </Group>\n      </NumberField>\n      <Text>\n        <strong>Value:</strong> {value ?? '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with a `FieldError` for validation feedback.
+
+<Story of="InvalidExample" />
+
+<Source language="tsx" code="&#x22;import { Button, FieldError, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <NumberField minValue={0} maxValue={100} isInvalid isRequired>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n      <FieldError>Please enter a value between 0 and 100</FieldError>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent input.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <NumberField defaultValue={42} minValue={0} maxValue={100} isDisabled>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Hide Stepper [#hide-stepper]
+
+Compose without stepper `Button`s for a plain numeric input.
+
+<Story of="HideStepperExample" />
+
+<Source language="tsx" code="&#x22;import { Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function HideStepperExample() {\n  return (\n    <NumberField minValue={0} maxValue={100}>\n      <Label>Quantity</Label>\n      <Input placeholder=\&#x22;0\&#x22; />\n      <Text slot=\&#x22;description\&#x22;>Enter a value between 0 and 100.</Text>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Value Scale [#value-scale]
+
+Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calculated from the minimum value.
+
+<Story of="ValueScaleExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function ValueScaleExample() {\n  return (\n    <NumberField minValue={2} maxValue={20} step={3}>\n      <Label>Step value</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>\n        Steps are from the minimum: minValue={'{2}'}, step={'{3}'} gives 2, 5, 8, 11, …\n      </Text>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Format options (numbering system) [#format-options-numbering-system]
+
+By default, NumberField displays the value using the numbering system for the user's locale. Use the `formatOptions` prop to override the numbering system by setting the Unicode numbering system locale extension.
+
+<Story of="FormatOptionsExample" />
+
+<Source language="tsx" code="&#x22;import { Input, Label, NumberField, Text } from '@godaddy/antares';\n\nconst devanagariFormatOptions = Intl.NumberFormat('hi-IN-u-nu-deva').resolvedOptions();\n\nexport function FormatOptionsExample() {\n  return (\n    <NumberField value={1024} formatOptions={devanagariFormatOptions}>\n      <Label>Number (Devanagari)</Label>\n      <Input />\n      <Text slot=\&#x22;description\&#x22;>\n        By default, NumberField uses the user's locale. Use formatOptions to override with a Unicode numbering system\n        locale extension (e.g. nu-deva).\n      </Text>\n    </NumberField>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+`size` sets the label, input, and steppers. Without it, the field follows the surrounding size
+scope.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function field(size) {\n        return (\n          <NumberField key={size} minValue={0} maxValue={100} size={size}>\n            <Label>Quantity ({size})</Label>\n            <Group>\n              <Button slot=\&#x22;decrement\&#x22; />\n              <Input />\n              <Button slot=\&#x22;increment\&#x22; />\n            </Group>\n          </NumberField>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+
+### Text Steppers [#text-steppers]
+
+Compose with `children` to replace the stepper icons with your own content, such as text.
+
+<Story of="TextSteppersExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function TextSteppersExample() {\n  return (\n    <NumberField defaultValue={1} minValue={0}>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22;>decrement</Button>\n        <Input />\n        <Button slot=\&#x22;increment\&#x22;>increment</Button>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Use decrement and increment to change the value.</Text>\n    </NumberField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<NumberField>
+  <Label />
+  <Group>
+    <Button slot="decrement" />
+    <Input />
+    <Button slot="increment" />
+  </Group>
+  {/* or a bare <Input /> for a plain numeric input */}
+  <Text slot="description" />
+  <FieldError />
+</NumberField>
+```
+
+### NumberField [#numberfield]
 
 <PropTable />
 
@@ -3781,145 +3920,6 @@ provided by Antares.
 <PropTable />
 
 ### PaginationDots [#paginationdots]
-
-<PropTable />
-
-
-# NumberField
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Composable interior**: Compose `Label`, the control, `Text slot="description"`, and `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
-* **Steppers**: A stepper is a `Group` holding `Button slot="decrement"`, an `Input`, and `Button slot="increment"`. Left empty, each button takes its icon and `variant="control"` from the field, so no icon imports are needed. Compose a bare `Input` instead for a plain numeric input
-* **Sizes**: The field is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, input, steppers, description, and error; without it, the field follows the surrounding scope
-* **Value scale**: `minValue`, `maxValue`, `step`, and `formatOptions` configure the numeric behavior
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Minimal usage with a `Label`, min/max, and stepper `Button`s.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, type NumberFieldProps } from '@godaddy/antares';\n\nexport function DefaultExample({ defaultValue = 0 }: Pick<NumberFieldProps, 'defaultValue'> = {}) {\n  return (\n    <NumberField defaultValue={defaultValue} minValue={0} maxValue={100}>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState(10);\n\n  return (\n    <>\n      <NumberField minValue={0} maxValue={100} value={value} onChange={setValue}>\n        <Label>Quantity</Label>\n        <Group>\n          <Button slot=\&#x22;decrement\&#x22; />\n          <Input />\n          <Button slot=\&#x22;increment\&#x22; />\n        </Group>\n      </NumberField>\n      <Text>\n        <strong>Value:</strong> {value ?? '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Invalid [#invalid]
-
-Use `isInvalid` with a `FieldError` for validation feedback.
-
-<Story of="InvalidExample" />
-
-<Source language="tsx" code="&#x22;import { Button, FieldError, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <NumberField minValue={0} maxValue={100} isInvalid isRequired>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n      <FieldError>Please enter a value between 0 and 100</FieldError>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` to prevent input.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <NumberField defaultValue={42} minValue={0} maxValue={100} isDisabled>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Hide Stepper [#hide-stepper]
-
-Compose without stepper `Button`s for a plain numeric input.
-
-<Story of="HideStepperExample" />
-
-<Source language="tsx" code="&#x22;import { Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function HideStepperExample() {\n  return (\n    <NumberField minValue={0} maxValue={100}>\n      <Label>Quantity</Label>\n      <Input placeholder=\&#x22;0\&#x22; />\n      <Text slot=\&#x22;description\&#x22;>Enter a value between 0 and 100.</Text>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Value Scale [#value-scale]
-
-Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calculated from the minimum value.
-
-<Story of="ValueScaleExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function ValueScaleExample() {\n  return (\n    <NumberField minValue={2} maxValue={20} step={3}>\n      <Label>Step value</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>\n        Steps are from the minimum: minValue={'{2}'}, step={'{3}'} gives 2, 5, 8, 11, …\n      </Text>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Format options (numbering system) [#format-options-numbering-system]
-
-By default, NumberField displays the value using the numbering system for the user's locale. Use the `formatOptions` prop to override the numbering system by setting the Unicode numbering system locale extension.
-
-<Story of="FormatOptionsExample" />
-
-<Source language="tsx" code="&#x22;import { Input, Label, NumberField, Text } from '@godaddy/antares';\n\nconst devanagariFormatOptions = Intl.NumberFormat('hi-IN-u-nu-deva').resolvedOptions();\n\nexport function FormatOptionsExample() {\n  return (\n    <NumberField value={1024} formatOptions={devanagariFormatOptions}>\n      <Label>Number (Devanagari)</Label>\n      <Input />\n      <Text slot=\&#x22;description\&#x22;>\n        By default, NumberField uses the user's locale. Use formatOptions to override with a Unicode numbering system\n        locale extension (e.g. nu-deva).\n      </Text>\n    </NumberField>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-`size` sets the label, input, and steppers. Without it, the field follows the surrounding size
-scope.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      {SIZES.map(function field(size) {\n        return (\n          <NumberField key={size} minValue={0} maxValue={100} size={size}>\n            <Label>Quantity ({size})</Label>\n            <Group>\n              <Button slot=\&#x22;decrement\&#x22; />\n              <Input />\n              <Button slot=\&#x22;increment\&#x22; />\n            </Group>\n          </NumberField>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
-
-### Text Steppers [#text-steppers]
-
-Compose with `children` to replace the stepper icons with your own content, such as text.
-
-<Story of="TextSteppersExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function TextSteppersExample() {\n  return (\n    <NumberField defaultValue={1} minValue={0}>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22;>decrement</Button>\n        <Input />\n        <Button slot=\&#x22;increment\&#x22;>increment</Button>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Use decrement and increment to change the value.</Text>\n    </NumberField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<NumberField>
-  <Label />
-  <Group>
-    <Button slot="decrement" />
-    <Input />
-    <Button slot="increment" />
-  </Group>
-  {/* or a bare <Input /> for a plain numeric input */}
-  <Text slot="description" />
-  <FieldError />
-</NumberField>
-```
-
-### NumberField [#numberfield]
 
 <PropTable />
 
@@ -4608,6 +4608,161 @@ Always provide clear error messages:
 <PropTable />
 
 
+# SegmentedController
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;View\&#x22; defaultValue=\&#x22;day\&#x22;>\n      <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [selected, setSelected] = useState('week');\n\n  return (\n    <>\n      <SegmentedController aria-label=\&#x22;View\&#x22; value={selected} onSelectionChange={setSelected}>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n      <p>Current selection: {selected}</p>\n    </>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Three sizes are available: `sm`, `md` (default), and `lg`.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <SegmentedController aria-label=\&#x22;View (small)\&#x22; size=\&#x22;sm\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day sm</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week sm</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month sm</SegmentedControllerItem>\n      </SegmentedController>\n\n      <SegmentedController aria-label=\&#x22;View (medium)\&#x22; size=\&#x22;md\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day md</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week md</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month md</SegmentedControllerItem>\n      </SegmentedController>\n\n      <SegmentedController aria-label=\&#x22;View (large)\&#x22; size=\&#x22;lg\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day lg</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week lg</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month lg</SegmentedControllerItem>\n      </SegmentedController>\n    </Flex>\n  );\n}&#x22;" />
+
+### Icon + Text [#icon--text]
+
+Segments can include an `Icon` alongside text for added visual context.
+
+<Story of="IconExample" />
+
+<Source language="tsx" code="&#x22;import { Icon, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function IconExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;Layout\&#x22; defaultValue=\&#x22;list\&#x22;>\n      <SegmentedControllerItem value=\&#x22;list\&#x22;>\n        <Icon icon=\&#x22;bulleted-list\&#x22; />\n        List\n      </SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;grid\&#x22;>\n        <Icon icon=\&#x22;grid\&#x22; />\n        Grid\n      </SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
+
+### Icon Only [#icon-only]
+
+For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
+
+<Story of="IconOnlyExample" />
+
+<Source language="tsx" code="&#x22;import { Icon, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function IconOnlyExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;Layout\&#x22;>\n      <SegmentedControllerItem value=\&#x22;list\&#x22; aria-label=\&#x22;List view\&#x22;>\n        <Icon icon=\&#x22;bulleted-list\&#x22; />\n      </SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;grid\&#x22; aria-label=\&#x22;Grid view\&#x22;>\n        <Icon icon=\&#x22;grid\&#x22; />\n      </SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
+
+### Overflow [#overflow]
+
+When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
+
+<Story of="OverflowExample" />
+
+<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function OverflowExample({ maxWidth = '300px' }: { maxWidth?: string }) {\n  return (\n    <SegmentedController aria-label=\&#x22;Category\&#x22; defaultValue=\&#x22;electronics\&#x22; style={{ maxWidth }}>\n      <SegmentedControllerItem value=\&#x22;electronics\&#x22;>Electronics</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;clothing\&#x22;>Clothing</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;home\&#x22;>Home</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;sports\&#x22;>Sports</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;toys\&#x22;>Toys</SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
+
+### RTL Direction [#rtl-direction]
+
+The segmented controller follows the current layout direction (LTR or RTL), detected automatically from the browser or system settings.
+
+<Story of="RTLExample" />
+
+<Source language="tsx" code="&#x22;import { RTLProvider } from '#utils/rtl-locale-provider.tsx';\nimport { OverflowExample } from './overflow.tsx';\n\nexport function RTLExample() {\n  return (\n    <RTLProvider>\n      <OverflowExample />\n    </RTLProvider>\n  );\n}&#x22;" />
+
+### Disabled States [#disabled-states]
+
+Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem, Flex } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <label>Disabled group</label>\n      <SegmentedController aria-label=\&#x22;Disabled group\&#x22; isDisabled defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n\n      <label>Individual disabled</label>\n      <SegmentedController aria-label=\&#x22;Individual disabled\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22; isDisabled>\n          Week\n        </SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n    </Flex>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+### Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**SegmentedController Container:** `data-disabled`
+
+**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
+
+## Accessibility [#accessibility]
+
+### Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to/from the segmented controller
+* **Arrow Left/Right**: Move to next/previous segment
+* **Space/Enter**: Select the focused segment
+
+### ARIA Support [#aria-support]
+
+* `role="radiogroup"` on the container
+* `role="radio"` on each segment
+* `aria-checked` indicates selection state
+* `aria-disabled` for disabled segments
+* `aria-label` required on the container for screen readers
+
+## Best Practices [#best-practices]
+
+### When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
+
+* When switching between 2-5 related views within the same context
+* When all options should be visible at once
+* When the selection immediately changes the displayed content
+
+### When Not to Use [#when-not-to-use]
+
+* For more than 5 options (use Tabs or Select instead)
+* For form input (use RadioGroup instead)
+
+## Props [#props]
+
+```tsx
+<SegmentedController>
+  <SegmentedControllerItem />
+  {/* ... */}
+</SegmentedController>
+```
+
+### SegmentedController [#segmentedcontroller]
+
+<PropTable />
+
+### SegmentedControllerItem [#segmentedcontrolleritem]
+
+<PropTable />
+
+
 # RangeField
 
 
@@ -4798,161 +4953,6 @@ Negative values are supported. Set a negative `minValue` and ensure every scalar
 Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
 
 
-# SegmentedController
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;View\&#x22; defaultValue=\&#x22;day\&#x22;>\n      <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [selected, setSelected] = useState('week');\n\n  return (\n    <>\n      <SegmentedController aria-label=\&#x22;View\&#x22; value={selected} onSelectionChange={setSelected}>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n      <p>Current selection: {selected}</p>\n    </>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Three sizes are available: `sm`, `md` (default), and `lg`.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <SegmentedController aria-label=\&#x22;View (small)\&#x22; size=\&#x22;sm\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day sm</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week sm</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month sm</SegmentedControllerItem>\n      </SegmentedController>\n\n      <SegmentedController aria-label=\&#x22;View (medium)\&#x22; size=\&#x22;md\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day md</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week md</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month md</SegmentedControllerItem>\n      </SegmentedController>\n\n      <SegmentedController aria-label=\&#x22;View (large)\&#x22; size=\&#x22;lg\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day lg</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week lg</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month lg</SegmentedControllerItem>\n      </SegmentedController>\n    </Flex>\n  );\n}&#x22;" />
-
-### Icon + Text [#icon--text]
-
-Segments can include an `Icon` alongside text for added visual context.
-
-<Story of="IconExample" />
-
-<Source language="tsx" code="&#x22;import { Icon, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function IconExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;Layout\&#x22; defaultValue=\&#x22;list\&#x22;>\n      <SegmentedControllerItem value=\&#x22;list\&#x22;>\n        <Icon icon=\&#x22;bulleted-list\&#x22; />\n        List\n      </SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;grid\&#x22;>\n        <Icon icon=\&#x22;grid\&#x22; />\n        Grid\n      </SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
-
-### Icon Only [#icon-only]
-
-For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
-
-<Story of="IconOnlyExample" />
-
-<Source language="tsx" code="&#x22;import { Icon, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function IconOnlyExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;Layout\&#x22;>\n      <SegmentedControllerItem value=\&#x22;list\&#x22; aria-label=\&#x22;List view\&#x22;>\n        <Icon icon=\&#x22;bulleted-list\&#x22; />\n      </SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;grid\&#x22; aria-label=\&#x22;Grid view\&#x22;>\n        <Icon icon=\&#x22;grid\&#x22; />\n      </SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
-
-### Overflow [#overflow]
-
-When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
-
-<Story of="OverflowExample" />
-
-<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function OverflowExample({ maxWidth = '300px' }: { maxWidth?: string }) {\n  return (\n    <SegmentedController aria-label=\&#x22;Category\&#x22; defaultValue=\&#x22;electronics\&#x22; style={{ maxWidth }}>\n      <SegmentedControllerItem value=\&#x22;electronics\&#x22;>Electronics</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;clothing\&#x22;>Clothing</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;home\&#x22;>Home</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;sports\&#x22;>Sports</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;toys\&#x22;>Toys</SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
-
-### RTL Direction [#rtl-direction]
-
-The segmented controller follows the current layout direction (LTR or RTL), detected automatically from the browser or system settings.
-
-<Story of="RTLExample" />
-
-<Source language="tsx" code="&#x22;import { RTLProvider } from '#utils/rtl-locale-provider.tsx';\nimport { OverflowExample } from './overflow.tsx';\n\nexport function RTLExample() {\n  return (\n    <RTLProvider>\n      <OverflowExample />\n    </RTLProvider>\n  );\n}&#x22;" />
-
-### Disabled States [#disabled-states]
-
-Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem, Flex } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <label>Disabled group</label>\n      <SegmentedController aria-label=\&#x22;Disabled group\&#x22; isDisabled defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n\n      <label>Individual disabled</label>\n      <SegmentedController aria-label=\&#x22;Individual disabled\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22; isDisabled>\n          Week\n        </SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n    </Flex>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-### Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**SegmentedController Container:** `data-disabled`
-
-**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
-
-## Accessibility [#accessibility]
-
-### Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to/from the segmented controller
-* **Arrow Left/Right**: Move to next/previous segment
-* **Space/Enter**: Select the focused segment
-
-### ARIA Support [#aria-support]
-
-* `role="radiogroup"` on the container
-* `role="radio"` on each segment
-* `aria-checked` indicates selection state
-* `aria-disabled` for disabled segments
-* `aria-label` required on the container for screen readers
-
-## Best Practices [#best-practices]
-
-### When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
-
-* When switching between 2-5 related views within the same context
-* When all options should be visible at once
-* When the selection immediately changes the displayed content
-
-### When Not to Use [#when-not-to-use]
-
-* For more than 5 options (use Tabs or Select instead)
-* For form input (use RadioGroup instead)
-
-## Props [#props]
-
-```tsx
-<SegmentedController>
-  <SegmentedControllerItem />
-  {/* ... */}
-</SegmentedController>
-```
-
-### SegmentedController [#segmentedcontroller]
-
-<PropTable />
-
-### SegmentedControllerItem [#segmentedcontrolleritem]
-
-<PropTable />
-
-
 # Select
 
 
@@ -5095,94 +5095,6 @@ over the popover and the list.
 <PropTable />
 
 
-# Structure primitives
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
-
-* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
-* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
-* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
-* **`ButtonGroup`** - a cluster of related actions (a wrapping row with `role="group"`). Overlay parents like `Modal` adopt it with end alignment and padding.
-* **`Group`** — semantic grouping container for field item controls. A parent field injects the box chrome.
-* **`CornerActions`** - an always-visible structural row for actions placed at a surface corner.
-
-## Hybrid styling [#hybrid-styling]
-
-Each container works in two modes:
-
-* **Standalone** - with no parent context it renders with its own structural defaults and looks the same everywhere.
-* **Adopted** - inside a parent that provides its context (e.g. `Modal`), it picks up that parent's styling and spacing automatically. Consumer props still win over the adopted defaults.
-
-## Examples [#examples]
-
-### Default [#default]
-
-The shared structural containers composed together into a card-like layout. Each is a
-plain semantic region here; inside a parent that provides their contexts (e.g. `Modal`)
-they adopt that parent's spacing automatically.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
-
-### Group [#group]
-
-Group is the bordered field box. Size and invalid/disabled chrome apply here.
-
-<Story of="GroupExample" />
-
-<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function GroupExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Group>\n        <Input placeholder=\&#x22;Enter your name\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
-
-### Corner Actions [#corner-actions]
-
-CornerActions is an always-visible structural region. Compose any actions inside it and use
-layout props to reserve room beside the surrounding content.
-
-<Story of="CornerActionsExample" />
-
-<Source language="tsx" code="&#x22;import { Button, CornerActions, Flex, Text } from '@godaddy/antares';\n\nexport function CornerActionsExample() {\n  return (\n    <Flex direction=\&#x22;row\&#x22; alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;space-between\&#x22; gap=\&#x22;md\&#x22;>\n      <Text>Card content</Text>\n      <CornerActions>\n        <Button variant=\&#x22;secondary\&#x22;>More actions</Button>\n        <Button variant=\&#x22;secondary\&#x22;>Share</Button>\n      </CornerActions>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### Content [#content]
-
-<PropTable />
-
-### Header [#header]
-
-<PropTable />
-
-### Footer [#footer]
-
-<PropTable />
-
-### ButtonGroup [#buttongroup]
-
-<PropTable />
-
-### Group [#group-1]
-
-<PropTable />
-
-### CornerActions [#corneractions]
-
-<PropTable />
-
-
 # SizeProvider
 
 
@@ -5288,6 +5200,94 @@ A scope sizes Antares components only. Plain HTML keeps its own typography, so p
 <Source language="tsx" code="&#x22;import { SizeProvider, Text } from '@godaddy/antares';\n\nexport function PlainHtmlExample() {\n  return (\n    <SizeProvider size=\&#x22;lg\&#x22;>\n      <p>A plain paragraph keeps the page's typography.</p>\n      <Text>Text follows the scope.</Text>\n    </SizeProvider>\n  );\n}&#x22;" />
 
 ## Props [#props]
+
+<PropTable />
+
+
+# Structure primitives
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
+
+* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
+* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
+* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
+* **`ButtonGroup`** - a cluster of related actions (a wrapping row with `role="group"`). Overlay parents like `Modal` adopt it with end alignment and padding.
+* **`Group`** — semantic grouping container for field item controls. A parent field injects the box chrome.
+* **`CornerActions`** - an always-visible structural row for actions placed at a surface corner.
+
+## Hybrid styling [#hybrid-styling]
+
+Each container works in two modes:
+
+* **Standalone** - with no parent context it renders with its own structural defaults and looks the same everywhere.
+* **Adopted** - inside a parent that provides its context (e.g. `Modal`), it picks up that parent's styling and spacing automatically. Consumer props still win over the adopted defaults.
+
+## Examples [#examples]
+
+### Default [#default]
+
+The shared structural containers composed together into a card-like layout. Each is a
+plain semantic region here; inside a parent that provides their contexts (e.g. `Modal`)
+they adopt that parent's spacing automatically.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
+
+### Group [#group]
+
+Group is the bordered field box. Size and invalid/disabled chrome apply here.
+
+<Story of="GroupExample" />
+
+<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function GroupExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Group>\n        <Input placeholder=\&#x22;Enter your name\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
+
+### Corner Actions [#corner-actions]
+
+CornerActions is an always-visible structural region. Compose any actions inside it and use
+layout props to reserve room beside the surrounding content.
+
+<Story of="CornerActionsExample" />
+
+<Source language="tsx" code="&#x22;import { Button, CornerActions, Flex, Text } from '@godaddy/antares';\n\nexport function CornerActionsExample() {\n  return (\n    <Flex direction=\&#x22;row\&#x22; alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;space-between\&#x22; gap=\&#x22;md\&#x22;>\n      <Text>Card content</Text>\n      <CornerActions>\n        <Button variant=\&#x22;secondary\&#x22;>More actions</Button>\n        <Button variant=\&#x22;secondary\&#x22;>Share</Button>\n      </CornerActions>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### Content [#content]
+
+<PropTable />
+
+### Header [#header]
+
+<PropTable />
+
+### Footer [#footer]
+
+<PropTable />
+
+### ButtonGroup [#buttongroup]
+
+<PropTable />
+
+### Group [#group-1]
+
+<PropTable />
+
+### CornerActions [#corneractions]
 
 <PropTable />
 
