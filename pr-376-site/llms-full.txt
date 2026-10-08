@@ -4779,7 +4779,17 @@ Compose with `children` to replace the stepper icons with your own content, such
 
 
 
+
+
 <Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Controlled and uncontrolled 1-based page state.
+* Explicit composition with Antares `Button`, `Input`, `Text`, `Select` and `PaginationDots`.
+* Known and unknown page-count data sources.
+* React Aria context defaults for previous, next and the single page input.
+* Medium and small control sizes.
 
 ## Installation [#installation]
 
@@ -4791,47 +4801,98 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
+The default pagination for a known page count without a page-size selector.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DefaultExample() {\n  const [page, setPage] = useState(0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={5} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Input, Pagination, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Pagination pageCount={5} defaultValue={1} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Input aria-label=\&#x22;Current page\&#x22; />\n      <Text size=\&#x22;sm\&#x22; aria-hidden>\n        /\n      </Text>\n      <Text size=\&#x22;sm\&#x22;>5</Text>\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n    </Pagination>\n  );\n}&#x22;" />
 
 ### Controlled [#controlled]
 
-Pass `activeIndex` and `onChange` to control the active page externally.
+A controlled Pagination keeps the current page in consumer state.
 
 <Story of="ControlledExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={4} activeIndex={page} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Input, Pagination, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Pagination value={page} pageCount={3} onChange={setPage} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Input aria-label=\&#x22;Current page\&#x22; />\n      <Text size=\&#x22;sm\&#x22; aria-hidden>\n        /\n      </Text>\n      <Text size=\&#x22;sm\&#x22;>3</Text>\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n    </Pagination>\n  );\n}&#x22;" />
 
-### Default Active [#default-active]
+### Page Count Known [#page-count-known]
 
-Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
+Page navigation with a known page count and a consumer-owned page-size Select.
 
-<Story of="DefaultActiveExample" />
+<Story of="PageCountKnownExample" />
 
-<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function DefaultActiveExample() {\n  return <Pagination total={5} defaultActiveIndex={2} />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Input, Pagination, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function PageCountKnownExample() {\n  const total = 50;\n  const [page, setPage] = useState(1);\n  const [limit, setLimit] = useState(10);\n  const pageCount = Math.ceil(total / limit);\n\n  function handlePageSizeChange(value: string | number | null) {\n    if (value == null) return;\n\n    setLimit(Number(value));\n    setPage(1);\n  }\n\n  return (\n    <Pagination value={page} pageCount={pageCount} onChange={setPage} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Input aria-label=\&#x22;Current page\&#x22; />\n      <Text size=\&#x22;sm\&#x22; aria-hidden>\n        /\n      </Text>\n      <Text size=\&#x22;sm\&#x22;>{pageCount}</Text>\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n      <Select aria-label=\&#x22;Results per page\&#x22; value={String(limit)} onChange={handlePageSizeChange}>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;10\&#x22;>10</SelectItem>\n          <SelectItem id=\&#x22;25\&#x22;>25</SelectItem>\n          <SelectItem id=\&#x22;50\&#x22;>50</SelectItem>\n        </SelectOptions>\n      </Select>\n    </Pagination>\n  );\n}&#x22;" />
 
-### With Limit [#with-limit]
+### Page Count Unknown [#page-count-unknown]
 
-Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
+Page Count Unknown: the consumer controls the next boundary.
 
-<Story of="WithLimitExample" />
+<Story of="PageCountUnknownExample" />
 
-<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function WithLimitExample() {\n  return <Pagination total={10} limit={3} />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Input, Pagination } from '@godaddy/antares';\n\nexport function PageCountUnknownExample() {\n  const [page, setPage] = useState(1);\n  const hasNextPage = true;\n\n  return (\n    <Pagination value={page} onChange={setPage} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Input aria-label=\&#x22;Current page\&#x22; />\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; isDisabled={!hasNextPage} />\n    </Pagination>\n  );\n}&#x22;" />
 
-### onChange Event [#onchange-event]
+### Minimal [#minimal]
 
-The `onChange` callback fires with the new page index whenever the user navigates.
+Minimal previous/next pagination.
 
-<Story of="OnChangeExample" />
+<Story of="MinimalExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function OnChangeExample() {\n  const [onChangeValue, setOnChangeValue] = useState<number | undefined>(undefined);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={3} onChange={setOnChangeValue} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        onChange: {onChangeValue ?? 'none'}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Pagination } from '@godaddy/antares';\n\nexport function MinimalExample() {\n  return (\n    <Pagination pageCount={8} defaultValue={1} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n    </Pagination>\n  );\n}&#x22;" />
+
+### Pagination Dots [#pagination-dots]
+
+Opt-in visual PaginationDots between previous and next controls.
+
+<Story of="PaginationDotsExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Pagination, PaginationDots } from '@godaddy/antares';\n\nexport function PaginationDotsExample() {\n  const [page, setPage] = useState(1);\n  const pageCount = 5;\n\n  return (\n    <Pagination value={page} pageCount={pageCount} onChange={setPage} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <PaginationDots />\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n    </Pagination>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Pagination is composed: pass only the regions your layout needs. Previous and
+next `Button`s and the page `Input` receive navigation defaults from
+Pagination, while explicit child props—including disabled-state props—and
+`className` values remain available for local customization. Separator, page count,
+`Select` and
+`PaginationDots` are consumer-owned.
+
+Use `className` to extend styling without replacing the interaction behavior
+provided by Antares.
+
+## Accessibility [#accessibility]
+
+* Pagination does not add translated labels. Provide accessible names for the
+  navigation region, previous/next buttons and page input.
+* `PaginationDots` is decorative and does not replace interactive page
+  controls.
+* For interactive page links, compose explicit `Button` or `LinkButton` children and
+  provide the active state with `aria-current="page"`.
+
+## Best Practices [#best-practices]
+
+* Pass `pageCount` when the backend exposes a known number of pages.
+* Omit `pageCount` for cursor-based data and disable the composed next button
+  when the backend reports that there is no next page.
+* Keep total items, page size and result ranges in the consuming data layer.
+* Compose exactly one page `Input`; use a separate component for advanced range
+  navigation.
 
 ## Props [#props]
 
 ### Pagination [#pagination]
+
+```tsx
+<Pagination>
+  <Button slot="previous" />
+  <Input />
+  {/* separator, page count, Select, PaginationDots, or custom regions */}
+  <Button slot="next" />
+</Pagination>
+```
+
+<PropTable />
+
+### PaginationDots [#paginationdots]
 
 <PropTable />
 
