@@ -1,6 +1,9 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { cdp, userEvent } from 'vitest/browser';
+import { act } from 'react';
+import { hydrateRoot, type Root } from 'react-dom/client';
+import { renderToString } from 'react-dom/server';
+import { cdp, page, userEvent } from 'vitest/browser';
 import { IndeterminateExample } from '../examples/indeterminate.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
@@ -113,6 +116,49 @@ describe('@godaddy/antares', function antares() {
       await expect.element(progress).not.toHaveAttribute('aria-valuetext');
       await screen.rerender(<IndeterminateExample isIndeterminate={false} />);
       await expect.element(screen.getByText('0%')).toBeVisible();
+    });
+
+    it('preserves description links from server markup through hydration', async function hydratesDescriptions() {
+      const environment = globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean };
+      const previousActEnvironment = environment.IS_REACT_ACT_ENVIRONMENT;
+      environment.IS_REACT_ACT_ENVIRONMENT = true;
+      const container = document.createElement('div');
+      const recoverableErrors: unknown[] = [];
+      const consoleError = vi.spyOn(console, 'error').mockImplementation(function captureError() {
+        // Keep hydration warnings available for the assertion below.
+      });
+      let root: Root | undefined;
+      try {
+        container.innerHTML = renderToString(<CompositionExample />);
+        document.body.append(container);
+        const progress = page.elementLocator(container).getByRole('progressbar', { name: 'Uploading' });
+        const serverElement = progress.element();
+        const serverMarkup = serverElement.outerHTML;
+        await expect.element(progress).toHaveAttribute('aria-describedby', 'external-description upload-description');
+        await expect.element(progress).toHaveAccessibleDescription('Keep this window open. 60% uploaded');
+
+        await act(async function hydrate() {
+          root = hydrateRoot(container, <CompositionExample />, {
+            onRecoverableError(error) {
+              recoverableErrors.push(error);
+            }
+          });
+        });
+
+        expect(progress.element()).toBe(serverElement);
+        expect(progress.element().outerHTML).toBe(serverMarkup);
+        await expect.element(progress).toHaveAttribute('aria-describedby', 'external-description upload-description');
+        await expect.element(progress).toHaveAccessibleDescription('Keep this window open. 60% uploaded');
+        expect(recoverableErrors).toEqual([]);
+        expect(consoleError).not.toHaveBeenCalled();
+      } finally {
+        await act(async function unmount() {
+          root?.unmount();
+        });
+        container.remove();
+        consoleError.mockRestore();
+        environment.IS_REACT_ACT_ENVIRONMENT = previousActEnvironment;
+      }
     });
 
     it('associates dynamic descriptions through wrappers and preserves external descriptions', async function dynamicDescriptions() {

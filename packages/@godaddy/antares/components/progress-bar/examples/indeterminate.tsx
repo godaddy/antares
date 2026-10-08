@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { Label, ProgressBar, ProgressBarTrack, ProgressBarValue, Text, type ProgressBarProps } from '@godaddy/antares';
 
 /**
@@ -5,12 +6,16 @@ import { Label, ProgressBar, ProgressBarTrack, ProgressBarValue, Text, type Prog
  * @order 4
  */
 export function IndeterminateExample(props: ProgressBarProps) {
+  const descriptionId = useId();
+  const { 'aria-describedby': describedBy, ...rest } = props;
   return (
-    <ProgressBar isIndeterminate {...props}>
+    <ProgressBar isIndeterminate aria-describedby={[describedBy, descriptionId].filter(Boolean).join(' ')} {...rest}>
       <Label>Preparing upload…</Label>
       <ProgressBarValue />
       <ProgressBarTrack />
-      <Text slot="description">Calculating the total size</Text>
+      <Text id={descriptionId} slot="description">
+        Calculating the total size
+      </Text>
     </ProgressBar>
   );
 }

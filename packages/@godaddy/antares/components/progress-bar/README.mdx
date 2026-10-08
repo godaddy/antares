@@ -25,7 +25,7 @@ Compose only the parts you need:
 - `Label` provides a visible, associated name.
 - `ProgressBarValue` shows the formatted value by default. Its children accept static content or a render function receiving `percentage`, `valueText`, and `isIndeterminate`.
 - `ProgressBarTrack` renders the fill and inherits the root's size and status.
-- `Text slot="description"` provides helper text with an automatic accessible association.
+- `Text slot="description"` provides helper text. Assign it an `id` and reference that ID in the root's `aria-describedby`.
 
 Omitting `ProgressBarValue` hides visible value output while preserving accessible progress. Omit both label and value for a compact track-only layout. Parts use named grid areas, so direct children and fragments can be written in any order. Use `display: contents` on a wrapper when its parts should participate in the root's grid, or override the root's Grid layout props for custom placement.
 
@@ -37,18 +37,17 @@ Custom visual value content does not change `aria-valuetext`. The root's `valueL
 - `Label` supplies the accessible name. When omitted, provide `aria-label` or `aria-labelledby`.
 - Determinate progress exposes `aria-valuenow` and formatted `aria-valuetext`, even without `ProgressBarValue`.
 - Indeterminate progress omits `aria-valuenow`, `aria-valuetext`, and visible value output.
-- Mounted descriptions are associated automatically, including custom IDs. External `aria-describedby` references are preserved.
-- Description association is established on mounting. Server-rendered descriptions are associated when the component hydrates.
+- Link descriptions through `aria-describedby`, combining helper-text and external description IDs when needed. These associations are present in server markup and remain unchanged during hydration.
 - Reduced motion stops the indeterminate sweep while retaining a visible indicator. RTL and forced colors are supported.
 
 ## Props
 
 ```tsx
-<ProgressBar>
+<ProgressBar aria-describedby="upload-description">
   <Label />
   <ProgressBarValue />
   <ProgressBarTrack />
-  <Text slot="description" />
+  <Text id="upload-description" slot="description" />
   {/* ... */}
 </ProgressBar>
 ```
