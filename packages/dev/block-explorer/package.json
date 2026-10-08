@@ -31,8 +31,8 @@
   "devDependencies": {
     "@godaddy/antares": "*",
     "@mdx-js/mdx": "^3.1.1",
-    "@storybook/addon-docs": "^10.5.7",
-    "@storybook/react-vite": "^10.5.7",
+    "@storybook/addon-docs": "^10.6.1",
+    "@storybook/react-vite": "^10.6.1",
     "@types/css-modules": "^1.0.5",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
@@ -40,12 +40,12 @@
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "storybook": "^10.5.7",
-    "tsdown": "^0.22.14",
+    "tsdown": "^0.23.0",
     "typescript": "^6.0.3",
     "vfile": "^6.0.3",
-    "vite": "^8.0.14",
+    "vite": "^8.3.2",
     "vitest": "^4.1.11",
-    "vitest-browser-react": "^2.2.0"
+    "vitest-browser-react": "^2.3.0"
   },
   "peerDependencies": {
     "@godaddy/antares": "*",
