@@ -1,4 +1,4 @@
-import { forwardRef, type ReactNode, type Ref } from 'react';
+import { forwardRef, type Ref } from 'react';
 import {
   GridListItem as RACGridListItem,
   type GridListItemProps as RACGridListItemProps,
@@ -15,17 +15,8 @@ import styles from './index.module.css';
  * `CardGroup` it is a row that the group selects, and `onAction` and `href` act on the row.
  */
 export interface CardProps
-  extends Omit<FlexProps, 'as' | 'children' | 'onClick' | 'id'>,
+  extends Omit<FlexProps, 'as' | 'onClick' | 'id'>,
     Pick<RACGridListItemProps, 'id' | 'target' | 'rel' | 'download' | 'ping' | 'referrerPolicy' | 'routerOptions'> {
-  /** Card contents. */
-  children?: ReactNode;
-
-  /** Accessible name for the link or row, else the surface. */
-  'aria-label'?: string;
-
-  /** Accessible labelled-by reference for the link or row, else the surface. */
-  'aria-labelledby'?: string;
-
   /** Disable the link or row and fade the Card. */
   isDisabled?: boolean;
 
@@ -65,18 +56,10 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
     isDisabled,
     id,
     textValue,
-    'aria-label': ariaLabel,
-    'aria-labelledby': ariaLabelledBy,
-    'aria-describedby': ariaDescribedBy,
     ...surfaceProps
   } = props;
 
   const isInGroup = useIsInCardGroup();
-  const ariaProps = {
-    'aria-label': ariaLabel,
-    'aria-labelledby': ariaLabelledBy,
-    'aria-describedby': ariaDescribedBy
-  };
   const navigationProps = { href, target, rel, download, ping, referrerPolicy, routerOptions };
   const surface = {
     padding: 'lg',
@@ -90,7 +73,6 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
     return (
       <Flex
         {...(surface as FlexProps<typeof RACGridListItem>)}
-        {...ariaProps}
         as={RACGridListItem}
         ref={ref as Ref<HTMLDivElement>}
         id={id}
@@ -123,7 +105,6 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
     return (
       <Flex
         {...(surface as FlexProps<typeof RACLink>)}
-        {...ariaProps}
         as={RACLink}
         ref={ref as Ref<HTMLAnchorElement>}
         id={id?.toString()}
@@ -139,7 +120,6 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(props, ref)
   return (
     <Flex
       {...surface}
-      {...ariaProps}
       ref={ref as Ref<HTMLDivElement>}
       id={id?.toString()}
       data-disabled={isDisabled || undefined}

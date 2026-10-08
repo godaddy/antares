@@ -16,7 +16,7 @@ export function MediaExample() {
     <Grid columns="repeat(auto-fit, minmax(min(100%, 16rem), 1fr))" gap="lg" alignItems="start">
       <Card>
         <CornerActions>
-          <Button aria-label="Favorite" aria-pressed={saved} onPress={() => setSaved(!saved)}>
+          <Button variant="secondary" aria-label="Favorite" aria-pressed={saved} onPress={() => setSaved(!saved)}>
             <Icon icon="star" />
           </Button>
         </CornerActions>

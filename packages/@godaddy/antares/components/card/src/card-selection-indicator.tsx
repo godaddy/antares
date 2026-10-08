@@ -41,9 +41,6 @@ export interface CardSelectionIndicatorProps
   extends Omit<HTMLAttributes<HTMLSpanElement>, 'children' | 'dangerouslySetInnerHTML' | 'aria-hidden'> {
   /** Custom visual content or a state render function. Omit for the default circular indicator. */
   children?: ReactNode | ((renderProps: CardSelectionIndicatorRenderProps) => ReactNode);
-
-  /** Additional CSS class for the indicator. */
-  className?: string;
 }
 
 /** Row selection state available to custom indicator content. */
