@@ -17,12 +17,12 @@
 - [DropZone](/docs/components/drop-zone): A standalone region that accepts drag-and-drop file interactions, rendering a clearly defined target area where users can drop files.
 - [FieldError](/docs/components/field-error): Validation message for a field. Renders only when the field is invalid.
 - [FileTrigger](/docs/components/file-trigger): A style-less primitive that wraps any pressable component and opens the native file picker when it is activated.
-- [Heading](/docs/components/heading): Semantic h1-h6 heading. Use slot="title" inside a Modal or Dialog to name the overlay.
-- [Icon](/docs/components/icon): Flexible SVG icon component with on-demand loading, automatic caching, and extensive customization options
 - [Image](/docs/components/image): A native image element that inherits presentation and behavior from its Antares parent.
-- [InlineDrawer](/docs/components/inline-drawer): An in-flow collapsible built on RAC Disclosure. Compose a trigger and content to make an accordion or a sidebar rail.
+- [Heading](/docs/components/heading): Semantic h1-h6 heading. Use slot="title" inside a Modal or Dialog to name the overlay.
 - [Input](/docs/components/input): Single-line text control for use inside a field.
 - [Label](/docs/components/label): Names a form field. The required asterisk appears when the field is required.
+- [InlineDrawer](/docs/components/inline-drawer): An in-flow collapsible built on RAC Disclosure. Compose a trigger and content to make an accordion or a sidebar rail.
+- [Icon](/docs/components/icon): Flexible SVG icon component with on-demand loading, automatic caching, and extensive customization options
 - [ListBox](/docs/components/listbox): ListBox is a selectable collection of items rendered inline. Use it for non-popover pickers, inline lists, or as a building block for higher-level components like Select.
 - [Menu](/docs/components/menu): Accessible dropdown menu with grouping, multi-select checkbox items, leading icons, and submenus.
 - [MetricsLockup](/docs/components/metrics-lockup): The MetricsLockup component displays a single metric with an optional title, info tooltip, trend indicator, and description.
@@ -40,8 +40,8 @@
 - [SizeProvider](/docs/components/size-provider): Sizes a section, so the text, controls, and default spacing inside it follow one size.
 - [Structure primitives](/docs/components/structure): Generic structural containers for composing a component's interior.
 - [Switch](/docs/components/switch): A binary toggle control that switches a setting between on and off states, communicated via the WAI-ARIA switch role.
-- [Tabs](/docs/components/tabs): Tabs organize peer sections of content and let users switch between them without leaving the page.
 - [Tag](/docs/components/tag): Non-interactive labels that highlight statuses and categories.
+- [Tabs](/docs/components/tabs): Tabs organize peer sections of content and let users switch between them without leaving the page.
 - [Text](/docs/components/text): Body copy and supporting detail, with size, emphasis, alignment, and truncation options
 - [TextArea](/docs/components/text-area): Multiline text control for use inside a field.
 - [TextField](/docs/components/text-field): TextField is a composed single-line or multiline text input. Use it in forms for short answers (email, search, name) or longer content (comments).
