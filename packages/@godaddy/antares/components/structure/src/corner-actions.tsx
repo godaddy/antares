@@ -1,0 +1,31 @@
+import { createContext, forwardRef } from 'react';
+import { useContextProps, type ContextValue } from 'react-aria-components';
+import { Flex, type FlexProps } from '#components/layout/flex';
+
+/** Layout and HTML props for a composed surface's trailing actions region. */
+export interface CornerActionsProps extends Omit<FlexProps, 'as'> {}
+
+/** Lets a parent style/space every CornerActions region it renders. */
+export const CornerActionsContext = createContext<ContextValue<CornerActionsProps, HTMLDivElement>>(null);
+
+/**
+ * Always-visible trailing actions region for composed surfaces.
+ *
+ * @param props - {@link CornerActionsProps}
+ */
+export const CornerActions = forwardRef<HTMLDivElement, CornerActionsProps>(function CornerActions(props, ref) {
+  [props, ref] = useContextProps(props, ref, CornerActionsContext);
+
+  return (
+    <Flex
+      direction="row"
+      alignItems="center"
+      gap="sm"
+      flexShrink={0}
+      {...props}
+      as="div"
+      data-corner-actions="true"
+      ref={ref}
+    />
+  );
+});

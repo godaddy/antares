@@ -5,6 +5,7 @@
   text-align: start;
 
   --_text-lockup-measure: none;
+  --_text-lockup-actions-gap: var(--size-space-040, calc(var(--ux-1sbfig8, 0.5rem) * 2));
 }
 
 .lockup:where([data-legible-lines]) {
@@ -18,4 +19,13 @@
 
 .part {
   max-width: var(--_text-lockup-measure);
+}
+
+.header:where(:has(> [data-corner-actions])) {
+  display: flow-root;
+}
+
+.header > :where([data-corner-actions]) {
+  float: inline-end;
+  margin-inline-start: var(--_text-lockup-actions-gap);
 }

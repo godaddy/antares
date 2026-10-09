@@ -1,0 +1,69 @@
+---
+title: Card
+description: A surface that groups related content and actions.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './card.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+Card groups related content, like media, text, and actions, on a single surface. On its own, a Card
+is a static surface, or a link when you pass `href`. Put Cards in a `CardGroup` to make them
+selectable or to give them an action: the group owns selection, row actions, focus, and arrow-key
+navigation.
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Customization
+
+Customize `CardSelectionIndicator` with non-interactive children or a selection-state render
+function. `CardGroup` owns selection, which works without an indicator.
+
+Use `className` with `[data-selected]`, `[data-hovered]`, `[data-pressed]`, `[data-focus-visible]`,
+and `[data-disabled]` to style Card states.
+
+## Accessibility
+
+- Name `CardGroup` with `aria-label` or `aria-labelledby`, and set `textValue` on Cards with composed
+  content for accessible names and typeahead.
+- `CardGroup` uses grid navigation: Tab enters or leaves, arrow keys move between Cards, and Space
+  changes selection. Enter activates row actions or links. Choose selection or `onAction`;
+  combining them prevents pointer selection.
+- Use `keyboardNavigationBehavior="tab"` for nested controls. Antares controls keep their actions
+  independent of the Card; use `Pressable` for custom controls.
+- A standalone Card with `href` is a link and must not contain buttons, inputs, or other controls.
+
+## Props
+
+```tsx
+<CardGroup selectionMode="multiple">
+  <Card id="privacy" textValue="Domain privacy">
+    <CornerActions />
+    <Image />
+    <TextLockup />
+    {/* ... */}
+  </Card>
+</CardGroup>
+```
+
+### Card
+
+<ArgTypes of={Stories.Props} />
+
+### CardGroup
+
+<ArgTypes of={Stories.CardGroupProps} />
+
+### CardSelectionIndicator
+
+<ArgTypes of={Stories.CardSelectionIndicatorProps} />
