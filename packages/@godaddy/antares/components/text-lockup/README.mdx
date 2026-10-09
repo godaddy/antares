@@ -71,15 +71,27 @@ growing a prop for it.
 
 ## Props
 
+Place the title directly inside `TextLockup` when there are no corner actions. The eyebrow can
+be `Text` or `Tag` and comes before the title.
+
 ```tsx
 <TextLockup>
+  <Tag slot="eyebrow" />
+  <Heading slot="title" />
+  <Text slot="body" />
+  {/* ... */}
+</TextLockup>
+```
+
+Wrap the title in `Header` when using `CornerActions`.
+
+```tsx
+<TextLockup>
+  <Tag slot="eyebrow" />
   <Header>
     <CornerActions />
     <Heading slot="title" />
   </Header>
-
-  <Tag slot="eyebrow" />
-  <Heading slot="title" />
   <Text slot="body" />
   {/* ... */}
 </TextLockup>
