@@ -1,0 +1,241 @@
+3:"$Sreact.fragment"
+4:"/antares/pr-379-site/_next/static/chunks/0xvdevozgcspg.js"
+5:"/antares/pr-379-site/_next/static/chunks/44u8vt8tcxeb8.js"
+6:I[339756,["$4","$5"],"default"]
+7:I[837457,["$4","$5"],"default"]
+c:"/antares/pr-379-site/_next/static/chunks/3bcg39of-lql3.js"
+d:"/antares/pr-379-site/_next/static/chunks/0cq_r7uivgtia.js"
+e:"/antares/pr-379-site/_next/static/chunks/44d0fxytx9jkg.js"
+f:"/antares/pr-379-site/_next/static/chunks/3ro9sb3nb8pm4.js"
+10:"/antares/pr-379-site/_next/static/chunks/0y43-9m1z7bvl.js"
+11:"/antares/pr-379-site/_next/static/chunks/2q1vkgy1flc92.js"
+12:"/antares/pr-379-site/_next/static/chunks/0s0e0vhpl8v2v.js"
+13:"/antares/pr-379-site/_next/static/chunks/428imhwwk-ha_.js"
+14:"/antares/pr-379-site/_next/static/chunks/3nd4_wmz1ljg4.js"
+15:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsPage"]
+16:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsTitle"]
+17:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsDescription"]
+18:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"LLMCopyButton"]
+19:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"ViewOptions"]
+1a:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsBody"]
+1b:I[494157,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Heading"]
+1c:I[144324,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"CodeBlock"]
+1d:I[144324,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Pre"]
+1e:I[403113,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"StoryRenderer"]
+1f:I[704716,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DefaultExample"]
+20:"DynamicCodeBlock"
+21:I[904143,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$20"]
+22:"ControlledExample"
+23:I[256000,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$22"]
+43:"ViewportBoundary"
+44:I[897367,["$4","$5"],"$43"]
+45:"MetadataBoundary"
+46:I[897367,["$4","$5"],"$45"]
+47:"$Sreact.suspense"
+9:X
+9:C
+a:X
+b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L15",null,{"toc":[{"depth":2,"url":"#installation","title":"Installation"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#default","title":"Default"},{"depth":3,"url":"#controlled","title":"Controlled"},{"depth":3,"url":"#external-controls-uncontrolled","title":"External Controls (Uncontrolled)"},{"depth":3,"url":"#external-controls-controlled","title":"External Controls (Controlled)"},{"depth":3,"url":"#hide-controls","title":"Hide Controls"},{"depth":3,"url":"#variable-widths","title":"Variable Widths"},{"depth":3,"url":"#events","title":"Events"},{"depth":3,"url":"#rtl-direction","title":"RTL Direction"},{"depth":2,"url":"#props","title":"Props"},{"depth":3,"url":"#carousel","title":"Carousel"}],"footer":{"enabled":true},"children":[["$","$L16",null,{"children":"Carousel"}],["$","$L17",null,{"className":"mb-0","children":"The Carousel component allows users to cycle through a series of content panels (typically images, cards, or text) in a horizontal or vertical layout. It is commonly used for featured content, product showcases, or testimonials."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L18",null,{"markdownUrl":"/docs/components/carousel.mdx"}],["$","$L19",null,{"markdownUrl":"/docs/components/carousel.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/carousel/README.mdx"}]]}],["$","$L1a",null,{"children":[null,"\n",["$","$L1b",null,{"as":"h2","id":"installation","children":"Installation"}],"\n",["$","$L1c",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$L1d",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npm"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" install"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" --save"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" @godaddy/antares"}]]}]}]}]}],"\n",["$","$L1b",null,{"as":"h2","id":"examples","children":"Examples"}],"\n",["$","$L1b",null,{"as":"h3","id":"default","children":"Default"}],"\n",["$","p",null,{"children":["The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the ",["$","code",null,{"children":"defaultActiveIndex"}]," prop to the ",["$","code",null,{"children":"Carousel"}]," component to set the initial active slide index."]}],"\n",["$","$L1e",null,{"component":"$1f"}],"\n",["$","$L21",null,{"lang":"tsx","code":"import { Carousel, Flex } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\"center\" justifyContent=\"center\" style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}"}],"\n",["$","$L1b",null,{"as":"h3","id":"controlled","children":"Controlled"}],"\n",["$","p",null,{"children":["The controlled carousel is a carousel that is controlled by the ",["$","code",null,{"children":"activeIndex"}]," prop."]}],"\n",["$","$L1e",null,{"component":"$23"}],"\n",["$","$L21",null,{"lang":"tsx","code":"import { Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.max(0, index - 1));\n  }\n\n  function handleNext(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.min(2, index + 1));\n  }\n\n  function handleChange(index: number) {\n    setActiveIndex(index);\n  }\n\n  return (\n    <Carousel\n      style={{ maxWidth: 400 }}\n      activeIndex={activeIndex}\n      onPrev={handlePrev}\n      onNext={handleNext}\n      onChange={handleChange}\n    >\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\"center\" justifyContent=\"center\" style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}"}],"\n","$L24","\n","$L25","\n","$L26","\n","$L27","\n","$L28","\n","$L29","\n","$L2a","\n","$L2b","\n","$L2c","\n","$L2d","\n","$L2e","\n","$L2f","\n","$L30","\n","$L31","\n","$L32","\n","$L33","\n","$L34","\n","$L35","\n","$L36","\n","$L37","\n","$L38","\n","$L39","\n","$L3a","\n","$L3b","\n","$L3c","\n","$L3d","\n","$L3e"]}]]}],["$L3f","$L40"],"$L41"]}],"p":"$@42","v":null,"s":"$a"}}]]
+2:[["children",{"s":{"n":"slug","t":"oc","k":"components/carousel","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
+1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L44",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L46",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$47",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Carousel"}],["$","meta","1",{"name":"description","content":"The Carousel component allows users to cycle through a series of content panels (typically images, cards, or text) in a horizontal or vertical layout. It is commonly used for featured content, product showcases, or testimonials."}],["$","meta","2",{"property":"og:title","content":"Carousel"}],["$","meta","3",{"property":"og:description","content":"The Carousel component allows users to cycle through a series of content panels (typically images, cards, or text) in a horizontal or vertical layout. It is commonly used for featured content, product showcases, or testimonials."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/components/carousel/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Carousel"}],["$","meta","7",{"name":"twitter:description","content":"The Carousel component allows users to cycle through a series of content panels (typically images, cards, or text) in a horizontal or vertical layout. It is commonly used for featured content, product showcases, or testimonials."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/components/carousel/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@48","v":null,"s":"$a"}},"a":"$@49","u":"$@4a","b":"VrNIx1BSMiAE8me1KMTBW"}
+4b:"ExternalControlsUncontrolledExample"
+4c:I[576912,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$4b"]
+4e:"ExternalControlsControlledExample"
+4f:I[975243,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$4e"]
+51:"HideControlsExample"
+52:I[795049,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$51"]
+53:"VariableWidthsExample"
+54:I[754360,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$53"]
+55:I[602592,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"EventsExample"]
+57:"RTLDirectionExample"
+58:I[34316,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$57"]
+59:I[403299,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"PropTableClient"]
+75:I[897367,["$4","$5"],"OutletBoundary"]
+24:["$","$L1b",null,{"as":"h3","id":"external-controls-uncontrolled","children":"External Controls (Uncontrolled)"}]
+25:["$","p",null,{"children":["You can control the carousel externally by passing the ",["$","code",null,{"children":"ref"}]," prop to the ",["$","code",null,{"children":"Carousel"}]," component and using the ",["$","code",null,{"children":"emblaApi"}]," to control the carousel imperatively."]}]
+26:["$","$L1e",null,{"component":"$4c"}]
+4d:T4b0,import { Button, Icon, Carousel, Flex, type CarouselRef } from '@godaddy/antares';
+import { useRef } from 'react';
+
+const TOTAL_SLIDES = 3;
+
+export function ExternalControlsUncontrolledExample() {
+  const carouselRef = useRef<CarouselRef>(null);
+
+  function handlePrev() {
+    carouselRef.current?.emblaApi?.goToPrev();
+  }
+
+  function handleNext() {
+    carouselRef.current?.emblaApi?.goToNext();
+  }
+
+  return (
+    <Flex direction="column" gap="md" style={{ maxWidth: 400 }}>
+      <Flex direction="row" gap="md" alignSelf="end">
+        <Button variant="secondary" aria-label="External prev slide" onClick={handlePrev}>
+          <Icon icon="chevron-left" />
+        </Button>
+        <Button variant="secondary" aria-label="External next slide" onClick={handleNext}>
+          <Icon icon="chevron-right" />
+        </Button>
+      </Flex>
+
+      <Carousel hideNavigationControls ref={carouselRef} id="carousel">
+        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (
+          <Flex key={index} alignItems="center" justifyContent="center" style={{ height: 300, background: 'lavender' }}>
+            Slide {index + 1}
+          </Flex>
+        ))}
+      </Carousel>
+    </Flex>
+  );
+}27:["$","$L21",null,{"lang":"tsx","code":"$4d"}]
+28:["$","$L1b",null,{"as":"h3","id":"external-controls-controlled","children":"External Controls (Controlled)"}]
+29:["$","p",null,{"children":["You can control the carousel externally by using the ",["$","code",null,{"children":"activeIndex"}]," prop to control the active slide index."]}]
+2a:["$","$L1e",null,{"component":"$4f"}]
+50:T569,import { Button, Icon, Carousel, Flex } from '@godaddy/antares';
+import { useState } from 'react';
+
+const TOTAL_SLIDES = 3;
+
+export function ExternalControlsControlledExample() {
+  const [activeIndex, setActiveIndex] = useState(1);
+
+  function handlePrev() {
+    setActiveIndex(Math.max(0, activeIndex - 1));
+  }
+
+  function handleNext() {
+    setActiveIndex(Math.min(TOTAL_SLIDES - 1, activeIndex + 1));
+  }
+
+  return (
+    <Flex direction="column" gap="md" style={{ maxWidth: 400 }}>
+      <Flex direction="row" gap="md" alignSelf="end">
+        <Button
+          variant="secondary"
+          aria-label="External prev slide"
+          onClick={handlePrev}
+          isDisabled={activeIndex === 0}
+        >
+          <Icon icon="chevron-left" />
+        </Button>
+        <Button
+          variant="secondary"
+          aria-label="External next slide"
+          onClick={handleNext}
+          isDisabled={activeIndex === TOTAL_SLIDES - 1}
+        >
+          <Icon icon="chevron-right" />
+        </Button>
+      </Flex>
+
+      <Carousel hideDots hideNavigationControls activeIndex={activeIndex}>
+        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (
+          <Flex key={index} alignItems="center" justifyContent="center" style={{ height: 300, background: 'lavender' }}>
+            Slide {index + 1}
+          </Flex>
+        ))}
+      </Carousel>
+    </Flex>
+  );
+}2b:["$","$L21",null,{"lang":"tsx","code":"$50"}]
+2c:["$","$L1b",null,{"as":"h3","id":"hide-controls","children":"Hide Controls"}]
+2d:["$","p",null,{"children":"The hide controls carousel is a carousel that hides the navigation controls."}]
+2e:["$","$L1e",null,{"component":"$52"}]
+2f:["$","$L21",null,{"lang":"tsx","code":"import { Carousel, Flex } from '@godaddy/antares';\n\nexport function HideControlsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }} hideNavigationControls hideDots>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\"center\" justifyContent=\"center\" style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}"}]
+30:["$","$L1b",null,{"as":"h3","id":"variable-widths","children":"Variable Widths"}]
+31:["$","p",null,{"children":"It supports multiple slides with different widths."}]
+32:["$","$L1e",null,{"component":"$54"}]
+33:["$","$L21",null,{"lang":"tsx","code":"import { Carousel, Flex } from '@godaddy/antares';\n\nconst SLIDE_WIDTHS = [200, 100, 300, 100, 200];\n\nexport function VariableWidthsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {SLIDE_WIDTHS.map((width, index) => (\n        <Flex\n          key={index}\n          alignItems=\"center\"\n          justifyContent=\"center\"\n          style={{ width, height: 300, background: 'lavender' }}\n        >\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}"}]
+34:["$","$L1b",null,{"as":"h3","id":"events","children":"Events"}]
+35:["$","p",null,{"children":["You can listen to events like ",["$","code",null,{"children":"onChange"}],", ",["$","code",null,{"children":"onPrev"}],", or ",["$","code",null,{"children":"onNext"}],"."]}]
+36:["$","$L1e",null,{"component":"$55"}]
+56:T633,import { Box, Carousel, Flex } from '@godaddy/antares';
+import { useState } from 'react';
+
+export function EventsExample() {
+  const [message, setMessage] = useState('Listening for change events...');
+  const [messagePrev, setMessagePrev] = useState('Listening for prev events...');
+  const [messageNext, setMessageNext] = useState('Listening for next events...');
+
+  function handleChange(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {
+    setMessage(`onChange: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);
+  }
+
+  function handlePrev(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {
+    setMessagePrev(`onPrev: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);
+  }
+
+  function handleNext(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {
+    setMessageNext(`onNext: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);
+  }
+  return (
+    <Flex direction="column" gap="md">
+      <Box>{message}</Box>
+      <Box>{messagePrev}</Box>
+      <Box>{messageNext}</Box>
+
+      <Carousel
+        style={{ maxWidth: 400 }}
+        defaultActiveIndex={2}
+        onChange={handleChange}
+        onPrev={handlePrev}
+        onNext={handleNext}
+      >
+        {Array.from({ length: 3 }).map((_, index) => (
+          <Flex key={index} alignItems="center" justifyContent="center" style={{ height: 300, background: 'lavender' }}>
+            Slide {index + 1}
+          </Flex>
+        ))}
+      </Carousel>
+    </Flex>
+  );
+}37:["$","$L21",null,{"lang":"tsx","code":"$56"}]
+38:["$","$L1b",null,{"as":"h3","id":"rtl-direction","children":"RTL Direction"}]
+39:["$","p",null,{"children":["The carousel follows the current ",["$","strong",null,{"children":"layout direction"}]," (LTR or RTL). By default, that direction is detected automatically from the browser or system settings."]}]
+3a:["$","$L1e",null,{"component":"$58"}]
+3b:["$","$L21",null,{"lang":"tsx","code":"import { Carousel, Flex } from '@godaddy/antares';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\nexport function RTLDirectionExample() {\n  return (\n    <RTLProvider>\n      <Carousel style={{ maxWidth: 400 }}>\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\"center\" justifyContent=\"center\" style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </RTLProvider>\n  );\n}"}]
+3c:["$","$L1b",null,{"as":"h2","id":"props","children":"Props"}]
+3d:["$","$L1b",null,{"as":"h3","id":"carousel","children":"Carousel"}]
+3e:["$","$L59",null,{"entries":[{"name":"onChange","type":"UseNavigationControlsProps['onChange']","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The callback function to be called when the active slide changes."}]],"required":false},{"name":"onPrev","type":"UseNavigationControlsProps['onPrev']","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The callback function to be called when the previous slide is pressed."}]],"required":false},{"name":"onNext","type":"UseNavigationControlsProps['onNext']","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The callback function to be called when the next slide is pressed."}]],"required":false},{"name":"display","type":"'flex' | 'inline-flex'","default":"'flex'","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The display property for the flex container."}]],"required":false},{"name":"justifyContent","type":"| 'normal'\n    | 'start'\n    | 'end'\n    | 'center'\n    | 'stretch'\n    | 'space-around'\n    | 'space-between'\n    | 'space-evenly'\n    | (string & {})","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The distribution of space around children along the main axis in flex or inline axis in grid"}]],"required":false},{"name":"alignContent","type":"| 'normal'\n    | 'start'\n    | 'end'\n    | 'center'\n    | 'stretch'\n    | 'space-around'\n    | 'space-between'\n    | 'space-evenly'\n    | 'baseline'\n    | (string & {})","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The distribution of space around children along the cross axis in flex or block axis in grid"}]],"required":false},{"name":"justifyItems","type":"'normal' | 'start' | 'end' | 'center' | 'stretch' | 'legacy' | (string & {})","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Defines the default justify-self for all children in a grid container."}]],"required":false},{"name":"alignItems","type":"'normal' | 'start' | 'end' | 'center' | 'stretch' | 'baseline' | (string & {})","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Sets the align-self property for each child."}]],"required":false},{"name":"gap","type":"Spacing | Spacing[]","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The gap between children."}]],"required":false},{"name":"columnGap","type":"Spacing","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The gap between columns."}]],"required":false},{"name":"rowGap","type":"Spacing","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The gap between rows."}]],"required":false},{"name":"padding","type":"Spacing | Spacing[]","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Padding on all sides. Accepts single value or array."}]],"required":false},{"name":"inlinePadding","type":"Spacing | Spacing[]","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Padding on inline (horizontal) direction."}]],"required":false},{"name":"inlinePaddingStart","type":"Spacing","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Padding on inline start (left in LTR)."}]],"required":false},{"name":"inlinePaddingEnd","type":"Spacing","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Padding on inline end (right in LTR)."}]],"required":false},{"name":"blockPadding","type":"Spacing | Spacing[]","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Padding on block (vertical) direction."}]],"required":false},{"name":"blockPaddingStart","type":"Spacing","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Padding on block start (top)."}]],"required":false},{"name":"blockPaddingEnd","type":"Spacing","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Padding on block end (bottom)."}]],"required":false},{"name":"alignSelf","type":"| 'auto'\n    | 'normal'\n    | 'start'\n    | 'end'\n    | 'center'\n    | 'flex-start'\n    | 'flex-end'\n    | 'self-start'\n    | 'self-end'\n    | 'stretch'\n    | (string & {})","description":"$L5a","required":false},{"name":"justifySelf","type":"| 'auto'\n    | 'normal'\n    | 'start'\n    | 'end'\n    | 'flex-start'\n    | 'flex-end'\n    | 'self-start'\n    | 'self-end'\n    | 'center'\n    | 'left'\n    | 'right'\n    | 'stretch'\n    | (string & {})","description":"$L5b","required":false},{"name":"order","type":"number | string","description":"$L5c","required":false},{"name":"flex","type":"number | string","description":"$L5d","required":false},{"name":"flexGrow","type":"number | string","description":"$L5e","required":false},{"name":"flexShrink","type":"number | string","description":"$L5f","required":false},{"name":"flexBasis","type":"string","description":"$L60","required":false},{"name":"gridArea","type":"string","description":"$L61","required":false},{"name":"gridColumnStart","type":"string","description":"$L62","required":false},{"name":"gridColumnEnd","type":"string","description":"$L63","required":false},{"name":"gridRowStart","type":"string","description":"$L64","required":false},{"name":"gridRowEnd","type":"string","description":"$L65","required":false},{"name":"direction","type":"'row' | 'column' | 'row-reverse' | 'column-reverse'","default":"'row'","description":"$L66","required":false},{"name":"wrap","type":"'nowrap' | 'wrap' | 'wrap-reverse'","description":"$L67","required":false},{"name":"children","type":"ReactNode | ReactNode[]","description":"$L68","required":true},{"name":"activeIndex","type":"number","description":"$L69","required":false},{"name":"defaultActiveIndex","type":"number","description":"$L6a","required":false},{"name":"hideMaskEdges","type":"boolean","description":"$L6b","required":false},{"name":"hideDots","type":"boolean","description":"$L6c","required":false},{"name":"hideNavigationControls","type":"boolean","description":"$L6d","required":false},{"name":"prevButtonProps","type":"ButtonProps","description":"$L6e","required":false},{"name":"nextButtonProps","type":"ButtonProps","description":"$L6f","required":false},{"name":"emblaOptions","type":"EmblaOptionsType","description":"$L70","required":false},{"name":"emblaAccessibilityOptions","type":"AccessibilityOptionsType","description":"$L71","required":false},{"name":"as","type":"ElementType","default":"'div'","description":"$L72","required":false},{"name":"elevation","type":"Elevation","description":"$L73","required":false},{"name":"rounding","type":"Rounding","description":"$L74","required":false}],"categories":{"Events":["onChange","onPrev","onNext"],"Layout":["display","justifyContent","alignContent","justifyItems","alignItems","gap","columnGap","rowGap","padding","inlinePadding","inlinePaddingStart","inlinePaddingEnd","blockPadding","blockPaddingStart","blockPaddingEnd","alignSelf","justifySelf","order","flex","flexGrow","flexShrink","flexBasis","gridArea","gridColumnStart","gridColumnEnd","gridRowStart","gridRowEnd","direction","wrap"]}}]
+3f:["$","script","script-0",{"src":"/antares/pr-379-site/_next/static/chunks/428imhwwk-ha_.js","async":true}]
+40:["$","script","script-1",{"src":"/antares/pr-379-site/_next/static/chunks/3nd4_wmz1ljg4.js","async":true}]
+41:["$","$L75",null,{"children":["$","$47",null,{"name":"Next.MetadataOutlet","children":"$@76"}]}]
+4a:true
+a:300
+5a:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Cross-axis alignment within flex/grid container."}]]
+5b:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Main-axis alignment within flex/grid container."}]]
+5c:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Layout order within flex/grid container."}]]
+5d:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Flex shorthand for grow, shrink, and basis."}]]
+5e:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. How much the item will grow relative to siblings."}]]
+5f:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. How much the item will shrink relative to siblings."}]]
+60:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Initial main size before growing/shrinking."}]]
+61:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Named grid area for placement."}]]
+62:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Grid column start line."}]]
+63:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Grid column end line."}]]
+64:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Grid row start line."}]]
+65:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Grid row end line."}]]
+66:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The direction in which to layout children."}]]
+67:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to wrap items onto multiple lines."}]]
+68:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The slides of the carousel."}]]
+69:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The index of the active slide. (Controlled mode)"}]]
+6a:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The index of the default active slide. (Uncontrolled mode)"}]]
+6b:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to hide the mask edges of the viewport."}]]
+6c:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to hide the dots."}]]
+6d:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to hide the navigation controls."}]]
+6e:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Props to pass to the previous button."}]]
+6f:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Props to pass to the next button."}]]
+70:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"All options available for the embla carousel."}]]
+71:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"All options available for the embla accessibility."}]]
+72:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Polymorphic element type."}]]
+73:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Elevation levels for visual depth."}]]
+74:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Rounding values for border radius."}]]
+76:null
+a:C
+49:0
+8:"$undefined"
+48:"$undefined"
+42:"$undefined"

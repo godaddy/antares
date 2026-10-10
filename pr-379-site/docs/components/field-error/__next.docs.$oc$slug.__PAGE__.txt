@@ -1,0 +1,58 @@
+3:"$Sreact.fragment"
+4:"/antares/pr-379-site/_next/static/chunks/0xvdevozgcspg.js"
+5:"/antares/pr-379-site/_next/static/chunks/44u8vt8tcxeb8.js"
+6:I[339756,["$4","$5"],"default"]
+7:I[837457,["$4","$5"],"default"]
+c:"/antares/pr-379-site/_next/static/chunks/3bcg39of-lql3.js"
+d:"/antares/pr-379-site/_next/static/chunks/0cq_r7uivgtia.js"
+e:"/antares/pr-379-site/_next/static/chunks/44d0fxytx9jkg.js"
+f:"/antares/pr-379-site/_next/static/chunks/3ro9sb3nb8pm4.js"
+10:"/antares/pr-379-site/_next/static/chunks/0y43-9m1z7bvl.js"
+11:"/antares/pr-379-site/_next/static/chunks/2q1vkgy1flc92.js"
+12:"/antares/pr-379-site/_next/static/chunks/0s0e0vhpl8v2v.js"
+13:"/antares/pr-379-site/_next/static/chunks/428imhwwk-ha_.js"
+14:"/antares/pr-379-site/_next/static/chunks/3nd4_wmz1ljg4.js"
+15:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsPage"]
+16:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsTitle"]
+17:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsDescription"]
+18:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"LLMCopyButton"]
+19:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"ViewOptions"]
+1a:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsBody"]
+1b:I[494157,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Heading"]
+1c:I[144324,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"CodeBlock"]
+1d:I[144324,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Pre"]
+1e:I[403113,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"StoryRenderer"]
+1f:I[67020,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DefaultExample"]
+20:"DynamicCodeBlock"
+21:I[904143,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$20"]
+22:I[403299,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"PropTableClient"]
+2d:"ViewportBoundary"
+2e:I[897367,["$4","$5"],"$2d"]
+2f:"MetadataBoundary"
+30:I[897367,["$4","$5"],"$2f"]
+31:"$Sreact.suspense"
+9:X
+9:C
+a:X
+b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L15",null,{"toc":[{"depth":2,"url":"#features","title":"Features"},{"depth":2,"url":"#installation","title":"Installation"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#default","title":"Default"},{"depth":2,"url":"#props","title":"Props"},{"depth":3,"url":"#fielderror","title":"FieldError"}],"footer":{"enabled":true},"children":[["$","$L16",null,{"children":"FieldError"}],["$","$L17",null,{"className":"mb-0","children":"Validation message for a field. Renders only when the field is invalid."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L18",null,{"markdownUrl":"/docs/components/field-error.mdx"}],["$","$L19",null,{"markdownUrl":"/docs/components/field-error.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/field-error/README.mdx"}]]}],["$","$L1a",null,{"children":[null,"\n",["$","$L1b",null,{"as":"h2","id":"features","children":"Features"}],"\n",["$","ul",null,{"children":["\n",["$","li",null,{"children":["Shown when the parent field is invalid (",["$","code",null,{"children":"isInvalid"}]," or native constraint validation)."]}],"\n"]}],"\n",["$","$L1b",null,{"as":"h2","id":"installation","children":"Installation"}],"\n",["$","$L1c",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$L1d",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npm"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" install"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" --save"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" @godaddy/antares"}]]}]}]}]}],"\n",["$","$L1b",null,{"as":"h2","id":"examples","children":"Examples"}],"\n",["$","$L1b",null,{"as":"h3","id":"default","children":"Default"}],"\n",["$","p",null,{"children":"FieldError renders when the field is invalid."}],"\n",["$","$L1e",null,{"component":"$1f"}],"\n",["$","$L21",null,{"lang":"tsx","code":"import { FieldError, Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\"you@example.com\" />\n      </Group>\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}"}],"\n",["$","$L1b",null,{"as":"h2","id":"props","children":"Props"}],"\n",["$","$L1b",null,{"as":"h3","id":"fielderror","children":"FieldError"}],"\n",["$","$L22",null,{"entries":[{"name":"onClick","type":"MouseEventHandler<T> | undefined","required":false},{"name":"onDoubleClick","type":"MouseEventHandler<T> | undefined","required":false},{"name":"className","type":"ClassNameOrFunction<FieldErrorRenderProps>","default":"'react-aria-FieldError'","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The CSS ",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/API/Element/className","children":"className"}]," for the\nelement. A function may be provided to compute the class based on component state."]}]],"required":false},{"name":"elementType","type":"string","default":"'span'","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The HTML element type to render. Defaults to ",["$","code","code-0",{"className":"font-mono","children":"'span'"}],".\nSet to ","$L23"," when using block-level children (e.g. ","$L24",") to avoid invalid HTML."]}]],"required":false},{"name":"children","type":"ChildrenOrFunction<T>","description":"$L25","required":false},{"name":"style","type":"StyleOrFunction<T>","description":"$L26","required":false},{"name":"render","type":"DOMRenderFunction<E, T>","description":"$L27","required":false},{"name":"id","type":"string","description":"$L28","required":false},{"name":"dir","type":"string | undefined","required":false},{"name":"lang","type":"string | undefined","required":false},{"name":"hidden","type":"boolean | undefined","required":false},{"name":"inert","type":"boolean | undefined","required":false}],"categories":{"Events":["onClick","onDoubleClick"]}}]]}]]}],["$L29","$L2a"],"$L2b"]}],"p":"$@2c","v":null,"s":"$a"}}]]
+2:[["children",{"s":{"n":"slug","t":"oc","k":"components/field-error","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
+1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L2e",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L30",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$31",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"FieldError"}],["$","meta","1",{"name":"description","content":"Validation message for a field. Renders only when the field is invalid."}],["$","meta","2",{"property":"og:title","content":"FieldError"}],["$","meta","3",{"property":"og:description","content":"Validation message for a field. Renders only when the field is invalid."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/components/field-error/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"FieldError"}],["$","meta","7",{"name":"twitter:description","content":"Validation message for a field. Renders only when the field is invalid."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/components/field-error/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@32","v":null,"s":"$a"}},"a":"$@33","u":"$@34","b":"VrNIx1BSMiAE8me1KMTBW"}
+35:I[897367,["$4","$5"],"OutletBoundary"]
+23:["$","code","code-1",{"className":"font-mono","children":"'div'"}]
+24:["$","code","code-2",{"className":"font-mono","children":"<ul>"}]
+25:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The children of the component. A function may be provided to alter the children based on\ncomponent state."}]]
+26:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The inline ",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style","children":"style"}]," for the\nelement. A function may be provided to compute the style based on component state."]}]]
+27:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Overrides the default DOM element with a custom render function.\nThis allows rendering existing components with built-in styles and behaviors\nsuch as router links, animation libraries, and pre-styled components."}],"\n",["$","p","p-1",{"className":"mb-1 last:mb-0","children":"Requirements:"}],"\n",["$","ul","ul-0",{"className":"my-1 list-disc ps-4","children":["\n",["$","li","li-0",{"className":"mt-0.5","children":["You must render the expected element type (e.g. if ",["$","code","code-0",{"className":"font-mono","children":"<button>"}]," is expected, you cannot render an\n",["$","code","code-1",{"className":"font-mono","children":"<a>"}],")."]}],"\n",["$","li","li-1",{"className":"mt-0.5","children":"Only a single root DOM element can be rendered (no fragments)."}],"\n",["$","li","li-2",{"className":"mt-0.5","children":"You must pass through props and ref to the underlying DOM element, merging with your own prop\nas appropriate."}],"\n"]}]]
+28:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The element's unique identifier. See\n",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id","children":"MDN"}],"."]}]]
+29:["$","script","script-0",{"src":"/antares/pr-379-site/_next/static/chunks/428imhwwk-ha_.js","async":true}]
+2a:["$","script","script-1",{"src":"/antares/pr-379-site/_next/static/chunks/3nd4_wmz1ljg4.js","async":true}]
+2b:["$","$L35",null,{"children":["$","$31",null,{"name":"Next.MetadataOutlet","children":"$@36"}]}]
+34:true
+a:300
+36:null
+a:C
+33:0
+8:"$undefined"
+32:"$undefined"
+2c:"$undefined"

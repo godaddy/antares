@@ -1,0 +1,504 @@
+1:"$Sreact.fragment"
+3:"/antares/pr-379-site/_next/static/chunks/0xvdevozgcspg.js"
+4:"/antares/pr-379-site/_next/static/chunks/44u8vt8tcxeb8.js"
+5:I[17751,["$3","$4"],"RootProvider"]
+6:I[339756,["$3","$4"],"default"]
+7:I[837457,["$3","$4"],"default"]
+11:I[168027,["$3","$4"],"default",1]
+:HL["/antares/pr-379-site/_next/static/chunks/04ezi745s8yv5.css","style"]
+:HL["/antares/pr-379-site/_next/static/chunks/2mpnk6awv76s3.css","style"]
+:HL["/antares/pr-379-site/_next/static/chunks/11ph9mp39y6o6.css","style"]
+:HL["/antares/pr-379-site/_next/static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-regular.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
+:HL["https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-bold.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
+:HL["https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
+2:T757,@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 700;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-bold.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-bold.woff') format('woff');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 400;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-regular.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-regular.woff') format('woff');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 1 999;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf.woff2') format('woff2-variations');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 1 900;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf2.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf2.woff2') format('woff2-variations');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 1 900;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf3.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf3.woff2') format('woff2-variations');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 1 900;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf4.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf4.woff2') format('woff2-variations');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}d:X
+e:[["children",{"s":"__PAGE__","h":512,"d":{"r":"$Lf","p":false,"v":null}}]]
+b:[["children",{"s":{"n":"slug","t":"oc","k":"components/button","s":[]},"h":512,"d":{"r":"$Lc","p":false,"v":"$d"},"c":"$Qe"}]]
+9:[["children",{"s":"docs","h":512,"d":{"r":"$La","p":false,"v":null},"c":"$Qb"}]]
+0:{"P":null,"c":["","docs","components","button",""],"q":"","i":false,"t":{"t":{"s":"","h":528,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/antares/pr-379-site/_next/static/chunks/04ezi745s8yv5.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/antares/pr-379-site/_next/static/chunks/0xvdevozgcspg.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/antares/pr-379-site/_next/static/chunks/44u8vt8tcxeb8.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"OU16Qa_className","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[[["$","link","https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-regular.woff2",{"rel":"preload","href":"https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-regular.woff2","as":"font","type":"font/woff2","crossOrigin":"anonymous"}],["$","link","https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-bold.woff2",{"rel":"preload","href":"https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-bold.woff2","as":"font","type":"font/woff2","crossOrigin":"anonymous"}],["$","link","https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf.woff2",{"rel":"preload","href":"https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf.woff2","as":"font","type":"font/woff2","crossOrigin":"anonymous"}]],["$","style",null,{"children":"$2"}]]}],["$","body",null,{"className":"flex flex-col min-h-screen","children":["$","$L5",null,{"search":{"options":{"api":"/antares/pr-379-site/api/search","type":"static"}},"children":["$","$L6",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L7",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],"$L8"],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}]]}],"p":false,"v":null},"c":"$Q9"},"h":{"r":"$L10","p":false,"v":null}},"m":"$undefined","G":["$11",["$L12"]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"VrNIx1BSMiAE8me1KMTBW"}
+13:"/antares/pr-379-site/_next/static/chunks/3bcg39of-lql3.js"
+14:"/antares/pr-379-site/_next/static/chunks/0cq_r7uivgtia.js"
+15:"/antares/pr-379-site/_next/static/chunks/44d0fxytx9jkg.js"
+16:"/antares/pr-379-site/_next/static/chunks/3ro9sb3nb8pm4.js"
+17:"/antares/pr-379-site/_next/static/chunks/0y43-9m1z7bvl.js"
+18:"/antares/pr-379-site/_next/static/chunks/2q1vkgy1flc92.js"
+19:"/antares/pr-379-site/_next/static/chunks/0s0e0vhpl8v2v.js"
+1a:I[563199,["$3","$4","$13","$14","$15","$16","$17","$18","$19"],"LayoutBody"]
+1d:I[897367,["$3","$4"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:"ViewportBoundary"
+21:I[897367,["$3","$4"],"$20"]
+23:"MetadataBoundary"
+24:I[897367,["$3","$4"],"$23"]
+8:["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]
+a:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/antares/pr-379-site/_next/static/chunks/2mpnk6awv76s3.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","link","1",{"rel":"stylesheet","href":"/antares/pr-379-site/_next/static/chunks/11ph9mp39y6o6.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/antares/pr-379-site/_next/static/chunks/3bcg39of-lql3.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/antares/pr-379-site/_next/static/chunks/0cq_r7uivgtia.js","async":true,"nonce":"$undefined"}],["$","script","script-2",{"src":"/antares/pr-379-site/_next/static/chunks/44d0fxytx9jkg.js","async":true,"nonce":"$undefined"}],["$","script","script-3",{"src":"/antares/pr-379-site/_next/static/chunks/3ro9sb3nb8pm4.js","async":true,"nonce":"$undefined"}],["$","script","script-4",{"src":"/antares/pr-379-site/_next/static/chunks/0y43-9m1z7bvl.js","async":true,"nonce":"$undefined"}],["$","script","script-5",{"src":"/antares/pr-379-site/_next/static/chunks/2q1vkgy1flc92.js","async":true,"nonce":"$undefined"}],["$","script","script-6",{"src":"/antares/pr-379-site/_next/static/chunks/0s0e0vhpl8v2v.js","async":true,"nonce":"$undefined"}]],["$","$L1a",null,{"tree":{"type":"root","$ref":{"folder":"","meta":"meta.json"},"$id":"root","name":"Docs","description":"$undefined","children":[{"$id":"index.mdx","type":"page","name":"Antares","description":"A collection of accessible, composable React components built on React Aria.","icon":"$undefined","url":"/docs","$ref":"index.mdx"},{"type":"folder","name":"Components","root":"$undefined","defaultOpen":true,"description":"$undefined","collapsible":"$undefined","children":[{"$id":"components/accordion.mdx","type":"page","name":"Accordion","description":"Accordion coordinates related collapsible sections with single or multiple expansion.","icon":"$undefined","url":"/docs/components/accordion","$ref":"components/accordion.mdx"},{"$id":"components/alert.mdx","type":"page","name":"Alert","description":"In-page alerts are non-intrusive notifications within a webpage, providing users with timely information or feedback without disrupting their experience.","icon":"$undefined","url":"/docs/components/alert","$ref":"components/alert.mdx"},{"$id":"components/avatar.mdx","type":"page","name":"Avatar","description":"A visual representation of a user or entity, shown as a photo or a monogram of their initials.","icon":"$undefined","url":"/docs/components/avatar","$ref":"components/avatar.mdx"},{"$id":"components/button.mdx","type":"page","name":"Button","description":"The Button component allows users to initiate actions or submit forms with a single click","icon":"$undefined","url":"/docs/components/button","$ref":"components/button.mdx"},{"$id":"components/calendar.mdx","type":"page","name":"Calendar","description":"Accessible calendar grids for selecting a single date (Calendar) or a date range (RangeCalendar), built on React Aria.","icon":"$undefined","url":"/docs/components/calendar","$ref":"components/calendar.mdx"},{"$id":"components/carousel.mdx","type":"page","name":"Carousel","description":"The Carousel component allows users to cycle through a series of content panels (typically images, cards, or text) in a horizontal or vertical layout. It is commonly used for featured content, product showcases, or testimonials.","icon":"$undefined","url":"/docs/components/carousel","$ref":"components/carousel.mdx"},{"$id":"components/checkbox.mdx","type":"page","name":"Checkbox","description":"Accessible checkbox component for multi-select options with support for indeterminate states, validation, keyboard navigation, and flexible group layouts.","icon":"$undefined","url":"/docs/components/checkbox","$ref":"components/checkbox.mdx"},{"$id":"components/chip.mdx","type":"page","name":"Chip","description":"Grouped pill-shaped items for selecting values and removing user-added filters or tokens.","icon":"$undefined","url":"/docs/components/chip","$ref":"components/chip.mdx"},{"$id":"components/circular-progress.mdx","type":"page","name":"CircularProgress","description":"A circular progress indicator shows determinate or indeterminate progress of an operation over time","icon":"$undefined","url":"/docs/components/circular-progress","$ref":"components/circular-progress.mdx"},{"$id":"components/collapsible.mdx","type":"page","name":"Collapsible","description":"Collapsible reveals or hides a section of content beneath a heading.","icon":"$undefined","url":"/docs/components/collapsible","$ref":"components/collapsible.mdx"},{"$id":"components/date-picker.mdx","type":"page","name":"DatePicker","description":"Date fields that display the selected value as a label and open a calendar popover to pick a single date (DatePicker) or a range (DateRangePicker).","icon":"$undefined","url":"/docs/components/date-picker","$ref":"components/date-picker.mdx"},{"$id":"components/drawer.mdx","type":"page","name":"Drawer","description":"An overlay panel that slides in from a screen edge, supporting sidebar navigation and bottom sheets.","icon":"$undefined","url":"/docs/components/drawer","$ref":"components/drawer.mdx"},{"$id":"components/drop-zone.mdx","type":"page","name":"DropZone","description":"A standalone region that accepts drag-and-drop file interactions, rendering a clearly defined target area where users can drop files.","icon":"$undefined","url":"/docs/components/drop-zone","$ref":"components/drop-zone.mdx"},{"$id":"components/field-error.mdx","type":"page","name":"FieldError","description":"Validation message for a field. Renders only when the field is invalid.","icon":"$undefined","url":"/docs/components/field-error","$ref":"components/field-error.mdx"},{"$id":"components/file-trigger.mdx","type":"page","name":"FileTrigger","description":"A style-less primitive that wraps any pressable component and opens the native file picker when it is activated.","icon":"$undefined","url":"/docs/components/file-trigger","$ref":"components/file-trigger.mdx"},{"$id":"components/heading.mdx","type":"page","name":"Heading","description":"Semantic h1-h6 heading. Use slot=\"title\" inside a Modal or Dialog to name the overlay.","icon":"$undefined","url":"/docs/components/heading","$ref":"components/heading.mdx"},{"$id":"components/icon.mdx","type":"page","name":"Icon","description":"Flexible SVG icon component with on-demand loading, automatic caching, and extensive customization options","icon":"$undefined","url":"/docs/components/icon","$ref":"components/icon.mdx"},{"$id":"components/image.mdx","type":"page","name":"Image","description":"A native image element that inherits presentation and behavior from its Antares parent.","icon":"$undefined","url":"/docs/components/image","$ref":"components/image.mdx"},{"$id":"components/inline-drawer.mdx","type":"page","name":"InlineDrawer","description":"An in-flow collapsible built on RAC Disclosure. Compose a trigger and content to make an accordion or a sidebar rail.","icon":"$undefined","url":"/docs/components/inline-drawer","$ref":"components/inline-drawer.mdx"},{"$id":"components/input.mdx","type":"page","name":"Input","description":"Single-line text control for use inside a field.","icon":"$undefined","url":"/docs/components/input","$ref":"components/input.mdx"},{"$id":"components/label.mdx","type":"page","name":"Label","description":"Names a form field. The required asterisk appears when the field is required.","icon":"$undefined","url":"/docs/components/label","$ref":"components/label.mdx"},{"$id":"components/listbox.mdx","type":"page","name":"ListBox","description":"ListBox is a selectable collection of items rendered inline. Use it for non-popover pickers, inline lists, or as a building block for higher-level components like Select.","icon":"$undefined","url":"/docs/components/listbox","$ref":"components/listbox.mdx"},{"$id":"components/menu.mdx","type":"page","name":"Menu","description":"Accessible dropdown menu with grouping, multi-select checkbox items, leading icons, and submenus.","icon":"$undefined","url":"/docs/components/menu","$ref":"components/menu.mdx"},{"$id":"components/metrics-lockup.mdx","type":"page","name":"MetricsLockup","description":"The MetricsLockup component displays a single metric with an optional title, info tooltip, trend indicator, and description.","icon":"$undefined","url":"/docs/components/metrics-lockup","$ref":"components/metrics-lockup.mdx"},{"$id":"components/modal.mdx","type":"page","name":"Modal","description":"The Modal component presents a dialog window over the page that focuses the user's attention on a single task or piece of information.","icon":"$undefined","url":"/docs/components/modal","$ref":"components/modal.mdx"},{"$id":"components/number-field.mdx","type":"page","name":"NumberField","description":"NumberField is a composed numeric input with min/max/step and optional increment/decrement stepper buttons. Use it in forms for quantities, amounts, or percentages.","icon":"$undefined","url":"/docs/components/number-field","$ref":"components/number-field.mdx"},{"$id":"components/pagination.mdx","type":"page","name":"Pagination","description":"A composed pagination primitive for controlled or uncontrolled page navigation.","icon":"$undefined","url":"/docs/components/pagination","$ref":"components/pagination.mdx"},{"$id":"components/popover.mdx","type":"page","name":"Popover","description":"The Popover component is an overlay element positioned relative to a trigger element.","icon":"$undefined","url":"/docs/components/popover","$ref":"components/popover.mdx"},{"$id":"components/pressable.mdx","type":"page","name":"Pressable","description":"A wrapperless interaction primitive that adds accessible press behavior to a single child element.","icon":"$undefined","url":"/docs/components/pressable","$ref":"components/pressable.mdx"},{"$id":"components/progress-bar.mdx","type":"page","name":"ProgressBar","description":"A progress bar shows determinate or indeterminate progress of an operation over time","icon":"$undefined","url":"/docs/components/progress-bar","$ref":"components/progress-bar.mdx"},{"$id":"components/progress-steps.mdx","type":"page","name":"ProgressSteps","description":"A multi-step progress indicator for wizard and onboarding flows.","icon":"$undefined","url":"/docs/components/progress-steps","$ref":"components/progress-steps.mdx"},{"$id":"components/radio.mdx","type":"page","name":"Radio","description":"Accessible radio button component for mutually exclusive selections with keyboard navigation, validation states, and flexible layouts.","icon":"$undefined","url":"/docs/components/radio","$ref":"components/radio.mdx"},{"$id":"components/range-field.mdx","type":"page","name":"RangeField","description":"RangeField lets users select one numeric value or a related set of values on a bounded scale.","icon":"$undefined","url":"/docs/components/range-field","$ref":"components/range-field.mdx"},{"$id":"components/segmented-controller.mdx","type":"page","name":"SegmentedController","description":"A segmented controller is a linear set of two or more segments, each of which functions as a button. A segmented controller allows users to select options, switch views, or sort elements.","icon":"$undefined","url":"/docs/components/segmented-controller","$ref":"components/segmented-controller.mdx"},{"$id":"components/select.mdx","type":"page","name":"Select","description":"Select is a dropdown for picking one or more values from a list of options. It renders a labeled trigger and a popover listbox, supports single and multiple selection, and submits naturally inside a form.","icon":"$undefined","url":"/docs/components/select","$ref":"components/select.mdx"},{"$id":"components/size-provider.mdx","type":"page","name":"SizeProvider","description":"Sizes a section, so the text, controls, and default spacing inside it follow one size.","icon":"$undefined","url":"/docs/components/size-provider","$ref":"components/size-provider.mdx"},{"$id":"components/structure.mdx","type":"page","name":"Structure primitives","description":"Generic structural containers for composing a component's interior.","icon":"$undefined","url":"/docs/components/structure","$ref":"components/structure.mdx"},{"$id":"components/switch.mdx","type":"page","name":"Switch","description":"A binary toggle control that switches a setting between on and off states, communicated via the WAI-ARIA switch role.","icon":"$undefined","url":"/docs/components/switch","$ref":"components/switch.mdx"},{"$id":"components/tabs.mdx","type":"page","name":"Tabs","description":"Tabs organize peer sections of content and let users switch between them without leaving the page.","icon":"$undefined","url":"/docs/components/tabs","$ref":"components/tabs.mdx"},{"$id":"components/tag.mdx","type":"page","name":"Tag","description":"Non-interactive labels that highlight statuses and categories.","icon":"$undefined","url":"/docs/components/tag","$ref":"components/tag.mdx"},{"$id":"components/text-area.mdx","type":"page","name":"TextArea","description":"Multiline text control for use inside a field.","icon":"$undefined","url":"/docs/components/text-area","$ref":"components/text-area.mdx"},{"$id":"components/text-field.mdx","type":"page","name":"TextField","description":"TextField is a composed single-line or multiline text input. Use it in forms for short answers (email, search, name) or longer content (comments).","icon":"$undefined","url":"/docs/components/text-field","$ref":"components/text-field.mdx"},{"$id":"components/text-lockup.mdx","type":"page","name":"TextLockup","description":"TextLockup stacks an eyebrow, title, and body text as one coordinated type group across six sizes.","icon":"$undefined","url":"/docs/components/text-lockup","$ref":"components/text-lockup.mdx"},{"$id":"components/text.mdx","type":"page","name":"Text","description":"Body copy and supporting detail, with size, emphasis, alignment, and truncation options","icon":"$undefined","url":"/docs/components/text","$ref":"components/text.mdx"},{"$id":"components/toggle-button.mdx","type":"page","name":"ToggleButton","description":"Accessible toggle button component for grouped contextual actions with single or multiple selection, keyboard navigation, and RTL-aware layouts.","icon":"$undefined","url":"/docs/components/toggle-button","$ref":"components/toggle-button.mdx"},{"$id":"components/tooltip.mdx","type":"page","name":"Tooltip","description":"The Tooltip component displays a description of an element on hover or focus.","icon":"$undefined","url":"/docs/components/tooltip","$ref":"components/tooltip.mdx"},{"type":"folder","name":"Chart","root":"$undefined","defaultOpen":"$undefined","description":"$undefined","collapsible":"$undefined","children":[{"$id":"components/chart/bar-chart.mdx","type":"page","name":"Bar Chart","description":"A flexible, accessible, and design-aligned data visualization solution for displaying single or multi-series bar charts.","icon":"$undefined","url":"/docs/components/chart/bar-chart","$ref":"components/chart/bar-chart.mdx"},{"$id":"components/chart/donut-chart.mdx","type":"page","name":"DonutChart","description":"Donut charts are for parts-to-whole comparison—how partial elements add up to a total—shown as a ring so a few categories are easy to compare at a glance.","icon":"$undefined","url":"/docs/components/chart/donut-chart","$ref":"components/chart/donut-chart.mdx"},{"$id":"components/chart/gauge-chart.mdx","type":"page","name":"Gauge Chart","description":"A visual indicator for representing a single quantitative value within a known range, rendered as a semicircle arc in continuous or segmented mode.","icon":"$undefined","url":"/docs/components/chart/gauge-chart","$ref":"components/chart/gauge-chart.mdx"},{"$id":"components/chart/line-chart.mdx","type":"page","name":"LineChart","description":"Line Chart shows how something changes over time or along a continuous scale. It connects data points with lines so people can quickly spot trends, peaks, dips, and patterns.","icon":"$undefined","url":"/docs/components/chart/line-chart","$ref":"components/chart/line-chart.mdx"}],"$id":"components/chart","$ref":{"folder":"components/chart","meta":"$undefined"},"icon":"$undefined"},{"type":"folder","name":"Layout","root":"$undefined","defaultOpen":"$undefined","description":"$undefined","collapsible":"$undefined","children":[{"$id":"components/layout/box.mdx","type":"page","name":"Box","description":"Polymorphic layout component providing consistent spacing, elevation, rounding, and self-alignment","icon":"$undefined","url":"/docs/components/layout/box","$ref":"components/layout/box.mdx"},{"$id":"components/layout/flex.mdx","type":"page","name":"Flex","description":"One-dimensional layout component for arranging children in rows or columns with alignment and spacing control","icon":"$undefined","url":"/docs/components/layout/flex","$ref":"components/layout/flex.mdx"},{"$id":"components/layout/grid.mdx","type":"page","name":"Grid","description":"Two-dimensional CSS Grid layout component for complex grid-based layouts with rows and columns","icon":"$undefined","url":"/docs/components/layout/grid","$ref":"components/layout/grid.mdx"}],"$id":"components/layout","$ref":{"folder":"components/layout","meta":"components/layout/meta.json"},"icon":"$undefined"}],"$id":"components","$ref":{"folder":"components","meta":"components/meta.json"},"icon":"$undefined"},{"type":"folder","name":"Blocks","root":"$undefined","defaultOpen":true,"description":"$undefined","collapsible":"$undefined","children":[{"$id":"blocks/sign-in-form.mdx","type":"page","name":"Sign-in form","description":"A simple Antares sign-in experience.","icon":"$undefined","url":"/docs/blocks/sign-in-form","$ref":"blocks/sign-in-form.mdx"}],"$id":"blocks","$ref":{"folder":"blocks","meta":"blocks/meta.json"},"index":{"$id":"blocks/index.mdx","type":"page","name":"Build product experiences with Antares.","description":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product.","icon":"$undefined","url":"/docs/blocks","$ref":"blocks/index.mdx"},"icon":"$undefined"}],"fallback":{"type":"root","$ref":{"folder":"","meta":"$undefined"},"$id":"fallback:root","name":"Docs","description":"$undefined","children":[{"type":"folder","name":"Blocks","root":"$undefined","defaultOpen":"$undefined","description":"$undefined","collapsible":"$undefined","children":[],"$id":"fallback:blocks","$ref":{"folder":"blocks","meta":"$undefined"},"icon":"$undefined"}]}},"tabs":[],"tabMode":"$undefined","sidebar":{},"nav":{"title":"Antares"},"links":[{"text":"Documentation","url":"/docs","on":"nav"}],"githubUrl":"https://github.com/godaddy/antares","children":"$L1b"}]]}]
+c:["$","$1","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L7",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}]
+f:["$","$1","c",{"children":["$L1c",[["$","script","script-0",{"src":"/antares/pr-379-site/_next/static/chunks/428imhwwk-ha_.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/antares/pr-379-site/_next/static/chunks/3nd4_wmz1ljg4.js","async":true,"nonce":"$undefined"}]],["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]]}]
+10:["$","$1","h",{"children":[null,["$","$L21",null,{"children":"$L22"}],["$","$L24",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$1e",null,{"name":"Next.Metadata","children":"$L25"}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}]
+12:["$","link","0",{"rel":"stylesheet","href":"/antares/pr-379-site/_next/static/chunks/04ezi745s8yv5.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]
+d:C
+1b:["$","$L6",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L7",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]
+26:"/antares/pr-379-site/_next/static/chunks/428imhwwk-ha_.js"
+27:"/antares/pr-379-site/_next/static/chunks/3nd4_wmz1ljg4.js"
+28:I[298330,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"DocsPage"]
+29:I[298330,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"DocsTitle"]
+2a:I[298330,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"DocsDescription"]
+2b:I[748747,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"LLMCopyButton"]
+2c:I[748747,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"ViewOptions"]
+2d:I[298330,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"DocsBody"]
+2e:I[494157,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"Heading"]
+2f:I[144324,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"CodeBlock"]
+30:I[144324,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"Pre"]
+1c:["$","$L28",null,{"toc":[{"depth":2,"url":"#installation","title":"Installation"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#default","title":"Default"},{"depth":3,"url":"#primary","title":"Primary"},{"depth":3,"url":"#secondary","title":"Secondary"},{"depth":3,"url":"#tertiary","title":"Tertiary"},{"depth":3,"url":"#critical","title":"Critical"},{"depth":3,"url":"#disabled","title":"Disabled"},{"depth":3,"url":"#icon","title":"Icon"},{"depth":3,"url":"#icons-and-alignment","title":"Icons And Alignment"},{"depth":3,"url":"#inline","title":"Inline"},{"depth":3,"url":"#minimal","title":"Minimal"},{"depth":3,"url":"#sizes","title":"Sizes"},{"depth":2,"url":"#props","title":"Props"},{"depth":3,"url":"#button","title":"Button"},{"depth":3,"url":"#linkbutton","title":"LinkButton"},{"depth":3,"url":"#closebutton","title":"CloseButton"}],"full":"$undefined","footer":{"enabled":true},"children":[["$","$L29",null,{"children":"Button"}],["$","$L2a",null,{"className":"mb-0","children":"The Button component allows users to initiate actions or submit forms with a single click"}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L2b",null,{"markdownUrl":"/docs/components/button.mdx"}],["$","$L2c",null,{"markdownUrl":"/docs/components/button.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/button/README.mdx"}]]}],["$","$L2d",null,{"children":[null,"\n",["$","p",null,{"children":["Use the ",["$","code",null,{"children":"LinkButton"}]," component instead when you need navigation functionality with a button-like appearance."]}],"\n",["$","p",null,{"children":["Use ",["$","code",null,{"children":"target=\"_blank\""}]," to open a link in a new tab without an icon. ",["$","code",null,{"children":"isExternal"}]," adds an icon and defaults\nto ",["$","code",null,{"children":"target=\"_blank\""}]," and ",["$","code",null,{"children":"rel=\"noopener noreferrer\""}],"; explicit ",["$","code",null,{"children":"target"}]," and ",["$","code",null,{"children":"rel"}]," override those defaults.\nYou can also compose an ",["$","code",null,{"children":"Icon"}]," as a child independently of navigation behavior."]}],"\n",["$","p",null,{"children":["Use the ",["$","code",null,{"children":"CloseButton"}]," preset to dismiss an overlay (such as a ",["$","code",null,{"children":"Modal"}],"). It defaults to ",["$","code",null,{"children":"slot=\"close\""}],", so it picks up the overlay's close behavior with no wiring, and always renders an ",["$","code",null,{"children":"x"}]," icon with ",["$","code",null,{"children":"aria-label=\"Close\""}],". For a labelled dismiss action (e.g. \"Cancel\"), use a raw ",["$","code",null,{"children":"<Button slot=\"close\">Cancel</Button>"}],"."]}],"\n",["$","p",null,{"children":["Inside a field ",["$","code",null,{"children":"Group"}],", ",["$","code",null,{"children":"slot=\"control\""}]," and ",["$","code",null,{"children":"slot=\"trigger\""}]," pick up the matching look, size, and\ndisabled state from context. See TextField for control affixes, and Select or DatePicker for trigger faces.\nThe ",["$","code",null,{"children":"control"}]," and ",["$","code",null,{"children":"trigger"}]," variants are field parts: the field sizes them, so use them only inside a field."]}],"\n",["$","$L2e",null,{"as":"h2","id":"installation","children":"Installation"}],"\n",["$","$L2f",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$L30",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npm"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" install"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" --save"}],"$L31"]}]}]}]}],"\n","$L32","\n","$L33","\n","$L34","\n","$L35","\n","$L36","\n","$L37","\n","$L38","\n","$L39","\n","$L3a","\n","$L3b","\n","$L3c","\n","$L3d","\n","$L3e","\n","$L3f","\n","$L40","\n","$L41","\n","$L42","\n","$L43","\n","$L44","\n","$L45","\n","$L46","\n","$L47","\n","$L48","\n","$L49","\n","$L4a","\n","$L4b","\n","$L4c","\n","$L4d","\n","$L4e","\n","$L4f","\n","$L50","\n","$L51","\n","$L52","\n","$L53","\n","$L54","\n","$L55","\n","$L56","\n","$L57","\n","$L58","\n","$L59","\n","$L5a","\n","$L5b","\n","$L5c","\n","$L5d","\n","$L5e","\n","$L5f","\n","$L60","\n","$L61","\n","$L62","\n","$L63","\n","$L64","\n","$L65"]}]]}]
+66:I[403113,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"StoryRenderer"]
+67:I[902481,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"DefaultExample"]
+68:"DynamicCodeBlock"
+69:I[904143,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"$68"]
+6a:I[777623,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"PrimaryExample"]
+6b:"SecondaryExample"
+6c:I[557701,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"$6b"]
+6d:I[791097,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"TertiaryExample"]
+6e:I[163922,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"CriticalExample"]
+6f:I[613835,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"DisabledExample"]
+70:I[141723,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"IconExample"]
+71:"IconsAndAlignmentExample"
+72:I[28544,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"$71"]
+73:I[257004,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"InlineExample"]
+74:I[495853,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"MinimalExample"]
+76:I[75011,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"SizesExample"]
+78:I[403299,["$3","$4","$13","$14","$15","$16","$17","$18","$19","$26","$27"],"PropTableClient"]
+31:["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" @godaddy/antares"}]
+32:["$","$L2e",null,{"as":"h2","id":"examples","children":"Examples"}]
+33:["$","$L2e",null,{"as":"h3","id":"default","children":"Default"}]
+34:["$","p",null,{"children":"The default/tertiary button is the base for all other buttons in the system. It provides no significant visual treatment other than to provide indication for the user to take a common action."}]
+35:["$","$L66",null,{"component":"$67"}]
+36:["$","$L69",null,{"lang":"tsx","code":"import { Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Button>Click me!</Button>;\n}"}]
+37:["$","$L2e",null,{"as":"h3","id":"primary","children":"Primary"}]
+38:["$","p",null,{"children":"The primary button should be used to indicate the most important action for the user to take in their current experience."}]
+39:["$","$L66",null,{"component":"$6a"}]
+3a:["$","$L69",null,{"lang":"tsx","code":"import { Button, type ButtonProps } from '@godaddy/antares';\n\nexport function PrimaryExample(props: ButtonProps) {\n  return (\n    <Button {...props} variant=\"primary\">\n      Primary Button\n    </Button>\n  );\n}"}]
+3b:["$","$L2e",null,{"as":"h3","id":"secondary","children":"Secondary"}]
+3c:["$","p",null,{"children":"The secondary button indicates an action of secondary importance."}]
+3d:["$","$L66",null,{"component":"$6c"}]
+3e:["$","$L69",null,{"lang":"tsx","code":"import { Button } from '@godaddy/antares';\n\nexport function SecondaryExample() {\n  return <Button variant=\"secondary\">Secondary Button</Button>;\n}"}]
+3f:["$","$L2e",null,{"as":"h3","id":"tertiary","children":"Tertiary"}]
+40:["$","p",null,{"children":"The tertiary button is the default, low-emphasis style used for common, non-critical actions."}]
+41:["$","$L66",null,{"component":"$6d"}]
+42:["$","$L69",null,{"lang":"tsx","code":"import { Button } from '@godaddy/antares';\n\nexport function TertiaryExample() {\n  return <Button variant=\"tertiary\">Tertiary Button</Button>;\n}"}]
+43:["$","$L2e",null,{"as":"h3","id":"critical","children":"Critical"}]
+44:["$","p",null,{"children":"The critical button signifies to the user a destructive action will take place."}]
+45:["$","$L66",null,{"component":"$6e"}]
+46:["$","$L69",null,{"lang":"tsx","code":"import { Button } from '@godaddy/antares';\n\nexport function CriticalExample() {\n  return <Button variant=\"critical\">Critical Button</Button>;\n}"}]
+47:["$","$L2e",null,{"as":"h3","id":"disabled","children":"Disabled"}]
+48:["$","p",null,{"children":"Any button variant can be disabled to prevent interaction, communicated with reduced opacity and a not-allowed cursor."}]
+49:["$","$L66",null,{"component":"$6f"}]
+4a:["$","$L69",null,{"lang":"tsx","code":"import { Button, Flex, LinkButton } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex alignItems=\"center\" gap=\"md\" wrap=\"wrap\">\n      <Button variant=\"primary\" isDisabled>\n        Primary Disabled\n      </Button>\n      <Button variant=\"secondary\" isDisabled>\n        Secondary Disabled\n      </Button>\n      <Button variant=\"tertiary\" isDisabled>\n        Tertiary Disabled\n      </Button>\n      <Button variant=\"critical\" isDisabled>\n        Critical Disabled\n      </Button>\n      <Button variant=\"inline\" isDisabled>\n        Inline Disabled\n      </Button>\n      <LinkButton variant=\"secondary\" href=\"#\" isDisabled>\n        Link Disabled\n      </LinkButton>\n    </Flex>\n  );\n}"}]
+4b:["$","$L2e",null,{"as":"h3","id":"icon","children":"Icon"}]
+4c:["$","p",null,{"children":["You may provide an optional ",["$","code",null,{"children":"Icon"}]," component to the button. Wrap the text beside an icon in a ",["$","code",null,{"children":"Text"}],". If you do not include text, you must provide an aria-label attribute to identify the purpose of the button. This will produce a square button."]}]
+4d:["$","$L66",null,{"component":"$70"}]
+4e:["$","$L69",null,{"lang":"tsx","code":"import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function IconExample() {\n  return (\n    <Flex direction=\"column\" gap=\"md\">\n      <div>\n        <Button variant=\"primary\">\n          <Icon icon=\"star\" />\n          <Text>With an icon!</Text>\n        </Button>\n      </div>\n\n      <div>\n        <LinkButton variant=\"secondary\" href=\"#\" isExternal>\n          An external link!\n        </LinkButton>\n      </div>\n\n      <Flex alignItems=\"center\" gap=\"sm\">\n        <Text>Icon only button:</Text>\n        <Button variant=\"primary\" aria-label=\"Star\">\n          <Icon icon=\"star\" />\n        </Button>\n      </Flex>\n\n      <div>\n        <Text>\n          Hey look at me!{' '}\n          <LinkButton href=\"#\" variant=\"inline\" isExternal>\n            link button\n          </LinkButton>{' '}\n          I have an icon!\n        </Text>\n      </div>\n    </Flex>\n  );\n}"}]
+4f:["$","$L2e",null,{"as":"h3","id":"icons-and-alignment","children":"Icons And Alignment"}]
+50:["$","p",null,{"children":["Control navigation with ",["$","code",null,{"children":"target"}]," and ",["$","code",null,{"children":"rel"}],", and compose icons independently. Stretched inline content follows the browser's default alignment; other variants stay centered."]}]
+51:["$","$L66",null,{"component":"$72"}]
+52:["$","$L69",null,{"lang":"tsx","code":"import { Button, Flex, type FlexProps, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function IconsAndAlignmentExample({ dir }: Pick<FlexProps, 'dir'> = {}) {\n  return (\n    <Flex direction=\"column\" gap=\"md\" dir={dir} style={{ width: '20rem' }}>\n      <Button variant=\"inline\">\n        <Text>Inline action</Text>\n      </Button>\n      <LinkButton href=\"#report\" variant=\"inline\" target=\"_blank\" rel=\"noopener noreferrer\">\n        <Text>View report</Text>\n      </LinkButton>\n      <LinkButton href=\"#help\" variant=\"inline\" isExternal target=\"_self\" rel=\"external\">\n        Read help\n      </LinkButton>\n      <LinkButton href=\"#documentation\" variant=\"inline\">\n        <Text>Read documentation</Text>\n        <Icon icon=\"window-new\" />\n      </LinkButton>\n      <Button variant=\"primary\">\n        <Text>Centered action</Text>\n      </Button>\n      <LinkButton href=\"#\" variant=\"primary\">\n        <Text>Centered link</Text>\n      </LinkButton>\n    </Flex>\n  );\n}"}]
+53:["$","$L2e",null,{"as":"h3","id":"inline","children":"Inline"}]
+54:["$","p",null,{"children":"The inline button sits within a run of text, styled like a link while retaining button semantics."}]
+55:["$","$L66",null,{"component":"$73"}]
+56:["$","$L69",null,{"lang":"tsx","code":"import { Button, Text } from '@godaddy/antares';\n\nexport function InlineExample() {\n  return (\n    <Text>\n      I am an <Button variant=\"inline\">inline button</Button> surrounded by text!\n    </Text>\n  );\n}"}]
+57:["$","$L2e",null,{"as":"h3","id":"minimal","children":"Minimal"}]
+58:["$","p",null,{"children":"The minimal button is an icon-only button that's used when space is limited and/or when the action is universally understood."}]
+59:["$","$L66",null,{"component":"$74"}]
+75:T134a,import { Button, Flex, Icon } from '@godaddy/antares';
+
+export function MinimalExample() {
+  return (
+    <table className="button-story-table">
+      <thead>
+        <tr>
+          <th scope="col">
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              Button Size
+            </Flex>
+          </th>
+          <th scope="col">
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              Gap Size
+            </Flex>
+          </th>
+          <th scope="col">
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              Example
+            </Flex>
+          </th>
+          <th scope="col">
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              Usage
+            </Flex>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              <code>md</code>
+            </Flex>
+          </td>
+          <td>
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              <code>md</code>
+            </Flex>
+          </td>
+          <td>
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              <Button variant="minimal" size="md" aria-label="Star">
+                <Icon icon="star" />
+              </Button>
+              <Button variant="minimal" size="md" aria-label="Edit">
+                <Icon icon="edit" />
+              </Button>
+              <Button variant="minimal" size="md" aria-label="More options" isDisabled>
+                <Icon icon="ellipsis" />
+              </Button>
+            </Flex>
+          </td>
+          <td>
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              Recommended
+            </Flex>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              <code>md</code>
+            </Flex>
+          </td>
+          <td>
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              <code>sm</code>
+            </Flex>
+          </td>
+          <td>
+            <Flex blockPadding="md" inlinePadding="md" gap="sm">
+              <Button variant="minimal" size="md" aria-label="Star">
+                <Icon icon="star" />
+              </Button>
+              <Button variant="minimal" size="md" aria-label="Edit">
+                <Icon icon="edit" />
+              </Button>
+              <Button variant="minimal" size="md" aria-label="More options" isDisabled>
+                <Icon icon="ellipsis" />
+              </Button>
+            </Flex>
+          </td>
+          <td>
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              Can be used, but not recommended.
+            </Flex>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              <code>sm</code>
+            </Flex>
+          </td>
+          <td>
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              <code>md</code>
+            </Flex>
+          </td>
+          <td>
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              <Button variant="minimal" size="sm" aria-label="Star">
+                <Icon icon="star" />
+              </Button>
+              <Button variant="minimal" size="sm" aria-label="Edit">
+                <Icon icon="edit" />
+              </Button>
+              <Button variant="minimal" size="sm" aria-label="More options" isDisabled>
+                <Icon icon="ellipsis" />
+              </Button>
+            </Flex>
+          </td>
+          <td>
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              Not recommended. The button may not be accessible at this size.
+            </Flex>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              <code>sm</code>
+            </Flex>
+          </td>
+          <td>
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              <code>sm</code>
+            </Flex>
+          </td>
+          <td>
+            <Flex blockPadding="md" inlinePadding="md" gap="sm">
+              <Button variant="minimal" size="sm" aria-label="Star">
+                <Icon icon="star" />
+              </Button>
+              <Button variant="minimal" size="sm" aria-label="Edit">
+                <Icon icon="edit" />
+              </Button>
+              <Button variant="minimal" size="sm" aria-label="More options" isDisabled>
+                <Icon icon="ellipsis" />
+              </Button>
+            </Flex>
+          </td>
+          <td>
+            <Flex blockPadding="md" inlinePadding="md" gap="md">
+              Not recommended. The button may not be accessible at this size.
+            </Flex>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  );
+}5a:["$","$L69",null,{"lang":"tsx","code":"$75"}]
+5b:["$","$L2e",null,{"as":"h3","id":"sizes","children":"Sizes"}]
+5c:["$","p",null,{"children":["Buttons come in small, medium, and large sizes to fit different layout densities. Without\n",["$","code",null,{"children":"size"}],", a button follows the surrounding size scope, and uses medium outside any scope. An\nicon-only button is square and as tall as a text button of the same size."]}]
+5d:["$","$L66",null,{"component":"$76"}]
+77:T59f,import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';
+
+export function SizesExample() {
+  return (
+    <Flex alignItems="center" gap="sm" wrap="wrap">
+      <Button variant="primary" size="sm" aria-label="Star">
+        <Icon icon="star" />
+      </Button>
+
+      <Button variant="primary" size="sm">
+        Small
+      </Button>
+
+      <Button variant="primary" size="sm">
+        <Icon icon="star" />
+        <Text>Small</Text>
+      </Button>
+
+      <LinkButton href="#" variant="primary" size="sm">
+        <Icon icon="star" />
+        <Text>Link Small</Text>
+      </LinkButton>
+
+      <Button variant="primary" aria-label="Star">
+        <Icon icon="star" />
+      </Button>
+
+      <Button variant="primary">Medium</Button>
+
+      <Button variant="primary">
+        <Icon icon="star" />
+        <Text>Medium</Text>
+      </Button>
+
+      <LinkButton href="#" variant="primary">
+        <Icon icon="star" />
+        <Text>Link Medium</Text>
+      </LinkButton>
+
+      <Button variant="primary" size="lg" aria-label="Star">
+        <Icon icon="star" />
+      </Button>
+
+      <Button variant="primary" size="lg">
+        Large
+      </Button>
+
+      <Button variant="primary" size="lg">
+        <Icon icon="star" />
+        <Text>Large</Text>
+      </Button>
+
+      <LinkButton href="#" variant="primary" size="lg">
+        <Icon icon="star" />
+        <Text>Link Large</Text>
+      </LinkButton>
+    </Flex>
+  );
+}5e:["$","$L69",null,{"lang":"tsx","code":"$77"}]
+5f:["$","$L2e",null,{"as":"h2","id":"props","children":"Props"}]
+60:["$","$L2e",null,{"as":"h3","id":"button","children":"Button"}]
+61:["$","$L78",null,{"entries":[{"name":"onPress","type":"(e: PressEvent) => void","default":"$undefined","description":"$L79","required":false,"deprecated":"$undefined"},{"name":"onPressStart","type":"(e: PressEvent) => void","default":"$undefined","description":"$L7a","required":false,"deprecated":"$undefined"},{"name":"onPressEnd","type":"(e: PressEvent) => void","default":"$undefined","description":"$L7b","required":false,"deprecated":"$undefined"},{"name":"onPressChange","type":"(isPressed: boolean) => void","default":"$undefined","description":"$L7c","required":false,"deprecated":"$undefined"},{"name":"onPressUp","type":"(e: PressEvent) => void","default":"$undefined","description":"$L7d","required":false,"deprecated":"$undefined"},{"name":"onHoverStart","type":"(e: HoverEvent) => void","default":"$undefined","description":"$L7e","required":false,"deprecated":"$undefined"},{"name":"onHoverEnd","type":"(e: HoverEvent) => void","default":"$undefined","description":"$L7f","required":false,"deprecated":"$undefined"},{"name":"onHoverChange","type":"(isHovering: boolean) => void","default":"$undefined","description":"$L80","required":false,"deprecated":"$undefined"},{"name":"onClick","type":"(e: MouseEvent<FocusableElement>) => void","default":"$undefined","description":"$L81","required":false,"deprecated":"$undefined"},{"name":"onFocus","type":"(e: FocusEvent<Target>) => void","default":"$undefined","description":"$L82","required":false,"deprecated":"$undefined"},{"name":"onBlur","type":"(e: FocusEvent<Target>) => void","default":"$undefined","description":"$L83","required":false,"deprecated":"$undefined"},{"name":"onFocusChange","type":"(isFocused: boolean) => void","default":"$undefined","description":"$L84","required":false,"deprecated":"$undefined"},{"name":"onKeyDown","type":"(e: KeyboardEvent) => void","default":"$undefined","description":"$L85","required":false,"deprecated":"$undefined"},{"name":"onKeyUp","type":"(e: KeyboardEvent) => void","default":"$undefined","description":"$L86","required":false,"deprecated":"$undefined"},{"name":"onDoubleClick","type":"MouseEventHandler<T> | undefined","default":"$undefined","description":"$undefined","required":false,"deprecated":"$undefined"},{"name":"aria-disabled","type":"boolean | 'true' | 'false'","default":"$undefined","description":"$L87","required":false,"deprecated":"$undefined"},{"name":"aria-expanded","type":"boolean | 'true' | 'false'","default":"$undefined","description":"$L88","required":false,"deprecated":"$undefined"},{"name":"aria-haspopup","type":"boolean | 'menu' | 'listbox' | 'tree' | 'grid' | 'dialog' | 'true' | 'false'","default":"$undefined","description":"$L89","required":false,"deprecated":"$undefined"},{"name":"aria-controls","type":"string","default":"$undefined","description":"$L8a","required":false,"deprecated":"$undefined"},{"name":"aria-pressed","type":"boolean | 'true' | 'false' | 'mixed'","default":"$undefined","description":"$L8b","required":false,"deprecated":"$undefined"},{"name":"aria-current","type":"boolean | 'true' | 'false' | 'page' | 'step' | 'location' | 'date' | 'time'","default":"$undefined","description":"$L8c","required":false,"deprecated":"$undefined"},{"name":"aria-label","type":"string","default":"$undefined","description":"$L8d","required":false,"deprecated":"$undefined"},{"name":"aria-labelledby","type":"string","default":"$undefined","description":"$L8e","required":false,"deprecated":"$undefined"},{"name":"aria-describedby","type":"string","default":"$undefined","description":"$L8f","required":false,"deprecated":"$undefined"},{"name":"aria-details","type":"string","default":"$undefined","description":"$L90","required":false,"deprecated":"$undefined"},{"name":"variant","type":"V","default":"$undefined","description":"$L91","required":false,"deprecated":"$undefined"},{"name":"size","type":"ButtonVariantProps['size']","default":"$undefined","description":"$L92","required":false,"deprecated":"$undefined"},{"name":"children","type":"React.ReactNode","default":"$undefined","description":"$L93","required":false,"deprecated":"$undefined"},{"name":"className","type":"ClassNameOrFunction<ButtonRenderProps>","default":"'react-aria-Button'","description":"$L94","required":false,"deprecated":"$undefined"},{"name":"isDisabled","type":"boolean","default":"$undefined","description":"$L95","required":false,"deprecated":"$undefined"},{"name":"autoFocus","type":"boolean","default":"$undefined","description":"$L96","required":false,"deprecated":"$undefined"},{"name":"type","type":"'button' | 'submit' | 'reset'","default":"'button'","description":"$L97","required":false,"deprecated":"$undefined"},{"name":"preventFocusOnPress","type":"boolean","default":"$undefined","description":"$L98","required":false,"deprecated":"$undefined"},{"name":"form","type":"string","default":"$undefined","description":"$L99","required":false,"deprecated":"$undefined"},{"name":"formAction","type":"ButtonHTMLAttributes<HTMLButtonElement>['formAction']","default":"$undefined","description":"$L9a","required":false,"deprecated":"$undefined"},{"name":"formEncType","type":"string","default":"$undefined","description":"$L9b","required":false,"deprecated":"$undefined"},{"name":"formMethod","type":"string","default":"$undefined","description":"$L9c","required":false,"deprecated":"$undefined"},{"name":"formNoValidate","type":"boolean","default":"$undefined","description":"$L9d","required":false,"deprecated":"$undefined"},{"name":"formTarget","type":"string","default":"$undefined","description":"$L9e","required":false,"deprecated":"$undefined"},{"name":"name","type":"string","default":"$undefined","description":"$L9f","required":false,"deprecated":"$undefined"},{"name":"value","type":"string","default":"$undefined","description":"$La0","required":false,"deprecated":"$undefined"},{"name":"excludeFromTabOrder","type":"boolean","default":"$undefined","description":"$La1","required":false,"deprecated":"$undefined"},{"name":"id","type":"string","default":"$undefined","description":"$La2","required":false,"deprecated":"$undefined"},{"name":"slot","type":"string | null","default":"$undefined","description":"$La3","required":false,"deprecated":"$undefined"},{"name":"style","type":"StyleOrFunction<T>","default":"$undefined","description":"$La4","required":false,"deprecated":"$undefined"},{"name":"render","type":"DOMRenderFunction<E, T>","default":"$undefined","description":"$La5","required":false,"deprecated":"$undefined"},{"name":"dir","type":"string | undefined","default":"$undefined","description":"$undefined","required":false,"deprecated":"$undefined"},{"name":"lang","type":"string | undefined","default":"$undefined","description":"$undefined","required":false,"deprecated":"$undefined"},{"name":"hidden","type":"boolean | undefined","default":"$undefined","description":"$undefined","required":false,"deprecated":"$undefined"},{"name":"inert","type":"boolean | undefined","default":"$undefined","description":"$undefined","required":false,"deprecated":"$undefined"}],"categories":{"Events":["onPress","onPressStart","onPressEnd","onPressChange","onPressUp","onHoverStart","onHoverEnd","onHoverChange","onClick","onFocus","onBlur","onFocusChange","onKeyDown","onKeyUp","onDoubleClick"],"Aria":["aria-disabled","aria-expanded","aria-haspopup","aria-controls","aria-pressed","aria-current","aria-label","aria-labelledby","aria-describedby","aria-details"]}}]
+62:["$","$L2e",null,{"as":"h3","id":"linkbutton","children":"LinkButton"}]
+63:["$","$L78",null,{"entries":[{"name":"onPress","type":"(e: PressEvent) => void","default":"$undefined","description":"$La6","required":false,"deprecated":"$undefined"},{"name":"onPressStart","type":"(e: PressEvent) => void","default":"$undefined","description":"$La7","required":false,"deprecated":"$undefined"},{"name":"onPressEnd","type":"(e: PressEvent) => void","default":"$undefined","description":"$La8","required":false,"deprecated":"$undefined"},{"name":"onPressChange","type":"(isPressed: boolean) => void","default":"$undefined","description":"$La9","required":false,"deprecated":"$undefined"},{"name":"onPressUp","type":"(e: PressEvent) => void","default":"$undefined","description":"$Laa","required":false,"deprecated":"$undefined"},{"name":"onHoverStart","type":"(e: HoverEvent) => void","default":"$undefined","description":"$Lab","required":false,"deprecated":"$undefined"},{"name":"onHoverEnd","type":"(e: HoverEvent) => void","default":"$undefined","description":"$Lac","required":false,"deprecated":"$undefined"},{"name":"onHoverChange","type":"(isHovering: boolean) => void","default":"$undefined","description":"$Lad","required":false,"deprecated":"$undefined"},{"name":"onClick","type":"(e: MouseEvent<FocusableElement>) => void","default":"$undefined","description":"$Lae","required":false,"deprecated":"$undefined"},{"name":"onFocus","type":"(e: FocusEvent<Target>) => void","default":"$undefined","description":"$Laf","required":false,"deprecated":"$undefined"},{"name":"onBlur","type":"(e: FocusEvent<Target>) => void","default":"$undefined","description":"$Lb0","required":false,"deprecated":"$undefined"},{"name":"onFocusChange","type":"(isFocused: boolean) => void","default":"$undefined","description":"$Lb1","required":false,"deprecated":"$undefined"},{"name":"onKeyDown","type":"(e: KeyboardEvent) => void","default":"$undefined","description":"$Lb2","required":false,"deprecated":"$undefined"},{"name":"onKeyUp","type":"(e: KeyboardEvent) => void","default":"$undefined","description":"$Lb3","required":false,"deprecated":"$undefined"},{"name":"onDoubleClick","type":"MouseEventHandler<T> | undefined","default":"$undefined","description":"$undefined","required":false,"deprecated":"$undefined"},{"name":"aria-label","type":"string","default":"$undefined","description":"$Lb4","required":false,"deprecated":"$undefined"},{"name":"aria-labelledby","type":"string","default":"$undefined","description":"$Lb5","required":false,"deprecated":"$undefined"},{"name":"aria-describedby","type":"string","default":"$undefined","description":"$Lb6","required":false,"deprecated":"$undefined"},{"name":"aria-details","type":"string","default":"$undefined","description":"$Lb7","required":false,"deprecated":"$undefined"},{"name":"isExternal","type":"boolean","default":"$undefined","description":"$Lb8","required":false,"deprecated":"$undefined"},{"name":"variant","type":"V","default":"$undefined","description":"$Lb9","required":false,"deprecated":"$undefined"},{"name":"size","type":"ButtonVariantProps['size']","default":"$undefined","description":"$Lba","required":false,"deprecated":"$undefined"},{"name":"children","type":"React.ReactNode","default":"$undefined","description":"$Lbb","required":false,"deprecated":"$undefined"},{"name":"className","type":"ClassNameOrFunction<LinkRenderProps>","default":"'react-aria-Link'","description":"$Lbc","required":false,"deprecated":"$undefined"},{"name":"isDisabled","type":"boolean","default":"$undefined","description":"$Lbd","required":false,"deprecated":"$undefined"},{"name":"autoFocus","type":"boolean","default":"$undefined","description":"$Lbe","required":false,"deprecated":"$undefined"},{"name":"href","type":"Href","default":"$undefined","description":"$Lbf","required":false,"deprecated":"$undefined"},{"name":"hrefLang","type":"string","default":"$undefined","description":"$Lc0","required":false,"deprecated":"$undefined"},{"name":"target","type":"HTMLAttributeAnchorTarget","default":"$undefined","description":"$Lc1","required":false,"deprecated":"$undefined"},{"name":"rel","type":"string","default":"$undefined","description":"$Lc2","required":false,"deprecated":"$undefined"},{"name":"download","type":"boolean | string","default":"$undefined","description":"$Lc3","required":false,"deprecated":"$undefined"},{"name":"ping","type":"string","default":"$undefined","description":"$Lc4","required":false,"deprecated":"$undefined"},{"name":"referrerPolicy","type":"HTMLAttributeReferrerPolicy","default":"$undefined","description":"$Lc5","required":false,"deprecated":"$undefined"},{"name":"routerOptions","type":"RouterOptions","default":"$undefined","description":"$Lc6","required":false,"deprecated":"$undefined"},{"name":"style","type":"StyleOrFunction<T>","default":"$undefined","description":"$Lc7","required":false,"deprecated":"$undefined"},{"name":"render","type":"(props: DetailedHTMLProps<LinkWithRequiredHref, HTMLAnchorElement> | React.JSX.IntrinsicElements[Fallback], renderProps: T) => ReactElement","default":"$undefined","description":"$Lc8","required":false,"deprecated":"$undefined"},{"name":"slot","type":"string | null","default":"$undefined","description":"$Lc9","required":false,"deprecated":"$undefined"},{"name":"id","type":"string","default":"$undefined","description":"$Lca","required":false,"deprecated":"$undefined"},{"name":"dir","type":"string | undefined","default":"$undefined","description":"$undefined","required":false,"deprecated":"$undefined"},{"name":"lang","type":"string | undefined","default":"$undefined","description":"$undefined","required":false,"deprecated":"$undefined"},{"name":"hidden","type":"boolean | undefined","default":"$undefined","description":"$undefined","required":false,"deprecated":"$undefined"},{"name":"inert","type":"boolean | undefined","default":"$undefined","description":"$undefined","required":false,"deprecated":"$undefined"}],"categories":{"Events":["onPress","onPressStart","onPressEnd","onPressChange","onPressUp","onHoverStart","onHoverEnd","onHoverChange","onClick","onFocus","onBlur","onFocusChange","onKeyDown","onKeyUp","onDoubleClick"],"Aria":["aria-label","aria-labelledby","aria-describedby","aria-details"]}}]
+64:["$","$L2e",null,{"as":"h3","id":"closebutton","children":"CloseButton"}]
+65:["$","$L78",null,{"entries":[{"name":"onPress","type":"(e: PressEvent) => void","default":"$undefined","description":"$Lcb","required":false,"deprecated":"$undefined"},{"name":"onPressStart","type":"(e: PressEvent) => void","default":"$undefined","description":"$Lcc","required":false,"deprecated":"$undefined"},{"name":"onPressEnd","type":"(e: PressEvent) => void","default":"$undefined","description":"$Lcd","required":false,"deprecated":"$undefined"},{"name":"onPressChange","type":"(isPressed: boolean) => void","default":"$undefined","description":"$Lce","required":false,"deprecated":"$undefined"},{"name":"onPressUp","type":"(e: PressEvent) => void","default":"$undefined","description":"$Lcf","required":false,"deprecated":"$undefined"},{"name":"onHoverStart","type":"(e: HoverEvent) => void","default":"$undefined","description":"$Ld0","required":false,"deprecated":"$undefined"},{"name":"onHoverEnd","type":"(e: HoverEvent) => void","default":"$undefined","description":"$Ld1","required":false,"deprecated":"$undefined"},{"name":"onHoverChange","type":"(isHovering: boolean) => void","default":"$undefined","description":"$Ld2","required":false,"deprecated":"$undefined"},{"name":"onClick","type":"(e: MouseEvent<FocusableElement>) => void","default":"$undefined","description":"$Ld3","required":false,"deprecated":"$undefined"},{"name":"onFocus","type":"(e: FocusEvent<Target>) => void","default":"$undefined","description":"$Ld4","required":false,"deprecated":"$undefined"},{"name":"onBlur","type":"(e: FocusEvent<Target>) => void","default":"$undefined","description":"$Ld5","required":false,"deprecated":"$undefined"},{"name":"onFocusChange","type":"(isFocused: boolean) => void","default":"$undefined","description":"$Ld6","required":false,"deprecated":"$undefined"},{"name":"onKeyDown","type":"(e: KeyboardEvent) => void","default":"$undefined","description":"$Ld7","required":false,"deprecated":"$undefined"},{"name":"onKeyUp","type":"(e: KeyboardEvent) => void","default":"$undefined","description":"$Ld8","required":false,"deprecated":"$undefined"},{"name":"onDoubleClick","type":"MouseEventHandler<T> | undefined","default":"$undefined","description":"$undefined","required":false,"deprecated":"$undefined"},{"name":"aria-disabled","type":"boolean | 'true' | 'false'","default":"$undefined","description":"$Ld9","required":false,"deprecated":"$undefined"},{"name":"aria-expanded","type":"boolean | 'true' | 'false'","default":"$undefined","description":"$Lda","required":false,"deprecated":"$undefined"},{"name":"aria-haspopup","type":"boolean | 'menu' | 'listbox' | 'tree' | 'grid' | 'dialog' | 'true' | 'false'","default":"$undefined","description":"$Ldb","required":false,"deprecated":"$undefined"},{"name":"aria-controls","type":"string","default":"$undefined","description":"$Ldc","required":false,"deprecated":"$undefined"},{"name":"aria-pressed","type":"boolean | 'true' | 'false' | 'mixed'","default":"$undefined","description":"$Ldd","required":false,"deprecated":"$undefined"},{"name":"aria-current","type":"boolean | 'true' | 'false' | 'page' | 'step' | 'location' | 'date' | 'time'","default":"$undefined","description":"$Lde","required":false,"deprecated":"$undefined"},{"name":"aria-label","type":"string","default":"$undefined","description":"$Ldf","required":false,"deprecated":"$undefined"},{"name":"aria-labelledby","type":"string","default":"$undefined","description":"$Le0","required":false,"deprecated":"$undefined"},{"name":"aria-describedby","type":"string","default":"$undefined","description":"$Le1","required":false,"deprecated":"$undefined"},{"name":"aria-details","type":"string","default":"$undefined","description":"$Le2","required":false,"deprecated":"$undefined"},{"name":"variant","type":"V","default":"$undefined","description":"$Le3","required":false,"deprecated":"$undefined"},{"name":"size","type":"ButtonVariantProps['size']","default":"$undefined","description":"$Le4","required":false,"deprecated":"$undefined"},{"name":"className","type":"ClassNameOrFunction<ButtonRenderProps>","default":"'react-aria-Button'","description":"$Le5","required":false,"deprecated":"$undefined"},{"name":"isDisabled","type":"boolean","default":"$undefined","description":"$Le6","required":false,"deprecated":"$undefined"},{"name":"autoFocus","type":"boolean","default":"$undefined","description":"$Le7","required":false,"deprecated":"$undefined"},{"name":"type","type":"'button' | 'submit' | 'reset'","default":"'button'","description":"$Le8","required":false,"deprecated":"$undefined"},{"name":"preventFocusOnPress","type":"boolean","default":"$undefined","description":"$Le9","required":false,"deprecated":"$undefined"},{"name":"form","type":"string","default":"$undefined","description":"$Lea","required":false,"deprecated":"$undefined"},{"name":"formAction","type":"ButtonHTMLAttributes<HTMLButtonElement>['formAction']","default":"$undefined","description":"$Leb","required":false,"deprecated":"$undefined"},{"name":"formEncType","type":"string","default":"$undefined","description":"$Lec","required":false,"deprecated":"$undefined"},{"name":"formMethod","type":"string","default":"$undefined","description":"$Led","required":false,"deprecated":"$undefined"},{"name":"formNoValidate","type":"boolean","default":"$undefined","description":"$Lee","required":false,"deprecated":"$undefined"},{"name":"formTarget","type":"string","default":"$undefined","description":"$Lef","required":false,"deprecated":"$undefined"},{"name":"name","type":"string","default":"$undefined","description":"$Lf0","required":false,"deprecated":"$undefined"},{"name":"value","type":"string","default":"$undefined","description":"$Lf1","required":false,"deprecated":"$undefined"},{"name":"excludeFromTabOrder","type":"boolean","default":"$undefined","description":"$Lf2","required":false,"deprecated":"$undefined"},{"name":"id","type":"string","default":"$undefined","description":"$Lf3","required":false,"deprecated":"$undefined"},{"name":"slot","type":"string | null","default":"$undefined","description":"$Lf4","required":false,"deprecated":"$undefined"},{"name":"style","type":"StyleOrFunction<T>","default":"$undefined","description":"$Lf5","required":false,"deprecated":"$undefined"},{"name":"render","type":"DOMRenderFunction<E, T>","default":"$undefined","description":"$Lf6","required":false,"deprecated":"$undefined"},{"name":"dir","type":"string | undefined","default":"$undefined","description":"$undefined","required":false,"deprecated":"$undefined"},{"name":"lang","type":"string | undefined","default":"$undefined","description":"$undefined","required":false,"deprecated":"$undefined"},{"name":"hidden","type":"boolean | undefined","default":"$undefined","description":"$undefined","required":false,"deprecated":"$undefined"},{"name":"inert","type":"boolean | undefined","default":"$undefined","description":"$undefined","required":false,"deprecated":"$undefined"}],"categories":{"Events":["onPress","onPressStart","onPressEnd","onPressChange","onPressUp","onHoverStart","onHoverEnd","onHoverChange","onClick","onFocus","onBlur","onFocusChange","onKeyDown","onKeyUp","onDoubleClick"],"Aria":["aria-disabled","aria-expanded","aria-haspopup","aria-controls","aria-pressed","aria-current","aria-label","aria-labelledby","aria-describedby","aria-details"]}}]
+79:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the press is released over the target."}]]
+7a:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a press interaction starts."}]]
+7b:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a press interaction ends, either\nover the target or when the pointer leaves the target."}]]
+7c:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the press state changes."}]]
+7d:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a press is released over the target, regardless of\nwhether it started on the target or not."}]]
+7e:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a hover interaction starts."}]]
+7f:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a hover interaction ends."}]]
+80:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the hover state changes."}]]
+81:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":[["$","strong","strong-0",{"children":["Not recommended – use ",["$","code","code-0",{"className":"font-mono","children":"onPress"}]," instead."]}]," ",["$","code","code-0",{"className":"font-mono","children":"onClick"}]," is an alias for ",["$","code","code-1",{"className":"font-mono","children":"onPress"}],"\nprovided for compatibility with other libraries. ",["$","code","code-2",{"className":"font-mono","children":"onPress"}]," provides\nadditional event details for non-mouse interactions."]}]]
+82:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the element receives focus."}]]
+83:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the element loses focus."}]]
+84:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the element's focus status changes."}]]
+85:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a key is pressed."}]]
+86:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a key is released."}]]
+87:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Indicates whether the element is disabled to users of assistive technology."}]]
+88:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Indicates whether the element, or another grouping element it controls, is currently expanded\nor collapsed."}]]
+89:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Indicates the availability and type of interactive popup element, such as menu or dialog, that\ncan be triggered by an element."}]]
+8a:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Identifies the element (or elements) whose contents or presence are controlled by the current\nelement."}]]
+8b:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Indicates the current \"pressed\" state of toggle buttons."}]]
+8c:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Indicates whether this element represents the current item within a container or set of related\nelements."}]]
+8d:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Defines a string value that labels the current element."}]]
+8e:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Identifies the element (or elements) that labels the current element."}]]
+8f:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Identifies the element (or elements) that describes the object."}]]
+90:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Identifies the element (or elements) that provide a detailed, extended description for the\nobject."}]]
+91:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The variant of the button."}]]
+92:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The size of the button. Follows the size scope when omitted."}]]
+93:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The content of the button."}]]
+94:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The CSS ",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/API/Element/className","children":"className"}]," for the\nelement. A function may be provided to compute the class based on component state."]}]]
+95:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether the button is disabled."}]]
+96:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether the element should receive focus on render."}]]
+97:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The behavior of the button when used in an HTML form."}]]
+98:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to prevent focus from moving to the button when pressing it."}],"\n",["$","p","p-1",{"className":"mb-1 last:mb-0","children":"Caution, this can make the button inaccessible and should only be used when alternative\nkeyboard interaction is provided, such as ComboBox's MenuTrigger or a NumberField's\nincrement/decrement control."}]]
+99:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The ",["$","code","code-0",{"className":"font-mono","children":"<form>"}]," element to associate the button with.\nThe value of this attribute must be the id of a ",["$","code","code-1",{"className":"font-mono","children":"<form>"}]," in the same document.\nSee ",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button#form","children":"MDN"}],"."]}]]
+9a:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The URL that processes the information submitted by the button.\nOverrides the action attribute of the button's form owner."}]]
+9b:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Indicates how to encode the form data that is submitted."}]]
+9c:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Indicates the HTTP method used to submit the form."}]]
+9d:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Indicates that the form is not to be validated when it is submitted."}]]
+9e:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Overrides the target attribute of the button's form owner."}]]
+9f:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Submitted as a pair with the button's value as part of the form data."}]]
+a6:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the press is released over the target."}]]
+a7:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a press interaction starts."}]]
+a8:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a press interaction ends, either\nover the target or when the pointer leaves the target."}]]
+a9:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the press state changes."}]]
+aa:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a press is released over the target, regardless of\nwhether it started on the target or not."}]]
+ab:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a hover interaction starts."}]]
+ac:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a hover interaction ends."}]]
+ad:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the hover state changes."}]]
+ae:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":[["$","strong","strong-0",{"children":["Not recommended – use ",["$","code","code-0",{"className":"font-mono","children":"onPress"}]," instead."]}]," ",["$","code","code-0",{"className":"font-mono","children":"onClick"}]," is an alias for ",["$","code","code-1",{"className":"font-mono","children":"onPress"}],"\nprovided for compatibility with other libraries. ",["$","code","code-2",{"className":"font-mono","children":"onPress"}]," provides\nadditional event details for non-mouse interactions."]}]]
+af:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the element receives focus."}]]
+b0:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the element loses focus."}]]
+b1:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the element's focus status changes."}]]
+b2:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a key is pressed."}]]
+b3:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a key is released."}]]
+b4:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Defines a string value that labels the current element."}]]
+b5:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Identifies the element (or elements) that labels the current element."}]]
+b6:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Identifies the element (or elements) that describes the object."}]]
+b7:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Identifies the element (or elements) that provide a detailed, extended description for the\nobject."}]]
+b8:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Shows an external icon and defaults to opening a new tab. Explicit target and rel override the defaults."}]]
+b9:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The variant of the button."}]]
+ba:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The size of the button. Follows the size scope when omitted."}]]
+bb:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The content of the button."}]]
+bc:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The CSS ",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/API/Element/className","children":"className"}]," for the\nelement. A function may be provided to compute the class based on component state."]}]]
+bd:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether the link is disabled."}]]
+be:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether the element should receive focus on render."}]]
+bf:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["A URL to link to. See ",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#href","children":"MDN"}],"."]}]]
+c0:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Hints at the human language of the linked URL.\nSee",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#hreflang","children":"MDN"}],"."]}]]
+c1:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The target window for the link. See\n",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target","children":"MDN"}],"."]}]]
+c2:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The relationship between the linked resource and the current page. See\n",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel","children":"MDN"}],"."]}]]
+c3:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Causes the browser to download the linked URL. A string may be provided to suggest a file name.\nSee ",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#download","children":"MDN"}],"."]}]]
+c4:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["A space-separated list of URLs to ping when the link is followed. See\n",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#ping","children":"MDN"}],"."]}]]
+c5:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["How much of the referrer to send when following the link. See\n",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#referrerpolicy","children":"MDN"}],"."]}]]
+c6:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Options for the configured client side router."}]]
+c7:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The inline ",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style","children":"style"}]," for the\nelement. A function may be provided to compute the style based on component state."]}]]
+c8:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Overrides the default DOM element with a custom render function.\nThis allows rendering existing components with built-in styles and behaviors\nsuch as router links, animation libraries, and pre-styled components."}],"\n",["$","p","p-1",{"className":"mb-1 last:mb-0","children":["Note: You can check if ",["$","code","code-0",{"className":"font-mono","children":"'href' in props"}]," in order to tell whether to render an ",["$","code","code-1",{"className":"font-mono","children":"<a>"}]," element."]}],"\n",["$","p","p-2",{"className":"mb-1 last:mb-0","children":"Requirements:"}],"\n",["$","ul","ul-0",{"className":"my-1 list-disc ps-4","children":["\n",["$","li","li-0",{"className":"mt-0.5","children":["You must render the expected element type (e.g. if ",["$","code","code-0",{"className":"font-mono","children":"<a>"}]," is expected, you cannot render a\n",["$","code","code-1",{"className":"font-mono","children":"<button>"}],")."]}],"\n",["$","li","li-1",{"className":"mt-0.5","children":"Only a single root DOM element can be rendered (no fragments)."}],"\n",["$","li","li-2",{"className":"mt-0.5","children":"You must pass through props and ref to the underlying DOM element, merging with your own prop\nas appropriate."}],"\n"]}]]
+c9:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["A slot name for the component. Slots allow the component to receive props from a parent\ncomponent. An explicit ",["$","code","code-0",{"className":"font-mono","children":"null"}]," value indicates that the local props completely override all\nprops received from a parent."]}]]
+ca:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The element's unique identifier. See\n",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id","children":"MDN"}],"."]}]]
+cb:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the press is released over the target."}]]
+cc:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a press interaction starts."}]]
+cd:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a press interaction ends, either\nover the target or when the pointer leaves the target."}]]
+ce:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the press state changes."}]]
+cf:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a press is released over the target, regardless of\nwhether it started on the target or not."}]]
+d0:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a hover interaction starts."}]]
+d1:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a hover interaction ends."}]]
+d2:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the hover state changes."}]]
+d3:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":[["$","strong","strong-0",{"children":["Not recommended – use ",["$","code","code-0",{"className":"font-mono","children":"onPress"}]," instead."]}]," ",["$","code","code-0",{"className":"font-mono","children":"onClick"}]," is an alias for ",["$","code","code-1",{"className":"font-mono","children":"onPress"}],"\nprovided for compatibility with other libraries. ",["$","code","code-2",{"className":"font-mono","children":"onPress"}]," provides\nadditional event details for non-mouse interactions."]}]]
+d4:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the element receives focus."}]]
+d5:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the element loses focus."}]]
+d6:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when the element's focus status changes."}]]
+d7:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a key is pressed."}]]
+d8:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Handler that is called when a key is released."}]]
+d9:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Indicates whether the element is disabled to users of assistive technology."}]]
+da:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Indicates whether the element, or another grouping element it controls, is currently expanded\nor collapsed."}]]
+db:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Indicates the availability and type of interactive popup element, such as menu or dialog, that\ncan be triggered by an element."}]]
+dc:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Identifies the element (or elements) whose contents or presence are controlled by the current\nelement."}]]
+dd:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Indicates the current \"pressed\" state of toggle buttons."}]]
+de:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Indicates whether this element represents the current item within a container or set of related\nelements."}]]
+df:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Defines a string value that labels the current element."}]]
+e0:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Identifies the element (or elements) that labels the current element."}]]
+e1:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Identifies the element (or elements) that describes the object."}]]
+e2:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Identifies the element (or elements) that provide a detailed, extended description for the\nobject."}]]
+e3:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The variant of the button."}]]
+e4:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The size of the button. Follows the size scope when omitted."}]]
+e5:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The CSS ",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/API/Element/className","children":"className"}]," for the\nelement. A function may be provided to compute the class based on component state."]}]]
+e6:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether the button is disabled."}]]
+e7:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether the element should receive focus on render."}]]
+e8:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The behavior of the button when used in an HTML form."}]]
+e9:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to prevent focus from moving to the button when pressing it."}],"\n",["$","p","p-1",{"className":"mb-1 last:mb-0","children":"Caution, this can make the button inaccessible and should only be used when alternative\nkeyboard interaction is provided, such as ComboBox's MenuTrigger or a NumberField's\nincrement/decrement control."}]]
+ea:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The ",["$","code","code-0",{"className":"font-mono","children":"<form>"}]," element to associate the button with.\nThe value of this attribute must be the id of a ",["$","code","code-1",{"className":"font-mono","children":"<form>"}]," in the same document.\nSee ",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button#form","children":"MDN"}],"."]}]]
+eb:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The URL that processes the information submitted by the button.\nOverrides the action attribute of the button's form owner."}]]
+ec:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Indicates how to encode the form data that is submitted."}]]
+ed:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Indicates the HTTP method used to submit the form."}]]
+ee:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Indicates that the form is not to be validated when it is submitted."}]]
+ef:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Overrides the target attribute of the button's form owner."}]]
+f0:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Submitted as a pair with the button's value as part of the form data."}]]
+f1:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The value associated with the button's name when it's submitted with the form data."}]]
+a0:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The value associated with the button's name when it's submitted with the form data."}]]
+a1:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to exclude the element from the sequential tab order. If true,\nthe element will not be focusable via the keyboard by tabbing. This should\nbe avoided except in rare scenarios where an alternative means of accessing\nthe element or its functionality via the keyboard is available."}]]
+a2:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The element's unique identifier. See\n",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id","children":"MDN"}],"."]}]]
+a3:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["A slot name for the component. Slots allow the component to receive props from a parent\ncomponent. An explicit ",["$","code","code-0",{"className":"font-mono","children":"null"}]," value indicates that the local props completely override all\nprops received from a parent."]}]]
+a4:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The inline ",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style","children":"style"}]," for the\nelement. A function may be provided to compute the style based on component state."]}]]
+a5:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Overrides the default DOM element with a custom render function.\nThis allows rendering existing components with built-in styles and behaviors\nsuch as router links, animation libraries, and pre-styled components."}],"\n",["$","p","p-1",{"className":"mb-1 last:mb-0","children":"Requirements:"}],"\n",["$","ul","ul-0",{"className":"my-1 list-disc ps-4","children":["\n",["$","li","li-0",{"className":"mt-0.5","children":["You must render the expected element type (e.g. if ",["$","code","code-0",{"className":"font-mono","children":"<button>"}]," is expected, you cannot render an\n",["$","code","code-1",{"className":"font-mono","children":"<a>"}],")."]}],"\n",["$","li","li-1",{"className":"mt-0.5","children":"Only a single root DOM element can be rendered (no fragments)."}],"\n",["$","li","li-2",{"className":"mt-0.5","children":"You must pass through props and ref to the underlying DOM element, merging with your own prop\nas appropriate."}],"\n"]}]]
+f2:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to exclude the element from the sequential tab order. If true,\nthe element will not be focusable via the keyboard by tabbing. This should\nbe avoided except in rare scenarios where an alternative means of accessing\nthe element or its functionality via the keyboard is available."}]]
+f3:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The element's unique identifier. See\n",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id","children":"MDN"}],"."]}]]
+f4:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["A slot name for the component. Slots allow the component to receive props from a parent\ncomponent. An explicit ",["$","code","code-0",{"className":"font-mono","children":"null"}]," value indicates that the local props completely override all\nprops received from a parent."]}]]
+f5:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["The inline ",["$","a","a-0",{"className":"underline underline-offset-2","href":"https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style","children":"style"}]," for the\nelement. A function may be provided to compute the style based on component state."]}]]
+f6:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Overrides the default DOM element with a custom render function.\nThis allows rendering existing components with built-in styles and behaviors\nsuch as router links, animation libraries, and pre-styled components."}],"\n",["$","p","p-1",{"className":"mb-1 last:mb-0","children":"Requirements:"}],"\n",["$","ul","ul-0",{"className":"my-1 list-disc ps-4","children":["\n",["$","li","li-0",{"className":"mt-0.5","children":["You must render the expected element type (e.g. if ",["$","code","code-0",{"className":"font-mono","children":"<button>"}]," is expected, you cannot render an\n",["$","code","code-1",{"className":"font-mono","children":"<a>"}],")."]}],"\n",["$","li","li-1",{"className":"mt-0.5","children":"Only a single root DOM element can be rendered (no fragments)."}],"\n",["$","li","li-2",{"className":"mt-0.5","children":"You must pass through props and ref to the underlying DOM element, merging with your own prop\nas appropriate."}],"\n"]}]]
+22:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+1f:null
+25:[["$","title","0",{"children":"Button"}],["$","meta","1",{"name":"description","content":"The Button component allows users to initiate actions or submit forms with a single click"}],["$","meta","2",{"property":"og:title","content":"Button"}],["$","meta","3",{"property":"og:description","content":"The Button component allows users to initiate actions or submit forms with a single click"}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/components/button/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Button"}],["$","meta","7",{"name":"twitter:description","content":"The Button component allows users to initiate actions or submit forms with a single click"}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/components/button/image.png"}]]

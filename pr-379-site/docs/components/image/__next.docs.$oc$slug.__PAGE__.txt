@@ -1,0 +1,54 @@
+3:"$Sreact.fragment"
+4:"/antares/pr-379-site/_next/static/chunks/0xvdevozgcspg.js"
+5:"/antares/pr-379-site/_next/static/chunks/44u8vt8tcxeb8.js"
+6:I[339756,["$4","$5"],"default"]
+7:I[837457,["$4","$5"],"default"]
+c:"/antares/pr-379-site/_next/static/chunks/3bcg39of-lql3.js"
+d:"/antares/pr-379-site/_next/static/chunks/0cq_r7uivgtia.js"
+e:"/antares/pr-379-site/_next/static/chunks/44d0fxytx9jkg.js"
+f:"/antares/pr-379-site/_next/static/chunks/3ro9sb3nb8pm4.js"
+10:"/antares/pr-379-site/_next/static/chunks/0y43-9m1z7bvl.js"
+11:"/antares/pr-379-site/_next/static/chunks/2q1vkgy1flc92.js"
+12:"/antares/pr-379-site/_next/static/chunks/0s0e0vhpl8v2v.js"
+13:"/antares/pr-379-site/_next/static/chunks/428imhwwk-ha_.js"
+14:"/antares/pr-379-site/_next/static/chunks/3nd4_wmz1ljg4.js"
+15:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsPage"]
+16:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsTitle"]
+17:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsDescription"]
+18:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"LLMCopyButton"]
+19:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"ViewOptions"]
+1a:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsBody"]
+1b:I[494157,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Heading"]
+1c:I[144324,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"CodeBlock"]
+1d:I[144324,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Pre"]
+1e:I[403113,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"StoryRenderer"]
+1f:I[178573,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DefaultExample"]
+20:"DynamicCodeBlock"
+21:I[904143,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$20"]
+22:I[403299,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"PropTableClient"]
+29:"ViewportBoundary"
+2a:I[897367,["$4","$5"],"$29"]
+2b:"MetadataBoundary"
+2c:I[897367,["$4","$5"],"$2b"]
+2d:"$Sreact.suspense"
+9:X
+9:C
+a:X
+b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L15",null,{"toc":[{"depth":2,"url":"#features","title":"Features"},{"depth":2,"url":"#installation","title":"Installation"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#default","title":"Default"},{"depth":2,"url":"#accessibility","title":"Accessibility"},{"depth":2,"url":"#props","title":"Props"},{"depth":3,"url":"#image","title":"Image"}],"footer":{"enabled":true},"children":[["$","$L16",null,{"children":"Image"}],["$","$L17",null,{"className":"mb-0","children":"A native image element that inherits presentation and behavior from its Antares parent."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L18",null,{"markdownUrl":"/docs/components/image.mdx"}],["$","$L19",null,{"markdownUrl":"/docs/components/image.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/image/README.mdx"}]]}],["$","$L1a",null,{"children":[null,"\n",["$","$L1b",null,{"as":"h2","id":"features","children":"Features"}],"\n",["$","ul",null,{"children":["\n",["$","li",null,{"children":["Renders a native ",["$","code",null,{"children":"<img>"}]," and accepts all of its attributes"]}],"\n",["$","li",null,{"children":"Inherits presentation and behavior when composed inside Antares components such as Avatar"}],"\n",["$","li",null,{"children":"Ships no default styles, loading state, or fallback so it stays predictable everywhere"}],"\n"]}],"\n",["$","$L1b",null,{"as":"h2","id":"installation","children":"Installation"}],"\n",["$","$L1c",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$L1d",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npm"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" install"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" @godaddy/antares"}]]}]}]}]}],"\n",["$","$L1b",null,{"as":"h2","id":"examples","children":"Examples"}],"\n",["$","$L1b",null,{"as":"h3","id":"default","children":"Default"}],"\n",["$","p",null,{"children":"Render an image with alternative text and explicit dimensions."}],"\n",["$","$L1e",null,{"component":"$1f"}],"\n",["$","$L21",null,{"lang":"tsx","code":"import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\"GoDaddy blue brand panel\" width={320} height={180} />;\n}"}],"\n",["$","$L1b",null,{"as":"h2","id":"accessibility","children":"Accessibility"}],"\n",["$","ul",null,{"children":["\n",["$","li",null,{"children":["Provide concise, meaningful ",["$","code",null,{"children":"alt"}]," text when the image conveys information."]}],"\n",["$","li",null,{"children":["Use ",["$","code",null,{"children":"alt=\"\""}]," for decorative images or images already described by adjacent text."]}],"\n",["$","li",null,{"children":["Set ",["$","code",null,{"children":"width"}]," and ",["$","code",null,{"children":"height"}]," when known to reserve space and reduce layout shift."]}],"\n"]}],"\n",["$","$L1b",null,{"as":"h2","id":"props","children":"Props"}],"\n",["$","$L1b",null,{"as":"h3","id":"image","children":"Image"}],"\n",["$","$L22",null,{"entries":[{"name":"alt","type":"string","description":"$L23","required":true},{"name":"slot","type":"string | null","description":"$L24","required":false}],"categories":{}}]]}]]}],["$L25","$L26"],"$L27"]}],"p":"$@28","v":null,"s":"$a"}}]]
+2:[["children",{"s":{"n":"slug","t":"oc","k":"components/image","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
+1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L2a",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L2c",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$2d",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Image"}],["$","meta","1",{"name":"description","content":"A native image element that inherits presentation and behavior from its Antares parent."}],["$","meta","2",{"property":"og:title","content":"Image"}],["$","meta","3",{"property":"og:description","content":"A native image element that inherits presentation and behavior from its Antares parent."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/components/image/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Image"}],["$","meta","7",{"name":"twitter:description","content":"A native image element that inherits presentation and behavior from its Antares parent."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/components/image/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@2e","v":null,"s":"$a"}},"a":"$@2f","u":"$@30","b":"VrNIx1BSMiAE8me1KMTBW"}
+31:I[897367,["$4","$5"],"OutletBoundary"]
+23:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Alternative text for informative images, or an empty string for decorative images."}]]
+24:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["A slot name for the component. Slots allow the component to receive props from a parent\ncomponent. An explicit ",["$","code","code-0",{"className":"font-mono","children":"null"}]," value indicates that the local props completely override all\nprops received from a parent."]}]]
+25:["$","script","script-0",{"src":"/antares/pr-379-site/_next/static/chunks/428imhwwk-ha_.js","async":true}]
+26:["$","script","script-1",{"src":"/antares/pr-379-site/_next/static/chunks/3nd4_wmz1ljg4.js","async":true}]
+27:["$","$L31",null,{"children":["$","$2d",null,{"name":"Next.MetadataOutlet","children":"$@32"}]}]
+30:true
+a:300
+32:null
+a:C
+2f:0
+8:"$undefined"
+2e:"$undefined"
+28:"$undefined"

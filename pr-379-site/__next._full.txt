@@ -1,0 +1,76 @@
+1:"$Sreact.fragment"
+3:"/antares/pr-379-site/_next/static/chunks/0xvdevozgcspg.js"
+4:"/antares/pr-379-site/_next/static/chunks/44u8vt8tcxeb8.js"
+5:I[17751,["$3","$4"],"RootProvider"]
+6:I[339756,["$3","$4"],"default"]
+7:I[837457,["$3","$4"],"default"]
+e:I[168027,["$3","$4"],"default",1]
+:HL["/antares/pr-379-site/_next/static/chunks/04ezi745s8yv5.css","style"]
+:HL["/antares/pr-379-site/_next/static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-regular.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
+:HL["https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-bold.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
+:HL["https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
+2:T757,@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 700;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-bold.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-bold.woff') format('woff');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 400;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-regular.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-regular.woff') format('woff');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 1 999;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf.woff2') format('woff2-variations');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 1 900;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf2.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf2.woff2') format('woff2-variations');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 1 900;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf3.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf3.woff2') format('woff2-variations');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'gdsherpa';
+  font-weight: 1 900;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf4.woff2') format('woff2'), url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf4.woff2') format('woff2-variations');
+  unicode-range: U+0-10FFFF;
+  font-display: swap;
+}b:[["children",{"s":"__PAGE__","h":512,"d":{"r":"$Lc","p":false,"v":null}}]]
+9:[["children",{"s":"(home)","h":512,"d":{"r":"$La","p":false,"v":null},"c":"$Qb"}]]
+0:{"P":null,"c":["",""],"q":"","i":false,"t":{"t":{"s":"","h":528,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/antares/pr-379-site/_next/static/chunks/04ezi745s8yv5.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/antares/pr-379-site/_next/static/chunks/0xvdevozgcspg.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/antares/pr-379-site/_next/static/chunks/44u8vt8tcxeb8.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"OU16Qa_className","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[[["$","link","https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-regular.woff2",{"rel":"preload","href":"https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-regular.woff2","as":"font","type":"font/woff2","crossOrigin":"anonymous"}],["$","link","https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-bold.woff2",{"rel":"preload","href":"https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-bold.woff2","as":"font","type":"font/woff2","crossOrigin":"anonymous"}],["$","link","https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf.woff2",{"rel":"preload","href":"https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-vf.woff2","as":"font","type":"font/woff2","crossOrigin":"anonymous"}]],["$","style",null,{"children":"$2"}]]}],["$","body",null,{"className":"flex flex-col min-h-screen","children":["$","$L5",null,{"search":{"options":{"api":"/antares/pr-379-site/api/search","type":"static"}},"children":["$","$L6",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L7",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":"$L8"}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}]]}],"p":false,"v":null},"c":"$Q9"},"h":{"r":"$Ld","p":false,"v":null}},"m":"$undefined","G":["$e",["$Lf"]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"VrNIx1BSMiAE8me1KMTBW"}
+10:"/antares/pr-379-site/_next/static/chunks/44d0fxytx9jkg.js"
+11:"/antares/pr-379-site/_next/static/chunks/1d3z_80m_yimx.js"
+12:"/antares/pr-379-site/_next/static/chunks/0y43-9m1z7bvl.js"
+13:"/antares/pr-379-site/_next/static/chunks/0cq_r7uivgtia.js"
+14:I[864345,["$3","$4","$10","$11","$12","$13"],"HomeLayout"]
+16:I[897367,["$3","$4"],"OutletBoundary"]
+17:"$Sreact.suspense"
+19:"ViewportBoundary"
+1a:I[897367,["$3","$4"],"$19"]
+1c:"MetadataBoundary"
+1d:I[897367,["$3","$4"],"$1c"]
+8:["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]
+a:["$","$1","c",{"children":[[["$","script","script-0",{"src":"/antares/pr-379-site/_next/static/chunks/44d0fxytx9jkg.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/antares/pr-379-site/_next/static/chunks/1d3z_80m_yimx.js","async":true,"nonce":"$undefined"}],["$","script","script-2",{"src":"/antares/pr-379-site/_next/static/chunks/0y43-9m1z7bvl.js","async":true,"nonce":"$undefined"}],["$","script","script-3",{"src":"/antares/pr-379-site/_next/static/chunks/0cq_r7uivgtia.js","async":true,"nonce":"$undefined"}]],["$","$L14",null,{"nav":{"title":"Antares"},"links":[{"text":"Documentation","url":"/docs","on":"nav"}],"githubUrl":"https://github.com/godaddy/antares","children":["$","$L6",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L7",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":"$0:t:t:d:r:props:children:1:props:children:1:props:children:props:children:props:notFound:0:1:props:style","children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":"$8:props:children:1:props:style","children":404}],["$","div",null,{"style":"$8:props:children:2:props:style","children":["$","h2",null,{"style":"$8:props:children:2:props:children:props:style","children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]]}]
+c:["$","$1","c",{"children":["$L15",null,["$","$L16",null,{"children":["$","$17",null,{"name":"Next.MetadataOutlet","children":"$@18"}]}]]}]
+d:["$","$1","h",{"children":[null,["$","$L1a",null,{"children":"$L1b"}],["$","$L1d",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$17",null,{"name":"Next.Metadata","children":"$L1e"}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}]
+f:["$","link","0",{"rel":"stylesheet","href":"/antares/pr-379-site/_next/static/chunks/04ezi745s8yv5.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]
+15:E{"digest":"NEXT_REDIRECT;replace;/docs;307;"}
+1b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+18:null
+1e:[]

@@ -1,0 +1,215 @@
+3:"$Sreact.fragment"
+4:"/antares/pr-379-site/_next/static/chunks/0xvdevozgcspg.js"
+5:"/antares/pr-379-site/_next/static/chunks/44u8vt8tcxeb8.js"
+6:I[339756,["$4","$5"],"default"]
+7:I[837457,["$4","$5"],"default"]
+c:"/antares/pr-379-site/_next/static/chunks/3bcg39of-lql3.js"
+d:"/antares/pr-379-site/_next/static/chunks/0cq_r7uivgtia.js"
+e:"/antares/pr-379-site/_next/static/chunks/44d0fxytx9jkg.js"
+f:"/antares/pr-379-site/_next/static/chunks/3ro9sb3nb8pm4.js"
+10:"/antares/pr-379-site/_next/static/chunks/0y43-9m1z7bvl.js"
+11:"/antares/pr-379-site/_next/static/chunks/2q1vkgy1flc92.js"
+12:"/antares/pr-379-site/_next/static/chunks/0s0e0vhpl8v2v.js"
+13:"/antares/pr-379-site/_next/static/chunks/428imhwwk-ha_.js"
+14:"/antares/pr-379-site/_next/static/chunks/3nd4_wmz1ljg4.js"
+15:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsPage"]
+16:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsTitle"]
+17:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsDescription"]
+18:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"LLMCopyButton"]
+19:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"ViewOptions"]
+1a:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsBody"]
+1b:I[494157,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Heading"]
+1c:I[403113,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"StoryRenderer"]
+1d:I[364516,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DefaultExample"]
+1e:"DynamicCodeBlock"
+1f:I[904143,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$1e"]
+3e:"ViewportBoundary"
+3f:I[897367,["$4","$5"],"$3e"]
+40:"MetadataBoundary"
+41:I[897367,["$4","$5"],"$40"]
+42:"$Sreact.suspense"
+9:X
+9:C
+a:X
+b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L15",null,{"toc":[{"depth":2,"url":"#features","title":"Features"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#default","title":"Default"},{"depth":3,"url":"#sizes","title":"Sizes"},{"depth":3,"url":"#form","title":"Form"},{"depth":3,"url":"#nested-scopes","title":"Nested Scopes"},{"depth":3,"url":"#explicit-size","title":"Explicit Size"},{"depth":3,"url":"#overlays","title":"Overlays"},{"depth":3,"url":"#plain-html","title":"Plain Html"},{"depth":2,"url":"#props","title":"Props"}],"footer":{"enabled":true},"children":[["$","$L16",null,{"children":"SizeProvider"}],["$","$L17",null,{"className":"mb-0","children":"Sizes a section, so the text, controls, and default spacing inside it follow one size."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L18",null,{"markdownUrl":"/docs/components/size-provider.mdx"}],["$","$L19",null,{"markdownUrl":"/docs/components/size-provider.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/size-provider/README.mdx"}]]}],["$","$L1a",null,{"children":[null,"\n",["$","$L1b",null,{"as":"h2","id":"features","children":"Features"}],"\n",["$","ul",null,{"children":["\n",["$","li",null,{"children":[["$","code",null,{"children":"sm"}],", ",["$","code",null,{"children":"md"}],", or ",["$","code",null,{"children":"lg"}]," for the adopted components inside (listed below): their text, controls, and\ndefault spacing."]}],"\n",["$","li",null,{"children":"The nearest scope wins, and nested scopes replace the size rather than compounding it."}],"\n",["$","li",null,{"children":["A component's own ",["$","code",null,{"children":"size"}]," prop wins for that component only."]}],"\n",["$","li",null,{"children":"Overlays opened inside, such as Modal and Select options, open at the scope's size even though\nthey render in a portal."}],"\n",["$","li",null,{"children":["Renders no element, so it never affects layout. Only Antares components follow it; plain HTML\nkeeps its own typography, so put copy in ",["$","code",null,{"children":"Text"}],"."]}],"\n",["$","li",null,{"children":["Without any scope, components use ",["$","code",null,{"children":"md"}],"."]}],"\n",["$","li",null,{"children":["Adopted so far by Text, Detail, Heading, Label, Button, LinkButton, TextField, NumberField, Select,\nDatePicker, DateRangePicker, Calendar, TextLockup, Modal, Drawer, Popover, and Tooltip. Other\ncomponents keep their own size. Layout spacing props keep their meaning: ",["$","code",null,{"children":"gap=\"md\""}]," is the layout\n",["$","code",null,{"children":"md"}]," gap in any scope."]}],"\n"]}],"\n",["$","$L1b",null,{"as":"h2","id":"examples","children":"Examples"}],"\n",["$","$L1b",null,{"as":"h3","id":"default","children":"Default"}],"\n",["$","p",null,{"children":["A scope sizes everything inside it: text, controls, and default spacing. A component's own\n",["$","code",null,{"children":"size"}]," still wins."]}],"\n",["$","$L1c",null,{"component":"$1d"}],"\n",["$","$L1f",null,{"lang":"tsx","code":"import { Button, Flex, Heading, Input, Label, SizeProvider, Text, TextField, TextLockup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SizeProvider size=\"sm\">\n      <Flex direction=\"column\" gap=\"md\" alignItems=\"start\">\n        <TextLockup>\n          <Heading slot=\"title\" level={2}>\n            Billing\n          </Heading>\n          <Text slot=\"body\">Manage your payment methods.</Text>\n        </TextLockup>\n\n        <TextField>\n          <Label>Email</Label>\n          <Input />\n          <Text slot=\"description\">We'll send receipts here.</Text>\n        </TextField>\n\n        <Flex gap=\"sm\" alignItems=\"center\">\n          <Button variant=\"primary\">Update payment method</Button>\n          <Button variant=\"primary\" size=\"md\">\n            Contact support\n          </Button>\n        </Flex>\n      </Flex>\n    </SizeProvider>\n  );\n}"}],"\n","$L20","\n","$L21","\n","$L22","\n","$L23","\n","$L24","\n","$L25","\n","$L26","\n","$L27","\n","$L28","\n","$L29","\n","$L2a","\n","$L2b","\n","$L2c","\n","$L2d","\n","$L2e","\n","$L2f","\n","$L30","\n","$L31","\n","$L32","\n","$L33","\n","$L34","\n","$L35","\n","$L36","\n","$L37","\n","$L38","\n","$L39"]}]]}],["$L3a","$L3b"],"$L3c"]}],"p":"$@3d","v":null,"s":"$a"}}]]
+2:[["children",{"s":{"n":"slug","t":"oc","k":"components/size-provider","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
+1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L3f",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L41",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$42",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"SizeProvider"}],["$","meta","1",{"name":"description","content":"Sizes a section, so the text, controls, and default spacing inside it follow one size."}],["$","meta","2",{"property":"og:title","content":"SizeProvider"}],["$","meta","3",{"property":"og:description","content":"Sizes a section, so the text, controls, and default spacing inside it follow one size."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/components/size-provider/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"SizeProvider"}],["$","meta","7",{"name":"twitter:description","content":"Sizes a section, so the text, controls, and default spacing inside it follow one size."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/components/size-provider/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@43","v":null,"s":"$a"}},"a":"$@44","u":"$@45","b":"VrNIx1BSMiAE8me1KMTBW"}
+46:I[113955,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"SizesExample"]
+47:I[907568,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"FormExample"]
+49:"NestedScopesExample"
+4a:I[24114,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$49"]
+4b:"ExplicitSizeExample"
+4c:I[39816,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$4b"]
+4d:I[467388,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"OverlaysExample"]
+4f:"PlainHtmlExample"
+50:I[460528,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$4f"]
+51:I[403299,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"PropTableClient"]
+52:I[897367,["$4","$5"],"OutletBoundary"]
+20:["$","$L1b",null,{"as":"h3","id":"sizes","children":"Sizes"}]
+21:["$","p",null,{"children":["The same section at each size. Without a scope, components use ",["$","code",null,{"children":"md"}],"."]}]
+22:["$","$L1c",null,{"component":"$46"}]
+23:["$","$L1f",null,{"lang":"tsx","code":"import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\"column\" gap=\"lg\">\n      {SIZES.map(function section(size) {\n        return (\n          <SizeProvider key={size} size={size}>\n            <Flex direction=\"column\" gap=\"sm\" alignItems=\"start\">\n              <Heading>Size {size}</Heading>\n              <Text>Body copy follows the scope.</Text>\n              <Detail>Supporting copy too.</Detail>\n              <Button variant=\"primary\">Save</Button>\n            </Flex>\n          </SizeProvider>\n        );\n      })}\n    </Flex>\n  );\n}"}]
+24:["$","$L1b",null,{"as":"h3","id":"form","children":"Form"}]
+25:["$","p",null,{"children":"Wrap a whole form to size it at once. Fields, their labels and descriptions, choices, and\nbuttons all follow the scope, so they stay aligned with each other."}]
+26:["$","$L1c",null,{"component":"$47"}]
+48:T4c0,import {
+  Button,
+  Checkbox,
+  Flex,
+  Heading,
+  Input,
+  Label,
+  Select,
+  SelectItem,
+  SelectOptions,
+  SizeProvider,
+  Text,
+  TextField
+} from '@godaddy/antares';
+
+export function FormExample() {
+  return (
+    <SizeProvider size="sm">
+      <Flex direction="column" gap="md" alignItems="start">
+        <Heading level={2}>Contact details</Heading>
+
+        <TextField>
+          <Label>Full name</Label>
+          <Input />
+        </TextField>
+
+        <TextField>
+          <Label>Email</Label>
+          <Input type="email" />
+          <Text slot="description">We'll send receipts here.</Text>
+        </TextField>
+
+        <Select placeholder="Pick a country">
+          <Label>Country</Label>
+          <Button slot="trigger" />
+          <SelectOptions>
+            <SelectItem id="us">United States</SelectItem>
+            <SelectItem id="ca">Canada</SelectItem>
+            <SelectItem id="mx">Mexico</SelectItem>
+          </SelectOptions>
+        </Select>
+
+        <Checkbox>Email me about offers</Checkbox>
+
+        <Flex gap="sm">
+          <Button variant="secondary">Cancel</Button>
+          <Button variant="primary">Save</Button>
+        </Flex>
+      </Flex>
+    </SizeProvider>
+  );
+}27:["$","$L1f",null,{"lang":"tsx","code":"$48"}]
+28:["$","$L1b",null,{"as":"h3","id":"nested-scopes","children":"Nested Scopes"}]
+29:["$","p",null,{"children":["The nearest scope wins. An inner scope replaces the outer size rather than scaling it, so an\n",["$","code",null,{"children":"sm"}]," section inside an ",["$","code",null,{"children":"lg"}]," page matches ",["$","code",null,{"children":"sm"}]," anywhere else."]}]
+2a:["$","$L1c",null,{"component":"$4a"}]
+2b:["$","$L1f",null,{"lang":"tsx","code":"import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nexport function NestedScopesExample() {\n  return (\n    <SizeProvider size=\"lg\">\n      <Flex direction=\"column\" gap=\"md\" alignItems=\"start\">\n        <Heading level={2}>Your plan</Heading>\n        <Text>Premium hosting, renews on March 1.</Text>\n        <Button variant=\"primary\">Manage plan</Button>\n\n        <SizeProvider size=\"sm\">\n          <Flex direction=\"column\" gap=\"sm\" alignItems=\"start\">\n            <Detail>Need less? You can switch to Basic at any time.</Detail>\n            <Button variant=\"primary\">Compare plans</Button>\n          </Flex>\n        </SizeProvider>\n      </Flex>\n    </SizeProvider>\n  );\n}"}]
+2c:["$","$L1b",null,{"as":"h3","id":"explicit-size","children":"Explicit Size"}]
+2d:["$","p",null,{"children":["A component's own ",["$","code",null,{"children":"size"}]," wins for that component and every part inside it, such as a field's\nlabel and description. Its siblings keep following the scope."]}]
+2e:["$","$L1c",null,{"component":"$4c"}]
+2f:["$","$L1f",null,{"lang":"tsx","code":"import { Flex, Input, Label, SizeProvider, Text, TextField } from '@godaddy/antares';\n\nexport function ExplicitSizeExample() {\n  return (\n    <SizeProvider size=\"sm\">\n      <Flex direction=\"column\" gap=\"md\" alignItems=\"start\">\n        <TextField>\n          <Label>Coupon code</Label>\n          <Input />\n          <Text slot=\"description\">Follows the scope.</Text>\n        </TextField>\n\n        <TextField size=\"lg\">\n          <Label>Domain name</Label>\n          <Input />\n          <Text slot=\"description\">Sized by the field.</Text>\n        </TextField>\n      </Flex>\n    </SizeProvider>\n  );\n}"}]
+30:["$","$L1b",null,{"as":"h3","id":"overlays","children":"Overlays"}]
+31:["$","p",null,{"children":["Overlays open at the size of the scope around their trigger, even though they render in a\nportal. An explicit ",["$","code",null,{"children":"size"}]," on the owner sizes its overlay too."]}]
+32:["$","$L1c",null,{"component":"$4d"}]
+4e:T7fe,import {
+  Button,
+  ButtonGroup,
+  Content,
+  DatePicker,
+  DatePickerCalendar,
+  DateRangePicker,
+  DateRangePickerCalendar,
+  Flex,
+  Heading,
+  Label,
+  Modal,
+  ModalTrigger,
+  Select,
+  SelectItem,
+  SelectOptions,
+  SizeProvider,
+  Text,
+  Tooltip,
+  TooltipTrigger
+} from '@godaddy/antares';
+
+export function OverlaysExample() {
+  return (
+    <SizeProvider size="sm">
+      <Flex gap="md" alignItems="end" wrap="wrap">
+        <Select placeholder="Pick a plan">
+          <Label>Plan</Label>
+          <Button slot="trigger" />
+          <SelectOptions>
+            <SelectItem id="basic">Basic</SelectItem>
+            <SelectItem id="pro">Pro</SelectItem>
+          </SelectOptions>
+        </Select>
+
+        <Select size="lg" placeholder="Pick a region">
+          <Label>Region</Label>
+          <Button slot="trigger" />
+          <SelectOptions>
+            <SelectItem id="us">United States</SelectItem>
+            <SelectItem id="eu">Europe</SelectItem>
+          </SelectOptions>
+        </Select>
+
+        <DatePicker>
+          <Label>Renewal date</Label>
+          <Button slot="trigger" />
+          <DatePickerCalendar />
+        </DatePicker>
+
+        <DateRangePicker size="lg">
+          <Label>Contract dates</Label>
+          <Button slot="trigger" />
+          <DateRangePickerCalendar />
+        </DateRangePicker>
+
+        <ModalTrigger>
+          <Button variant="primary">Edit plan</Button>
+          <Modal>
+            <Heading slot="title">Edit plan</Heading>
+            <Content>
+              <Text>Changes apply at the next billing cycle.</Text>
+            </Content>
+            <ButtonGroup>
+              <Button slot="close">Cancel</Button>
+              <Button slot="close" variant="primary">
+                Save
+              </Button>
+            </ButtonGroup>
+          </Modal>
+        </ModalTrigger>
+
+        <TooltipTrigger>
+          <Button variant="primary">Help</Button>
+          <Tooltip>Billing questions</Tooltip>
+        </TooltipTrigger>
+      </Flex>
+    </SizeProvider>
+  );
+}33:["$","$L1f",null,{"lang":"tsx","code":"$4e"}]
+34:["$","$L1b",null,{"as":"h3","id":"plain-html","children":"Plain Html"}]
+35:["$","p",null,{"children":["A scope sizes Antares components only. Plain HTML keeps its own typography, so put copy in\n",["$","code",null,{"children":"Text"}]," to follow the scope."]}]
+36:["$","$L1c",null,{"component":"$50"}]
+37:["$","$L1f",null,{"lang":"tsx","code":"import { SizeProvider, Text } from '@godaddy/antares';\n\nexport function PlainHtmlExample() {\n  return (\n    <SizeProvider size=\"lg\">\n      <p>A plain paragraph keeps the page's typography.</p>\n      <Text>Text follows the scope.</Text>\n    </SizeProvider>\n  );\n}"}]
+38:["$","$L1b",null,{"as":"h2","id":"props","children":"Props"}]
+39:["$","$L51",null,{"entries":[{"name":"size","type":"ScaleSize","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Size of the adopted components inside. Inherits when omitted."}]],"required":false},{"name":"children","type":"ReactNode","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Content to size."}]],"required":false}],"categories":{}}]
+3a:["$","script","script-0",{"src":"/antares/pr-379-site/_next/static/chunks/428imhwwk-ha_.js","async":true}]
+3b:["$","script","script-1",{"src":"/antares/pr-379-site/_next/static/chunks/3nd4_wmz1ljg4.js","async":true}]
+3c:["$","$L52",null,{"children":["$","$42",null,{"name":"Next.MetadataOutlet","children":"$@53"}]}]
+45:true
+a:300
+53:null
+a:C
+44:0
+8:"$undefined"
+43:"$undefined"
+3d:"$undefined"
