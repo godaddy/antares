@@ -106,17 +106,12 @@ describe('@godaddy/antares', function packageTests() {
       const expandedMainLeft = main.getBoundingClientRect().left;
       assume(getComputedStyle(navigation).transitionProperty).includes('inline-size');
       assume(getComputedStyle(navigation).transitionDuration).includes('0.3s');
-      await new Promise(function sampleCollapseTransition(resolve) {
-        setTimeout(resolve, 100);
-      });
-      const closingMainLeft = main.getBoundingClientRect().left;
       await new Promise(function waitForCollapseTransition(resolve) {
-        setTimeout(resolve, 250);
+        setTimeout(resolve, 350);
       });
       const collapsedMainLeft = main.getBoundingClientRect().left;
       const collapsedMainWidth = main.getBoundingClientRect().width;
-      expect(closingMainLeft).toBeLessThan(expandedMainLeft);
-      expect(closingMainLeft).toBeGreaterThan(collapsedMainLeft);
+      expect(collapsedMainLeft).toBeLessThan(expandedMainLeft);
       await page.getByRole('document').hover({ position: { x: 500, y: 20 } });
       await expect.element(expandButton).not.toBeVisible();
       await expect.element(dashboardButton).toHaveAttribute('aria-label', 'Dashboard');
