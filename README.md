@@ -101,6 +101,21 @@ Storybook is configured to automatically scan `packages/**` for `.mdx` and `.sto
 
 Examples should be placed in each package's `examples` folder as individual component exports. This allows reuse in both Storybook documentation and tests.
 
+### Antares block registry
+
+The registry makes blocks installable as source files that you can adapt in your
+application. Regenerate it when blocks, their titles, or their implementation file
+lists change:
+
+```sh
+npm run registry:build
+npm run registry:validate
+```
+
+Review and commit the generated registry with the source changes. Validation
+checks its schema; keeping its entries current remains the contributor's
+responsibility.
+
 ## Development
 
 ### Prerequisites

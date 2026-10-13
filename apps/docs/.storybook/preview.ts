@@ -36,6 +36,7 @@ const preview: Preview = {
         order: [
           'Welcome',
           'components',
+          'Blocks',
           'Bento',
           [
             'Welcome',

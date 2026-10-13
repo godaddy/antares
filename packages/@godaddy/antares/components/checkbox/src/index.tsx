@@ -11,6 +11,7 @@ import {
   composeRenderProps,
   useSlottedContext
 } from 'react-aria-components';
+import { useTypographyClassName } from '#components/_internal/typography';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { GroupContext, type GroupProps } from '#components/structure';
 import { LabelContext } from '#components/label';
@@ -61,9 +62,10 @@ interface CheckboxButtonProps extends Omit<RACCheckboxButtonProps, 'className' |
 
 function CheckboxButton(props: CheckboxButtonProps) {
   const { className, children, ...rest } = props;
+  const typography = useTypographyClassName('text');
 
   return (
-    <Flex {...rest} as={RACCheckboxButton} className={composeClassName(className, styles.checkbox)}>
+    <Flex {...rest} as={RACCheckboxButton} className={composeClassName(className, styles.checkbox, typography)}>
       {children}
     </Flex>
   );

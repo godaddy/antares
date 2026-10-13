@@ -21,6 +21,7 @@ import { DisabledExample } from '../examples/disabled';
 import { InvalidExample } from '../examples/invalid';
 import { MultilineExample } from '../examples/multiline';
 import { TelephoneFieldExample } from '../examples/telephone-field';
+import { SizesExample } from '../examples/sizes';
 
 describe('@godaddy/antares', function antares() {
   describe('#TextField', function textField() {
@@ -175,6 +176,29 @@ describe('@godaddy/antares', function antares() {
         await userEvent.click(page.getByRole('button', { name: 'Submit' }));
 
         assume(group.hasAttribute('data-invalid')).equals(true);
+      });
+    });
+
+    describe('#size', function size() {
+      it('sizes every part and composed control from the field size', async function sizes() {
+        await render(<SizesExample />);
+
+        const expected = {
+          sm: ['14.2222px', '12px', '4px'],
+          md: ['16px', '14px', '8px'],
+          lg: ['18px', '16px', '12px']
+        };
+        for (const [name, [control, label, padding]] of Object.entries(expected)) {
+          const input = page.getByRole('textbox', { name: `Email (${name})` }).element();
+          const field = input.closest('[data-interior]') as HTMLElement;
+          const button = field.querySelector('button') as HTMLElement;
+
+          assume(getComputedStyle(input).fontSize).equals(control);
+          assume(getComputedStyle(button).fontSize).equals(control);
+          assume(getComputedStyle(field.querySelector('label') as HTMLElement).fontSize).equals(label);
+          assume(getComputedStyle(input).paddingBlockStart).equals(padding);
+          assume(getComputedStyle(button).paddingBlockStart).equals(padding);
+        }
       });
     });
   });

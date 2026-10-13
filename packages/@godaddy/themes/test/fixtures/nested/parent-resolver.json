@@ -1,9 +1,0 @@
-{
-  "$schema": "https://www.designtokens.org/schemas/2025.10/resolver.json",
-  "sets": {
-    "parent": {
-      "sources": [{ "$ref": "./child-resolver.json" }]
-    }
-  },
-  "resolutionOrder": ["sets/parent"]
-}

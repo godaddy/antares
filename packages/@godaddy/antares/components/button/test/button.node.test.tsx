@@ -10,6 +10,7 @@ import { DisabledExample } from '../examples/disabled.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 import { IconExample } from '../examples/icon.tsx';
 import { MinimalExample } from '../examples/minimal.tsx';
+import { IconsAndAlignmentExample } from '../examples/icons-and-alignment.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
@@ -40,6 +41,11 @@ describe('@godaddy/antares', function antares() {
 
     it('renders the inline button', function rendersInline() {
       const result = renderToString(<InlineExample />);
+      expect(result).toMatchSnapshot();
+    });
+
+    it('renders stretched inline buttons with independent navigation and icons', function rendersInlineAlignment() {
+      const result = renderToString(<IconsAndAlignmentExample />);
       expect(result).toMatchSnapshot();
     });
 

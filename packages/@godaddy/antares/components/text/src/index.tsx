@@ -1,11 +1,12 @@
 import { forwardRef } from 'react';
-import { cx } from 'cva';
 import { Text as RACText, TextContext as RACTextContext, type TextProps as RACTextProps } from 'react-aria-components';
+import { useTypographyClassName, type TypographyProps } from '#components/_internal/typography';
+import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
 export const TextContext = RACTextContext;
 
-export interface TextProps extends Omit<RACTextProps, 'elementType' | 'slot'> {
+export interface TextProps extends Omit<RACTextProps, 'elementType' | 'slot'>, TypographyProps {
   /** Text alignment. */
   align?: 'start' | 'center' | 'end' | 'justify';
 
@@ -25,16 +26,15 @@ export interface TextProps extends Omit<RACTextProps, 'elementType' | 'slot'> {
   wrap?: 'wrap' | 'nowrap' | 'balance' | 'pretty' | 'stable';
 }
 
-/**
- * Text element.
- *
- * @example
- * ```tsx
- * <Text>Hello, world!</Text>
- * ```
- */
-export const Text = forwardRef<HTMLElement, TextProps>(function Text(props, ref) {
-  const { as, align, maxLines, wrap, className, slot, ...rest } = props;
+export interface DetailProps extends TextProps {}
+
+interface TextElementProps extends TextProps {
+  treatment: 'text' | 'detail';
+}
+
+const TextElement = forwardRef<HTMLElement, TextElementProps>(function TextElement(props, ref) {
+  const { as, align, maxLines, wrap, className, slot, size, emphasis, treatment, ...rest } = props;
+  const typography = useTypographyClassName(treatment, { size, emphasis });
 
   const style = Object.assign({}, props.style, {
     '--align': align,
@@ -48,9 +48,33 @@ export const Text = forwardRef<HTMLElement, TextProps>(function Text(props, ref)
       {...(rest as Omit<RACTextProps, 'slot'>)}
       slot={slot as RACTextProps['slot']}
       ref={ref}
-      className={cx(styles.text, className)}
+      className={composeClassName(className, styles.text, typography)}
       elementType={as}
       style={style}
     />
   );
+});
+
+/**
+ * Body copy. Without `size`, it takes the scope's body tier, or `md` outside any scope.
+ *
+ * @example
+ * ```tsx
+ * <Text>Hello, world!</Text>
+ * ```
+ */
+export const Text = forwardRef<HTMLElement, TextProps>(function Text(props, ref) {
+  return <TextElement {...props} ref={ref} treatment="text" />;
+});
+
+/**
+ * Supporting copy, such as captions and metadata.
+ *
+ * @example
+ * ```tsx
+ * <Detail>Updated 2 hours ago</Detail>
+ * ```
+ */
+export const Detail = forwardRef<HTMLElement, DetailProps>(function Detail(props, ref) {
+  return <TextElement {...props} ref={ref} treatment="detail" />;
 });

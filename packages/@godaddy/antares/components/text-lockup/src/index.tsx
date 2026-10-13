@@ -1,6 +1,9 @@
 import { forwardRef, type ReactNode } from 'react';
+import { cx } from 'cva';
 import { DEFAULT_SLOT, HeadingContext, Provider as RACProvider, TextContext } from 'react-aria-components';
+import { textTreatmentClassName, textSlotSizeClassName } from '#components/_internal/typography';
 import { Flex, type FlexProps } from '#components/layout/flex';
+import { HeaderContext } from '#components/structure';
 import { TagContext, type TagSize } from '#components/tag';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
@@ -22,11 +25,7 @@ const TAG_SIZE: Record<TextLockupSize, TagSize> = {
  * Props for the {@link TextLockup} component.
  */
 export interface TextLockupProps extends Omit<FlexProps, 'as' | 'direction' | 'alignItems'> {
-  /**
-   * The coordinated type size of the lockup. Each part reads this tier on its own role
-   * ramp: the eyebrow on `detail`, the title on `heading`, the body on `body`.
-   * @default 'md'
-   */
+  /** Type size of every part, each on its own role ramp. Follows the size scope when omitted. */
   size?: TextLockupSize;
 
   /** How the parts are aligned within the lockup. @default 'start' */
@@ -46,8 +45,7 @@ export interface TextLockupProps extends Omit<FlexProps, 'as' | 'direction' | 'a
  * Stacks an optional eyebrow, a title and body text as one coordinated type group.
  *
  * The lockup positions and type-sets the parts; the consumer supplies them. Each part names its
- * role with a slot (`eyebrow`, `title`, `body`), so the eyebrow can be plain text or a `Tag`, the
- * title can be any heading level, and anything unslotted is left on its own type.
+ * role with a slot (`eyebrow`, `title`, `body`).
  *
  * @param props - {@link TextLockupProps}
  *
@@ -61,7 +59,8 @@ export interface TextLockupProps extends Omit<FlexProps, 'as' | 'direction' | 'a
  * ```
  */
 export const TextLockup = forwardRef<HTMLDivElement, TextLockupProps>(function TextLockup(props, ref) {
-  const { size = 'md', align = 'start', legibleLines = true, className, children, ...rest } = props;
+  const { size, align = 'start', legibleLines = true, className, children, ...rest } = props;
+  const tier = size && textSlotSizeClassName(size);
 
   return (
     <Flex
@@ -70,24 +69,27 @@ export const TextLockup = forwardRef<HTMLDivElement, TextLockupProps>(function T
       ref={ref}
       direction="column"
       className={composeClassName(className, styles.lockup)}
-      data-size={size}
       data-align={align}
       data-legible-lines={legibleLines ? '' : undefined}
     >
       <RACProvider
         values={[
-          [HeadingContext, { slots: { [DEFAULT_SLOT]: {}, title: { className: styles.title } } }],
+          [HeaderContext, { padding: '0', alignSelf: 'stretch', className: styles.header }],
+          [
+            HeadingContext,
+            { slots: { [DEFAULT_SLOT]: { className: tier }, title: { className: cx(styles.part, tier) } } }
+          ],
           [
             TextContext,
             {
               slots: {
-                [DEFAULT_SLOT]: {},
-                eyebrow: { className: styles.eyebrow },
-                body: { className: styles.body }
+                [DEFAULT_SLOT]: { className: tier },
+                eyebrow: { className: cx(styles.part, textTreatmentClassName('detail'), tier) },
+                body: { className: cx(styles.part, textTreatmentClassName('body'), tier) }
               }
             }
           ],
-          [TagContext, { slots: { [DEFAULT_SLOT]: {}, eyebrow: { size: TAG_SIZE[size] } } }]
+          [TagContext, { slots: { [DEFAULT_SLOT]: {}, eyebrow: size ? { size: TAG_SIZE[size] } : {} } }]
         ]}
       >
         {children}

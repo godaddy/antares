@@ -1,17 +1,18 @@
 import { forwardRef } from 'react';
-import { cx } from 'cva';
 import {
   Heading as RACHeading,
   HeadingContext as RACHeadingContext,
   type HeadingProps as RACHeadingProps
 } from 'react-aria-components';
+import { useTypographyClassName, type TypographyProps } from '#components/_internal/typography';
+import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
 export const HeadingContext = RACHeadingContext;
 
-export interface HeadingProps extends Omit<RACHeadingProps, 'className'> {
+export interface HeadingProps extends Omit<RACHeadingProps, 'className'>, TypographyProps {
   /**
-   * The heading level, rendered as the matching `h1`-`h6` element.
+   * Heading level (`h1`-`h6`). Does not affect the size.
    * Falls back to the level a container provides, then to `3`.
    * @default 3
    */
@@ -33,12 +34,13 @@ export interface HeadingProps extends Omit<RACHeadingProps, 'className'> {
  * @example
  * ```tsx
  * <Heading slot="title">Delete file?</Heading>
- * <Heading level={2}>Section</Heading>
+ * <Heading level={2} size="xl">Section</Heading>
  * ```
  */
 export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(function Heading(props, ref) {
-  const { className, ...rest } = props;
+  const { className, size, emphasis, ...rest } = props;
+  const typography = useTypographyClassName('heading', { size, emphasis });
 
   // `level` stays absent when unset so RACHeading resolves it from context, then its own default.
-  return <RACHeading {...rest} ref={ref} className={cx(styles.heading, className)} />;
+  return <RACHeading {...rest} ref={ref} className={composeClassName(className, styles.heading, typography)} />;
 });

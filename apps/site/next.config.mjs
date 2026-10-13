@@ -27,7 +27,8 @@ const config = {
     resolveAlias: {
       '@storybook/addon-docs/blocks': './lib/storybook-bridge/blocks.tsx',
       '@storybook/react-vite': './lib/storybook-bridge/react-vite.ts',
-      '@bento/storybook-addon-helpers': '@bento/storybook-addon-helpers/runtime'
+      '@bento/storybook-addon-helpers': '@bento/storybook-addon-helpers/runtime',
+      '@bento/block-explorer/runtime': '../../packages/dev/block-explorer/src/runtime.tsx'
     },
     rules: {
       '**/components/**/examples/*.tsx': {
@@ -53,7 +54,8 @@ const config = {
       ...config.resolve.alias,
       '@storybook/addon-docs/blocks': join(__dirname, 'lib/storybook-bridge/blocks.tsx'),
       '@storybook/react-vite': join(__dirname, 'lib/storybook-bridge/react-vite.ts'),
-      '@bento/storybook-addon-helpers$': '@bento/storybook-addon-helpers/runtime'
+      '@bento/storybook-addon-helpers$': '@bento/storybook-addon-helpers/runtime',
+      '@bento/block-explorer/runtime': join(__dirname, '../../packages/dev/block-explorer/src/runtime.tsx')
     };
 
     config.module.rules.push({

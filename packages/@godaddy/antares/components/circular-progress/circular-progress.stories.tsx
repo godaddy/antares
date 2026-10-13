@@ -15,6 +15,7 @@ export const Playground = getStory(PlaygroundExample, {
   args: {
     size: 'md',
     value: 60,
+    isIndeterminate: false,
     label: 'Progress',
     helperText: 'Notice/helper text'
   },
@@ -28,6 +29,10 @@ export const Playground = getStory(PlaygroundExample, {
       control: 'radio',
       options: ['success', 'warning', 'critical'],
       description: 'Visual emphasis for status feedback'
+    },
+    isIndeterminate: {
+      control: 'boolean',
+      description: 'Show ongoing activity when the completion percentage is unknown; hides value text'
     },
     value: {
       control: { type: 'range', min: 0, max: 100, step: 1 },

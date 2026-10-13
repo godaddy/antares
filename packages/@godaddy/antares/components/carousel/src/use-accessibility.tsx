@@ -11,9 +11,6 @@ interface UseAccessibilityProps {
   /** The next button element. */
   nextButton: HTMLElement | null;
 
-  /** The pagination dots element. */
-  paginationDots: HTMLElement | null;
-
   /** The live region element. */
   liveRegion: HTMLElement | null;
 }
@@ -24,18 +21,17 @@ interface UseAccessibilityProps {
  * @param props - The props for the useAccessibility hook.
  */
 export function useAccessibility(props: UseAccessibilityProps) {
-  const { emblaApi, previousButton, nextButton, paginationDots, liveRegion } = props;
+  const { emblaApi, previousButton, nextButton, liveRegion } = props;
   const setupAccessibility = useCallback(
     function setupAccessibility(emblaApi: EmblaCarouselType) {
       const accessibility = emblaApi.plugins().accessibility;
 
-      if (!accessibility || !previousButton || !nextButton || !paginationDots || !liveRegion) return;
+      if (!accessibility || !previousButton || !nextButton || !liveRegion) return;
 
       accessibility.setupLiveRegion(liveRegion);
-      accessibility.setupDotButtons(paginationDots);
       accessibility.setupPrevAndNextButtons(previousButton, nextButton);
     },
-    [emblaApi, previousButton, nextButton, paginationDots, liveRegion]
+    [previousButton, nextButton, liveRegion]
   );
 
   useEffect(

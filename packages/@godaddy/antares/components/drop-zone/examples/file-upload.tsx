@@ -61,7 +61,7 @@ export function FileUploadExample() {
         <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} allowsMultiple onSelect={handleFiles}>
           <Button variant="inline" style={{ fontSize: '0.984rem', fontWeight: 700 }}>
             <Icon icon="add" aria-hidden="true" />
-            Add files
+            <Text>Add files</Text>
           </Button>
         </FileTrigger>
         <Text style={{ fontSize: '0.778rem' }}>The file must be less than 256MB</Text>

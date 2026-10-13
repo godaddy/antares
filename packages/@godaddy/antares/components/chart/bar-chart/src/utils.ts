@@ -9,6 +9,28 @@ export interface Margin {
 }
 
 /**
+ * Tooltip payload for a hovered bar group.
+ */
+export interface BarTooltipData<T = unknown> {
+  x: number | string | Date;
+  y?: number;
+  /** Each series' datum at the hovered group, keyed by series id. */
+  datumByKey: Record<string, { datum: T }>;
+}
+
+/**
+ * Normalizes a category value to a stable string key so equal categories compare equal
+ * regardless of type.
+ *
+ * @param value - A category value (or null/undefined)
+ * @returns A string key, or null when there is no category
+ */
+function categoryKey(value: number | string | Date | null | undefined): string | null {
+  if (value === null || value === undefined) return null;
+  return value instanceof Date ? value.getTime().toString() : String(value);
+}
+
+/**
  * Extracts the ordered list of unique category values across all series.
  * In vertical orientation, categories come from xAccessor; in horizontal, from yAccessor.
  * Deduplication uses string key comparison so that Dates with the same timestamp are treated as equal.
@@ -34,7 +56,7 @@ export function getCategoryValues<T extends object>(
     for (const d of s.data) {
       const v = accessor(d);
       if (v === null || v === undefined) continue;
-      const key = v instanceof Date ? v.getTime().toString() : String(v);
+      const key = categoryKey(v) as string;
       if (!seen.has(key)) {
         seen.add(key);
         values.push(v as number | string | Date);
@@ -42,6 +64,60 @@ export function getCategoryValues<T extends object>(
     }
   }
   return values;
+}
+
+/**
+ * Indexes one series' data by category key so a datum can be looked up by category in O(1) rather
+ * than rescanning the series per category. First datum wins if a category repeats.
+ */
+export function indexDataByCategory<T>(
+  data: readonly T[],
+  categoryAccessor: (d: T) => number | string | Date | null
+): Map<string, T> {
+  const index = new Map<string, T>();
+  for (const d of data) {
+    const key = categoryKey(categoryAccessor(d));
+    if (key !== null && !index.has(key)) index.set(key, d);
+  }
+  return index;
+}
+
+/** Looks up a series' datum for a category value in an index from {@link indexDataByCategory}. */
+export function findDatumInIndex<T>(index: ReadonlyMap<string, T>, catValue: number | string | Date): T | undefined {
+  const key = categoryKey(catValue);
+  return key === null ? undefined : index.get(key);
+}
+
+/**
+ * Assigns each series a stable palette index keyed by id: a series keeps its index across
+ * re-renders, and a removed series' index is freed and reused (smallest first). Pure and
+ * idempotent, so it is safe to call during render.
+ *
+ * @param previous - The previously allocated `id → index` map (empty on first render)
+ * @param ids - The current series ids, in render order
+ * @returns A new `id → index` map
+ */
+export function allocateSeriesColorIndices(
+  previous: ReadonlyMap<string, number>,
+  ids: readonly string[]
+): Map<string, number> {
+  const next = new Map<string, number>();
+  const used = new Set<number>();
+  for (const id of ids) {
+    const index = previous.get(id);
+    if (index !== undefined) {
+      next.set(id, index);
+      used.add(index);
+    }
+  }
+  for (const id of ids) {
+    if (next.has(id)) continue;
+    let index = 0;
+    while (used.has(index)) index += 1;
+    next.set(id, index);
+    used.add(index);
+  }
+  return next;
 }
 
 /**
@@ -141,6 +217,8 @@ interface TooltipPositionOptions {
   rtl: boolean;
   groupIndex: number;
   series: SeriesConfig<any>[];
+  /** Per-series category index (series id -> category key -> datum), built by `indexDataByCategory`. */
+  categoryIndexById: Map<string, ReadonlyMap<string, any>>;
   categoryValues: Array<number | string | Date>;
   xScale: (value: any) => number | undefined;
   yScale: (value: any) => number | undefined;
@@ -171,6 +249,7 @@ export function computeTooltipPosition({
   rtl,
   groupIndex,
   series,
+  categoryIndexById,
   categoryValues,
   xScale,
   yScale,
@@ -186,15 +265,26 @@ export function computeTooltipPosition({
   xAccessor,
   yAccessor
 }: TooltipPositionOptions) {
-  const datumByKey = series.reduce(function buildDatum(acc: any, s: any) {
-    acc[s.id] = { datum: s.data[groupIndex] };
+  const catValue = categoryValues[groupIndex];
+  const datumBySeries = series.map(function resolveDatum(s) {
+    const index = categoryIndexById.get(s.id);
+    return {
+      id: s.id,
+      datum: index ? findDatumInIndex(index, catValue) : undefined
+    };
+  });
+
+  const datumByKey = datumBySeries.reduce(function buildDatum(acc: any, { id, datum }) {
+    if (datum !== undefined) {
+      acc[id] = { datum };
+    }
     return acc;
   }, {});
 
   if (isVertical) {
     let minY = innerHeight;
-    for (const s of series) {
-      const yValue = yAccessor(s.data[groupIndex]);
+    for (const { datum } of datumBySeries) {
+      const yValue = datum !== undefined ? yAccessor(datum) : null;
       if (yValue !== null) {
         minY = Math.min(minY, (yScale(yValue as number) as number) ?? minY);
       }
@@ -213,14 +303,13 @@ export function computeTooltipPosition({
   }
 
   let extremeX = rtl ? innerWidth : 0;
-  for (const s of series) {
-    const xValue = xAccessor(s.data[groupIndex]);
+  for (const { datum } of datumBySeries) {
+    const xValue = datum !== undefined ? xAccessor(datum) : null;
     if (xValue !== null) {
       const scaledX = (valueScale(xValue as number) as number) ?? 0;
       extremeX = rtl ? Math.min(extremeX, scaledX) : Math.max(extremeX, scaledX);
     }
   }
-  const catValue = categoryValues[groupIndex];
   const yPos = (yScale(catValue as any) as number) || 0;
   const groupOffset = (categoryScale.bandwidth() - totalBarWidth) / 2;
   const barGroupTop = yPos + groupOffset;

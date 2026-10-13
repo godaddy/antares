@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render } from 'vitest-browser-react';
+import { cdp } from 'vitest/browser';
+import { IndeterminateExample } from '../examples/indeterminate.tsx';
 import { CircularProgress } from '@godaddy/antares';
 import { DefaultExample } from '../examples/default.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
@@ -7,6 +9,90 @@ import { EmphasisExample } from '../examples/emphasis.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#CircularProgress', function circularProgressTests() {
+    it('announces activity without a numeric value', async function indeterminateSemantics() {
+      const { getByRole, getByText } = await render(<IndeterminateExample />);
+      const progress = getByRole('progressbar', { name: 'Preparing upload…' });
+      await expect.element(progress).toBeVisible();
+      await expect.element(progress).not.toHaveAttribute('aria-valuenow');
+      await expect.element(progress).not.toHaveAttribute('aria-valuetext');
+      await expect.element(progress).toHaveAttribute('aria-valuemin', '0');
+      await expect.element(progress).toHaveAttribute('aria-valuemax', '100');
+      await expect.element(progress).toHaveAccessibleDescription('Calculating the total size');
+      await expect.element(getByText('Calculating the total size')).toBeVisible();
+      expect(progress.element().textContent).not.toContain('0%');
+    });
+
+    it('switches between unknown and measured progress', async function changesMode() {
+      const screen = await render(<IndeterminateExample value={60} valueLabel="60 files" />);
+      const progress = screen.getByRole('progressbar');
+      await expect.element(progress).not.toHaveAttribute('aria-valuenow');
+      await expect.element(progress).not.toHaveAttribute('aria-valuetext');
+      expect(progress.element().textContent).not.toContain('60 files');
+      expect(progress.element().querySelector('[data-indeterminate]')).not.toBeNull();
+
+      await screen.rerender(<IndeterminateExample isIndeterminate={false} value={60} valueLabel="60 files" />);
+      await expect.element(progress).toHaveAttribute('aria-valuenow', '60');
+      await expect.element(progress).toHaveAttribute('aria-valuetext', '60 files');
+      await expect.element(screen.getByText('60 files')).toBeVisible();
+      expect(progress.element().querySelector('[data-indeterminate]')).toBeNull();
+
+      await screen.rerender(<IndeterminateExample value={90} />);
+      await expect.element(progress).not.toHaveAttribute('aria-valuenow');
+      await expect.element(progress).not.toHaveAttribute('aria-valuetext');
+      expect(progress.element().textContent).not.toContain('90%');
+
+      await screen.rerender(<IndeterminateExample isIndeterminate={false} />);
+      await expect.element(progress).toHaveAttribute('aria-valuenow', '0');
+      await expect.element(screen.getByText('0%')).toBeVisible();
+    });
+
+    it('supports a nonvisual label and a custom range', async function labelAndRange() {
+      const screen = await render(
+        <IndeterminateExample label={undefined} aria-label="Preparing upload" minValue={20} maxValue={80} value={50} />
+      );
+      const progress = screen.getByRole('progressbar', { name: 'Preparing upload' });
+      await expect.element(progress).toHaveAttribute('aria-valuemin', '20');
+      await expect.element(progress).toHaveAttribute('aria-valuemax', '80');
+      await expect.element(progress).not.toHaveAttribute('aria-valuenow');
+      await screen.rerender(
+        <IndeterminateExample
+          label={undefined}
+          aria-label="Preparing upload"
+          minValue={20}
+          maxValue={80}
+          value={50}
+          isIndeterminate={false}
+        />
+      );
+      await expect.element(progress).toHaveAttribute('aria-valuenow', '50');
+      await expect.element(progress).toHaveAttribute('aria-valuetext', '50%');
+    });
+
+    it('keeps the indicator visible while respecting motion preferences', async function motionPreferences() {
+      const session = cdp() as unknown as { send: (method: string, params: unknown) => Promise<void> };
+      try {
+        await session.send('Emulation.setEmulatedMedia', {
+          features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }]
+        });
+        const { getByRole } = await render(<IndeterminateExample />);
+        const progress = getByRole('progressbar');
+        const indicator = progress.element().querySelector('[data-indeterminate]') as Element;
+        expect(indicator).not.toBeNull();
+        expect(getComputedStyle(indicator).animationName).not.toBe('none');
+        await session.send('Emulation.setEmulatedMedia', {
+          features: [{ name: 'prefers-reduced-motion', value: 'reduce' }]
+        });
+        expect(matchMedia('(prefers-reduced-motion: reduce)').matches).toBe(true);
+        expect(getComputedStyle(indicator).animationName).toBe('none');
+        await expect.element(progress).toBeVisible();
+        const fill = indicator.querySelector('circle:nth-child(2)') as SVGCircleElement;
+        const circumference = Number(fill.getAttribute('stroke-dasharray'));
+        expect(Number(fill.getAttribute('stroke-dashoffset'))).toBeCloseTo(circumference * 0.75);
+      } finally {
+        await session.send('Emulation.setEmulatedMedia', { features: [] });
+      }
+    });
+
     it('renders with role progressbar', async function rendersRole() {
       const { getByRole } = await render(<DefaultExample />);
       await expect.element(getByRole('progressbar')).toBeVisible();

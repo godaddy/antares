@@ -1,0 +1,6 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "godaddy-antares",
+  "homepage": "https://github.com/godaddy/antares",
+  "include": ["packages/@godaddy/antares/blocks/registry.json"]
+}

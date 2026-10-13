@@ -1,7 +1,7 @@
 .calendar {
   --_calendar-gu: var(--ux-1sbfig8, 0.5rem);
   --_calendar-line-height: var(--ux-jw5s9j, 1.375);
-  --_calendar-font-size: var(--ux-cxbe8g, 1rem);
+  --_calendar-font-size: var(--_size-control-font);
 
   --_calendar-cell-max: calc(var(--_calendar-gu) * 4 + var(--_calendar-line-height) * var(--_calendar-font-size));
   /* Reserved from the viewport width: popover padding plus breathing room from screen edges. */
@@ -14,6 +14,8 @@
 }
 
 .yearField {
+  font-family: var(--ux-9wtaa3, sans-serif);
+  font-size: var(--_size-input-font);
   max-width: calc(4ch + var(--_calendar-gu) * 4 + 2px);
 }
 
@@ -28,6 +30,7 @@
 
 .grid {
   border-collapse: collapse;
+  font-size: var(--_calendar-font-size);
 }
 
 .cell {

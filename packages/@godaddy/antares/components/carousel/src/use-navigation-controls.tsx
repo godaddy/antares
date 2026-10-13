@@ -41,9 +41,6 @@ interface ReturnType {
 
   /** The callback function to be called when the next button is pressed. */
   onNextButtonPress: () => void;
-
-  /** The callback function to be called when a pagination dot is pressed. */
-  onPaginationDotPress: (index: number) => void;
 }
 
 /**
@@ -91,7 +88,7 @@ export function useNavigationControls(props: UseNavigationControlsProps): Return
       const { scrollSnap, atFirstSlide, atLastSlide } = updateValues(emblaApi);
       onChange?.(scrollSnap, { atFirstSlide, atLastSlide });
     },
-    [controlledMode, onChange, updateValues]
+    [onChange, updateValues]
   );
 
   const onPrevButtonPress = useCallback(
@@ -110,13 +107,6 @@ export function useNavigationControls(props: UseNavigationControlsProps): Return
       onNext?.(scrollSnap, { atFirstSlide, atLastSlide });
     },
     [emblaApi, controlledMode, updateValues, onNext]
-  );
-
-  const onPaginationDotPress = useCallback(
-    function onPaginationDotPress(index: number) {
-      emblaApi?.goTo(index);
-    },
-    [emblaApi]
   );
 
   // handle event attachments
@@ -149,7 +139,6 @@ export function useNavigationControls(props: UseNavigationControlsProps): Return
     atFirstSlide,
     atLastSlide,
     onPrevButtonPress,
-    onNextButtonPress,
-    onPaginationDotPress
+    onNextButtonPress
   };
 }

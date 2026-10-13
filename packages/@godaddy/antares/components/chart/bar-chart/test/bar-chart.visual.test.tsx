@@ -3,14 +3,17 @@ import type React from 'react';
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
+import { CategoryColorsExample } from '../examples/category-colors';
 import { waitForSelector } from '#test/utils/wait-for-selector.ts';
 import { CustomDomainExample } from '../examples/custom-domain';
+import { CustomTooltipPeriodComparisonExample } from '../examples/custom-tooltip-period-comparison';
 import { FormattedTickMarksExample } from '../examples/formatted-tick-marks';
 import { HorizontalMultiSeriesExample } from '../examples/horizontal-multi-series';
 import { HorizontalSingleSeriesExample } from '../examples/horizontal-single-series';
 import { MultiSeriesExample } from '../examples/multi-series';
 import { RTLHorizontalMultiSeriesExample } from '../examples/rtl-horizontal-multi-series';
 import { RTLMultiSeriesExample } from '../examples/rtl-multi-series';
+import { SeriesColorsExample } from '../examples/series-colors';
 import { DefaultExample } from '../examples/default';
 
 /**
@@ -83,6 +86,41 @@ describe('@godaddy/antares', function antares() {
 
         assume(container.querySelector('svg')).exists();
         await expect(container).toMatchScreenshot('formatted-tick-marks');
+      });
+
+      it('series-colors screenshot', async function seriesColors() {
+        const { container } = await renderExampleAndWait(SeriesColorsExample);
+
+        assume(container.querySelector('svg')).exists();
+        await expect(container).toMatchScreenshot('series-colors');
+      });
+
+      it('category-colors screenshot', async function categoryColors() {
+        const { container } = await renderExampleAndWait(CategoryColorsExample);
+
+        assume(container.querySelector('svg')).exists();
+        await expect(container).toMatchScreenshot('category-colors');
+      });
+
+      it('custom-tooltip-period-comparison screenshot', async function customTooltipPeriodComparison() {
+        const { container } = await renderExampleAndWait(CustomTooltipPeriodComparisonExample);
+
+        assume(container.querySelector('svg')).exists();
+
+        // Hover a bar group's hitbox so the custom tooltip renders. Each group is a
+        // `<Group role="group">` wrapping a transparent hover `<rect>`; pick a middle group so
+        // the tooltip is fully visible. Its position is derived from the group index (not the
+        // pointer location), so the capture stays deterministic.
+        const hitboxes = container.querySelectorAll('[role="group"] rect');
+        const hitbox = hitboxes[Math.floor(hitboxes.length / 2)];
+        assume(hitbox).exists();
+        await page.elementLocator(hitbox).hover();
+
+        // The tooltip is portaled to document.body, so wait for it on the page (not `container`)
+        // before capturing; otherwise the screenshot races the tooltip's appearance.
+        await expect.element(page.getByText('Net Payments', { exact: true })).toBeVisible();
+
+        await expect(container).toMatchScreenshot('custom-tooltip-period-comparison');
       });
     });
 

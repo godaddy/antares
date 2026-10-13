@@ -4,15 +4,17 @@ import { Text } from '#components/text';
 import type { TooltipData } from '@visx/xychart';
 import type { ReactElement, ReactNode } from 'react';
 import { useMemo } from 'react';
+import { TextContext as RACTextContext } from 'react-aria-components';
 import type { DataPoint, InternalSeriesConfig } from '../../../types.ts';
 import { yAccessor as defaultYAccessor } from '../../../utils.ts';
 import { cx } from 'cva';
 import styles from './index.module.css';
 import { SWATCH_DASH_ARRAY } from '#components/chart/_internal/legend';
+import { textTreatmentClassName } from '#components/_internal/typography';
 
 /**
  * Styled popover container shared by the built-in tooltip and any custom tooltip
- * content, so both render with identical chrome (elevation, rounding, padding).
+ * content, so both render with identical chrome (elevation, rounding, padding) and type.
  *
  * @param props.children - Tooltip content to render inside the popover.
  * @param props.className - Additional class name merged onto the container.
@@ -21,7 +23,9 @@ export function TooltipContainer(props: { children: ReactNode; className?: strin
   const { children, className } = props;
   return (
     <Box padding="md" rounding="2xl" elevation="raised" className={cx(styles.tooltip, className)}>
-      {children}
+      <RACTextContext.Provider value={{ className: textTreatmentClassName('inherit') }}>
+        {children}
+      </RACTextContext.Provider>
     </Box>
   );
 }
@@ -96,8 +100,11 @@ export function Tooltip<T extends object = DataPoint>(
         })
         .map(function toSeriesItem(seriesItem) {
           const datum = tooltipData.datumByKey[seriesItem.id];
+          // Prefer a per-datum color (e.g. bar chart categoryColors); fall back to the series color.
+          const swatchColor = seriesItem._resolveDatumColor?.(datum.datum as T) ?? seriesItem._resolvedColor;
           return {
             ...seriesItem,
+            _resolvedColor: swatchColor,
             value: (formatValue as (d: unknown) => string)(datum.datum)
           };
         });
@@ -128,7 +135,10 @@ export function Tooltip<T extends object = DataPoint>(
                   <Box
                     className={styles.swatch}
                     rounding="full"
-                    style={item._resolvedColor ? { backgroundColor: item._resolvedColor } : undefined}
+                    style={{
+                      opacity: item.opacity ?? undefined,
+                      backgroundColor: item._resolvedColor || undefined
+                    }}
                   />
                 ) : (
                   item.variant && (
@@ -139,6 +149,7 @@ export function Tooltip<T extends object = DataPoint>(
                       focusable="false"
                       width="16"
                       height="16"
+                      style={item.opacity != null ? { opacity: item.opacity } : undefined}
                     >
                       <line
                         x1="0"

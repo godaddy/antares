@@ -118,7 +118,7 @@ export function ReplaceFileExample() {
                 }}
               >
                 <Icon icon="add" aria-hidden="true" />
-                Add files
+                <Text>Add files</Text>
               </Button>
             </FileTrigger>
           );

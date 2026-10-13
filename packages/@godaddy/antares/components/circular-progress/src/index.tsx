@@ -10,13 +10,18 @@ import { Text } from '#components/text';
 import { Flex } from '#components/layout/flex';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
+import { cx } from 'cva';
+import { textTreatmentClassName } from '#components/_internal/typography';
 
 const VIEWBOX_SIZE = 100;
 const STROKE_WIDTH = 12.5;
 const RADIUS = (VIEWBOX_SIZE - STROKE_WIDTH) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-export interface CircularProgressProps extends Omit<RACProgressBarProps, 'children' | 'isIndeterminate'> {
+export interface CircularProgressProps extends Omit<RACProgressBarProps, 'children'> {
+  /** Show ongoing activity when progress cannot be measured. Ignores value and hides value text. @default false */
+  isIndeterminate?: boolean;
+
   /** Size preset controlling circle diameter and typography scale. @default 'md' */
   size?: 'sm' | 'md' | 'lg' | 'xl';
 
@@ -31,7 +36,7 @@ export interface CircularProgressProps extends Omit<RACProgressBarProps, 'childr
 }
 
 /**
- * A circular progress indicator shows determinate progress of an operation over time.
+ * A circular progress indicator shows determinate or indeterminate progress of an operation over time.
  *
  * @param props - The properties {@link CircularProgressProps} passed to the component.
  *
@@ -72,12 +77,17 @@ export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps
           return { ...value, '--circular-progress-stroke-width': STROKE_WIDTH } as CSSProperties;
         })}
       >
-        {function renderContent({ percentage, valueText }) {
-          const offset = CIRCUMFERENCE * (1 - (percentage ?? 0) / 100);
+        {function renderContent({ percentage, valueText, isIndeterminate }) {
+          const offset = CIRCUMFERENCE * (isIndeterminate ? 0.75 : 1 - (percentage ?? 0) / 100);
           return (
             <>
               <div className={styles.indicator}>
-                <svg className={styles.svg} viewBox={`0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`} aria-hidden="true">
+                <svg
+                  className={styles.svg}
+                  data-indeterminate={isIndeterminate || undefined}
+                  viewBox={`0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`}
+                  aria-hidden="true"
+                >
                   <circle className={styles.track} cx="50" cy="50" r={RADIUS} fill="none" strokeLinecap="round" />
                   <circle
                     className={styles.fill}
@@ -91,7 +101,7 @@ export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps
                     strokeDashoffset={offset}
                   />
                 </svg>
-                {valueText ? (
+                {!isIndeterminate && valueText ? (
                   <Flex className={styles.output} alignItems="center" justifyContent="center" aria-hidden="true">
                     {valueText}
                   </Flex>
@@ -99,7 +109,7 @@ export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps
               </div>
               {label ? <Label className={styles.label}>{label}</Label> : null}
               {helperText ? (
-                <Text id={helperTextId} className={styles.helperText}>
+                <Text id={helperTextId} className={cx(styles.helperText, textTreatmentClassName('inherit'))}>
                   {helperText}
                 </Text>
               ) : null}

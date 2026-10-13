@@ -1,0 +1,24 @@
+---
+title: Build product experiences with Antares.
+description: Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product.
+---
+
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Block } from '@bento/block-explorer/runtime';
+import * as SignInFormStories from './sign-in-form/sign-in-form.stories.tsx';
+
+<Meta title="Blocks" id="blocks" />
+
+## Install a block
+
+From the root of your application, run the command copied by the block's Install button:
+
+```bash
+npx shadcn@latest add godaddy/antares/blocks/sign-in-form
+```
+
+## Blocks
+
+### Sign-in form
+
+<Block id="sign-in-form" description="A simple Antares sign-in experience." of={SignInFormStories.Preview} />
