@@ -762,6 +762,191 @@ A fully disabled calendar.
 <PropTable />
 
 
+# Card
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Card groups related content, like media, text, and actions, on a single surface. On its own, a Card
+is a static surface, or a link when you pass `href`. Put Cards in a `CardGroup` to make them
+selectable or to give them an action: the group owns selection, row actions, focus, and arrow-key
+navigation.
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A simple website status message.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Card } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Card>Your website is published and ready for visitors.</Card>;\n}&#x22;" />
+
+### Text lockup [#text-lockup]
+
+Introduce the next step in setting up a business website.
+
+<Story of="TextLockupExample" />
+
+<Source language="tsx" code="&#x22;import { Card, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function TextLockupExample() {\n  return (\n    <Card>\n      <TextLockup>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;info\&#x22;>\n          New\n        </Tag>\n        <Heading slot=\&#x22;title\&#x22;>Connect your domain</Heading>\n        <Text slot=\&#x22;body\&#x22;>Give your website a memorable address so customers can find your business.</Text>\n      </TextLockup>\n    </Card>\n  );\n}&#x22;" />
+
+### Corner actions [#corner-actions]
+
+Save a business guide for later, mark it as read from the menu, or open the guide.
+
+<Story of="CornerActionsExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Button,\n  ButtonGroup,\n  Card,\n  CornerActions,\n  Header,\n  Heading,\n  Icon,\n  LinkButton,\n  Menu,\n  MenuItem,\n  MenuTrigger,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function CornerActionsExample({ dir }: { dir?: 'ltr' | 'rtl' } = {}) {\n  const [saved, setSaved] = useState(false);\n  const [read, setRead] = useState(false);\n\n  return (\n    <Card dir={dir} style={{ maxWidth: '24rem' }}>\n      <TextLockup>\n        <Header>\n          <CornerActions>\n            <Button aria-label=\&#x22;Favorite\&#x22; aria-pressed={saved} onPress={() => setSaved(!saved)}>\n              <Icon icon=\&#x22;star\&#x22; />\n            </Button>\n            <MenuTrigger popoverProps={{ placement: 'bottom end' }}>\n              <Button aria-label=\&#x22;More options\&#x22;>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n              <Menu aria-label=\&#x22;Guide actions\&#x22;>\n                <MenuItem id=\&#x22;read\&#x22; onAction={() => setRead(!read)}>\n                  {read ? 'Mark as unread' : 'Mark as read'}\n                </MenuItem>\n              </Menu>\n            </MenuTrigger>\n          </CornerActions>\n          <Heading slot=\&#x22;title\&#x22;>\n            Everything you need to launch your first online store and turn new visitors into returning customers\n          </Heading>\n        </Header>\n        <Text slot=\&#x22;body\&#x22;>\n          A practical checklist for your products, payments, shipping, and first marketing campaign.\n        </Text>\n        {read && <Tag>Read</Tag>}\n        <Text role=\&#x22;status\&#x22;>{saved ? 'Saved to your reading list' : '5 min read'}</Text>\n      </TextLockup>\n\n      <ButtonGroup>\n        <LinkButton variant=\&#x22;primary\&#x22; href=\&#x22;#store-launch-guide\&#x22;>\n          Read guide\n        </LinkButton>\n      </ButtonGroup>\n    </Card>\n  );\n}&#x22;" />
+
+### Link [#link]
+
+Link to billing, domain search, or hosting from the whole Card. Keep nested controls out of
+standalone link Cards.
+
+<Story of="LinkExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Card, Grid, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function LinkExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <Card href=\&#x22;#billing\&#x22; aria-label=\&#x22;Manage billing\&#x22;>\n        Manage your billing and payment methods\n      </Card>\n\n      <Card href=\&#x22;#domains\&#x22;>\n        <TextLockup>\n          <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;info\&#x22;>\n            Domains\n          </Tag>\n          <Heading slot=\&#x22;title\&#x22;>Find your domain</Heading>\n          <Text slot=\&#x22;body\&#x22;>Search for the perfect name for your business.</Text>\n        </TextLockup>\n      </Card>\n\n      <Card href=\&#x22;#hosting\&#x22;>\n        <Box elevation=\&#x22;raised\&#x22; rounding=\&#x22;md\&#x22; padding=\&#x22;md\&#x22;>\n          <Text>99.9% uptime</Text>\n        </Box>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22;>Web hosting</Heading>\n          <Text slot=\&#x22;body\&#x22;>Keep your website online with hosting that grows with your business.</Text>\n        </TextLockup>\n      </Card>\n    </Grid>\n  );\n}&#x22;" />
+
+### Grouped links [#grouped-links]
+
+Open a domain's settings by pressing its Card or Enter. Toggle auto-renew or manage DNS without
+opening the Card. Arrow keys move between domains, skipping the domain being transferred.
+
+<Story of="GroupedLinksExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Card, CardGroup, Flex, Heading, LinkButton, Switch, Text, TextLockup } from '@godaddy/antares';\n\nexport function GroupedLinksExample() {\n  const [opened, setOpened] = useState<string[]>([]);\n  const [autoRenew, setAutoRenew] = useState(false);\n\n  function open(key: string) {\n    setOpened((keys) => [...keys, key]);\n  }\n\n  return (\n    <>\n      <CardGroup aria-label=\&#x22;Domain names\&#x22; selectionMode=\&#x22;none\&#x22; keyboardNavigationBehavior=\&#x22;tab\&#x22;>\n        <Card\n          id=\&#x22;example-com\&#x22;\n          textValue=\&#x22;example.com\&#x22;\n          href=\&#x22;#example-com-settings\&#x22;\n          onAction={() => open('example.com')}\n        >\n          <TextLockup>\n            <Heading slot=\&#x22;title\&#x22;>example.com</Heading>\n            <Text slot=\&#x22;body\&#x22;>Auto-renew is {autoRenew ? 'on' : 'off'}. Open this domain to view its settings.</Text>\n          </TextLockup>\n          <Flex alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;space-between\&#x22; gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n            <Switch isSelected={autoRenew} onChange={setAutoRenew}>\n              Auto-renew\n            </Switch>\n            <LinkButton variant=\&#x22;primary\&#x22; href=\&#x22;#example-com-dns\&#x22;>\n              Manage DNS\n            </LinkButton>\n          </Flex>\n        </Card>\n        <Card\n          id=\&#x22;example-net\&#x22;\n          textValue=\&#x22;example.net\&#x22;\n          href=\&#x22;#example-net-settings\&#x22;\n          onAction={() => open('example.net')}\n        >\n          <Heading>example.net</Heading>\n          <Text>Auto-renew is on. Open this domain to view its settings.</Text>\n        </Card>\n        <Card\n          id=\&#x22;example-org\&#x22;\n          textValue=\&#x22;example.org\&#x22;\n          href=\&#x22;#example-org-settings\&#x22;\n          onAction={() => open('example.org')}\n          isDisabled\n        >\n          <Heading>example.org</Heading>\n          <Text>Transfer in progress. Settings will be available when the transfer is complete.</Text>\n        </Card>\n      </CardGroup>\n      <Text>Opened: {opened.join(',') || 'none'}</Text>\n    </>\n  );\n}&#x22;" />
+
+### Media [#media]
+
+Preview website templates with inset, full bleed, or standalone media, and a brand palette
+with custom media. Direct CornerActions place the favorite action over the template preview.
+
+<Story of="MediaExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Box, Button, Card, CornerActions, Grid, Heading, Icon, Image, Tag, Text, TextLockup } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 640 360%22%3E%3Crect width=%22640%22 height=%22360%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%22480%22 cy=%22110%22 r=%2270%22 fill=%22%234ecdc4%22/%3E%3Cpath d=%22M0 300 180 150l120 100 90-75 250 185H0z%22 fill=%22%230b3d91%22/%3E%3C/svg%3E';\n\nexport function MediaExample() {\n  const [saved, setSaved] = useState(false);\n\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <Card>\n        <CornerActions>\n          <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;Favorite\&#x22; aria-pressed={saved} onPress={() => setSaved(!saved)}>\n            <Icon icon=\&#x22;star\&#x22; />\n          </Button>\n        </CornerActions>\n        <Image\n          src={image}\n          alt=\&#x22;Blue mountain landscape\&#x22;\n          style={{ display: 'block', width: '100%', borderRadius: 'inherit' }}\n        />\n        <TextLockup>\n          <Tag slot=\&#x22;eyebrow\&#x22;>Portfolio</Tag>\n          <Heading slot=\&#x22;title\&#x22;>Lakeside portfolio</Heading>\n          <Text slot=\&#x22;body\&#x22;>A calm, spacious template that puts your work first.</Text>\n          <Text role=\&#x22;status\&#x22;>{saved ? 'Saved to your templates' : 'Free template'}</Text>\n        </TextLockup>\n      </Card>\n\n      <Card padding=\&#x22;0\&#x22; gap=\&#x22;0\&#x22;>\n        <Box style={{ overflow: 'hidden', borderStartStartRadius: 'inherit', borderStartEndRadius: 'inherit' }}>\n          <Image src={image} alt=\&#x22;Blue mountain landscape\&#x22; style={{ display: 'block', width: '100%' }} />\n        </Box>\n\n        <TextLockup padding=\&#x22;lg\&#x22;>\n          <Tag slot=\&#x22;eyebrow\&#x22;>Photography</Tag>\n          <Heading slot=\&#x22;title\&#x22;>Horizon photography</Heading>\n          <Text slot=\&#x22;body\&#x22;>Give your photos room to tell the story.</Text>\n        </TextLockup>\n      </Card>\n\n      <Card padding=\&#x22;0\&#x22; gap=\&#x22;0\&#x22;>\n        <Box style={{ overflow: 'hidden', borderRadius: 'inherit' }}>\n          <Image\n            src={image}\n            alt=\&#x22;Blue mountain landscape preview for the Horizon website template\&#x22;\n            style={{ display: 'block', width: '100%' }}\n          />\n        </Box>\n      </Card>\n\n      <Card>\n        <TextLockup>\n          <Tag slot=\&#x22;eyebrow\&#x22;>Branding</Tag>\n          <Heading slot=\&#x22;title\&#x22;>Find your brand colors</Heading>\n          <Text slot=\&#x22;body\&#x22;>A blue and turquoise palette for a fresh, confident first impression.</Text>\n        </TextLockup>\n        <Box\n          role=\&#x22;img\&#x22;\n          aria-label=\&#x22;Blue and turquoise brand palette\&#x22;\n          rounding=\&#x22;lg\&#x22;\n          style={{ aspectRatio: '16 / 9', background: 'linear-gradient(135deg, #145fa9, #4ecdc4)' }}\n        />\n      </Card>\n    </Grid>\n  );\n}&#x22;" />
+
+### Actions [#actions]
+
+Open a newsletter signup from the Card, or save it without opening the form. Submit a valid
+email to see a local confirmation.
+
+<Story of="ActionsExample" />
+
+<Source language="tsx" code="&#x22;import { useState, type FormEvent } from 'react';\nimport {\n  Box,\n  Button,\n  ButtonGroup,\n  Card,\n  CardGroup,\n  FieldError,\n  Heading,\n  Input,\n  Label,\n  Modal,\n  Tag,\n  Text,\n  TextField,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function ActionsExample() {\n  const [subscribing, setSubscribing] = useState(false);\n  const [saved, setSaved] = useState(false);\n  const [subscribedEmail, setSubscribedEmail] = useState('');\n\n  function subscribe(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    setSubscribedEmail(String(new FormData(event.currentTarget).get('email')));\n    setSubscribing(false);\n  }\n\n  return (\n    <>\n      <CardGroup aria-label=\&#x22;Newsletters\&#x22; keyboardNavigationBehavior=\&#x22;tab\&#x22;>\n        <Card id=\&#x22;newsletter\&#x22; textValue=\&#x22;Join our mailing list\&#x22; onAction={() => setSubscribing(true)}>\n          <TextLockup>\n            <Tag slot=\&#x22;eyebrow\&#x22;>Newsletter</Tag>\n            <Heading slot=\&#x22;title\&#x22;>Join our mailing list</Heading>\n            <Text slot=\&#x22;body\&#x22;>Get practical tips for growing your business, delivered to your inbox every month.</Text>\n          </TextLockup>\n\n          <ButtonGroup justifyContent=\&#x22;end\&#x22;>\n            <Button variant=\&#x22;primary\&#x22; aria-pressed={saved} onPress={() => setSaved(!saved)}>\n              {saved ? 'Saved' : 'Save'}\n            </Button>\n          </ButtonGroup>\n        </Card>\n      </CardGroup>\n      <Text role=\&#x22;status\&#x22;>{subscribedEmail ? `Subscribed with ${subscribedEmail}` : ''}</Text>\n\n      <Modal isOpen={subscribing} onOpenChange={setSubscribing} aria-label=\&#x22;Join our mailing list\&#x22;>\n        <Box as=\&#x22;form\&#x22; onSubmit={subscribe}>\n          <Card elevation=\&#x22;base\&#x22;>\n            <TextLockup>\n              <Heading slot=\&#x22;title\&#x22;>Join our mailing list</Heading>\n              <Text slot=\&#x22;body\&#x22;>One email a month. Unsubscribe whenever you like.</Text>\n            </TextLockup>\n\n            <TextField type=\&#x22;email\&#x22; name=\&#x22;email\&#x22; isRequired>\n              <Label>Email</Label>\n              <Input placeholder=\&#x22;you@example.com\&#x22; />\n              <Box style={{ minHeight: '1.5em' }}>\n                <FieldError>Enter a valid email address.</FieldError>\n              </Box>\n            </TextField>\n\n            <ButtonGroup justifyContent=\&#x22;end\&#x22;>\n              <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n              <Button type=\&#x22;submit\&#x22; variant=\&#x22;primary\&#x22;>\n                Subscribe\n              </Button>\n            </ButtonGroup>\n          </Card>\n        </Box>\n      </Modal>\n    </>\n  );\n}&#x22;" />
+
+### Multiple selection [#multiple-selection]
+
+Choose optional add-ons and see the monthly total update. The indicators show selection,
+including a custom text indicator for email.
+
+<Story of="MultipleSelectionExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Card,\n  CardGroup,\n  CardSelectionIndicator,\n  CornerActions,\n  Flex,\n  Header,\n  Heading,\n  type Selection,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function MultipleSelectionExample() {\n  const [selected, setSelected] = useState<Selection>(new Set(['privacy']));\n  const privacyPrice = 5;\n  const emailPrice = 8;\n  const total =\n    (selected === 'all' || selected.has('privacy') ? privacyPrice : 0) +\n    (selected === 'all' || selected.has('email') ? emailPrice : 0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <CardGroup\n        aria-label=\&#x22;Select add-ons\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selected}\n        onSelectionChange={setSelected}\n      >\n        <Card id=\&#x22;privacy\&#x22; textValue=\&#x22;Domain privacy\&#x22;>\n          <TextLockup>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator data-testid=\&#x22;privacy-indicator\&#x22; />\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>Domain privacy</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>Hide your contact details from the public directory.</Text>\n            <Text>${privacyPrice}/month</Text>\n          </TextLockup>\n        </Card>\n\n        <Card id=\&#x22;email\&#x22; textValue=\&#x22;Professional email\&#x22;>\n          <TextLockup>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator data-testid=\&#x22;email-indicator\&#x22;>\n                  {({ isSelected }) => <Text>{isSelected ? 'Added' : 'Add'}</Text>}\n                </CardSelectionIndicator>\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>Professional email</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>Send from a mailbox at your domain.</Text>\n            <Text>${emailPrice}/month</Text>\n          </TextLockup>\n        </Card>\n      </CardGroup>\n      <Text role=\&#x22;status\&#x22;>Add-ons total: ${total}/month</Text>\n    </Flex>\n  );\n}&#x22;" />
+
+### Single selection [#single-selection]
+
+Pick a plan and see its monthly price. `disallowEmptySelection` keeps one plan selected.
+
+<Story of="SingleSelectionExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Card,\n  CardGroup,\n  CardSelectionIndicator,\n  CornerActions,\n  Flex,\n  Header,\n  Heading,\n  type Selection,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function SingleSelectionExample() {\n  const [selected, setSelected] = useState<Selection>(new Set(['starter']));\n  const starterPrice = 10;\n  const proPrice = 25;\n  const isPro = selected !== 'all' && selected.has('pro');\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <CardGroup\n        aria-label=\&#x22;Choose a plan\&#x22;\n        selectionMode=\&#x22;single\&#x22;\n        disallowEmptySelection\n        selectedKeys={selected}\n        onSelectionChange={setSelected}\n      >\n        <Card id=\&#x22;starter\&#x22; textValue=\&#x22;Starter plan\&#x22;>\n          <TextLockup>\n            <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n              Popular\n            </Tag>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator data-testid=\&#x22;starter-indicator\&#x22; />\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>Starter plan</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>For getting started with a single project.</Text>\n            <Text>${starterPrice}/month</Text>\n          </TextLockup>\n        </Card>\n        <Card id=\&#x22;pro\&#x22; textValue=\&#x22;Pro plan\&#x22;>\n          <TextLockup>\n            <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n              Upgrade\n            </Tag>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator data-testid=\&#x22;pro-indicator\&#x22; />\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>Pro plan</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>For teams that need more room to grow.</Text>\n            <Text>${proPrice}/month</Text>\n          </TextLockup>\n        </Card>\n      </CardGroup>\n      <Text role=\&#x22;status\&#x22;>\n        Selected plan: {isPro ? 'Pro' : 'Starter'} - ${isPro ? proPrice : starterPrice}/month\n      </Text>\n    </Flex>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Explain why billing or add-ons are unavailable. Disable an individual Card with `isDisabled`,
+or disable Cards by key with `disabledKeys` on the group.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Card,\n  CardGroup,\n  CardSelectionIndicator,\n  CornerActions,\n  Flex,\n  Header,\n  Heading,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Card href=\&#x22;#billing\&#x22; isDisabled>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22;>Billing temporarily unavailable</Heading>\n          <Text slot=\&#x22;body\&#x22;>Finish transferring your account to manage billing.</Text>\n        </TextLockup>\n      </Card>\n\n      <CardGroup aria-label=\&#x22;Available add-ons\&#x22; selectionMode=\&#x22;multiple\&#x22; disabledKeys={['ssl']}>\n        <Card id=\&#x22;backup\&#x22; textValue=\&#x22;Automatic backups\&#x22; isDisabled>\n          <TextLockup>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator />\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>Automatic backups</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>Add a hosting plan to enable daily backups.</Text>\n          </TextLockup>\n        </Card>\n\n        <Card id=\&#x22;ssl\&#x22; textValue=\&#x22;SSL certificate\&#x22;>\n          <TextLockup>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator />\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>SSL certificate</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>Connect a domain to activate your SSL certificate.</Text>\n          </TextLockup>\n        </Card>\n      </CardGroup>\n    </Flex>\n  );\n}&#x22;" />
+
+### Layout [#layout]
+
+A featured business guide and a responsive reading list. Grid adapts the layout to the
+available space, while each guide keeps its own height.
+
+<Story of="LayoutExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Box,\n  Button,\n  ButtonGroup,\n  Card,\n  CornerActions,\n  Flex,\n  Grid,\n  Header,\n  Heading,\n  Icon,\n  Image,\n  LinkButton,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 240%22%3E%3Crect width=%22320%22 height=%22240%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%22220%22 cy=%2270%22 r=%2250%22 fill=%22%234ecdc4%22/%3E%3C/svg%3E';\n\nexport function LayoutExample() {\n  const [saved, setSaved] = useState(new Set<string>());\n\n  function toggleSaved(id: string) {\n    setSaved(function updateSaved(current) {\n      const next = new Set(current);\n      if (next.has(id)) next.delete(id);\n      else next.add(id);\n      return next;\n    });\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <Box style={{ maxWidth: '48rem', width: '100%' }}>\n        <Card>\n          <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;center\&#x22;>\n            <Image\n              src={image}\n              alt=\&#x22;Blue abstract landscape\&#x22;\n              data-testid=\&#x22;container-query-media\&#x22;\n              style={{ display: 'block', width: '100%', height: 'auto' }}\n            />\n            <TextLockup data-testid=\&#x22;container-query-content\&#x22;>\n              <Tag slot=\&#x22;eyebrow\&#x22;>Featured guide</Tag>\n              <Heading slot=\&#x22;title\&#x22;>Build a website that works for your business</Heading>\n              <Text slot=\&#x22;body\&#x22;>\n                Choose your pages, tell your story, and make it easy for customers to get in touch.\n              </Text>\n            </TextLockup>\n          </Grid>\n        </Card>\n      </Box>\n\n      <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        {[\n          ['domain', 'Find your domain', 'Choose a name customers will remember.'],\n          ['brand', 'Build your brand', 'Bring your colors, logo, and business story together.'],\n          [\n            'store',\n            'Turn your first online store into a place customers want to come back to',\n            'Build trust with clear product photos, straightforward shipping, and a checkout that is easy to use.'\n          ]\n        ].map(function renderCard([id, title, body], index) {\n          return (\n            <Card key={id} gap=\&#x22;md\&#x22; data-testid={`collection-card-${index}`}>\n              <TextLockup>\n                <Tag slot=\&#x22;eyebrow\&#x22;>Recommended</Tag>\n                <Header>\n                  <CornerActions>\n                    <Button aria-label={`Save ${title}`} aria-pressed={saved.has(id)} onPress={() => toggleSaved(id)}>\n                      <Icon icon=\&#x22;star\&#x22; />\n                    </Button>\n                  </CornerActions>\n                  <Heading slot=\&#x22;title\&#x22;>{title}</Heading>\n                </Header>\n                <Text slot=\&#x22;body\&#x22;>{body}</Text>\n              </TextLockup>\n\n              <ButtonGroup justifyContent=\&#x22;end\&#x22;>\n                <LinkButton variant=\&#x22;primary\&#x22; href={`#${id}-guide`}>\n                  Read guide\n                </LinkButton>\n              </ButtonGroup>\n            </Card>\n          );\n        })}\n      </Grid>\n    </Flex>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Customize `CardSelectionIndicator` with non-interactive children or a selection-state render
+function. `CardGroup` owns selection, which works without an indicator.
+
+Use `className` with `[data-selected]`, `[data-hovered]`, `[data-pressed]`, `[data-focus-visible]`,
+and `[data-disabled]` to style Card states.
+
+## Accessibility [#accessibility]
+
+* Name `CardGroup` with `aria-label` or `aria-labelledby`, and set `textValue` on Cards with composed
+  content for accessible names and typeahead.
+* `CardGroup` uses grid navigation: Tab enters or leaves, arrow keys move between Cards, and Space
+  changes selection. Enter activates row actions or links. Choose selection or `onAction`;
+  combining them prevents pointer selection.
+* Use `keyboardNavigationBehavior="tab"` for nested controls. Antares controls keep their actions
+  independent of the Card; use `Pressable` for custom controls.
+* A standalone Card with `href` is a link and must not contain buttons, inputs, or other controls.
+
+## Props [#props]
+
+```tsx
+<CardGroup selectionMode="multiple">
+  <Card id="privacy" textValue="Domain privacy">
+    <CornerActions />
+    <Image />
+    <TextLockup />
+    {/* ... */}
+  </Card>
+</CardGroup>
+```
+
+### Card [#card]
+
+<PropTable />
+
+### CardGroup [#cardgroup]
+
+<PropTable />
+
+### CardSelectionIndicator [#cardselectionindicator]
+
+<PropTable />
+
+
 # Carousel
 
 
@@ -1458,6 +1643,84 @@ For a menu trigger, the button and menu are composed as siblings inside
 <PropTable />
 
 ### ChipButton [#chipbutton]
+
+<PropTable />
+
+
+# CircularProgress
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A basic determinate progress indicator with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Indeterminate [#indeterminate]
+
+Use indeterminate progress while preparing an upload whose total size is unknown.
+Once the total is known, set `isIndeterminate` to false and supply a measured value.
+
+<Story of="IndeterminateExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, type CircularProgressProps } from '@godaddy/antares';\n\nexport function IndeterminateExample(props: CircularProgressProps) {\n  return (\n    <CircularProgress label=\&#x22;Preparing upload…\&#x22; helperText=\&#x22;Calculating the total size\&#x22; isIndeterminate {...props} />\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+## Props [#props]
+
+### CircularProgress [#circularprogress]
 
 <PropTable />
 
@@ -2170,84 +2433,6 @@ Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow m
 ## Props [#props]
 
 ### FileTrigger [#filetrigger]
-
-<PropTable />
-
-
-# CircularProgress
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A basic determinate progress indicator with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
-
-<Story of="EmphasisExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Indeterminate [#indeterminate]
-
-Use indeterminate progress while preparing an upload whose total size is unknown.
-Once the total is known, set `isIndeterminate` to false and supply a measured value.
-
-<Story of="IndeterminateExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, type CircularProgressProps } from '@godaddy/antares';\n\nexport function IndeterminateExample(props: CircularProgressProps) {\n  return (\n    <CircularProgress label=\&#x22;Preparing upload…\&#x22; helperText=\&#x22;Calculating the total size\&#x22; isIndeterminate {...props} />\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value (clamped to 0–100)
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-* `aria-describedby` wires the `helperText` to the progressbar for screen readers
-* The decorative SVG and output text are hidden via `aria-hidden="true"`
-
-## Props [#props]
-
-### CircularProgress [#circularprogress]
 
 <PropTable />
 
@@ -3579,6 +3764,103 @@ Compose with `children` to replace the stepper icons with your own content, such
 <PropTable />
 
 
+# Popover
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`PopoverTrigger` wraps a trigger button and a `<Popover>`, handling open state and positioning automatically.
+Based on RAC `DialogTrigger`. To anchor a popover to an element it doesn't wrap, pass `triggerRef` instead.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive trigger element (for example, a `Button`).
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Content, Popover, PopoverTrigger, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover>\n        <Content>This is the popover content!</Content>\n      </Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
+
+### Custom Anchor [#custom-anchor]
+
+To position a popover relative to a different element than its trigger, use the `triggerRef` and `isOpen` props instead of `<PopoverTrigger>`. `onOpenChange` is called when the user opens or closes the popover.
+
+<Story of="CustomAnchorExample" />
+
+<Source language="tsx" code="&#x22;import { Popover, Box, Content, Flex, Button } from '@godaddy/antares';\nimport { useRef, useState } from 'react';\n\nexport function CustomAnchorExample() {\n  const [isOpen, setOpen] = useState(false);\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open Popover\n      </Button>\n\n      <Box elevation=\&#x22;card\&#x22; ref={triggerRef}>\n        Popover will be positioned relative to me\n      </Box>\n\n      <Popover triggerRef={triggerRef} isOpen={isOpen} onOpenChange={setOpen} aria-label=\&#x22;Popover\&#x22;>\n        <Content>Popover content!</Content>\n      </Popover>\n    </Flex>\n  );\n}&#x22;" />
+
+### Title and Close Button [#title-and-close-button]
+
+Add a `Heading slot="title"` and a `CloseButton` for a titled, dismissible popover. The heading
+also gives the dialog its accessible name.
+
+<Story of="WithCloseButtonExample" />
+
+<Source language="tsx" code="&#x22;import { Button, CloseButton, Content, Heading, Popover, PopoverTrigger } from '@godaddy/antares';\n\nexport function WithCloseButtonExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover>\n        <Heading slot=\&#x22;title\&#x22;>Popover title</Heading>\n        <CloseButton />\n        <Content>This is the popover content!</Content>\n      </Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key           | Action                             |
+| ------------- | ---------------------------------- |
+| `Enter/Space` | Opens the popover from its trigger |
+| `Escape`      | Closes the popover                 |
+
+### ARIA [#aria]
+
+* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+* A `Heading slot="title"` labels the dialog via `aria-labelledby`. Without one, a popover inside
+  a `PopoverTrigger` falls back to being labelled by its trigger; standing alone with
+  `triggerRef` it needs an explicit `aria-label`
+
+## Best Practices [#best-practices]
+
+* Pass an `aria-label` when anchoring with `triggerRef` instead of wrapping a `PopoverTrigger`,
+  since there is no trigger to borrow the name from.
+* Popover width is determined by its content, and it's recommended to keep it under 400px.
+
+## Props [#props]
+
+```tsx
+<PopoverTrigger>
+  <Button />
+  <Popover>
+    <Heading slot="title" />
+    <CloseButton />
+    <Content />
+    {/* ... */}
+  </Popover>
+</PopoverTrigger>
+```
+
+### Popover [#popover]
+
+<PropTable />
+
+### PopoverTrigger [#popovertrigger]
+
+<PropTable />
+
+
 # Pagination
 
 
@@ -3715,103 +3997,6 @@ provided by Antares.
 <PropTable />
 
 
-# Popover
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`PopoverTrigger` wraps a trigger button and a `<Popover>`, handling open state and positioning automatically.
-Based on RAC `DialogTrigger`. To anchor a popover to an element it doesn't wrap, pass `triggerRef` instead.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive trigger element (for example, a `Button`).
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Content, Popover, PopoverTrigger, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover>\n        <Content>This is the popover content!</Content>\n      </Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
-
-### Custom Anchor [#custom-anchor]
-
-To position a popover relative to a different element than its trigger, use the `triggerRef` and `isOpen` props instead of `<PopoverTrigger>`. `onOpenChange` is called when the user opens or closes the popover.
-
-<Story of="CustomAnchorExample" />
-
-<Source language="tsx" code="&#x22;import { Popover, Box, Content, Flex, Button } from '@godaddy/antares';\nimport { useRef, useState } from 'react';\n\nexport function CustomAnchorExample() {\n  const [isOpen, setOpen] = useState(false);\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open Popover\n      </Button>\n\n      <Box elevation=\&#x22;card\&#x22; ref={triggerRef}>\n        Popover will be positioned relative to me\n      </Box>\n\n      <Popover triggerRef={triggerRef} isOpen={isOpen} onOpenChange={setOpen} aria-label=\&#x22;Popover\&#x22;>\n        <Content>Popover content!</Content>\n      </Popover>\n    </Flex>\n  );\n}&#x22;" />
-
-### Title and Close Button [#title-and-close-button]
-
-Add a `Heading slot="title"` and a `CloseButton` for a titled, dismissible popover. The heading
-also gives the dialog its accessible name.
-
-<Story of="WithCloseButtonExample" />
-
-<Source language="tsx" code="&#x22;import { Button, CloseButton, Content, Heading, Popover, PopoverTrigger } from '@godaddy/antares';\n\nexport function WithCloseButtonExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover>\n        <Heading slot=\&#x22;title\&#x22;>Popover title</Heading>\n        <CloseButton />\n        <Content>This is the popover content!</Content>\n      </Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key           | Action                             |
-| ------------- | ---------------------------------- |
-| `Enter/Space` | Opens the popover from its trigger |
-| `Escape`      | Closes the popover                 |
-
-### ARIA [#aria]
-
-* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
-* A `Heading slot="title"` labels the dialog via `aria-labelledby`. Without one, a popover inside
-  a `PopoverTrigger` falls back to being labelled by its trigger; standing alone with
-  `triggerRef` it needs an explicit `aria-label`
-
-## Best Practices [#best-practices]
-
-* Pass an `aria-label` when anchoring with `triggerRef` instead of wrapping a `PopoverTrigger`,
-  since there is no trigger to borrow the name from.
-* Popover width is determined by its content, and it's recommended to keep it under 400px.
-
-## Props [#props]
-
-```tsx
-<PopoverTrigger>
-  <Button />
-  <Popover>
-    <Heading slot="title" />
-    <CloseButton />
-    <Content />
-    {/* ... */}
-  </Popover>
-</PopoverTrigger>
-```
-
-### Popover [#popover]
-
-<PropTable />
-
-### PopoverTrigger [#popovertrigger]
-
-<PropTable />
-
-
 # Pressable
 
 
@@ -3892,82 +4077,6 @@ Do not add `role="button"` to a native `<button>` or `<a>` unless you intentiona
 ```
 
 ### Pressable [#pressable]
-
-<PropTable />
-
-
-# ProgressBar
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A determinate progress bar with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
-
-### Statuses [#statuses]
-
-Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
-
-<Story of="StatusesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Indeterminate [#indeterminate]
-
-Use indeterminate progress while preparing an upload whose total size is unknown.
-Once the total is known, set `isIndeterminate` to false and supply a measured value.
-
-<Story of="IndeterminateExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, type ProgressBarProps } from '@godaddy/antares';\n\nexport function IndeterminateExample(props: ProgressBarProps) {\n  return <ProgressBar label=\&#x22;Preparing upload…\&#x22; helperText=\&#x22;Calculating the total size\&#x22; isIndeterminate {...props} />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`)
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-
-## Props [#props]
-
-### ProgressBar [#progressbar]
 
 <PropTable />
 
@@ -4103,298 +4212,6 @@ Step numbers are shown by default; `hideStepNumbers` omits the "N. " prefix.
 <PropTable />
 
 ### ProgressStep [#progressstep]
-
-<PropTable />
-
-
-# Radio
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A radio group with a default selection.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <RadioGroup defaultValue=\&#x22;basic\&#x22;>\n      <Label>Select your plan</Label>\n      <Group>\n        <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n        <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n        <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n      </Group>\n    </RadioGroup>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-A controlled radio group using `value` and `onChange`.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [selected, setSelected] = useState('standard');\n\n  return (\n    <>\n      <RadioGroup value={selected} onChange={setSelected}>\n        <Label>Select your plan</Label>\n        <Group>\n          <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n          <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n          <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n        </Group>\n      </RadioGroup>\n      <p>Current selection: {selected}</p>\n    </>\n  );\n}&#x22;" />
-
-### Horizontal Layout [#horizontal-layout]
-
-A radio group arranged horizontally.
-
-<Story of="HorizontalExample" />
-
-<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function HorizontalExample() {\n  return (\n    <RadioGroup defaultValue=\&#x22;standard\&#x22; orientation=\&#x22;horizontal\&#x22;>\n      <Label>Select your plan</Label>\n      <Group>\n        <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n        <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n        <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n      </Group>\n    </RadioGroup>\n  );\n}&#x22;" />
-
-### Disabled States [#disabled-states]
-
-Disabled group and individually disabled radio options.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Group, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <RadioGroup defaultValue=\&#x22;basic\&#x22; isDisabled>\n        <Label>Disabled group</Label>\n        <Group>\n          <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n          <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n          <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n        </Group>\n      </RadioGroup>\n\n      <RadioGroup defaultValue=\&#x22;standard\&#x22;>\n        <Label>Individual disabled options</Label>\n        <Group>\n          <Radio value=\&#x22;basic\&#x22; isDisabled>\n            Basic (disabled)\n          </Radio>\n          <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n          <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n        </Group>\n      </RadioGroup>\n    </Flex>\n  );\n}&#x22;" />
-
-### Required Indicator [#required-indicator]
-
-A required radio group with a payment method selection.
-
-<Story of="RequiredExample" />
-
-<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function RequiredExample() {\n  return (\n    <RadioGroup isRequired defaultValue=\&#x22;credit\&#x22;>\n      <Label>Payment method</Label>\n      <Group>\n        <Radio value=\&#x22;credit\&#x22;>Credit Card</Radio>\n        <Radio value=\&#x22;paypal\&#x22;>PayPal</Radio>\n        <Radio value=\&#x22;bank\&#x22;>Bank Transfer</Radio>\n      </Group>\n    </RadioGroup>\n  );\n}&#x22;" />
-
-### Description Text [#description-text]
-
-A radio group with helper description text.
-
-<Story of="DescriptionExample" />
-
-<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup, Text } from '@godaddy/antares';\n\nexport function DescriptionExample() {\n  return (\n    <RadioGroup defaultValue=\&#x22;email\&#x22;>\n      <Label>Notification preferences</Label>\n      <Group>\n        <Radio value=\&#x22;email\&#x22;>Email</Radio>\n        <Radio value=\&#x22;sms\&#x22;>SMS</Radio>\n        <Radio value=\&#x22;push\&#x22;>Push Notifications</Radio>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Choose how you'd like to receive updates</Text>\n    </RadioGroup>\n  );\n}&#x22;" />
-
-### Error State [#error-state]
-
-An invalid required group displaying an error message.
-
-<Story of="ErrorExample" />
-
-<Source language="tsx" code="&#x22;import { FieldError, Group, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function ErrorExample() {\n  return (\n    <RadioGroup isRequired isInvalid>\n      <Label>Select shipping method</Label>\n      <Group>\n        <Radio value=\&#x22;standard\&#x22;>Standard Shipping</Radio>\n        <Radio value=\&#x22;express\&#x22;>Express Shipping</Radio>\n        <Radio value=\&#x22;overnight\&#x22;>Overnight Shipping</Radio>\n      </Group>\n      <FieldError>Please select a shipping method</FieldError>\n    </RadioGroup>\n  );\n}&#x22;" />
-
-### Aria Label [#aria-label]
-
-A radio group using `aria-label` instead of a visible label.
-
-<Story of="AriaLabelExample" />
-
-<Source language="tsx" code="&#x22;import { Group, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function AriaLabelExample() {\n  return (\n    <RadioGroup aria-label=\&#x22;Sort order\&#x22; defaultValue=\&#x22;newest\&#x22;>\n      <Group>\n        <Radio value=\&#x22;newest\&#x22;>Newest first</Radio>\n        <Radio value=\&#x22;oldest\&#x22;>Oldest first</Radio>\n        <Radio value=\&#x22;popular\&#x22;>Most popular</Radio>\n      </Group>\n    </RadioGroup>\n  );\n}&#x22;" />
-
-### Form Submission [#form-submission]
-
-A radio group integrated with native form submission.
-
-<Story of="FormExample" />
-
-<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';\nimport { type FormEvent, useState } from 'react';\n\nexport function FormExample() {\n  const [submittedValue, setSubmittedValue] = useState<string | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const value = new FormData(event.currentTarget).get('plan');\n    setSubmittedValue(value != null ? String(value) : null);\n  }\n\n  return (\n    <>\n      <form onSubmit={handleSubmit}>\n        <RadioGroup name=\&#x22;plan\&#x22; defaultValue=\&#x22;standard\&#x22;>\n          <Label>Select your plan</Label>\n          <Group>\n            <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n            <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n            <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n          </Group>\n        </RadioGroup>\n        <button type=\&#x22;submit\&#x22; style={{ marginTop: '1rem' }}>\n          Submit\n        </button>\n      </form>\n      {submittedValue && <p>Form submitted with value: {submittedValue}</p>}\n    </>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-`RadioGroup` is composed: write `Label`, a `Group` holding the `Radio` items, `Text slot="description"`, and `FieldError`. The `Group` takes its axis, gap, and presentational role from the group's `orientation`, so a bare `<Group>` is all you need; pass your own `direction`/`gap` to lay the items out differently. Each `Radio` takes label text next to the indicator. `orientation` also sets keyboard-navigation direction and ARIA.
-
-### Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**RadioGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
-
-**Radio Button:** `data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
-
-```css
-.my-radio-group [data-selected] {
-  color: #09757a;
-  font-weight: 500;
-}
-
-.my-radio-group[data-invalid] {
-  border-color: #db1802;
-}
-
-.my-radio-group [data-focused] {
-  outline: 2px solid #1976d2;
-  outline-offset: 2px;
-}
-
-.my-radio-group [data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-```
-
-### Component Customization [#component-customization]
-
-Pass `className` or `style` to customize a radio field container. Use descendant data-attribute selectors to style the interactive radio state:
-
-```jsx
-<RadioGroup className="custom-radio-group">
-  <Label>Select plan</Label>
-  <Group>
-    <Radio value="basic" className="custom-radio">
-      Basic
-    </Radio>
-    <Radio value="premium" className="premium-radio">
-      Premium
-    </Radio>
-  </Group>
-</RadioGroup>
-```
-
-## Accessibility [#accessibility]
-
-### Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to/from the radio group
-* **Arrow Down/Right**: Move to next radio button
-* **Arrow Up/Left**: Move to previous radio button
-* **Space**: Select the focused radio button
-
-### ARIA Support [#aria-support]
-
-* `role="radiogroup"` on the container
-* `role="radio"` on each option
-* `aria-checked` indicates selection state
-* `aria-disabled` for disabled options
-* `aria-required` when selection is required
-* `aria-invalid` for validation errors
-
-## Troubleshooting [#troubleshooting]
-
-### Selection Not Updating [#selection-not-updating]
-
-```jsx
-// ❌ Wrong: Using both value and defaultValue
-<RadioGroup value={value} defaultValue="basic">
-  <Label>Plan</Label>
-  <Group>
-    <Radio value="basic">Basic</Radio>
-  </Group>
-</RadioGroup>
-
-// ✅ Controlled mode
-<RadioGroup value={value} onChange={setValue}>
-  <Label>Plan</Label>
-  <Group>
-    <Radio value="basic">Basic</Radio>
-  </Group>
-</RadioGroup>
-
-// ✅ Uncontrolled mode
-<RadioGroup defaultValue="basic">
-  <Label>Plan</Label>
-  <Group>
-    <Radio value="basic">Basic</Radio>
-  </Group>
-</RadioGroup>
-```
-
-### Styling Overrides Not Applying [#styling-overrides-not-applying]
-
-```css
-/* ❌ May not have enough specificity */
-.my-custom-radio {
-  color: red;
-}
-
-/* ✅ Use data attributes and className for higher specificity */
-.my-radio-group [data-selected] {
-  color: red;
-  font-weight: 600;
-}
-```
-
-### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
-
-```css
-/* ❌ Don't remove focus outlines without replacement */
-[data-focused] {
-  outline: none;
-}
-
-/* ✅ Provide visible focus indicator */
-.my-radio-group [data-focused] {
-  outline: 2px solid #1976d2;
-  outline-offset: 2px;
-}
-```
-
-## Best Practices [#best-practices]
-
-### When to Use Radio Buttons [#when-to-use-radio-buttons]
-
-* ✅ When there are 2-7 mutually exclusive options
-* ✅ When all options should be visible at once
-* ✅ When the decision is important and deserves space
-* ❌ For more than 7 options (use Select instead)
-* ❌ For binary yes/no choices (use Checkbox or Toggle instead)
-* ❌ When space is limited (use Select dropdown)
-
-### Label Guidelines [#label-guidelines]
-
-* Use clear, concise labels
-* Keep labels short (1-3 words when possible)
-* Place the most common option first
-* Ensure labels are descriptive without being verbose
-
-### Validation [#validation]
-
-Always provide clear error messages:
-
-```jsx
-<RadioGroup isRequired isInvalid={!selectedShipping}>
-  <Label>Select shipping method</Label>
-  <Group>
-    <Radio value="standard">Standard</Radio>
-    <Radio value="express">Express</Radio>
-  </Group>
-  <FieldError>Please select a shipping method</FieldError>
-</RadioGroup>
-```
-
-## Props [#props]
-
-```tsx
-<RadioGroup>
-  <Label />
-  <Group>
-    <Radio />
-  </Group>
-  <Text slot="description" />
-  <FieldError />
-</RadioGroup>
-```
-
-### Radio [#radio]
-
-<PropTable />
-
-### RadioGroup [#radiogroup]
 
 <PropTable />
 
@@ -4744,6 +4561,298 @@ Components automatically add data attributes for styling different states:
 <PropTable />
 
 
+# Radio
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A radio group with a default selection.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <RadioGroup defaultValue=\&#x22;basic\&#x22;>\n      <Label>Select your plan</Label>\n      <Group>\n        <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n        <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n        <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n      </Group>\n    </RadioGroup>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+A controlled radio group using `value` and `onChange`.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [selected, setSelected] = useState('standard');\n\n  return (\n    <>\n      <RadioGroup value={selected} onChange={setSelected}>\n        <Label>Select your plan</Label>\n        <Group>\n          <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n          <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n          <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n        </Group>\n      </RadioGroup>\n      <p>Current selection: {selected}</p>\n    </>\n  );\n}&#x22;" />
+
+### Horizontal Layout [#horizontal-layout]
+
+A radio group arranged horizontally.
+
+<Story of="HorizontalExample" />
+
+<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function HorizontalExample() {\n  return (\n    <RadioGroup defaultValue=\&#x22;standard\&#x22; orientation=\&#x22;horizontal\&#x22;>\n      <Label>Select your plan</Label>\n      <Group>\n        <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n        <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n        <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n      </Group>\n    </RadioGroup>\n  );\n}&#x22;" />
+
+### Disabled States [#disabled-states]
+
+Disabled group and individually disabled radio options.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Group, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <RadioGroup defaultValue=\&#x22;basic\&#x22; isDisabled>\n        <Label>Disabled group</Label>\n        <Group>\n          <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n          <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n          <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n        </Group>\n      </RadioGroup>\n\n      <RadioGroup defaultValue=\&#x22;standard\&#x22;>\n        <Label>Individual disabled options</Label>\n        <Group>\n          <Radio value=\&#x22;basic\&#x22; isDisabled>\n            Basic (disabled)\n          </Radio>\n          <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n          <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n        </Group>\n      </RadioGroup>\n    </Flex>\n  );\n}&#x22;" />
+
+### Required Indicator [#required-indicator]
+
+A required radio group with a payment method selection.
+
+<Story of="RequiredExample" />
+
+<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function RequiredExample() {\n  return (\n    <RadioGroup isRequired defaultValue=\&#x22;credit\&#x22;>\n      <Label>Payment method</Label>\n      <Group>\n        <Radio value=\&#x22;credit\&#x22;>Credit Card</Radio>\n        <Radio value=\&#x22;paypal\&#x22;>PayPal</Radio>\n        <Radio value=\&#x22;bank\&#x22;>Bank Transfer</Radio>\n      </Group>\n    </RadioGroup>\n  );\n}&#x22;" />
+
+### Description Text [#description-text]
+
+A radio group with helper description text.
+
+<Story of="DescriptionExample" />
+
+<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup, Text } from '@godaddy/antares';\n\nexport function DescriptionExample() {\n  return (\n    <RadioGroup defaultValue=\&#x22;email\&#x22;>\n      <Label>Notification preferences</Label>\n      <Group>\n        <Radio value=\&#x22;email\&#x22;>Email</Radio>\n        <Radio value=\&#x22;sms\&#x22;>SMS</Radio>\n        <Radio value=\&#x22;push\&#x22;>Push Notifications</Radio>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Choose how you'd like to receive updates</Text>\n    </RadioGroup>\n  );\n}&#x22;" />
+
+### Error State [#error-state]
+
+An invalid required group displaying an error message.
+
+<Story of="ErrorExample" />
+
+<Source language="tsx" code="&#x22;import { FieldError, Group, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function ErrorExample() {\n  return (\n    <RadioGroup isRequired isInvalid>\n      <Label>Select shipping method</Label>\n      <Group>\n        <Radio value=\&#x22;standard\&#x22;>Standard Shipping</Radio>\n        <Radio value=\&#x22;express\&#x22;>Express Shipping</Radio>\n        <Radio value=\&#x22;overnight\&#x22;>Overnight Shipping</Radio>\n      </Group>\n      <FieldError>Please select a shipping method</FieldError>\n    </RadioGroup>\n  );\n}&#x22;" />
+
+### Aria Label [#aria-label]
+
+A radio group using `aria-label` instead of a visible label.
+
+<Story of="AriaLabelExample" />
+
+<Source language="tsx" code="&#x22;import { Group, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function AriaLabelExample() {\n  return (\n    <RadioGroup aria-label=\&#x22;Sort order\&#x22; defaultValue=\&#x22;newest\&#x22;>\n      <Group>\n        <Radio value=\&#x22;newest\&#x22;>Newest first</Radio>\n        <Radio value=\&#x22;oldest\&#x22;>Oldest first</Radio>\n        <Radio value=\&#x22;popular\&#x22;>Most popular</Radio>\n      </Group>\n    </RadioGroup>\n  );\n}&#x22;" />
+
+### Form Submission [#form-submission]
+
+A radio group integrated with native form submission.
+
+<Story of="FormExample" />
+
+<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';\nimport { type FormEvent, useState } from 'react';\n\nexport function FormExample() {\n  const [submittedValue, setSubmittedValue] = useState<string | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const value = new FormData(event.currentTarget).get('plan');\n    setSubmittedValue(value != null ? String(value) : null);\n  }\n\n  return (\n    <>\n      <form onSubmit={handleSubmit}>\n        <RadioGroup name=\&#x22;plan\&#x22; defaultValue=\&#x22;standard\&#x22;>\n          <Label>Select your plan</Label>\n          <Group>\n            <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n            <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n            <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n          </Group>\n        </RadioGroup>\n        <button type=\&#x22;submit\&#x22; style={{ marginTop: '1rem' }}>\n          Submit\n        </button>\n      </form>\n      {submittedValue && <p>Form submitted with value: {submittedValue}</p>}\n    </>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+`RadioGroup` is composed: write `Label`, a `Group` holding the `Radio` items, `Text slot="description"`, and `FieldError`. The `Group` takes its axis, gap, and presentational role from the group's `orientation`, so a bare `<Group>` is all you need; pass your own `direction`/`gap` to lay the items out differently. Each `Radio` takes label text next to the indicator. `orientation` also sets keyboard-navigation direction and ARIA.
+
+### Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**RadioGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
+
+**Radio Button:** `data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
+
+```css
+.my-radio-group [data-selected] {
+  color: #09757a;
+  font-weight: 500;
+}
+
+.my-radio-group[data-invalid] {
+  border-color: #db1802;
+}
+
+.my-radio-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.my-radio-group [data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+### Component Customization [#component-customization]
+
+Pass `className` or `style` to customize a radio field container. Use descendant data-attribute selectors to style the interactive radio state:
+
+```jsx
+<RadioGroup className="custom-radio-group">
+  <Label>Select plan</Label>
+  <Group>
+    <Radio value="basic" className="custom-radio">
+      Basic
+    </Radio>
+    <Radio value="premium" className="premium-radio">
+      Premium
+    </Radio>
+  </Group>
+</RadioGroup>
+```
+
+## Accessibility [#accessibility]
+
+### Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to/from the radio group
+* **Arrow Down/Right**: Move to next radio button
+* **Arrow Up/Left**: Move to previous radio button
+* **Space**: Select the focused radio button
+
+### ARIA Support [#aria-support]
+
+* `role="radiogroup"` on the container
+* `role="radio"` on each option
+* `aria-checked` indicates selection state
+* `aria-disabled` for disabled options
+* `aria-required` when selection is required
+* `aria-invalid` for validation errors
+
+## Troubleshooting [#troubleshooting]
+
+### Selection Not Updating [#selection-not-updating]
+
+```jsx
+// ❌ Wrong: Using both value and defaultValue
+<RadioGroup value={value} defaultValue="basic">
+  <Label>Plan</Label>
+  <Group>
+    <Radio value="basic">Basic</Radio>
+  </Group>
+</RadioGroup>
+
+// ✅ Controlled mode
+<RadioGroup value={value} onChange={setValue}>
+  <Label>Plan</Label>
+  <Group>
+    <Radio value="basic">Basic</Radio>
+  </Group>
+</RadioGroup>
+
+// ✅ Uncontrolled mode
+<RadioGroup defaultValue="basic">
+  <Label>Plan</Label>
+  <Group>
+    <Radio value="basic">Basic</Radio>
+  </Group>
+</RadioGroup>
+```
+
+### Styling Overrides Not Applying [#styling-overrides-not-applying]
+
+```css
+/* ❌ May not have enough specificity */
+.my-custom-radio {
+  color: red;
+}
+
+/* ✅ Use data attributes and className for higher specificity */
+.my-radio-group [data-selected] {
+  color: red;
+  font-weight: 600;
+}
+```
+
+### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
+
+```css
+/* ❌ Don't remove focus outlines without replacement */
+[data-focused] {
+  outline: none;
+}
+
+/* ✅ Provide visible focus indicator */
+.my-radio-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+```
+
+## Best Practices [#best-practices]
+
+### When to Use Radio Buttons [#when-to-use-radio-buttons]
+
+* ✅ When there are 2-7 mutually exclusive options
+* ✅ When all options should be visible at once
+* ✅ When the decision is important and deserves space
+* ❌ For more than 7 options (use Select instead)
+* ❌ For binary yes/no choices (use Checkbox or Toggle instead)
+* ❌ When space is limited (use Select dropdown)
+
+### Label Guidelines [#label-guidelines]
+
+* Use clear, concise labels
+* Keep labels short (1-3 words when possible)
+* Place the most common option first
+* Ensure labels are descriptive without being verbose
+
+### Validation [#validation]
+
+Always provide clear error messages:
+
+```jsx
+<RadioGroup isRequired isInvalid={!selectedShipping}>
+  <Label>Select shipping method</Label>
+  <Group>
+    <Radio value="standard">Standard</Radio>
+    <Radio value="express">Express</Radio>
+  </Group>
+  <FieldError>Please select a shipping method</FieldError>
+</RadioGroup>
+```
+
+## Props [#props]
+
+```tsx
+<RadioGroup>
+  <Label />
+  <Group>
+    <Radio />
+  </Group>
+  <Text slot="description" />
+  <FieldError />
+</RadioGroup>
+```
+
+### Radio [#radio]
+
+<PropTable />
+
+### RadioGroup [#radiogroup]
+
+<PropTable />
+
+
 # Select
 
 
@@ -4995,7 +5104,85 @@ A scope sizes Antares components only. Plain HTML keeps its own typography, so p
 <PropTable />
 
 
+# ProgressBar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A determinate progress bar with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
+
+### Statuses [#statuses]
+
+Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
+
+<Story of="StatusesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Indeterminate [#indeterminate]
+
+Use indeterminate progress while preparing an upload whose total size is unknown.
+Once the total is known, set `isIndeterminate` to false and supply a measured value.
+
+<Story of="IndeterminateExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, type ProgressBarProps } from '@godaddy/antares';\n\nexport function IndeterminateExample(props: ProgressBarProps) {\n  return <ProgressBar label=\&#x22;Preparing upload…\&#x22; helperText=\&#x22;Calculating the total size\&#x22; isIndeterminate {...props} />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`)
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+
+## Props [#props]
+
+### ProgressBar [#progressbar]
+
+<PropTable />
+
+
 # Structure primitives
+
+
 
 
 
@@ -5016,6 +5203,7 @@ A scope sizes Antares components only. Plain HTML keeps its own typography, so p
 * **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
 * **`ButtonGroup`** - a cluster of related actions (a wrapping row with `role="group"`). Overlay parents like `Modal` adopt it with end alignment and padding.
 * **`Group`** — semantic grouping container for field item controls. A parent field injects the box chrome.
+* **`CornerActions`** - an always-visible structural row for actions placed at a surface corner.
 
 ## Hybrid styling [#hybrid-styling]
 
@@ -5044,6 +5232,15 @@ Group is the bordered field box. Size and invalid/disabled chrome apply here.
 
 <Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function GroupExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Group>\n        <Input placeholder=\&#x22;Enter your name\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
 
+### Corner Actions [#corner-actions]
+
+CornerActions is an always-visible structural region. Compose any actions inside it and use
+layout props to reserve room beside the surrounding content.
+
+<Story of="CornerActionsExample" />
+
+<Source language="tsx" code="&#x22;import { Button, CornerActions, Flex, Text } from '@godaddy/antares';\n\nexport function CornerActionsExample() {\n  return (\n    <Flex direction=\&#x22;row\&#x22; alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;space-between\&#x22; gap=\&#x22;md\&#x22;>\n      <Text>Card content</Text>\n      <CornerActions>\n        <Button variant=\&#x22;secondary\&#x22;>More actions</Button>\n        <Button variant=\&#x22;secondary\&#x22;>Share</Button>\n      </CornerActions>\n    </Flex>\n  );\n}&#x22;" />
+
 ## Props [#props]
 
 ### Content [#content]
@@ -5063,6 +5260,10 @@ Group is the bordered field box. Size and invalid/disabled chrome apply here.
 <PropTable />
 
 ### Group [#group-1]
+
+<PropTable />
+
+### CornerActions [#corneractions]
 
 <PropTable />
 
@@ -5266,6 +5467,141 @@ Use the interactive root data attributes for state-based customization. The trac
 <PropTable />
 
 
+# Tag
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A minimal tag with the default emphasis and size.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Tag, type TagProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<TagProps>) {\n  return <Tag {...props}>Tag</Tag>;\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Nine emphasis options are available. Choose the one that fits the visual tone of your context.
+
+<Story of="EmphasesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function EmphasesExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis}>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Choose a size that fits the surrounding content. Smaller tags work well in compact layouts like tables; larger tags suit headings or hero sections.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Tag size=\&#x22;sm\&#x22; emphasis=\&#x22;info\&#x22;>\n        Small\n      </Tag>\n      <Tag size=\&#x22;md\&#x22; emphasis=\&#x22;info\&#x22;>\n        Medium\n      </Tag>\n      <Tag size=\&#x22;lg\&#x22; emphasis=\&#x22;info\&#x22;>\n        Large\n      </Tag>\n    </Flex>\n  );\n}&#x22;" />
+
+### Inline [#inline]
+
+Use `design="inline"` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
+
+<Story of="InlineExample" />
+
+<Source language="tsx" code="&#x22;import { Tag } from '@godaddy/antares';\n\nexport function InlineExample() {\n  return (\n    <p>\n      This domain is{' '}\n      <Tag emphasis=\&#x22;success\&#x22; design=\&#x22;inline\&#x22;>\n        Active\n      </Tag>{' '}\n      and your plan is{' '}\n      <Tag emphasis=\&#x22;premium\&#x22; design=\&#x22;inline\&#x22;>\n        Pro\n      </Tag>\n      .\n    </p>\n  );\n}&#x22;" />
+
+### High Contrast [#high-contrast]
+
+A bolder color treatment for when tags need to stand out more - for example, on colored backgrounds.
+
+<Story of="HighContrastExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function HighContrastExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis} highContrast>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+
+### With Icon [#with-icon]
+
+Icons reinforce the tag's meaning at a glance. Add an `Icon` as a child - it inherits the tag's color and scales with its size.
+
+<Story of="IconsExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Icon, Tag } from '@godaddy/antares';\n\nexport function IconsExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Tag emphasis=\&#x22;critical\&#x22;>\n        <Icon icon=\&#x22;alert\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Critical\n      </Tag>\n      <Tag emphasis=\&#x22;success\&#x22;>\n        <Icon icon=\&#x22;checkmark\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Success\n      </Tag>\n      <Tag emphasis=\&#x22;warning\&#x22;>\n        <Icon icon=\&#x22;alert\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Warning\n      </Tag>\n      <Tag emphasis=\&#x22;info\&#x22;>\n        <Icon icon=\&#x22;information\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Info\n      </Tag>\n      <Tag emphasis=\&#x22;highlight\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Highlight\n      </Tag>\n      <Tag emphasis=\&#x22;premium\&#x22;>\n        <Icon icon=\&#x22;diamond\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Premium\n      </Tag>\n    </Flex>\n  );\n}&#x22;" />
+
+### Indicator [#indicator]
+
+A minimal style that pairs a small colored dot with a neutral background. Well suited for dense layouts like tables or dashboards where multiple tags in close proximity would otherwise compete for attention.
+
+<Story of="IndicatorExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function IndicatorExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis} indicator>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Screen readers [#screen-readers]
+
+Tags are `<span>` elements with no special ARIA role. Screen readers announce the tag's text as part of normal page content — no extra markup is needed.
+
+### Decorative icons [#decorative-icons]
+
+Icons passed as children must include `aria-hidden="true"` so they are skipped by screen readers. The text label is the sole carrier of meaning.
+
+```tsx
+<Tag emphasis="critical">
+  <Icon icon="alert" aria-hidden="true" />
+  Expired
+</Tag>
+```
+
+### Indicator dot [#indicator-dot]
+
+The colored dot is decorative and invisible to screen readers. The text label must convey the status on its own — never rely on the dot alone to communicate meaning.
+
+## Best Practices [#best-practices]
+
+* Use the indicator style in dense layouts like tables and dashboards. Use the filled style when the tag is a prominent, standalone element on a card or hero section.
+* Default to the small size in compact layouts like tables and lists. Use medium or large only when the tag needs to stand out as a primary piece of information.
+* Use the inline design only within running prose. In grouped or standalone contexts, the filled style provides better visual separation.
+* Do not stack multiple tags of different emphasis on the same item. Choose the most important one — too many competing labels lose their meaning.
+
+## When to Use [#when-to-use]
+
+* Showing the status of an item on a card, table row, or list entry (e.g. "Active", "Expired", "Pending")
+* Categorizing or grouping content so users can scan and filter quickly (e.g. "New", "Sale", "Beta")
+* Surfacing metadata about an item (e.g. "Pro", "Free trial", "Internal")
+* Communicating priority or category in project management and collaboration tools (e.g. "High priority", "In review")
+
+## When Not to Use [#when-not-to-use]
+
+* If users need to click or dismiss it — use a **Button** instead.
+* If the label is part of a sentence with no visual distinction — just use text.
+
+## Props [#props]
+
+### Tag [#tag]
+
+<PropTable />
+
+
 # Tabs
 
 
@@ -5413,141 +5749,6 @@ Use `TabList`'s `containerProps` to customize the outer tab list shell, such as 
 <PropTable />
 
 
-# Tag
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A minimal tag with the default emphasis and size.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Tag, type TagProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<TagProps>) {\n  return <Tag {...props}>Tag</Tag>;\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Nine emphasis options are available. Choose the one that fits the visual tone of your context.
-
-<Story of="EmphasesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function EmphasesExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis}>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Choose a size that fits the surrounding content. Smaller tags work well in compact layouts like tables; larger tags suit headings or hero sections.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Tag size=\&#x22;sm\&#x22; emphasis=\&#x22;info\&#x22;>\n        Small\n      </Tag>\n      <Tag size=\&#x22;md\&#x22; emphasis=\&#x22;info\&#x22;>\n        Medium\n      </Tag>\n      <Tag size=\&#x22;lg\&#x22; emphasis=\&#x22;info\&#x22;>\n        Large\n      </Tag>\n    </Flex>\n  );\n}&#x22;" />
-
-### Inline [#inline]
-
-Use `design="inline"` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
-
-<Story of="InlineExample" />
-
-<Source language="tsx" code="&#x22;import { Tag } from '@godaddy/antares';\n\nexport function InlineExample() {\n  return (\n    <p>\n      This domain is{' '}\n      <Tag emphasis=\&#x22;success\&#x22; design=\&#x22;inline\&#x22;>\n        Active\n      </Tag>{' '}\n      and your plan is{' '}\n      <Tag emphasis=\&#x22;premium\&#x22; design=\&#x22;inline\&#x22;>\n        Pro\n      </Tag>\n      .\n    </p>\n  );\n}&#x22;" />
-
-### High Contrast [#high-contrast]
-
-A bolder color treatment for when tags need to stand out more - for example, on colored backgrounds.
-
-<Story of="HighContrastExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function HighContrastExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis} highContrast>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
-
-### With Icon [#with-icon]
-
-Icons reinforce the tag's meaning at a glance. Add an `Icon` as a child - it inherits the tag's color and scales with its size.
-
-<Story of="IconsExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Icon, Tag } from '@godaddy/antares';\n\nexport function IconsExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Tag emphasis=\&#x22;critical\&#x22;>\n        <Icon icon=\&#x22;alert\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Critical\n      </Tag>\n      <Tag emphasis=\&#x22;success\&#x22;>\n        <Icon icon=\&#x22;checkmark\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Success\n      </Tag>\n      <Tag emphasis=\&#x22;warning\&#x22;>\n        <Icon icon=\&#x22;alert\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Warning\n      </Tag>\n      <Tag emphasis=\&#x22;info\&#x22;>\n        <Icon icon=\&#x22;information\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Info\n      </Tag>\n      <Tag emphasis=\&#x22;highlight\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Highlight\n      </Tag>\n      <Tag emphasis=\&#x22;premium\&#x22;>\n        <Icon icon=\&#x22;diamond\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Premium\n      </Tag>\n    </Flex>\n  );\n}&#x22;" />
-
-### Indicator [#indicator]
-
-A minimal style that pairs a small colored dot with a neutral background. Well suited for dense layouts like tables or dashboards where multiple tags in close proximity would otherwise compete for attention.
-
-<Story of="IndicatorExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function IndicatorExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis} indicator>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Screen readers [#screen-readers]
-
-Tags are `<span>` elements with no special ARIA role. Screen readers announce the tag's text as part of normal page content — no extra markup is needed.
-
-### Decorative icons [#decorative-icons]
-
-Icons passed as children must include `aria-hidden="true"` so they are skipped by screen readers. The text label is the sole carrier of meaning.
-
-```tsx
-<Tag emphasis="critical">
-  <Icon icon="alert" aria-hidden="true" />
-  Expired
-</Tag>
-```
-
-### Indicator dot [#indicator-dot]
-
-The colored dot is decorative and invisible to screen readers. The text label must convey the status on its own — never rely on the dot alone to communicate meaning.
-
-## Best Practices [#best-practices]
-
-* Use the indicator style in dense layouts like tables and dashboards. Use the filled style when the tag is a prominent, standalone element on a card or hero section.
-* Default to the small size in compact layouts like tables and lists. Use medium or large only when the tag needs to stand out as a primary piece of information.
-* Use the inline design only within running prose. In grouped or standalone contexts, the filled style provides better visual separation.
-* Do not stack multiple tags of different emphasis on the same item. Choose the most important one — too many competing labels lose their meaning.
-
-## When to Use [#when-to-use]
-
-* Showing the status of an item on a card, table row, or list entry (e.g. "Active", "Expired", "Pending")
-* Categorizing or grouping content so users can scan and filter quickly (e.g. "New", "Sale", "Beta")
-* Surfacing metadata about an item (e.g. "Pro", "Free trial", "Internal")
-* Communicating priority or category in project management and collaboration tools (e.g. "High priority", "In review")
-
-## When Not to Use [#when-not-to-use]
-
-* If users need to click or dismiss it — use a **Button** instead.
-* If the label is part of a sentence with no visual distinction — just use text.
-
-## Props [#props]
-
-### Tag [#tag]
-
-<PropTable />
-
-
 # Text
 
 
@@ -5669,6 +5870,50 @@ surrounding color; add `emphasis="passive"` to mute it.
 <PropTable />
 
 ### Detail [#detail-1]
+
+<PropTable />
+
+
+# TextArea
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`TextArea` is the multiline control inside a field, not a field on its own. Prefer `TextField` as the parent; see that component for fuller examples.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+TextArea inside TextField.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Label, TextArea, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Comment</Label>\n      <TextArea placeholder=\&#x22;Enter your comment\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<TextField>
+  <Label>Comment</Label>
+  <TextArea placeholder="Enter your comment" />
+</TextField>
+```
+
+### TextArea [#textarea]
 
 <PropTable />
 
@@ -5816,51 +6061,9 @@ Compose a telephone number input paired with a country-code select.
 <PropTable />
 
 
-# TextArea
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`TextArea` is the multiline control inside a field, not a field on its own. Prefer `TextField` as the parent; see that component for fuller examples.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-TextArea inside TextField.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Label, TextArea, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Comment</Label>\n      <TextArea placeholder=\&#x22;Enter your comment\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<TextField>
-  <Label>Comment</Label>
-  <TextArea placeholder="Enter your comment" />
-</TextField>
-```
-
-### TextArea [#textarea]
-
-<PropTable />
-
-
 # TextLockup
+
+
 
 
 
@@ -5955,6 +6158,15 @@ here. Controls keep their own type: the buttons are unaffected by the lockup's `
 
 <Source language="tsx" code="&#x22;import { Button, ButtonGroup, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function WithActionsExample() {\n  return (\n    <TextLockup size=\&#x22;xl\&#x22;>\n      <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n        Pro\n      </Tag>\n      <Heading slot=\&#x22;title\&#x22; level={1}>\n        Upgrade your plan\n      </Heading>\n      <Text slot=\&#x22;body\&#x22;>Unlock advanced reporting, priority support, and unlimited seats for your whole team.</Text>\n      <ButtonGroup inlinePadding=\&#x22;0\&#x22; blockPadding=\&#x22;0\&#x22;>\n        <Button variant=\&#x22;primary\&#x22;>Upgrade</Button>\n        <Button variant=\&#x22;secondary\&#x22;>Compare plans</Button>\n      </ButtonGroup>\n    </TextLockup>\n  );\n}&#x22;" />
 
+### Corner Actions [#corner-actions]
+
+An article introduction with a menu to mark it as read. Put CornerActions before Heading
+inside Header so the title wraps around the menu button.
+
+<Story of="CornerActionsExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Button,\n  CornerActions,\n  Header,\n  Heading,\n  Icon,\n  Menu,\n  MenuItem,\n  MenuTrigger,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function CornerActionsExample() {\n  const [read, setRead] = useState(false);\n\n  return (\n    <TextLockup size=\&#x22;lg\&#x22; style={{ maxWidth: '24rem' }}>\n      <Tag slot=\&#x22;eyebrow\&#x22;>Business guide</Tag>\n      <Header>\n        <CornerActions>\n          <MenuTrigger popoverProps={{ placement: 'bottom end' }}>\n            <Button aria-label=\&#x22;More options\&#x22;>\n              <Icon icon=\&#x22;ellipsis\&#x22; />\n            </Button>\n            <Menu aria-label=\&#x22;Article actions\&#x22;>\n              <MenuItem id=\&#x22;read\&#x22; onAction={() => setRead(!read)}>\n                {read ? 'Mark as unread' : 'Mark as read'}\n              </MenuItem>\n            </Menu>\n          </MenuTrigger>\n        </CornerActions>\n        <Heading slot=\&#x22;title\&#x22; level={2}>\n          Prepare your online store for launch and make a great first impression on every customer\n        </Heading>\n      </Header>\n      <Text slot=\&#x22;body\&#x22;>\n        Check your product photos, payment options, and shipping details before opening your doors.\n      </Text>\n      <Text role=\&#x22;status\&#x22;>{read ? 'Marked as read' : '5 min read'}</Text>\n    </TextLockup>\n  );\n}&#x22;" />
+
 ## Customization [#customization]
 
 `TextLockup` positions and type-sets its parts; you supply them. That means anything else can
@@ -5998,10 +6210,27 @@ growing a prop for it.
 
 ## Props [#props]
 
+Place the title directly inside `TextLockup` when there are no corner actions. The eyebrow can
+be `Text` or `Tag` and comes before the title.
+
 ```tsx
 <TextLockup>
   <Tag slot="eyebrow" />
   <Heading slot="title" />
+  <Text slot="body" />
+  {/* ... */}
+</TextLockup>
+```
+
+Wrap the title in `Header` when using `CornerActions`.
+
+```tsx
+<TextLockup>
+  <Tag slot="eyebrow" />
+  <Header>
+    <CornerActions />
+    <Heading slot="title" />
+  </Header>
   <Text slot="body" />
   {/* ... */}
 </TextLockup>
@@ -7324,6 +7553,124 @@ All spacing, elevation, and rounding values are derived from the theme. If no th
 <PropTable />
 
 
+# Grid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component.
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic 3-column grid layout with gap.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex, type GridProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: GridProps) {\n  return (\n    <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; {...props}>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 1\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 2\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 3\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 4\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 5\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Columns [#columns]
+
+The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+
+<Story of="ColumnsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ColumnsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: repeat(2, 1fr)</Flex>\n        <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: 1fr 2fr 1fr</Flex>\n        <Grid columns=\&#x22;1fr 2fr 1fr\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Wide\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: auto 1fr auto</Flex>\n        <Grid columns=\&#x22;auto 1fr auto\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Flexible\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Gap [#gap]
+
+The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="GapExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function GapExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: md</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;md\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xl</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xl\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>rowGap: lg, columnGap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rowGap=\&#x22;lg\&#x22; columnGap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 5\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 6\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Named Areas [#named-areas]
+
+Use `areas` to define named grid regions. Children use the `gridArea` prop for placement.
+
+<Story of="AreasExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AreasExample() {\n  return (\n    <Grid\n      areas={['header header header', 'sidebar main main', 'footer footer footer']}\n      columns=\&#x22;200px 1fr 1fr\&#x22;\n      rows=\&#x22;auto 1fr auto\&#x22;\n      gap=\&#x22;sm\&#x22;\n      style={{ height: '300px' }}\n    >\n      <Flex gridArea=\&#x22;header\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Header\n      </Flex>\n      <Flex gridArea=\&#x22;sidebar\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#d0d0d0' }}>\n        Sidebar\n      </Flex>\n      <Flex gridArea=\&#x22;main\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Main Content\n      </Flex>\n      <Flex gridArea=\&#x22;footer\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Footer\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Responsive Grid [#responsive-grid]
+
+Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+
+<Story of="ResponsiveExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ResponsiveExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fill, minmax(150px, 1fr))\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 1\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 2\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 3\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 4\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 5\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Alignment [#alignment]
+
+Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+
+<Story of="AlignmentExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: center</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>alignItems: center (with fixed row height)</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;100px\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: end, alignItems: end</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;80px\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;end\&#x22; alignItems=\&#x22;end\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Form [#form]
+
+A common two-column form pattern with auto-sized label column.
+
+<Story of="FormExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <Grid columns=\&#x22;auto 1fr\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;center\&#x22; style={{ width: '400px' }}>\n      <Flex as=\&#x22;label\&#x22;>Name</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Email</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Message</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Textarea placeholder\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+## RTL Support [#rtl-support]
+
+Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
+
+## Grid vs Flex [#grid-vs-flex]
+
+| Use Case                   | Recommended      |
+| -------------------------- | ---------------- |
+| Single row/column of items | Flex             |
+| Two-dimensional layouts    | Grid             |
+| Named layout regions       | Grid             |
+| Auto-wrapping cards        | Grid (auto-fill) |
+| Navigation bars            | Flex             |
+| Form layouts               | Grid             |
+
+## Props [#props]
+
+### Grid [#grid]
+
+<PropTable />
+
+
 # Flex
 
 
@@ -7440,124 +7787,6 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 ## Props [#props]
 
 ### Flex [#flex]
-
-<PropTable />
-
-
-# Grid
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
-
-**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Scale Sizes [#scale-sizes]
-
-We use the same scale sizes as the `Box` component.
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic 3-column grid layout with gap.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex, type GridProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: GridProps) {\n  return (\n    <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; {...props}>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 1\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 2\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 3\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 4\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 5\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Columns [#columns]
-
-The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
-
-<Story of="ColumnsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ColumnsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: repeat(2, 1fr)</Flex>\n        <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: 1fr 2fr 1fr</Flex>\n        <Grid columns=\&#x22;1fr 2fr 1fr\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Wide\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: auto 1fr auto</Flex>\n        <Grid columns=\&#x22;auto 1fr auto\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Flexible\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Gap [#gap]
-
-The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
-
-<Story of="GapExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function GapExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: md</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;md\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xl</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xl\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>rowGap: lg, columnGap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rowGap=\&#x22;lg\&#x22; columnGap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 5\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 6\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Named Areas [#named-areas]
-
-Use `areas` to define named grid regions. Children use the `gridArea` prop for placement.
-
-<Story of="AreasExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AreasExample() {\n  return (\n    <Grid\n      areas={['header header header', 'sidebar main main', 'footer footer footer']}\n      columns=\&#x22;200px 1fr 1fr\&#x22;\n      rows=\&#x22;auto 1fr auto\&#x22;\n      gap=\&#x22;sm\&#x22;\n      style={{ height: '300px' }}\n    >\n      <Flex gridArea=\&#x22;header\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Header\n      </Flex>\n      <Flex gridArea=\&#x22;sidebar\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#d0d0d0' }}>\n        Sidebar\n      </Flex>\n      <Flex gridArea=\&#x22;main\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Main Content\n      </Flex>\n      <Flex gridArea=\&#x22;footer\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Footer\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Responsive Grid [#responsive-grid]
-
-Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
-
-<Story of="ResponsiveExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ResponsiveExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fill, minmax(150px, 1fr))\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 1\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 2\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 3\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 4\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 5\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Alignment [#alignment]
-
-Use `justifyItems` and `alignItems` to control default alignment of all grid children.
-
-<Story of="AlignmentExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: center</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>alignItems: center (with fixed row height)</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;100px\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: end, alignItems: end</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;80px\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;end\&#x22; alignItems=\&#x22;end\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Form [#form]
-
-A common two-column form pattern with auto-sized label column.
-
-<Story of="FormExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <Grid columns=\&#x22;auto 1fr\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;center\&#x22; style={{ width: '400px' }}>\n      <Flex as=\&#x22;label\&#x22;>Name</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Email</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Message</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Textarea placeholder\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-## RTL Support [#rtl-support]
-
-Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
-
-## Grid vs Flex [#grid-vs-flex]
-
-| Use Case                   | Recommended      |
-| -------------------------- | ---------------- |
-| Single row/column of items | Flex             |
-| Two-dimensional layouts    | Grid             |
-| Named layout regions       | Grid             |
-| Auto-wrapping cards        | Grid (auto-fill) |
-| Navigation bars            | Flex             |
-| Form layouts               | Grid             |
-
-## Props [#props]
-
-### Grid [#grid]
 
 <PropTable />
 
