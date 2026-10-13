@@ -1,5 +1,5 @@
 import { HeadingContext } from 'react-aria-components';
-import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';
+import { Button, Flex, Header, Heading, Text, TextLockup } from '@godaddy/antares';
 
 /**
  * Fixture for the lockup governing its own box and type whatever surrounds it. One region per
@@ -9,6 +9,13 @@ import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';
 export function SelfContainedExample() {
   return (
     <Flex direction="column" gap="lg">
+      <TextLockup>
+        <Header>
+          <Heading slot="title">Account settings</Heading>
+          <Button>Manage</Button>
+        </Header>
+      </TextLockup>
+
       <TextLockup size="2xl" style={{ inlineSize: '400px' }}>
         <Heading slot="title">Narrow</Heading>
       </TextLockup>
