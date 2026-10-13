@@ -13,5 +13,8 @@ export {
   type ButtonGroupProps,
   Group,
   GroupContext,
-  type GroupProps
+  type GroupProps,
+  CornerActions,
+  CornerActionsContext,
+  type CornerActionsProps
 } from '#components/structure';

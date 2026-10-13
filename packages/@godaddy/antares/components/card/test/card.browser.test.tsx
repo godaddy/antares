@@ -1,0 +1,585 @@
+import { RouterProvider } from 'react-aria-components';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { render } from 'vitest-browser-react';
+import { page, userEvent } from 'vitest/browser';
+import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
+import { ActionsExample } from '../examples/actions.tsx';
+import { CornerActionsExample } from '../examples/corner-actions.tsx';
+import { CustomizationExample } from '../examples/customization.tsx';
+import { DisabledExample } from '../examples/disabled.tsx';
+import { FrameExample } from '../examples/frame.tsx';
+import { GroupedLinksExample } from '../examples/grouped-links.tsx';
+import { InteractionsExample } from '../examples/interactions.tsx';
+import { LayoutExample } from '../examples/layout.tsx';
+import { LinkExample } from '../examples/link.tsx';
+import { MediaExample } from '../examples/media.tsx';
+import { MultipleSelectionExample } from '../examples/multiple-selection.tsx';
+import { NavigationExample } from '../examples/navigation.tsx';
+import { NumericExample } from '../examples/numeric.tsx';
+import { NestedExample } from '../examples/nested.tsx';
+import { SingleSelectionExample } from '../examples/single-selection.tsx';
+
+function bounds(element: Element) {
+  return element.getBoundingClientRect();
+}
+
+describe('@godaddy/antares', function packageTests() {
+  beforeAll(preloadTestIcons);
+
+  describe('#Card', function cardTests() {
+    beforeEach(resetHover);
+    beforeEach(async function resetViewport() {
+      await page.viewport(414, 896);
+    });
+
+    afterEach(async function resetInteractions() {
+      window.getSelection()?.removeAllRanges();
+      history.replaceState(null, '', `${location.pathname}${location.search}`);
+      await page.viewport(414, 896);
+    });
+
+    describe('standalone', function standaloneTests() {
+      it('bookmarks a guide and marks it as read from its menu', async function bookmarkGuide() {
+        const { getByRole, getByText } = await render(<CornerActionsExample />);
+        const favorite = getByRole('button', { name: 'Favorite' });
+        await userEvent.click(favorite);
+        await expect.element(favorite).toHaveAttribute('aria-pressed', 'true');
+        await expect.element(getByText('Saved to your reading list')).toBeVisible();
+        await userEvent.click(favorite);
+        await expect.element(favorite).toHaveAttribute('aria-pressed', 'false');
+
+        await userEvent.click(getByRole('button', { name: 'More options' }));
+        await userEvent.click(getByRole('menuitem', { name: 'Mark as read' }));
+        await expect.element(getByText('Read', { exact: true })).toBeVisible();
+      });
+
+      it('saves a website template from its media overlay', async function saveTemplate() {
+        const { getByRole } = await render(<MediaExample />);
+        const favorite = getByRole('button', { name: 'Favorite' });
+        await userEvent.click(favorite);
+        await expect.element(favorite).toHaveAttribute('aria-pressed', 'true');
+        await expect.element(getByRole('status')).toHaveTextContent('Saved to your templates');
+        await userEvent.click(favorite);
+        await expect.element(favorite).toHaveAttribute('aria-pressed', 'false');
+      });
+
+      it('renders the Card itself as the native link', async function nativeLink() {
+        const { getByRole, getByText } = await render(<LinkExample />);
+        const link = getByRole('link', { name: 'Manage billing' });
+        await expect.element(link).toHaveAttribute('href', '#billing');
+        expect(link.element()).toHaveAttribute('data-card', 'interactive');
+        await expect.element(getByRole('link', { name: /Find your domain/ })).toHaveAttribute('href', '#domains');
+        await userEvent.click(getByText('99.9% uptime'));
+        expect(location.hash).toBe('#hosting');
+      });
+
+      it('rings a focused link Card', async function linkFocusRing() {
+        const { getByRole } = await render(<LinkExample />);
+        const link = getByRole('link', { name: 'Manage billing' });
+        await userEvent.click(getByRole('link', { name: /Find your domain/ }));
+        await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
+        await expect.element(link).toHaveFocus();
+        expect(getComputedStyle(link.element()).outlineStyle).toBe('solid');
+      });
+
+      it('disables a link Card', async function disabledLink() {
+        const { getByRole } = await render(<DisabledExample />);
+        const link = getByRole('link', { name: /Billing temporarily unavailable/ });
+        await expect.element(link).toHaveAttribute('aria-disabled', 'true');
+        await userEvent.click(link, { force: true });
+        expect(location.hash).toBe('');
+      });
+
+      it('names and describes a static Card surface', async function staticSurfaceName() {
+        const { getByRole } = await render(<CustomizationExample />);
+        const region = getByRole('region', { name: 'Card without group' });
+        await expect.element(region).toHaveAccessibleDescription('Static surface description');
+        expect(region.element()).toHaveAttribute('data-card', 'static');
+      });
+
+      it('renders an indicator on a Card outside a group as unselected decoration', async function staticIndicator() {
+        const { getByTestId } = await render(<CustomizationExample />);
+        const indicator = getByTestId('props-static-indicator');
+        await expect.element(indicator).toHaveAttribute('aria-hidden', 'true');
+        await expect.element(indicator).not.toHaveAttribute('data-selected');
+      });
+
+      it('sets the element id on link and static Cards', async function standaloneIds() {
+        const { getByRole } = await render(<CustomizationExample />);
+        await expect.element(getByRole('link', { name: 'Linked content ref' })).toHaveAttribute('id', 'props-link');
+        await expect.element(getByRole('region', { name: 'Card without group' })).toHaveAttribute('id', 'props-static');
+      });
+
+      it('stringifies numeric ids for standalone surfaces and links', async function numericDomIds() {
+        const { getByRole } = await render(<NumericExample />);
+        await expect.element(getByRole('region', { name: 'Numeric static card' })).toHaveAttribute('id', '0');
+        await expect.element(getByRole('link', { name: 'Numeric link card' })).toHaveAttribute('id', '42');
+      });
+
+      it('focuses the collection through its forwarded ref', async function groupRefFocus() {
+        const { getByRole } = await render(<CustomizationExample />);
+        await userEvent.click(getByRole('button', { name: 'Focus cards' }));
+        expect(getByRole('grid', { name: 'Review cards' }).element().contains(document.activeElement)).toBe(true);
+      });
+
+      it('forwards refs for the collection, rows, links, and static Cards', async function refs() {
+        const { getByRole, getByTestId } = await render(<CustomizationExample />);
+        await userEvent.click(getByRole('button', { name: 'Check refs' }));
+        await expect.element(getByTestId('props-ref-status')).toHaveTextContent('Refs ready');
+      });
+    });
+
+    describe('selection', function selectionTests() {
+      it('toggles each Card in a multiple selection group', async function multiple() {
+        const { getByRole, getByTestId } = await render(<MultipleSelectionExample />);
+        const privacy = getByRole('row', { name: 'Domain privacy' });
+        const email = getByRole('row', { name: 'Professional email' });
+
+        await expect.element(privacy).toHaveAttribute('aria-selected', 'true');
+        await expect.element(getByTestId('privacy-indicator')).toHaveAttribute('data-selected', 'true');
+        await expect.element(getByTestId('email-indicator')).toHaveTextContent('Add');
+        await expect.element(getByRole('status')).toHaveTextContent('Add-ons total: $5/month');
+
+        await userEvent.click(email);
+        await expect.element(email).toHaveAttribute('aria-selected', 'true');
+        await expect.element(getByTestId('email-indicator')).toHaveTextContent('Added');
+        await expect.element(privacy).toHaveAttribute('aria-selected', 'true');
+        await expect.element(getByRole('status')).toHaveTextContent('Add-ons total: $13/month');
+
+        await userEvent.click(privacy);
+        await expect.element(privacy).toHaveAttribute('aria-selected', 'false');
+        expect(getComputedStyle(email.element()).borderColor).not.toBe(getComputedStyle(privacy.element()).borderColor);
+        await expect.element(getByRole('status')).toHaveTextContent('Add-ons total: $8/month');
+        await userEvent.click(email);
+        await expect.element(getByRole('status')).toHaveTextContent('Add-ons total: $0/month');
+      });
+
+      it('keeps one Card selected in a single selection group', async function single() {
+        const { getByRole, getByTestId } = await render(<SingleSelectionExample />);
+        const pro = getByRole('row', { name: 'Pro plan' });
+        await expect.element(getByRole('status')).toHaveTextContent('Selected plan: Starter - $10/month');
+        await userEvent.click(pro);
+        await expect.element(pro).toHaveAttribute('aria-selected', 'true');
+        await expect.element(getByRole('row', { name: 'Starter plan' })).toHaveAttribute('aria-selected', 'false');
+        await expect.element(getByTestId('starter-indicator')).not.toHaveAttribute('data-selected');
+        await expect.element(getByRole('status')).toHaveTextContent('Selected plan: Pro - $25/month');
+
+        await userEvent.click(pro);
+        await expect.element(pro).toHaveAttribute('aria-selected', 'true');
+        await userEvent.keyboard(' ');
+        await expect.element(pro).toHaveAttribute('aria-selected', 'true');
+      });
+
+      it('moves between Cards with arrow keys and selects with Space', async function keyboard() {
+        const { getByRole } = await render(<SingleSelectionExample />);
+        await userEvent.tab();
+        await expect.element(getByRole('row', { name: 'Starter plan' })).toHaveFocus();
+        await userEvent.keyboard('{ArrowRight}');
+        await expect.element(getByRole('row', { name: 'Pro plan' })).toHaveFocus();
+        await userEvent.keyboard(' ');
+        await expect.element(getByRole('row', { name: 'Pro plan' })).toHaveAttribute('aria-selected', 'true');
+      });
+
+      it('names and type-selects a Card by its plain-text children', async function plainTextRow() {
+        const { getByRole } = await render(<CustomizationExample />);
+        await userEvent.click(getByRole('row', { name: 'Row props card' }));
+        await userEvent.keyboard('p');
+        await expect.element(getByRole('row', { name: 'Plain text card' })).toHaveFocus();
+      });
+
+      it('preserves numeric keys when selecting dynamic items', async function numericKeys() {
+        const { getByRole, getByText } = await render(<NumericExample />);
+        await expect.element(getByRole('row', { name: '42', exact: true })).toHaveAttribute('aria-selected', 'true');
+        await userEvent.click(getByRole('row', { name: '0', exact: true }));
+        await expect.element(getByText('Selected: number:2,number:1')).toBeInTheDocument();
+        await userEvent.click(getByRole('row', { name: '42', exact: true }));
+        await expect.element(getByText('Selected: number:1')).toBeInTheDocument();
+      });
+
+      it('type-selects rows from numeric children including zero', async function numericTypeahead() {
+        const { getByRole } = await render(<NumericExample />);
+        await userEvent.click(getByRole('row', { name: '42', exact: true }));
+        await userEvent.keyboard('0');
+        await expect.element(getByRole('row', { name: '0', exact: true })).toHaveFocus();
+      });
+
+      it('shares row hover and focus with the indicator', async function indicatorState() {
+        const { getByRole, getByTestId } = await render(<InteractionsExample />);
+        const row = getByRole('row', { name: 'Option one' });
+        await userEvent.hover(row.element().querySelector('p, span')!);
+        await expect.element(row).toHaveAttribute('data-hovered', 'true');
+        await expect.element(getByTestId('indicator-One')).toHaveAttribute('data-hovered', 'true');
+
+        await userEvent.unhover(row);
+        await userEvent.tab();
+        await expect.element(row).toHaveFocus();
+        await expect.element(getByTestId('indicator-One')).toHaveAttribute('data-focus-visible', 'true');
+        expect(getComputedStyle(row.element()).outlineStyle).toBe('solid');
+      });
+
+      it('positions direct corner actions at the top end of a grouped Card', async function cornerPlacement() {
+        const { getByRole, getByText, getByTestId } = await render(<InteractionsExample />);
+        const row = bounds(getByRole('row', { name: 'Option one' }).element());
+        const corner = bounds(getByTestId('corner-One').element());
+        const text = bounds(getByText('One: copy this text.').element());
+        expect(corner.top).toBeGreaterThanOrEqual(row.top);
+        expect(corner.top).toBeLessThan(text.top);
+        expect(corner.right).toBeLessThanOrEqual(row.right);
+        expect(corner.right).toBeGreaterThan(text.right);
+      });
+
+      it('selects from the indicator itself', async function indicatorPress() {
+        const { getByRole, getByTestId } = await render(<InteractionsExample />);
+        await userEvent.click(getByTestId('indicator-One'));
+        await expect.element(getByRole('row', { name: 'Option one' })).toHaveAttribute('aria-selected', 'true');
+      });
+
+      it('reports controlled selection changes once', async function controlled() {
+        const { getByRole, getByText, getByTestId } = await render(<CustomizationExample />);
+        await userEvent.click(getByRole('row', { name: 'Row props card' }));
+        await expect.element(getByText('Selection changes: 1')).toBeInTheDocument();
+        await expect.element(getByTestId('props-row-indicator')).toHaveAttribute('data-selected', 'true');
+      });
+
+      it.each(['Automatic backups', 'SSL certificate'])('does not select a Card %s', async function disabled(name) {
+        const { getByRole } = await render(<DisabledExample />);
+        const row = getByRole('row', { name });
+        await expect.element(row).toHaveAttribute('aria-disabled', 'true');
+        await expect.element(row).toHaveAttribute('data-disabled', 'true');
+        await userEvent.click(row, { force: true });
+        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+      });
+    });
+
+    describe('row actions', function rowActionTests() {
+      it('validates the newsletter email and confirms a subscription locally', async function subscribeForm() {
+        const { getByRole } = await render(<ActionsExample />);
+        await userEvent.click(getByRole('row', { name: 'Join our mailing list' }));
+        const dialog = getByRole('dialog', { name: 'Join our mailing list' });
+        await userEvent.click(getByRole('button', { name: 'Subscribe', exact: true }));
+        await expect.element(dialog).toBeVisible();
+        await userEvent.fill(getByRole('textbox', { name: /Email/ }), 'invalid');
+        await userEvent.click(getByRole('button', { name: 'Subscribe', exact: true }));
+        await expect.element(dialog).toBeVisible();
+        await userEvent.fill(getByRole('textbox', { name: /Email/ }), 'owner@example.com');
+        await userEvent.click(getByRole('button', { name: 'Subscribe', exact: true }));
+        await expect.element(dialog).not.toBeInTheDocument();
+        await expect.element(getByRole('status')).toHaveTextContent('Subscribed with owner@example.com');
+      });
+
+      it('runs a row action from a press or Enter', async function rowAction() {
+        const { getByRole, getByText } = await render(<InteractionsExample selectionMode="none" withAction />);
+        await userEvent.click(getByText('One: copy this text.'));
+        await expect.element(getByText('Row actions: one')).toBeInTheDocument();
+
+        await userEvent.keyboard('{ArrowDown}');
+        await expect.element(getByRole('row', { name: 'Option two' })).toHaveFocus();
+        await userEvent.keyboard('{Enter}');
+        await expect.element(getByText('Row actions: one,two')).toBeInTheDocument();
+      });
+
+      it('opens a subscribe Card inside a modal but not from a nested button', async function subscribeModal() {
+        const { getByRole } = await render(<ActionsExample />);
+        await userEvent.click(getByRole('button', { name: 'Save' }));
+        await expect.element(getByRole('button', { name: 'Saved' })).toBeInTheDocument();
+        await expect.element(getByRole('dialog')).not.toBeInTheDocument();
+
+        await userEvent.click(getByRole('row', { name: 'Join our mailing list' }));
+        await expect.element(getByRole('dialog', { name: 'Join our mailing list' })).toBeInTheDocument();
+        await userEvent.click(getByRole('button', { name: 'Cancel' }));
+        await expect.element(getByRole('dialog')).not.toBeInTheDocument();
+
+        await userEvent.click(getByRole('row', { name: 'Join our mailing list' }));
+        await userEvent.fill(getByRole('textbox', { name: /Email/ }), 'owner@example.com');
+        await userEvent.keyboard('{Enter}');
+        await expect.element(getByRole('dialog')).not.toBeInTheDocument();
+        await expect.element(getByRole('status')).toHaveTextContent('Subscribed with owner@example.com');
+      });
+    });
+
+    describe('grouped links', function groupedLinkTests() {
+      it('navigates and runs the row action once from a body press', async function groupedLinkPress() {
+        const { getByText } = await render(<GroupedLinksExample />);
+        await userEvent.click(getByText('Auto-renew is off. Open this domain to view its settings.'));
+        expect(location.hash).toBe('#example-com-settings');
+        await expect.element(getByText('Opened: example.com')).toBeInTheDocument();
+      });
+
+      it('moves between linked rows with arrow keys and navigates with Enter', async function groupedLinkKeyboard() {
+        const { getByRole, getByText } = await render(<GroupedLinksExample />);
+        const firstDomain = getByRole('row', { name: 'example.com' });
+        const secondDomain = getByRole('row', { name: 'example.net' });
+        await userEvent.tab();
+        await expect.element(firstDomain).toHaveFocus();
+        await userEvent.keyboard('{ArrowDown}');
+        await expect.element(secondDomain).toHaveFocus();
+        await userEvent.keyboard('{ArrowDown}');
+        await expect.element(secondDomain).toHaveFocus();
+        await userEvent.keyboard('{Enter}');
+        expect(location.hash).toBe('#example-net-settings');
+        await expect.element(getByText('Opened: example.net')).toBeInTheDocument();
+      });
+
+      it('keeps nested switches and links independent of grouped navigation', async function groupedLinkControls() {
+        const { getByRole, getByText } = await render(<GroupedLinksExample />);
+        const autoRenew = getByRole('switch', { name: 'Auto-renew' });
+        await expect.element(autoRenew).not.toBeChecked();
+        await userEvent.click(getByText('Auto-renew', { exact: true }));
+        await expect.element(autoRenew).toBeChecked();
+        await expect
+          .element(getByText('Auto-renew is on. Open this domain to view its settings.').first())
+          .toBeInTheDocument();
+        expect(location.hash).toBe('');
+        await expect.element(getByText('Opened: none')).toBeInTheDocument();
+
+        await userEvent.keyboard(' ');
+        await expect.element(autoRenew).not.toBeChecked();
+        await expect
+          .element(getByText('Auto-renew is off. Open this domain to view its settings.'))
+          .toBeInTheDocument();
+        expect(location.hash).toBe('');
+        await expect.element(getByText('Opened: none')).toBeInTheDocument();
+
+        await userEvent.click(getByRole('link', { name: 'Manage DNS' }));
+        expect(location.hash).toBe('#example-com-dns');
+        await expect.element(getByText('Opened: none')).toBeInTheDocument();
+      });
+
+      it('does not navigate or run the action of a disabled linked row', async function disabledGroupedLink() {
+        const { getByRole, getByText } = await render(<GroupedLinksExample />);
+        await userEvent.click(getByRole('row', { name: 'example.org' }), { force: true });
+        expect(location.hash).toBe('');
+        await expect.element(getByText('Opened: none')).toBeInTheDocument();
+      });
+    });
+
+    describe('navigation options', function navigationOptionsTests() {
+      it('forwards link options and routes standalone and grouped Cards', async function navigationOptions() {
+        const navigate = vi.fn();
+        const routerOptions = { replace: true };
+        // RAC types routerOptions as never until the app augments RouterConfig.
+        const { getByRole } = await render(
+          <RouterProvider navigate={navigate}>
+            <NavigationExample routerOptions={routerOptions as never} />
+          </RouterProvider>
+        );
+        const standalone = getByRole('link', { name: 'Standalone navigation' });
+        const grouped = getByRole('row', { name: 'Grouped navigation' });
+        await expect.element(standalone).toHaveAttribute('target', '_self');
+        await expect.element(standalone).toHaveAttribute('rel', 'help');
+        await expect.element(standalone).toHaveAttribute('referrerpolicy', 'no-referrer');
+        await expect
+          .element(getByRole('link', { name: 'Standalone download' }))
+          .toHaveAttribute('download', 'standalone.txt');
+        await expect.element(grouped).toHaveAttribute('data-target', '_self');
+        await expect.element(grouped).toHaveAttribute('data-rel', 'help');
+        await expect.element(grouped).toHaveAttribute('data-referrer-policy', 'no-referrer');
+        await expect
+          .element(getByRole('row', { name: 'Grouped download' }))
+          .toHaveAttribute('data-download', 'grouped.txt');
+
+        await userEvent.click(standalone);
+        expect(navigate).toHaveBeenCalledExactlyOnceWith('#standalone', routerOptions);
+        navigate.mockClear();
+        await userEvent.click(grouped);
+        expect(navigate).toHaveBeenCalledExactlyOnceWith('#grouped', routerOptions);
+        navigate.mockClear();
+        await userEvent.keyboard('{Enter}');
+        expect(navigate).toHaveBeenCalledExactlyOnceWith('#grouped', routerOptions);
+      });
+    });
+
+    describe('nested controls', function nestedControlTests() {
+      it('keeps React Aria controls independent of the row', async function racControls() {
+        const { getByRole, getByText } = await render(<InteractionsExample withAction />);
+        const row = getByRole('row', { name: 'Option one' });
+
+        await userEvent.click(getByRole('button', { name: 'Independent One' }));
+        await userEvent.click(getByRole('link', { name: 'Independent link One' }));
+        await userEvent.click(getByRole('button', { name: 'Menu One' }));
+        await userEvent.click(getByRole('menuitem', { name: 'Menu action One' }));
+
+        await expect.element(getByText('Independent activations: 3')).toBeInTheDocument();
+        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+        await expect.element(row).toHaveAttribute('aria-selected', 'false');
+      });
+
+      it.each([
+        false,
+        true
+      ])('keeps checkbox presses independent with row action %s', async function checkbox(withAction) {
+        const { getByRole, getByText } = await render(
+          <InteractionsExample selectionMode={withAction ? 'none' : 'multiple'} withAction={withAction} />
+        );
+        const row = getByRole('row', { name: 'Option one' });
+        const checkbox = getByRole('checkbox', { name: 'Remember One' });
+        await userEvent.click(getByText('Remember One'));
+        await expect.element(checkbox).toBeChecked();
+        await expect.element(getByText('Independent activations: 1')).toBeInTheDocument();
+        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+
+        await userEvent.click(getByText('Remember One'));
+        await expect.element(checkbox).not.toBeChecked();
+        await expect.element(getByText('Independent activations: 2')).toBeInTheDocument();
+        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+      });
+
+      it.each([
+        false,
+        true
+      ])('keeps RAC keyboard activation independent with row action %s', async function racKeyboard(withAction) {
+        const { getByRole, getByText } = await render(
+          <InteractionsExample selectionMode={withAction ? 'none' : 'multiple'} withAction={withAction} />
+        );
+        const row = getByRole('row', { name: 'Option one' });
+        await userEvent.tab();
+        await userEvent.tab();
+        await expect.element(getByRole('button', { name: 'Independent One' })).toHaveFocus();
+        await userEvent.keyboard('{Enter}');
+        await expect.element(getByText('Independent activations: 1')).toBeInTheDocument();
+        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+        await userEvent.keyboard(' ');
+        await expect.element(getByText('Independent activations: 2')).toBeInTheDocument();
+
+        await userEvent.tab();
+        await expect.element(getByRole('button', { name: 'Custom action One' })).toHaveFocus();
+        await userEvent.keyboard('{Enter}');
+        await expect.element(getByText('Independent activations: 3')).toBeInTheDocument();
+        await userEvent.keyboard(' ');
+        await expect.element(getByText('Independent activations: 4')).toBeInTheDocument();
+        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+
+        await userEvent.tab();
+        const checkbox = getByRole('checkbox', { name: 'Remember One' });
+        await expect.element(checkbox).toHaveFocus();
+        await userEvent.keyboard(' ');
+        await expect.element(checkbox).toBeChecked();
+        await expect.element(getByText('Independent activations: 5')).toBeInTheDocument();
+
+        await userEvent.tab();
+        await expect.element(getByRole('link', { name: 'Independent link One' })).toHaveFocus();
+        await userEvent.keyboard('{Enter}');
+        expect(location.hash).toBe('#independent-destination');
+        await expect.element(getByText('Independent activations: 6')).toBeInTheDocument();
+        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+      });
+
+      it.each([
+        false,
+        true
+      ])('keeps RAC virtual clicks independent with row action %s', async function racVirtualClick(withAction) {
+        const { getByRole, getByText } = await render(
+          <InteractionsExample selectionMode={withAction ? 'none' : 'multiple'} withAction={withAction} />
+        );
+        const row = getByRole('row', { name: 'Option one' });
+        (getByRole('button', { name: 'Independent One' }).element() as HTMLButtonElement).click();
+        await expect.element(getByText('Independent activations: 1')).toBeInTheDocument();
+        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+
+        (getByRole('button', { name: 'Custom action One' }).element() as HTMLDivElement).click();
+        await expect.element(getByText('Independent activations: 2')).toBeInTheDocument();
+        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+
+        const checkbox = getByRole('checkbox', { name: 'Remember One' });
+        (checkbox.element() as HTMLInputElement).click();
+        await expect.element(checkbox).toBeChecked();
+        await expect.element(getByText('Independent activations: 3')).toBeInTheDocument();
+        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+
+        (getByRole('link', { name: 'Independent link One' }).element() as HTMLAnchorElement).click();
+        expect(location.hash).toBe('#independent-destination');
+        await expect.element(getByText('Independent activations: 4')).toBeInTheDocument();
+        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+      });
+
+      it('drags a nested slider without selecting the row', async function slider() {
+        const { getByRole } = await render(<InteractionsExample slider />);
+        const row = getByRole('row', { name: 'Option one' });
+        const track = row.element().querySelector<HTMLElement>('[class*="track"]')!;
+        const box = bounds(track);
+        await userEvent.dragAndDrop(track, track, {
+          sourcePosition: { x: box.width * 0.1, y: box.height / 2 },
+          targetPosition: { x: box.width * 0.8, y: box.height / 2 }
+        });
+        expect(row.element().querySelector<HTMLInputElement>('input[type="range"]')!.value).toBe('80');
+        await expect.element(row).toHaveAttribute('aria-selected', 'false');
+      });
+    });
+
+    describe('composition', function compositionTests() {
+      it('renders a Card nested in a row as a static Card', async function nested() {
+        const { getByRole, getByTestId } = await render(<NestedExample />);
+        const outer = getByRole('row', { name: 'Outer card' }).element();
+        expect(outer.querySelectorAll('[role="row"]')).toHaveLength(0);
+        expect(outer.querySelector('[aria-label="Inner card"]')).toHaveAttribute('data-card', 'static');
+        await expect.element(getByTestId('outer-indicator')).toHaveAttribute('data-selected', 'true');
+        await expect.element(getByTestId('inner-indicator')).not.toHaveAttribute('data-selected');
+      });
+
+      it('runs actions and selection inside an iframe', async function framed() {
+        const { getByTitle, getByText } = await render(<FrameExample />);
+        const frame = getByTitle('Card frame').element() as HTMLIFrameElement;
+        await expect.poll(() => frame.contentDocument?.querySelectorAll('[role="row"]').length).toBe(2);
+        const frameDocument = frame.contentDocument!;
+        const [action, selection] = frameDocument.querySelectorAll<HTMLElement>('[role="row"]');
+
+        action.click();
+        await expect.element(getByText('Framed activations: 1')).toBeInTheDocument();
+        selection.click();
+        await expect.poll(() => selection.getAttribute('aria-selected')).toBe('true');
+      });
+    });
+
+    describe('layout', function layoutTests() {
+      it.each([
+        'ltr',
+        'rtl'
+      ] as const)('wraps heading lines around corner actions in %s', async function headingWrap(dir) {
+        const { getByRole, getByText } = await render(<CornerActionsExample dir={dir} />);
+        const heading = getByRole('heading').element();
+        const actions = bounds(getByRole('button', { name: 'Favorite' }).element().parentElement!);
+        const range = document.createRange();
+        range.selectNodeContents(heading);
+        const lines = [...range.getClientRects()];
+        const alongside = lines.filter((line) => line.top < actions.bottom && line.bottom > actions.top);
+        const below = lines.filter((line) => line.top >= actions.bottom);
+
+        expect(alongside.length).toBeGreaterThan(0);
+        expect(below.length).toBeGreaterThan(0);
+        for (const line of alongside) {
+          if (dir === 'ltr') expect(line.right).toBeLessThanOrEqual(actions.left);
+          else expect(line.left).toBeGreaterThanOrEqual(actions.right);
+        }
+        expect(below.some((line) => (dir === 'ltr' ? line.right > actions.left : line.left < actions.right))).toBe(
+          true
+        );
+        expect(
+          bounds(
+            getByText(
+              'A practical checklist for your products, payments, shipping, and first marketing campaign.'
+            ).element()
+          ).top
+        ).toBeGreaterThanOrEqual(bounds(heading.parentElement!).bottom);
+      });
+
+      it('stacks media in narrow containers and places it beside content in wide ones', async function containerQuery() {
+        const { getByTestId } = await render(<LayoutExample />);
+        const media = () => bounds(getByTestId('container-query-media').element());
+        const content = () => bounds(getByTestId('container-query-content').element());
+        expect(media().bottom).toBeLessThanOrEqual(content().top);
+
+        await page.viewport(800, 800);
+        await expect.poll(() => media().right <= content().left).toBe(true);
+      });
+    });
+  });
+});
