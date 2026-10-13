@@ -7,7 +7,7 @@ export function ConversationsCard() {
     <Card elevation="card" className={styles.conversationsCard}>
       <Flex direction="column" gap="md">
         <Flex justifyContent="space-between" alignItems="center" gap="md">
-          <Heading level={4}>Conversations</Heading>
+          <Heading level={3}>Conversations</Heading>
           <Tag emphasis="info" size="sm">
             Included
           </Tag>

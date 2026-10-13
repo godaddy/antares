@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Flex, Grid, Heading } from '@godaddy/antares';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { defaultActiveNavigationItem, type DashboardNavigationItemLabel } from '../../constants/config';
 import { AppointmentsPromotionCard } from '../appointments-promotion-card';
 import { ConversationsCard } from '../conversations-card';
@@ -13,20 +13,54 @@ import styles from './index.module.css';
 
 /** Renders the responsive overview dashboard block. */
 export function OverviewDashboard() {
+  const dashboardFrameRef = useRef<HTMLDivElement>(null);
   const [activeNavigationItem, setActiveNavigationItem] =
     useState<DashboardNavigationItemLabel>(defaultActiveNavigationItem);
   const [isNavigationPinnedOpen, setIsNavigationPinnedOpen] = useState(true);
+  const [isCompactLayout, setIsCompactLayout] = useState(false);
   const [isMobileNavigationOpen, setIsMobileNavigationOpen] = useState(false);
 
+  useEffect(function observeDashboardLayout() {
+    const frame = dashboardFrameRef.current;
+    if (!frame) {
+      return undefined;
+    }
+    const observedFrame = frame;
+
+    function syncDashboardLayout() {
+      const rootFontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+      const isCompact = observedFrame.getBoundingClientRect().width <= 40 * rootFontSize;
+
+      setIsCompactLayout(function preserveStableLayout(current) {
+        return current === isCompact ? current : isCompact;
+      });
+    }
+
+    syncDashboardLayout();
+    const observer = new ResizeObserver(syncDashboardLayout);
+    observer.observe(observedFrame);
+
+    return function disconnectDashboardLayoutObserver() {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(
+    function closeMobileNavigationOnDesktopLayout() {
+      if (!isCompactLayout) {
+        setIsMobileNavigationOpen(false);
+      }
+    },
+    [isCompactLayout]
+  );
+
   function openMobileNavigation() {
-    setIsNavigationPinnedOpen(true);
     setIsMobileNavigationOpen(true);
   }
 
   function toggleNavigation() {
     if (isMobileNavigationOpen) {
       setIsMobileNavigationOpen(false);
-      setIsNavigationPinnedOpen(false);
       return;
     }
 
@@ -37,20 +71,17 @@ export function OverviewDashboard() {
 
   function handleMobileNavigationChange(isOpen: boolean) {
     setIsMobileNavigationOpen(isOpen);
-    if (!isOpen) {
-      setIsNavigationPinnedOpen(false);
-    }
   }
 
   return (
-    <Box className={styles.dashboardFrame}>
+    <Box ref={dashboardFrameRef} className={styles.dashboardFrame}>
       <Grid className={styles.dashboardShell}>
         <DashboardSidebar
           activeItem={activeNavigationItem}
           isPinnedOpen={isNavigationPinnedOpen}
           onSelectItem={setActiveNavigationItem}
           onToggleCollapse={toggleNavigation}
-          isMobileNavigationOpen={isMobileNavigationOpen}
+          isMobileNavigationOpen={isCompactLayout && isMobileNavigationOpen}
           onMobileNavigationChange={handleMobileNavigationChange}
         />
 

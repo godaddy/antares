@@ -22,10 +22,10 @@ export const dashboardUsers = [
 
 /** Sales-channel slices displayed by the responsive chart. */
 export const salesChannelData = [
-  { id: 'shopify', name: 'Shopify', value: 40 },
-  { id: 'facebook-marketplace', name: 'Facebook Marketplace', value: 30 },
-  { id: 'instagram', name: 'Instagram', value: 20 },
-  { id: 'other', name: 'Other', value: 10 }
+  { id: 'shopify', name: 'Shopify', value: 400 },
+  { id: 'facebook-marketplace', name: 'Facebook Marketplace', value: 300 },
+  { id: 'instagram', name: 'Instagram', value: 200 },
+  { id: 'other', name: 'Other', value: 100 }
 ] satisfies DonutChartProps['data'];
 
 /** Self-contained local image used by the appointments promotion card. */

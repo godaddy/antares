@@ -17,7 +17,7 @@ export function SalesChannelsCard() {
   return (
     <Card elevation="card" className={styles.salesCardMeasure}>
       <Flex direction="column" gap="lg">
-        <Heading level={4}>Sales by Sales Channels</Heading>
+        <Heading level={3}>Sales by Sales Channels</Heading>
         <DonutChart
           data={salesChannelData}
           label="$1,000"

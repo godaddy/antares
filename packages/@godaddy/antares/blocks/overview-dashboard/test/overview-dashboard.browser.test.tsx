@@ -97,6 +97,8 @@ describe('@godaddy/antares', function packageTests() {
       await user.click(locator.getByRole('button', { name: 'Collapse navigation' }));
       const expandButton = container.querySelector('button[aria-label="Expand navigation"]') as HTMLElement;
       assume(expandButton).is.not.equal(null);
+      await page.getByRole('document').hover({ position: { x: 500, y: 20 } });
+      await expect.element(expandButton).not.toBeVisible();
       await expect.element(dashboardButton).toHaveAttribute('aria-label', 'Dashboard');
       assume(dashboardButton.element().querySelector('svg')).is.not.equal(null);
       assume(getComputedStyle(logo).display).is.not.equal('none');
@@ -199,6 +201,31 @@ describe('@godaddy/antares', function packageTests() {
       await user.click(drawer.getByRole('button', { name: 'Collapse navigation' }));
       await expect.element(drawer).not.toBeInTheDocument();
       assume(getComputedStyle(inlineNavigation).display).equals('none');
+    });
+
+    it('closes the mobile navigation on desktop resize without changing the pinned preference', async function handlesDesktopResize() {
+      const user = userEvent.setup();
+      const { container, locator } = await render(
+        <div style={{ width: '960px' }}>
+          <OverviewDashboard />
+        </div>
+      );
+
+      const viewport = container.firstElementChild as HTMLElement;
+      await user.click(locator.getByRole('button', { name: 'Collapse navigation' }));
+      const expandButton = locator.getByRole('button', { name: 'Expand navigation' });
+      await expect.element(expandButton).toBeVisible();
+
+      viewport.style.width = '320px';
+      await expect.element(locator.getByRole('button', { name: 'Open navigation' })).toBeVisible();
+      await user.click(locator.getByRole('button', { name: 'Open navigation' }));
+
+      const drawer = page.getByRole('dialog', { name: 'Product navigation' });
+      await expect.element(drawer).toBeVisible();
+
+      viewport.style.width = '960px';
+      await expect.element(drawer).not.toBeInTheDocument();
+      await expect.element(expandButton).toBeVisible();
     });
   });
 });
