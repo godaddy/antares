@@ -29,16 +29,6 @@
           "target": "components/blocks/overview-dashboard/components/conversations-card/index.tsx"
         },
         {
-          "path": "overview-dashboard/components/dashboard-card/index.module.css",
-          "type": "registry:style",
-          "target": "components/blocks/overview-dashboard/components/dashboard-card/index.module.css"
-        },
-        {
-          "path": "overview-dashboard/components/dashboard-card/index.tsx",
-          "type": "registry:component",
-          "target": "components/blocks/overview-dashboard/components/dashboard-card/index.tsx"
-        },
-        {
           "path": "overview-dashboard/components/dashboard-header/index.module.css",
           "type": "registry:style",
           "target": "components/blocks/overview-dashboard/components/dashboard-header/index.module.css"
@@ -87,11 +77,6 @@
           "path": "overview-dashboard/components/sales-channels-card/index.tsx",
           "type": "registry:component",
           "target": "components/blocks/overview-dashboard/components/sales-channels-card/index.tsx"
-        },
-        {
-          "path": "overview-dashboard/components/sales-channels-card/use-sales-channels-legend-placement.ts",
-          "type": "registry:component",
-          "target": "components/blocks/overview-dashboard/components/sales-channels-card/use-sales-channels-legend-placement.ts"
         },
         {
           "path": "overview-dashboard/components/users-card/index.module.css",

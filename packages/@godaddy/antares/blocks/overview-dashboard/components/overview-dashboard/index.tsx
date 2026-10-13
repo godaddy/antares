@@ -2,7 +2,7 @@
 
 import { Box, Flex, Grid, Heading } from '@godaddy/antares';
 import { useState } from 'react';
-import { defaultActiveNavigationItem } from '../../constants/config';
+import { defaultActiveNavigationItem, type DashboardNavigationItemLabel } from '../../constants/config';
 import { AppointmentsPromotionCard } from '../appointments-promotion-card';
 import { ConversationsCard } from '../conversations-card';
 import { DashboardHeader } from '../dashboard-header';
@@ -13,7 +13,8 @@ import styles from './index.module.css';
 
 /** Renders the responsive overview dashboard block. */
 export function OverviewDashboard() {
-  const [activeNavigationItem, setActiveNavigationItem] = useState(defaultActiveNavigationItem);
+  const [activeNavigationItem, setActiveNavigationItem] =
+    useState<DashboardNavigationItemLabel>(defaultActiveNavigationItem);
   const [isNavigationPinnedOpen, setIsNavigationPinnedOpen] = useState(true);
   const [isMobileNavigationOpen, setIsMobileNavigationOpen] = useState(false);
 

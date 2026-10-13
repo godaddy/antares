@@ -1,22 +1,18 @@
 import type { DonutChartProps } from '@godaddy/antares';
 
-interface DashboardNavigationItem {
-  label: string;
-  icon: string;
-  badge?: string;
-}
-
 /** Navigation entries shown by the dashboard shell. */
-export const dashboardNavigationItems: readonly DashboardNavigationItem[] = [
+export const dashboardNavigationItems = [
   { label: 'Dashboard', icon: 'dashboard' },
   { label: 'Advanced Email Security', icon: 'mail-lock' },
   { label: 'Add-Ons', icon: 'addon' },
   { label: 'My Brand', icon: 'color-palette' },
   { label: 'Deals', icon: 'deals', badge: 'New' }
-] as const;
+] as const satisfies readonly { label: string; icon: string; badge?: string }[];
+
+export type DashboardNavigationItemLabel = (typeof dashboardNavigationItems)[number]['label'];
 
 /** Initial dashboard navigation item. */
-export const defaultActiveNavigationItem = 'Dashboard';
+export const defaultActiveNavigationItem: DashboardNavigationItemLabel = dashboardNavigationItems[0].label;
 
 /** User rows displayed by the dashboard's Users card. */
 export const dashboardUsers = [

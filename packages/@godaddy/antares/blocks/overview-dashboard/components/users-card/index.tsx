@@ -1,17 +1,16 @@
-import { Box, Button, Detail, Flex, Heading, Icon, Tag, Text } from '@godaddy/antares';
+import { Box, Button, Card, Detail, Flex, Heading, Icon, Tag, Text } from '@godaddy/antares';
 import { dashboardUsers } from '../../constants/config';
-import { DashboardCard } from '../dashboard-card';
 import styles from './index.module.css';
 
 /** Shows the user-management card from the dashboard composition. */
 export function UsersCard() {
   return (
-    <DashboardCard className={styles.usersCard}>
+    <Card elevation="card" className={styles.usersCard}>
       <Flex direction="column" gap="lg">
         <Flex justifyContent="space-between" alignItems="center" gap="md">
           <Heading level={3}>Users</Heading>
-          <Button className={styles.restoreUsersButton} variant="minimal" size="sm" aria-label="Restore deleted users">
-            <Flex className={styles.restoreUsersContent} alignItems="center" gap="sm">
+          <Button variant="minimal" size="sm" aria-label="Restore deleted users">
+            <Flex alignItems="center" gap="sm">
               <Icon icon="trash" aria-hidden="true" />
               <Text className={styles.restoreUsersLabel}>Restore deleted users</Text>
             </Flex>
@@ -58,6 +57,6 @@ export function UsersCard() {
           })}
         </Flex>
       </Flex>
-    </DashboardCard>
+    </Card>
   );
 }

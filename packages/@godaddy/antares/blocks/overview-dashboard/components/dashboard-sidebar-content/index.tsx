@@ -1,16 +1,16 @@
 import { Button, Flex, Icon, Tag, Text } from '@godaddy/antares';
-import { dashboardNavigationItems } from '../../constants/config';
+import { dashboardNavigationItems, type DashboardNavigationItemLabel } from '../../constants/config';
 import styles from './index.module.css';
 
 interface DashboardSidebarContentProps {
   /** Item label that receives the active marker. */
-  activeItem: string;
+  activeItem: DashboardNavigationItemLabel;
 
   /** Whether the desktop rail is pinned open. */
   isPinnedOpen: boolean;
 
   /** Selects a menu item without navigating the example. */
-  onSelectItem: (label: string) => void;
+  onSelectItem: (label: DashboardNavigationItemLabel) => void;
 
   /** Toggles the desktop rail or closes the mobile navigation. */
   onToggleCollapse: () => void;
@@ -52,14 +52,13 @@ export function DashboardSidebarContent({
               variant="minimal"
               size="sm"
               aria-current={isActive ? 'page' : undefined}
-              aria-pressed={isActive}
               aria-label={!isPinnedOpen ? item.label : undefined}
               onPress={() => onSelectItem(item.label)}
             >
               <Icon className={styles.sideNavIcon} icon={item.icon} aria-hidden="true" />
               <Flex className={styles.sideNavContent} flex="1" alignItems="center" justifyContent="flex-start" gap="sm">
                 <Text className={styles.sideNavLabel}>{item.label}</Text>
-                {item.badge ? (
+                {'badge' in item && item.badge ? (
                   <Tag emphasis="highlight" size="sm">
                     {item.badge}
                   </Tag>

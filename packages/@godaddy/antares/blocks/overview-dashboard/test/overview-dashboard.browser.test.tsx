@@ -64,9 +64,9 @@ describe('@godaddy/antares', function packageTests() {
 
       await expect.element(overview).toBeVisible();
       await expect.element(emailSecurity).toHaveAttribute('aria-current', 'page');
-      await expect.element(emailSecurity).toHaveAttribute('aria-pressed', 'true');
       await expect.element(dashboard).not.toHaveAttribute('aria-current');
-      await expect.element(dashboard).toHaveAttribute('aria-pressed', 'false');
+      await expect.element(emailSecurity).not.toHaveAttribute('aria-pressed');
+      await expect.element(dashboard).not.toHaveAttribute('aria-pressed');
       assume(locator.getByRole('button', { name: 'Admin' }).all().length).equals(0);
     });
 
@@ -137,6 +137,7 @@ describe('@godaddy/antares', function packageTests() {
 
       await user.click(locator.getByRole('button', { name: 'Expand navigation' }));
       await expect.element(locator.getByRole('button', { name: 'Collapse navigation' })).toBeVisible();
+      expect(getComputedStyle(navigation).zIndex).toBe('1');
       await new Promise(function samplePinnedExpansion(resolve) {
         setTimeout(resolve, 100);
       });
@@ -154,7 +155,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(expandButton).not.toBeVisible();
     });
 
-    it('places the chart legend beside the donut only when the card is wide enough', async function adaptsLegendPlacement() {
+    it('keeps the chart legend below the donut at every card width', async function keepsLegendPlacement() {
       const wide = await render(
         <div style={{ width: '1600px' }}>
           <OverviewDashboard />
@@ -164,7 +165,7 @@ describe('@godaddy/antares', function packageTests() {
       await waitForSelector(wide.container, 'svg path');
       const wideLegend = wide.container.querySelector('[aria-label="Chart legend"]');
       assume(wideLegend).is.not.equal(null);
-      assume(getComputedStyle(wideLegend?.parentElement?.parentElement as Element).flexDirection).equals('row');
+      assume(getComputedStyle(wideLegend?.parentElement?.parentElement as Element).flexDirection).equals('column');
 
       const narrow = await render(
         <div style={{ width: '320px' }}>

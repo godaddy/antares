@@ -2,15 +2,6 @@
   min-inline-size: 0;
 }
 
-.restoreUsersLabel {
-  white-space: nowrap;
-}
-
-.restoreUsersButton,
-.restoreUsersContent {
-  align-items: center;
-}
-
 .userDivider {
   border: 0;
   border-block-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));

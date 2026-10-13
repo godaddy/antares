@@ -10,7 +10,7 @@ interface DashboardHeaderProps {
 export function DashboardHeader({ onOpenNavigation }: DashboardHeaderProps) {
   return (
     <Flex className={styles.navigation} justifyContent="space-between" alignItems="center" gap="lg" wrap="wrap">
-      <Flex className={styles.navBrand} alignItems="center" gap="lg">
+      <Flex alignItems="center" gap="lg">
         <Button
           className={styles.mobileMenuButton}
           variant="minimal"
@@ -25,11 +25,11 @@ export function DashboardHeader({ onOpenNavigation }: DashboardHeaderProps) {
 
       <Flex className={styles.navActions} alignItems="center" gap="md" wrap="wrap">
         <Button className={styles.desktopNavAction} variant="minimal" size="sm" aria-label="Hire an Expert">
-          <Text className={styles.navLabel}>Hire an Expert</Text>
+          Hire an Expert
         </Button>
         <Box as="span" className={styles.navDivider} aria-hidden="true" />
         <Button className={styles.desktopNavAction} variant="minimal" size="sm" aria-label="Help Center">
-          <Text className={styles.navLabel}>Help Center</Text>
+          Help Center
         </Button>
         <Button className={styles.mobileNavAction} variant="minimal" size="sm" aria-label="Help Center">
           <Icon icon="help" aria-hidden="true" />

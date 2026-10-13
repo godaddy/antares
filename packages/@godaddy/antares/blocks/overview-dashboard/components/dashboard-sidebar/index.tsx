@@ -1,16 +1,17 @@
 import { Drawer, Flex, InlineDrawer } from '@godaddy/antares';
+import type { DashboardNavigationItemLabel } from '../../constants/config';
 import { DashboardSidebarContent } from '../dashboard-sidebar-content';
 import styles from './index.module.css';
 
 interface DashboardSidebarProps {
   /** Item label that receives the active marker. */
-  activeItem: string;
+  activeItem: DashboardNavigationItemLabel;
 
   /** Whether the navigation is pinned open on desktop. */
   isPinnedOpen: boolean;
 
   /** Selects a menu item without navigating the example. */
-  onSelectItem: (label: string) => void;
+  onSelectItem: (label: DashboardNavigationItemLabel) => void;
 
   /** Toggles the desktop rail or closes the mobile navigation. */
   onToggleCollapse: () => void;

@@ -1,9 +1,9 @@
 .content {
   inline-size: 100%;
+  --navigation-rail-size: 56px;
 }
 
 .navigationHeader {
-  --navigation-rail-size: 56px;
   padding-inline-end: var(--sp-sm, 0.25rem);
   padding-inline-start: calc((var(--navigation-rail-size) - 24px) / 2);
 }
@@ -22,7 +22,7 @@
   justify-content: flex-start;
   inline-size: 100%;
   padding-inline-end: var(--sp-md, 0.5rem);
-  padding-inline-start: calc((var(--navigation-rail-size, 56px) - 1lh) / 2 - 1px);
+  padding-inline-start: calc((var(--navigation-rail-size) - 1lh) / 2 - 1px);
   position: relative;
   text-align: start;
 }

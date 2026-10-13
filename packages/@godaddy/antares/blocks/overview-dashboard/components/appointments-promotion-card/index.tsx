@@ -1,6 +1,5 @@
-import { Box, Detail, Flex, Heading, Icon, Image } from '@godaddy/antares';
+import { Box, Card, Detail, Flex, Heading, Icon, Image } from '@godaddy/antares';
 import { appointmentsImage } from '../../constants/config';
-import { DashboardCard } from '../dashboard-card';
 import styles from './index.module.css';
 
 /** Shows the appointments promotion card below the users card. */
@@ -8,7 +7,7 @@ export function AppointmentsPromotionCard() {
   return (
     <Flex direction="column" gap="lg">
       <Heading level={3}>GoDaddy can do more for you</Heading>
-      <DashboardCard padding="xl" className={styles.mediaCard}>
+      <Card padding="xl" elevation="card" className={styles.mediaCard}>
         <Flex className={styles.mediaCardContent} alignItems="center" gap="2xl" wrap="wrap">
           <Flex className={styles.mediaCardCopy} direction="column" gap="lg" flex="1 1 14rem">
             <Flex alignItems="center" gap="sm">
@@ -34,7 +33,7 @@ export function AppointmentsPromotionCard() {
             />
           </Box>
         </Flex>
-      </DashboardCard>
+      </Card>
     </Flex>
   );
 }
