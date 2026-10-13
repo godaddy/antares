@@ -1,14 +1,82 @@
-.dot {
-  --pagination-dot-bg: var(--ux-1u2jy43, #d6d6d6);
-  --pagination-dot-bg-selected: var(--ux-e5ryhe, #111);
-  --pagination-dot-size: calc(var(--ux-1sbfig8, 0.25rem) * 2);
+.pagination {
+  /* MD Space is expressed as 2 GU in the Antares spacing scale. */
+  --_pagination-gap: var(--size-space-md, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  --_pagination-input-padding: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  --_pagination-input-digits: 2ch;
+  --_pagination-input-width: calc(
+    (var(--_pagination-input-padding) * 2) +
+    max(2ch, var(--_pagination-input-digits)) +
+    2px
+  );
 
-  width: var(--pagination-dot-size);
-  height: var(--pagination-dot-size);
-  background: var(--pagination-dot-bg);
-  border-radius: 50%;
+  gap: var(--_pagination-gap);
+
+  &:where([data-size="sm"]) {
+    --_pagination-input-padding: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
+  }
 }
 
-.dot.selected {
-  background: var(--pagination-dot-bg-selected);
+.previous,
+.next {
+  flex: 0 0 auto;
+}
+
+.input {
+  --_pagination-input-border: var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));
+  --_pagination-input-background: var(--bg-card, var(--ux-cao06b, #fff));
+  --_pagination-input-foreground: var(--color-text-default, var(--ux-1glcx6s, #2b2b2b));
+  --_pagination-input-radius: var(--size-radius-md, var(--ux-1oqjeuu, 0.375rem));
+
+  box-sizing: border-box;
+  inline-size: var(--_pagination-input-width);
+  padding: var(--_pagination-input-padding);
+  border: 1px solid var(--_pagination-input-border);
+  border-radius: var(--_pagination-input-radius);
+  background: var(--_pagination-input-background);
+  color: var(--_pagination-input-foreground);
+  /* Typography comes from useTypographyClassName('label', { size: 'md' }). */
+  line-height: var(--font-label-line-height, var(--ux-h93mi7, 1.375));
+  text-align: center;
+  appearance: textfield;
+
+  &:where([data-focus-visible]) {
+    outline: 2px solid Highlight;
+  }
+
+  &:where([data-disabled]) {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+}
+
+.dots {
+  --_pagination-dot-size: var(--size-space-md, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  gap: var(--size-space-sm, var(--ux-1sbfig8, 0.25rem));
+
+  &:where([data-size="sm"]) {
+    --_pagination-dot-size: var(--size-space-sm, var(--ux-1sbfig8, 0.25rem));
+
+    gap: var(--size-space-xs, calc(var(--ux-1sbfig8, 0.25rem) * 0.5));
+  }
+
+  :where([data-pagination-dot]) {
+    inline-size: var(--_pagination-dot-size);
+    block-size: var(--_pagination-dot-size);
+    border-radius: 50%;
+    background: var(--color-surface-background-subdued, var(--ux-1u2jy43, #d6d6d6));
+  }
+
+  :where([data-pagination-dot][data-active="true"]) {
+    background: var(--color-action-foreground-default, var(--ux-e5ryhe, #111));
+  }
 }

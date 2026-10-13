@@ -1,137 +1,241 @@
-import { type RefObject, useCallback, useState } from 'react';
-import { Button, type ButtonProps } from '#components/button';
-import { Flex, type FlexProps } from '#components/layout/flex';
+import {
+  createContext,
+  forwardRef,
+  type CSSProperties,
+  type ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from 'react';
+import { DEFAULT_SLOT, Provider as RACProvider } from 'react-aria-components';
+import { ButtonContext, type ButtonProps } from '#components/button';
 import { Box } from '#components/layout/box';
+import { Flex, type FlexProps } from '#components/layout/flex';
 import { Icon } from '#components/icon';
-import { cx } from 'cva';
+import { InputContext } from '#components/input';
+import { SizeProvider } from '#components/size-provider';
+import { useTypographyClassName } from '#components/_internal/typography';
+import { composeClassName, composeStyle } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
-export interface PaginationProps extends Omit<FlexProps, 'onChange'> {
-  /** Total number of items. */
-  total: number;
+type PaginationSize = 'sm' | 'md';
 
-  /** The active page index (0-based). When provided, the component is controlled. */
-  activeIndex?: number;
+interface PaginationContextValue {
+  /** The current 1-based page; 0 represents an empty known page set. */
+  value: number;
 
-  /** The initial active page index for uncontrolled mode. @default 0 */
-  defaultActiveIndex?: number;
+  /** The known page count, when available. */
+  pageCount?: number;
 
-  /** Number of items shown per page. Dots are derived from Math.ceil(total / limit). @default 1 */
-  limit?: number;
+  /** The visual size inherited by Pagination parts. */
+  size: PaginationSize;
+}
 
-  /** The variant of the pagination. @default 'dots' */
-  variant?: 'dots' | null;
+const PaginationContext = createContext<PaginationContextValue | null>(null);
 
-  /** Whether to hide the navigation controls. */
-  hideControls?: boolean;
+export interface PaginationProps extends Omit<FlexProps<'nav'>, 'as' | 'children' | 'onChange'> {
+  /**
+   * The total number of pages. Omit it when the data source does not expose a known page count.
+   */
+  pageCount?: number;
 
-  /** Called when the active page changes. */
-  onChange?: (index: number) => void;
+  /** The current page, using a 1-based value. */
+  value?: number;
 
-  /** Props forwarded to the previous button. */
-  prevButtonProps?: ButtonProps;
+  /** The initial page for uncontrolled usage, using a 1-based value. @default 1 */
+  defaultValue?: number;
 
-  /** Props forwarded to the next button. */
-  nextButtonProps?: ButtonProps;
+  /** Called with the next 1-based page when navigation changes the current page. */
+  onChange?: (value: number) => void;
 
-  /** Props forwarded to the pagination dots. */
-  dotsProps?: FlexProps;
+  /**
+   * Provides a default disabled state for controls and page input provided through Pagination contexts.
+   * Explicit child props may override this value.
+   */
+  isDisabled?: boolean;
 
-  /** Ref for the previous button. */
-  prevButtonRef?: RefObject<HTMLButtonElement | null>;
+  /** The visual size of the composed controls. @default 'md' */
+  size?: PaginationSize;
 
-  /** Ref for the next button. */
-  nextButtonRef?: RefObject<HTMLButtonElement | null>;
+  /** The composed Pagination interior. Pass exactly the controls and content to render. */
+  children: ReactNode;
+}
+
+/** Props for the passive visual dots region. */
+export interface PaginationDotsProps extends Omit<FlexProps<'div'>, 'as' | 'children'> {}
+
+/**
+ * Normalizes an optional page count to a non-negative integer.
+ * `undefined` represents an unknown page count.
+ */
+function normalizePageCount(pageCount?: number) {
+  if (pageCount == null || !Number.isFinite(pageCount)) return undefined;
+
+  return Math.max(0, Math.floor(pageCount));
 }
 
 /**
- * Pagination bar with prev/next buttons and pagination dot indicators.
- * Supports controlled (activeIndex) and uncontrolled (defaultActiveIndex) modes.
- * Dots are derived from total and limit: Math.ceil(total / limit).
- * When there is only one page (or fewer), dots are not rendered.
+ * Clamps a 1-based page value to the available page range when known.
+ */
+function clampValue(value: number, pageCount?: number) {
+  if (pageCount === 0) return 0;
+
+  const normalized = Number.isFinite(value) ? Math.max(1, Math.floor(value)) : 1;
+
+  return pageCount == null ? normalized : Math.min(normalized, pageCount);
+}
+
+/**
+ * Coordinates controlled and uncontrolled page navigation for a composed Pagination.
+ * The root owns state and context defaults while the consumer owns the rendered anatomy.
  *
  * @param props - {@link PaginationProps}
+ * @returns A navigation region containing exactly the supplied children.
  */
 export function Pagination(props: PaginationProps) {
   const {
-    activeIndex: controlledIndex,
-    total,
-    limit = 1,
-    defaultActiveIndex = 0,
-    variant = 'dots',
+    children,
+    className,
+    defaultValue = 1,
+    isDisabled = false,
     onChange,
-    prevButtonProps,
-    nextButtonProps,
-    hideControls,
-    dotsProps,
-    prevButtonRef,
-    nextButtonRef,
+    pageCount,
+    size = 'md',
+    style,
+    value: controlledValue,
     ...rest
   } = props;
+  const resolvedPageCount = normalizePageCount(pageCount);
+  const [uncontrolledValue, setUncontrolledValue] = useState(function getInitialValue() {
+    return clampValue(defaultValue, resolvedPageCount);
+  });
+  const rawValue = controlledValue ?? uncontrolledValue;
+  const value = clampValue(rawValue, resolvedPageCount);
+  const canGoPrevious = resolvedPageCount !== 0 && value > 1;
+  const canGoNext = resolvedPageCount == null ? true : resolvedPageCount > 0 && value < resolvedPageCount;
+  const inputTypography = useTypographyClassName('label', { size: 'md' });
+  const inputDigits = String(resolvedPageCount ?? value).length;
 
-  const [uncontrolledIndex, setUncontrolledIndex] = useState(defaultActiveIndex);
-  const currentIndex = controlledIndex ?? uncontrolledIndex;
-  const pageCount = Math.ceil(total / limit);
-
-  const navigate = useCallback(
-    function navigate(index: number) {
-      if (controlledIndex === undefined) setUncontrolledIndex(index);
-      onChange?.(index);
+  useEffect(
+    function syncUncontrolledValue() {
+      if (controlledValue === undefined && uncontrolledValue !== value) {
+        setUncontrolledValue(value);
+      }
     },
-    [controlledIndex, onChange, setUncontrolledIndex]
+    [controlledValue, uncontrolledValue, value]
   );
 
-  const handlePrev = useCallback(
-    function handlePrev() {
-      navigate(Math.max(0, currentIndex - 1));
+  const goTo = useCallback(
+    function goTo(nextValue: number) {
+      const next = clampValue(nextValue, resolvedPageCount);
+
+      if (controlledValue === undefined) setUncontrolledValue(next);
+      onChange?.(next);
     },
-    [currentIndex]
+    [controlledValue, onChange, resolvedPageCount]
   );
 
-  const handleNext = useCallback(
-    function handleNext() {
-      navigate(Math.min(pageCount - 1, currentIndex + 1));
-    },
-    [currentIndex, pageCount]
-  );
+  const isEmpty = resolvedPageCount === 0;
 
   return (
-    <Flex alignItems="center" justifyContent="space-between" {...rest}>
-      {hideControls ? null : (
-        <Button
-          ref={prevButtonRef}
-          variant="secondary"
-          size="md"
-          aria-label="Go to previous page"
-          isDisabled={currentIndex === 0}
-          onPress={handlePrev}
-          {...prevButtonProps}
-        >
-          <Icon icon="chevron-left" />
-        </Button>
-      )}
+    <RACProvider
+      values={[
+        [
+          ButtonContext,
+          {
+            slots: {
+              [DEFAULT_SLOT]: {},
+              previous: {
+                variant: 'tertiary',
+                size,
+                className: styles.previous,
+                isDisabled: isDisabled || !canGoPrevious,
+                onPress: function handlePreviousPress() {
+                  goTo(value - 1);
+                },
+                children: <Icon icon="chevron-left" />
+              } as ButtonProps,
+              next: {
+                variant: 'tertiary',
+                size,
+                className: styles.next,
+                isDisabled: isDisabled || !canGoNext,
+                onPress: function handleNextPress() {
+                  goTo(value + 1);
+                },
+                children: <Icon icon="chevron-right" />
+              } as ButtonProps
+            }
+          }
+        ],
+        [
+          InputContext,
+          {
+            type: 'number',
+            value: isEmpty ? '' : String(value),
+            min: isEmpty ? undefined : 1,
+            max: isEmpty ? undefined : resolvedPageCount,
+            disabled: isDisabled || isEmpty,
+            className: composeClassName(styles.input, inputTypography),
+            onChange: function handleInputChange(event) {
+              const next = Number(event.target.value);
 
-      {pageCount === 0 || variant !== 'dots' ? null : (
-        <Flex gap="sm" role="group" justifyContent="center" flex={1} aria-label="Dots" {...dotsProps}>
-          {Array.from({ length: pageCount }, function getDot(_, index) {
-            return <Box key={index} className={cx(styles.dot, index === currentIndex && styles.selected)} />;
-          })}
+              if (!isEmpty && Number.isInteger(next) && next > 0) goTo(next);
+            }
+          }
+        ],
+        [PaginationContext, { pageCount: resolvedPageCount, size, value }]
+      ]}
+    >
+      <SizeProvider size={size}>
+        <Flex
+          {...rest}
+          as="nav"
+          alignItems="center"
+          className={composeClassName(className, styles.pagination)}
+          data-size={size}
+          style={composeStyle(style, {
+            '--_pagination-input-digits': `${inputDigits}ch`
+          } as CSSProperties)}
+        >
+          {children}
         </Flex>
-      )}
-
-      {hideControls ? null : (
-        <Button
-          ref={nextButtonRef}
-          variant="secondary"
-          size="md"
-          aria-label="Go to next page"
-          isDisabled={currentIndex === pageCount - 1}
-          onPress={handleNext}
-          {...nextButtonProps}
-        >
-          <Icon icon="chevron-right" />
-        </Button>
-      )}
-    </Flex>
+      </SizeProvider>
+    </RACProvider>
   );
 }
+
+/**
+ * Renders a passive visual indicator for the current page.
+ *
+ * `PaginationDots` does not create page buttons. Compose explicit `Button` or `LinkButton` children
+ * when page indicators must be interactive.
+ *
+ * @param props - {@link PaginationDotsProps}
+ * @returns The dots region, or `null` when `pageCount` is unavailable.
+ */
+export const PaginationDots = forwardRef<HTMLDivElement, PaginationDotsProps>(function PaginationDots(
+  { className, ...rest },
+  ref
+) {
+  const context = useContext(PaginationContext);
+
+  if (context?.pageCount == null || context.pageCount < 1) return null;
+
+  return (
+    <Flex
+      {...rest}
+      ref={ref}
+      aria-hidden="true"
+      className={composeClassName(className, styles.dots)}
+      data-size={context.size}
+    >
+      {Array.from({ length: context.pageCount }, function getDot(_, index) {
+        const page = index + 1;
+
+        return <Box key={page} data-active={page === context.value ? 'true' : 'false'} data-pagination-dot />;
+      })}
+    </Flex>
+  );
+});
