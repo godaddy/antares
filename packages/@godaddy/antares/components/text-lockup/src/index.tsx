@@ -3,6 +3,7 @@ import { cx } from 'cva';
 import { DEFAULT_SLOT, HeadingContext, Provider as RACProvider, TextContext } from 'react-aria-components';
 import { textTreatmentClassName, textSlotSizeClassName } from '#components/_internal/typography';
 import { Flex, type FlexProps } from '#components/layout/flex';
+import { HeaderContext } from '#components/structure';
 import { TagContext, type TagSize } from '#components/tag';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
@@ -73,6 +74,7 @@ export const TextLockup = forwardRef<HTMLDivElement, TextLockupProps>(function T
     >
       <RACProvider
         values={[
+          [HeaderContext, { padding: '0', alignSelf: 'stretch', className: styles.header }],
           [
             HeadingContext,
             { slots: { [DEFAULT_SLOT]: { className: tier }, title: { className: cx(styles.part, tier) } } }
