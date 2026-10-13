@@ -1,0 +1,54 @@
+import { Avatar, Box, Button, Flex, Icon, Text } from '@godaddy/antares';
+import styles from './index.module.css';
+
+interface DashboardHeaderProps {
+  /** Opens the product navigation from the compact mobile header. */
+  onOpenNavigation: () => void;
+}
+
+/** Renders the compact application header shown above the dashboard. */
+export function DashboardHeader({ onOpenNavigation }: DashboardHeaderProps) {
+  return (
+    <Flex className={styles.navigation} justifyContent="space-between" alignItems="center" gap="lg" wrap="wrap">
+      <Flex className={styles.navBrand} alignItems="center" gap="lg">
+        <Button
+          className={styles.mobileMenuButton}
+          variant="minimal"
+          size="sm"
+          aria-label="Open navigation"
+          onPress={onOpenNavigation}
+        >
+          <Icon icon="hamburger" aria-hidden="true" />
+        </Button>
+        <Icon className={styles.mobileNavLogo} icon="gd-the-go" aria-label="GoDaddy" />
+      </Flex>
+
+      <Flex className={styles.navActions} alignItems="center" gap="md" wrap="wrap">
+        <Button className={styles.desktopNavAction} variant="minimal" size="sm" aria-label="Hire an Expert">
+          <Text className={styles.navLabel}>Hire an Expert</Text>
+        </Button>
+        <Box as="span" className={styles.navDivider} aria-hidden="true" />
+        <Button className={styles.desktopNavAction} variant="minimal" size="sm" aria-label="Help Center">
+          <Text className={styles.navLabel}>Help Center</Text>
+        </Button>
+        <Button className={styles.mobileNavAction} variant="minimal" size="sm" aria-label="Help Center">
+          <Icon icon="help" aria-hidden="true" />
+        </Button>
+        <Button className={styles.desktopNavAction} variant="minimal" size="sm" aria-label="Notifications">
+          <Icon icon="bell" aria-hidden="true" />
+        </Button>
+        <Button className={styles.mobileNavAction} variant="minimal" size="sm" aria-label="Apps">
+          <Icon icon="apps" aria-hidden="true" />
+        </Button>
+        <Button variant="minimal" size="sm" aria-label="Account menu">
+          <Avatar size="sm" emphasis="primary">
+            <Text>MT</Text>
+          </Avatar>
+        </Button>
+        <Button variant="minimal" size="sm" aria-label="Shopping cart">
+          <Icon icon="cart" aria-hidden="true" />
+        </Button>
+      </Flex>
+    </Flex>
+  );
+}

@@ -1,0 +1,36 @@
+.mobileMenuButton,
+.mobileNavLogo,
+.mobileNavAction {
+  display: none;
+}
+
+.navDivider {
+  block-size: 1.25rem;
+  border-inline-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));
+}
+
+.navLabel {
+  white-space: nowrap;
+}
+
+@container (max-width: 40rem) {
+  .mobileMenuButton,
+  .mobileNavLogo,
+  .mobileNavAction {
+    display: inline-flex;
+  }
+
+  .desktopNavAction,
+  .navDivider {
+    display: none;
+  }
+
+  .navigation,
+  .navActions {
+    gap: var(--sp-sm);
+  }
+
+  .navLabel {
+    display: none;
+  }
+}

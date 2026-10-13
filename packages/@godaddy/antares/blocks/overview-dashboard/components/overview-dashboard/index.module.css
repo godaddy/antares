@@ -1,0 +1,29 @@
+.dashboardFrame {
+  container-type: inline-size;
+}
+
+.dashboardShell {
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--sp-xl);
+  min-inline-size: 0;
+}
+
+.dashboardMain {
+  min-inline-size: 0;
+}
+
+.contentGrid {
+  grid-template-columns: minmax(0, 2.25fr) minmax(17.5rem, 1fr);
+}
+
+@container (max-width: 56rem) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@container (max-width: 40rem) {
+  .dashboardShell {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,45 @@
+.sideNavigationContainer {
+  align-self: stretch;
+  background: var(--ux-9i7okd, #f5f7f8);
+  block-size: auto;
+  min-inline-size: 0;
+  overflow: visible;
+  position: relative;
+  --navigation-rail-size: 56px;
+}
+
+.sideNavigation {
+  background: var(--ux-9i7okd, #f5f7f8);
+  block-size: 100%;
+  inline-size: 100%;
+  min-inline-size: 0;
+  overflow: hidden;
+  padding-block-start: var(--sp-md, 0.5rem);
+  transition: inline-size 300ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.sideNavigationContainer:where([data-pinned-open]) .sideNavigation {
+  inline-size: var(--_max-size);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sideNavigationContainer:where(:hover):where(:not([data-pinned-open])) {
+    z-index: 1;
+  }
+
+  .sideNavigationContainer:where(:hover):where(:not([data-pinned-open])) .sideNavigation {
+    inline-size: var(--_max-size);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sideNavigation {
+    transition: none;
+  }
+}
+
+@container (max-width: 40rem) {
+  .sideNavigationContainer {
+    display: none;
+  }
+}
