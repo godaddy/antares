@@ -40,7 +40,13 @@ export const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(fun
           Add files
         </Button>
       </FileTrigger>
-      {isDropTarget ? null : <Text id={helpId}>or drag them here.</Text>}
+      <Text
+        id={isDropTarget ? undefined : helpId}
+        role={isDropTarget ? 'status' : undefined}
+        aria-live={isDropTarget ? 'polite' : undefined}
+      >
+        {isDropTarget ? 'Drop Files to upload.' : 'or drag them here.'}
+      </Text>
       {error ? (
         <Text id={errorId} role="alert" emphasis="critical">
           {error}

@@ -18,13 +18,3 @@
 .container {
   min-inline-size: 0;
 }
-
-.openButton {
-  inline-size: 100%;
-  min-inline-size: 0;
-  padding: 0;
-}
-
-.openButton:where([data-selected="true"]) {
-  outline: 2px solid currentColor;
-}

@@ -14,7 +14,7 @@ export function EmptyState() {
       aria-label="Empty gallery"
       className={styles.emptyState}
     >
-      <Box padding="md" rounding="full" aria-hidden="true" className={styles.iconSurface}>
+      <Box padding="md" rounding="full" elevation="card" aria-hidden="true">
         <Icon icon="upload" />
       </Box>
       <Heading level={3}>Start your gallery</Heading>

@@ -23,18 +23,16 @@ export function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: 
 
   return (
     <Flex direction="column" gap="sm" blockPadding="sm" aria-label="Gallery file status">
-      {hasMore || totalCount > 0 ? (
-        <Flex justifyContent="space-between" alignItems="center" gap="sm">
-          <Text role="status" aria-live="polite">
-            {visibleCount} of {totalCount} files
-          </Text>
-          {hasMore ? (
-            <Button variant="inline" onPress={onShowAll}>
-              Show all
-            </Button>
-          ) : null}
-        </Flex>
-      ) : null}
+      <Flex justifyContent="space-between" alignItems="center" gap="sm">
+        <Text role="status" aria-live="polite">
+          {visibleCount} of {totalCount} files
+        </Text>
+        {hasMore ? (
+          <Button variant="inline" onPress={onShowAll}>
+            Show all
+          </Button>
+        ) : null}
+      </Flex>
 
       {errorCount > 0 ? (
         <Flex justifyContent="center" alignItems="center" gap="xs" role="alert" aria-live="assertive">

@@ -15,9 +15,8 @@ import {
   TextContext,
   isFileDropItem
 } from '@godaddy/antares';
-import { DropOverlay } from '../drop-overlay/index.tsx';
 import { EmptyState } from '../empty-state/index.tsx';
-import { sampleImages, type ImageItem } from '../../data/sample-images.ts';
+import type { ImageItem } from '../../data/types.ts';
 import { GridView } from '../grid-view/index.tsx';
 import { ListView } from '../list-view/index.tsx';
 import { UploadPrompt } from '../upload-prompt/index.tsx';
@@ -44,7 +43,7 @@ function createLocalImageId() {
 }
 
 export interface GalleryProps {
-  /** Initial images; read once on mount. Pass [] to start empty. IDs must be unique. */
+  /** Initial images; read once on mount. Defaults to an empty gallery. IDs must be unique. */
   initialImages?: ImageItem[];
 
   /** Initial presentation; switching views preserves the collection. */
@@ -54,7 +53,7 @@ export interface GalleryProps {
 type DropEvent = Parameters<NonNullable<ComponentProps<typeof DropZone>['onDrop']>>[0];
 
 /** Copyable local gallery with accessible list/grid views, file upload, and media viewing. */
-export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: GalleryProps) {
+export function Gallery({ initialImages = [], defaultView = 'grid' }: GalleryProps) {
   const [images, setImages] = useState<ImageItem[]>(function initializeImages() {
     return [...initialImages];
   });
@@ -207,11 +206,11 @@ export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: 
       return (
         <TextContext.Provider value={null}>
           <Flex direction="column" gap="lg" padding="lg" className={styles.content}>
-            <Flex gap="md" wrap="wrap" className={styles.toolbar}>
+            <Flex gap="md" wrap="wrap" alignItems="center" justifyContent="space-between">
               <Flex alignItems="center" gap="sm" wrap="wrap">
                 <Heading level={2}>Gallery</Heading>
                 <Tag size="sm">
-                  {images.length} {images.length === 1 ? 'image' : 'images'}
+                  {images.length} {pluralize(images.length, 'image', 'images')}
                 </Tag>
               </Flex>
 
@@ -263,8 +262,6 @@ export function Gallery({ initialImages = sampleImages, defaultView = 'grid' }: 
                 />
               )}
             </Box>
-
-            <DropOverlay isDropTarget={isDropTarget} />
           </Flex>
         </TextContext.Provider>
       );

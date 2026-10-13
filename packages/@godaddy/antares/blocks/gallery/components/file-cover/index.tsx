@@ -1,8 +1,8 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
-import { Box, Button, Flex, Icon, Image } from '@godaddy/antares';
-import type { ImageItem } from '../../data/sample-images.ts';
+import { Flex, Icon } from '@godaddy/antares';
+import type { ImageItem } from '../../data/types.ts';
+import { ImageSurface, useImageLoadState } from '../image/image-surface.tsx';
 import styles from './index.module.css';
 
 /** Cover geometry used by Gallery's list and grid presentations. */
@@ -24,30 +24,11 @@ interface FileCoverProps {
 
 /** A small, reusable image/error surface shared by every Gallery presentation. */
 export function FileCover({ image, variant, onOpen, onLoadError }: FileCoverProps) {
-  const [loadError, setLoadError] = useState(false);
-  const hasError = image.status === 'error' || loadError;
-
-  useEffect(
-    function resetLoadState() {
-      setLoadError(false);
-    },
-    [image.id, image.status]
-  );
-
-  const handleOpen = useCallback(
-    function handleOpen() {
-      onOpen?.(image.id);
-    },
-    [image.id, onOpen]
-  );
-
-  const handleImageError = useCallback(
-    function handleImageError() {
-      setLoadError(true);
-      onLoadError?.(image.id);
-    },
-    [image.id, onLoadError]
-  );
+  const { state, imageRef, onLoad, onError } = useImageLoadState(image.src, {
+    resetKey: `${image.id}:${image.status ?? ''}`,
+    onError: onLoadError ? () => onLoadError(image.id) : undefined
+  });
+  const hasError = image.status === 'error' || state === 'error';
 
   if (hasError) {
     return (
@@ -65,26 +46,18 @@ export function FileCover({ image, variant, onOpen, onLoadError }: FileCoverProp
     );
   }
 
-  const picture = (
-    <Box
-      as={Image}
-      src={image.src}
-      alt={onOpen ? '' : image.name}
-      aria-hidden={onOpen ? true : undefined}
-      rounding="md"
-      className={styles.surface}
-      data-variant={variant}
-      loading="lazy"
-      decoding="async"
-      onError={handleImageError}
-    />
-  );
-
-  if (!onOpen) return picture;
-
   return (
-    <Button variant="minimal" aria-label={`Open ${image.name}`} onPress={handleOpen} className={styles.openButton}>
-      {picture}
-    </Button>
+    <ImageSurface
+      ref={imageRef}
+      src={image.src}
+      alt={image.name}
+      className={styles.surface}
+      variant={variant}
+      loading="lazy"
+      onLoad={onLoad}
+      onError={onError}
+      onOpen={onOpen ? () => onOpen(image.id) : undefined}
+      label={`Open ${image.name}`}
+    />
   );
 }

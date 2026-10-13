@@ -9,16 +9,6 @@
       "dependencies": ["@godaddy/antares"],
       "files": [
         {
-          "path": "gallery/components/drop-overlay/index.module.css",
-          "type": "registry:style",
-          "target": "components/blocks/gallery/components/drop-overlay/index.module.css"
-        },
-        {
-          "path": "gallery/components/drop-overlay/index.tsx",
-          "type": "registry:component",
-          "target": "components/blocks/gallery/components/drop-overlay/index.tsx"
-        },
-        {
           "path": "gallery/components/empty-state/index.module.css",
           "type": "registry:style",
           "target": "components/blocks/gallery/components/empty-state/index.module.css"
@@ -49,6 +39,11 @@
           "target": "components/blocks/gallery/components/file-item/index.tsx"
         },
         {
+          "path": "gallery/components/file-items/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/file-items/index.tsx"
+        },
+        {
           "path": "gallery/components/gallery/index.module.css",
           "type": "registry:style",
           "target": "components/blocks/gallery/components/gallery/index.module.css"
@@ -67,6 +62,16 @@
           "path": "gallery/components/grid-view/index.tsx",
           "type": "registry:component",
           "target": "components/blocks/gallery/components/grid-view/index.tsx"
+        },
+        {
+          "path": "gallery/components/image/image-surface.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/gallery/components/image/image-surface.module.css"
+        },
+        {
+          "path": "gallery/components/image/image-surface.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/image/image-surface.tsx"
         },
         {
           "path": "gallery/components/image/index.module.css",
@@ -112,6 +117,11 @@
           "path": "gallery/data/sample-images.ts",
           "type": "registry:component",
           "target": "components/blocks/gallery/data/sample-images.ts"
+        },
+        {
+          "path": "gallery/data/types.ts",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/data/types.ts"
         },
         {
           "path": "gallery/index.tsx",

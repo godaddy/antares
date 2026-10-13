@@ -1,26 +1,4 @@
-/** The upload state shown by a gallery file item. */
-export type ImageStatus = 'ready' | 'error';
-
-/** An image shown by the gallery. IDs must be unique and stable. */
-export interface ImageItem {
-  /** Identity used by navigation and removal. */
-  id: string;
-
-  /** Visible filename and accessible image name. */
-  name: string;
-
-  /** Remote URL, data URL, or locally owned object URL. */
-  src: string;
-
-  /** Actual bytes when known; omitted for remote samples. */
-  size?: number;
-
-  /** Upload state used by the list/grid examples. */
-  status?: ImageStatus;
-
-  /** Optional message associated with a failed upload. */
-  errorMessage?: string;
-}
+import type { ImageItem } from './types.ts';
 
 /** Fixed IDs keep the sample photographs consistent between visits. */
 export const sampleImages: ImageItem[] = [

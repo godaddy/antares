@@ -1,23 +1,13 @@
 .content {
-  position: relative;
   inline-size: 100%;
   min-inline-size: 0;
 }
 
-.toolbar {
-  align-items: center;
-  justify-content: space-between;
-}
-
-.toolbarActions {
-  justify-content: flex-end;
-}
-
 .dropZone {
   inline-size: 100%;
-  background: transparent;
   border: 0;
   border-radius: 0;
+  background: transparent;
 }
 
 @media (max-width: 48rem) {

@@ -2,6 +2,7 @@
 
 import { getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Gallery, type GalleryProps, type ImageStatus } from './index.tsx';
+import { sampleImages } from './data/sample-images.ts';
 
 export default getMeta({
   title: 'Blocks/Gallery',
@@ -9,8 +10,9 @@ export default getMeta({
   parameters: { layout: 'fullscreen' }
 });
 
-export const Preview = getStory(Gallery);
-export const ListView = getStory(Gallery, { args: { defaultView: 'list' } });
+const sampleGalleryProps: GalleryProps = { initialImages: sampleImages };
+export const Preview = getStory(Gallery, { args: sampleGalleryProps });
+export const ListView = getStory(Gallery, { args: { ...sampleGalleryProps, defaultView: 'list' } });
 const emptyGalleryProps: GalleryProps = { initialImages: [] };
 export const Empty = getStory(Gallery, { args: emptyGalleryProps });
 

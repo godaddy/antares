@@ -4,6 +4,7 @@ import { userEvent } from 'vitest/browser';
 import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
 import { Gallery, type ImageItem } from '../index.tsx';
 import { GalleryImage } from '../components/image/index.tsx';
+import { sampleImages } from '../data/sample-images.ts';
 
 const pixel = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZ1EAAAAASUVORK5CYII=';
 const samples: ImageItem[] = [
@@ -55,13 +56,20 @@ afterEach(function restore() {
 describe('@godaddy/antares', function packageTests() {
   describe('#Gallery', function galleryTests() {
     it('shows an active sample gallery and available upload and view controls', async function defaultGallery() {
-      const screen = await render(<Gallery />);
+      const screen = await render(<Gallery initialImages={sampleImages} />);
 
       await expect.element(screen.getByText('11 images', { exact: true })).toBeVisible();
       await expect.element(screen.getByRole('button', { name: 'Add files', exact: true })).toBeEnabled();
       await expect.element(screen.getByRole('radio', { name: 'Grid', exact: true })).toBeEnabled();
       await expect.element(screen.getByRole('button', { name: 'Open Photo_2.png' })).toBeVisible();
       await expect.element(screen.getByRole('button', { name: 'Retry Photo_error.png' })).toBeVisible();
+    });
+
+    it('starts empty when no initial images are provided', async function emptyByDefault() {
+      const screen = await render(<Gallery />);
+
+      await expect.element(screen.getByText('0 images', { exact: true })).toBeVisible();
+      await expect.element(screen.getByRole('region', { name: 'Empty gallery' })).toBeVisible();
     });
 
     it('keeps the error card height stable while showing its message', async function stableErrorCard() {
@@ -81,7 +89,9 @@ describe('@godaddy/antares', function packageTests() {
         />
       );
 
-      const cards = Array.from(screen.container.querySelectorAll<HTMLElement>('li[data-variant="vertical"]'));
+      const cards = Array.from(
+        screen.container.querySelectorAll<HTMLElement>('[data-card="static"][data-variant="vertical"]')
+      );
       expect(cards).toHaveLength(2);
       await expect.element(screen.getByRole('button', { name: `Retry ${longName}` })).toBeVisible();
       expect(cards[0].getBoundingClientRect().height).toBe(cards[1].getBoundingClientRect().height);
@@ -104,7 +114,9 @@ describe('@godaddy/antares', function packageTests() {
         />
       );
 
-      const rows = Array.from(screen.container.querySelectorAll<HTMLElement>('li[data-variant="horizontal"]'));
+      const rows = Array.from(
+        screen.container.querySelectorAll<HTMLElement>('[data-card="static"][data-variant="horizontal"]')
+      );
       expect(rows).toHaveLength(2);
       await expect.element(screen.getByRole('button', { name: 'Retry failed.png' })).toBeVisible();
       expect(rows[0].getBoundingClientRect().height).toBe(rows[1].getBoundingClientRect().height);

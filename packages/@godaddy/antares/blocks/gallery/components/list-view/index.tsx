@@ -1,10 +1,10 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { Flex } from '@godaddy/antares';
-import { FileItem } from '../file-item/index.tsx';
+import { FileItems } from '../file-items/index.tsx';
 import { ViewBanner } from '../view-banner/index.tsx';
-import type { ImageItem } from '../../data/sample-images.ts';
+import type { ImageItem } from '../../data/types.ts';
 import styles from './index.module.css';
 
 interface ListViewProps {
@@ -34,32 +34,23 @@ export function ListView({ images, onOpen, onRemove, onRetry, onLoadError }: Lis
     return image.status === 'error';
   }).length;
 
-  const handleShowAll = useCallback(function handleShowAll() {
-    setShowAll(true);
-  }, []);
-
   return (
     <Flex direction="column" gap="sm" className={styles.root}>
       <Flex as="ul" direction="column" gap="sm" aria-label="Gallery files" className={styles.items}>
-        {visibleImages.map(function renderListItem(image) {
-          return (
-            <FileItem
-              key={image.id}
-              image={image}
-              variant="horizontal"
-              onOpen={onOpen}
-              onRemove={onRemove}
-              onRetry={onRetry}
-              onLoadError={onLoadError}
-            />
-          );
-        })}
+        <FileItems
+          images={visibleImages}
+          variant="horizontal"
+          onOpen={onOpen}
+          onRemove={onRemove}
+          onRetry={onRetry}
+          onLoadError={onLoadError}
+        />
       </Flex>
       <ViewBanner
         visibleCount={visibleImages.length}
         totalCount={images.length}
         errorCount={errorCount}
-        onShowAll={handleShowAll}
+        onShowAll={() => setShowAll(true)}
       />
     </Flex>
   );

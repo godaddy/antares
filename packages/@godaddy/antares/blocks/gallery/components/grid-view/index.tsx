@@ -1,8 +1,8 @@
 'use client';
 
 import { Grid } from '@godaddy/antares';
-import { FileItem } from '../file-item/index.tsx';
-import type { ImageItem } from '../../data/sample-images.ts';
+import { FileItems } from '../file-items/index.tsx';
+import type { ImageItem } from '../../data/types.ts';
 import styles from './index.module.css';
 
 interface GridViewProps {
@@ -34,19 +34,14 @@ export function GridView({ images, onOpen, onRemove, onRetry, onLoadError }: Gri
       aria-label="Gallery image grid"
       className={styles.items}
     >
-      {images.map(function renderGridItem(image) {
-        return (
-          <FileItem
-            key={image.id}
-            image={image}
-            variant="vertical"
-            onOpen={onOpen}
-            onRemove={onRemove}
-            onRetry={onRetry}
-            onLoadError={onLoadError}
-          />
-        );
-      })}
+      <FileItems
+        images={images}
+        variant="vertical"
+        onOpen={onOpen}
+        onRemove={onRemove}
+        onRetry={onRetry}
+        onLoadError={onLoadError}
+      />
     </Grid>
   );
 }
