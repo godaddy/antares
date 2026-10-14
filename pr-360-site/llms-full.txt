@@ -762,6 +762,191 @@ A fully disabled calendar.
 <PropTable />
 
 
+# Card
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Card groups related content, like media, text, and actions, on a single surface. On its own, a Card
+is a static surface, or a link when you pass `href`. Put Cards in a `CardGroup` to make them
+selectable or to give them an action: the group owns selection, row actions, focus, and arrow-key
+navigation.
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A simple website status message.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Card } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Card>Your website is published and ready for visitors.</Card>;\n}&#x22;" />
+
+### Text lockup [#text-lockup]
+
+Introduce the next step in setting up a business website.
+
+<Story of="TextLockupExample" />
+
+<Source language="tsx" code="&#x22;import { Card, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function TextLockupExample() {\n  return (\n    <Card>\n      <TextLockup>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;info\&#x22;>\n          New\n        </Tag>\n        <Heading slot=\&#x22;title\&#x22;>Connect your domain</Heading>\n        <Text slot=\&#x22;body\&#x22;>Give your website a memorable address so customers can find your business.</Text>\n      </TextLockup>\n    </Card>\n  );\n}&#x22;" />
+
+### Corner actions [#corner-actions]
+
+Save a business guide for later, mark it as read from the menu, or open the guide.
+
+<Story of="CornerActionsExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Button,\n  ButtonGroup,\n  Card,\n  CornerActions,\n  Header,\n  Heading,\n  Icon,\n  LinkButton,\n  Menu,\n  MenuItem,\n  MenuTrigger,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function CornerActionsExample({ dir }: { dir?: 'ltr' | 'rtl' } = {}) {\n  const [saved, setSaved] = useState(false);\n  const [read, setRead] = useState(false);\n\n  return (\n    <Card dir={dir} style={{ maxWidth: '24rem' }}>\n      <TextLockup>\n        <Header>\n          <CornerActions>\n            <Button aria-label=\&#x22;Favorite\&#x22; aria-pressed={saved} onPress={() => setSaved(!saved)}>\n              <Icon icon=\&#x22;star\&#x22; />\n            </Button>\n            <MenuTrigger popoverProps={{ placement: 'bottom end' }}>\n              <Button aria-label=\&#x22;More options\&#x22;>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n              <Menu aria-label=\&#x22;Guide actions\&#x22;>\n                <MenuItem id=\&#x22;read\&#x22; onAction={() => setRead(!read)}>\n                  {read ? 'Mark as unread' : 'Mark as read'}\n                </MenuItem>\n              </Menu>\n            </MenuTrigger>\n          </CornerActions>\n          <Heading slot=\&#x22;title\&#x22;>\n            Everything you need to launch your first online store and turn new visitors into returning customers\n          </Heading>\n        </Header>\n        <Text slot=\&#x22;body\&#x22;>\n          A practical checklist for your products, payments, shipping, and first marketing campaign.\n        </Text>\n        {read && <Tag>Read</Tag>}\n        <Text role=\&#x22;status\&#x22;>{saved ? 'Saved to your reading list' : '5 min read'}</Text>\n      </TextLockup>\n\n      <ButtonGroup>\n        <LinkButton variant=\&#x22;primary\&#x22; href=\&#x22;#store-launch-guide\&#x22;>\n          Read guide\n        </LinkButton>\n      </ButtonGroup>\n    </Card>\n  );\n}&#x22;" />
+
+### Link [#link]
+
+Link to billing, domain search, or hosting from the whole Card. Keep nested controls out of
+standalone link Cards.
+
+<Story of="LinkExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Card, Grid, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function LinkExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <Card href=\&#x22;#billing\&#x22; aria-label=\&#x22;Manage billing\&#x22;>\n        Manage your billing and payment methods\n      </Card>\n\n      <Card href=\&#x22;#domains\&#x22;>\n        <TextLockup>\n          <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;info\&#x22;>\n            Domains\n          </Tag>\n          <Heading slot=\&#x22;title\&#x22;>Find your domain</Heading>\n          <Text slot=\&#x22;body\&#x22;>Search for the perfect name for your business.</Text>\n        </TextLockup>\n      </Card>\n\n      <Card href=\&#x22;#hosting\&#x22;>\n        <Box elevation=\&#x22;raised\&#x22; rounding=\&#x22;md\&#x22; padding=\&#x22;md\&#x22;>\n          <Text>99.9% uptime</Text>\n        </Box>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22;>Web hosting</Heading>\n          <Text slot=\&#x22;body\&#x22;>Keep your website online with hosting that grows with your business.</Text>\n        </TextLockup>\n      </Card>\n    </Grid>\n  );\n}&#x22;" />
+
+### Grouped links [#grouped-links]
+
+Open a domain's settings by pressing its Card or Enter. Toggle auto-renew or manage DNS without
+opening the Card. Arrow keys move between domains, skipping the domain being transferred.
+
+<Story of="GroupedLinksExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Card, CardGroup, Flex, Heading, LinkButton, Switch, Text, TextLockup } from '@godaddy/antares';\n\nexport function GroupedLinksExample() {\n  const [opened, setOpened] = useState<string[]>([]);\n  const [autoRenew, setAutoRenew] = useState(false);\n\n  function open(key: string) {\n    setOpened((keys) => [...keys, key]);\n  }\n\n  return (\n    <>\n      <CardGroup aria-label=\&#x22;Domain names\&#x22; selectionMode=\&#x22;none\&#x22; keyboardNavigationBehavior=\&#x22;tab\&#x22;>\n        <Card\n          id=\&#x22;example-com\&#x22;\n          textValue=\&#x22;example.com\&#x22;\n          href=\&#x22;#example-com-settings\&#x22;\n          onAction={() => open('example.com')}\n        >\n          <TextLockup>\n            <Heading slot=\&#x22;title\&#x22;>example.com</Heading>\n            <Text slot=\&#x22;body\&#x22;>Auto-renew is {autoRenew ? 'on' : 'off'}. Open this domain to view its settings.</Text>\n          </TextLockup>\n          <Flex alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;space-between\&#x22; gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n            <Switch isSelected={autoRenew} onChange={setAutoRenew}>\n              Auto-renew\n            </Switch>\n            <LinkButton variant=\&#x22;primary\&#x22; href=\&#x22;#example-com-dns\&#x22;>\n              Manage DNS\n            </LinkButton>\n          </Flex>\n        </Card>\n        <Card\n          id=\&#x22;example-net\&#x22;\n          textValue=\&#x22;example.net\&#x22;\n          href=\&#x22;#example-net-settings\&#x22;\n          onAction={() => open('example.net')}\n        >\n          <Heading>example.net</Heading>\n          <Text>Auto-renew is on. Open this domain to view its settings.</Text>\n        </Card>\n        <Card\n          id=\&#x22;example-org\&#x22;\n          textValue=\&#x22;example.org\&#x22;\n          href=\&#x22;#example-org-settings\&#x22;\n          onAction={() => open('example.org')}\n          isDisabled\n        >\n          <Heading>example.org</Heading>\n          <Text>Transfer in progress. Settings will be available when the transfer is complete.</Text>\n        </Card>\n      </CardGroup>\n      <Text>Opened: {opened.join(',') || 'none'}</Text>\n    </>\n  );\n}&#x22;" />
+
+### Media [#media]
+
+Preview website templates with inset, full bleed, or standalone media, and a brand palette
+with custom media. Direct CornerActions place the favorite action over the template preview.
+
+<Story of="MediaExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Box, Button, Card, CornerActions, Grid, Heading, Icon, Image, Tag, Text, TextLockup } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 640 360%22%3E%3Crect width=%22640%22 height=%22360%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%22480%22 cy=%22110%22 r=%2270%22 fill=%22%234ecdc4%22/%3E%3Cpath d=%22M0 300 180 150l120 100 90-75 250 185H0z%22 fill=%22%230b3d91%22/%3E%3C/svg%3E';\n\nexport function MediaExample() {\n  const [saved, setSaved] = useState(false);\n\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <Card>\n        <CornerActions>\n          <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;Favorite\&#x22; aria-pressed={saved} onPress={() => setSaved(!saved)}>\n            <Icon icon=\&#x22;star\&#x22; />\n          </Button>\n        </CornerActions>\n        <Image\n          src={image}\n          alt=\&#x22;Blue mountain landscape\&#x22;\n          style={{ display: 'block', width: '100%', borderRadius: 'inherit' }}\n        />\n        <TextLockup>\n          <Tag slot=\&#x22;eyebrow\&#x22;>Portfolio</Tag>\n          <Heading slot=\&#x22;title\&#x22;>Lakeside portfolio</Heading>\n          <Text slot=\&#x22;body\&#x22;>A calm, spacious template that puts your work first.</Text>\n          <Text role=\&#x22;status\&#x22;>{saved ? 'Saved to your templates' : 'Free template'}</Text>\n        </TextLockup>\n      </Card>\n\n      <Card padding=\&#x22;0\&#x22; gap=\&#x22;0\&#x22;>\n        <Box style={{ overflow: 'hidden', borderStartStartRadius: 'inherit', borderStartEndRadius: 'inherit' }}>\n          <Image src={image} alt=\&#x22;Blue mountain landscape\&#x22; style={{ display: 'block', width: '100%' }} />\n        </Box>\n\n        <TextLockup padding=\&#x22;lg\&#x22;>\n          <Tag slot=\&#x22;eyebrow\&#x22;>Photography</Tag>\n          <Heading slot=\&#x22;title\&#x22;>Horizon photography</Heading>\n          <Text slot=\&#x22;body\&#x22;>Give your photos room to tell the story.</Text>\n        </TextLockup>\n      </Card>\n\n      <Card padding=\&#x22;0\&#x22; gap=\&#x22;0\&#x22;>\n        <Box style={{ overflow: 'hidden', borderRadius: 'inherit' }}>\n          <Image\n            src={image}\n            alt=\&#x22;Blue mountain landscape preview for the Horizon website template\&#x22;\n            style={{ display: 'block', width: '100%' }}\n          />\n        </Box>\n      </Card>\n\n      <Card>\n        <TextLockup>\n          <Tag slot=\&#x22;eyebrow\&#x22;>Branding</Tag>\n          <Heading slot=\&#x22;title\&#x22;>Find your brand colors</Heading>\n          <Text slot=\&#x22;body\&#x22;>A blue and turquoise palette for a fresh, confident first impression.</Text>\n        </TextLockup>\n        <Box\n          role=\&#x22;img\&#x22;\n          aria-label=\&#x22;Blue and turquoise brand palette\&#x22;\n          rounding=\&#x22;lg\&#x22;\n          style={{ aspectRatio: '16 / 9', background: 'linear-gradient(135deg, #145fa9, #4ecdc4)' }}\n        />\n      </Card>\n    </Grid>\n  );\n}&#x22;" />
+
+### Actions [#actions]
+
+Open a newsletter signup from the Card, or save it without opening the form. Submit a valid
+email to see a local confirmation.
+
+<Story of="ActionsExample" />
+
+<Source language="tsx" code="&#x22;import { useState, type FormEvent } from 'react';\nimport {\n  Box,\n  Button,\n  ButtonGroup,\n  Card,\n  CardGroup,\n  FieldError,\n  Heading,\n  Input,\n  Label,\n  Modal,\n  Tag,\n  Text,\n  TextField,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function ActionsExample() {\n  const [subscribing, setSubscribing] = useState(false);\n  const [saved, setSaved] = useState(false);\n  const [subscribedEmail, setSubscribedEmail] = useState('');\n\n  function subscribe(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    setSubscribedEmail(String(new FormData(event.currentTarget).get('email')));\n    setSubscribing(false);\n  }\n\n  return (\n    <>\n      <CardGroup aria-label=\&#x22;Newsletters\&#x22; keyboardNavigationBehavior=\&#x22;tab\&#x22;>\n        <Card id=\&#x22;newsletter\&#x22; textValue=\&#x22;Join our mailing list\&#x22; onAction={() => setSubscribing(true)}>\n          <TextLockup>\n            <Tag slot=\&#x22;eyebrow\&#x22;>Newsletter</Tag>\n            <Heading slot=\&#x22;title\&#x22;>Join our mailing list</Heading>\n            <Text slot=\&#x22;body\&#x22;>Get practical tips for growing your business, delivered to your inbox every month.</Text>\n          </TextLockup>\n\n          <ButtonGroup justifyContent=\&#x22;end\&#x22;>\n            <Button variant=\&#x22;primary\&#x22; aria-pressed={saved} onPress={() => setSaved(!saved)}>\n              {saved ? 'Saved' : 'Save'}\n            </Button>\n          </ButtonGroup>\n        </Card>\n      </CardGroup>\n      <Text role=\&#x22;status\&#x22;>{subscribedEmail ? `Subscribed with ${subscribedEmail}` : ''}</Text>\n\n      <Modal isOpen={subscribing} onOpenChange={setSubscribing} aria-label=\&#x22;Join our mailing list\&#x22;>\n        <Box as=\&#x22;form\&#x22; onSubmit={subscribe}>\n          <Card elevation=\&#x22;base\&#x22;>\n            <TextLockup>\n              <Heading slot=\&#x22;title\&#x22;>Join our mailing list</Heading>\n              <Text slot=\&#x22;body\&#x22;>One email a month. Unsubscribe whenever you like.</Text>\n            </TextLockup>\n\n            <TextField type=\&#x22;email\&#x22; name=\&#x22;email\&#x22; isRequired>\n              <Label>Email</Label>\n              <Input placeholder=\&#x22;you@example.com\&#x22; />\n              <Box style={{ minHeight: '1.5em' }}>\n                <FieldError>Enter a valid email address.</FieldError>\n              </Box>\n            </TextField>\n\n            <ButtonGroup justifyContent=\&#x22;end\&#x22;>\n              <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n              <Button type=\&#x22;submit\&#x22; variant=\&#x22;primary\&#x22;>\n                Subscribe\n              </Button>\n            </ButtonGroup>\n          </Card>\n        </Box>\n      </Modal>\n    </>\n  );\n}&#x22;" />
+
+### Multiple selection [#multiple-selection]
+
+Choose optional add-ons and see the monthly total update. The indicators show selection,
+including a custom text indicator for email.
+
+<Story of="MultipleSelectionExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Card,\n  CardGroup,\n  CardSelectionIndicator,\n  CornerActions,\n  Flex,\n  Header,\n  Heading,\n  type Selection,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function MultipleSelectionExample() {\n  const [selected, setSelected] = useState<Selection>(new Set(['privacy']));\n  const privacyPrice = 5;\n  const emailPrice = 8;\n  const total =\n    (selected === 'all' || selected.has('privacy') ? privacyPrice : 0) +\n    (selected === 'all' || selected.has('email') ? emailPrice : 0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <CardGroup\n        aria-label=\&#x22;Select add-ons\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selected}\n        onSelectionChange={setSelected}\n      >\n        <Card id=\&#x22;privacy\&#x22; textValue=\&#x22;Domain privacy\&#x22;>\n          <TextLockup>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator data-testid=\&#x22;privacy-indicator\&#x22; />\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>Domain privacy</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>Hide your contact details from the public directory.</Text>\n            <Text>${privacyPrice}/month</Text>\n          </TextLockup>\n        </Card>\n\n        <Card id=\&#x22;email\&#x22; textValue=\&#x22;Professional email\&#x22;>\n          <TextLockup>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator data-testid=\&#x22;email-indicator\&#x22;>\n                  {({ isSelected }) => <Text>{isSelected ? 'Added' : 'Add'}</Text>}\n                </CardSelectionIndicator>\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>Professional email</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>Send from a mailbox at your domain.</Text>\n            <Text>${emailPrice}/month</Text>\n          </TextLockup>\n        </Card>\n      </CardGroup>\n      <Text role=\&#x22;status\&#x22;>Add-ons total: ${total}/month</Text>\n    </Flex>\n  );\n}&#x22;" />
+
+### Single selection [#single-selection]
+
+Pick a plan and see its monthly price. `disallowEmptySelection` keeps one plan selected.
+
+<Story of="SingleSelectionExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Card,\n  CardGroup,\n  CardSelectionIndicator,\n  CornerActions,\n  Flex,\n  Header,\n  Heading,\n  type Selection,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function SingleSelectionExample() {\n  const [selected, setSelected] = useState<Selection>(new Set(['starter']));\n  const starterPrice = 10;\n  const proPrice = 25;\n  const isPro = selected !== 'all' && selected.has('pro');\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <CardGroup\n        aria-label=\&#x22;Choose a plan\&#x22;\n        selectionMode=\&#x22;single\&#x22;\n        disallowEmptySelection\n        selectedKeys={selected}\n        onSelectionChange={setSelected}\n      >\n        <Card id=\&#x22;starter\&#x22; textValue=\&#x22;Starter plan\&#x22;>\n          <TextLockup>\n            <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n              Popular\n            </Tag>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator data-testid=\&#x22;starter-indicator\&#x22; />\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>Starter plan</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>For getting started with a single project.</Text>\n            <Text>${starterPrice}/month</Text>\n          </TextLockup>\n        </Card>\n        <Card id=\&#x22;pro\&#x22; textValue=\&#x22;Pro plan\&#x22;>\n          <TextLockup>\n            <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n              Upgrade\n            </Tag>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator data-testid=\&#x22;pro-indicator\&#x22; />\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>Pro plan</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>For teams that need more room to grow.</Text>\n            <Text>${proPrice}/month</Text>\n          </TextLockup>\n        </Card>\n      </CardGroup>\n      <Text role=\&#x22;status\&#x22;>\n        Selected plan: {isPro ? 'Pro' : 'Starter'} - ${isPro ? proPrice : starterPrice}/month\n      </Text>\n    </Flex>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Explain why billing or add-ons are unavailable. Disable an individual Card with `isDisabled`,
+or disable Cards by key with `disabledKeys` on the group.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Card,\n  CardGroup,\n  CardSelectionIndicator,\n  CornerActions,\n  Flex,\n  Header,\n  Heading,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Card href=\&#x22;#billing\&#x22; isDisabled>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22;>Billing temporarily unavailable</Heading>\n          <Text slot=\&#x22;body\&#x22;>Finish transferring your account to manage billing.</Text>\n        </TextLockup>\n      </Card>\n\n      <CardGroup aria-label=\&#x22;Available add-ons\&#x22; selectionMode=\&#x22;multiple\&#x22; disabledKeys={['ssl']}>\n        <Card id=\&#x22;backup\&#x22; textValue=\&#x22;Automatic backups\&#x22; isDisabled>\n          <TextLockup>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator />\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>Automatic backups</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>Add a hosting plan to enable daily backups.</Text>\n          </TextLockup>\n        </Card>\n\n        <Card id=\&#x22;ssl\&#x22; textValue=\&#x22;SSL certificate\&#x22;>\n          <TextLockup>\n            <Header>\n              <CornerActions>\n                <CardSelectionIndicator />\n              </CornerActions>\n              <Heading slot=\&#x22;title\&#x22;>SSL certificate</Heading>\n            </Header>\n            <Text slot=\&#x22;body\&#x22;>Connect a domain to activate your SSL certificate.</Text>\n          </TextLockup>\n        </Card>\n      </CardGroup>\n    </Flex>\n  );\n}&#x22;" />
+
+### Layout [#layout]
+
+A featured business guide and a responsive reading list. Grid adapts the layout to the
+available space, while each guide keeps its own height.
+
+<Story of="LayoutExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Box,\n  Button,\n  ButtonGroup,\n  Card,\n  CornerActions,\n  Flex,\n  Grid,\n  Header,\n  Heading,\n  Icon,\n  Image,\n  LinkButton,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 240%22%3E%3Crect width=%22320%22 height=%22240%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%22220%22 cy=%2270%22 r=%2250%22 fill=%22%234ecdc4%22/%3E%3C/svg%3E';\n\nexport function LayoutExample() {\n  const [saved, setSaved] = useState(new Set<string>());\n\n  function toggleSaved(id: string) {\n    setSaved(function updateSaved(current) {\n      const next = new Set(current);\n      if (next.has(id)) next.delete(id);\n      else next.add(id);\n      return next;\n    });\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <Box style={{ maxWidth: '48rem', width: '100%' }}>\n        <Card>\n          <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;center\&#x22;>\n            <Image\n              src={image}\n              alt=\&#x22;Blue abstract landscape\&#x22;\n              data-testid=\&#x22;container-query-media\&#x22;\n              style={{ display: 'block', width: '100%', height: 'auto' }}\n            />\n            <TextLockup data-testid=\&#x22;container-query-content\&#x22;>\n              <Tag slot=\&#x22;eyebrow\&#x22;>Featured guide</Tag>\n              <Heading slot=\&#x22;title\&#x22;>Build a website that works for your business</Heading>\n              <Text slot=\&#x22;body\&#x22;>\n                Choose your pages, tell your story, and make it easy for customers to get in touch.\n              </Text>\n            </TextLockup>\n          </Grid>\n        </Card>\n      </Box>\n\n      <Grid columns=\&#x22;repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        {[\n          ['domain', 'Find your domain', 'Choose a name customers will remember.'],\n          ['brand', 'Build your brand', 'Bring your colors, logo, and business story together.'],\n          [\n            'store',\n            'Turn your first online store into a place customers want to come back to',\n            'Build trust with clear product photos, straightforward shipping, and a checkout that is easy to use.'\n          ]\n        ].map(function renderCard([id, title, body], index) {\n          return (\n            <Card key={id} gap=\&#x22;md\&#x22; data-testid={`collection-card-${index}`}>\n              <TextLockup>\n                <Tag slot=\&#x22;eyebrow\&#x22;>Recommended</Tag>\n                <Header>\n                  <CornerActions>\n                    <Button aria-label={`Save ${title}`} aria-pressed={saved.has(id)} onPress={() => toggleSaved(id)}>\n                      <Icon icon=\&#x22;star\&#x22; />\n                    </Button>\n                  </CornerActions>\n                  <Heading slot=\&#x22;title\&#x22;>{title}</Heading>\n                </Header>\n                <Text slot=\&#x22;body\&#x22;>{body}</Text>\n              </TextLockup>\n\n              <ButtonGroup justifyContent=\&#x22;end\&#x22;>\n                <LinkButton variant=\&#x22;primary\&#x22; href={`#${id}-guide`}>\n                  Read guide\n                </LinkButton>\n              </ButtonGroup>\n            </Card>\n          );\n        })}\n      </Grid>\n    </Flex>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Customize `CardSelectionIndicator` with non-interactive children or a selection-state render
+function. `CardGroup` owns selection, which works without an indicator.
+
+Use `className` with `[data-selected]`, `[data-hovered]`, `[data-pressed]`, `[data-focus-visible]`,
+and `[data-disabled]` to style Card states.
+
+## Accessibility [#accessibility]
+
+* Name `CardGroup` with `aria-label` or `aria-labelledby`, and set `textValue` on Cards with composed
+  content for accessible names and typeahead.
+* `CardGroup` uses grid navigation: Tab enters or leaves, arrow keys move between Cards, and Space
+  changes selection. Enter activates row actions or links. Choose selection or `onAction`;
+  combining them prevents pointer selection.
+* Use `keyboardNavigationBehavior="tab"` for nested controls. Antares controls keep their actions
+  independent of the Card; use `Pressable` for custom controls.
+* A standalone Card with `href` is a link and must not contain buttons, inputs, or other controls.
+
+## Props [#props]
+
+```tsx
+<CardGroup selectionMode="multiple">
+  <Card id="privacy" textValue="Domain privacy">
+    <CornerActions />
+    <Image />
+    <TextLockup />
+    {/* ... */}
+  </Card>
+</CardGroup>
+```
+
+### Card [#card]
+
+<PropTable />
+
+### CardGroup [#cardgroup]
+
+<PropTable />
+
+### CardSelectionIndicator [#cardselectionindicator]
+
+<PropTable />
+
+
 # Carousel
 
 
@@ -1462,6 +1647,84 @@ For a menu trigger, the button and menu are composed as siblings inside
 <PropTable />
 
 
+# CircularProgress
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A basic determinate progress indicator with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Indeterminate [#indeterminate]
+
+Use indeterminate progress while preparing an upload whose total size is unknown.
+Once the total is known, set `isIndeterminate` to false and supply a measured value.
+
+<Story of="IndeterminateExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, type CircularProgressProps } from '@godaddy/antares';\n\nexport function IndeterminateExample(props: CircularProgressProps) {\n  return (\n    <CircularProgress label=\&#x22;Preparing upload…\&#x22; helperText=\&#x22;Calculating the total size\&#x22; isIndeterminate {...props} />\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+## Props [#props]
+
+### CircularProgress [#circularprogress]
+
+<PropTable />
+
+
 # Collapsible
 
 
@@ -1620,213 +1883,6 @@ Panel content stays mounted when collapsed. Reset form state explicitly when the
 <PropTable />
 
 ### CollapsiblePanel [#collapsiblepanel]
-
-<PropTable />
-
-
-# CircularProgress
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A basic determinate progress indicator with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
-
-<Story of="EmphasisExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Indeterminate [#indeterminate]
-
-Use indeterminate progress while preparing an upload whose total size is unknown.
-Once the total is known, set `isIndeterminate` to false and supply a measured value.
-
-<Story of="IndeterminateExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, type CircularProgressProps } from '@godaddy/antares';\n\nexport function IndeterminateExample(props: CircularProgressProps) {\n  return (\n    <CircularProgress label=\&#x22;Preparing upload…\&#x22; helperText=\&#x22;Calculating the total size\&#x22; isIndeterminate {...props} />\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value (clamped to 0–100)
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-* `aria-describedby` wires the `helperText` to the progressbar for screen readers
-* The decorative SVG and output text are hidden via `aria-hidden="true"`
-
-## Props [#props]
-
-### CircularProgress [#circularprogress]
-
-<PropTable />
-
-
-# Drawer
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-An overlay panel that slides in from a screen edge. Built on the same RAC stack as `Modal` (a
-modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar
-navigation and bottom sheets.
-
-`DrawerTrigger` wraps a trigger button and a `<Drawer>`, handling open
-state automatically.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Content, Drawer, DrawerTrigger } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Drawer\&#x22;>\n        <Content>Drawer content goes here.</Content>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
-
-### Bottom Sheet [#bottom-sheet]
-
-Use `placement="bottom"` with controlled state for a bottom sheet pattern. Compose a
-`CloseButton` for the dismiss affordance.
-
-<Story of="BottomSheetExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, CloseButton, Content, Drawer, Heading } from '@godaddy/antares';\n\nexport function BottomSheetExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open bottom sheet\n      </Button>\n      <Drawer placement=\&#x22;bottom\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable>\n        <Heading slot=\&#x22;title\&#x22;>Bottom sheet</Heading>\n        <CloseButton />\n        <Content>Bottom sheet with a composed close button.</Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
-
-### Placements [#placements]
-
-The drawer slides in from whichever edge you set with `placement`.
-
-<Story of="PlacementsExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer, Flex, type DrawerPlacement } from '@godaddy/antares';\n\nconst PLACEMENTS: DrawerPlacement[] = ['left', 'right', 'top', 'bottom'];\n\nexport function PlacementsExample() {\n  const [placement, setPlacement] = useState<DrawerPlacement>('right');\n  const [open, setOpen] = useState(false);\n\n  return (\n    <Flex gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {PLACEMENTS.map(function renderButton(p) {\n        return (\n          <Button\n            key={p}\n            variant=\&#x22;primary\&#x22;\n            onPress={function openAt() {\n              setPlacement(p);\n              setOpen(true);\n            }}\n          >\n            Open {p}\n          </Button>\n        );\n      })}\n      <Drawer\n        placement={placement}\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        aria-label={`${placement} drawer`}\n      >\n        <Content>Placement: {placement}</Content>\n      </Drawer>\n    </Flex>\n  );\n}&#x22;" />
-
-### Nested Popover [#nested-popover]
-
-Popovers rendered inside a drawer stay open without dismissing the drawer.
-
-<Story of="NestedPopoverExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer, Popover, PopoverTrigger, Text } from '@godaddy/antares';\n\nexport function NestedPopoverExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open drawer\n      </Button>\n      <Drawer placement=\&#x22;right\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable aria-label=\&#x22;Nested popover\&#x22;>\n        <Content>\n          <PopoverTrigger>\n            <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n            <Popover aria-label=\&#x22;Popover\&#x22;>\n              <Content>\n                <Text>Popover inside drawer</Text>\n              </Content>\n            </Popover>\n          </PopoverTrigger>\n        </Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
-
-### No Escape Dismiss [#no-escape-dismiss]
-
-Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by the escape key.
-
-<Story of="NoEscapeDismissExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer } from '@godaddy/antares';\n\nexport function NoEscapeDismissExample() {\n  const [open, setOpen] = useState(false);\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open\n      </Button>\n      <Drawer\n        placement=\&#x22;right\&#x22;\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        isKeyboardDismissDisabled\n        aria-label=\&#x22;Drawer\&#x22;\n      >\n        <Content>Cannot escape</Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
-
-### Scrollable content [#scrollable-content]
-
-When the content is taller than the drawer, the `Content` region scrolls while the title row
-stays pinned.
-
-<Story of="ScrollableExample" />
-
-<Source language="tsx" code="&#x22;import { Button, CloseButton, Content, Drawer, DrawerTrigger, Heading, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Terms\&#x22;>\n        <Heading slot=\&#x22;title\&#x22;>Terms</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 12 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key      | Action                                                |
-| -------- | ----------------------------------------------------- |
-| `Escape` | Close the drawer (unless `isKeyboardDismissDisabled`) |
-| `Tab`    | Move focus within the drawer (focus is trapped)       |
-
-### ARIA [#aria]
-
-* `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
-* A `Heading slot="title"` labels the dialog via `aria-labelledby`; otherwise pass `aria-label`
-
-## Best Practices [#best-practices]
-
-* Provide a `Heading slot="title"` or an `aria-label` so the dialog has an accessible name.
-* Use `isDismissable` to allow closing via backdrop click.
-* Don't nest drawers.
-
-## Props [#props]
-
-```tsx
-<Drawer placement="right">
-  <Header>
-    <Heading slot="title" />
-    <CloseButton />
-  </Header>
-  <Content />
-  {/* ... */}
-</Drawer>
-```
-
-### Drawer [#drawer]
-
-<PropTable />
-
-### DrawerTrigger [#drawertrigger]
 
 <PropTable />
 
@@ -2041,6 +2097,135 @@ size scope.
 <PropTable />
 
 ### DateRangePickerValue [#daterangepickervalue]
+
+<PropTable />
+
+
+# Drawer
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+An overlay panel that slides in from a screen edge. Built on the same RAC stack as `Modal` (a
+modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar
+navigation and bottom sheets.
+
+`DrawerTrigger` wraps a trigger button and a `<Drawer>`, handling open
+state automatically.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Content, Drawer, DrawerTrigger } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Drawer\&#x22;>\n        <Content>Drawer content goes here.</Content>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
+
+### Bottom Sheet [#bottom-sheet]
+
+Use `placement="bottom"` with controlled state for a bottom sheet pattern. Compose a
+`CloseButton` for the dismiss affordance.
+
+<Story of="BottomSheetExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, CloseButton, Content, Drawer, Heading } from '@godaddy/antares';\n\nexport function BottomSheetExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open bottom sheet\n      </Button>\n      <Drawer placement=\&#x22;bottom\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable>\n        <Heading slot=\&#x22;title\&#x22;>Bottom sheet</Heading>\n        <CloseButton />\n        <Content>Bottom sheet with a composed close button.</Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
+
+### Placements [#placements]
+
+The drawer slides in from whichever edge you set with `placement`.
+
+<Story of="PlacementsExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer, Flex, type DrawerPlacement } from '@godaddy/antares';\n\nconst PLACEMENTS: DrawerPlacement[] = ['left', 'right', 'top', 'bottom'];\n\nexport function PlacementsExample() {\n  const [placement, setPlacement] = useState<DrawerPlacement>('right');\n  const [open, setOpen] = useState(false);\n\n  return (\n    <Flex gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {PLACEMENTS.map(function renderButton(p) {\n        return (\n          <Button\n            key={p}\n            variant=\&#x22;primary\&#x22;\n            onPress={function openAt() {\n              setPlacement(p);\n              setOpen(true);\n            }}\n          >\n            Open {p}\n          </Button>\n        );\n      })}\n      <Drawer\n        placement={placement}\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        aria-label={`${placement} drawer`}\n      >\n        <Content>Placement: {placement}</Content>\n      </Drawer>\n    </Flex>\n  );\n}&#x22;" />
+
+### Nested Popover [#nested-popover]
+
+Popovers rendered inside a drawer stay open without dismissing the drawer.
+
+<Story of="NestedPopoverExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer, Popover, PopoverTrigger, Text } from '@godaddy/antares';\n\nexport function NestedPopoverExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open drawer\n      </Button>\n      <Drawer placement=\&#x22;right\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable aria-label=\&#x22;Nested popover\&#x22;>\n        <Content>\n          <PopoverTrigger>\n            <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n            <Popover aria-label=\&#x22;Popover\&#x22;>\n              <Content>\n                <Text>Popover inside drawer</Text>\n              </Content>\n            </Popover>\n          </PopoverTrigger>\n        </Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
+
+### No Escape Dismiss [#no-escape-dismiss]
+
+Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by the escape key.
+
+<Story of="NoEscapeDismissExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer } from '@godaddy/antares';\n\nexport function NoEscapeDismissExample() {\n  const [open, setOpen] = useState(false);\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open\n      </Button>\n      <Drawer\n        placement=\&#x22;right\&#x22;\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        isKeyboardDismissDisabled\n        aria-label=\&#x22;Drawer\&#x22;\n      >\n        <Content>Cannot escape</Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
+
+### Scrollable content [#scrollable-content]
+
+When the content is taller than the drawer, the `Content` region scrolls while the title row
+stays pinned.
+
+<Story of="ScrollableExample" />
+
+<Source language="tsx" code="&#x22;import { Button, CloseButton, Content, Drawer, DrawerTrigger, Heading, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Terms\&#x22;>\n        <Heading slot=\&#x22;title\&#x22;>Terms</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 12 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key      | Action                                                |
+| -------- | ----------------------------------------------------- |
+| `Escape` | Close the drawer (unless `isKeyboardDismissDisabled`) |
+| `Tab`    | Move focus within the drawer (focus is trapped)       |
+
+### ARIA [#aria]
+
+* `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
+* A `Heading slot="title"` labels the dialog via `aria-labelledby`; otherwise pass `aria-label`
+
+## Best Practices [#best-practices]
+
+* Provide a `Heading slot="title"` or an `aria-label` so the dialog has an accessible name.
+* Use `isDismissable` to allow closing via backdrop click.
+* Don't nest drawers.
+
+## Props [#props]
+
+```tsx
+<Drawer placement="right">
+  <Header>
+    <Heading slot="title" />
+    <CloseButton />
+  </Header>
+  <Content />
+  {/* ... */}
+</Drawer>
+```
+
+### Drawer [#drawer]
+
+<PropTable />
+
+### DrawerTrigger [#drawertrigger]
 
 <PropTable />
 
@@ -2720,53 +2905,6 @@ For performance optimization:
 3. **Minimize icon sets**: Only load icons that are actually used
 
 
-# Image
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders a native `<img>` and accepts all of its attributes
-* Inherits presentation and behavior when composed inside Antares components such as Avatar
-* Ships no default styles, loading state, or fallback so it stays predictable everywhere
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Render an image with alternative text and explicit dimensions.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-* Provide concise, meaningful `alt` text when the image conveys information.
-* Use `alt=""` for decorative images or images already described by adjacent text.
-* Set `width` and `height` when known to reserve space and reduce layout shift.
-
-## Props [#props]
-
-### Image [#image]
-
-<PropTable />
-
-
 # InlineDrawer
 
 
@@ -2949,6 +3087,53 @@ Label names a field. The required asterisk comes from Field CSS when the root is
 ## Props [#props]
 
 ### Label [#label]
+
+<PropTable />
+
+
+# Image
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders a native `<img>` and accepts all of its attributes
+* Inherits presentation and behavior when composed inside Antares components such as Avatar
+* Ships no default styles, loading state, or fallback so it stays predictable everywhere
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Render an image with alternative text and explicit dimensions.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+* Provide concise, meaningful `alt` text when the image conveys information.
+* Use `alt=""` for decorative images or images already described by adjacent text.
+* Set `width` and `height` when known to reserve space and reduce layout shift.
+
+## Props [#props]
+
+### Image [#image]
 
 <PropTable />
 
@@ -3440,6 +3625,142 @@ the dialog.
 <PropTable />
 
 
+# Pagination
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Controlled and uncontrolled 1-based page state.
+* Explicit composition with Antares `Button`, `Input`, `Text`, `Select` and `PaginationDots`.
+* Known and unknown page-count data sources.
+* React Aria context defaults for previous, next and the single page input.
+* Medium and small control sizes.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+The default pagination for a known page count without a page-size selector.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Input, Pagination, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Pagination pageCount={5} defaultValue={1} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Input aria-label=\&#x22;Current page\&#x22; />\n      <Text size=\&#x22;sm\&#x22; aria-hidden>\n        /\n      </Text>\n      <Text size=\&#x22;sm\&#x22;>5</Text>\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n    </Pagination>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+A controlled Pagination keeps the current page in consumer state.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Input, Pagination, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Pagination value={page} pageCount={3} onChange={setPage} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Input aria-label=\&#x22;Current page\&#x22; />\n      <Text size=\&#x22;sm\&#x22; aria-hidden>\n        /\n      </Text>\n      <Text size=\&#x22;sm\&#x22;>3</Text>\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n    </Pagination>\n  );\n}&#x22;" />
+
+### Page Count Known [#page-count-known]
+
+Page navigation with a known page count and a consumer-owned page-size Select.
+
+<Story of="PageCountKnownExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Input, Pagination, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function PageCountKnownExample() {\n  const total = 50;\n  const [page, setPage] = useState(1);\n  const [limit, setLimit] = useState(10);\n  const pageCount = Math.ceil(total / limit);\n\n  function handlePageSizeChange(value: string | number | null) {\n    if (value == null) return;\n\n    setLimit(Number(value));\n    setPage(1);\n  }\n\n  return (\n    <Pagination value={page} pageCount={pageCount} onChange={setPage} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Input aria-label=\&#x22;Current page\&#x22; />\n      <Text size=\&#x22;sm\&#x22; aria-hidden>\n        /\n      </Text>\n      <Text size=\&#x22;sm\&#x22;>{pageCount}</Text>\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n      <Select aria-label=\&#x22;Results per page\&#x22; value={String(limit)} onChange={handlePageSizeChange}>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;10\&#x22;>10</SelectItem>\n          <SelectItem id=\&#x22;25\&#x22;>25</SelectItem>\n          <SelectItem id=\&#x22;50\&#x22;>50</SelectItem>\n        </SelectOptions>\n      </Select>\n    </Pagination>\n  );\n}&#x22;" />
+
+### Page Count Unknown [#page-count-unknown]
+
+Page Count Unknown: the consumer controls the next boundary.
+
+<Story of="PageCountUnknownExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Input, Pagination } from '@godaddy/antares';\n\nexport function PageCountUnknownExample() {\n  const [page, setPage] = useState(1);\n  const hasNextPage = true;\n\n  return (\n    <Pagination value={page} onChange={setPage} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Input aria-label=\&#x22;Current page\&#x22; />\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; isDisabled={!hasNextPage} />\n    </Pagination>\n  );\n}&#x22;" />
+
+### Minimal [#minimal]
+
+Minimal previous/next pagination.
+
+<Story of="MinimalExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Pagination } from '@godaddy/antares';\n\nexport function MinimalExample() {\n  return (\n    <Pagination pageCount={8} defaultValue={1} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n    </Pagination>\n  );\n}&#x22;" />
+
+### Pagination Dots [#pagination-dots]
+
+Opt-in visual PaginationDots between previous and next controls.
+
+<Story of="PaginationDotsExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Pagination, PaginationDots } from '@godaddy/antares';\n\nexport function PaginationDotsExample() {\n  const [page, setPage] = useState(1);\n  const pageCount = 5;\n\n  return (\n    <Pagination value={page} pageCount={pageCount} onChange={setPage} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <PaginationDots />\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n    </Pagination>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Pagination is composed: pass only the regions your layout needs. Previous and
+next `Button`s and the page `Input` receive navigation defaults from
+Pagination, while explicit child props—including disabled-state props—and
+`className` values remain available for local customization. Separator, page count,
+`Select` and
+`PaginationDots` are consumer-owned.
+
+Use `className` to extend styling without replacing the interaction behavior
+provided by Antares.
+
+## Accessibility [#accessibility]
+
+* Pagination does not add translated labels. Provide accessible names for the
+  navigation region, previous/next buttons and page input.
+* `PaginationDots` is decorative and does not replace interactive page
+  controls.
+* For interactive page links, compose explicit `Button` or `LinkButton` children and
+  provide the active state with `aria-current="page"`.
+
+## Best Practices [#best-practices]
+
+* Pass `pageCount` when the backend exposes a known number of pages.
+* Omit `pageCount` for cursor-based data and disable the composed next button
+  when the backend reports that there is no next page.
+* Keep total items, page size and result ranges in the consuming data layer.
+* Compose exactly one page `Input`; use a separate component for advanced range
+  navigation.
+
+## Props [#props]
+
+### Pagination [#pagination]
+
+```tsx
+<Pagination>
+  <Button slot="previous" />
+  <Input />
+  {/* separator, page count, Select, PaginationDots, or custom regions */}
+  <Button slot="next" />
+</Pagination>
+```
+
+<PropTable />
+
+### PaginationDots [#paginationdots]
+
+<PropTable />
+
+
 # NumberField
 
 
@@ -3579,142 +3900,6 @@ Compose with `children` to replace the stepper icons with your own content, such
 <PropTable />
 
 
-# Pagination
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Controlled and uncontrolled 1-based page state.
-* Explicit composition with Antares `Button`, `Input`, `Text`, `Select` and `PaginationDots`.
-* Known and unknown page-count data sources.
-* React Aria context defaults for previous, next and the single page input.
-* Medium and small control sizes.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The default pagination for a known page count without a page-size selector.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Input, Pagination, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Pagination pageCount={5} defaultValue={1} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Input aria-label=\&#x22;Current page\&#x22; />\n      <Text size=\&#x22;sm\&#x22; aria-hidden>\n        /\n      </Text>\n      <Text size=\&#x22;sm\&#x22;>5</Text>\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n    </Pagination>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-A controlled Pagination keeps the current page in consumer state.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Input, Pagination, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Pagination value={page} pageCount={3} onChange={setPage} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Input aria-label=\&#x22;Current page\&#x22; />\n      <Text size=\&#x22;sm\&#x22; aria-hidden>\n        /\n      </Text>\n      <Text size=\&#x22;sm\&#x22;>3</Text>\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n    </Pagination>\n  );\n}&#x22;" />
-
-### Page Count Known [#page-count-known]
-
-Page navigation with a known page count and a consumer-owned page-size Select.
-
-<Story of="PageCountKnownExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Input, Pagination, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function PageCountKnownExample() {\n  const total = 50;\n  const [page, setPage] = useState(1);\n  const [limit, setLimit] = useState(10);\n  const pageCount = Math.ceil(total / limit);\n\n  function handlePageSizeChange(value: string | number | null) {\n    if (value == null) return;\n\n    setLimit(Number(value));\n    setPage(1);\n  }\n\n  return (\n    <Pagination value={page} pageCount={pageCount} onChange={setPage} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Input aria-label=\&#x22;Current page\&#x22; />\n      <Text size=\&#x22;sm\&#x22; aria-hidden>\n        /\n      </Text>\n      <Text size=\&#x22;sm\&#x22;>{pageCount}</Text>\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n      <Select aria-label=\&#x22;Results per page\&#x22; value={String(limit)} onChange={handlePageSizeChange}>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;10\&#x22;>10</SelectItem>\n          <SelectItem id=\&#x22;25\&#x22;>25</SelectItem>\n          <SelectItem id=\&#x22;50\&#x22;>50</SelectItem>\n        </SelectOptions>\n      </Select>\n    </Pagination>\n  );\n}&#x22;" />
-
-### Page Count Unknown [#page-count-unknown]
-
-Page Count Unknown: the consumer controls the next boundary.
-
-<Story of="PageCountUnknownExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Input, Pagination } from '@godaddy/antares';\n\nexport function PageCountUnknownExample() {\n  const [page, setPage] = useState(1);\n  const hasNextPage = true;\n\n  return (\n    <Pagination value={page} onChange={setPage} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Input aria-label=\&#x22;Current page\&#x22; />\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; isDisabled={!hasNextPage} />\n    </Pagination>\n  );\n}&#x22;" />
-
-### Minimal [#minimal]
-
-Minimal previous/next pagination.
-
-<Story of="MinimalExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Pagination } from '@godaddy/antares';\n\nexport function MinimalExample() {\n  return (\n    <Pagination pageCount={8} defaultValue={1} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n    </Pagination>\n  );\n}&#x22;" />
-
-### Pagination Dots [#pagination-dots]
-
-Opt-in visual PaginationDots between previous and next controls.
-
-<Story of="PaginationDotsExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Pagination, PaginationDots } from '@godaddy/antares';\n\nexport function PaginationDotsExample() {\n  const [page, setPage] = useState(1);\n  const pageCount = 5;\n\n  return (\n    <Pagination value={page} pageCount={pageCount} onChange={setPage} aria-label=\&#x22;Page navigation\&#x22;>\n      <Button slot=\&#x22;previous\&#x22; aria-label=\&#x22;Previous\&#x22; />\n      <PaginationDots />\n      <Button slot=\&#x22;next\&#x22; aria-label=\&#x22;Next\&#x22; />\n    </Pagination>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-Pagination is composed: pass only the regions your layout needs. Previous and
-next `Button`s and the page `Input` receive navigation defaults from
-Pagination, while explicit child props—including disabled-state props—and
-`className` values remain available for local customization. Separator, page count,
-`Select` and
-`PaginationDots` are consumer-owned.
-
-Use `className` to extend styling without replacing the interaction behavior
-provided by Antares.
-
-## Accessibility [#accessibility]
-
-* Pagination does not add translated labels. Provide accessible names for the
-  navigation region, previous/next buttons and page input.
-* `PaginationDots` is decorative and does not replace interactive page
-  controls.
-* For interactive page links, compose explicit `Button` or `LinkButton` children and
-  provide the active state with `aria-current="page"`.
-
-## Best Practices [#best-practices]
-
-* Pass `pageCount` when the backend exposes a known number of pages.
-* Omit `pageCount` for cursor-based data and disable the composed next button
-  when the backend reports that there is no next page.
-* Keep total items, page size and result ranges in the consuming data layer.
-* Compose exactly one page `Input`; use a separate component for advanced range
-  navigation.
-
-## Props [#props]
-
-### Pagination [#pagination]
-
-```tsx
-<Pagination>
-  <Button slot="previous" />
-  <Input />
-  {/* separator, page count, Select, PaginationDots, or custom regions */}
-  <Button slot="next" />
-</Pagination>
-```
-
-<PropTable />
-
-### PaginationDots [#paginationdots]
-
-<PropTable />
-
-
 # Popover
 
 
@@ -3812,6 +3997,90 @@ also gives the dialog its accessible name.
 <PropTable />
 
 
+# Pressable
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Adds accessible press behavior to an existing visual component.
+* Applies interaction states directly to the child without adding a wrapper element.
+* Supports pointer, touch, and keyboard interactions through React Aria.
+* Preserves the child's layout, shape, and base visual styling while adding state feedback.
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Add accessible press behavior to an existing visual component without adding a wrapper element.
+The surface supports pointer, touch, and keyboard activation.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex, Pressable, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Pressable aria-label=\&#x22;View account summary\&#x22;>\n      <Box role=\&#x22;button\&#x22; padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n          <Text>Account summary</Text>\n          <Text>View your account details</Text>\n        </Flex>\n      </Box>\n    </Pressable>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Use `Pressable` when an existing visual component or layout surface needs press behavior while keeping its own DOM element, layout, and styles. The child must be a single element that forwards its ref and accepts the DOM, ARIA, and event props supplied by React Aria.
+
+Use `Button` when you need a standard button control with button-specific sizing, layout, and visual variants.
+
+Pass `onPress` for the action instead of wiring separate pointer and keyboard handlers:
+
+```tsx
+<Pressable aria-label="View account summary" onPress={handlePress}>
+  <Box role="button" padding="md" rounding="md" elevation="card">
+    Account summary
+  </Box>
+</Pressable>
+```
+
+## Accessibility [#accessibility]
+
+`Pressable` accepts the React Aria press props, including `onPress`, `onPressStart`, `onPressEnd`, `onPressUp`, and `onPressChange`.
+
+Use a semantic interactive element when possible. For a non-semantic child such as `Avatar` or `Box`, provide an appropriate interactive role and an accessible name. Pressable makes the child focusable when the required props are forwarded.
+
+Do not add `role="button"` to a native `<button>` or `<a>` unless you intentionally need to change its semantics. Use a dedicated semantic component such as `Button`, `LinkButton`, `Menu`, or `ToggleButton` when that control's meaning is known.
+
+## Best Practices [#best-practices]
+
+* Prefer a native interactive element or a semantic Antares component when the interaction meaning is known.
+* Avoid nesting interactive elements inside the child passed to `Pressable`.
+* `Pressable` automatically applies React Aria state attributes such as `[data-hovered]`, `[data-pressed]`, `[data-focus-visible]`, and `[data-disabled]` to the child. Ensure the child component styles these states appropriately if it overrides the default `Pressable` styles.
+
+## Troubleshooting [#troubleshooting]
+
+* If React Aria warns that the child must be focusable, ensure it is a single element that forwards its ref, `tabIndex`, DOM props, and ARIA attributes.
+* If `onPress` does not fire, confirm that the child forwards event handlers and is not disabled by another component.
+
+## Props [#props]
+
+```tsx
+<Pressable>
+  <Box />
+</Pressable>
+```
+
+### Pressable [#pressable]
+
+<PropTable />
+
+
 # ProgressBar
 
 
@@ -3884,6 +4153,141 @@ Once the total is known, set `isIndeterminate` to false and supply a measured va
 ## Props [#props]
 
 ### ProgressBar [#progressbar]
+
+<PropTable />
+
+
+# ProgressSteps
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Horizontal and vertical orientations
+* Four completion statuses (`none`, `partial`, `complete`, `error`) with status icons
+* Timeline (past / current / future) derived from a single `currentStep` prop
+* Auto-generated step numbers (opt out with `hideStepNumbers`)
+* Interactive (navigable) and inert (display-only) steps
+* Title truncation and RTL support
+* Rendered as a `<nav>` landmark with an ordered list for assistive technology
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A horizontal stepper. `currentStep` marks the active step; earlier steps are `past`, later are `future`. Each `status` sets the step's icon, and an `error` step turns its accent bar red.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22;>Cart</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Shipping</ProgressStep>\n      <ProgressStep status=\&#x22;error\&#x22;>Payment</ProgressStep>\n      <ProgressStep>Review</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+### Not started [#not-started]
+
+No `currentStep`: the flow hasn't started, so every step is `future` and none is marked current.
+
+<Story of="NotStartedExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function NotStartedExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22;>\n      <ProgressStep>Cart</ProgressStep>\n      <ProgressStep>Shipping</ProgressStep>\n      <ProgressStep>Payment</ProgressStep>\n      <ProgressStep>Review</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+### Vertical [#vertical]
+
+Vertical orientation: accent bar on the leading edge, steps stacked in a column.
+
+<Story of="VerticalExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function VerticalExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Onboarding\&#x22; orientation=\&#x22;vertical\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22;>Create account</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Verify email</ProgressStep>\n      <ProgressStep>Add payment method</ProgressStep>\n      <ProgressStep>Invite your team</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+### Interactive [#interactive]
+
+Interactive steps: each `onPress` navigates the wizard by updating `currentStep`.
+
+<Story of="InteractiveExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\nimport { useState } from 'react';\n\nconst steps = ['Cart', 'Shipping', 'Payment', 'Review'];\n\nexport function InteractiveExample() {\n  const [currentStep, setCurrentStep] = useState(1);\n\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={currentStep}>\n      {steps.map((label, index) => (\n        <ProgressStep\n          key={label}\n          status={index < currentStep ? 'complete' : index === currentStep ? 'partial' : 'none'}\n          onPress={() => setCurrentStep(index)}\n        >\n          {label}\n        </ProgressStep>\n      ))}\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+A disabled interactive step is muted, not focusable, and cannot be activated.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22; onPress={() => undefined}>\n        Cart\n      </ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22; onPress={() => undefined}>\n        Shipping\n      </ProgressStep>\n      <ProgressStep onPress={() => undefined} isDisabled>\n        Payment\n      </ProgressStep>\n      <ProgressStep onPress={() => undefined} isDisabled>\n        Review\n      </ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+### Hide Step Numbers [#hide-step-numbers]
+
+Step numbers are shown by default; `hideStepNumbers` omits the "N. " prefix.
+
+<Story of="HideStepNumbersExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function HideStepNumbersExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1} hideStepNumbers>\n      <ProgressStep status=\&#x22;complete\&#x22;>Cart</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Shipping</ProgressStep>\n      <ProgressStep>Payment</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+* Step numbers (`"N. "`) are prepended automatically — keep them where possible, as user testing shows people recognize the component better with them. Set `hideStepNumbers` to omit them.
+* `orientation` switches between `horizontal` (accent bar on top) and `vertical` (accent bar on the leading edge).
+* `currentStep` is the single source of truth for the timeline. Omit it for a not-yet-started flow where every step is `future`; pass the step count for a fully completed flow where every step is `past`.
+* `status` is independent of timeline and only controls the status icon and (for `error`) the accent bar color.
+* Pass `className` to the container or an individual step to extend the styles.
+
+## Accessibility [#accessibility]
+
+* The container renders a `<nav>` landmark; set `aria-label` to name it (defaults to `"Progress"`).
+* Steps are an ordered list (`<ol>`/`<li>`) so assistive technology conveys position and count.
+* The current step is marked with `aria-current="step"`.
+* Interactive steps are real buttons: focusable in the natural **Tab** order and activated with **Enter** or **Space**. Status icons are decorative (`aria-hidden`).
+* Focus is shown with a visible outline; disabled steps use `0.4` opacity and are not focusable.
+
+## Best Practices [#best-practices]
+
+* Drive the timeline from `currentStep` rather than styling individual steps.
+* Provide `onPress` only for steps a user can actually navigate to; leave it off for display-only steps.
+* Keep titles short — they truncate with an ellipsis when space is tight.
+* Always give the container an `aria-label` that describes the flow (e.g. `"Checkout progress"`).
+
+## Troubleshooting [#troubleshooting]
+
+* **No step is highlighted:** `currentStep` is omitted, negative, or out of range. Set it to the active step's 0-based index.
+* **A step isn't clickable:** it has no `onPress`, so it's inert by design. Add `onPress` to make it interactive.
+* **Titles overflow:** that's expected — titles truncate. Shorten the title.
+
+## Props [#props]
+
+```tsx
+<ProgressSteps>
+  <ProgressStep />
+  {/* ... */}
+</ProgressSteps>
+```
+
+### ProgressSteps [#progresssteps]
+
+<PropTable />
+
+### ProgressStep [#progressstep]
 
 <PropTable />
 
@@ -4176,141 +4580,6 @@ Always provide clear error messages:
 <PropTable />
 
 ### RadioGroup [#radiogroup]
-
-<PropTable />
-
-
-# ProgressSteps
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Horizontal and vertical orientations
-* Four completion statuses (`none`, `partial`, `complete`, `error`) with status icons
-* Timeline (past / current / future) derived from a single `currentStep` prop
-* Auto-generated step numbers (opt out with `hideStepNumbers`)
-* Interactive (navigable) and inert (display-only) steps
-* Title truncation and RTL support
-* Rendered as a `<nav>` landmark with an ordered list for assistive technology
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A horizontal stepper. `currentStep` marks the active step; earlier steps are `past`, later are `future`. Each `status` sets the step's icon, and an `error` step turns its accent bar red.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22;>Cart</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Shipping</ProgressStep>\n      <ProgressStep status=\&#x22;error\&#x22;>Payment</ProgressStep>\n      <ProgressStep>Review</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-### Not started [#not-started]
-
-No `currentStep`: the flow hasn't started, so every step is `future` and none is marked current.
-
-<Story of="NotStartedExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function NotStartedExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22;>\n      <ProgressStep>Cart</ProgressStep>\n      <ProgressStep>Shipping</ProgressStep>\n      <ProgressStep>Payment</ProgressStep>\n      <ProgressStep>Review</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-### Vertical [#vertical]
-
-Vertical orientation: accent bar on the leading edge, steps stacked in a column.
-
-<Story of="VerticalExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function VerticalExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Onboarding\&#x22; orientation=\&#x22;vertical\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22;>Create account</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Verify email</ProgressStep>\n      <ProgressStep>Add payment method</ProgressStep>\n      <ProgressStep>Invite your team</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-### Interactive [#interactive]
-
-Interactive steps: each `onPress` navigates the wizard by updating `currentStep`.
-
-<Story of="InteractiveExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\nimport { useState } from 'react';\n\nconst steps = ['Cart', 'Shipping', 'Payment', 'Review'];\n\nexport function InteractiveExample() {\n  const [currentStep, setCurrentStep] = useState(1);\n\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={currentStep}>\n      {steps.map((label, index) => (\n        <ProgressStep\n          key={label}\n          status={index < currentStep ? 'complete' : index === currentStep ? 'partial' : 'none'}\n          onPress={() => setCurrentStep(index)}\n        >\n          {label}\n        </ProgressStep>\n      ))}\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-A disabled interactive step is muted, not focusable, and cannot be activated.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22; onPress={() => undefined}>\n        Cart\n      </ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22; onPress={() => undefined}>\n        Shipping\n      </ProgressStep>\n      <ProgressStep onPress={() => undefined} isDisabled>\n        Payment\n      </ProgressStep>\n      <ProgressStep onPress={() => undefined} isDisabled>\n        Review\n      </ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-### Hide Step Numbers [#hide-step-numbers]
-
-Step numbers are shown by default; `hideStepNumbers` omits the "N. " prefix.
-
-<Story of="HideStepNumbersExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function HideStepNumbersExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1} hideStepNumbers>\n      <ProgressStep status=\&#x22;complete\&#x22;>Cart</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Shipping</ProgressStep>\n      <ProgressStep>Payment</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-* Step numbers (`"N. "`) are prepended automatically — keep them where possible, as user testing shows people recognize the component better with them. Set `hideStepNumbers` to omit them.
-* `orientation` switches between `horizontal` (accent bar on top) and `vertical` (accent bar on the leading edge).
-* `currentStep` is the single source of truth for the timeline. Omit it for a not-yet-started flow where every step is `future`; pass the step count for a fully completed flow where every step is `past`.
-* `status` is independent of timeline and only controls the status icon and (for `error`) the accent bar color.
-* Pass `className` to the container or an individual step to extend the styles.
-
-## Accessibility [#accessibility]
-
-* The container renders a `<nav>` landmark; set `aria-label` to name it (defaults to `"Progress"`).
-* Steps are an ordered list (`<ol>`/`<li>`) so assistive technology conveys position and count.
-* The current step is marked with `aria-current="step"`.
-* Interactive steps are real buttons: focusable in the natural **Tab** order and activated with **Enter** or **Space**. Status icons are decorative (`aria-hidden`).
-* Focus is shown with a visible outline; disabled steps use `0.4` opacity and are not focusable.
-
-## Best Practices [#best-practices]
-
-* Drive the timeline from `currentStep` rather than styling individual steps.
-* Provide `onPress` only for steps a user can actually navigate to; leave it off for display-only steps.
-* Keep titles short — they truncate with an ellipsis when space is tight.
-* Always give the container an `aria-label` that describes the flow (e.g. `"Checkout progress"`).
-
-## Troubleshooting [#troubleshooting]
-
-* **No step is highlighted:** `currentStep` is omitted, negative, or out of range. Set it to the active step's 0-based index.
-* **A step isn't clickable:** it has no `onPress`, so it's inert by design. Add `onPress` to make it interactive.
-* **Titles overflow:** that's expected — titles truncate. Shorten the title.
-
-## Props [#props]
-
-```tsx
-<ProgressSteps>
-  <ProgressStep />
-  {/* ... */}
-</ProgressSteps>
-```
-
-### ProgressSteps [#progresssteps]
-
-<PropTable />
-
-### ProgressStep [#progressstep]
 
 <PropTable />
 
@@ -5042,6 +5311,8 @@ A scope sizes Antares components only. Plain HTML keeps its own typography, so p
 
 
 
+
+
 <Meta of="Stories" name="Overview" />
 
 **Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
@@ -5051,6 +5322,7 @@ A scope sizes Antares components only. Plain HTML keeps its own typography, so p
 * **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
 * **`ButtonGroup`** - a cluster of related actions (a wrapping row with `role="group"`). Overlay parents like `Modal` adopt it with end alignment and padding.
 * **`Group`** — semantic grouping container for field item controls. A parent field injects the box chrome.
+* **`CornerActions`** - an always-visible structural row for actions placed at a surface corner.
 
 ## Hybrid styling [#hybrid-styling]
 
@@ -5079,6 +5351,15 @@ Group is the bordered field box. Size and invalid/disabled chrome apply here.
 
 <Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function GroupExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Group>\n        <Input placeholder=\&#x22;Enter your name\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
 
+### Corner Actions [#corner-actions]
+
+CornerActions is an always-visible structural region. Compose any actions inside it and use
+layout props to reserve room beside the surrounding content.
+
+<Story of="CornerActionsExample" />
+
+<Source language="tsx" code="&#x22;import { Button, CornerActions, Flex, Text } from '@godaddy/antares';\n\nexport function CornerActionsExample() {\n  return (\n    <Flex direction=\&#x22;row\&#x22; alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;space-between\&#x22; gap=\&#x22;md\&#x22;>\n      <Text>Card content</Text>\n      <CornerActions>\n        <Button variant=\&#x22;secondary\&#x22;>More actions</Button>\n        <Button variant=\&#x22;secondary\&#x22;>Share</Button>\n      </CornerActions>\n    </Flex>\n  );\n}&#x22;" />
+
 ## Props [#props]
 
 ### Content [#content]
@@ -5098,6 +5379,10 @@ Group is the bordered field box. Size and invalid/disabled chrome apply here.
 <PropTable />
 
 ### Group [#group-1]
+
+<PropTable />
+
+### CornerActions [#corneractions]
 
 <PropTable />
 
@@ -5708,50 +5993,6 @@ surrounding color; add `emphasis="passive"` to mute it.
 <PropTable />
 
 
-# TextArea
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`TextArea` is the multiline control inside a field, not a field on its own. Prefer `TextField` as the parent; see that component for fuller examples.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-TextArea inside TextField.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Label, TextArea, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Comment</Label>\n      <TextArea placeholder=\&#x22;Enter your comment\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<TextField>
-  <Label>Comment</Label>
-  <TextArea placeholder="Enter your comment" />
-</TextField>
-```
-
-### TextArea [#textarea]
-
-<PropTable />
-
-
 # TextField
 
 
@@ -5895,7 +6136,7 @@ Compose a telephone number input paired with a country-code select.
 <PropTable />
 
 
-# Pressable
+# TextArea
 
 
 
@@ -5907,79 +6148,41 @@ Compose a telephone number input paired with a country-code select.
 
 <Meta of="Stories" name="Overview" />
 
-## Features [#features]
-
-* Adds accessible press behavior to an existing visual component.
-* Applies interaction states directly to the child without adding a wrapper element.
-* Supports pointer, touch, and keyboard interactions through React Aria.
-* Preserves the child's layout, shape, and base visual styling while adding state feedback.
+`TextArea` is the multiline control inside a field, not a field on its own. Prefer `TextField` as the parent; see that component for fuller examples.
 
 ## Installation [#installation]
 
 ```bash
-npm install @godaddy/antares
+npm install --save @godaddy/antares
 ```
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-Add accessible press behavior to an existing visual component without adding a wrapper element.
-The surface supports pointer, touch, and keyboard activation.
+TextArea inside TextField.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Box, Flex, Pressable, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Pressable aria-label=\&#x22;View account summary\&#x22;>\n      <Box role=\&#x22;button\&#x22; padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n          <Text>Account summary</Text>\n          <Text>View your account details</Text>\n        </Flex>\n      </Box>\n    </Pressable>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-Use `Pressable` when an existing visual component or layout surface needs press behavior while keeping its own DOM element, layout, and styles. The child must be a single element that forwards its ref and accepts the DOM, ARIA, and event props supplied by React Aria.
-
-Use `Button` when you need a standard button control with button-specific sizing, layout, and visual variants.
-
-Pass `onPress` for the action instead of wiring separate pointer and keyboard handlers:
-
-```tsx
-<Pressable aria-label="View account summary" onPress={handlePress}>
-  <Box role="button" padding="md" rounding="md" elevation="card">
-    Account summary
-  </Box>
-</Pressable>
-```
-
-## Accessibility [#accessibility]
-
-`Pressable` accepts the React Aria press props, including `onPress`, `onPressStart`, `onPressEnd`, `onPressUp`, and `onPressChange`.
-
-Use a semantic interactive element when possible. For a non-semantic child such as `Avatar` or `Box`, provide an appropriate interactive role and an accessible name. Pressable makes the child focusable when the required props are forwarded.
-
-Do not add `role="button"` to a native `<button>` or `<a>` unless you intentionally need to change its semantics. Use a dedicated semantic component such as `Button`, `LinkButton`, `Menu`, or `ToggleButton` when that control's meaning is known.
-
-## Best Practices [#best-practices]
-
-* Prefer a native interactive element or a semantic Antares component when the interaction meaning is known.
-* Avoid nesting interactive elements inside the child passed to `Pressable`.
-* `Pressable` automatically applies React Aria state attributes such as `[data-hovered]`, `[data-pressed]`, `[data-focus-visible]`, and `[data-disabled]` to the child. Ensure the child component styles these states appropriately if it overrides the default `Pressable` styles.
-
-## Troubleshooting [#troubleshooting]
-
-* If React Aria warns that the child must be focusable, ensure it is a single element that forwards its ref, `tabIndex`, DOM props, and ARIA attributes.
-* If `onPress` does not fire, confirm that the child forwards event handlers and is not disabled by another component.
+<Source language="tsx" code="&#x22;import { Label, TextArea, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Comment</Label>\n      <TextArea placeholder=\&#x22;Enter your comment\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
 
 ## Props [#props]
 
 ```tsx
-<Pressable>
-  <Box />
-</Pressable>
+<TextField>
+  <Label>Comment</Label>
+  <TextArea placeholder="Enter your comment" />
+</TextField>
 ```
 
-### Pressable [#pressable]
+### TextArea [#textarea]
 
 <PropTable />
 
 
 # TextLockup
+
+
 
 
 
@@ -6074,6 +6277,15 @@ here. Controls keep their own type: the buttons are unaffected by the lockup's `
 
 <Source language="tsx" code="&#x22;import { Button, ButtonGroup, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function WithActionsExample() {\n  return (\n    <TextLockup size=\&#x22;xl\&#x22;>\n      <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n        Pro\n      </Tag>\n      <Heading slot=\&#x22;title\&#x22; level={1}>\n        Upgrade your plan\n      </Heading>\n      <Text slot=\&#x22;body\&#x22;>Unlock advanced reporting, priority support, and unlimited seats for your whole team.</Text>\n      <ButtonGroup inlinePadding=\&#x22;0\&#x22; blockPadding=\&#x22;0\&#x22;>\n        <Button variant=\&#x22;primary\&#x22;>Upgrade</Button>\n        <Button variant=\&#x22;secondary\&#x22;>Compare plans</Button>\n      </ButtonGroup>\n    </TextLockup>\n  );\n}&#x22;" />
 
+### Corner Actions [#corner-actions]
+
+An article introduction with a menu to mark it as read. Put CornerActions before Heading
+inside Header so the title wraps around the menu button.
+
+<Story of="CornerActionsExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport {\n  Button,\n  CornerActions,\n  Header,\n  Heading,\n  Icon,\n  Menu,\n  MenuItem,\n  MenuTrigger,\n  Tag,\n  Text,\n  TextLockup\n} from '@godaddy/antares';\n\nexport function CornerActionsExample() {\n  const [read, setRead] = useState(false);\n\n  return (\n    <TextLockup size=\&#x22;lg\&#x22; style={{ maxWidth: '24rem' }}>\n      <Tag slot=\&#x22;eyebrow\&#x22;>Business guide</Tag>\n      <Header>\n        <CornerActions>\n          <MenuTrigger popoverProps={{ placement: 'bottom end' }}>\n            <Button aria-label=\&#x22;More options\&#x22;>\n              <Icon icon=\&#x22;ellipsis\&#x22; />\n            </Button>\n            <Menu aria-label=\&#x22;Article actions\&#x22;>\n              <MenuItem id=\&#x22;read\&#x22; onAction={() => setRead(!read)}>\n                {read ? 'Mark as unread' : 'Mark as read'}\n              </MenuItem>\n            </Menu>\n          </MenuTrigger>\n        </CornerActions>\n        <Heading slot=\&#x22;title\&#x22; level={2}>\n          Prepare your online store for launch and make a great first impression on every customer\n        </Heading>\n      </Header>\n      <Text slot=\&#x22;body\&#x22;>\n        Check your product photos, payment options, and shipping details before opening your doors.\n      </Text>\n      <Text role=\&#x22;status\&#x22;>{read ? 'Marked as read' : '5 min read'}</Text>\n    </TextLockup>\n  );\n}&#x22;" />
+
 ## Customization [#customization]
 
 `TextLockup` positions and type-sets its parts; you supply them. That means anything else can
@@ -6117,6 +6329,9 @@ growing a prop for it.
 
 ## Props [#props]
 
+Place the title directly inside `TextLockup` when there are no corner actions. The eyebrow can
+be `Text` or `Tag` and comes before the title.
+
 ```tsx
 <TextLockup>
   <Tag slot="eyebrow" />
@@ -6126,7 +6341,111 @@ growing a prop for it.
 </TextLockup>
 ```
 
+Wrap the title in `Header` when using `CornerActions`.
+
+```tsx
+<TextLockup>
+  <Tag slot="eyebrow" />
+  <Header>
+    <CornerActions />
+    <Heading slot="title" />
+  </Header>
+  <Text slot="body" />
+  {/* ... */}
+</TextLockup>
+```
+
 ### TextLockup [#textlockup]
+
+<PropTable />
+
+
+# Tooltip
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
+Once a tooltip has been shown, subsequent tooltips appear without delay.
+
+`TooltipTrigger` wraps a focusable element and a `<Tooltip>`, handling hover/focus state and positioning automatically.
+
+## Features [#features]
+
+* `overlay` elevation panel positioned relative to its trigger, with an optional arrow
+* Flips and shifts to stay in the viewport
+* Configurable open and close delays
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use it with `TooltipTrigger`, which wraps both the tooltip content and a focusable element such as a `Button`. The tooltip appears on hover and focus.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Button, type TooltipTriggerProps, type TooltipProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: {\n  tooltipTriggerProps?: Partial<TooltipTriggerProps>;\n  tooltipProps?: Partial<TooltipProps>;\n}) {\n  return (\n    <TooltipTrigger {...props.tooltipTriggerProps}>\n      <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n      <Tooltip {...props.tooltipProps}>This is the tooltip content!</Tooltip>\n    </TooltipTrigger>\n  );\n}&#x22;" />
+
+### Custom Anchor [#custom-anchor]
+
+To position a tooltip relative to a different focusable element, use the `triggerRef` prop. `TooltipTrigger` still handles showing and hiding on hover and focus.
+
+<Story of="CustomAnchorExample" />
+
+<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nexport function CustomAnchorExample() {\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <TooltipTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n        <Tooltip triggerRef={triggerRef}>Tooltip positioned relative to the box</Tooltip>\n      </TooltipTrigger>\n\n      <Box elevation=\&#x22;card\&#x22; padding=\&#x22;sm\&#x22; ref={triggerRef}>\n        Tooltip appears here\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+`className` and `style` apply to the tooltip panel.
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key      | Action                                                     |
+| -------- | ---------------------------------------------------------- |
+| `Tab`    | Moves focus to the focusable element and shows the tooltip |
+| `Escape` | Closes the tooltip                                         |
+
+### ARIA [#aria]
+
+* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`
+
+## Best Practices [#best-practices]
+
+* Keep tooltip content short and informative.
+* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
+* Do not place interactive content inside tooltips. Use a `Popover` instead.
+
+## Props [#props]
+
+```tsx
+<TooltipTrigger>
+  <Button />
+  <Tooltip placement="bottom" />
+</TooltipTrigger>
+```
+
+### Tooltip [#tooltip]
+
+<PropTable />
+
+### TooltipTrigger [#tooltiptrigger]
 
 <PropTable />
 
@@ -6405,96 +6724,6 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 <PropTable />
 
 ### ToggleButton [#togglebutton]
-
-<PropTable />
-
-
-# Tooltip
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
-Once a tooltip has been shown, subsequent tooltips appear without delay.
-
-`TooltipTrigger` wraps a focusable element and a `<Tooltip>`, handling hover/focus state and positioning automatically.
-
-## Features [#features]
-
-* `overlay` elevation panel positioned relative to its trigger, with an optional arrow
-* Flips and shifts to stay in the viewport
-* Configurable open and close delays
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use it with `TooltipTrigger`, which wraps both the tooltip content and a focusable element such as a `Button`. The tooltip appears on hover and focus.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Button, type TooltipTriggerProps, type TooltipProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: {\n  tooltipTriggerProps?: Partial<TooltipTriggerProps>;\n  tooltipProps?: Partial<TooltipProps>;\n}) {\n  return (\n    <TooltipTrigger {...props.tooltipTriggerProps}>\n      <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n      <Tooltip {...props.tooltipProps}>This is the tooltip content!</Tooltip>\n    </TooltipTrigger>\n  );\n}&#x22;" />
-
-### Custom Anchor [#custom-anchor]
-
-To position a tooltip relative to a different focusable element, use the `triggerRef` prop. `TooltipTrigger` still handles showing and hiding on hover and focus.
-
-<Story of="CustomAnchorExample" />
-
-<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nexport function CustomAnchorExample() {\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <TooltipTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n        <Tooltip triggerRef={triggerRef}>Tooltip positioned relative to the box</Tooltip>\n      </TooltipTrigger>\n\n      <Box elevation=\&#x22;card\&#x22; padding=\&#x22;sm\&#x22; ref={triggerRef}>\n        Tooltip appears here\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-`className` and `style` apply to the tooltip panel.
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key      | Action                                                     |
-| -------- | ---------------------------------------------------------- |
-| `Tab`    | Moves focus to the focusable element and shows the tooltip |
-| `Escape` | Closes the tooltip                                         |
-
-### ARIA [#aria]
-
-* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`
-
-## Best Practices [#best-practices]
-
-* Keep tooltip content short and informative.
-* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
-* Do not place interactive content inside tooltips. Use a `Popover` instead.
-
-## Props [#props]
-
-```tsx
-<TooltipTrigger>
-  <Button />
-  <Tooltip placement="bottom" />
-</TooltipTrigger>
-```
-
-### Tooltip [#tooltip]
-
-<PropTable />
-
-### TooltipTrigger [#tooltiptrigger]
 
 <PropTable />
 
@@ -6826,122 +7055,6 @@ Use `formatValue` when the raw numbers in the tooltip should read like money, co
 ## Props [#props]
 
 ### DonutChart [#donutchart]
-
-<PropTable />
-
-
-# Gauge Chart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A continuous gauge with a single label.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { GaugeChart } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <GaugeChart value={50} label=\&#x22;50%\&#x22; aria-label=\&#x22;Basic gauge\&#x22; style={{ maxWidth: '200px', margin: 'auto' }} />;\n}&#x22;" />
-
-### Continuous Values [#continuous-values]
-
-Multiple continuous gauges showing different fill percentages.
-
-<Story of="ContinuousExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function ContinuousExample() {\n  const values = [0, 25, 50, 75, 100];\n\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(180px, 1fr))\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22; alignContent=\&#x22;center\&#x22;>\n      {values.map(function renderGauge(v) {\n        return <GaugeChart key={v} value={v} label={`${v}%`} subLabel=\&#x22;Progress\&#x22; aria-label={`Gauge at ${v}%`} />;\n      })}\n    </Grid>\n  );\n}&#x22;" />
-
-### Segmented [#segmented]
-
-Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
-
-<Story of="SegmentedExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function SegmentedExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 200px)\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart segments={5} value={0} label=\&#x22;0/5\&#x22; subLabel=\&#x22;Empty\&#x22; aria-label=\&#x22;Gauge with 0 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={2} label=\&#x22;2/5\&#x22; subLabel=\&#x22;Partial\&#x22; aria-label=\&#x22;Gauge with 2 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={5} label=\&#x22;5/5\&#x22; subLabel=\&#x22;Full\&#x22; aria-label=\&#x22;Gauge with 5 of 5 filled\&#x22; />\n      <GaugeChart segments={3} value={1} label=\&#x22;1/3\&#x22; subLabel=\&#x22;Three segments\&#x22; aria-label=\&#x22;Gauge with 1 of 3 filled\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-### With Range Labels [#with-range-labels]
-
-Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
-
-<Story of="WithRangeLabelsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function WithRangeLabelsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart\n        value={65}\n        label=\&#x22;65%\&#x22;\n        subLabel=\&#x22;CPU Usage\&#x22;\n        rangeLabel={{ min: 0, max: 100 }}\n        aria-label=\&#x22;CPU usage gauge\&#x22;\n      />\n      <GaugeChart\n        value={3}\n        segments={5}\n        label=\&#x22;3/5\&#x22;\n        subLabel=\&#x22;Risk Level\&#x22;\n        rangeLabel={{ min: 'Low', max: 'High' }}\n        variant=\&#x22;warning\&#x22;\n        aria-label=\&#x22;Risk level gauge\&#x22;\n      />\n    </Grid>\n  );\n}&#x22;" />
-
-### Variants [#variants]
-
-Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
-
-<Story of="VariantsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function VariantsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Default\&#x22; variant=\&#x22;default\&#x22; aria-label=\&#x22;Default variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Success\&#x22; variant=\&#x22;success\&#x22; aria-label=\&#x22;Success variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Warning\&#x22; variant=\&#x22;warning\&#x22; aria-label=\&#x22;Warning variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Critical\&#x22; variant=\&#x22;critical\&#x22; aria-label=\&#x22;Critical variant gauge\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-### Label Type [#label-type]
-
-Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
-
-<Story of="LabelTypeExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function LabelTypeExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={72} label=\&#x22;72%\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with numeric value label\&#x22; />\n      <GaugeChart value={72} label=\&#x22;Good\&#x22; labelType=\&#x22;text\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with text label\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-## Troubleshooting [#troubleshooting]
-
-### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
-
-The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
-
-```tsx
-// ❌ No width constraint — gauge may stretch to full viewport
-<GaugeChart label="50%" value={50} aria-label="Progress" />
-
-// ✅ Parent provides width context
-<div style={{ width: 200 }}>
-  <GaugeChart label="50%" value={50} aria-label="Progress" />
-</div>
-
-// ✅ Or use className for max-width
-<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
-```
-
-### Value Out of Range [#value-out-of-range]
-
-Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
-
-```tsx
-// ✅ Continuous: 0–100
-<GaugeChart label="75%" value={75} aria-label="Score" />
-
-// ✅ Segmented: 0 to segments
-<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
-```
-
-## Props [#props]
-
-### GaugeChart [#gaugechart]
 
 <PropTable />
 
@@ -7331,6 +7444,122 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 ## Props [#props]
 
 ### LineChart [#linechart]
+
+<PropTable />
+
+
+# Gauge Chart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A continuous gauge with a single label.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { GaugeChart } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <GaugeChart value={50} label=\&#x22;50%\&#x22; aria-label=\&#x22;Basic gauge\&#x22; style={{ maxWidth: '200px', margin: 'auto' }} />;\n}&#x22;" />
+
+### Continuous Values [#continuous-values]
+
+Multiple continuous gauges showing different fill percentages.
+
+<Story of="ContinuousExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function ContinuousExample() {\n  const values = [0, 25, 50, 75, 100];\n\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(180px, 1fr))\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22; alignContent=\&#x22;center\&#x22;>\n      {values.map(function renderGauge(v) {\n        return <GaugeChart key={v} value={v} label={`${v}%`} subLabel=\&#x22;Progress\&#x22; aria-label={`Gauge at ${v}%`} />;\n      })}\n    </Grid>\n  );\n}&#x22;" />
+
+### Segmented [#segmented]
+
+Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+
+<Story of="SegmentedExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function SegmentedExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 200px)\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart segments={5} value={0} label=\&#x22;0/5\&#x22; subLabel=\&#x22;Empty\&#x22; aria-label=\&#x22;Gauge with 0 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={2} label=\&#x22;2/5\&#x22; subLabel=\&#x22;Partial\&#x22; aria-label=\&#x22;Gauge with 2 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={5} label=\&#x22;5/5\&#x22; subLabel=\&#x22;Full\&#x22; aria-label=\&#x22;Gauge with 5 of 5 filled\&#x22; />\n      <GaugeChart segments={3} value={1} label=\&#x22;1/3\&#x22; subLabel=\&#x22;Three segments\&#x22; aria-label=\&#x22;Gauge with 1 of 3 filled\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
+
+### With Range Labels [#with-range-labels]
+
+Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+
+<Story of="WithRangeLabelsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function WithRangeLabelsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart\n        value={65}\n        label=\&#x22;65%\&#x22;\n        subLabel=\&#x22;CPU Usage\&#x22;\n        rangeLabel={{ min: 0, max: 100 }}\n        aria-label=\&#x22;CPU usage gauge\&#x22;\n      />\n      <GaugeChart\n        value={3}\n        segments={5}\n        label=\&#x22;3/5\&#x22;\n        subLabel=\&#x22;Risk Level\&#x22;\n        rangeLabel={{ min: 'Low', max: 'High' }}\n        variant=\&#x22;warning\&#x22;\n        aria-label=\&#x22;Risk level gauge\&#x22;\n      />\n    </Grid>\n  );\n}&#x22;" />
+
+### Variants [#variants]
+
+Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
+
+<Story of="VariantsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function VariantsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Default\&#x22; variant=\&#x22;default\&#x22; aria-label=\&#x22;Default variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Success\&#x22; variant=\&#x22;success\&#x22; aria-label=\&#x22;Success variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Warning\&#x22; variant=\&#x22;warning\&#x22; aria-label=\&#x22;Warning variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Critical\&#x22; variant=\&#x22;critical\&#x22; aria-label=\&#x22;Critical variant gauge\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
+
+### Label Type [#label-type]
+
+Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
+
+<Story of="LabelTypeExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function LabelTypeExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={72} label=\&#x22;72%\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with numeric value label\&#x22; />\n      <GaugeChart value={72} label=\&#x22;Good\&#x22; labelType=\&#x22;text\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with text label\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
+
+## Troubleshooting [#troubleshooting]
+
+### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
+
+The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
+
+```tsx
+// ❌ No width constraint — gauge may stretch to full viewport
+<GaugeChart label="50%" value={50} aria-label="Progress" />
+
+// ✅ Parent provides width context
+<div style={{ width: 200 }}>
+  <GaugeChart label="50%" value={50} aria-label="Progress" />
+</div>
+
+// ✅ Or use className for max-width
+<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
+```
+
+### Value Out of Range [#value-out-of-range]
+
+Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
+
+```tsx
+// ✅ Continuous: 0–100
+<GaugeChart label="75%" value={75} aria-label="Score" />
+
+// ✅ Segmented: 0 to segments
+<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
+```
+
+## Props [#props]
+
+### GaugeChart [#gaugechart]
 
 <PropTable />
 
