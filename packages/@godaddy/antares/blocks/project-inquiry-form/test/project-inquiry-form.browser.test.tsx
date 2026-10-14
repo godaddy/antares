@@ -116,6 +116,22 @@ describe('@godaddy/antares', function packageTests() {
       expect(screen.getByRole('button', { name: /^Remove / }).all()).toHaveLength(5);
     });
 
+    it('merges a picker selection made while a drop is pending', async function mergesPendingDrop() {
+      const screen = await render(<ProjectInquiryForm />);
+      const target = screen.getByRole('textbox', { name: /Email/ }).element();
+      const input = fileInput(screen.container);
+
+      sendDrag(target, 'drop', dragFiles([new File(['drop'], 'dropped.pdf', { type: 'application/pdf' })]));
+
+      const transfer = new DataTransfer();
+      transfer.items.add(new File(['picker'], 'picked.pdf', { type: 'application/pdf' }));
+      Object.defineProperty(input, 'files', { configurable: true, value: transfer.files });
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+
+      await expect.element(screen.getByRole('button', { name: 'Remove dropped.pdf' })).toBeVisible();
+      await expect.element(screen.getByRole('button', { name: 'Remove picked.pdf' })).toBeVisible();
+    });
+
     it('validates unsupported files after a drop', async function rejectsDragType() {
       const screen = await render(<ProjectInquiryForm />);
       const target = screen.getByRole('textbox', { name: /Email/ }).element();
@@ -304,17 +320,26 @@ describe('@godaddy/antares', function packageTests() {
       const input = fileInput(screen.container);
       const transfer = new DataTransfer();
 
-      for (let index = 0; index < 11; index++) {
+      for (let index = 0; index < 10; index++) {
         transfer.items.add(new File(['brief'], `brief-${index}.pdf`, { type: 'application/pdf' }));
       }
 
       Object.defineProperty(input, 'files', { configurable: true, value: transfer.files });
       input.dispatchEvent(new Event('change', { bubbles: true }));
 
+      await expect.element(screen.getByRole('button', { name: 'Remove brief-0.pdf' })).toBeVisible();
+
+      const extraFile = new DataTransfer();
+      extraFile.items.add(new File(['brief'], 'brief-10.pdf', { type: 'application/pdf' }));
+      Object.defineProperty(input, 'files', { configurable: true, value: extraFile.files });
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+
       await expect
         .element(screen.getByRole('alert'))
         .toHaveTextContent('Use up to 10 files with a combined size under 256 MiB.');
-      await expect.element(screen.getByRole('button', { name: 'Remove brief-0.pdf' })).not.toBeInTheDocument();
+
+      await userEvent.click(screen.getByRole('button', { name: 'Remove brief-0.pdf' }));
+      await expect.element(screen.getByRole('alert')).not.toBeInTheDocument();
     });
 
     it('disables submission after removing the last attachment', async function requiresAttachment() {

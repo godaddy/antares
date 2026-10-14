@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useState, type ComponentProps, type FormEvent } from 'react';
+import { useId, useReducer, useState, type ComponentProps, type FormEvent } from 'react';
 import {
   Alert,
   Box,
@@ -31,6 +31,62 @@ const heroImage = {
   height: 720
 };
 
+const fileFormatError = 'Use PDF, JPG, GIF, or PNG files smaller than 256 MiB.';
+const fileLimitError = 'Use up to 10 files with a combined size under 256 MiB.';
+
+interface AttachmentState {
+  files: File[];
+  error: string;
+}
+
+type AttachmentAction = { type: 'add'; files: File[] } | { type: 'read-error' } | { type: 'remove'; file: File };
+
+const initialAttachmentState: AttachmentState = { files: [], error: '' };
+
+function attachmentReducer(state: AttachmentState, action: AttachmentAction): AttachmentState {
+  if (action.type === 'read-error') {
+    return { ...state, error: 'We couldn’t read these files. Please try again.' };
+  }
+
+  if (action.type === 'remove') {
+    return {
+      files: state.files.filter(function keepFile(candidate) {
+        return fileKey(candidate) !== fileKey(action.file);
+      }),
+      error: ''
+    };
+  }
+
+  const valid = action.files.filter(isAcceptedFile);
+  const validationError = valid.length === action.files.length ? '' : fileFormatError;
+
+  if (valid.length === 0) {
+    return { ...state, error: validationError };
+  }
+
+  const unique = new Map(
+    state.files.map(function identify(file) {
+      return [fileKey(file), file];
+    })
+  );
+
+  for (const file of valid) {
+    const key = fileKey(file);
+    if (!unique.has(key)) unique.set(key, file);
+  }
+
+  const nextFiles = Array.from(unique.values());
+  const totalSize = nextFiles.reduce(function sumFileSizes(total, file) {
+    return total + file.size;
+  }, 0);
+
+  if (nextFiles.length > MAX_FILE_COUNT || totalSize > MAX_TOTAL_FILE_SIZE) {
+    return { ...state, error: fileLimitError };
+  }
+
+  return { files: nextFiles, error: validationError };
+}
+
 type FormDropEvent = Parameters<NonNullable<ComponentProps<typeof DropZone>['onDrop']>>[0];
 
 /** A complete, interactive project inquiry page with a local demo submission. */
@@ -38,13 +94,12 @@ export function ProjectInquiryForm() {
   const headingId = useId();
   const [values, setValues] = useState(initialValues);
   const [dueDate, setDueDate] = useState<CalendarDate | null>(null);
-  const [files, setFiles] = useState<File[]>([]);
-  const [fileError, setFileError] = useState('');
+  const [attachments, dispatchAttachments] = useReducer(attachmentReducer, initialAttachmentState);
   const [submitted, setSubmitted] = useState(false);
   const canSubmit =
     Object.values(values).every(function isFilled(value) {
       return value.trim().length > 0;
-    }) && files.length > 0;
+    }) && attachments.files.length > 0;
 
   function clearConfirmation() {
     setSubmitted(false);
@@ -54,34 +109,8 @@ export function ProjectInquiryForm() {
     if (!list?.length) return;
 
     const incoming = Array.from(list);
-    const valid = incoming.filter(isAcceptedFile);
-
-    setFileError(valid.length === incoming.length ? '' : 'Use PDF, JPG, GIF, or PNG files smaller than 256 MiB.');
-    if (valid.length === 0) return;
-
-    const unique = new Map(
-      files.map(function identify(file) {
-        return [fileKey(file), file];
-      })
-    );
-
-    for (const file of valid) {
-      const key = fileKey(file);
-      if (!unique.has(key)) unique.set(key, file);
-    }
-
-    const nextFiles = Array.from(unique.values());
-    const totalSize = nextFiles.reduce(function sumFileSizes(total, file) {
-      return total + file.size;
-    }, 0);
-
-    if (nextFiles.length > MAX_FILE_COUNT || totalSize > MAX_TOTAL_FILE_SIZE) {
-      setFileError('Use up to 10 files with a combined size under 256 MiB.');
-      return;
-    }
-
-    setFiles(nextFiles);
-    clearConfirmation();
+    dispatchAttachments({ type: 'add', files: incoming });
+    if (incoming.some(isAcceptedFile)) clearConfirmation();
   }
 
   async function handleDrop(event: FormDropEvent) {
@@ -93,7 +122,7 @@ export function ProjectInquiryForm() {
       );
       addFiles(dropped);
     } catch {
-      setFileError('We couldn’t read these files. Please try again.');
+      dispatchAttachments({ type: 'read-error' });
     }
   }
 
@@ -115,11 +144,7 @@ export function ProjectInquiryForm() {
   }
 
   function handleRemoveFile(file: File) {
-    setFiles(function removeFile(previous) {
-      return previous.filter(function keepFile(candidate) {
-        return fileKey(candidate) !== fileKey(file);
-      });
-    });
+    dispatchAttachments({ type: 'remove', file });
     clearConfirmation();
   }
 
@@ -181,7 +206,12 @@ export function ProjectInquiryForm() {
                   onClearDate={handleClearDate}
                 />
 
-                <AttachedFiles files={files} error={fileError} onSelect={addFiles} onRemove={handleRemoveFile} />
+                <AttachedFiles
+                  files={attachments.files}
+                  error={attachments.error}
+                  onSelect={addFiles}
+                  onRemove={handleRemoveFile}
+                />
 
                 <Button type="submit" variant="primary" isDisabled={!canSubmit}>
                   <Icon icon="calendar" aria-hidden="true" />
