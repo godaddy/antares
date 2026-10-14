@@ -1,5 +1,5 @@
-/** The upload state shown by a gallery file item. */
-export type ImageStatus = 'ready' | 'error';
+/** The load state shown by a gallery file item. */
+export type ImageStatus = 'ready' | 'loading' | 'error';
 
 /** An image shown by the gallery. IDs must be unique and stable. */
 export interface ImageItem {
@@ -15,7 +15,7 @@ export interface ImageItem {
   /** Actual bytes when known; omitted for remote samples. */
   size?: number;
 
-  /** Upload state used by the list/grid examples. */
+  /** Load state used by the list/grid examples. */
   status?: ImageStatus;
 
   /** Optional message associated with a failed upload. */

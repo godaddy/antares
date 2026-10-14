@@ -1,8 +1,8 @@
 'use client';
 
 import { Grid } from '@godaddy/antares';
-import { FileItems } from '../file-items/index.tsx';
-import type { ImageItem } from '../../data/types.ts';
+import { FileItems } from '../file-items';
+import type { ImageItem } from '../../data/types';
 import styles from './index.module.css';
 
 interface GridViewProps {
@@ -20,10 +20,13 @@ interface GridViewProps {
 
   /** Reports an image decode or network failure. */
   onLoadError: (id: string) => void;
+
+  /** Reports a successful image load. */
+  onLoadSuccess: (id: string) => void;
 }
 
 /** Full-width responsive image grid with gallery-sized cards. */
-export function GridView({ images, onOpen, onRemove, onRetry, onLoadError }: GridViewProps) {
+export function GridView({ images, onOpen, onRemove, onRetry, onLoadError, onLoadSuccess }: GridViewProps) {
   return (
     <Grid
       as="ul"
@@ -41,6 +44,7 @@ export function GridView({ images, onOpen, onRemove, onRetry, onLoadError }: Gri
         onRemove={onRemove}
         onRetry={onRetry}
         onLoadError={onLoadError}
+        onLoadSuccess={onLoadSuccess}
       />
     </Grid>
   );

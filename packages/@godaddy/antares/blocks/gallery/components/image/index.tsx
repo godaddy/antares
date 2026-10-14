@@ -1,8 +1,8 @@
 'use client';
 
 import { Button, Flex, Icon, Text } from '@godaddy/antares';
-import type { ImageItem } from '../../data/types.ts';
-import { ImageSurface, useImageLoadState } from './image-surface.tsx';
+import type { ImageItem } from '../../data/types';
+import { ImageSurface, useImageLoadState } from './image-surface';
 import styles from './index.module.css';
 
 interface GalleryImageProps {
@@ -39,6 +39,19 @@ export function GalleryImage({
   });
 
   if (state === 'error') {
+    if (variant === 'thumbnail') {
+      return (
+        <Flex
+          className={`${styles.image} ${styles.errorSurface}`}
+          data-variant={variant}
+          role="img"
+          aria-label={`${image.name} failed to load`}
+        >
+          <Icon icon="alert" aria-hidden="true" />
+        </Flex>
+      );
+    }
+
     return (
       <Flex direction="column" gap="xs" padding="sm" role="alert">
         <Icon icon="alert" aria-hidden="true" />

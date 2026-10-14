@@ -1,4 +1,4 @@
-import type { ImageItem } from './types.ts';
+import type { ImageItem } from './types';
 
 /** Fixed IDs keep the sample photographs consistent between visits. */
 export const sampleImages: ImageItem[] = [

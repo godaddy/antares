@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useCallback, useEffect, useState, type ReactEventHandler } from 'react';
+import { forwardRef, useCallback, useEffect, useRef, useState, type ReactEventHandler } from 'react';
 import { Box, Button, Image } from '@godaddy/antares';
 import styles from './image-surface.module.css';
 
@@ -10,14 +10,43 @@ interface UseImageLoadStateOptions {
   /** Resets the resource when the owning image changes state. */
   resetKey?: string;
 
+  /** Called after the image loads successfully. */
+  onLoad?: () => void;
+
   /** Called after the image fails to load. */
   onError?: () => void;
 }
 
 /** Shares image loading, retry, and complete-image handling across Gallery surfaces. */
-export function useImageLoadState(src: string, { resetKey = '', onError: reportError }: UseImageLoadStateOptions = {}) {
+export function useImageLoadState(
+  src: string,
+  { resetKey = '', onLoad: reportLoad, onError: reportError }: UseImageLoadStateOptions = {}
+) {
   const [attempt, setAttempt] = useState(0);
   const [state, setState] = useState<ImageLoadState>('loading');
+  const reportedErrorKey = useRef<string | null>(null);
+  const reportedLoadKey = useRef<string | null>(null);
+  const loadKey = `${src}:${resetKey}:${attempt}`;
+
+  const reportLoadOnce = useCallback(
+    function reportLoadedResource() {
+      if (reportedLoadKey.current === loadKey) return;
+
+      reportedLoadKey.current = loadKey;
+      reportLoad?.();
+    },
+    [loadKey, reportLoad]
+  );
+
+  const reportErrorOnce = useCallback(
+    function reportFailedResource() {
+      if (reportedErrorKey.current === loadKey) return;
+
+      reportedErrorKey.current = loadKey;
+      reportError?.();
+    },
+    [loadKey, reportError]
+  );
 
   useEffect(
     function resetImageState() {
@@ -27,20 +56,35 @@ export function useImageLoadState(src: string, { resetKey = '', onError: reportE
     [resetKey, src]
   );
 
-  const imageRef = useCallback(function inspectLoadedImage(element: HTMLImageElement | null) {
-    if (element?.complete) setState(element.naturalWidth > 0 ? 'ready' : 'error');
-  }, []);
+  const imageRef = useCallback(
+    function inspectLoadedImage(element: HTMLImageElement | null) {
+      if (!element?.complete) return;
 
-  const onLoad = useCallback(function handleLoad() {
-    setState('ready');
-  }, []);
+      if (element.naturalWidth > 0) {
+        setState('ready');
+        reportLoadOnce();
+      } else {
+        setState('error');
+        reportErrorOnce();
+      }
+    },
+    [reportErrorOnce, reportLoadOnce]
+  );
+
+  const onLoad = useCallback(
+    function handleLoad() {
+      setState('ready');
+      reportLoadOnce();
+    },
+    [reportLoadOnce]
+  );
 
   const onError = useCallback(
     function handleError() {
       setState('error');
-      reportError?.();
+      reportErrorOnce();
     },
-    [reportError]
+    [reportErrorOnce]
   );
 
   const retry = useCallback(function retryImage() {
@@ -50,14 +94,7 @@ export function useImageLoadState(src: string, { resetKey = '', onError: reportE
     setState('loading');
   }, []);
 
-  let resolvedSrc = src;
-  if (attempt > 0 && /^https?:/.test(src)) {
-    const url = new URL(src);
-    url.searchParams.set('gallery-retry', String(attempt));
-    resolvedSrc = url.toString();
-  }
-
-  return { attempt, imageRef, onLoad, onError, retry, src: resolvedSrc, state };
+  return { attempt, imageRef, onLoad, onError, retry, src, state };
 }
 
 interface ImageSurfaceProps {

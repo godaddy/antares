@@ -12,15 +12,16 @@ import {
   SegmentedController,
   SegmentedControllerItem,
   Tag,
+  Text,
   TextContext,
   isFileDropItem
 } from '@godaddy/antares';
-import { EmptyState } from '../empty-state/index.tsx';
-import type { ImageItem } from '../../data/types.ts';
-import { GridView } from '../grid-view/index.tsx';
-import { ListView } from '../list-view/index.tsx';
-import { UploadPrompt } from '../upload-prompt/index.tsx';
-import { Viewer } from '../viewer/index.tsx';
+import { EmptyState } from '../empty-state';
+import type { ImageItem } from '../../data/types';
+import { GridView } from '../grid-view';
+import { ListView } from '../list-view';
+import { UploadPrompt } from '../upload-prompt';
+import { Viewer } from '../viewer';
 import styles from './index.module.css';
 
 const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
@@ -32,6 +33,16 @@ function pluralize(count: number, singular: string, plural: string) {
   return count === 1 ? singular : plural;
 }
 
+function getDropZoneStyle({ isDropTarget }: DropZoneRenderProps) {
+  return isDropTarget
+    ? {
+        border: '1.5px dashed #00a4a6',
+        borderRadius: '16px',
+        background: 'rgba(216, 239, 239, 0.9)'
+      }
+    : undefined;
+}
+
 /** Creates a unique ID for a locally added image with a Web Crypto fallback. */
 function createLocalImageId() {
   const uuid = globalThis.crypto?.randomUUID?.();
@@ -40,6 +51,21 @@ function createLocalImageId() {
   const random = new Uint32Array(2);
   globalThis.crypto?.getRandomValues?.(random);
   return `local-${Date.now()}-${localImageCounter++}-${random[0]}-${random[1]}`;
+}
+
+/** Returns a byte-based identity for duplicate detection when Web Crypto is available. */
+async function getFileContentKey(file: File) {
+  const subtle = globalThis.crypto?.subtle;
+  if (!subtle) return null;
+
+  try {
+    const digest = await subtle.digest('SHA-256', await file.arrayBuffer());
+    return Array.from(new Uint8Array(digest), function formatByte(byte) {
+      return byte.toString(16).padStart(2, '0');
+    }).join('');
+  } catch {
+    return null;
+  }
 }
 
 export interface GalleryProps {
@@ -79,12 +105,13 @@ export function Gallery({ initialImages = [], defaultView = 'grid' }: GalleryPro
     };
   }, []);
 
-  const addFiles = useCallback(function addFiles(list: FileList | File[] | null) {
+  const addFiles = useCallback(async function addFiles(list: FileList | File[] | null) {
     if (!list?.length) return;
 
     const added: ImageItem[] = [];
     let rejected = 0;
     let duplicates = 0;
+    const validFiles: File[] = [];
 
     for (const file of Array.from(list)) {
       if (!acceptedTypes.includes(file.type) || file.size >= maximumSize) {
@@ -92,13 +119,23 @@ export function Gallery({ initialImages = [], defaultView = 'grid' }: GalleryPro
         continue;
       }
 
-      const key = JSON.stringify([file.name, file.size, file.type, file.lastModified]);
-      if (ownedByKey.current.has(key)) {
+      validFiles.push(file);
+    }
+
+    const keyedFiles = await Promise.all(
+      validFiles.map(async function identifyFile(file) {
+        return { file, contentKey: await getFileContentKey(file) };
+      })
+    );
+
+    for (const { file, contentKey } of keyedFiles) {
+      const id = createLocalImageId();
+      const key = contentKey ? JSON.stringify([file.name, contentKey]) : `unique:${id}`;
+      if (contentKey && ownedByKey.current.has(key)) {
         duplicates++;
         continue;
       }
 
-      const id = createLocalImageId();
       const url = URL.createObjectURL(file);
       ownedByKey.current.set(key, { id, url });
       keyById.current.set(id, key);
@@ -159,7 +196,7 @@ export function Gallery({ initialImages = [], defaultView = 'grid' }: GalleryPro
             return item.getFile();
           })
         );
-        if (mounted.current) addFiles(files);
+        if (mounted.current) await addFiles(files);
       } catch {
         if (mounted.current) setError('We couldn’t read these images. Please try again.');
       }
@@ -177,12 +214,21 @@ export function Gallery({ initialImages = [], defaultView = 'grid' }: GalleryPro
   }, []);
 
   const handleRetryImage = useCallback(function handleRetryImage(image: ImageItem) {
-    setImages(function markImageReady(previous) {
+    setImages(function markImageLoading(previous) {
       return previous.map(function updateImage(item) {
-        return item.id === image.id ? { ...item, status: 'ready', errorMessage: undefined } : item;
+        return item.id === image.id ? { ...item, status: 'loading', errorMessage: undefined } : item;
       });
     });
     setNotice(`${image.name} is retrying.`);
+  }, []);
+
+  const handleImageLoad = useCallback(function handleImageLoad(id: string) {
+    setImages(function markImageReady(previous) {
+      return previous.map(function updateImage(item) {
+        return item.id === id ? { ...item, status: 'ready', errorMessage: undefined } : item;
+      });
+    });
+    setNotice('Image is ready to view.');
   }, []);
 
   const handleImageLoadError = useCallback(function handleImageLoadError(id: string) {
@@ -195,6 +241,7 @@ export function Gallery({ initialImages = [], defaultView = 'grid' }: GalleryPro
         return item.id === id ? { ...item, status: 'error', errorMessage: `Couldn’t load ${item.name}.` } : item;
       });
     });
+    setNotice('Image failed to load.');
   }, []);
 
   const handleCloseViewer = useCallback(function handleCloseViewer() {
@@ -251,6 +298,7 @@ export function Gallery({ initialImages = [], defaultView = 'grid' }: GalleryPro
                   onRemove={removeImage}
                   onRetry={handleRetryImage}
                   onLoadError={handleImageLoadError}
+                  onLoadSuccess={handleImageLoad}
                 />
               ) : (
                 <GridView
@@ -259,6 +307,7 @@ export function Gallery({ initialImages = [], defaultView = 'grid' }: GalleryPro
                   onRemove={removeImage}
                   onRetry={handleRetryImage}
                   onLoadError={handleImageLoadError}
+                  onLoadSuccess={handleImageLoad}
                 />
               )}
             </Box>
@@ -270,6 +319,7 @@ export function Gallery({ initialImages = [], defaultView = 'grid' }: GalleryPro
       addFiles,
       error,
       handleImageLoadError,
+      handleImageLoad,
       handleOpenImage,
       handleRetryImage,
       handleViewChange,
@@ -288,15 +338,34 @@ export function Gallery({ initialImages = [], defaultView = 'grid' }: GalleryPro
         alignItems="stretch"
         justifyContent="start"
         className={styles.dropZone}
+        style={getDropZoneStyle}
         isDisabled={activeId !== null}
         getDropOperation={handleDropOperation}
         onDrop={handleDrop}
       >
-        {renderDropZone}
+        {function renderGalleryDropZone(props) {
+          return (
+            <>
+              {renderDropZone(props)}
+              {props.isDropTarget ? (
+                <Flex
+                  alignItems="center"
+                  justifyContent="center"
+                  role="status"
+                  aria-live="polite"
+                  data-drop-overlay
+                  className={styles.dropOverlay}
+                >
+                  <Text as="strong">Drop files to upload.</Text>
+                </Flex>
+              ) : null}
+            </>
+          );
+        }}
       </DropZone>
       <Viewer
         images={images.filter(function filterViewableImage(image) {
-          return image.status !== 'error';
+          return image.status !== 'error' && image.status !== 'loading';
         })}
         activeId={activeId}
         onClose={handleCloseViewer}

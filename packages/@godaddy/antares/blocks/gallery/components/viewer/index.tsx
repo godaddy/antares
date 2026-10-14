@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useRef, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Button, Carousel, CloseButton, Content, Flex, Heading, Icon, Modal, Text } from '@godaddy/antares';
-import { GalleryImage } from '../image/index.tsx';
-import type { ImageItem } from '../../data/types.ts';
+import { GalleryImage } from '../image';
+import type { ImageItem } from '../../data/types';
 import styles from './index.module.css';
 
 type PropagatingKeyboardEvent<T extends Element> = ReactKeyboardEvent<T> & {
@@ -157,7 +157,9 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
           {images.map(renderSlide)}
         </Carousel>
         <Flex justifyContent="space-between" alignItems="center" gap="sm" wrap="wrap">
-          <Text className={styles.name}>{image.name}</Text>
+          <Text className={styles.name} role="status" aria-live="polite" aria-atomic="true">
+            {image.name}
+          </Text>
           <Flex gap="xs" alignItems="center">
             <Button
               ref={previousButton}

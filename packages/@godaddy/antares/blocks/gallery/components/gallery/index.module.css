@@ -3,6 +3,16 @@
   min-inline-size: 0;
 }
 
+.dropOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: 1.5px dashed var(--ux-187j9dd, #00a4a6);
+  border-radius: var(--ux-2jubes, 16px);
+  background: rgba(216, 239, 239, 0.9);
+  pointer-events: none;
+}
+
 .dropZone {
   inline-size: 100%;
   border: 0;

@@ -16,7 +16,7 @@ interface ViewBannerProps {
   onShowAll: () => void;
 }
 
-/** Counter and upload-error feedback used below the Figma list layouts. */
+/** Counter and image-error feedback used below the Figma list layouts. */
 export function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: ViewBannerProps) {
   const hasMore = visibleCount < totalCount;
   if (!hasMore && errorCount === 0) return null;
@@ -38,7 +38,7 @@ export function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: 
         <Flex justifyContent="center" alignItems="center" gap="xs" role="alert" aria-live="assertive">
           <Icon icon="alert" aria-hidden="true" />
           <Text emphasis="critical">
-            {errorCount} file{errorCount === 1 ? '' : 's'} upload failed.
+            {errorCount} file{errorCount === 1 ? ' needs' : 's need'} attention.
           </Text>
         </Flex>
       ) : null}

@@ -1,21 +1,46 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { userEvent } from 'vitest/browser';
+import { cdp, userEvent } from 'vitest/browser';
 import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
 import { Gallery, type ImageItem } from '../index.tsx';
 import { GalleryImage } from '../components/image/index.tsx';
-import { sampleImages } from '../data/sample-images.ts';
 
 const pixel = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZ1EAAAAASUVORK5CYII=';
 const samples: ImageItem[] = [
   { id: 'one', name: 'one.png', src: `data:image/png;base64,${pixel}` },
   { id: 'two', name: 'two.png', src: `data:image/png;base64,${pixel}` }
 ];
+const browserSamples: ImageItem[] = [
+  ...Array.from({ length: 10 }, function createSample(_, index) {
+    return {
+      id: `sample-${index}`,
+      name: index === 0 ? 'file_name.png' : `Photo_${index + 1}.png`,
+      src: `data:image/png;base64,${pixel}`,
+      size: (index + 2) * 1024 * 1024
+    };
+  }),
+  {
+    id: 'sample-error',
+    name: 'Photo_error.png',
+    src: `data:image/png;base64,${pixel}`,
+    size: 5 * 1024 * 1024,
+    status: 'error',
+    errorMessage: 'Couldn’t load Photo_error.png.'
+  }
+];
 
 function png(name = 'local.png') {
   const bytes = Uint8Array.from(atob(pixel), function byte(value) {
     return value.charCodeAt(0);
   });
+  return new File([bytes], name, { type: 'image/png', lastModified: 1 });
+}
+
+function differentPng(name = 'local.png') {
+  const bytes = Uint8Array.from(atob(pixel), function byte(value) {
+    return value.charCodeAt(0);
+  });
+  bytes[bytes.length - 1] ^= 1;
   return new File([bytes], name, { type: 'image/png', lastModified: 1 });
 }
 
@@ -43,6 +68,22 @@ function drag(element: Element, type: string, dataTransfer: DataTransfer) {
   element.dispatchEvent(new DragEvent(type, { bubbles: true, cancelable: true, dataTransfer }));
 }
 
+async function simulateFileDragEnter(element: HTMLElement): Promise<void> {
+  const session = cdp();
+  const elementRect = element.getBoundingClientRect();
+  const frameRect = (window.frameElement as HTMLElement)?.getBoundingClientRect() ?? { left: 0, top: 0 };
+  await (session as unknown as { send: (method: string, params: unknown) => Promise<void> }).send(
+    'Input.dispatchDragEvent',
+    {
+      type: 'dragEnter',
+      x: frameRect.left + elementRect.left + elementRect.width / 2,
+      y: frameRect.top + elementRect.top + elementRect.height / 2,
+      data: { items: [{ mimeType: 'image/png', data: '' }], dragOperationsMask: 15 },
+      modifiers: 0
+    }
+  );
+}
+
 beforeAll(preloadTestIcons);
 beforeEach(function syntheticFileEntries() {
   vi.spyOn(DataTransferItem.prototype, 'webkitGetAsEntry').mockImplementation(function fileEntry() {
@@ -56,7 +97,7 @@ afterEach(function restore() {
 describe('@godaddy/antares', function packageTests() {
   describe('#Gallery', function galleryTests() {
     it('shows an active sample gallery and available upload and view controls', async function defaultGallery() {
-      const screen = await render(<Gallery initialImages={sampleImages} />);
+      const screen = await render(<Gallery initialImages={browserSamples} />);
 
       await expect.element(screen.getByText('11 images', { exact: true })).toBeVisible();
       await expect.element(screen.getByRole('button', { name: 'Add files', exact: true })).toBeEnabled();
@@ -70,6 +111,24 @@ describe('@godaddy/antares', function packageTests() {
 
       await expect.element(screen.getByText('0 images', { exact: true })).toBeVisible();
       await expect.element(screen.getByRole('region', { name: 'Empty gallery' })).toBeVisible();
+    });
+
+    it('shows the active drop styling while a file is dragged over the gallery', async function activeDropTarget() {
+      const screen = await render(<Gallery initialImages={samples} />);
+      const dropZone = screen.container.querySelector<HTMLElement>('[data-rac]');
+      if (!dropZone) throw new Error('Expected the gallery DropZone');
+
+      await simulateFileDragEnter(dropZone);
+
+      await expect.element(screen.getByText('Drop files to upload.')).toBeVisible();
+      await expect.element(dropZone).toHaveAttribute('data-drop-target', 'true');
+      expect(dropZone.style.background).toBe('rgba(216, 239, 239, 0.9)');
+      expect(dropZone.style.borderTopStyle).toBe('dashed');
+
+      const overlay = screen.container.querySelector<HTMLElement>('[data-drop-overlay]');
+      if (!overlay) throw new Error('Expected the active drop overlay');
+      expect(getComputedStyle(overlay).position).toBe('absolute');
+      expect(getComputedStyle(overlay).zIndex).toBe('1');
     });
 
     it('keeps the error card height stable while showing its message', async function stableErrorCard() {
@@ -123,6 +182,7 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('restores the image size after retrying an error item', async function retryPreservesMetadata() {
+      vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
       const screen = await render(
         <Gallery
           initialImages={[
@@ -139,10 +199,14 @@ describe('@godaddy/antares', function packageTests() {
       );
 
       await userEvent.click(screen.getByRole('button', { name: 'Retry failed.png' }));
-      await expect.element(screen.getByRole('button', { name: 'Open failed.png' })).toBeVisible();
       await expect.element(screen.getByText('5 MiB', { exact: true })).toBeVisible();
-      await expect.element(screen.getByRole('status')).toHaveTextContent('failed.png is retrying.');
-      await expect.element(screen.getByRole('status')).not.toHaveTextContent('is ready to view');
+
+      const image = screen.container.querySelector<HTMLImageElement>('img');
+      if (!image) throw new Error('Expected the retried gallery image');
+      image.dispatchEvent(new Event('load'));
+
+      await expect.element(screen.getByRole('button', { name: 'Open failed.png' })).toBeVisible();
+      await expect.element(screen.getByRole('status')).toHaveTextContent('Image is ready to view.');
     });
 
     it('formats image sizes with fractional MiB precision', async function fractionalSizes() {
@@ -171,7 +235,7 @@ describe('@godaddy/antares', function packageTests() {
 
       function expectCenteredIcon() {
         const surface = screen.container.querySelector<HTMLElement>(
-          '[role="img"][aria-label="failed.png failed to upload"]'
+          '[role="img"][aria-label="failed.png: Couldn’t load failed.png."]'
         );
         const icon = surface?.querySelector<SVGElement>('svg');
         if (!surface || !icon) throw new Error('Expected the error surface and icon');
@@ -195,7 +259,18 @@ describe('@godaddy/antares', function packageTests() {
       image.dispatchEvent(new Event('error'));
 
       await expect.element(screen.getByRole('button', { name: 'Retry one.png' })).toBeVisible();
-      await expect.element(screen.getByRole('alert')).toHaveTextContent('1 file upload failed.');
+      await expect.element(screen.getByRole('alert')).toHaveTextContent('1 file needs attention.');
+    });
+
+    it('announces grid image failures without relying on the list banner', async function gridImageLoadError() {
+      const screen = await render(<Gallery initialImages={samples} />);
+      const image = screen.container.querySelector('img');
+
+      if (!image) throw new Error('Expected a gallery image');
+      image.dispatchEvent(new Event('error'));
+
+      await expect.element(screen.getByRole('alert')).toHaveTextContent('Couldn’t load one.png.');
+      await expect.element(screen.getByRole('button', { name: 'Retry one.png' })).toBeVisible();
     });
 
     it('switches views without losing the collection and supports keyboard selection', async function views() {
@@ -245,6 +320,14 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('button', { name: 'Open local.png' })).toBeVisible();
     });
 
+    it('keeps distinct files with matching metadata', async function metadataCollision() {
+      const screen = await render(<Gallery initialImages={[]} />);
+      selectFiles(screen.container, [png(), differentPng()]);
+
+      await expect.element(screen.getByText('2 images', { exact: true })).toBeVisible();
+      expect(screen.getByRole('button', { name: 'Remove local.png' }).all()).toHaveLength(2);
+    });
+
     it('releases only owned URLs on unmount', async function cleanup() {
       const create = vi.spyOn(URL, 'createObjectURL');
       const revoke = vi.spyOn(URL, 'revokeObjectURL');
@@ -277,11 +360,11 @@ describe('@godaddy/antares', function packageTests() {
       for (const [index, target] of targets.entries()) {
         const data = transfer([png(`drop-${index}.png`)]);
         drag(target, 'dragenter', data);
-        await expect.element(screen.getByText('Drop Files to upload.')).toBeVisible();
+        await expect.element(screen.getByText('Drop files to upload.')).toBeVisible();
         drag(target, 'dragover', data);
         drag(target, 'drop', data);
         await expect.element(screen.getByRole('button', { name: `Open drop-${index}.png` })).toBeVisible();
-        await expect.element(screen.getByText('Drop Files to upload.')).not.toBeInTheDocument();
+        await expect.element(screen.getByText('Drop files to upload.')).not.toBeInTheDocument();
       }
       expect(screen.getByRole('button', { name: /^Remove / }).all()).toHaveLength(5);
     });
@@ -292,12 +375,12 @@ describe('@godaddy/antares', function packageTests() {
       const card = screen.getByRole('button', { name: 'Open one.png' }).element();
       const data = transfer([png()]);
       drag(heading, 'dragenter', data);
-      await expect.element(screen.getByText('Drop Files to upload.')).toBeVisible();
+      await expect.element(screen.getByText('Drop files to upload.')).toBeVisible();
       drag(card, 'dragenter', data);
       drag(heading, 'dragleave', data);
-      await expect.element(screen.getByText('Drop Files to upload.')).toBeVisible();
+      await expect.element(screen.getByText('Drop files to upload.')).toBeVisible();
       drag(card, 'dragleave', data);
-      await expect.element(screen.getByText('Drop Files to upload.')).not.toBeInTheDocument();
+      await expect.element(screen.getByText('Drop files to upload.')).not.toBeInTheDocument();
       expect(screen.getByRole('button', { name: /^Remove / }).all()).toHaveLength(2);
     });
 
@@ -306,7 +389,7 @@ describe('@godaddy/antares', function packageTests() {
       const heading = screen.getByRole('heading', { name: 'Gallery', exact: true }).element();
       const unsupported = transfer([new File(['text'], 'notes.txt', { type: 'text/plain' })]);
       drag(heading, 'dragenter', unsupported);
-      await expect.element(screen.getByText('Drop Files to upload.')).not.toBeInTheDocument();
+      await expect.element(screen.getByText('Drop files to upload.')).not.toBeInTheDocument();
       drag(heading, 'dragleave', unsupported);
       const data = transfer([png()]);
       drag(document.body, 'dragenter', data);
@@ -337,6 +420,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect
         .element(dialog.getByRole('button', { name: 'View two.png' }))
         .toHaveAttribute('aria-current', 'true');
+      await expect.element(dialog.getByRole('status')).toHaveTextContent('two.png');
       await userEvent.keyboard('{ArrowLeft}');
       await expect
         .element(dialog.getByRole('button', { name: 'View one.png' }))
@@ -403,6 +487,26 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('img', { name: 'one.png' })).toBeVisible();
       await expect.element(screen.getByText('Loading image…')).not.toBeInTheDocument();
       await expect.element(screen.getByRole('button', { name: 'Retry one.png' })).not.toBeInTheDocument();
+    });
+
+    it('reports a cached image failure to the owning gallery', async function cachedImageFailure() {
+      vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(true);
+      vi.spyOn(HTMLImageElement.prototype, 'naturalWidth', 'get').mockReturnValue(0);
+      const screen = await render(<Gallery initialImages={[samples[0]]} />);
+
+      await expect.element(screen.getByRole('alert')).toHaveTextContent('Couldn’t load one.png.');
+      await expect.element(screen.getByRole('button', { name: 'Retry one.png' })).toBeVisible();
+      expect(screen.getByRole('button', { name: 'Open one.png' }).all()).toHaveLength(0);
+    });
+
+    it('keeps failed viewer thumbnails compact and avoids repeated alerts', async function failedThumbnail() {
+      const screen = await render(<GalleryImage image={samples[0]} variant="thumbnail" />);
+      const image = screen.getByRole('img', { name: 'one.png' });
+      image.element().dispatchEvent(new Event('error'));
+
+      await expect.element(screen.getByRole('img', { name: 'one.png failed to load' })).toBeVisible();
+      expect(screen.getByRole('alert').all()).toHaveLength(0);
+      expect(screen.container.querySelector('[data-variant="thumbnail"]')).toBeTruthy();
     });
 
     it('retries an actual image error and restores the loaded image', async function retry() {

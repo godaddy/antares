@@ -1,8 +1,8 @@
 'use client';
 
 import { Box, Button, Card, CornerActions, Detail, Flex, Icon, Text } from '@godaddy/antares';
-import { FileCover, type FileCoverVariant } from '../file-cover/index.tsx';
-import type { ImageItem } from '../../data/types.ts';
+import { FileCover, type FileCoverVariant } from '../file-cover';
+import type { ImageItem } from '../../data/types';
 import styles from './index.module.css';
 
 export interface FileItemProps {
@@ -23,15 +23,20 @@ export interface FileItemProps {
 
   /** Reports an image decode or network failure. */
   onLoadError: (id: string) => void;
+
+  /** Reports a successful image load. */
+  onLoadSuccess: (id: string) => void;
 }
 
 const fileSizeFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
 /** One file item with the same actions and states across list and grid views. */
-export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadError }: FileItemProps) {
+export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadError, onLoadSuccess }: FileItemProps) {
   const size =
     image.size === undefined ? 'Sample image' : `${fileSizeFormatter.format(image.size / (1024 * 1024))} MiB`;
   const isError = image.status === 'error';
+  const isLoading = image.status === 'loading';
+  const canOpen = !isError && !isLoading;
 
   return (
     <Box as="li" className={styles.item}>
@@ -44,7 +49,13 @@ export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadErro
         data-variant={variant}
       >
         <Box flex={variant === 'horizontal' ? '0 0 3.5rem' : undefined}>
-          <FileCover image={image} variant={variant} onOpen={isError ? undefined : onOpen} onLoadError={onLoadError} />
+          <FileCover
+            image={image}
+            variant={variant}
+            onOpen={canOpen ? onOpen : undefined}
+            onLoadError={onLoadError}
+            onLoadSuccess={isLoading ? onLoadSuccess : undefined}
+          />
         </Box>
 
         <Flex
@@ -65,9 +76,10 @@ export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadErro
               alignItems={variant === 'horizontal' ? 'center' : 'start'}
               wrap={variant === 'horizontal' ? 'nowrap' : undefined}
               className={styles.errorDetails}
+              role={variant === 'vertical' ? 'alert' : undefined}
             >
               <Detail emphasis="critical" maxLines={1}>
-                {image.errorMessage ?? 'File upload failed.'}
+                {image.errorMessage ?? 'File needs attention.'}
               </Detail>
               <Button variant="inline" size="sm" aria-label={`Retry ${image.name}`} onPress={() => onRetry(image)}>
                 <Icon icon="refresh" aria-hidden="true" />
@@ -75,7 +87,7 @@ export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadErro
               </Button>
             </Flex>
           ) : (
-            <Detail>{size}</Detail>
+            <Detail>{isLoading ? 'Loading image…' : size}</Detail>
           )}
         </Flex>
 

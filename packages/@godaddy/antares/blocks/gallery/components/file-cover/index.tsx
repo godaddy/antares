@@ -1,8 +1,9 @@
 'use client';
 
+import { useCallback } from 'react';
 import { Flex, Icon } from '@godaddy/antares';
-import type { ImageItem } from '../../data/types.ts';
-import { ImageSurface, useImageLoadState } from '../image/image-surface.tsx';
+import type { ImageItem } from '../../data/types';
+import { ImageSurface, useImageLoadState } from '../image/image-surface';
 import styles from './index.module.css';
 
 /** Cover geometry used by Gallery's list and grid presentations. */
@@ -20,13 +21,19 @@ interface FileCoverProps {
 
   /** Reports an image decode or network failure to the owning gallery. */
   onLoadError?: (id: string) => void;
+
+  /** Reports a successful retry to the owning gallery. */
+  onLoadSuccess?: (id: string) => void;
 }
 
 /** A small, reusable image/error surface shared by every Gallery presentation. */
-export function FileCover({ image, variant, onOpen, onLoadError }: FileCoverProps) {
+export function FileCover({ image, variant, onOpen, onLoadError, onLoadSuccess }: FileCoverProps) {
+  const reportLoadError = useCallback(() => onLoadError?.(image.id), [image.id, onLoadError]);
+  const reportLoadSuccess = useCallback(() => onLoadSuccess?.(image.id), [image.id, onLoadSuccess]);
   const { state, imageRef, onLoad, onError } = useImageLoadState(image.src, {
     resetKey: `${image.id}:${image.status ?? ''}`,
-    onError: onLoadError ? () => onLoadError(image.id) : undefined
+    onLoad: onLoadSuccess ? reportLoadSuccess : undefined,
+    onError: reportLoadError
   });
   const hasError = image.status === 'error' || state === 'error';
 
@@ -36,7 +43,7 @@ export function FileCover({ image, variant, onOpen, onLoadError }: FileCoverProp
         alignItems="center"
         justifyContent="center"
         role="img"
-        aria-label={`${image.name} failed to upload`}
+        aria-label={`${image.name}: ${image.errorMessage ?? 'File needs attention.'}`}
         rounding="md"
         className={`${styles.surface} ${styles.error}`}
         data-variant={variant}

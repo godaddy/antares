@@ -1,2 +1,2 @@
-export { Gallery, type GalleryProps } from './components/gallery/index.tsx';
-export type { ImageItem, ImageStatus } from './data/types.ts';
+export { Gallery, type GalleryProps } from './components/gallery';
+export type { ImageItem, ImageStatus } from './data/types';
