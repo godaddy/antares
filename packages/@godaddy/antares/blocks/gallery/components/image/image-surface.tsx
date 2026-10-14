@@ -26,7 +26,16 @@ export function useImageLoadState(
   const [state, setState] = useState<ImageLoadState>('loading');
   const reportedErrorKey = useRef<string | null>(null);
   const reportedLoadKey = useRef<string | null>(null);
-  const loadKey = `${src}:${resetKey}:${attempt}`;
+  const resourceKey = JSON.stringify([src, resetKey]);
+  const previousResourceKey = useRef(resourceKey);
+
+  if (previousResourceKey.current !== resourceKey) {
+    previousResourceKey.current = resourceKey;
+    reportedErrorKey.current = null;
+    reportedLoadKey.current = null;
+  }
+
+  const loadKey = `${resourceKey}:${attempt}`;
 
   const reportLoadOnce = useCallback(
     function reportLoadedResource() {

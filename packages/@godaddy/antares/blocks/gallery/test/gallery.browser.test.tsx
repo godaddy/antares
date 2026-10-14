@@ -209,6 +209,35 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('status')).toHaveTextContent('Image is ready to view.');
     });
 
+    it('keeps retry available after repeated image failures', async function repeatedRetry() {
+      vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
+      const screen = await render(
+        <Gallery
+          initialImages={[
+            {
+              id: 'failed',
+              name: 'failed.png',
+              src: `data:image/png;base64,${pixel}`,
+              status: 'error',
+              errorMessage: 'Couldn’t load failed.png.'
+            }
+          ]}
+        />
+      );
+
+      await userEvent.click(screen.getByRole('button', { name: 'Retry failed.png' }));
+      let image = screen.container.querySelector<HTMLImageElement>('img');
+      if (!image) throw new Error('Expected the first retried gallery image');
+      image.dispatchEvent(new Event('error'));
+      await expect.element(screen.getByRole('button', { name: 'Retry failed.png' })).toBeVisible();
+
+      await userEvent.click(screen.getByRole('button', { name: 'Retry failed.png' }));
+      image = screen.container.querySelector<HTMLImageElement>('img');
+      if (!image) throw new Error('Expected the second retried gallery image');
+      image.dispatchEvent(new Event('error'));
+      await expect.element(screen.getByRole('button', { name: 'Retry failed.png' })).toBeVisible();
+    });
+
     it('formats image sizes with fractional MiB precision', async function fractionalSizes() {
       const screen = await render(
         <Gallery
