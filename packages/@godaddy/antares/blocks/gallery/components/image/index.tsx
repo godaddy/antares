@@ -40,7 +40,7 @@ export function GalleryImage({
 
   if (state === 'error') {
     if (variant === 'thumbnail') {
-      return (
+      const errorSurface = (
         <Flex
           className={`${styles.image} ${styles.errorSurface}`}
           data-variant={variant}
@@ -49,6 +49,20 @@ export function GalleryImage({
         >
           <Icon icon="alert" aria-hidden="true" />
         </Flex>
+      );
+
+      if (!onOpen) return errorSurface;
+
+      return (
+        <Button
+          variant={selected ? 'secondary' : 'minimal'}
+          aria-label={label ?? `View ${image.name}`}
+          aria-current={selected ? 'true' : undefined}
+          onPress={() => onOpen(image.id)}
+          className={styles.openButton}
+        >
+          {errorSurface}
+        </Button>
       );
     }
 

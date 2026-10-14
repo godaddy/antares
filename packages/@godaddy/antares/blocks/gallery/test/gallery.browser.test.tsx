@@ -333,7 +333,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('button', { name: 'Open local.png' })).toBeVisible();
     });
 
-    it('limits concurrent duplicate hashing', async function boundedHashing() {
+    it('hashes files serially to bound duplicate hashing memory', async function boundedHashing() {
       let active = 0;
       let peak = 0;
       vi.spyOn(globalThis.crypto.subtle, 'digest').mockImplementation(async function digestFile() {
@@ -356,7 +356,7 @@ describe('@godaddy/antares', function packageTests() {
 
       await expect.element(screen.getByText('5 images', { exact: true })).toBeVisible();
       expect(peak).toBeGreaterThan(0);
-      expect(peak).toBeLessThanOrEqual(4);
+      expect(peak).toBe(1);
     });
 
     it('keeps distinct files with matching metadata', async function metadataCollision() {
@@ -563,13 +563,29 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('keeps failed viewer thumbnails compact and avoids repeated alerts', async function failedThumbnail() {
-      const screen = await render(<GalleryImage image={samples[0]} variant="thumbnail" />);
-      const image = screen.getByRole('img', { name: 'one.png' });
-      image.element().dispatchEvent(new Event('error'));
+      let openedId = '';
+      const screen = await render(
+        <GalleryImage
+          image={samples[0]}
+          variant="thumbnail"
+          selected
+          label="View one.png"
+          onOpen={function openImage(id) {
+            openedId = id;
+          }}
+        />
+      );
+      const image = screen.container.querySelector<HTMLImageElement>('img[data-variant="thumbnail"]');
+      if (!image) throw new Error('Expected the thumbnail image');
+      image.dispatchEvent(new Event('error'));
 
       await expect.element(screen.getByRole('img', { name: 'one.png failed to load' })).toBeVisible();
       expect(screen.getByRole('alert').all()).toHaveLength(0);
       expect(screen.container.querySelector('[data-variant="thumbnail"]')).toBeTruthy();
+      const thumbnail = screen.getByRole('button', { name: 'View one.png' });
+      await expect.element(thumbnail).toHaveAttribute('aria-current', 'true');
+      await userEvent.click(thumbnail);
+      expect(openedId).toBe('one');
     });
 
     it('retries an actual image error and restores the loaded image', async function retry() {
