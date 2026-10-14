@@ -24,7 +24,7 @@ export function AppointmentsPromotionCard() {
           <Box className={styles.mediaCardImage} flex="0 1 11rem">
             <Image
               src={appointmentsImage}
-              alt="Illustration for online appointments"
+              alt=""
               width={176}
               height={112}
               loading="lazy"

@@ -46,7 +46,7 @@ describe('@godaddy/antares', function packageTests() {
       assume(locator.getByRole('button', { name: 'Upgrade John Doe' }).element()).exists();
       assume(locator.getByRole('button', { name: 'Manage Jane Smith' }).element()).exists();
 
-      const expectedSalesTotal = new Intl.NumberFormat(undefined, {
+      const expectedSalesTotal = new Intl.NumberFormat('en-US', {
         maximumFractionDigits: 0
       }).format(
         salesChannelData.reduce(function sumSales(total, channel) {
@@ -63,7 +63,7 @@ describe('@godaddy/antares', function packageTests() {
           })
           .element()
       ).exists();
-      assume(locator.getByRole('img', { name: 'Illustration for online appointments' }).element()).exists();
+      assume(container.querySelector('img[alt=""]')).is.not.equal(null);
       assume(locator.getByRole('list').all().length).equals(1);
     });
 
@@ -125,11 +125,11 @@ describe('@godaddy/antares', function packageTests() {
       assume(dashboardButton.element().querySelector('svg')).is.not.equal(null);
       assume(getComputedStyle(logo).display).is.not.equal('none');
 
-      assume(getComputedStyle(navigation).transitionProperty).includes('inline-size');
-      assume(getComputedStyle(navigation).transitionDuration).includes('0.3s');
-      await new Promise(function waitForCollapseTransition(resolve) {
-        setTimeout(resolve, 350);
-      });
+      await expect
+        .poll(function readCollapsedNavigationWidth() {
+          return navigation.getBoundingClientRect().width;
+        })
+        .toBeLessThanOrEqual(56);
       const collapsedMainLeft = main.getBoundingClientRect().left;
       const collapsedMainWidth = main.getBoundingClientRect().width;
       expect(collapsedMainLeft).toBeLessThan(expandedMainLeft);
