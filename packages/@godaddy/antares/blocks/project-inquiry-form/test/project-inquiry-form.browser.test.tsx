@@ -336,7 +336,7 @@ describe('@godaddy/antares', function packageTests() {
 
       await expect
         .element(screen.getByRole('alert'))
-        .toHaveTextContent('Use up to 10 files with a combined size under 256 MiB.');
+        .toHaveTextContent('Use up to 10 files with a combined size of 256 MiB or less.');
 
       await userEvent.click(screen.getByRole('button', { name: 'Remove brief-0.pdf' }));
       await expect.element(screen.getByRole('alert')).not.toBeInTheDocument();

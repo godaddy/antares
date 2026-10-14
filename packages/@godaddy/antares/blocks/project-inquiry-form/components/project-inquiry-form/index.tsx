@@ -16,11 +16,11 @@ import {
   isFileDropItem
 } from '@godaddy/antares';
 import type { CalendarDate } from '@godaddy/antares/date';
-import { DropOverlay } from '../drop-overlay/index.tsx';
-import { AttachedFiles } from '../attached-files/index.tsx';
-import { Benefits } from '../benefits/index.tsx';
-import { type FieldName, Fields } from '../fields/index.tsx';
-import { fileKey, isAcceptedFile, MAX_FILE_COUNT, MAX_TOTAL_FILE_SIZE } from '../../data/files.ts';
+import { DropOverlay } from '../drop-overlay';
+import { AttachedFiles } from '../attached-files';
+import { Benefits } from '../benefits';
+import { type FieldName, Fields } from '../fields';
+import { fileKey, isAcceptedFile, MAX_FILE_COUNT, MAX_TOTAL_FILE_SIZE } from '../../data/files';
 import styles from './index.module.css';
 
 const initialValues: Record<FieldName, string> = { fullName: '', email: '', phone: '' };
@@ -32,7 +32,7 @@ const heroImage = {
 };
 
 const fileFormatError = 'Use PDF, JPG, GIF, or PNG files smaller than 256 MiB.';
-const fileLimitError = 'Use up to 10 files with a combined size under 256 MiB.';
+const fileLimitError = 'Use up to 10 files with a combined size of 256 MiB or less.';
 
 interface AttachmentState {
   files: File[];

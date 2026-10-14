@@ -2,8 +2,8 @@
 
 import { useCallback, useId, useRef } from 'react';
 import { Button, Detail, FileTrigger, Flex, Icon, Text } from '@godaddy/antares';
-import { ACCEPTED_FILE_TYPES, fileKey, formatFileSize } from '../../data/files.ts';
-import { FilePreview } from '../file-preview/index.tsx';
+import { ACCEPTED_FILE_TYPES, fileKey, formatFileSize } from '../../data/files';
+import { FilePreview } from '../file-preview';
 import styles from './index.module.css';
 
 interface AttachedFilesProps {
