@@ -56,7 +56,13 @@ describe('@godaddy/antares', function packageTests() {
       assume(locator.getByText(expectedSalesTotal).element()).exists();
       assume(locator.getByText('USD').element()).exists();
 
-      assume(locator.getByRole('img', { name: 'Sales by sales channels donut chart' }).element()).exists();
+      assume(
+        locator
+          .getByRole('img', {
+            name: 'Sales by sales channels donut chart. Shopify: $400. Facebook Marketplace: $300. Instagram: $200. Other: $100'
+          })
+          .element()
+      ).exists();
       assume(locator.getByRole('img', { name: 'Illustration for online appointments' }).element()).exists();
       assume(locator.getByRole('list').all().length).equals(1);
     });
@@ -96,7 +102,9 @@ describe('@godaddy/antares', function packageTests() {
       const main = container.querySelector('[class*="dashboardMain"]') as HTMLElement;
       const logo = container.querySelector('[class*="sideNavigationLogo"]') as HTMLElement;
       const dashboardButton = locator.getByRole('button', { name: 'Dashboard' });
-      await expect.element(locator.getByRole('button', { name: 'Collapse navigation' })).toBeVisible();
+      const collapseButton = locator.getByRole('button', { name: 'Collapse navigation' });
+      await expect.element(collapseButton).toBeVisible();
+      await expect.element(collapseButton).not.toHaveAttribute('aria-pressed');
       await expect.element(dashboardButton).not.toHaveAttribute('aria-label');
       assume(dashboardButton.element().querySelector('svg')).is.not.equal(null);
       assume(getComputedStyle(logo).display).is.not.equal('none');
@@ -147,6 +155,9 @@ describe('@godaddy/antares', function packageTests() {
 
       await user.click(locator.getByRole('button', { name: 'Expand navigation' }));
       await expect.element(locator.getByRole('button', { name: 'Collapse navigation' })).toBeVisible();
+      await expect
+        .element(locator.getByRole('button', { name: 'Collapse navigation' }))
+        .not.toHaveAttribute('aria-pressed');
       expect(getComputedStyle(navigation).zIndex).toBe('1');
       await new Promise(function samplePinnedExpansion(resolve) {
         setTimeout(resolve, 100);
@@ -200,6 +211,12 @@ describe('@godaddy/antares', function packageTests() {
       const inlineNavigation = container.querySelector('[data-placement="left"]') as HTMLElement;
       assume(inlineNavigation).is.not.equal(null);
       assume(getComputedStyle(inlineNavigation).display).equals('none');
+      const compactHeader = container.querySelector('[class*="dashboardMain"] > [class*="navigation"]') as HTMLElement;
+      const compactActions = container.querySelector('[class*="navActions"]') as HTMLElement;
+      const compactUserRow = container.querySelector('[class*="userRow"]') as HTMLElement;
+      expect(compactHeader.style.gap).toBe('');
+      expect(compactActions.style.gap).toBe('');
+      expect(getComputedStyle(compactUserRow).alignItems).toBe('flex-start');
 
       await user.click(locator.getByRole('button', { name: 'Open navigation' }));
       const drawer = page.getByRole('dialog', { name: 'Product navigation' });

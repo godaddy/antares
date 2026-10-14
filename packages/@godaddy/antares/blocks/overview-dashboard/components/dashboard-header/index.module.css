@@ -9,6 +9,14 @@
   border-inline-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));
 }
 
+.navigation {
+  gap: var(--sp-lg);
+}
+
+.navActions {
+  gap: var(--sp-md);
+}
+
 @container (max-width: 40rem) {
   .mobileMenuButton,
   .mobileNavLogo,

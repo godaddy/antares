@@ -42,7 +42,6 @@ export function DashboardSidebarContent({
           variant="minimal"
           size="sm"
           aria-label={navigationToggleLabel}
-          aria-pressed={isMobileNavigation ? undefined : isPinnedOpen}
           onPress={onToggleCollapse}
         >
           <Icon icon={isPinnedOpen ? 'sidebar-collapse' : 'sidebar-expand'} aria-hidden="true" />

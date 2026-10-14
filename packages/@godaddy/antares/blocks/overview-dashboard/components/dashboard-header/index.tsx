@@ -9,7 +9,7 @@ interface DashboardHeaderProps {
 /** Renders the compact application header shown above the dashboard. */
 export function DashboardHeader({ onOpenNavigation }: DashboardHeaderProps) {
   return (
-    <Flex className={styles.navigation} justifyContent="space-between" alignItems="center" gap="lg" wrap="wrap">
+    <Flex className={styles.navigation} justifyContent="space-between" alignItems="center" wrap="wrap">
       <Flex alignItems="center" gap="lg">
         <Button
           className={styles.mobileMenuButton}
@@ -23,7 +23,7 @@ export function DashboardHeader({ onOpenNavigation }: DashboardHeaderProps) {
         <Icon className={styles.mobileNavLogo} icon="gd-the-go" aria-label="GoDaddy" />
       </Flex>
 
-      <Flex className={styles.navActions} alignItems="center" gap="md" wrap="wrap">
+      <Flex className={styles.navActions} alignItems="center" wrap="wrap">
         <Button className={styles.desktopNavAction} variant="minimal" size="sm" aria-label="Hire an Expert">
           Hire an Expert
         </Button>

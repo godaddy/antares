@@ -17,7 +17,7 @@
   transition: inline-size 300ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.sideNavigationContainer:where([data-pinned-open]) .sideNavigation {
+.sideNavigationContainer:where([data-pinned-open]) :where(.sideNavigation) {
   inline-size: var(--_max-size);
 }
 
@@ -30,7 +30,7 @@
     z-index: 1;
   }
 
-  .sideNavigationContainer:where(:hover):where(:not([data-pinned-open])) .sideNavigation {
+  .sideNavigationContainer:where(:hover):where(:not([data-pinned-open])) :where(.sideNavigation) {
     inline-size: var(--_max-size);
   }
 }

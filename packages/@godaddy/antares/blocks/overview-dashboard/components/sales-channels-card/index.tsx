@@ -2,13 +2,13 @@ import { Card, DonutChart, Flex, Heading } from '@godaddy/antares';
 import { salesChannelData } from '../../constants/config';
 import styles from './index.module.css';
 
-const currencyFormatter = new Intl.NumberFormat(undefined, {
+const currencyFormatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
   maximumFractionDigits: 0
 });
 
-const numberFormatter = new Intl.NumberFormat(undefined, {
+const numberFormatter = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 0
 });
 
@@ -24,6 +24,13 @@ const totalSales = salesChannelData.reduce(function sumSales(total, channel) {
   return total + channel.value;
 }, 0);
 
+const salesChannelAriaLabel = [
+  'Sales by sales channels donut chart',
+  ...salesChannelData.map(function describeChannel(channel) {
+    return `${channel.name}: ${formatCurrency(channel.value)}`;
+  })
+].join('. ');
+
 /** Demonstrates sales-channel performance with a responsive donut chart. */
 export function SalesChannelsCard() {
   return (
@@ -36,7 +43,7 @@ export function SalesChannelsCard() {
           subLabel="USD"
           legend="bottom"
           formatValue={formatCurrency}
-          aria-label="Sales by sales channels donut chart"
+          aria-label={salesChannelAriaLabel}
         />
       </Flex>
     </Card>

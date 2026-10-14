@@ -21,13 +21,7 @@ export function UsersCard() {
           {dashboardUsers.map(function renderUser(user, index) {
             return (
               <Box key={user.email}>
-                <Flex
-                  className={styles.userRow}
-                  justifyContent="space-between"
-                  alignItems="center"
-                  gap="lg"
-                  wrap="wrap"
-                >
+                <Flex className={styles.userRow} justifyContent="space-between" gap="lg" wrap="wrap">
                   <Flex direction="column" gap="xs">
                     <Flex alignItems="center" gap="sm" wrap="wrap">
                       <Text>{user.name}</Text>
