@@ -3,6 +3,7 @@ import { page, userEvent } from 'vitest/browser';
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { waitForSelector } from '#test/utils/wait-for-selector.ts';
+import { salesChannelData } from '../constants/config.ts';
 import { OverviewDashboard } from '../index.tsx';
 
 describe('@godaddy/antares', function packageTests() {
@@ -43,6 +44,16 @@ describe('@godaddy/antares', function packageTests() {
       assume(locator.getByRole('heading', { name: 'Conversations' }).element()).exists();
       assume(locator.getByText('Facebook Marketplace').element()).exists();
 
+      const expectedSalesTotal = new Intl.NumberFormat(undefined, {
+        maximumFractionDigits: 0
+      }).format(
+        salesChannelData.reduce(function sumSales(total, channel) {
+          return total + channel.value;
+        }, 0)
+      );
+      assume(locator.getByText(expectedSalesTotal).element()).exists();
+      assume(locator.getByText('USD').element()).exists();
+
       assume(locator.getByRole('img', { name: 'Sales by sales channels donut chart' }).element()).exists();
       assume(locator.getByRole('img', { name: 'Illustration for online appointments' }).element()).exists();
       assume(locator.getByRole('list').all().length).equals(1);
@@ -63,10 +74,10 @@ describe('@godaddy/antares', function packageTests() {
       await user.click(emailSecurity);
 
       await expect.element(overview).toBeVisible();
-      await expect.element(emailSecurity).toHaveAttribute('aria-current', 'page');
+      await expect.element(emailSecurity).toHaveAttribute('aria-pressed', 'true');
+      await expect.element(dashboard).toHaveAttribute('aria-pressed', 'false');
+      await expect.element(emailSecurity).not.toHaveAttribute('aria-current');
       await expect.element(dashboard).not.toHaveAttribute('aria-current');
-      await expect.element(emailSecurity).not.toHaveAttribute('aria-pressed');
-      await expect.element(dashboard).not.toHaveAttribute('aria-pressed');
       assume(locator.getByRole('button', { name: 'Admin' }).all().length).equals(0);
     });
 
