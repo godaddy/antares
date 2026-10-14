@@ -287,6 +287,19 @@ describe('@godaddy/antares', function packageTests() {
       expect(screen.getByRole('button', { name: /^Open / }).all()).toHaveLength(2);
     });
 
+    it('shows five list items before revealing the complete collection', async function listPagination() {
+      const screen = await render(<Gallery initialImages={browserSamples} defaultView="list" />);
+
+      await expect.element(screen.getByRole('status')).toHaveTextContent('5 of 11 files');
+      expect(screen.getByRole('listitem').all()).toHaveLength(5);
+      await expect.element(screen.getByRole('button', { name: 'Show all', exact: true })).toBeVisible();
+
+      await userEvent.click(screen.getByRole('button', { name: 'Show all', exact: true }));
+
+      await expect.element(screen.getByRole('status')).toHaveTextContent('11 of 11 files');
+      expect(screen.getByRole('listitem').all()).toHaveLength(11);
+    });
+
     it('opens the native picker with click, Enter, and Space', async function picker() {
       const screen = await render(<Gallery initialImages={[]} />);
       const click = vi.spyOn(input(screen.container), 'click').mockImplementation(function nativePicker() {
@@ -320,6 +333,32 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('button', { name: 'Open local.png' })).toBeVisible();
     });
 
+    it('limits concurrent duplicate hashing', async function boundedHashing() {
+      let active = 0;
+      let peak = 0;
+      vi.spyOn(globalThis.crypto.subtle, 'digest').mockImplementation(async function digestFile() {
+        active++;
+        peak = Math.max(peak, active);
+        await new Promise(function settle(resolve) {
+          setTimeout(resolve, 0);
+        });
+        active--;
+        return new ArrayBuffer(32);
+      });
+
+      const screen = await render(<Gallery initialImages={[]} />);
+      selectFiles(
+        screen.container,
+        Array.from({ length: 5 }, function createFile(_, index) {
+          return png(`batch-${index}.png`);
+        })
+      );
+
+      await expect.element(screen.getByText('5 images', { exact: true })).toBeVisible();
+      expect(peak).toBeGreaterThan(0);
+      expect(peak).toBeLessThanOrEqual(4);
+    });
+
     it('keeps distinct files with matching metadata', async function metadataCollision() {
       const screen = await render(<Gallery initialImages={[]} />);
       selectFiles(screen.container, [png(), differentPng()]);
@@ -336,6 +375,30 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('button', { name: 'Open local.png' })).toBeVisible();
       await screen.unmount();
       expect(revoke).toHaveBeenCalledExactlyOnceWith(create.mock.results[0].value);
+    });
+
+    it('does not create previews after unmount during hashing', async function cleanupDuringHashing() {
+      let resolveDigest: ((value: ArrayBuffer | PromiseLike<ArrayBuffer>) => void) | undefined;
+      const digest = vi.spyOn(globalThis.crypto.subtle, 'digest').mockImplementation(function delayedDigest() {
+        return new Promise(function waitForDigest(resolve) {
+          resolveDigest = resolve;
+        });
+      });
+      const create = vi.spyOn(URL, 'createObjectURL');
+      const screen = await render(<Gallery initialImages={[]} />);
+      selectFiles(screen.container, [png()]);
+
+      await vi.waitFor(function hashing() {
+        expect(digest).toHaveBeenCalledOnce();
+      });
+      await screen.unmount();
+      if (!resolveDigest) throw new Error('Expected the hashing promise to be pending');
+      resolveDigest(new ArrayBuffer(32));
+      await new Promise(function settle(resolve) {
+        setTimeout(resolve, 0);
+      });
+
+      expect(create).not.toHaveBeenCalled();
     });
 
     it('keeps valid files in a mixed batch and rejects unsupported types and the size boundary', async function validation() {

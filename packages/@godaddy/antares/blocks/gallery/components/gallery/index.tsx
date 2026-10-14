@@ -26,6 +26,7 @@ import styles from './index.module.css';
 
 const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 const maximumSize = 256 * 1024 * 1024;
+const fileHashConcurrency = 4;
 let localImageCounter = 0;
 
 /** Returns the singular or plural label matching a count. */
@@ -122,11 +123,19 @@ export function Gallery({ initialImages = [], defaultView = 'grid' }: GalleryPro
       validFiles.push(file);
     }
 
-    const keyedFiles = await Promise.all(
-      validFiles.map(async function identifyFile(file) {
-        return { file, contentKey: await getFileContentKey(file) };
-      })
-    );
+    const keyedFiles: { file: File; contentKey: string | null }[] = [];
+    for (let index = 0; index < validFiles.length; index += fileHashConcurrency) {
+      const batch = validFiles.slice(index, index + fileHashConcurrency);
+      const keyedBatch = await Promise.all(
+        batch.map(async function identifyFile(file) {
+          return { file, contentKey: await getFileContentKey(file) };
+        })
+      );
+      if (!mounted.current) return;
+      keyedFiles.push(...keyedBatch);
+    }
+
+    if (!mounted.current) return;
 
     for (const { file, contentKey } of keyedFiles) {
       const id = createLocalImageId();
