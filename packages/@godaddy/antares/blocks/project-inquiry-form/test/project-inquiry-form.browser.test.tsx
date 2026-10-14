@@ -252,6 +252,7 @@ describe('@godaddy/antares', function packageTests() {
         input.dispatchEvent(new Event('change', { bubbles: true }));
         await expect.element(screen.getByText('brief.pdf', { exact: true })).toBeVisible();
       }
+      await expect.element(screen.getByText('5 B', { exact: true })).toBeVisible();
       delete (input as unknown as { files?: FileList }).files;
       expect(screen.getByRole('button', { name: 'Remove brief.pdf' }).all()).toHaveLength(1);
 

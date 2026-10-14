@@ -15,7 +15,9 @@ export const MAX_FILE_COUNT = 10;
 /** Maximum combined size of attachments kept in memory at once. */
 export const MAX_TOTAL_FILE_SIZE = 256 * 1024 * 1024;
 
-const fileSizeFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+const byteFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
+const kibibyteFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+const mebibyteFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
 /** Returns the stable identity used to deduplicate and remove an attachment. */
 export function fileKey(file: File) {
@@ -49,5 +51,8 @@ export function isAcceptedFile(file: File) {
 
 /** Formats an attachment size using the same unit shown by the picker. */
 export function formatFileSize(file: File) {
-  return `${fileSizeFormatter.format(file.size / (1024 * 1024))} MiB`;
+  if (file.size < 1024) return `${byteFormatter.format(file.size)} B`;
+  if (file.size < 1024 * 1024) return `${kibibyteFormatter.format(file.size / 1024)} KiB`;
+
+  return `${mebibyteFormatter.format(file.size / (1024 * 1024))} MiB`;
 }
