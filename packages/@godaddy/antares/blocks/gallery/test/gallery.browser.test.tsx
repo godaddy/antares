@@ -333,7 +333,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('button', { name: 'Open local.png' })).toBeVisible();
     });
 
-    it('hashes files serially to bound duplicate hashing memory', async function boundedHashing() {
+    it('hashes files serially across overlapping selections to bound duplicate hashing memory', async function boundedHashing() {
       let active = 0;
       let peak = 0;
       vi.spyOn(globalThis.crypto.subtle, 'digest').mockImplementation(async function digestFile() {
@@ -353,8 +353,9 @@ describe('@godaddy/antares', function packageTests() {
           return png(`batch-${index}.png`);
         })
       );
+      selectFiles(screen.container, [png('second.png')]);
 
-      await expect.element(screen.getByText('5 images', { exact: true })).toBeVisible();
+      await expect.element(screen.getByText('6 images', { exact: true })).toBeVisible();
       expect(peak).toBeGreaterThan(0);
       expect(peak).toBe(1);
     });

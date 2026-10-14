@@ -91,6 +91,7 @@ export function Gallery({ initialImages = [], defaultView = 'grid' }: GalleryPro
   const addButton = useRef<HTMLButtonElement>(null);
   const ownedByKey = useRef(new Map<string, { id: string; url: string }>());
   const keyById = useRef(new Map<string, string>());
+  const ingestionQueue = useRef(Promise.resolve());
 
   useEffect(function manageLifecycle() {
     mounted.current = true;
@@ -105,58 +106,66 @@ export function Gallery({ initialImages = [], defaultView = 'grid' }: GalleryPro
     };
   }, []);
 
-  const addFiles = useCallback(async function addFiles(list: FileList | File[] | null) {
-    if (!list?.length) return;
+  const addFiles = useCallback(function addFiles(list: FileList | File[] | null) {
+    const processFiles = async function processFiles() {
+      if (!mounted.current || !list?.length) return;
 
-    const added: ImageItem[] = [];
-    let rejected = 0;
-    let duplicates = 0;
-    const validFiles: File[] = [];
+      const added: ImageItem[] = [];
+      let rejected = 0;
+      let duplicates = 0;
+      const validFiles: File[] = [];
 
-    for (const file of Array.from(list)) {
-      if (!acceptedTypes.includes(file.type) || file.size >= maximumSize) {
-        rejected++;
-        continue;
+      for (const file of Array.from(list)) {
+        if (!acceptedTypes.includes(file.type) || file.size >= maximumSize) {
+          rejected++;
+          continue;
+        }
+
+        validFiles.push(file);
       }
 
-      validFiles.push(file);
-    }
+      const keyedFiles: { file: File; contentKey: string | null }[] = [];
+      for (const file of validFiles) {
+        const keyedFile = { file, contentKey: await getFileContentKey(file) };
+        if (!mounted.current) return;
+        keyedFiles.push(keyedFile);
+      }
 
-    const keyedFiles: { file: File; contentKey: string | null }[] = [];
-    for (const file of validFiles) {
-      const keyedFile = { file, contentKey: await getFileContentKey(file) };
       if (!mounted.current) return;
-      keyedFiles.push(keyedFile);
-    }
 
-    if (!mounted.current) return;
+      for (const { file, contentKey } of keyedFiles) {
+        const id = createLocalImageId();
+        const key = contentKey ? JSON.stringify([file.name, contentKey]) : `unique:${id}`;
+        if (contentKey && ownedByKey.current.has(key)) {
+          duplicates++;
+          continue;
+        }
 
-    for (const { file, contentKey } of keyedFiles) {
-      const id = createLocalImageId();
-      const key = contentKey ? JSON.stringify([file.name, contentKey]) : `unique:${id}`;
-      if (contentKey && ownedByKey.current.has(key)) {
-        duplicates++;
-        continue;
+        const url = URL.createObjectURL(file);
+        ownedByKey.current.set(key, { id, url });
+        keyById.current.set(id, key);
+        added.push({ id, name: file.name, size: file.size, src: url });
       }
 
-      const url = URL.createObjectURL(file);
-      ownedByKey.current.set(key, { id, url });
-      keyById.current.set(id, key);
-      added.push({ id, name: file.name, size: file.size, src: url });
-    }
+      setImages(function appendImages(previous) {
+        return [...previous, ...added];
+      });
+      setError(rejected ? 'Use JPG, PNG, GIF, or WebP images smaller than 256 MiB.' : '');
+      const messages = [];
+      if (added.length > 0) {
+        messages.push(`${added.length} ${pluralize(added.length, 'image', 'images')} added.`);
+      }
+      if (duplicates > 0) {
+        messages.push(`${duplicates} ${pluralize(duplicates, 'duplicate', 'duplicates')} skipped.`);
+      }
+      setNotice(messages.join(' '));
+    };
 
-    setImages(function appendImages(previous) {
-      return [...previous, ...added];
+    const queued = ingestionQueue.current.then(processFiles, processFiles);
+    ingestionQueue.current = queued.catch(function continueIngestionQueue() {
+      return undefined;
     });
-    setError(rejected ? 'Use JPG, PNG, GIF, or WebP images smaller than 256 MiB.' : '');
-    const messages = [];
-    if (added.length > 0) {
-      messages.push(`${added.length} ${pluralize(added.length, 'image', 'images')} added.`);
-    }
-    if (duplicates > 0) {
-      messages.push(`${duplicates} ${pluralize(duplicates, 'duplicate', 'duplicates')} skipped.`);
-    }
-    setNotice(messages.join(' '));
+    return queued;
   }, []);
 
   const removeImage = useCallback(function removeImage(image: ImageItem) {

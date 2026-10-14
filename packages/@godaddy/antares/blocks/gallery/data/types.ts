@@ -18,6 +18,6 @@ export interface ImageItem {
   /** Load state used by the list/grid examples. */
   status?: ImageStatus;
 
-  /** Optional message associated with a failed upload. */
+  /** Optional message associated with an image error. */
   errorMessage?: string;
 }
