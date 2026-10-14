@@ -1,11 +1,11 @@
 1:"$Sreact.fragment"
-2:I[838538,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js","/antares/pr-381-site/_next/static/chunks/0t-cfdsqovp91.js","/antares/pr-381-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-381-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-381-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-381-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-381-site/_next/static/chunks/1dqkbhgb2k_mz.js","/antares/pr-381-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-381-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-381-site/_next/static/chunks/0n4v_ij7u21f8.js"],"DocsPage"]
-3:I[838538,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js","/antares/pr-381-site/_next/static/chunks/0t-cfdsqovp91.js","/antares/pr-381-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-381-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-381-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-381-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-381-site/_next/static/chunks/1dqkbhgb2k_mz.js","/antares/pr-381-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-381-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-381-site/_next/static/chunks/0n4v_ij7u21f8.js"],"DocsTitle"]
-4:I[838538,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js","/antares/pr-381-site/_next/static/chunks/0t-cfdsqovp91.js","/antares/pr-381-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-381-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-381-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-381-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-381-site/_next/static/chunks/1dqkbhgb2k_mz.js","/antares/pr-381-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-381-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-381-site/_next/static/chunks/0n4v_ij7u21f8.js"],"DocsDescription"]
-5:I[748747,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js","/antares/pr-381-site/_next/static/chunks/0t-cfdsqovp91.js","/antares/pr-381-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-381-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-381-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-381-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-381-site/_next/static/chunks/1dqkbhgb2k_mz.js","/antares/pr-381-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-381-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-381-site/_next/static/chunks/0n4v_ij7u21f8.js"],"LLMCopyButton"]
-6:I[748747,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js","/antares/pr-381-site/_next/static/chunks/0t-cfdsqovp91.js","/antares/pr-381-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-381-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-381-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-381-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-381-site/_next/static/chunks/1dqkbhgb2k_mz.js","/antares/pr-381-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-381-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-381-site/_next/static/chunks/0n4v_ij7u21f8.js"],"ViewOptions"]
-7:I[838538,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js","/antares/pr-381-site/_next/static/chunks/0t-cfdsqovp91.js","/antares/pr-381-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-381-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-381-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-381-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-381-site/_next/static/chunks/1dqkbhgb2k_mz.js","/antares/pr-381-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-381-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-381-site/_next/static/chunks/0n4v_ij7u21f8.js"],"DocsBody"]
-8:I[696229,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js","/antares/pr-381-site/_next/static/chunks/0t-cfdsqovp91.js","/antares/pr-381-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-381-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-381-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-381-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-381-site/_next/static/chunks/1dqkbhgb2k_mz.js","/antares/pr-381-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-381-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-381-site/_next/static/chunks/0n4v_ij7u21f8.js"],"SiteBlockExplorer"]
+2:I[838538,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js","/antares/pr-381-site/_next/static/chunks/0t-cfdsqovp91.js","/antares/pr-381-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-381-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-381-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-381-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-381-site/_next/static/chunks/2l3rxwq47v99_.js","/antares/pr-381-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-381-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-381-site/_next/static/chunks/0n4v_ij7u21f8.js"],"DocsPage"]
+3:I[838538,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js","/antares/pr-381-site/_next/static/chunks/0t-cfdsqovp91.js","/antares/pr-381-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-381-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-381-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-381-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-381-site/_next/static/chunks/2l3rxwq47v99_.js","/antares/pr-381-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-381-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-381-site/_next/static/chunks/0n4v_ij7u21f8.js"],"DocsTitle"]
+4:I[838538,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js","/antares/pr-381-site/_next/static/chunks/0t-cfdsqovp91.js","/antares/pr-381-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-381-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-381-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-381-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-381-site/_next/static/chunks/2l3rxwq47v99_.js","/antares/pr-381-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-381-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-381-site/_next/static/chunks/0n4v_ij7u21f8.js"],"DocsDescription"]
+5:I[748747,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js","/antares/pr-381-site/_next/static/chunks/0t-cfdsqovp91.js","/antares/pr-381-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-381-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-381-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-381-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-381-site/_next/static/chunks/2l3rxwq47v99_.js","/antares/pr-381-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-381-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-381-site/_next/static/chunks/0n4v_ij7u21f8.js"],"LLMCopyButton"]
+6:I[748747,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js","/antares/pr-381-site/_next/static/chunks/0t-cfdsqovp91.js","/antares/pr-381-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-381-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-381-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-381-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-381-site/_next/static/chunks/2l3rxwq47v99_.js","/antares/pr-381-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-381-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-381-site/_next/static/chunks/0n4v_ij7u21f8.js"],"ViewOptions"]
+7:I[838538,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js","/antares/pr-381-site/_next/static/chunks/0t-cfdsqovp91.js","/antares/pr-381-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-381-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-381-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-381-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-381-site/_next/static/chunks/2l3rxwq47v99_.js","/antares/pr-381-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-381-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-381-site/_next/static/chunks/0n4v_ij7u21f8.js"],"DocsBody"]
+8:I[696229,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js","/antares/pr-381-site/_next/static/chunks/0t-cfdsqovp91.js","/antares/pr-381-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-381-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-381-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-381-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-381-site/_next/static/chunks/2l3rxwq47v99_.js","/antares/pr-381-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-381-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-381-site/_next/static/chunks/0n4v_ij7u21f8.js"],"SiteBlockExplorer"]
 9:T649,import { Box, Card, Detail, Flex, Heading, Icon, Image } from '@godaddy/antares';
 import { appointmentsImage } from '../../constants/config';
 import styles from './index.module.css';
@@ -45,7 +45,7 @@ export function AppointmentsPromotionCard() {
     </Flex>
   );
 }
-a:T8e1,import { Avatar, Box, Button, Flex, Icon, Text } from '@godaddy/antares';
+a:T8cf,import { Avatar, Box, Button, Flex, Icon, Text } from '@godaddy/antares';
 import styles from './index.module.css';
 
 interface DashboardHeaderProps {
@@ -56,7 +56,7 @@ interface DashboardHeaderProps {
 /** Renders the compact application header shown above the dashboard. */
 export function DashboardHeader({ onOpenNavigation }: DashboardHeaderProps) {
   return (
-    <Flex className={styles.navigation} justifyContent="space-between" alignItems="center" gap="lg" wrap="wrap">
+    <Flex className={styles.navigation} justifyContent="space-between" alignItems="center" wrap="wrap">
       <Flex alignItems="center" gap="lg">
         <Button
           className={styles.mobileMenuButton}
@@ -70,7 +70,7 @@ export function DashboardHeader({ onOpenNavigation }: DashboardHeaderProps) {
         <Icon className={styles.mobileNavLogo} icon="gd-the-go" aria-label="GoDaddy" />
       </Flex>
 
-      <Flex className={styles.navActions} alignItems="center" gap="md" wrap="wrap">
+      <Flex className={styles.navActions} alignItems="center" wrap="wrap">
         <Button className={styles.desktopNavAction} variant="minimal" size="sm" aria-label="Hire an Expert">
           Hire an Expert
         </Button>
@@ -181,7 +181,7 @@ b:T76a,.content {
     display: flex;
   }
 }
-c:Tb7b,import { Button, Flex, Icon, Tag, Text } from '@godaddy/antares';
+c:Tb34,import { Button, Flex, Icon, Tag, Text } from '@godaddy/antares';
 import { dashboardNavigationItems, type DashboardNavigationItemLabel } from '../../constants/config';
 import styles from './index.module.css';
 
@@ -225,7 +225,6 @@ export function DashboardSidebarContent({
           variant="minimal"
           size="sm"
           aria-label={navigationToggleLabel}
-          aria-pressed={isMobileNavigation ? undefined : isPinnedOpen}
           onPress={onToggleCollapse}
         >
           <Icon icon={isPinnedOpen ? 'sidebar-collapse' : 'sidebar-expand'} aria-hidden="true" />
@@ -262,7 +261,7 @@ export function DashboardSidebarContent({
     </Flex>
   );
 }
-d:T422,.sideNavigationContainer {
+d:T432,.sideNavigationContainer {
   align-self: stretch;
   background: var(--ux-9i7okd, #f5f7f8);
   block-size: auto;
@@ -281,7 +280,7 @@ d:T422,.sideNavigationContainer {
   transition: inline-size 300ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.sideNavigationContainer:where([data-pinned-open]) .sideNavigation {
+.sideNavigationContainer:where([data-pinned-open]) :where(.sideNavigation) {
   inline-size: var(--_max-size);
 }
 
@@ -294,7 +293,7 @@ d:T422,.sideNavigationContainer {
     z-index: 1;
   }
 
-  .sideNavigationContainer:where(:hover):where(:not([data-pinned-open])) .sideNavigation {
+  .sideNavigationContainer:where(:hover):where(:not([data-pinned-open])) :where(.sideNavigation) {
     inline-size: var(--_max-size);
   }
 }
@@ -494,17 +493,17 @@ export function OverviewDashboard() {
     </Box>
   );
 }
-10:T4fe,import { Card, DonutChart, Flex, Heading } from '@godaddy/antares';
+10:T5c7,import { Card, DonutChart, Flex, Heading } from '@godaddy/antares';
 import { salesChannelData } from '../../constants/config';
 import styles from './index.module.css';
 
-const currencyFormatter = new Intl.NumberFormat(undefined, {
+const currencyFormatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
   maximumFractionDigits: 0
 });
 
-const numberFormatter = new Intl.NumberFormat(undefined, {
+const numberFormatter = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 0
 });
 
@@ -520,6 +519,13 @@ const totalSales = salesChannelData.reduce(function sumSales(total, channel) {
   return total + channel.value;
 }, 0);
 
+const salesChannelAriaLabel = [
+  'Sales by sales channels donut chart',
+  ...salesChannelData.map(function describeChannel(channel) {
+    return `${channel.name}: ${formatCurrency(channel.value)}`;
+  })
+].join('. ');
+
 /** Demonstrates sales-channel performance with a responsive donut chart. */
 export function SalesChannelsCard() {
   return (
@@ -532,13 +538,13 @@ export function SalesChannelsCard() {
           subLabel="USD"
           legend="bottom"
           formatValue={formatCurrency}
-          aria-label="Sales by sales channels donut chart"
+          aria-label={salesChannelAriaLabel}
         />
       </Flex>
     </Card>
   );
 }
-11:T96e,import { Box, Button, Card, Detail, Flex, Heading, Icon, Tag, Text } from '@godaddy/antares';
+11:T8ef,import { Box, Button, Card, Detail, Flex, Heading, Icon, Tag, Text } from '@godaddy/antares';
 import { dashboardUsers } from '../../constants/config';
 import styles from './index.module.css';
 
@@ -561,13 +567,7 @@ export function UsersCard() {
           {dashboardUsers.map(function renderUser(user, index) {
             return (
               <Box key={user.email}>
-                <Flex
-                  className={styles.userRow}
-                  justifyContent="space-between"
-                  alignItems="center"
-                  gap="lg"
-                  wrap="wrap"
-                >
+                <Flex className={styles.userRow} justifyContent="space-between" gap="lg" wrap="wrap">
                   <Flex direction="column" gap="xs">
                     <Flex alignItems="center" gap="sm" wrap="wrap">
                       <Text>{user.name}</Text>
@@ -636,8 +636,8 @@ export const appointmentsImage =
 18:X
 1d:X
 1d:C
-0:{"buildId":"Z6OQ9xgTEvJHqyhdjUHP3","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"toc":[],"footer":{"enabled":true},"children":[["$","$L3",null,{"children":"Overview dashboard"}],["$","$L4",null,{"className":"mb-0","children":"A responsive Antares overview dashboard with users, sales channels, and conversations."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L5",null,{"markdownUrl":"/docs/blocks/overview-dashboard.mdx"}],["$","$L6",null,{"markdownUrl":"/docs/blocks/overview-dashboard.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/overview-dashboard/README.mdx"}]]}],["$","$L7",null,{"children":[null,"\n",["$","$L8",null,{"block":{"id":"overview-dashboard","description":"A responsive Antares overview dashboard with users, sales channels, and conversations.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/overview-dashboard","files":[{"path":"components/appointments-promotion-card/index.module.css","language":"css","source":".mediaCard {\n  min-inline-size: 0;\n}\n\n.mediaImage {\n  display: block;\n  max-inline-size: 100%;\n  block-size: auto;\n  border-radius: var(--rounding-sm);\n}\n\n.mediaCardContent,\n.mediaCardCopy,\n.mediaCardImage {\n  min-inline-size: 0;\n}\n"},{"path":"components/appointments-promotion-card/index.tsx","language":"tsx","source":"$9"},{"path":"components/conversations-card/index.module.css","language":"css","source":".conversationsCard {\n  min-inline-size: 0;\n}\n"},{"path":"components/conversations-card/index.tsx","language":"tsx","source":"import { Button, Card, Flex, Heading, Tag, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Demonstrates a secondary conversations card with a connection action. */\nexport function ConversationsCard() {\n  return (\n    <Card elevation=\"card\" className={styles.conversationsCard}>\n      <Flex direction=\"column\" gap=\"md\">\n        <Flex justifyContent=\"space-between\" alignItems=\"center\" gap=\"md\">\n          <Heading level={3}>Conversations</Heading>\n          <Tag emphasis=\"info\" size=\"sm\">\n            Included\n          </Tag>\n        </Flex>\n        <Text>Manage all your emails and messages in one place with a unified inbox.</Text>\n        <Button variant=\"secondary\" size=\"sm\">\n          Connect Email\n        </Button>\n      </Flex>\n    </Card>\n  );\n}\n"},{"path":"components/dashboard-header/index.module.css","language":"css","source":".mobileMenuButton,\n.mobileNavLogo,\n.mobileNavAction {\n  display: none;\n}\n\n.navDivider {\n  block-size: 1.25rem;\n  border-inline-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n}\n\n@container (max-width: 40rem) {\n  .mobileMenuButton,\n  .mobileNavLogo,\n  .mobileNavAction {\n    display: inline-flex;\n  }\n\n  .desktopNavAction,\n  .navDivider {\n    display: none;\n  }\n\n  .navigation,\n  .navActions {\n    gap: var(--sp-sm);\n  }\n}\n"},{"path":"components/dashboard-header/index.tsx","language":"tsx","source":"$a"},{"path":"components/dashboard-sidebar-content/index.module.css","language":"css","source":"$b"},{"path":"components/dashboard-sidebar-content/index.tsx","language":"tsx","source":"$c"},{"path":"components/dashboard-sidebar/index.module.css","language":"css","source":"$d"},{"path":"components/dashboard-sidebar/index.tsx","language":"tsx","source":"$e"},{"path":"components/overview-dashboard/index.module.css","language":"css","source":".dashboardFrame {\n  container-type: inline-size;\n}\n\n.dashboardShell {\n  grid-template-columns: auto minmax(0, 1fr);\n  gap: var(--sp-xl);\n  min-inline-size: 0;\n}\n\n.dashboardMain {\n  min-inline-size: 0;\n}\n\n.contentGrid {\n  grid-template-columns: minmax(0, 2.25fr) minmax(17.5rem, 1fr);\n}\n\n@container (max-width: 56rem) {\n  .contentGrid {\n    grid-template-columns: 1fr;\n  }\n}\n\n@container (max-width: 40rem) {\n  .dashboardShell {\n    grid-template-columns: 1fr;\n  }\n}\n"},{"path":"components/overview-dashboard/index.tsx","language":"tsx","source":"$f"},{"path":"components/sales-channels-card/index.module.css","language":"css","source":".salesCardMeasure {\n  min-inline-size: 0;\n}\n"},{"path":"components/sales-channels-card/index.tsx","language":"tsx","source":"$10"},{"path":"components/users-card/index.module.css","language":"css","source":".usersCard {\n  min-inline-size: 0;\n}\n\n.userDivider {\n  border: 0;\n  border-block-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n  margin-block: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .restoreUsersLabel {\n    display: none;\n  }\n\n  .userRow {\n    align-items: flex-start;\n  }\n\n  .userActions {\n    inline-size: 100%;\n    justify-content: flex-end;\n  }\n}\n"},{"path":"components/users-card/index.tsx","language":"tsx","source":"$11"},{"path":"constants/config.ts","language":"ts","source":"$12"},{"path":"index.tsx","language":"tsx","source":"export { OverviewDashboard } from './components/overview-dashboard';\n"}]},"children":"$L13"}]]}]]}],["$L14","$L15"],"$L16"]}],"isPartial":"$@17","staleTime":"$18","varyParams":null},{"rsc":"$L19","isPartial":"$@1a","staleTime":"$18","varyParams":null},{"rsc":"$L1b","isPartial":"$@1c","staleTime":"$18","varyParams":"$1d"}],"isUpgradeableISRFallback":false,"a":"$@1e","rootVaryParams":null,"needsRuntimeRequest":"$@1f"}
-20:I[260568,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js","/antares/pr-381-site/_next/static/chunks/0t-cfdsqovp91.js","/antares/pr-381-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-381-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-381-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-381-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-381-site/_next/static/chunks/1dqkbhgb2k_mz.js","/antares/pr-381-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-381-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-381-site/_next/static/chunks/0n4v_ij7u21f8.js"],"Preview"]
+0:{"buildId":"5QrLoPe-3kpkqeCeBwuvE","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"toc":[],"footer":{"enabled":true},"children":[["$","$L3",null,{"children":"Overview dashboard"}],["$","$L4",null,{"className":"mb-0","children":"A responsive Antares overview dashboard with users, sales channels, and conversations."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L5",null,{"markdownUrl":"/docs/blocks/overview-dashboard.mdx"}],["$","$L6",null,{"markdownUrl":"/docs/blocks/overview-dashboard.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/overview-dashboard/README.mdx"}]]}],["$","$L7",null,{"children":[null,"\n",["$","$L8",null,{"block":{"id":"overview-dashboard","description":"A responsive Antares overview dashboard with users, sales channels, and conversations.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/overview-dashboard","files":[{"path":"components/appointments-promotion-card/index.module.css","language":"css","source":".mediaCard {\n  min-inline-size: 0;\n}\n\n.mediaImage {\n  display: block;\n  max-inline-size: 100%;\n  block-size: auto;\n  border-radius: var(--rounding-sm);\n}\n\n.mediaCardContent,\n.mediaCardCopy,\n.mediaCardImage {\n  min-inline-size: 0;\n}\n"},{"path":"components/appointments-promotion-card/index.tsx","language":"tsx","source":"$9"},{"path":"components/conversations-card/index.module.css","language":"css","source":".conversationsCard {\n  min-inline-size: 0;\n}\n"},{"path":"components/conversations-card/index.tsx","language":"tsx","source":"import { Button, Card, Flex, Heading, Tag, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Demonstrates a secondary conversations card with a connection action. */\nexport function ConversationsCard() {\n  return (\n    <Card elevation=\"card\" className={styles.conversationsCard}>\n      <Flex direction=\"column\" gap=\"md\">\n        <Flex justifyContent=\"space-between\" alignItems=\"center\" gap=\"md\">\n          <Heading level={3}>Conversations</Heading>\n          <Tag emphasis=\"info\" size=\"sm\">\n            Included\n          </Tag>\n        </Flex>\n        <Text>Manage all your emails and messages in one place with a unified inbox.</Text>\n        <Button variant=\"secondary\" size=\"sm\">\n          Connect Email\n        </Button>\n      </Flex>\n    </Card>\n  );\n}\n"},{"path":"components/dashboard-header/index.module.css","language":"css","source":".mobileMenuButton,\n.mobileNavLogo,\n.mobileNavAction {\n  display: none;\n}\n\n.navDivider {\n  block-size: 1.25rem;\n  border-inline-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n}\n\n.navigation {\n  gap: var(--sp-lg);\n}\n\n.navActions {\n  gap: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .mobileMenuButton,\n  .mobileNavLogo,\n  .mobileNavAction {\n    display: inline-flex;\n  }\n\n  .desktopNavAction,\n  .navDivider {\n    display: none;\n  }\n\n  .navigation,\n  .navActions {\n    gap: var(--sp-sm);\n  }\n}\n"},{"path":"components/dashboard-header/index.tsx","language":"tsx","source":"$a"},{"path":"components/dashboard-sidebar-content/index.module.css","language":"css","source":"$b"},{"path":"components/dashboard-sidebar-content/index.tsx","language":"tsx","source":"$c"},{"path":"components/dashboard-sidebar/index.module.css","language":"css","source":"$d"},{"path":"components/dashboard-sidebar/index.tsx","language":"tsx","source":"$e"},{"path":"components/overview-dashboard/index.module.css","language":"css","source":".dashboardFrame {\n  container-type: inline-size;\n}\n\n.dashboardShell {\n  grid-template-columns: auto minmax(0, 1fr);\n  gap: var(--sp-xl);\n  min-inline-size: 0;\n}\n\n.dashboardMain {\n  min-inline-size: 0;\n}\n\n.contentGrid {\n  grid-template-columns: minmax(0, 2.25fr) minmax(17.5rem, 1fr);\n}\n\n@container (max-width: 56rem) {\n  .contentGrid {\n    grid-template-columns: 1fr;\n  }\n}\n\n@container (max-width: 40rem) {\n  .dashboardShell {\n    grid-template-columns: 1fr;\n  }\n}\n"},{"path":"components/overview-dashboard/index.tsx","language":"tsx","source":"$f"},{"path":"components/sales-channels-card/index.module.css","language":"css","source":".salesCardMeasure {\n  min-inline-size: 0;\n}\n"},{"path":"components/sales-channels-card/index.tsx","language":"tsx","source":"$10"},{"path":"components/users-card/index.module.css","language":"css","source":".usersCard {\n  min-inline-size: 0;\n}\n\n.userRow {\n  align-items: center;\n}\n\n.userDivider {\n  border: 0;\n  border-block-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n  margin-block: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .restoreUsersLabel {\n    display: none;\n  }\n\n  .userRow {\n    align-items: flex-start;\n  }\n\n  .userActions {\n    inline-size: 100%;\n    justify-content: flex-end;\n  }\n}\n"},{"path":"components/users-card/index.tsx","language":"tsx","source":"$11"},{"path":"constants/config.ts","language":"ts","source":"$12"},{"path":"index.tsx","language":"tsx","source":"export { OverviewDashboard } from './components/overview-dashboard';\n"}]},"children":"$L13"}]]}]]}],["$L14","$L15"],"$L16"]}],"isPartial":"$@17","staleTime":"$18","varyParams":null},{"rsc":"$L19","isPartial":"$@1a","staleTime":"$18","varyParams":null},{"rsc":"$L1b","isPartial":"$@1c","staleTime":"$18","varyParams":"$1d"}],"isUpgradeableISRFallback":false,"a":"$@1e","rootVaryParams":null,"needsRuntimeRequest":"$@1f"}
+20:I[260568,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js","/antares/pr-381-site/_next/static/chunks/0t-cfdsqovp91.js","/antares/pr-381-site/_next/static/chunks/0xga5xun-lgar.js","/antares/pr-381-site/_next/static/chunks/0f_weh1uv0sim.js","/antares/pr-381-site/_next/static/chunks/04_eagrfk6qzl.js","/antares/pr-381-site/_next/static/chunks/3_sr8ai1c7us1.js","/antares/pr-381-site/_next/static/chunks/2l3rxwq47v99_.js","/antares/pr-381-site/_next/static/chunks/3wo3otk7x3yuj.js","/antares/pr-381-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-381-site/_next/static/chunks/0n4v_ij7u21f8.js"],"Preview"]
 21:I[897367,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js"],"OutletBoundary"]
 22:"$Sreact.suspense"
 24:I[897367,["/antares/pr-381-site/_next/static/chunks/3mwjkp9yvf9t6.js","/antares/pr-381-site/_next/static/chunks/3vnhm7f0_7n5-.js"],"ViewportBoundary"]
