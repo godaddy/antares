@@ -30,7 +30,7 @@
   "ux.action.foregroundColor": {
     "hash": "ut3xrx",
     "var": "--ux-ut3xrx",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": "color-action-text-tertiary-default",
     "dtcgDefault": "royalblue"
   },
@@ -44,14 +44,14 @@
   "ux.actionChosen.backgroundColor": {
     "hash": "9qpf6c",
     "var": "--ux-9qpf6c",
-    "legacyDefault": "#00a4a6",
+    "legacyDefault": "darkcyan",
     "token": "color-action-background-tertiary-pressed",
     "dtcgDefault": "gainsboro"
   },
   "ux.actionChosen.borderColor": {
     "hash": "1xliuhi",
     "var": "--ux-1xliuhi",
-    "legacyDefault": "#00a4a6",
+    "legacyDefault": "darkcyan",
     "token": "color-action-border-tertiary-pressed",
     "dtcgDefault": "darkgray"
   },
@@ -72,7 +72,7 @@
   "ux.actionChosen.foregroundColor": {
     "hash": "h6e7c1",
     "var": "--ux-h6e7c1",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": "color-action-text-tertiary-pressed",
     "dtcgDefault": "midnightblue"
   },
@@ -86,16 +86,32 @@
   "ux.actionControl.backgroundColor": {
     "hash": "1mh0ktr",
     "var": "--ux-1mh0ktr",
-    "legacyDefault": "#f5f5f5",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "whitesmoke",
+    "tokens": [
+      {
+        "token": "color-action-background-control-default",
+        "dtcgDefault": "whitesmoke"
+      },
+      {
+        "token": "color-action-background-overlay-default",
+        "dtcgDefault": "whitesmoke"
+      }
+    ]
   },
   "ux.actionControl.borderColor": {
     "hash": "1qbn65p",
     "var": "--ux-1qbn65p",
-    "legacyDefault": "#f5f5f5",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "whitesmoke",
+    "tokens": [
+      {
+        "token": "color-action-border-control-default",
+        "dtcgDefault": "whitesmoke"
+      },
+      {
+        "token": "color-action-border-overlay-default",
+        "dtcgDefault": "whitesmoke"
+      }
+    ]
   },
   "ux.actionControl.borderRadius": {
     "hash": "zvaw3s",
@@ -114,9 +130,17 @@
   "ux.actionControl.foregroundColor": {
     "hash": "1utwv7e",
     "var": "--ux-1utwv7e",
-    "legacyDefault": "#111",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "black",
+    "tokens": [
+      {
+        "token": "color-action-text-control-default",
+        "dtcgDefault": "black"
+      },
+      {
+        "token": "color-action-text-overlay-default",
+        "dtcgDefault": "black"
+      }
+    ]
   },
   "ux.actionControl.outlineColor": {
     "hash": "1iktadd",
@@ -128,16 +152,40 @@
   "ux.actionControlChosen.backgroundColor": {
     "hash": "gdy377",
     "var": "--ux-gdy377",
-    "legacyDefault": "#fff",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "white",
+    "tokens": [
+      {
+        "token": "color-action-background-selected-default",
+        "dtcgDefault": "white"
+      },
+      {
+        "token": "color-action-background-selected-hovered",
+        "dtcgDefault": "white"
+      },
+      {
+        "token": "color-action-background-selected-pressed",
+        "dtcgDefault": "white"
+      }
+    ]
   },
   "ux.actionControlChosen.borderColor": {
     "hash": "187j9dd",
     "var": "--ux-187j9dd",
-    "legacyDefault": "#00a4a6",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "darkcyan",
+    "tokens": [
+      {
+        "token": "color-action-border-selected-default",
+        "dtcgDefault": "teal"
+      },
+      {
+        "token": "color-action-border-selected-hovered",
+        "dtcgDefault": "teal"
+      },
+      {
+        "token": "color-action-border-selected-pressed",
+        "dtcgDefault": "teal"
+      }
+    ]
   },
   "ux.actionControlChosen.borderRadius": {
     "hash": "ocvlxw",
@@ -156,9 +204,21 @@
   "ux.actionControlChosen.foregroundColor": {
     "hash": "k4fkva",
     "var": "--ux-k4fkva",
-    "legacyDefault": "#111",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "black",
+    "tokens": [
+      {
+        "token": "color-action-text-selected-default",
+        "dtcgDefault": "black"
+      },
+      {
+        "token": "color-action-text-selected-hovered",
+        "dtcgDefault": "black"
+      },
+      {
+        "token": "color-action-text-selected-pressed",
+        "dtcgDefault": "black"
+      }
+    ]
   },
   "ux.actionControlChosen.outlineColor": {
     "hash": "ws2b8d",
@@ -170,16 +230,32 @@
   "ux.actionControlFocused.backgroundColor": {
     "hash": "qebq9u",
     "var": "--ux-qebq9u",
-    "legacyDefault": "#f5f5f5",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "whitesmoke",
+    "tokens": [
+      {
+        "token": "color-action-background-control-pressed",
+        "dtcgDefault": "whitesmoke"
+      },
+      {
+        "token": "color-action-background-overlay-pressed",
+        "dtcgDefault": "whitesmoke"
+      }
+    ]
   },
   "ux.actionControlFocused.borderColor": {
     "hash": "18hlgn4",
     "var": "--ux-18hlgn4",
-    "legacyDefault": "#d6d6d6",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "lightgray",
+    "tokens": [
+      {
+        "token": "color-action-border-control-pressed",
+        "dtcgDefault": "lightgray"
+      },
+      {
+        "token": "color-action-border-overlay-pressed",
+        "dtcgDefault": "lightgray"
+      }
+    ]
   },
   "ux.actionControlFocused.borderRadius": {
     "hash": "kdmzt1",
@@ -198,30 +274,54 @@
   "ux.actionControlFocused.foregroundColor": {
     "hash": "6gm31z",
     "var": "--ux-6gm31z",
-    "legacyDefault": "#111",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "black",
+    "tokens": [
+      {
+        "token": "color-action-text-control-pressed",
+        "dtcgDefault": "black"
+      },
+      {
+        "token": "color-action-text-overlay-pressed",
+        "dtcgDefault": "black"
+      }
+    ]
   },
   "ux.actionControlFocused.outlineColor": {
     "hash": "1njwmlo",
     "var": "--ux-1njwmlo",
-    "legacyDefault": "#1976d2",
+    "legacyDefault": "royalblue",
     "token": null,
     "dtcgDefault": null
   },
   "ux.actionControlHovered.backgroundColor": {
     "hash": "11rtwg8",
     "var": "--ux-11rtwg8",
-    "legacyDefault": "#f5f5f5",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "whitesmoke",
+    "tokens": [
+      {
+        "token": "color-action-background-control-hovered",
+        "dtcgDefault": "whitesmoke"
+      },
+      {
+        "token": "color-action-background-overlay-hovered",
+        "dtcgDefault": "whitesmoke"
+      }
+    ]
   },
   "ux.actionControlHovered.borderColor": {
     "hash": "bg7olm",
     "var": "--ux-bg7olm",
-    "legacyDefault": "#d6d6d6",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "lightgray",
+    "tokens": [
+      {
+        "token": "color-action-border-control-hovered",
+        "dtcgDefault": "lightgray"
+      },
+      {
+        "token": "color-action-border-overlay-hovered",
+        "dtcgDefault": "lightgray"
+      }
+    ]
   },
   "ux.actionControlHovered.borderRadius": {
     "hash": "mpv2fj",
@@ -240,9 +340,17 @@
   "ux.actionControlHovered.foregroundColor": {
     "hash": "1e4ese5",
     "var": "--ux-1e4ese5",
-    "legacyDefault": "#111",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "black",
+    "tokens": [
+      {
+        "token": "color-action-text-control-hovered",
+        "dtcgDefault": "black"
+      },
+      {
+        "token": "color-action-text-overlay-hovered",
+        "dtcgDefault": "black"
+      }
+    ]
   },
   "ux.actionControlHovered.outlineColor": {
     "hash": "r2wrvq",
@@ -254,14 +362,14 @@
   "ux.actionCritical.backgroundColor": {
     "hash": "1marogz",
     "var": "--ux-1marogz",
-    "legacyDefault": "#ae1302",
+    "legacyDefault": "darkred",
     "token": null,
     "dtcgDefault": null
   },
   "ux.actionCritical.borderColor": {
     "hash": "ceou01",
     "var": "--ux-ceou01",
-    "legacyDefault": "#ae1302",
+    "legacyDefault": "darkred",
     "token": null,
     "dtcgDefault": null
   },
@@ -282,7 +390,7 @@
   "ux.actionCritical.foregroundColor": {
     "hash": "17htz86",
     "var": "--ux-17htz86",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": null,
     "dtcgDefault": null
   },
@@ -296,14 +404,14 @@
   "ux.actionCriticalChosen.backgroundColor": {
     "hash": "926l8f",
     "var": "--ux-926l8f",
-    "legacyDefault": "#850f01",
+    "legacyDefault": "maroon",
     "token": null,
     "dtcgDefault": null
   },
   "ux.actionCriticalChosen.borderColor": {
     "hash": "w3lhdp",
     "var": "--ux-w3lhdp",
-    "legacyDefault": "#850f01",
+    "legacyDefault": "maroon",
     "token": null,
     "dtcgDefault": null
   },
@@ -324,7 +432,7 @@
   "ux.actionCriticalChosen.foregroundColor": {
     "hash": "17znn9m",
     "var": "--ux-17znn9m",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": null,
     "dtcgDefault": null
   },
@@ -338,14 +446,14 @@
   "ux.actionCriticalFocused.backgroundColor": {
     "hash": "83yt9q",
     "var": "--ux-83yt9q",
-    "legacyDefault": "#db1802",
+    "legacyDefault": "crimson",
     "token": null,
     "dtcgDefault": null
   },
   "ux.actionCriticalFocused.borderColor": {
     "hash": "1novelo",
     "var": "--ux-1novelo",
-    "legacyDefault": "#db1802",
+    "legacyDefault": "crimson",
     "token": null,
     "dtcgDefault": null
   },
@@ -366,28 +474,28 @@
   "ux.actionCriticalFocused.foregroundColor": {
     "hash": "tt846z",
     "var": "--ux-tt846z",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": null,
     "dtcgDefault": null
   },
   "ux.actionCriticalFocused.outlineColor": {
     "hash": "1she0w",
     "var": "--ux-1she0w",
-    "legacyDefault": "#1976d2",
+    "legacyDefault": "royalblue",
     "token": null,
     "dtcgDefault": null
   },
   "ux.actionCriticalHovered.backgroundColor": {
     "hash": "1q4q36s",
     "var": "--ux-1q4q36s",
-    "legacyDefault": "#db1802",
+    "legacyDefault": "crimson",
     "token": null,
     "dtcgDefault": null
   },
   "ux.actionCriticalHovered.borderColor": {
     "hash": "n0tova",
     "var": "--ux-n0tova",
-    "legacyDefault": "#db1802",
+    "legacyDefault": "crimson",
     "token": null,
     "dtcgDefault": null
   },
@@ -408,7 +516,7 @@
   "ux.actionCriticalHovered.foregroundColor": {
     "hash": "9cq6k1",
     "var": "--ux-9cq6k1",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": null,
     "dtcgDefault": null
   },
@@ -450,14 +558,14 @@
   "ux.actionFocused.foregroundColor": {
     "hash": "1e85ids",
     "var": "--ux-1e85ids",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": null,
     "dtcgDefault": null
   },
   "ux.actionFocused.outlineColor": {
     "hash": "io2uwb",
     "var": "--ux-io2uwb",
-    "legacyDefault": "#1976d2",
+    "legacyDefault": "royalblue",
     "token": null,
     "dtcgDefault": null
   },
@@ -492,7 +600,7 @@
   "ux.actionHovered.foregroundColor": {
     "hash": "unx9i2",
     "var": "--ux-unx9i2",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": "color-action-text-tertiary-hovered",
     "dtcgDefault": "teal"
   },
@@ -506,16 +614,16 @@
   "ux.actionOption.backgroundColor": {
     "hash": "1sw32wb",
     "var": "--ux-1sw32wb",
-    "legacyDefault": "#fff",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "white",
+    "token": "color-action-background-option-default",
+    "dtcgDefault": "white"
   },
   "ux.actionOption.borderColor": {
     "hash": "iz7fvt",
     "var": "--ux-iz7fvt",
-    "legacyDefault": "#fff",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "white",
+    "token": "color-action-border-option-default",
+    "dtcgDefault": "white"
   },
   "ux.actionOption.borderRadius": {
     "hash": "1frurfw",
@@ -534,9 +642,9 @@
   "ux.actionOption.foregroundColor": {
     "hash": "1wf60ri",
     "var": "--ux-1wf60ri",
-    "legacyDefault": "#111",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "black",
+    "token": "color-action-text-option-default",
+    "dtcgDefault": "black"
   },
   "ux.actionOption.outlineColor": {
     "hash": "1tuh6f9",
@@ -548,7 +656,7 @@
   "ux.actionOptionChosen.backgroundColor": {
     "hash": "9cqgfr",
     "var": "--ux-9cqgfr",
-    "legacyDefault": "#f5f7f8",
+    "legacyDefault": "aliceblue",
     "token": null,
     "dtcgDefault": null
   },
@@ -576,7 +684,7 @@
   "ux.actionOptionChosen.foregroundColor": {
     "hash": "h8m2iq",
     "var": "--ux-h8m2iq",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": null,
     "dtcgDefault": null
   },
@@ -590,16 +698,16 @@
   "ux.actionOptionFocused.backgroundColor": {
     "hash": "1tn536u",
     "var": "--ux-1tn536u",
-    "legacyDefault": "#f5f5f5",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "whitesmoke",
+    "token": "color-action-background-option-pressed",
+    "dtcgDefault": "whitesmoke"
   },
   "ux.actionOptionFocused.borderColor": {
     "hash": "1x4s92c",
     "var": "--ux-1x4s92c",
-    "legacyDefault": "#f5f5f5",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "whitesmoke",
+    "token": "color-action-border-option-pressed",
+    "dtcgDefault": "whitesmoke"
   },
   "ux.actionOptionFocused.borderRadius": {
     "hash": "1nlxwe9",
@@ -618,30 +726,30 @@
   "ux.actionOptionFocused.foregroundColor": {
     "hash": "1jz8rn7",
     "var": "--ux-1jz8rn7",
-    "legacyDefault": "#111",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "black",
+    "token": "color-action-text-option-pressed",
+    "dtcgDefault": "black"
   },
   "ux.actionOptionFocused.outlineColor": {
     "hash": "1s3rs7c",
     "var": "--ux-1s3rs7c",
-    "legacyDefault": "#1976d2",
+    "legacyDefault": "royalblue",
     "token": null,
     "dtcgDefault": null
   },
   "ux.actionOptionHovered.backgroundColor": {
     "hash": "1x1u50s",
     "var": "--ux-1x1u50s",
-    "legacyDefault": "#e8eaeb",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "aliceblue",
+    "token": "color-action-background-option-hovered",
+    "dtcgDefault": "gainsboro"
   },
   "ux.actionOptionHovered.borderColor": {
     "hash": "19xthpq",
     "var": "--ux-19xthpq",
     "legacyDefault": "transparent",
-    "token": null,
-    "dtcgDefault": null
+    "token": "color-action-border-option-hovered",
+    "dtcgDefault": "transparent"
   },
   "ux.actionOptionHovered.borderRadius": {
     "hash": "qn0bm3",
@@ -660,9 +768,9 @@
   "ux.actionOptionHovered.foregroundColor": {
     "hash": "1mntjax",
     "var": "--ux-1mntjax",
-    "legacyDefault": "#111",
-    "token": null,
-    "dtcgDefault": null
+    "legacyDefault": "black",
+    "token": "color-action-text-option-hovered",
+    "dtcgDefault": "black"
   },
   "ux.actionOptionHovered.outlineColor": {
     "hash": "16ez05e",
@@ -674,14 +782,14 @@
   "ux.actionPrimary.backgroundColor": {
     "hash": "c5mlr8",
     "var": "--ux-c5mlr8",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": "color-action-background-primary-default",
     "dtcgDefault": "royalblue"
   },
   "ux.actionPrimary.borderColor": {
     "hash": "kdwujq",
     "var": "--ux-kdwujq",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": "color-action-border-primary-default",
     "dtcgDefault": "royalblue"
   },
@@ -702,7 +810,7 @@
   "ux.actionPrimary.foregroundColor": {
     "hash": "t04p4h",
     "var": "--ux-t04p4h",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": "color-action-text-primary-default",
     "dtcgDefault": "white"
   },
@@ -716,14 +824,14 @@
   "ux.actionPrimaryChosen.backgroundColor": {
     "hash": "1ehwjjs",
     "var": "--ux-1ehwjjs",
-    "legacyDefault": "#00a4a6",
+    "legacyDefault": "darkcyan",
     "token": "color-action-background-primary-pressed",
     "dtcgDefault": "midnightblue"
   },
   "ux.actionPrimaryChosen.borderColor": {
     "hash": "1hnbfne",
     "var": "--ux-1hnbfne",
-    "legacyDefault": "#00a4a6",
+    "legacyDefault": "darkcyan",
     "token": "color-action-border-primary-pressed",
     "dtcgDefault": "midnightblue"
   },
@@ -744,7 +852,7 @@
   "ux.actionPrimaryChosen.foregroundColor": {
     "hash": "1uyxcq5",
     "var": "--ux-1uyxcq5",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": "color-action-text-primary-pressed",
     "dtcgDefault": "white"
   },
@@ -758,14 +866,14 @@
   "ux.actionPrimaryFocused.backgroundColor": {
     "hash": "vhbo95",
     "var": "--ux-vhbo95",
-    "legacyDefault": "#444444",
+    "legacyDefault": "dimgray",
     "token": null,
     "dtcgDefault": null
   },
   "ux.actionPrimaryFocused.borderColor": {
     "hash": "1331zgr",
     "var": "--ux-1331zgr",
-    "legacyDefault": "#444444",
+    "legacyDefault": "dimgray",
     "token": null,
     "dtcgDefault": null
   },
@@ -786,28 +894,28 @@
   "ux.actionPrimaryFocused.foregroundColor": {
     "hash": "lrwu2k",
     "var": "--ux-lrwu2k",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": null,
     "dtcgDefault": null
   },
   "ux.actionPrimaryFocused.outlineColor": {
     "hash": "5mgu1z",
     "var": "--ux-5mgu1z",
-    "legacyDefault": "#1976d2",
+    "legacyDefault": "royalblue",
     "token": null,
     "dtcgDefault": null
   },
   "ux.actionPrimaryHovered.backgroundColor": {
     "hash": "ran6wz",
     "var": "--ux-ran6wz",
-    "legacyDefault": "#444444",
+    "legacyDefault": "dimgray",
     "token": "color-action-background-primary-hovered",
     "dtcgDefault": "teal"
   },
   "ux.actionPrimaryHovered.borderColor": {
     "hash": "bgke81",
     "var": "--ux-bgke81",
-    "legacyDefault": "#444444",
+    "legacyDefault": "dimgray",
     "token": "color-action-border-primary-hovered",
     "dtcgDefault": "teal"
   },
@@ -828,7 +936,7 @@
   "ux.actionPrimaryHovered.foregroundColor": {
     "hash": "1ckzto6",
     "var": "--ux-1ckzto6",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": "color-action-text-primary-hovered",
     "dtcgDefault": "white"
   },
@@ -842,14 +950,14 @@
   "ux.actionSecondary.backgroundColor": {
     "hash": "1r87102",
     "var": "--ux-1r87102",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": "color-action-background-secondary-default",
     "dtcgDefault": "lavender"
   },
   "ux.actionSecondary.borderColor": {
     "hash": "1p5s1n4",
     "var": "--ux-1p5s1n4",
-    "legacyDefault": "#767676",
+    "legacyDefault": "gray",
     "token": "color-action-border-secondary-default",
     "dtcgDefault": "silver"
   },
@@ -870,7 +978,7 @@
   "ux.actionSecondary.foregroundColor": {
     "hash": "w7826f",
     "var": "--ux-w7826f",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": "color-action-text-secondary-default",
     "dtcgDefault": "black"
   },
@@ -884,14 +992,14 @@
   "ux.actionSecondaryChosen.backgroundColor": {
     "hash": "ix2s5q",
     "var": "--ux-ix2s5q",
-    "legacyDefault": "#00a4a6",
+    "legacyDefault": "darkcyan",
     "token": "color-action-background-secondary-pressed",
     "dtcgDefault": "silver"
   },
   "ux.actionSecondaryChosen.borderColor": {
     "hash": "1ixzvrg",
     "var": "--ux-1ixzvrg",
-    "legacyDefault": "#00a4a6",
+    "legacyDefault": "darkcyan",
     "token": "color-action-border-secondary-pressed",
     "dtcgDefault": "gray"
   },
@@ -912,7 +1020,7 @@
   "ux.actionSecondaryChosen.foregroundColor": {
     "hash": "19ykcyj",
     "var": "--ux-19ykcyj",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": "color-action-text-secondary-pressed",
     "dtcgDefault": "black"
   },
@@ -926,14 +1034,14 @@
   "ux.actionSecondaryFocused.backgroundColor": {
     "hash": "vqhzzz",
     "var": "--ux-vqhzzz",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": null,
     "dtcgDefault": null
   },
   "ux.actionSecondaryFocused.borderColor": {
     "hash": "8qoawt",
     "var": "--ux-8qoawt",
-    "legacyDefault": "#09757a",
+    "legacyDefault": "teal",
     "token": null,
     "dtcgDefault": null
   },
@@ -954,28 +1062,28 @@
   "ux.actionSecondaryFocused.foregroundColor": {
     "hash": "vwf4ne",
     "var": "--ux-vwf4ne",
-    "legacyDefault": "#09757a",
+    "legacyDefault": "teal",
     "token": null,
     "dtcgDefault": null
   },
   "ux.actionSecondaryFocused.outlineColor": {
     "hash": "953c7l",
     "var": "--ux-953c7l",
-    "legacyDefault": "#1976d2",
+    "legacyDefault": "royalblue",
     "token": null,
     "dtcgDefault": null
   },
   "ux.actionSecondaryHovered.backgroundColor": {
     "hash": "c624hh",
     "var": "--ux-c624hh",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": "color-action-background-secondary-hovered",
     "dtcgDefault": "lightgray"
   },
   "ux.actionSecondaryHovered.borderColor": {
     "hash": "kkdx4n",
     "var": "--ux-kkdx4n",
-    "legacyDefault": "#09757a",
+    "legacyDefault": "teal",
     "token": "color-action-border-secondary-hovered",
     "dtcgDefault": "darkgray"
   },
@@ -996,7 +1104,7 @@
   "ux.actionSecondaryHovered.foregroundColor": {
     "hash": "1e7hthc",
     "var": "--ux-1e7hthc",
-    "legacyDefault": "#09757a",
+    "legacyDefault": "teal",
     "token": "color-action-text-secondary-hovered",
     "dtcgDefault": "black"
   },
@@ -1010,7 +1118,7 @@
   "ux.box.backgroundColor": {
     "hash": "cao06b",
     "var": "--ux-cao06b",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "tokens": [
       {
         "token": "color-canvas-background",
@@ -1029,7 +1137,7 @@
   "ux.box.borderColor": {
     "hash": "97h3vl",
     "var": "--ux-97h3vl",
-    "legacyDefault": "#d4dbe0",
+    "legacyDefault": "aliceblue",
     "tokens": [
       {
         "token": "color-surface-border-base",
@@ -1065,7 +1173,7 @@
   "ux.box.foregroundColor": {
     "hash": "1leynsm",
     "var": "--ux-1leynsm",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "tokens": [
       {
         "token": "color-canvas-text",
@@ -1084,21 +1192,21 @@
   "ux.box.outlineColor": {
     "hash": "wikx71",
     "var": "--ux-wikx71",
-    "legacyDefault": "#1976d2",
+    "legacyDefault": "royalblue",
     "token": null,
     "dtcgDefault": null
   },
   "ux.boxHighContrast.backgroundColor": {
     "hash": "7wu8i7",
     "var": "--ux-7wu8i7",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": "color-surface-background-raised",
     "dtcgDefault": "snow"
   },
   "ux.boxHighContrast.borderColor": {
     "hash": "1nx9aml",
     "var": "--ux-1nx9aml",
-    "legacyDefault": "#2b2b2b",
+    "legacyDefault": "black",
     "token": "color-surface-border-raised",
     "dtcgDefault": "lavender"
   },
@@ -1126,7 +1234,7 @@
   "ux.boxHighContrast.foregroundColor": {
     "hash": "1o8cusa",
     "var": "--ux-1o8cusa",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": "color-surface-text-raised",
     "dtcgDefault": "black"
   },
@@ -1147,7 +1255,7 @@
   "ux.boxHighContrastOverlay.borderColor": {
     "hash": "17fhz5j",
     "var": "--ux-17fhz5j",
-    "legacyDefault": "#2b2b2b",
+    "legacyDefault": "black",
     "token": "color-surface-border-overlay",
     "dtcgDefault": "lightgray"
   },
@@ -1175,7 +1283,7 @@
   "ux.boxHighContrastOverlay.foregroundColor": {
     "hash": "i4fj7k",
     "var": "--ux-i4fj7k",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": "color-surface-text-overlay",
     "dtcgDefault": "black"
   },
@@ -1189,14 +1297,14 @@
   "ux.boxLowContrast.backgroundColor": {
     "hash": "l7zq7p",
     "var": "--ux-l7zq7p",
-    "legacyDefault": "#f5f7f8",
+    "legacyDefault": "aliceblue",
     "token": null,
     "dtcgDefault": null
   },
   "ux.boxLowContrast.borderColor": {
     "hash": "1vw9arb",
     "var": "--ux-1vw9arb",
-    "legacyDefault": "#d6d6d6",
+    "legacyDefault": "lightgray",
     "token": null,
     "dtcgDefault": null
   },
@@ -1224,7 +1332,7 @@
   "ux.boxLowContrast.foregroundColor": {
     "hash": "vuekow",
     "var": "--ux-vuekow",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": null,
     "dtcgDefault": null
   },
@@ -1245,7 +1353,7 @@
   "ux.boxLowContrastOverlay.borderColor": {
     "hash": "5n4ibx",
     "var": "--ux-5n4ibx",
-    "legacyDefault": "#d4dbe0",
+    "legacyDefault": "aliceblue",
     "token": null,
     "dtcgDefault": null
   },
@@ -1273,7 +1381,7 @@
   "ux.boxLowContrastOverlay.foregroundColor": {
     "hash": "c3e9y2",
     "var": "--ux-c3e9y2",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": null,
     "dtcgDefault": null
   },
@@ -1287,14 +1395,14 @@
   "ux.control.backgroundColor": {
     "hash": "1nu8itt",
     "var": "--ux-1nu8itt",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": "color-input-background-default",
     "dtcgDefault": "white"
   },
   "ux.control.borderColor": {
     "hash": "by6mab",
     "var": "--ux-by6mab",
-    "legacyDefault": "#767676",
+    "legacyDefault": "gray",
     "token": "color-input-border-default",
     "dtcgDefault": "lightgray"
   },
@@ -1315,21 +1423,21 @@
   "ux.control.foregroundColor": {
     "hash": "1glcx6s",
     "var": "--ux-1glcx6s",
-    "legacyDefault": "#2b2b2b",
+    "legacyDefault": "black",
     "token": "color-input-text-default",
     "dtcgDefault": "black"
   },
   "ux.control.outlineColor": {
     "hash": "10jlyin",
     "var": "--ux-10jlyin",
-    "legacyDefault": "#000",
+    "legacyDefault": "black",
     "token": null,
     "dtcgDefault": null
   },
   "ux.controlChosen.backgroundColor": {
     "hash": "sywk25",
     "var": "--ux-sywk25",
-    "legacyDefault": "#00a4a6",
+    "legacyDefault": "darkcyan",
     "tokens": [
       {
         "token": "color-input-background-selected",
@@ -1348,7 +1456,7 @@
   "ux.controlChosen.borderColor": {
     "hash": "77zzwv",
     "var": "--ux-77zzwv",
-    "legacyDefault": "#00a4a6",
+    "legacyDefault": "darkcyan",
     "tokens": [
       {
         "token": "color-input-border-selected",
@@ -1381,7 +1489,7 @@
   "ux.controlChosen.foregroundColor": {
     "hash": "1lw8azc",
     "var": "--ux-1lw8azc",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "tokens": [
       {
         "token": "color-input-text-selected",
@@ -1610,7 +1718,7 @@
   "ux.controlFocused.outlineColor": {
     "hash": "1im0suq",
     "var": "--ux-1im0suq",
-    "legacyDefault": "#1976d2",
+    "legacyDefault": "royalblue",
     "token": null,
     "dtcgDefault": null
   },
@@ -1624,7 +1732,7 @@
   "ux.controlHovered.borderColor": {
     "hash": "1bdyuno",
     "var": "--ux-1bdyuno",
-    "legacyDefault": "#00a4a6",
+    "legacyDefault": "darkcyan",
     "token": "color-input-border-hovered",
     "dtcgDefault": "darkgray"
   },
@@ -1659,14 +1767,14 @@
   "ux.controlKnob.backgroundColor": {
     "hash": "11i8wqh",
     "var": "--ux-11i8wqh",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": null,
     "dtcgDefault": null
   },
   "ux.controlKnob.borderColor": {
     "hash": "1szqg1n",
     "var": "--ux-1szqg1n",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": null,
     "dtcgDefault": null
   },
@@ -2023,7 +2131,7 @@
   "ux.controlVoid.foregroundColor": {
     "hash": "1nk9qds",
     "var": "--ux-1nk9qds",
-    "legacyDefault": "#767676",
+    "legacyDefault": "gray",
     "token": null,
     "dtcgDefault": null
   },
@@ -2331,315 +2439,315 @@
   "ux.feedback.feedbackColor": {
     "hash": "f7kpiw",
     "var": "--ux-f7kpiw",
-    "legacyDefault": "#00a4a6",
+    "legacyDefault": "darkcyan",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedback.onFeedbackColor": {
     "hash": "1no0ng9",
     "var": "--ux-1no0ng9",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackCritical.feedbackColor": {
     "hash": "1iiiqs3",
     "var": "--ux-1iiiqs3",
-    "legacyDefault": "#ffbbbb",
+    "legacyDefault": "mistyrose",
     "token": "color-feedback-critical-strong",
     "dtcgDefault": "firebrick"
   },
   "ux.feedbackCritical.onFeedbackColor": {
     "hash": "xaxxaq",
     "var": "--ux-xaxxaq",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": "color-feedback-critical-onstrong",
     "dtcgDefault": "white"
   },
   "ux.feedbackHighContrastCritical.feedbackColor": {
     "hash": "1fhc073",
     "var": "--ux-1fhc073",
-    "legacyDefault": "#db1802",
+    "legacyDefault": "crimson",
     "token": "color-feedback-critical-subtle",
     "dtcgDefault": "lavenderblush"
   },
   "ux.feedbackHighContrastCritical.onFeedbackColor": {
     "hash": "17o0ohq",
     "var": "--ux-17o0ohq",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": "color-feedback-critical-onsubtle",
     "dtcgDefault": "darkred"
   },
   "ux.feedbackHighContrastHighlight.feedbackColor": {
     "hash": "cuskv8",
     "var": "--ux-cuskv8",
-    "legacyDefault": "#09757a",
+    "legacyDefault": "teal",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackHighContrastHighlight.onFeedbackColor": {
     "hash": "c419qd",
     "var": "--ux-c419qd",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackHighContrastInfo.feedbackColor": {
     "hash": "1lpd00q",
     "var": "--ux-1lpd00q",
-    "legacyDefault": "#145fa9",
+    "legacyDefault": "royalblue",
     "token": "color-feedback-info-subtle",
     "dtcgDefault": "lightcyan"
   },
   "ux.feedbackHighContrastInfo.onFeedbackColor": {
     "hash": "15n32fv",
     "var": "--ux-15n32fv",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": "color-feedback-info-onsubtle",
     "dtcgDefault": "teal"
   },
   "ux.feedbackHighContrastInternal.feedbackColor": {
     "hash": "1iwdp0z",
     "var": "--ux-1iwdp0z",
-    "legacyDefault": "#b4006c",
+    "legacyDefault": "mediumvioletred",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackHighContrastInternal.onFeedbackColor": {
     "hash": "s2edbm",
     "var": "--ux-s2edbm",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackHighContrastNeutral.feedbackColor": {
     "hash": "e1mf41",
     "var": "--ux-e1mf41",
-    "legacyDefault": "#145fa9",
+    "legacyDefault": "royalblue",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackHighContrastNeutral.onFeedbackColor": {
     "hash": "wi4oww",
     "var": "--ux-wi4oww",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackHighContrastPassive.feedbackColor": {
     "hash": "1m9ys0v",
     "var": "--ux-1m9ys0v",
-    "legacyDefault": "#767676",
+    "legacyDefault": "gray",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackHighContrastPassive.onFeedbackColor": {
     "hash": "1j2zkam",
     "var": "--ux-1j2zkam",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackHighContrastPremium.feedbackColor": {
     "hash": "143smq7",
     "var": "--ux-143smq7",
-    "legacyDefault": "#e20087",
+    "legacyDefault": "deeppink",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackHighContrastPremium.onFeedbackColor": {
     "hash": "3lso4u",
     "var": "--ux-3lso4u",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackHighContrastSuccess.feedbackColor": {
     "hash": "1ep3kxj",
     "var": "--ux-1ep3kxj",
-    "legacyDefault": "#00a63f",
+    "legacyDefault": "green",
     "token": "color-feedback-success-subtle",
     "dtcgDefault": "honeydew"
   },
   "ux.feedbackHighContrastSuccess.onFeedbackColor": {
     "hash": "zk0uja",
     "var": "--ux-zk0uja",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": "color-feedback-success-onsubtle",
     "dtcgDefault": "darkgreen"
   },
   "ux.feedbackHighContrastWarning.feedbackColor": {
     "hash": "lv1r6m",
     "var": "--ux-lv1r6m",
-    "legacyDefault": "#de7c00",
+    "legacyDefault": "darkorange",
     "token": "color-feedback-warning-subtle",
     "dtcgDefault": "cornsilk"
   },
   "ux.feedbackHighContrastWarning.onFeedbackColor": {
     "hash": "tqp5z3",
     "var": "--ux-tqp5z3",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": "color-feedback-warning-onsubtle",
     "dtcgDefault": "orangered"
   },
   "ux.feedbackHighlight.feedbackColor": {
     "hash": "18lg5k",
     "var": "--ux-18lg5k",
-    "legacyDefault": "#a6fff8",
+    "legacyDefault": "paleturquoise",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackHighlight.onFeedbackColor": {
     "hash": "1iwsz6x",
     "var": "--ux-1iwsz6x",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackInfo.feedbackColor": {
     "hash": "1i7a912",
     "var": "--ux-1i7a912",
-    "legacyDefault": "#ddeaf8",
+    "legacyDefault": "aliceblue",
     "token": "color-feedback-info-strong",
     "dtcgDefault": "dodgerblue"
   },
   "ux.feedbackInfo.onFeedbackColor": {
     "hash": "1a8ld87",
     "var": "--ux-1a8ld87",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": "color-feedback-info-onstrong",
     "dtcgDefault": "white"
   },
   "ux.feedbackInternal.feedbackColor": {
     "hash": "bsmnmn",
     "var": "--ux-bsmnmn",
-    "legacyDefault": "#fbd9ed",
+    "legacyDefault": "lavenderblush",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackInternal.onFeedbackColor": {
     "hash": "1ygutpa",
     "var": "--ux-1ygutpa",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackNeutral.feedbackColor": {
     "hash": "1rfp50t",
     "var": "--ux-1rfp50t",
-    "legacyDefault": "#ddeaf8",
+    "legacyDefault": "aliceblue",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackNeutral.onFeedbackColor": {
     "hash": "qnydfw",
     "var": "--ux-qnydfw",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackPassive.feedbackColor": {
     "hash": "1u2jy43",
     "var": "--ux-1u2jy43",
-    "legacyDefault": "#d6d6d6",
+    "legacyDefault": "lightgray",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackPassive.onFeedbackColor": {
     "hash": "e5ryhe",
     "var": "--ux-e5ryhe",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackPremium.feedbackColor": {
     "hash": "1b26o0z",
     "var": "--ux-1b26o0z",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackPremium.onFeedbackColor": {
     "hash": "1pqaqki",
     "var": "--ux-1pqaqki",
-    "legacyDefault": "#e20087",
+    "legacyDefault": "deeppink",
     "token": null,
     "dtcgDefault": null
   },
   "ux.feedbackSuccess.feedbackColor": {
     "hash": "em0gr",
     "var": "--ux-em0gr",
-    "legacyDefault": "#9fffb8",
+    "legacyDefault": "palegreen",
     "token": "color-feedback-success-strong",
     "dtcgDefault": "forestgreen"
   },
   "ux.feedbackSuccess.onFeedbackColor": {
     "hash": "1mph5ru",
     "var": "--ux-1mph5ru",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": "color-feedback-success-onstrong",
     "dtcgDefault": "white"
   },
   "ux.feedbackWarning.feedbackColor": {
     "hash": "1tgn1ki",
     "var": "--ux-1tgn1ki",
-    "legacyDefault": "#ffeea9",
+    "legacyDefault": "palegoldenrod",
     "token": "color-feedback-warning-strong",
     "dtcgDefault": "darkorange"
   },
   "ux.feedbackWarning.onFeedbackColor": {
     "hash": "l48e4z",
     "var": "--ux-l48e4z",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": "color-feedback-warning-onstrong",
     "dtcgDefault": "black"
   },
   "ux.figure.figureColor0": {
     "hash": "k4t5bc",
     "var": "--ux-k4t5bc",
-    "legacyDefault": "#15a4ab",
+    "legacyDefault": "lightseagreen",
     "token": "color-chart-001",
     "dtcgDefault": "royalblue"
   },
   "ux.figure.figureColor1": {
     "hash": "yscvvt",
     "var": "--ux-yscvvt",
-    "legacyDefault": "#145fa9",
+    "legacyDefault": "royalblue",
     "token": "color-chart-002",
     "dtcgDefault": "darkcyan"
   },
   "ux.figure.figureColor10": {
     "hash": "99lo9",
     "var": "--ux-99lo9",
-    "legacyDefault": "#0c8a8f",
+    "legacyDefault": "darkcyan",
     "token": null,
     "dtcgDefault": null
   },
   "ux.figure.figureColor11": {
     "hash": "ux0m8o",
     "var": "--ux-ux0m8o",
-    "legacyDefault": "#09757a",
+    "legacyDefault": "teal",
     "token": null,
     "dtcgDefault": null
   },
   "ux.figure.figureColor12": {
     "hash": "swmbzv",
     "var": "--ux-swmbzv",
-    "legacyDefault": "#086366",
+    "legacyDefault": "teal",
     "token": null,
     "dtcgDefault": null
   },
   "ux.figure.figureColor13": {
     "hash": "xpiaca",
     "var": "--ux-xpiaca",
-    "legacyDefault": "#054648",
+    "legacyDefault": "teal",
     "token": null,
     "dtcgDefault": null
   },
   "ux.figure.figureColor14": {
     "hash": "ktf9ml",
     "var": "--ux-ktf9ml",
-    "legacyDefault": "#022627",
+    "legacyDefault": "darkslategray",
     "token": null,
     "dtcgDefault": null
   },
@@ -2681,7 +2789,7 @@
   "ux.figure.figureColor2": {
     "hash": "3seoiy",
     "var": "--ux-3seoiy",
-    "legacyDefault": "#ef6c0f",
+    "legacyDefault": "darkorange",
     "token": "color-chart-003",
     "dtcgDefault": "orange"
   },
@@ -2758,49 +2866,49 @@
   "ux.figure.figureColor3": {
     "hash": "ifyf3f",
     "var": "--ux-ifyf3f",
-    "legacyDefault": "#e20087",
+    "legacyDefault": "deeppink",
     "token": "color-chart-004",
     "dtcgDefault": "mediumorchid"
   },
   "ux.figure.figureColor4": {
     "hash": "1c4rju4",
     "var": "--ux-1c4rju4",
-    "legacyDefault": "#744bc4",
+    "legacyDefault": "mediumpurple",
     "token": "color-chart-005",
     "dtcgDefault": "salmon"
   },
   "ux.figure.figureColor5": {
     "hash": "1qsbael",
     "var": "--ux-1qsbael",
-    "legacyDefault": "#104a85",
+    "legacyDefault": "midnightblue",
     "token": "color-chart-006",
     "dtcgDefault": "mediumturquoise"
   },
   "ux.figure.figureColor6": {
     "hash": "vsd31q",
     "var": "--ux-vsd31q",
-    "legacyDefault": "#9d470a",
+    "legacyDefault": "saddlebrown",
     "token": "color-chart-007",
     "dtcgDefault": "darkgray"
   },
   "ux.figure.figureColor7": {
     "hash": "1afwtm7",
     "var": "--ux-1afwtm7",
-    "legacyDefault": "#8b0053",
+    "legacyDefault": "darkmagenta",
     "token": "color-chart-008",
     "dtcgDefault": "darkslategray"
   },
   "ux.figure.figureColor8": {
     "hash": "3uv4tc",
     "var": "--ux-3uv4tc",
-    "legacyDefault": "#462a72",
+    "legacyDefault": "darkslateblue",
     "token": null,
     "dtcgDefault": null
   },
   "ux.figure.figureColor9": {
     "hash": "iievdt",
     "var": "--ux-iievdt",
-    "legacyDefault": "#565656",
+    "legacyDefault": "dimgray",
     "token": null,
     "dtcgDefault": null
   },
@@ -2828,7 +2936,7 @@
   "ux.navigate.foregroundColor": {
     "hash": "2rqapw",
     "var": "--ux-2rqapw",
-    "legacyDefault": "#444444",
+    "legacyDefault": "dimgray",
     "token": "color-action-text-inline-default",
     "dtcgDefault": "royalblue"
   },
@@ -2870,7 +2978,7 @@
   "ux.navigateChosen.foregroundColor": {
     "hash": "1ymu8yg",
     "var": "--ux-1ymu8yg",
-    "legacyDefault": "#104a85",
+    "legacyDefault": "midnightblue",
     "token": "color-action-text-inline-pressed",
     "dtcgDefault": "midnightblue"
   },
@@ -2912,14 +3020,14 @@
   "ux.navigateFocused.foregroundColor": {
     "hash": "10kwq3t",
     "var": "--ux-10kwq3t",
-    "legacyDefault": "#1976d2",
+    "legacyDefault": "royalblue",
     "token": null,
     "dtcgDefault": null
   },
   "ux.navigateFocused.outlineColor": {
     "hash": "1e4z3ma",
     "var": "--ux-1e4z3ma",
-    "legacyDefault": "#1976d2",
+    "legacyDefault": "royalblue",
     "token": null,
     "dtcgDefault": null
   },
@@ -2954,7 +3062,7 @@
   "ux.navigateHovered.foregroundColor": {
     "hash": "1j87vvn",
     "var": "--ux-1j87vvn",
-    "legacyDefault": "#1976d2",
+    "legacyDefault": "royalblue",
     "token": "color-action-text-inline-hovered",
     "dtcgDefault": "teal"
   },
@@ -2975,7 +3083,7 @@
   "ux.navigatePrimary.backgroundColor": {
     "hash": "9i7okd",
     "var": "--ux-9i7okd",
-    "legacyDefault": "#f5f7f8",
+    "legacyDefault": "aliceblue",
     "token": null,
     "dtcgDefault": null
   },
@@ -2996,7 +3104,7 @@
   "ux.navigatePrimary.foregroundColor": {
     "hash": "1xxygco",
     "var": "--ux-1xxygco",
-    "legacyDefault": "#5e5e5e",
+    "legacyDefault": "dimgray",
     "token": null,
     "dtcgDefault": null
   },
@@ -3024,7 +3132,7 @@
   "ux.navigatePrimaryChosen.borderColor": {
     "hash": "t61743",
     "var": "--ux-t61743",
-    "legacyDefault": "#1bdbdb",
+    "legacyDefault": "turquoise",
     "token": null,
     "dtcgDefault": null
   },
@@ -3038,7 +3146,7 @@
   "ux.navigatePrimaryChosen.foregroundColor": {
     "hash": "1i83650",
     "var": "--ux-1i83650",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": null,
     "dtcgDefault": null
   },
@@ -3080,14 +3188,14 @@
   "ux.navigatePrimaryFocused.foregroundColor": {
     "hash": "1gkt6kl",
     "var": "--ux-1gkt6kl",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": null,
     "dtcgDefault": null
   },
   "ux.navigatePrimaryFocused.outlineColor": {
     "hash": "1wp39lq",
     "var": "--ux-1wp39lq",
-    "legacyDefault": "#1976d2",
+    "legacyDefault": "royalblue",
     "token": null,
     "dtcgDefault": null
   },
@@ -3122,7 +3230,7 @@
   "ux.navigatePrimaryHovered.foregroundColor": {
     "hash": "h6e91r",
     "var": "--ux-h6e91r",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": null,
     "dtcgDefault": null
   },
@@ -3164,7 +3272,7 @@
   "ux.navigateSecondary.foregroundColor": {
     "hash": "1xeg43i",
     "var": "--ux-1xeg43i",
-    "legacyDefault": "#767676",
+    "legacyDefault": "gray",
     "token": null,
     "dtcgDefault": null
   },
@@ -3185,14 +3293,14 @@
   "ux.navigateSecondaryChosen.backgroundColor": {
     "hash": "1d8mwhj",
     "var": "--ux-1d8mwhj",
-    "legacyDefault": "#fff",
+    "legacyDefault": "white",
     "token": null,
     "dtcgDefault": null
   },
   "ux.navigateSecondaryChosen.borderColor": {
     "hash": "1pvg8dx",
     "var": "--ux-1pvg8dx",
-    "legacyDefault": "#1bdbdb",
+    "legacyDefault": "turquoise",
     "token": null,
     "dtcgDefault": null
   },
@@ -3206,7 +3314,7 @@
   "ux.navigateSecondaryChosen.foregroundColor": {
     "hash": "9gvyua",
     "var": "--ux-9gvyua",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": null,
     "dtcgDefault": null
   },
@@ -3234,7 +3342,7 @@
   "ux.navigateSecondaryFocused.borderColor": {
     "hash": "1ely98k",
     "var": "--ux-1ely98k",
-    "legacyDefault": "#afafaf",
+    "legacyDefault": "darkgray",
     "token": null,
     "dtcgDefault": null
   },
@@ -3248,14 +3356,14 @@
   "ux.navigateSecondaryFocused.foregroundColor": {
     "hash": "38c183",
     "var": "--ux-38c183",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": null,
     "dtcgDefault": null
   },
   "ux.navigateSecondaryFocused.outlineColor": {
     "hash": "44qvxk",
     "var": "--ux-44qvxk",
-    "legacyDefault": "#1976d2",
+    "legacyDefault": "royalblue",
     "token": null,
     "dtcgDefault": null
   },
@@ -3276,7 +3384,7 @@
   "ux.navigateSecondaryHovered.borderColor": {
     "hash": "1vtao7i",
     "var": "--ux-1vtao7i",
-    "legacyDefault": "#afafaf",
+    "legacyDefault": "darkgray",
     "token": null,
     "dtcgDefault": null
   },
@@ -3290,7 +3398,7 @@
   "ux.navigateSecondaryHovered.foregroundColor": {
     "hash": "1qc8i9l",
     "var": "--ux-1qc8i9l",
-    "legacyDefault": "#111",
+    "legacyDefault": "black",
     "token": null,
     "dtcgDefault": null
   },
