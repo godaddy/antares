@@ -29,6 +29,11 @@
           "target": "components/blocks/project-inquiry-form/components/benefits/index.tsx"
         },
         {
+          "path": "project-inquiry-form/data/files.ts",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/data/files.ts"
+        },
+        {
           "path": "project-inquiry-form/components/drop-overlay/index.module.css",
           "type": "registry:style",
           "target": "components/blocks/project-inquiry-form/components/drop-overlay/index.module.css"

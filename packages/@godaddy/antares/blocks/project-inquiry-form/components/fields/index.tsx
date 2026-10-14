@@ -1,6 +1,5 @@
 'use client';
 
-import { useCallback } from 'react';
 import {
   Box,
   Button,
@@ -61,13 +60,6 @@ interface ContactFieldProps {
 
 /** Renders one required contact field from the form's field metadata. */
 function ContactField({ field, value, onChange }: ContactFieldProps) {
-  const handleChange = useCallback(
-    function handleChange(nextValue: string) {
-      onChange(field.name, nextValue);
-    },
-    [field.name, onChange]
-  );
-
   return (
     <TextField
       name={field.name}
@@ -75,7 +67,9 @@ function ContactField({ field, value, onChange }: ContactFieldProps) {
       value={value}
       isRequired
       validationBehavior="native"
-      onChange={handleChange}
+      onChange={function handleChange(nextValue: string) {
+        onChange(field.name, nextValue);
+      }}
     >
       <Label>{field.label}</Label>
       <Input autoComplete={field.autoComplete} />

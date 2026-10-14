@@ -48,7 +48,7 @@ describe('@godaddy/antares', function packageTests() {
           // Assert activation without opening the operating system's file picker.
         });
 
-      await userEvent.click(screen.getByText('The file must be less than 256 MiB'));
+      await userEvent.click(screen.getByText(/Each file must be less than 256 MiB/));
       expect(openPicker).toHaveBeenCalledTimes(1);
 
       screen.getByRole('button', { name: 'Add files', exact: true }).element().focus();
@@ -116,13 +116,18 @@ describe('@godaddy/antares', function packageTests() {
       expect(screen.getByRole('button', { name: /^Remove / }).all()).toHaveLength(5);
     });
 
-    it('does not activate the hint for an unsupported file type', async function rejectsDragType() {
+    it('validates unsupported files after a drop', async function rejectsDragType() {
       const screen = await render(<ProjectInquiryForm />);
       const target = screen.getByRole('textbox', { name: /Email/ }).element();
       const transfer = dragFiles([new File(['notes'], 'notes.txt', { type: 'text/plain' })]);
 
       sendDrag(target, 'dragenter', transfer);
-      await expect.element(screen.getByText('Drop Files to upload.')).not.toBeInTheDocument();
+      await expect.element(screen.getByText('Drop Files to upload.')).toBeVisible();
+      sendDrag(target, 'dragover', transfer);
+      sendDrag(target, 'drop', transfer);
+      await expect
+        .element(screen.getByRole('alert'))
+        .toHaveTextContent('Use PDF, JPG, GIF, or PNG files smaller than 256 MiB.');
       sendDrag(target, 'dragleave', transfer);
       await expect.element(screen.getByRole('button', { name: 'Remove notes.txt' })).not.toBeInTheDocument();
     });
@@ -216,6 +221,7 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.click(screen.getByRole('button', { name: 'Remove brief.pdf' }));
       await expect.element(screen.getByRole('button', { name: 'Remove brief.pdf' })).not.toBeInTheDocument();
       await expect.element(screen.getByText('notes.pdf', { exact: true })).toBeVisible();
+      await expect.element(screen.getByRole('button', { name: 'Add files' })).toHaveFocus();
     });
 
     it('releases image previews when an attachment is removed', async function releasesPreview() {
@@ -249,6 +255,7 @@ describe('@godaddy/antares', function packageTests() {
 
     it('shows the fallback when an image attachment preview fails', async function failedPreview() {
       const screen = await render(<ProjectInquiryForm />);
+      vi.spyOn(URL, 'createObjectURL').mockReturnValue('data:image/png;base64,invalid');
       const bytes = Uint8Array.from(
         atob('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZ1EAAAAASUVORK5CYII='),
         function toByte(character) {
@@ -257,12 +264,8 @@ describe('@godaddy/antares', function packageTests() {
       );
 
       await userEvent.upload(fileInput(screen.container), new File([bytes], 'photo.png', { type: 'image/png' }));
-      const preview = screen.getByRole('img', { name: 'photo.png' });
-      await expect.element(preview).toBeVisible();
-      preview.element().dispatchEvent(new Event('error'));
-
       await expect.element(screen.getByText('IMG', { exact: true })).toBeVisible();
-      await expect.element(screen.getByRole('img', { name: 'photo.png' })).not.toBeInTheDocument();
+      await expect.element(screen.getByRole('img', { name: '', exact: true })).not.toBeInTheDocument();
     });
 
     it('rejects files at the size limit', async function rejectsOversizedFile() {
@@ -283,6 +286,35 @@ describe('@godaddy/antares', function packageTests() {
         .element(screen.getByRole('alert'))
         .toHaveTextContent('Use PDF, JPG, GIF, or PNG files smaller than 256 MiB.');
       await expect.element(screen.getByRole('button', { name: 'Remove large.pdf' })).not.toBeInTheDocument();
+    });
+
+    it('accepts a supported extension when the MIME type is empty', async function acceptsEmptyMimeType() {
+      const screen = await render(<ProjectInquiryForm />);
+      const input = fileInput(screen.container);
+      const transfer = new DataTransfer();
+      transfer.items.add(new File(['brief'], 'brief.pdf', { type: '' }));
+      Object.defineProperty(input, 'files', { configurable: true, value: transfer.files });
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+
+      await expect.element(screen.getByRole('button', { name: 'Remove brief.pdf' })).toBeVisible();
+    });
+
+    it('limits the number of attachments kept in memory', async function limitsAttachments() {
+      const screen = await render(<ProjectInquiryForm />);
+      const input = fileInput(screen.container);
+      const transfer = new DataTransfer();
+
+      for (let index = 0; index < 11; index++) {
+        transfer.items.add(new File(['brief'], `brief-${index}.pdf`, { type: 'application/pdf' }));
+      }
+
+      Object.defineProperty(input, 'files', { configurable: true, value: transfer.files });
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+
+      await expect
+        .element(screen.getByRole('alert'))
+        .toHaveTextContent('Use up to 10 files with a combined size under 256 MiB.');
+      await expect.element(screen.getByRole('button', { name: 'Remove brief-0.pdf' })).not.toBeInTheDocument();
     });
 
     it('disables submission after removing the last attachment', async function requiresAttachment() {

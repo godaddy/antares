@@ -38,7 +38,9 @@ export function FilePreview({ file }: FilePreviewProps) {
       <Box
         as="img"
         src={url}
-        alt={file.name}
+        alt=""
+        loading="lazy"
+        decoding="async"
         width={56}
         height={56}
         rounding="lg"

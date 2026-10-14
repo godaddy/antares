@@ -1,12 +1,10 @@
 'use client';
 
-import { useCallback, useId } from 'react';
+import { useCallback, useId, useRef } from 'react';
 import { Button, Detail, FileTrigger, Flex, Icon, Text } from '@godaddy/antares';
+import { ACCEPTED_FILE_TYPES, fileKey, formatFileSize } from '../../data/files.ts';
 import { FilePreview } from '../file-preview/index.tsx';
 import styles from './index.module.css';
-
-/** MIME types accepted by the project inquiry attachment picker. */
-export const acceptedTypes = ['application/pdf', 'image/jpeg', 'image/gif', 'image/png'];
 
 interface AttachedFilesProps {
   /** Files currently selected in the form. */
@@ -22,28 +20,25 @@ interface AttachedFilesProps {
   onRemove: (file: File) => void;
 }
 
-/** Returns the stable identity used to deduplicate and remove an attachment. */
-export function fileKey(file: File) {
-  return JSON.stringify([file.name, file.size, file.type, file.lastModified]);
-}
-
-const fileSizeFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
-
 interface AttachmentRowProps {
   /** Attachment represented by the row. */
   file: File;
 
   /** Removes the represented attachment from the form. */
   onRemove: (file: File) => void;
+
+  /** Restores focus after the row is removed. */
+  onRestoreFocus: () => void;
 }
 
 /** Renders a selected attachment with its preview, size, and remove action. */
-function AttachmentRow({ file, onRemove }: AttachmentRowProps) {
+function AttachmentRow({ file, onRemove, onRestoreFocus }: AttachmentRowProps) {
   const handleRemove = useCallback(
     function handleRemove() {
       onRemove(file);
+      onRestoreFocus();
     },
-    [file, onRemove]
+    [file, onRemove, onRestoreFocus]
   );
 
   return (
@@ -51,7 +46,7 @@ function AttachmentRow({ file, onRemove }: AttachmentRowProps) {
       <FilePreview file={file} />
       <Flex direction="column" gap="sm" flex="1" className={styles.details}>
         <Text className={styles.fileName}>{file.name}</Text>
-        <Detail size="sm">{fileSizeFormatter.format(file.size / (1024 * 1024))} MiB</Detail>
+        <Detail size="sm">{formatFileSize(file)}</Detail>
       </Flex>
       <Button type="button" variant="minimal" size="sm" aria-label={`Remove ${file.name}`} onPress={handleRemove}>
         <Icon icon="x" aria-hidden="true" />
@@ -65,6 +60,11 @@ export function AttachedFiles({ files, error, onSelect, onRemove }: AttachedFile
   const sizeHintId = useId();
   const formatHintId = useId();
   const errorId = useId();
+  const pickerButtonRef = useRef<HTMLButtonElement>(null);
+
+  const restorePickerFocus = useCallback(function restorePickerFocus() {
+    pickerButtonRef.current?.focus();
+  }, []);
 
   return (
     <Flex direction="column" gap="sm" role="group" aria-label="Attach files (required)">
@@ -72,8 +72,9 @@ export function AttachedFiles({ files, error, onSelect, onRemove }: AttachedFile
         Attach files <span aria-hidden="true">*</span>
       </Text>
 
-      <FileTrigger acceptedFileTypes={acceptedTypes} allowsMultiple onSelect={onSelect}>
+      <FileTrigger acceptedFileTypes={ACCEPTED_FILE_TYPES} allowsMultiple onSelect={onSelect}>
         <Button
+          ref={pickerButtonRef}
           type="button"
           variant="minimal"
           aria-label="Add files"
@@ -87,14 +88,14 @@ export function AttachedFiles({ files, error, onSelect, onRemove }: AttachedFile
               <Text>or drag them here.</Text>
             </Flex>
             <Detail id={sizeHintId} align="center" size="sm">
-              The file must be less than 256 MiB
+              Each file must be less than 256 MiB; up to 10 files and 256 MiB total
             </Detail>
           </Flex>
         </Button>
       </FileTrigger>
 
       <Detail id={formatHintId} align="center" size="sm">
-        Supported formats: <strong>.pdf, .jpg, .gif, .png</strong>
+        Supported formats: <strong>.pdf, .jpg, .jpeg, .gif, .png</strong>
       </Detail>
 
       {error ? (
@@ -104,7 +105,9 @@ export function AttachedFiles({ files, error, onSelect, onRemove }: AttachedFile
       ) : null}
 
       {files.map(function renderFile(file) {
-        return <AttachmentRow key={fileKey(file)} file={file} onRemove={onRemove} />;
+        return (
+          <AttachmentRow key={fileKey(file)} file={file} onRemove={onRemove} onRestoreFocus={restorePickerFocus} />
+        );
       })}
     </Flex>
   );
