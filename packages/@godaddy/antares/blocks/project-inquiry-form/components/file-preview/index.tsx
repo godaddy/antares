@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { Box, Flex, Text } from '@godaddy/antares';
+import { filePreviewKind } from '../../data/files';
 import styles from './index.module.css';
 
 interface FilePreviewProps {
@@ -13,10 +14,11 @@ interface FilePreviewProps {
 export function FilePreview({ file }: FilePreviewProps) {
   const [url, setUrl] = useState<string>();
   const [failed, setFailed] = useState(false);
+  const previewKind = filePreviewKind(file);
 
   useEffect(
     function createPreview() {
-      if (!file.type.startsWith('image/')) return;
+      if (previewKind !== 'image') return;
 
       const next = URL.createObjectURL(file);
       setUrl(next);
@@ -26,7 +28,7 @@ export function FilePreview({ file }: FilePreviewProps) {
         URL.revokeObjectURL(next);
       };
     },
-    [file]
+    [file, previewKind]
   );
 
   const handlePreviewError = useCallback(function handlePreviewError() {
@@ -59,7 +61,7 @@ export function FilePreview({ file }: FilePreviewProps) {
       aria-hidden="true"
       className={styles.preview}
     >
-      <Text>{file.type === 'application/pdf' ? 'PDF' : 'IMG'}</Text>
+      <Text>{previewKind === 'pdf' ? 'PDF' : 'IMG'}</Text>
     </Flex>
   );
 }

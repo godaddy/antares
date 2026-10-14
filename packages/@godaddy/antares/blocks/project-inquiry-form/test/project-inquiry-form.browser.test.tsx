@@ -304,15 +304,46 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('button', { name: 'Remove large.pdf' })).not.toBeInTheDocument();
     });
 
-    it('accepts a supported extension when the MIME type is empty', async function acceptsEmptyMimeType() {
+    it('previews supported extensions when the MIME type is empty', async function previewsEmptyMimeTypes() {
       const screen = await render(<ProjectInquiryForm />);
       const input = fileInput(screen.container);
+      const previewUrl =
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZ1EAAAAASUVORK5CYII=';
+      vi.spyOn(URL, 'createObjectURL').mockReturnValue(previewUrl);
       const transfer = new DataTransfer();
       transfer.items.add(new File(['brief'], 'brief.pdf', { type: '' }));
+      transfer.items.add(new File(['image'], 'photo.png', { type: '' }));
       Object.defineProperty(input, 'files', { configurable: true, value: transfer.files });
       input.dispatchEvent(new Event('change', { bubbles: true }));
 
       await expect.element(screen.getByRole('button', { name: 'Remove brief.pdf' })).toBeVisible();
+      await expect.element(screen.getByRole('button', { name: 'Remove photo.png' })).toBeVisible();
+      await expect.element(screen.getByText('PDF', { exact: true })).toBeVisible();
+      expect(
+        Array.from(screen.container.querySelectorAll('img')).some(function hasPreview(image) {
+          return image.getAttribute('src') === previewUrl;
+        })
+      ).toBe(true);
+    });
+
+    it('rejects files over the combined size limit', async function rejectsCombinedSize() {
+      const screen = await render(<ProjectInquiryForm />);
+      const input = fileInput(screen.container);
+      const transfer = new DataTransfer();
+
+      for (let index = 0; index < 10; index++) {
+        const file = new File(['brief'], `brief-${index}.pdf`, { type: 'application/pdf' });
+        Object.defineProperty(file, 'size', { value: 27 * 1024 * 1024 });
+        transfer.items.add(file);
+      }
+
+      Object.defineProperty(input, 'files', { configurable: true, value: transfer.files });
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+
+      await expect
+        .element(screen.getByRole('alert'))
+        .toHaveTextContent('Use up to 10 files with a combined size of 256 MiB or less.');
+      await expect.element(screen.getByRole('button', { name: 'Remove brief-0.pdf' })).not.toBeInTheDocument();
     });
 
     it('limits the number of attachments kept in memory', async function limitsAttachments() {
