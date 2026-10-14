@@ -9,6 +9,9 @@ interface DashboardSidebarContentProps {
   /** Whether the desktop rail is pinned open. */
   isPinnedOpen: boolean;
 
+  /** Whether the content is rendered inside the mobile drawer. */
+  isMobileNavigation?: boolean;
+
   /** Selects a menu item without navigating the example. */
   onSelectItem: (label: DashboardNavigationItemLabel) => void;
 
@@ -20,10 +23,15 @@ interface DashboardSidebarContentProps {
 export function DashboardSidebarContent({
   activeItem,
   isPinnedOpen,
+  isMobileNavigation = false,
   onSelectItem,
   onToggleCollapse
 }: DashboardSidebarContentProps) {
-  const navigationToggleLabel = isPinnedOpen ? 'Collapse navigation' : 'Expand navigation';
+  const navigationToggleLabel = isMobileNavigation
+    ? 'Close navigation'
+    : isPinnedOpen
+      ? 'Collapse navigation'
+      : 'Expand navigation';
 
   return (
     <Flex className={styles.content} direction="column" gap="xl">
@@ -34,7 +42,7 @@ export function DashboardSidebarContent({
           variant="minimal"
           size="sm"
           aria-label={navigationToggleLabel}
-          aria-pressed={isPinnedOpen}
+          aria-pressed={isMobileNavigation ? undefined : isPinnedOpen}
           onPress={onToggleCollapse}
         >
           <Icon icon={isPinnedOpen ? 'sidebar-collapse' : 'sidebar-expand'} aria-hidden="true" />

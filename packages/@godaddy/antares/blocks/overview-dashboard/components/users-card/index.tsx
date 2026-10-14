@@ -41,10 +41,10 @@ export function UsersCard() {
                   </Flex>
 
                   <Flex className={styles.userActions} alignItems="center" gap="md">
-                    <Button variant="tertiary" size="sm">
+                    <Button variant="tertiary" size="sm" aria-label={`Upgrade ${user.name}`}>
                       Upgrade
                     </Button>
-                    <Button variant="tertiary" size="sm">
+                    <Button variant="tertiary" size="sm" aria-label={`Manage ${user.name}`}>
                       Manage
                     </Button>
                   </Flex>

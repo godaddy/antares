@@ -43,6 +43,8 @@ describe('@godaddy/antares', function packageTests() {
       assume(locator.getByRole('heading', { name: 'GoDaddy can do more for you' }).element()).exists();
       assume(locator.getByRole('heading', { name: 'Conversations' }).element()).exists();
       assume(locator.getByText('Facebook Marketplace').element()).exists();
+      assume(locator.getByRole('button', { name: 'Upgrade John Doe' }).element()).exists();
+      assume(locator.getByRole('button', { name: 'Manage Jane Smith' }).element()).exists();
 
       const expectedSalesTotal = new Intl.NumberFormat(undefined, {
         maximumFractionDigits: 0
@@ -105,6 +107,7 @@ describe('@godaddy/antares', function packageTests() {
       const collapsedDashboardIconCenter = collapsedDashboardIconBounds.left + collapsedDashboardIconBounds.width / 2;
       expect(Math.abs(collapsedLogoCenter - collapsedDashboardIconCenter)).toBeLessThanOrEqual(4);
 
+      const expandedMainLeft = main.getBoundingClientRect().left;
       await user.click(locator.getByRole('button', { name: 'Collapse navigation' }));
       const expandButton = container.querySelector('button[aria-label="Expand navigation"]') as HTMLElement;
       assume(expandButton).is.not.equal(null);
@@ -114,7 +117,6 @@ describe('@godaddy/antares', function packageTests() {
       assume(dashboardButton.element().querySelector('svg')).is.not.equal(null);
       assume(getComputedStyle(logo).display).is.not.equal('none');
 
-      const expandedMainLeft = main.getBoundingClientRect().left;
       assume(getComputedStyle(navigation).transitionProperty).includes('inline-size');
       assume(getComputedStyle(navigation).transitionDuration).includes('0.3s');
       await new Promise(function waitForCollapseTransition(resolve) {
@@ -203,8 +205,12 @@ describe('@godaddy/antares', function packageTests() {
       const drawer = page.getByRole('dialog', { name: 'Product navigation' });
       await expect.element(drawer).toBeVisible();
       await expect.element(locator.getByRole('heading', { name: 'Overview' })).toBeVisible();
+      const mobileNavigation = drawer.getByRole('navigation', { name: 'Product navigation' });
+      expect(getComputedStyle(mobileNavigation.element()).overflowY).toBe('auto');
 
-      await user.click(drawer.getByRole('button', { name: 'Collapse navigation' }));
+      const closeNavigation = drawer.getByRole('button', { name: 'Close navigation' });
+      await expect.element(closeNavigation).not.toHaveAttribute('aria-pressed');
+      await user.click(closeNavigation);
       await expect.element(drawer).not.toBeInTheDocument();
       assume(getComputedStyle(inlineNavigation).display).equals('none');
     });

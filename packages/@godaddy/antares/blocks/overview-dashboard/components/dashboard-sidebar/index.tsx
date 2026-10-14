@@ -1,4 +1,4 @@
-import { Drawer, Flex, InlineDrawer } from '@godaddy/antares';
+import { Content, Drawer, Flex, InlineDrawer } from '@godaddy/antares';
 import type { DashboardNavigationItemLabel } from '../../constants/config';
 import { DashboardSidebarContent } from '../dashboard-sidebar-content';
 import styles from './index.module.css';
@@ -61,14 +61,15 @@ export function DashboardSidebar({
         maxSize={224}
         aria-label="Product navigation"
       >
-        <Flex as="nav" direction="column" aria-label="Product navigation" padding="lg">
+        <Content role="navigation" aria-label="Product navigation" padding="lg">
           <DashboardSidebarContent
             activeItem={activeItem}
             isPinnedOpen
+            isMobileNavigation
             onSelectItem={onSelectItem}
             onToggleCollapse={onToggleCollapse}
           />
-        </Flex>
+        </Content>
       </Drawer>
     </>
   );
