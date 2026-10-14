@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useContext, useState, type ReactElement, type SVGProps } from 'react';
+import { useCallback, useEffect, useMemo, useContext, useState, type ReactElement, type SVGProps } from 'react';
 import { Box, type BoxContext } from '@bento/box';
 import { createPortal } from 'react-dom';
 
@@ -41,6 +41,11 @@ function sprite(id: string): SVGSVGElement {
   return sprite;
 }
 
+function SpriteRegistration({ children, register }: { children: ReactElement; register: () => void }) {
+  useEffect(register, [register]);
+  return children;
+}
+
 /**
  * React hook that introduces SVG illustrations to a sprite sheet. The hook
  * creates a new symbol element for the provided illustration and adds it to the
@@ -67,12 +72,12 @@ export function useSVGSprite(name: string, Graphic: ReactElement | undefined): R
         return;
       }
 
-      setTarget(document.createElement('div'));
+      setTarget((target) => target ?? document.createElement('div'));
     },
     [id, Graphic]
   );
 
-  useEffect(
+  const populate = useCallback(
     function populate() {
       if (!target || !Graphic) return;
 
@@ -99,10 +104,12 @@ export function useSVGSprite(name: string, Graphic: ReactElement | undefined): R
       return (
         <svg viewBox={props?.viewBox} xmlns={namespace} width={props?.width} height={props?.height}>
           <use xlinkHref={`${env.sprite}#${id}`} fill="currentColor" />
-          {target && Graphic ? createPortal(Graphic, target) : null}
+          {target && Graphic
+            ? createPortal(<SpriteRegistration register={populate}>{Graphic}</SpriteRegistration>, target)
+            : null}
         </svg>
       );
     },
-    [Graphic, id, target, env.sprite, props]
+    [Graphic, id, target, env.sprite, props, populate]
   );
 }

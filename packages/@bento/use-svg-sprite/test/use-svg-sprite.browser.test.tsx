@@ -140,6 +140,19 @@ describe('@bento/use-svg-sprite browser', function bento() {
     expect(document.getElementById(`${root}-absent`)).toBeNull();
   });
 
+  it('waits to register until the returned SVG is rendered', async function deferred() {
+    function Sprite({ visible }: { visible: boolean }) {
+      const svg = useSVGSprite('deferred', <svg>{play}</svg>);
+      return visible ? svg : null;
+    }
+    const { rerender } = await render(<Sprite visible={false} />);
+    expect(document.getElementById(`${root}-deferred`)).toBeNull();
+
+    await rerender(<Sprite visible />);
+    expect(document.getElementById(`${root}-deferred`)?.querySelector('path')).toBeTruthy();
+    expect(document.querySelectorAll(`[id="${root}-deferred"]`)).toHaveLength(1);
+  });
+
   it('registers a shared symbol once in StrictMode and keeps it after unmount', async function shared() {
     function Sprite() {
       return useSVGSprite('shared', play);
