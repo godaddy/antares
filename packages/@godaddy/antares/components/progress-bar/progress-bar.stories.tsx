@@ -1,15 +1,13 @@
 'use client';
 import { PlaygroundExample } from './examples/progress-bar-playground.tsx';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { ProgressBar, ProgressBarTrack, ProgressBarValue } from './src/index.tsx';
+import { ProgressBar } from './src/index.tsx';
 
 export default getMeta({
   title: 'components/ProgressBar'
 });
 
 export const Props = getComponentDocs(ProgressBar);
-export const TrackProps = getComponentDocs(ProgressBarTrack);
-export const ValueProps = getComponentDocs(ProgressBarValue);
 
 export const Examples = getExamples('./examples');
 
@@ -44,7 +42,7 @@ export const Playground = getStory(PlaygroundExample, {
     },
     showValue: {
       control: 'boolean',
-      description: 'Render the optional ProgressBarValue'
+      description: 'Render the optional visible value slot'
     },
     label: {
       control: 'text',

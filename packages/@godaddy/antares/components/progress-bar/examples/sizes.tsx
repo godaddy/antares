@@ -1,4 +1,4 @@
-import { Flex, Label, ProgressBar, ProgressBarTrack, ProgressBarValue } from '@godaddy/antares';
+import { Box, Flex, Label, ProgressBar } from '@godaddy/antares';
 
 /**
  * Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
@@ -9,18 +9,18 @@ export function SizesExample() {
     <Flex direction="column" gap="md">
       <ProgressBar size="xs" value={40}>
         <Label>Extra Small</Label>
-        <ProgressBarValue />
-        <ProgressBarTrack />
+        <Box slot="value" />
+        <Box slot="track" />
       </ProgressBar>
       <ProgressBar size="sm" value={60}>
         <Label>Small</Label>
-        <ProgressBarValue />
-        <ProgressBarTrack />
+        <Box slot="value" />
+        <Box slot="track" />
       </ProgressBar>
       <ProgressBar size="md" value={80}>
         <Label>Medium</Label>
-        <ProgressBarValue />
-        <ProgressBarTrack />
+        <Box slot="value" />
+        <Box slot="track" />
       </ProgressBar>
     </Flex>
   );

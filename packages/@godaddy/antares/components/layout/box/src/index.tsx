@@ -1,12 +1,19 @@
-import { forwardRef, type CSSProperties, type ElementType } from 'react';
+import { createContext, forwardRef, type CSSProperties, type ElementType } from 'react';
+import { useContextProps, type ContextValue } from 'react-aria-components';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '#types/polymorphic-react.ts';
 import { composeClassName, composeStyle } from '#utils/render-props.ts';
 import { toRoundingVar, toSpacingVar, type Elevation, type Rounding, type Spacing } from '../../tokens.ts';
 import styles from './index.module.css';
 
 export interface BoxOwnProps {
+  /** Custom data attributes, including props supplied through context. */
+  [dataAttribute: `data-${string}`]: string | number | boolean | undefined;
+
   /** Polymorphic element type. @default 'div' */
   as?: ElementType;
+
+  /** Named slot to consume from BoxContext. Pass `null` to opt out. */
+  slot?: string | null;
 
   /** Padding on all sides. Accepts single value or array. */
   padding?: Spacing | Spacing[];
@@ -99,6 +106,9 @@ export interface BoxOwnProps {
 /** Polymorphic Box props - combines Box props with the target element's props. */
 export type BoxProps<C extends ElementType = 'div'> = PolymorphicProps<C, BoxOwnProps>;
 
+/** Lets a parent provide props for its Box slots. */
+export const BoxContext = createContext<ContextValue<BoxProps, HTMLElement>>(null);
+
 /**
  * Primitive container for spacing, elevation, rounding, and self-alignment.
  * Prefer `<Flex />` or `<Grid />` which extend Box with layout capabilities.
@@ -106,6 +116,7 @@ export type BoxProps<C extends ElementType = 'div'> = PolymorphicProps<C, BoxOwn
  * @param props - {@link BoxProps}
  */
 export const Box = forwardRef(function Box(props: BoxProps<ElementType>, ref: PolymorphicRef<ElementType>) {
+  [props, ref] = useContextProps(props, ref, BoxContext);
   const {
     className,
     style,
@@ -131,6 +142,7 @@ export const Box = forwardRef(function Box(props: BoxProps<ElementType>, ref: Po
     gridColumnEnd,
     gridRowStart,
     gridRowEnd,
+    slot,
     ...rest
   } = props;
 
@@ -160,6 +172,7 @@ export const Box = forwardRef(function Box(props: BoxProps<ElementType>, ref: Po
     <Component
       {...rest}
       ref={ref}
+      slot={slot}
       className={composeClassName(className, styles.box)}
       style={composeStyle(style, computedStyle)}
       data-elevation={elevation}

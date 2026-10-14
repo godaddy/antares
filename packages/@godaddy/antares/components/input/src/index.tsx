@@ -8,7 +8,7 @@ import { Box, type BoxOwnProps } from '#components/layout/box';
 
 export const InputContext = RACInputContext;
 
-export interface InputProps extends RACInputProps, Omit<BoxOwnProps, 'as'> {}
+export interface InputProps extends RACInputProps, Omit<BoxOwnProps, 'as' | 'slot'> {}
 
 /** Single-line text control for use inside a field. */
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(props, ref) {

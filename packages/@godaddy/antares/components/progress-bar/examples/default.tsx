@@ -1,4 +1,4 @@
-import { Label, ProgressBar, ProgressBarTrack, ProgressBarValue, Text, type ProgressBarProps } from '@godaddy/antares';
+import { Box, Label, ProgressBar, Text, type ProgressBarProps } from '@godaddy/antares';
 
 /**
  * Compose a label, formatted value, track, and description.
@@ -8,8 +8,8 @@ export function DefaultExample(props: ProgressBarProps) {
   return (
     <ProgressBar value={60} {...props}>
       <Label>Loading…</Label>
-      <ProgressBarValue />
-      <ProgressBarTrack />
+      <Box slot="value" />
+      <Box slot="track" />
       <Text slot="description">Please wait while we process your request</Text>
     </ProgressBar>
   );

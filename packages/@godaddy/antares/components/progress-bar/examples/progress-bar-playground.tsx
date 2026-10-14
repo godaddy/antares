@@ -1,4 +1,4 @@
-import { Label, ProgressBar, ProgressBarTrack, ProgressBarValue, Text, type ProgressBarProps } from '@godaddy/antares';
+import { Box, Label, ProgressBar, Text, type ProgressBarProps } from '@godaddy/antares';
 
 interface PlaygroundExampleProps extends Pick<ProgressBarProps, 'size' | 'status' | 'value' | 'isIndeterminate'> {
   /** Visible label text. */
@@ -7,7 +7,7 @@ interface PlaygroundExampleProps extends Pick<ProgressBarProps, 'size' | 'status
   /** Description below the track. */
   description?: string;
 
-  /** Whether to render ProgressBarValue. */
+  /** Whether to render the visible value slot. */
   showValue?: boolean;
 }
 
@@ -29,8 +29,8 @@ export function PlaygroundExample({
       isIndeterminate={isIndeterminate}
     >
       {label ? <Label>{label}</Label> : null}
-      {showValue ? <ProgressBarValue /> : null}
-      <ProgressBarTrack />
+      {showValue ? <Box slot="value" /> : null}
+      <Box slot="track" />
       {description ? <Text slot="description">{description}</Text> : null}
     </ProgressBar>
   );

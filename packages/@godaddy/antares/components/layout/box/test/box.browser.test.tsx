@@ -7,10 +7,43 @@ import { AlignmentExample } from '../examples/alignment.tsx';
 import { HostCompositionExample } from '../examples/host-composition.tsx';
 import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
 import { StyleRenderPropExample } from '../examples/style-render-prop.tsx';
+import { ContextExample } from '../examples/context.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Box', function boxTests() {
     beforeEach(resetPointer);
+
+    it('merges context defaults and refs while allowing overrides and opt-out', async function contextProps() {
+      let contextElement: HTMLElement | null = null;
+      let consumerElement: HTMLDivElement | null = null;
+      const screen = await render(
+        <ContextExample
+          contextRef={function contextRef(element) {
+            contextElement = element;
+          }}
+          consumerRef={function consumerRef(element) {
+            consumerElement = element;
+          }}
+        />
+      );
+      const content = screen.getByText('Content from context').element();
+      expect(content).toHaveClass('context-class', 'consumer-class');
+      expect(content).toHaveStyle({ color: 'blue', opacity: '0.5', padding: '8px' });
+      expect(contextElement).toBe(content);
+      expect(consumerElement).toBe(content);
+      expect(content).toHaveAttribute('data-context', 'true');
+      const independent = screen.getByTestId('opt-out').element();
+      expect(independent).not.toHaveClass('context-class');
+      expect(independent).not.toHaveAttribute('data-context');
+      expect(independent).not.toHaveAttribute('slot');
+      await screen.rerender(
+        <ContextExample padding="sm" style={{ opacity: 1 }}>
+          Consumer content
+        </ContextExample>
+      );
+      const overridden = screen.getByText('Consumer content').element();
+      expect(overridden).toHaveStyle({ color: 'blue', opacity: '1', padding: '4px' });
+    });
 
     it('renders boxes with padding in the browser', async function rendersPadding() {
       const { getByText } = await render(<PaddingExample />);

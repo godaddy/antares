@@ -1,22 +1,12 @@
 import { useState, type RefAttributes } from 'react';
-import {
-  Button,
-  Label,
-  ProgressBar,
-  ProgressBarTrack,
-  ProgressBarValue,
-  Text,
-  type ProgressBarProps,
-  type ProgressBarTrackProps,
-  type ProgressBarValueProps
-} from '@godaddy/antares';
+import { Button, Label, ProgressBar, Box, Text, type ProgressBarProps, type BoxProps } from '@godaddy/antares';
 
 interface CompositionExampleProps extends ProgressBarProps, RefAttributes<HTMLDivElement> {
   /** Props for the track. */
-  trackProps?: ProgressBarTrackProps & RefAttributes<HTMLDivElement>;
+  trackProps?: BoxProps & RefAttributes<HTMLDivElement>;
 
   /** Props for the visible value. */
-  valueProps?: ProgressBarValueProps & RefAttributes<HTMLElement>;
+  valueProps?: BoxProps & RefAttributes<HTMLDivElement>;
 
   /** Include a nested progress bar to check context isolation. */
   nested?: boolean;
@@ -31,23 +21,24 @@ export function CompositionExample({ trackProps, valueProps, nested, ...props }:
       <ProgressBar value={60} aria-describedby="external-description" {...props}>
         {({ valueText }) => (
           <>
-            <ProgressBarTrack {...trackProps} />
+            <Box slot="track" {...trackProps} />
             <div style={{ display: 'contents' }}>
               <Text slot={null}>Additional content</Text>
+              <Box data-testid="unrelated-box" />
               {descriptionId && (
                 <Text id={descriptionId} slot="description">
                   {valueText} uploaded
                 </Text>
               )}
-              <ProgressBarValue {...valueProps} />
+              <Box slot="value" {...valueProps} />
               <Label>Uploading</Label>
             </div>
             {nested && (
               <div>
                 <ProgressBar value={20} size="xs" status="success">
                   <Label>Current file</Label>
-                  <ProgressBarValue />
-                  <ProgressBarTrack />
+                  <Box slot="value" />
+                  <Box slot="track" />
                   <Text slot="description">One file</Text>
                 </ProgressBar>
               </div>

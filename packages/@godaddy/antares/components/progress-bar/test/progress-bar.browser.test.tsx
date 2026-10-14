@@ -12,6 +12,7 @@ import { WithoutValueLabelExample } from '../examples/without-value-label.tsx';
 import { WithoutLabelExample } from '../examples/without-label.tsx';
 import { ValueDisplayExample } from '../examples/value-display.tsx';
 import { CompositionExample } from '../examples/composition.tsx';
+import { SlotsExample } from '../examples/slots.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#ProgressBar', function progressBarTests() {
@@ -107,11 +108,11 @@ describe('@godaddy/antares', function antares() {
       await expect.element(progress).toHaveAttribute('aria-valuemax', '100');
       await expect.element(progress).toHaveAccessibleDescription('Calculating the total size');
       expect(progress.element().textContent).not.toContain('60 files');
-      expect(progress.element().querySelector('[data-indeterminate]')).not.toBeNull();
+      expect(progress.element().querySelector('[slot="track"][data-indeterminate]')).not.toBeNull();
       await screen.rerender(<IndeterminateExample isIndeterminate={false} value={60} valueLabel="60 files" />);
       await expect.element(progress).toHaveAttribute('aria-valuenow', '60');
       await expect.element(screen.getByText('60 files')).toBeVisible();
-      expect(progress.element().querySelector('[data-indeterminate]')).toBeNull();
+      expect(progress.element().querySelector('[slot="track"][data-indeterminate]')).toBeNull();
       await screen.rerender(<IndeterminateExample />);
       await expect.element(progress).not.toHaveAttribute('aria-valuetext');
       await screen.rerender(<IndeterminateExample isIndeterminate={false} />);
@@ -198,7 +199,7 @@ describe('@godaddy/antares', function antares() {
               value = element;
             },
             className: 'custom-value',
-            size: 'lg'
+            style: { fontSize: 18 }
           }}
         />
       );
@@ -231,6 +232,10 @@ describe('@godaddy/antares', function antares() {
       await expect.element(screen.getByText('20%', { exact: true })).toBeVisible();
       const track = inner.element().querySelector('[aria-hidden="true"]') as HTMLElement;
       expect(track.getBoundingClientRect().height).toBe(6);
+      const unrelated = screen.getByTestId('unrelated-box').element();
+      expect(unrelated.textContent).toBe('');
+      expect(unrelated).not.toHaveAttribute('aria-hidden');
+      expect(unrelated).not.toHaveAttribute('data-indeterminate');
     });
 
     it('keeps the indicator visible while respecting motion preferences', async function motionPreferences() {
@@ -241,7 +246,7 @@ describe('@godaddy/antares', function antares() {
         });
         const { getByRole } = await render(<IndeterminateExample />);
         const progress = getByRole('progressbar');
-        const indicator = progress.element().querySelector('[data-indeterminate]') as Element;
+        const indicator = progress.element().querySelector('[slot="track"][data-indeterminate]') as Element;
         expect(indicator).not.toBeNull();
         expect(getComputedStyle(indicator, '::after').animationName).not.toBe('none');
         await session.send('Emulation.setEmulatedMedia', {
@@ -260,7 +265,10 @@ describe('@godaddy/antares', function antares() {
 
     it('mirrors the indeterminate sweep in RTL', async function rtlMotion() {
       const screen = await render(<IndeterminateExample dir="ltr" />);
-      const indicator = screen.getByRole('progressbar').element().querySelector('[data-indeterminate]') as Element;
+      const indicator = screen
+        .getByRole('progressbar')
+        .element()
+        .querySelector('[slot="track"][data-indeterminate]') as Element;
       expect(getComputedStyle(indicator).getPropertyValue('--_progress-bar-direction').trim()).toBe('1');
       await screen.rerender(<IndeterminateExample dir="rtl" />);
       expect(getComputedStyle(indicator).getPropertyValue('--_progress-bar-direction').trim()).toBe('-1');
@@ -277,7 +285,7 @@ describe('@godaddy/antares', function antares() {
         });
         const { getByRole } = await render(<IndeterminateExample />);
         const progress = getByRole('progressbar', { name: 'Preparing upload…' });
-        const indicator = progress.element().querySelector('[data-indeterminate]') as Element;
+        const indicator = progress.element().querySelector('[slot="track"][data-indeterminate]') as Element;
         const trackStyle = getComputedStyle(indicator);
         const fillStyle = getComputedStyle(indicator, '::after');
         expect(matchMedia('(forced-colors: active)').matches).toBe(true);
@@ -322,6 +330,50 @@ describe('@godaddy/antares', function antares() {
       expect(bars[1]).toHaveAttribute('data-status', 'success');
       expect(bars[2]).toHaveAttribute('data-status', 'warning');
       expect(bars[3]).toHaveAttribute('data-status', 'critical');
+    });
+
+    it('renders Box and Text values with accessible descriptions', async function slotValues() {
+      const screen = await render(<SlotsExample />);
+      const boxProgress = screen.getByRole('progressbar', { name: 'Box value' });
+      const textProgress = screen.getByRole('progressbar', { name: 'Text value' });
+      await expect.element(boxProgress).toHaveAttribute('aria-valuetext', '60%');
+      await expect.element(boxProgress).toHaveAccessibleDescription('Processing files');
+      const boxValue = boxProgress.element().querySelector('[slot="value"]')!;
+      const textValue = textProgress.element().querySelector('[slot="value"]')!;
+      expect(boxValue.textContent).toBe('60%');
+      expect(textValue.textContent).toBe('60%');
+      expect(getComputedStyle(boxValue).fontSize).toBe(getComputedStyle(textValue).fontSize);
+      expect(getComputedStyle(boxValue).color).toBe(getComputedStyle(textValue).color);
+      await expect.element(screen.getByText('Current: 60%')).toBeVisible();
+      expect(screen.getByRole('progressbar', { name: 'Track only' }).element().getBoundingClientRect().height).toBe(6);
+      await expect.element(screen.getByText('Waiting')).not.toBeVisible();
+    });
+
+    it('collapses empty values without losing numeric zero', async function emptyValues() {
+      const screen = await render(<WithoutLabelExample />);
+      const progress = screen.getByRole('progressbar');
+      expect(progress.element().getBoundingClientRect().height).toBe(12);
+      for (const valueContent of [null, false, true, '', <></>]) {
+        await screen.rerender(<WithoutLabelExample showValue valueContent={valueContent} />);
+        expect(progress.element().getBoundingClientRect().height).toBe(12);
+      }
+      await screen.rerender(<WithoutLabelExample showValue valueContent={0} />);
+      await expect.element(screen.getByText('0', { exact: true })).toBeVisible();
+    });
+
+    it('hides custom values in indeterminate mode and restores them afterward', async function modeChanges() {
+      const screen = await render(<WithoutLabelExample showValue valueContent="3 files" isIndeterminate />);
+      const progress = screen.getByRole('progressbar');
+      await expect.element(screen.getByText('3 files')).not.toBeVisible();
+      await expect.element(progress).not.toHaveAttribute('aria-valuenow');
+      expect(progress.element().getBoundingClientRect().height).toBe(12);
+      const track = progress.element().querySelector('[slot="track"]') as HTMLElement;
+      expect(track).toHaveAttribute('aria-hidden', 'true');
+      expect(track).toHaveAttribute('data-indeterminate');
+      await screen.rerender(<WithoutLabelExample showValue valueContent="3 files" />);
+      await expect.element(screen.getByText('3 files')).toBeVisible();
+      expect(track).not.toHaveAttribute('data-indeterminate');
+      expect(track.style.getPropertyValue('--progress-bar-progress')).toBe('60%');
     });
   });
 });

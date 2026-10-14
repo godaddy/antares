@@ -1,7 +1,7 @@
-import { Flex, Label, ProgressBar, ProgressBarTrack, ProgressBarValue } from '@godaddy/antares';
+import { Box, Flex, Label, ProgressBar } from '@godaddy/antares';
 
 /**
- * ProgressBarValue shows the formatted value by default and accepts static or state-based content.
+ * The value slot shows formatted text by default and accepts custom children.
  * Static content does not change the accessible value; set the root's valueLabel when needed.
  * @order 7
  */
@@ -10,24 +10,24 @@ export function ValueDisplayExample() {
     <Flex direction="column" gap="md">
       <ProgressBar value={60}>
         <Label>Upload progress</Label>
-        <ProgressBarValue />
-        <ProgressBarTrack />
+        <Box slot="value" />
+        <Box slot="track" />
       </ProgressBar>
       <ProgressBar value={60}>
         <Label>Files uploaded</Label>
-        <ProgressBarValue>
+        <Box slot="value">
           <span>3 of 5 files</span>
-        </ProgressBarValue>
-        <ProgressBarTrack />
+        </Box>
+        <Box slot="track" />
       </ProgressBar>
       <ProgressBar value={60}>
-        <Label>Processing progress</Label>
-        <ProgressBarValue>
-          {function renderValue({ percentage }) {
-            return `Current: ${percentage}%`;
-          }}
-        </ProgressBarValue>
-        <ProgressBarTrack />
+        {({ percentage }) => (
+          <>
+            <Label>Processing progress</Label>
+            <Box slot="value">Current: {percentage}%</Box>
+            <Box slot="track" />
+          </>
+        )}
       </ProgressBar>
     </Flex>
   );

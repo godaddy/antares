@@ -8,6 +8,7 @@ import { WithoutValueLabelExample } from '../examples/without-value-label.tsx';
 import { WithoutLabelExample } from '../examples/without-label.tsx';
 import { ValueDisplayExample } from '../examples/value-display.tsx';
 import { CompositionExample } from '../examples/composition.tsx';
+import { SlotsExample } from '../examples/slots.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#ProgressBar', function progressBarTests() {
@@ -60,6 +61,10 @@ describe('@godaddy/antares', function antares() {
     it('renders progress bars with different statuses', function rendersStatuses() {
       const result = renderToString(<StatusesExample />);
       expect(result).toMatchSnapshot();
+    });
+
+    it('renders slot composition on the server', function serverSlots() {
+      expect(renderToString(<SlotsExample />)).toMatchSnapshot();
     });
   });
 });
