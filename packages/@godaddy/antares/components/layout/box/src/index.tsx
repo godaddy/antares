@@ -107,7 +107,7 @@ export interface BoxOwnProps {
 export type BoxProps<C extends ElementType = 'div'> = PolymorphicProps<C, BoxOwnProps>;
 
 /** Lets a parent provide props for its Box slots. */
-export const BoxContext = createContext<ContextValue<BoxProps, HTMLElement>>(null);
+export const BoxContext = createContext<ContextValue<BoxProps<ElementType>, HTMLElement>>(null);
 
 /**
  * Primitive container for spacing, elevation, rounding, and self-alignment.

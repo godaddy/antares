@@ -46,6 +46,9 @@ export function ContextExample({ padding, style, children, contextRef, consumerR
           Independent content
         </Box>
       </BoxContext.Provider>
+      <BoxContext.Provider value={{ as: 'section' }}>
+        <Box>Section from context</Box>
+      </BoxContext.Provider>
     </Flex>
   );
 }

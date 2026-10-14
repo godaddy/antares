@@ -27,12 +27,14 @@ describe('@godaddy/antares', function antares() {
         />
       );
       const content = screen.getByText('Content from context').element();
+      expect(screen.getByText('Section from context').element().tagName).toBe('SECTION');
       expect(content).toHaveClass('context-class', 'consumer-class');
       expect(content).toHaveStyle({ color: 'blue', opacity: '0.5', padding: '8px' });
       expect(contextElement).toBe(content);
       expect(consumerElement).toBe(content);
       expect(content).toHaveAttribute('data-context', 'true');
       const independent = screen.getByTestId('opt-out').element();
+      expect(independent.tagName).toBe('DIV');
       expect(independent).not.toHaveClass('context-class');
       expect(independent).not.toHaveAttribute('data-context');
       expect(independent).not.toHaveAttribute('slot');
