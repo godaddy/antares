@@ -132,6 +132,31 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('button', { name: 'Remove picked.pdf' })).toBeVisible();
     });
 
+    it('shows a read error and keeps existing attachments when a drop cannot be read', async function handlesDropReadError() {
+      const screen = await render(<ProjectInquiryForm />);
+      const target = screen.getByRole('textbox', { name: /Email/ }).element();
+      const unreadable = new File(['drop'], 'unreadable.pdf', { type: 'application/pdf' });
+
+      await userEvent.upload(
+        fileInput(screen.container),
+        new File(['existing'], 'existing.pdf', { type: 'application/pdf' })
+      );
+
+      const resolve = Promise.resolve;
+      vi.spyOn(Promise, 'resolve').mockImplementation(function rejectUnreadableFile(value) {
+        if (value === unreadable) return Promise.reject(new Error('Unable to read file'));
+        return resolve(value);
+      });
+
+      sendDrag(target, 'drop', dragFiles([unreadable]));
+
+      await expect
+        .element(screen.getByRole('alert'))
+        .toHaveTextContent('We couldn’t read these files. Please try again.');
+      await expect.element(screen.getByRole('button', { name: 'Remove existing.pdf' })).toBeVisible();
+      await expect.element(screen.getByRole('button', { name: 'Remove unreadable.pdf' })).not.toBeInTheDocument();
+    });
+
     it('validates unsupported files after a drop', async function rejectsDragType() {
       const screen = await render(<ProjectInquiryForm />);
       const target = screen.getByRole('textbox', { name: /Email/ }).element();
