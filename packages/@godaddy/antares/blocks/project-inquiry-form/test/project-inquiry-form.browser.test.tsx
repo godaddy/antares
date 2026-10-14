@@ -66,7 +66,7 @@ describe('@godaddy/antares', function packageTests() {
       const screen = await render(<ProjectInquiryForm />);
       const name = screen.getByRole('textbox', { name: /Full name/ });
       const email = screen.getByRole('textbox', { name: /Email/ });
-      const hint = screen.getByText('Drop Files to upload.', { exact: true });
+      const hint = screen.getByText('Drop files to upload.', { exact: true });
       const transfer = dragFiles([new File(['brief'], 'brief.pdf', { type: 'application/pdf' })]);
 
       await userEvent.fill(name, 'Joan');
@@ -104,12 +104,12 @@ describe('@godaddy/antares', function packageTests() {
         const transfer = dragFiles([new File(['drop'], filename, { type: 'application/pdf' })]);
 
         sendDrag(target.element(), 'dragenter', transfer);
-        await expect.element(screen.getByText('Drop Files to upload.')).toBeVisible();
+        await expect.element(screen.getByText('Drop files to upload.')).toBeVisible();
         sendDrag(target.element(), 'dragover', transfer);
         sendDrag(target.element(), 'drop', transfer);
 
         await expect.element(screen.getByRole('button', { name: `Remove ${filename}` })).toBeVisible();
-        await expect.element(screen.getByText('Drop Files to upload.')).not.toBeInTheDocument();
+        await expect.element(screen.getByText('Drop files to upload.')).not.toBeInTheDocument();
       }
 
       await expect.element(screen.getByRole('button', { name: 'Remove picker.pdf' })).toBeVisible();
@@ -142,7 +142,7 @@ describe('@godaddy/antares', function packageTests() {
         new File(['existing'], 'existing.pdf', { type: 'application/pdf' })
       );
 
-      const resolve = Promise.resolve;
+      const resolve = Promise.resolve.bind(Promise);
       vi.spyOn(Promise, 'resolve').mockImplementation(function rejectUnreadableFile(value) {
         if (value === unreadable) return Promise.reject(new Error('Unable to read file'));
         return resolve(value);
@@ -163,7 +163,7 @@ describe('@godaddy/antares', function packageTests() {
       const transfer = dragFiles([new File(['notes'], 'notes.txt', { type: 'text/plain' })]);
 
       sendDrag(target, 'dragenter', transfer);
-      await expect.element(screen.getByText('Drop Files to upload.')).toBeVisible();
+      await expect.element(screen.getByText('Drop files to upload.')).toBeVisible();
       sendDrag(target, 'dragover', transfer);
       sendDrag(target, 'drop', transfer);
       await expect

@@ -22,7 +22,7 @@ export function DropOverlay({ isDropTarget }: DropOverlayProps) {
       className={styles.overlay}
     >
       <Icon icon="upload" aria-hidden="true" />
-      <Text as="strong">Drop Files to upload.</Text>
+      <Text as="strong">Drop files to upload.</Text>
     </Flex>
   );
 }
