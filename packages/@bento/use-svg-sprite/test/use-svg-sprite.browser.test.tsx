@@ -1,10 +1,10 @@
 import { root, useSVGSprite } from '@bento/use-svg-sprite';
-import { render, renderHook } from 'vitest-browser-react';
+import { render } from 'vitest-browser-react';
 import { Environment } from '@bento/environment';
-import { describe, it } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { Icon } from '@bento/icon';
 import type React from 'react';
-import { act } from 'react';
+import { act, createContext, useContext, StrictMode } from 'react';
 import assume from 'assume';
 
 describe('@bento/use-svg-sprite browser', function bento() {
@@ -14,13 +14,14 @@ describe('@bento/use-svg-sprite browser', function bento() {
     </svg>
   );
 
-  async function flushedHook(fn) {
-    const res = renderHook(fn);
-    await act(function flush() {
-      /* delay returning until all dom changes have been made */
-    });
-
-    return res;
+  async function flushedHook(fn: () => React.ReactElement | null) {
+    const result = { current: null as React.ReactElement | null };
+    function Sprite() {
+      result.current = fn();
+      return result.current;
+    }
+    const res = await render(<Sprite />);
+    return { ...res, result };
   }
 
   it('introduces the sprite container if it does not exist', async function sprite() {
@@ -120,5 +121,86 @@ describe('@bento/use-svg-sprite browser', function bento() {
     const svg = result.current as React.ReactElement | null;
     const use = Array.isArray(svg?.props.children) ? svg?.props.children[0] : svg?.props.children;
     assume(use?.props.xlinkHref).equals(`#${root}-plain`);
+  });
+
+  it('registers a graphic when it becomes available and when its name changes', async function loaded() {
+    function Sprite({ name, graphic }: { name: string; graphic?: React.ReactElement }) {
+      return useSVGSprite(name, graphic);
+    }
+    const { rerender } = await render(<Sprite name="loaded" />);
+    expect(document.getElementById(`${root}-loaded`)).toBeNull();
+
+    await rerender(<Sprite name="loaded" graphic={play} />);
+    expect(document.getElementById(`${root}-loaded`)?.querySelector('path')).toBeTruthy();
+
+    await rerender(<Sprite name="renamed" graphic={play} />);
+    expect(document.getElementById(`${root}-renamed`)?.querySelector('path')).toBeTruthy();
+
+    await rerender(<Sprite name="absent" />);
+    expect(document.getElementById(`${root}-absent`)).toBeNull();
+  });
+
+  it('registers a shared symbol once in StrictMode and keeps it after unmount', async function shared() {
+    function Sprite() {
+      return useSVGSprite('shared', play);
+    }
+    const { unmount } = await render(
+      <StrictMode>
+        <Sprite />
+        <Sprite />
+      </StrictMode>
+    );
+
+    const symbol = document.getElementById(`${root}-shared`);
+    expect(symbol?.querySelector('path')).toBeTruthy();
+    expect(document.querySelectorAll(`[id="${root}-shared"]`)).toHaveLength(1);
+
+    await unmount();
+    expect(document.getElementById(`${root}-shared`)).toBe(symbol);
+    expect(symbol?.querySelector('path')).toBeTruthy();
+  });
+
+  it('preserves existing symbol nodes when another sprite is added', async function preserved() {
+    await flushedHook(() => useSVGSprite('preserved', play));
+    const symbol = document.getElementById(`${root}-preserved`);
+    await flushedHook(() => useSVGSprite('new-symbol', play));
+    expect(document.getElementById(`${root}-preserved`)).toBe(symbol);
+  });
+
+  it('renders custom graphics using the host context', async function context() {
+    const Color = createContext('red');
+    function Graphic() {
+      return (
+        <svg>
+          <path fill={useContext(Color)} d="M0 0h10v10z" />
+        </svg>
+      );
+    }
+    function Sprite() {
+      return useSVGSprite('context', <Graphic />);
+    }
+    await render(
+      <Color.Provider value="blue">
+        <Sprite />
+      </Color.Provider>
+    );
+    expect(document.getElementById(`${root}-context`)?.querySelector('path')).toHaveAttribute('fill', 'blue');
+  });
+
+  it('updates the sprite URL when the environment changes', async function environment() {
+    function Sprite() {
+      return useSVGSprite('environment', play);
+    }
+    const { container, rerender } = await render(
+      <Environment sprite="first.svg">
+        <Sprite />
+      </Environment>
+    );
+    await rerender(
+      <Environment sprite="second.svg">
+        <Sprite />
+      </Environment>
+    );
+    expect(container.querySelector('use')).toHaveAttribute('xlink:href', `second.svg#${root}-environment`);
   });
 });
