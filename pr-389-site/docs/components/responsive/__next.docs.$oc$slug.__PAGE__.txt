@@ -1,0 +1,245 @@
+3:"$Sreact.fragment"
+4:"/antares/pr-389-site/_next/static/chunks/16cnpvut8diq-.js"
+5:"/antares/pr-389-site/_next/static/chunks/0amgp_m1z1p90.js"
+6:I[339756,["$4","$5"],"default"]
+7:I[837457,["$4","$5"],"default"]
+c:"/antares/pr-389-site/_next/static/chunks/3go1ngu2dh6q3.js"
+d:"/antares/pr-389-site/_next/static/chunks/0cq_r7uivgtia.js"
+e:"/antares/pr-389-site/_next/static/chunks/44d0fxytx9jkg.js"
+f:"/antares/pr-389-site/_next/static/chunks/0_p798nhv97_v.js"
+10:"/antares/pr-389-site/_next/static/chunks/0goqhg6ph2zuq.js"
+11:"/antares/pr-389-site/_next/static/chunks/30oi00m-jo1m5.js"
+12:"/antares/pr-389-site/_next/static/chunks/2znf03_833nl7.js"
+13:"/antares/pr-389-site/_next/static/chunks/428imhwwk-ha_.js"
+14:"/antares/pr-389-site/_next/static/chunks/3nd4_wmz1ljg4.js"
+15:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsPage"]
+16:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsTitle"]
+17:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsDescription"]
+18:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"LLMCopyButton"]
+19:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"ViewOptions"]
+1a:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsBody"]
+1b:I[494157,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Heading"]
+1c:I[403113,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"StoryRenderer"]
+1d:I[700498,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DefaultExample"]
+1e:"DynamicCodeBlock"
+1f:I[904143,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$1e"]
+20:"ContainerLayoutExample"
+21:I[714320,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$20"]
+3e:"ViewportBoundary"
+3f:I[897367,["$4","$5"],"$3e"]
+40:"MetadataBoundary"
+41:I[897367,["$4","$5"],"$40"]
+42:"$Sreact.suspense"
+9:X
+9:C
+a:X
+22:T70a,import { Box, Button, Flex, Heading, Text } from '@godaddy/antares';
+
+interface DomainCardProps {
+  domain: string;
+  renewal: string;
+}
+
+function DomainCard({ domain, renewal }: DomainCardProps) {
+  return (
+    <Box as="article" aria-label={domain} padding="md" elevation="card" className="responsive-domain-card">
+      <Flex gap="sm" className="responsive-domain-card-body">
+        <Flex direction="column" gap="xs">
+          <Heading level={3}>{domain}</Heading>
+          <Text>{renewal}</Text>
+        </Flex>
+        <Flex wrap="wrap" gap="sm">
+          <Button variant="secondary">Manage DNS</Button>
+          <Button>Renew</Button>
+        </Flex>
+      </Flex>
+    </Box>
+  );
+}
+
+export function ContainerLayoutExample() {
+  return (
+    <>
+      <style>{`
+        .responsive-container-example-sidebar {
+          flex: 1 1 14rem;
+        }
+
+        .responsive-container-example-main {
+          flex: 3 1 28rem;
+        }
+
+        .responsive-domain-card {
+          container: domain-card / inline-size;
+        }
+
+        .responsive-domain-card-body {
+          flex-direction: column;
+        }
+
+        @container domain-card (min-width: 28rem) {
+          .responsive-domain-card-body {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+          }
+        }
+      `}</style>
+      <Flex wrap="wrap" gap="md">
+        <Box as="aside" aria-label="Sidebar" className="responsive-container-example-sidebar">
+          <DomainCard domain="shop.example" renewal="Renews on March 2, 2027" />
+        </Box>
+        <Box as="main" aria-label="Domains" className="responsive-container-example-main">
+          <DomainCard domain="example.com" renewal="Renews on January 12, 2027" />
+        </Box>
+      </Flex>
+    </>
+  );
+}b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L15",null,{"toc":[{"depth":2,"url":"#features","title":"Features"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#intrinsic-layout","title":"Intrinsic layout"},{"depth":3,"url":"#container-query","title":"Container query"},{"depth":3,"url":"#viewport-media-query","title":"Viewport media query"},{"depth":3,"url":"#form-reflow","title":"Form reflow"},{"depth":3,"url":"#responsive-size","title":"Responsive size"},{"depth":2,"url":"#customization","title":"Customization"},{"depth":3,"url":"#responsive-size-1","title":"Responsive size"},{"depth":2,"url":"#accessibility","title":"Accessibility"}],"footer":{"enabled":true},"children":[["$","$L16",null,{"children":"Responsive"}],["$","$L17",null,{"className":"mb-0","children":"How Antares components adapt, and how to build responsive layouts around them with native CSS."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L18",null,{"markdownUrl":"/docs/components/responsive.mdx"}],["$","$L19",null,{"markdownUrl":"/docs/components/responsive.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/responsive/README.mdx"}]]}],["$","$L1a",null,{"children":[null,"\n",["$","$L1b",null,{"as":"h2","id":"features","children":"Features"}],"\n",["$","ul",null,{"children":["\n",["$","li",null,{"children":"Components adapt to the space they are given with intrinsic CSS and container queries."}],"\n",["$","li",null,{"children":"Page layout stays in your CSS, with your own media queries and breakpoints."}],"\n",["$","li",null,{"children":["Component sizes can follow ",["$","code",null,{"children":"--antares-size"}],", so your CSS can change them at any breakpoint."]}],"\n",["$","li",null,{"children":"Responsive styles are plain CSS, so server rendering needs no viewport guess."}],"\n"]}],"\n",["$","$L1b",null,{"as":"h2","id":"examples","children":"Examples"}],"\n",["$","$L1b",null,{"as":"h3","id":"intrinsic-layout","children":"Intrinsic layout"}],"\n",["$","p",null,{"children":["Hosting plans wrap into as many columns as fit, with no breakpoint. ",["$","code",null,{"children":"auto-fill"}]," and ",["$","code",null,{"children":"minmax()"}],"\npick the column count from the available width. Start here before reaching for a query."]}],"\n",["$","$L1c",null,{"component":"$1d"}],"\n",["$","$L1f",null,{"lang":"tsx","code":"import { Button, Flex, Grid, Heading, Text } from '@godaddy/antares';\n\nconst plans = [\n  { name: 'Economy', summary: 'One website with 25 GB of storage.' },\n  { name: 'Deluxe', summary: 'Ten websites with 50 GB of storage.' },\n  { name: 'Ultimate', summary: 'Twenty-five websites with 75 GB of storage.' }\n];\n\nexport function DefaultExample() {\n  return (\n    <Grid as=\"section\" aria-label=\"Hosting plans\" columns=\"repeat(auto-fill, minmax(min(16rem, 100%), 1fr))\" gap=\"md\">\n      {plans.map(function plan({ name, summary }) {\n        return (\n          <Flex key={name} direction=\"column\" alignItems=\"start\" gap=\"sm\" padding=\"md\" elevation=\"card\">\n            <Heading level={3}>{name}</Heading>\n            <Text>{summary}</Text>\n            <Button variant=\"secondary\">Choose {name}</Button>\n          </Flex>\n        );\n      })}\n    </Grid>\n  );\n}"}],"\n",["$","$L1b",null,{"as":"h3","id":"container-query","children":"Container query"}],"\n",["$","p",null,{"children":"The same domain card sits in a narrow sidebar and a wide main area. It stacks in the sidebar and\nlines up in the main area at the same viewport width, because it queries its own container. The\n28rem threshold belongs to the card. Its CSS owns the direction and alignment, so those props stay\nunset."}],"\n",["$","$L1c",null,{"component":"$21"}],"\n",["$","$L1f",null,{"lang":"tsx","code":"$22"}],"\n","$L23","\n","$L24","\n","$L25","\n","$L26","\n","$L27","\n","$L28","\n","$L29","\n","$L2a","\n","$L2b","\n","$L2c","\n","$L2d","\n","$L2e","\n","$L2f","\n","$L30","\n","$L31","\n","$L32","\n","$L33","\n","$L34","\n","$L35","\n","$L36","\n","$L37","\n","$L38","\n","$L39"]}]]}],["$L3a","$L3b"],"$L3c"]}],"p":"$@3d","v":null,"s":"$a"}}]]
+2:[["children",{"s":{"n":"slug","t":"oc","k":"components/responsive","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
+1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L3f",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L41",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$42",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Responsive"}],["$","meta","1",{"name":"description","content":"How Antares components adapt, and how to build responsive layouts around them with native CSS."}],["$","meta","2",{"property":"og:title","content":"Responsive"}],["$","meta","3",{"property":"og:description","content":"How Antares components adapt, and how to build responsive layouts around them with native CSS."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/components/responsive/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Responsive"}],["$","meta","7",{"name":"twitter:description","content":"How Antares components adapt, and how to build responsive layouts around them with native CSS."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/components/responsive/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@43","v":null,"s":"$a"}},"a":"$@44","u":"$@45","b":"5Q_mAmVBAVtjwDL9hRo5R"}
+46:"ViewportLayoutExample"
+47:I[459766,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$46"]
+49:I[747164,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"FormExample"]
+4b:"ResponsiveSizeExample"
+4c:I[603387,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$4b"]
+4d:I[897367,["$4","$5"],"OutletBoundary"]
+23:["$","$L1b",null,{"as":"h3","id":"viewport-media-query","children":"Viewport media query"}]
+24:["$","p",null,{"children":["Page layout belongs to the app, so its CSS picks the breakpoint. This settings page shows its\nnavigation beside the content from ",["$","code",null,{"children":"64rem"}]," and stacks it above the content below that. Leave\n",["$","code",null,{"children":"columns"}]," unset so it does not place a competing value in inline styles."]}]
+25:["$","$L1c",null,{"component":"$47"}]
+48:T57f,import { Box, Flex, Grid, Heading, LinkButton, Text } from '@godaddy/antares';
+
+const sections = [
+  { name: 'Profile', href: '#profile' },
+  { name: 'Security', href: '#security' },
+  { name: 'Payment methods', href: '#payment-methods' },
+  { name: 'Notifications', href: '#notifications' }
+];
+
+export function ViewportLayoutExample() {
+  return (
+    <>
+      <style>{`
+        .responsive-viewport-example {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        @media (min-width: 64rem) {
+          .responsive-viewport-example {
+            grid-template-columns: 16rem minmax(0, 1fr);
+          }
+        }
+      `}</style>
+      <Grid as="section" aria-label="Account settings" gap="lg" className="responsive-viewport-example">
+        <Box as="nav" aria-label="Settings">
+          <Flex direction="column" alignItems="start" gap="xs">
+            {sections.map(function section({ name, href }) {
+              return (
+                <LinkButton key={name} variant="minimal" href={href}>
+                  {name}
+                </LinkButton>
+              );
+            })}
+          </Flex>
+        </Box>
+        <Flex as="section" aria-label="Profile" direction="column" gap="sm" padding="md" elevation="card">
+          <Heading level={2}>Profile</Heading>
+          <Text>Update the name and contact details on your account.</Text>
+        </Flex>
+      </Grid>
+    </>
+  );
+}26:["$","$L1f",null,{"lang":"tsx","code":"$48"}]
+27:["$","$L1b",null,{"as":"h3","id":"form-reflow","children":"Form reflow"}]
+28:["$","p",null,{"children":["Billing details in one column on small screens and two from ",["$","code",null,{"children":"64rem"}],". Type into a field and resize:\nCSS reflows the same inputs, preserving their values, focus, and selection. Let CSS own the columns\nand allow long descriptions to wrap."]}]
+29:["$","$L1c",null,{"component":"$49"}]
+4a:T7e6,import { Grid, Input, Label, Text, TextField } from '@godaddy/antares';
+
+interface FormExampleProps {
+  /** Help text that can wrap onto multiple lines. */
+  description?: string;
+
+  /** Reading direction of the form. */
+  dir?: 'ltr' | 'rtl';
+}
+
+export function FormExample({ description = 'Use the name on your payment card.', dir }: FormExampleProps) {
+  return (
+    <>
+      <style>{`
+        .responsive-form-example {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .responsive-form-example-field {
+          min-inline-size: 0;
+          overflow-wrap: anywhere;
+        }
+
+        @media (min-width: 64rem) {
+          .responsive-form-example {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
+          .responsive-form-example-wide {
+            grid-column: 1 / -1;
+          }
+        }
+      `}</style>
+      <Grid as="form" aria-label="Billing details" dir={dir} gap="md" className="responsive-form-example">
+        <TextField name="name" autoComplete="name" className="responsive-form-example-field">
+          <Label>Full name</Label>
+          <Input />
+          <Text slot="description">{description}</Text>
+        </TextField>
+        <TextField name="email" type="email" autoComplete="email" className="responsive-form-example-field">
+          <Label>Email</Label>
+          <Input />
+        </TextField>
+        <TextField
+          name="address"
+          autoComplete="street-address"
+          className="responsive-form-example-field responsive-form-example-wide"
+        >
+          <Label>Street address</Label>
+          <Input />
+        </TextField>
+        <TextField name="city" autoComplete="address-level2" className="responsive-form-example-field">
+          <Label>City</Label>
+          <Input />
+        </TextField>
+        <TextField name="postalCode" autoComplete="postal-code" className="responsive-form-example-field">
+          <Label>Postal code</Label>
+          <Input />
+        </TextField>
+      </Grid>
+    </>
+  );
+}2a:["$","$L1f",null,{"lang":"tsx","code":"$4a"}]
+2b:["$","$L1b",null,{"as":"h3","id":"responsive-size","children":"Responsive size"}]
+2c:["$","p",null,{"children":["A ",["$","code",null,{"children":"TextLockup"}]," without ",["$","code",null,{"children":"size"}]," follows ",["$","code",null,{"children":"--antares-size"}]," from a parent, so the app's CSS can change it\nat its own breakpoint. This dashboard greeting is ",["$","code",null,{"children":"md"}]," on small screens and ",["$","code",null,{"children":"xl"}]," from ",["$","code",null,{"children":"80rem"}],".\nBrowsers without container style queries fall back to the surrounding size scope (",["$","code",null,{"children":"md"}]," here)."]}]
+2d:["$","$L1c",null,{"component":"$4c"}]
+2e:["$","$L1f",null,{"lang":"tsx","code":"import { Box, Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function ResponsiveSizeExample() {\n  return (\n    <>\n      <style>{`\n        .responsive-size-example {\n          --antares-size: md;\n        }\n\n        @media (min-width: 80rem) {\n          .responsive-size-example {\n            --antares-size: xl;\n          }\n        }\n      `}</style>\n      <Box as=\"header\" className=\"responsive-size-example\">\n        <TextLockup>\n          <Text slot=\"eyebrow\">Dashboard</Text>\n          <Heading slot=\"title\" level={1}>\n            Welcome back, Ada\n          </Heading>\n          <Text slot=\"body\">Two domains renew this month. Review them to keep your sites online.</Text>\n        </TextLockup>\n      </Box>\n    </>\n  );\n}"}]
+2f:["$","$L1b",null,{"as":"h2","id":"customization","children":"Customization"}]
+30:["$","p",null,{"children":"Antares publishes no viewport breakpoints. Components don't change by viewport width, except overlays\nsuch as Modal and Drawer, which document their own thresholds. Choose the breakpoints your layout needs,\nand write them in your own media or container queries."}]
+31:["$","p",null,{"children":["The examples include their CSS in ",["$","code",null,{"children":"<style>"}]," blocks so the complete code is visible. Applications can\nplace those rules in their own stylesheets. Layout props such as ",["$","code",null,{"children":"columns"}]," and ",["$","code",null,{"children":"gap"}]," write inline styles,\nwhich beat stylesheet rules. When your CSS changes a property across a query, set it in CSS for every\nwidth and leave the prop unset."]}]
+32:["$","p",null,{"children":["A container can't take its width from its content, so give it one from its parent, as the container\nexample does with the ",["$","code",null,{"children":"flex"}]," basis of its sidebar and main area. Otherwise it collapses in flex rows and\nother shrink-to-fit layouts. Portaled content is outside the container, so it needs a container in its\nown DOM ancestry."]}]
+33:["$","p",null,{"children":["In media queries, ",["$","code",null,{"children":"rem"}]," uses the browser's initial font size."]}]
+34:["$","$L1b",null,{"as":"h3","id":"responsive-size-1","children":"Responsive size"}]
+35:["$","p",null,{"children":["Component props, including ",["$","code",null,{"children":"size"}],", take a single value. For a size that changes with the layout, leave\n",["$","code",null,{"children":"size"}]," unset and set ",["$","code",null,{"children":"--antares-size"}]," in your CSS. TextLockup reads it for its text parts, so you can set\nthe variable on the lockup itself or an ancestor. The responsive size example sets it on a parent. The\nnearest value wins, and an explicit ",["$","code",null,{"children":"size"}]," beats it. Without the variable, components follow the\nsurrounding ",["$","code",null,{"children":"SizeProvider"}],". Browsers without container style queries ignore the variable."]}]
+36:["$","p",null,{"children":["These components follow ",["$","code",null,{"children":"--antares-size"}],":"]}]
+37:["$","div",null,{"className":"relative overflow-auto prose-no-margin my-6","children":["$","table",null,{"children":[["$","thead",null,{"children":["$","tr",null,{"children":[["$","th",null,{"children":"Component"}],["$","th",null,{"children":"Values"}],["$","th",null,{"children":"Notes"}]]}]}],["$","tbody",null,{"children":["$","tr",null,{"children":[["$","td",null,{"children":["$","code",null,{"children":"TextLockup"}]}],["$","td",null,{"children":[["$","code",null,{"children":"xs"}],"-",["$","code",null,{"children":"2xl"}]]}],["$","td",null,{"children":["A ",["$","code",null,{"children":"Tag"}]," eyebrow keeps its own size."]}]]}]}]]}]}]
+38:["$","$L1b",null,{"as":"h2","id":"accessibility","children":"Accessibility"}]
+39:["$","p",null,{"children":"Preserve reading order, keyboard focus, and entered values as layouts change: reflow one DOM tree with\nCSS instead of rendering different trees. Validate layouts with long text, RTL, narrow widths, text\nenlargement, and browser zoom. Resizing the viewport alone does not test every effect of zoom. Use\npointer and hover media features to detect input capabilities, not widths."}]
+3a:["$","script","script-0",{"src":"/antares/pr-389-site/_next/static/chunks/428imhwwk-ha_.js","async":true}]
+3b:["$","script","script-1",{"src":"/antares/pr-389-site/_next/static/chunks/3nd4_wmz1ljg4.js","async":true}]
+3c:["$","$L4d",null,{"children":["$","$42",null,{"name":"Next.MetadataOutlet","children":"$@4e"}]}]
+45:true
+a:300
+4e:null
+a:C
+44:0
+8:"$undefined"
+43:"$undefined"
+3d:"$undefined"
