@@ -1,0 +1,1 @@
+import{i as e}from"./preload-helper-CgLGFiSy.js";import{Ln as t}from"./useTooltipTrigger-vLYElsdi.js";var n=e((()=>{t()}));export{n as t};
