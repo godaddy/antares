@@ -8,7 +8,7 @@ import { Box, type BoxOwnProps } from '#components/layout/box';
 
 export const TextAreaContext = RACTextAreaContext;
 
-export interface TextAreaProps extends RACTextAreaProps, Omit<BoxOwnProps, 'as'> {}
+export interface TextAreaProps extends RACTextAreaProps, Omit<BoxOwnProps, 'as' | 'slot'> {}
 
 /** Multiline text control for use inside a field. */
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function TextArea(props, ref) {

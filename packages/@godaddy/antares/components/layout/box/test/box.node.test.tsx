@@ -6,9 +6,14 @@ import { RoundingExample } from '../examples/rounding.tsx';
 import { AsExample } from '../examples/as.tsx';
 import { AlignmentExample } from '../examples/alignment.tsx';
 import { TypesExample } from '../examples/types.tsx';
+import { ContextExample } from '../examples/context.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Box', function boxTests() {
+    it('renders named context defaults and opt-out', function rendersContext() {
+      expect(renderToString(<ContextExample />)).toMatchSnapshot();
+    });
+
     it('renders boxes with padding variations', function rendersPadding() {
       const result = renderToString(<PaddingExample />);
       expect(result).toMatchSnapshot();

@@ -1,6 +1,6 @@
 ---
 title: ProgressBar
-description: A progress bar shows determinate or indeterminate progress of an operation over time
+description: Composable determinate or indeterminate progress with optional label, value, and description
 ---
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import { Examples } from '@bento/storybook-addon-helpers/runtime';
@@ -18,17 +18,29 @@ npm install --save @godaddy/antares
 
 <Examples of={Stories.Examples} />
 
+## Customization
+
+Use `Box slot="value"` for formatted or custom content, or `Text slot="value"` for typography controls.
+The root's children render function provides progress state. Customize layout and styling with
+Grid props, `className`, and `style`.
+
 ## Accessibility
 
-### ARIA Support
-
-- `role="progressbar"` on the container
-- `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value
-- `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-- `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`)
-- `aria-labelledby` associates the visible label when the `label` prop is provided
+- Provide `Label`, `aria-label`, or `aria-labelledby` for the accessible name.
+- Progress remains accessible without a visible value. Use `valueLabel` to customize its text; indeterminate progress omits the value.
+- `Text slot="description"` is associated automatically, preserving external `aria-describedby` references.
 
 ## Props
+
+```tsx
+<ProgressBar>
+  <Label />
+  <Box slot="value" />
+  <Box slot="track" />
+  <Text slot="description" />
+  {/* ... */}
+</ProgressBar>
+```
 
 ### ProgressBar
 
