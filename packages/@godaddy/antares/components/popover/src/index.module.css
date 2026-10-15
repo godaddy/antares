@@ -6,6 +6,7 @@
   --_content-offset: calc(var(--_arrow-height) + var(--_arrow-rounded-tip));
   --_arrow-offset: calc(var(--_arrow-height) * -1);
 
+  inline-size: max-content;
   max-inline-size: calc(100dvw - var(--sp-md) * 2);
   isolation: isolate;
   transition:
