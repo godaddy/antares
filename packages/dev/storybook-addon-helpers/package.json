@@ -35,15 +35,15 @@
     "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@types/react": "^19.2.15",
-    "react": "^19.2.6",
-    "tsdown": "^0.22.14",
-    "vite": "^8.0.14",
+    "@types/react": "^19.3.0",
+    "react": "^19.3.0",
+    "tsdown": "^0.23.1",
+    "vite": "^8.3.4",
     "vitest": "^4.1.11"
   },
   "peerDependencies": {
-    "@storybook/react-vite": "^10.5.7",
-    "storybook": "^10.5.7"
+    "@storybook/react-vite": "^10.6.2",
+    "storybook": "^10.6.1"
   },
   "exports": {
     ".": {

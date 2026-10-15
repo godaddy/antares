@@ -102,28 +102,28 @@ describe('@godaddy/antares', function packageTests() {
       expect(getComputedStyle(title).fontSize).toBe('30px');
     });
 
-    it.each([
-      'ltr',
-      'rtl'
-    ] as const)('reflows long form text at 320px with enlarged text in %s', async function narrowForm(dir) {
-      await page.viewport(320, 768);
-      const originalFontSize = document.documentElement.style.fontSize;
-      const fontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize);
-      document.documentElement.style.fontSize = `${fontSize * 2}px`;
-      try {
-        const description = `Card reference: ${'cardholderreference'.repeat(12)}`;
-        const screen = await render(<FormExample dir={dir} description={description} />);
-        const form = screen.getByRole('form', { name: 'Billing details' }).element();
-        expect(columnCount(form)).toBe(1);
-        expect(form.scrollWidth).toBeLessThanOrEqual(form.clientWidth);
-        expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(window.innerWidth);
-        await expect.element(screen.getByText(description)).toBeVisible();
-        await screen.getByRole('textbox', { name: 'Full name' }).fill('Ada Lovelace');
-        await userEvent.tab();
-        await expect.element(screen.getByRole('textbox', { name: 'Email' })).toHaveFocus();
-      } finally {
-        document.documentElement.style.fontSize = originalFontSize;
+    it.each(['ltr', 'rtl'] as const)(
+      'reflows long form text at 320px with enlarged text in %s',
+      async function narrowForm(dir) {
+        await page.viewport(320, 768);
+        const originalFontSize = document.documentElement.style.fontSize;
+        const fontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize);
+        document.documentElement.style.fontSize = `${fontSize * 2}px`;
+        try {
+          const description = `Card reference: ${'cardholderreference'.repeat(12)}`;
+          const screen = await render(<FormExample dir={dir} description={description} />);
+          const form = screen.getByRole('form', { name: 'Billing details' }).element();
+          expect(columnCount(form)).toBe(1);
+          expect(form.scrollWidth).toBeLessThanOrEqual(form.clientWidth);
+          expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(window.innerWidth);
+          await expect.element(screen.getByText(description)).toBeVisible();
+          await screen.getByRole('textbox', { name: 'Full name' }).fill('Ada Lovelace');
+          await userEvent.tab();
+          await expect.element(screen.getByRole('textbox', { name: 'Email' })).toHaveFocus();
+        } finally {
+          document.documentElement.style.fontSize = originalFontSize;
+        }
       }
-    });
+    );
   });
 });

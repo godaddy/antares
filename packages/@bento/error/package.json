@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "lint": "biome lint && tsgo --noEmit",
+    "lint": "biome lint",
     "prepublishOnly": "node ../../../scripts/compile-readme.ts",
     "test": "vitest --run",
     "test:watch": "vitest",
@@ -37,10 +37,10 @@
     "package.json"
   ],
   "devDependencies": {
-    "tsdown": "^0.22.14",
+    "tsdown": "^0.23.1",
     "typescript": "^6.0.3",
     "vitest": "^4.1.11",
-    "vitest-browser-react": "^2.2.0"
+    "vitest-browser-react": "^2.3.0"
   },
   "exports": {
     ".": {

@@ -1,0 +1,28 @@
+.usersCard {
+  min-inline-size: 0;
+}
+
+.userRow {
+  align-items: center;
+}
+
+.userDivider {
+  border: 0;
+  border-block-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));
+  margin-block: var(--sp-md);
+}
+
+@container (max-width: 40rem) {
+  .restoreUsersLabel {
+    display: none;
+  }
+
+  .userRow {
+    align-items: flex-start;
+  }
+
+  .userActions {
+    inline-size: 100%;
+    justify-content: flex-end;
+  }
+}

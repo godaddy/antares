@@ -17,27 +17,27 @@ describe('@godaddy/antares', function packageTests() {
       await page.viewport(1024, 768);
     });
 
-    it.each([
-      false,
-      true
-    ])('selects in the %s range drawer and restores trigger focus', async function selection(range) {
-      await page.viewport(320, 768);
-      const screen = await render(<MobileExample range={range} />);
-      const trigger = screen.getByRole('button', { name: /Calendar Event dates/ });
-      await trigger.click();
-      await expect.element(screen.getByRole('dialog', { name: /Event dates/ })).toBeVisible();
-      expect(document.querySelector('[data-placement="bottom"]:not([data-trigger])')).not.toBeNull();
-      await screen.getByRole('button', { name: /September 15, 2026/ }).click();
-      if (range) {
-        await expect.element(screen.getByRole('dialog')).toBeVisible();
-        await screen.getByRole('button', { name: /September 18, 2026/ }).click();
+    it.each([false, true])(
+      'selects in the %s range drawer and restores trigger focus',
+      async function selection(range) {
+        await page.viewport(320, 768);
+        const screen = await render(<MobileExample range={range} />);
+        const trigger = screen.getByRole('button', { name: /Calendar Event dates/ });
+        await trigger.click();
+        await expect.element(screen.getByRole('dialog', { name: /Event dates/ })).toBeVisible();
+        expect(document.querySelector('[data-placement="bottom"]:not([data-trigger])')).not.toBeNull();
+        await screen.getByRole('button', { name: /September 15, 2026/ }).click();
+        if (range) {
+          await expect.element(screen.getByRole('dialog')).toBeVisible();
+          await screen.getByRole('button', { name: /September 18, 2026/ }).click();
+        }
+        await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
+        await expect
+          .element(screen.getByLabelText('Selected dates'))
+          .toHaveTextContent(range ? '2026-09-15/2026-09-18' : '2026-09-15');
+        await expect.element(trigger).toHaveFocus();
       }
-      await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
-      await expect
-        .element(screen.getByLabelText('Selected dates'))
-        .toHaveTextContent(range ? '2026-09-15/2026-09-18' : '2026-09-15');
-      await expect.element(trigger).toHaveFocus();
-    });
+    );
 
     it('keeps the container while open and switches on the next opening', async function breakpoint() {
       await page.viewport(639, 768);
@@ -85,41 +85,41 @@ describe('@godaddy/antares', function packageTests() {
       expect(screen.getByRole('grid').all()).toHaveLength(2);
     });
 
-    it.each([
-      'en-US',
-      'ar-AE'
-    ])('rounds range segments around unavailable dates in %s', async function rangeBand(locale) {
-      await page.viewport(320, 768);
-      const screen = await render(
-        <MobileExample range keepOpen unavailable allowsNonContiguousRanges locale={locale} />
-      );
-      await screen.getByRole('button', { name: /Event dates/ }).click();
-      const september = screen
-        .getByRole('grid')
-        .all()
-        .find(function month(grid) {
-          return grid.element().closest('[data-calendar-month="2026-09-01"]');
-        })!;
-      await september.getByRole('button').all()[14].click();
-      const november = document.querySelector('[data-calendar-month="2026-11-01"]') as HTMLElement;
-      november.scrollIntoView();
-      await expect
-        .poll(function mounted() {
-          return november.querySelectorAll('[role="button"]:not([data-outside-month])').length;
-        })
-        .toBe(30);
-      const end = november.querySelectorAll<HTMLElement>('[role="button"]:not([data-outside-month])')[11];
-      end.click();
-      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-11-12');
-      const october = document.querySelector('[data-calendar-month="2026-10-01"]') as HTMLElement;
-      const dates = october.querySelectorAll<HTMLElement>('[role="button"]:not([data-outside-month])');
-      const before = getComputedStyle(dates[18].parentElement!);
-      const after = getComputedStyle(dates[20].parentElement!);
-      expect(before.backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
-      expect(after.backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
-      expect(before.borderStartEndRadius).not.toBe('0px');
-      expect(after.borderStartStartRadius).not.toBe('0px');
-    });
+    it.each(['en-US', 'ar-AE'])(
+      'rounds range segments around unavailable dates in %s',
+      async function rangeBand(locale) {
+        await page.viewport(320, 768);
+        const screen = await render(
+          <MobileExample range keepOpen unavailable allowsNonContiguousRanges locale={locale} />
+        );
+        await screen.getByRole('button', { name: /Event dates/ }).click();
+        const september = screen
+          .getByRole('grid')
+          .all()
+          .find(function month(grid) {
+            return grid.element().closest('[data-calendar-month="2026-09-01"]');
+          })!;
+        await september.getByRole('button').all()[14].click();
+        const november = document.querySelector('[data-calendar-month="2026-11-01"]') as HTMLElement;
+        november.scrollIntoView();
+        await expect
+          .poll(function mounted() {
+            return november.querySelectorAll('[role="button"]:not([data-outside-month])').length;
+          })
+          .toBe(30);
+        const end = november.querySelectorAll<HTMLElement>('[role="button"]:not([data-outside-month])')[11];
+        end.click();
+        await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-11-12');
+        const october = document.querySelector('[data-calendar-month="2026-10-01"]') as HTMLElement;
+        const dates = october.querySelectorAll<HTMLElement>('[role="button"]:not([data-outside-month])');
+        const before = getComputedStyle(dates[18].parentElement!);
+        const after = getComputedStyle(dates[20].parentElement!);
+        expect(before.backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+        expect(after.backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+        expect(before.borderStartEndRadius).not.toBe('0px');
+        expect(after.borderStartStartRadius).not.toBe('0px');
+      }
+    );
 
     it('keeps the scrolled page and focus while resizing an open drawer', async function resizeScroll() {
       await page.viewport(320, 768);
@@ -218,41 +218,41 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-18/2026-09-19');
     });
 
-    it.each([
-      false,
-      true
-    ])('respects bounds and noncontiguous range policy %s', async function bounds(allowsNonContiguousRanges) {
-      await page.viewport(320, 768);
-      const screen = await render(
-        <MobileExample
-          range
-          min="2026-09-05"
-          max="2026-11-15"
-          unavailable
-          allowsNonContiguousRanges={allowsNonContiguousRanges}
-        />
-      );
-      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
-      await expect
-        .element(screen.getByRole('button', { name: /September 3, 2026/ }))
-        .toHaveAttribute('aria-disabled', 'true');
-      await screen.getByRole('button', { name: /September 15, 2026/ }).click();
-      await expect
-        .element(screen.getByRole('button', { name: /September 20, 2026/ }))
-        .toHaveAttribute('aria-disabled', 'true');
-      if (allowsNonContiguousRanges) {
-        const november = document.querySelector('[data-calendar-month="2026-11-01"]') as HTMLElement;
-        november.scrollIntoView();
-        await screen.getByRole('button', { name: /November 12, 2026/ }).click();
-        await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-11-12');
-      } else {
+    it.each([false, true])(
+      'respects bounds and noncontiguous range policy %s',
+      async function bounds(allowsNonContiguousRanges) {
+        await page.viewport(320, 768);
+        const screen = await render(
+          <MobileExample
+            range
+            min="2026-09-05"
+            max="2026-11-15"
+            unavailable
+            allowsNonContiguousRanges={allowsNonContiguousRanges}
+          />
+        );
+        await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
         await expect
-          .element(screen.getByRole('button', { name: /September 21, 2026/ }))
+          .element(screen.getByRole('button', { name: /September 3, 2026/ }))
           .toHaveAttribute('aria-disabled', 'true');
-        await screen.getByRole('button', { name: /September 18, 2026/ }).click();
-        await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-09-18');
+        await screen.getByRole('button', { name: /September 15, 2026/ }).click();
+        await expect
+          .element(screen.getByRole('button', { name: /September 20, 2026/ }))
+          .toHaveAttribute('aria-disabled', 'true');
+        if (allowsNonContiguousRanges) {
+          const november = document.querySelector('[data-calendar-month="2026-11-01"]') as HTMLElement;
+          november.scrollIntoView();
+          await screen.getByRole('button', { name: /November 12, 2026/ }).click();
+          await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-11-12');
+        } else {
+          await expect
+            .element(screen.getByRole('button', { name: /September 21, 2026/ }))
+            .toHaveAttribute('aria-disabled', 'true');
+          await screen.getByRole('button', { name: /September 18, 2026/ }).click();
+          await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-09-18');
+        }
       }
-    });
+    );
 
     it.each([false, true])('starts from the selected value for range=%s', async function selectedFocus(range) {
       await page.viewport(320, 768);
@@ -273,54 +273,53 @@ describe('@godaddy/antares', function packageTests() {
       expect(document.querySelector('[data-placement="bottom"]:not([data-trigger])')).toBeNull();
     });
 
-    it.each([
-      'closed',
-      'defaultOpen',
-      'controlled'
-    ] as const)('hydrates a %s picker at a narrow viewport', async function hydrate(mode) {
-      await page.viewport(320, 768);
-      vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true);
-      const props = { defaultOpen: mode === 'defaultOpen', isOpen: mode === 'controlled' ? true : undefined };
-      const container = document.createElement('div');
-      container.innerHTML = renderToString(<MobileExample {...props} />);
-      document.body.append(container);
-      const onRecoverableError = vi.fn();
-      let root: Root | undefined;
-      try {
-        await act(async function mount() {
-          root = hydrateRoot(container, <MobileExample {...props} />, { onRecoverableError });
-        });
-        if (mode !== 'closed') {
+    it.each(['closed', 'defaultOpen', 'controlled'] as const)(
+      'hydrates a %s picker at a narrow viewport',
+      async function hydrate(mode) {
+        await page.viewport(320, 768);
+        vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true);
+        const props = { defaultOpen: mode === 'defaultOpen', isOpen: mode === 'controlled' ? true : undefined };
+        const container = document.createElement('div');
+        container.innerHTML = renderToString(<MobileExample {...props} />);
+        document.body.append(container);
+        const onRecoverableError = vi.fn();
+        let root: Root | undefined;
+        try {
+          await act(async function mount() {
+            root = hydrateRoot(container, <MobileExample {...props} />, { onRecoverableError });
+          });
+          if (mode !== 'closed') {
+            await expect.element(page.getByRole('dialog')).toBeVisible();
+            expect(document.querySelector('[data-placement="bottom"]:not([data-trigger])')).toBeNull();
+            await act(async function close() {
+              if (mode === 'controlled') root?.render(<MobileExample isOpen={false} />);
+              else await userEvent.keyboard('{Escape}');
+            });
+            await act(async function finishExit() {
+              await Promise.all(
+                document.getAnimations().map(function finish(animation) {
+                  return animation.finished;
+                })
+              );
+            });
+            await expect.element(page.getByRole('dialog')).not.toBeInTheDocument();
+          }
+          await act(async function open() {
+            if (mode === 'controlled') root?.render(<MobileExample isOpen />);
+            else await page.getByRole('button', { name: /Calendar Event dates/ }).click();
+          });
           await expect.element(page.getByRole('dialog')).toBeVisible();
-          expect(document.querySelector('[data-placement="bottom"]:not([data-trigger])')).toBeNull();
-          await act(async function close() {
-            if (mode === 'controlled') root?.render(<MobileExample isOpen={false} />);
-            else await userEvent.keyboard('{Escape}');
+          expect(page.getByRole('dialog').all()).toHaveLength(1);
+          expect(document.querySelector('[data-placement="bottom"]:not([data-trigger])')).not.toBeNull();
+          expect(onRecoverableError).not.toHaveBeenCalled();
+        } finally {
+          await act(async function unmount() {
+            root?.unmount();
           });
-          await act(async function finishExit() {
-            await Promise.all(
-              document.getAnimations().map(function finish(animation) {
-                return animation.finished;
-              })
-            );
-          });
-          await expect.element(page.getByRole('dialog')).not.toBeInTheDocument();
+          container.remove();
         }
-        await act(async function open() {
-          if (mode === 'controlled') root?.render(<MobileExample isOpen />);
-          else await page.getByRole('button', { name: /Calendar Event dates/ }).click();
-        });
-        await expect.element(page.getByRole('dialog')).toBeVisible();
-        expect(page.getByRole('dialog').all()).toHaveLength(1);
-        expect(document.querySelector('[data-placement="bottom"]:not([data-trigger])')).not.toBeNull();
-        expect(onRecoverableError).not.toHaveBeenCalled();
-      } finally {
-        await act(async function unmount() {
-          root?.unmount();
-        });
-        container.remove();
       }
-    });
+    );
 
     it.each(['en-US', 'ar-AE'])('fits a 320px viewport with enlarged text in %s', async function enlargedText(locale) {
       await page.viewport(320, 768);
@@ -341,26 +340,28 @@ describe('@godaddy/antares', function packageTests() {
       }
     });
 
-    it.each([
-      'select',
-      'reset'
-    ] as const)('uses React Aria range commitBehavior=%s', async function commitBehavior(behavior) {
-      await page.viewport(320, 768);
-      const screen = await render(<MobileExample range keepOpen commitBehavior={behavior} selectedDate="2026-09-05" />);
-      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
-      await userEvent.keyboard('{Enter}');
-      const label = document.querySelector('[data-calendar-month="2026-09-01"]')!.firstElementChild as HTMLElement;
-      await userEvent.click(label);
-      if (behavior === 'select') {
-        await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-09-16');
-      } else {
-        await expect.element(screen.getByLabelText('Selected dates')).toBeEmptyDOMElement();
-        await screen.getByRole('button', { name: /September 18, 2026/ }).click();
-        await expect.element(screen.getByLabelText('Selected dates')).toBeEmptyDOMElement();
-        await screen.getByRole('button', { name: /September 19, 2026/ }).click();
-        await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-18/2026-09-19');
+    it.each(['select', 'reset'] as const)(
+      'uses React Aria range commitBehavior=%s',
+      async function commitBehavior(behavior) {
+        await page.viewport(320, 768);
+        const screen = await render(
+          <MobileExample range keepOpen commitBehavior={behavior} selectedDate="2026-09-05" />
+        );
+        await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+        await userEvent.keyboard('{Enter}');
+        const label = document.querySelector('[data-calendar-month="2026-09-01"]')!.firstElementChild as HTMLElement;
+        await userEvent.click(label);
+        if (behavior === 'select') {
+          await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-09-16');
+        } else {
+          await expect.element(screen.getByLabelText('Selected dates')).toBeEmptyDOMElement();
+          await screen.getByRole('button', { name: /September 18, 2026/ }).click();
+          await expect.element(screen.getByLabelText('Selected dates')).toBeEmptyDOMElement();
+          await screen.getByRole('button', { name: /September 19, 2026/ }).click();
+          await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-18/2026-09-19');
+        }
       }
-    });
+    );
 
     it('clamps committed header years to the date bounds', async function yearBounds() {
       await page.viewport(320, 768);

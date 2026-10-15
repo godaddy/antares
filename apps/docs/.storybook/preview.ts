@@ -4,6 +4,7 @@
 // React and apply re-render tracking.
 //
 // import './why-did-you-render.ts';
+import './fullscreen.css';
 import type { Preview } from '@storybook/react-vite';
 import React from 'react';
 import { MermaidDiagram } from './components/MermaidDiagram';

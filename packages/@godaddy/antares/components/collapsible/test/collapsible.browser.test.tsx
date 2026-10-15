@@ -89,61 +89,61 @@ describe('@godaddy/antares', function antares() {
       expect(onChange).toHaveBeenCalledTimes(1);
     });
 
-    it.each([
-      false,
-      true
-    ])('skips a disabled section with initial expansion %s', async function disabledState(defaultExpanded) {
-      await render(
-        <PlaygroundExample headingText="Unavailable settings" isDisabled defaultExpanded={defaultExpanded} />
-      );
-      const trigger = page.getByRole('button', { name: 'Unavailable settings' });
+    it.each([false, true])(
+      'skips a disabled section with initial expansion %s',
+      async function disabledState(defaultExpanded) {
+        await render(
+          <PlaygroundExample headingText="Unavailable settings" isDisabled defaultExpanded={defaultExpanded} />
+        );
+        const trigger = page.getByRole('button', { name: 'Unavailable settings' });
 
-      await expect.element(trigger).toBeDisabled();
+        await expect.element(trigger).toBeDisabled();
 
-      await userEvent.tab();
-      await expect.element(trigger).not.toHaveFocus();
-      await userEvent.keyboard('{Enter}');
-      await userEvent.keyboard(' ');
+        await userEvent.tab();
+        await expect.element(trigger).not.toHaveFocus();
+        await userEvent.keyboard('{Enter}');
+        await userEvent.keyboard(' ');
 
-      await expect.element(trigger).toHaveAttribute('aria-expanded', String(defaultExpanded));
-    });
+        await expect.element(trigger).toHaveAttribute('aria-expanded', String(defaultExpanded));
+      }
+    );
 
     it.each([
       { showStatus: false, showIndicator: false },
       { showStatus: false, showIndicator: true },
       { showStatus: true, showIndicator: false },
       { showStatus: true, showIndicator: true }
-    ])('supports keyboard and ARIA with status $showStatus and indicator $showIndicator', async function keyboardAndAria({
-      showStatus,
-      showIndicator
-    }) {
-      await render(
-        <PlaygroundExample
-          headingText="Transfer details"
-          content="Unlock your domain before requesting a transfer."
-          showStatus={showStatus}
-          showIndicator={showIndicator}
-        />
-      );
-      const name = showStatus ? 'Transfer details (Completed)' : 'Transfer details';
-      const trigger = page.getByRole('button', { name });
+    ])(
+      'supports keyboard and ARIA with status $showStatus and indicator $showIndicator',
+      async function keyboardAndAria({ showStatus, showIndicator }) {
+        await render(
+          <PlaygroundExample
+            headingText="Transfer details"
+            content="Unlock your domain before requesting a transfer."
+            showStatus={showStatus}
+            showIndicator={showIndicator}
+          />
+        );
+        const name = showStatus ? 'Transfer details (Completed)' : 'Transfer details';
+        const trigger = page.getByRole('button', { name });
 
-      await userEvent.tab();
+        await userEvent.tab();
 
-      await expect.element(trigger).toHaveFocus();
+        await expect.element(trigger).toHaveFocus();
 
-      await userEvent.keyboard('{Enter}');
+        await userEvent.keyboard('{Enter}');
 
-      await expect.element(trigger).toHaveAttribute('aria-expanded', 'true');
-      await expect.element(trigger).toHaveFocus();
-      await expect.element(page.getByRole('group', { name })).toBeVisible();
-      await expect.element(page.getByText('Unlock your domain before requesting a transfer.')).toBeVisible();
+        await expect.element(trigger).toHaveAttribute('aria-expanded', 'true');
+        await expect.element(trigger).toHaveFocus();
+        await expect.element(page.getByRole('group', { name })).toBeVisible();
+        await expect.element(page.getByText('Unlock your domain before requesting a transfer.')).toBeVisible();
 
-      await userEvent.keyboard(' ');
+        await userEvent.keyboard(' ');
 
-      await expect.element(trigger).toHaveAttribute('aria-expanded', 'false');
-      await expect.element(page.getByText('Unlock your domain before requesting a transfer.')).not.toBeVisible();
-      await expect.element(trigger).toHaveFocus();
-    });
+        await expect.element(trigger).toHaveAttribute('aria-expanded', 'false');
+        await expect.element(page.getByText('Unlock your domain before requesting a transfer.')).not.toBeVisible();
+        await expect.element(trigger).toHaveFocus();
+      }
+    );
   });
 });
