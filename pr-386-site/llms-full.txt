@@ -4257,9 +4257,28 @@ npx shadcn@latest add godaddy/antares/blocks/sign-in-form
 
 ## Blocks [#blocks]
 
+### Overview dashboard [#overview-dashboard]
+
+<Block
+  id="overview-dashboard"
+  description="A responsive Antares overview dashboard with users, sales channels, and conversations."
+  of={OverviewDashboardStories.Preview}
+/>
+
 ### Sign-in form [#sign-in-form]
 
 <Block id="sign-in-form" description="A simple Antares sign-in experience." of={SignInFormStories.Preview} />
+
+
+# Overview dashboard
+
+<Meta of={Stories} name="Overview" id="blocks-overview-dashboard" />
+
+<Block
+  id="overview-dashboard"
+  description="A responsive Antares overview dashboard with users, sales channels, and conversations."
+  of={Stories.Preview}
+/>
 
 
 # Sign-in form
