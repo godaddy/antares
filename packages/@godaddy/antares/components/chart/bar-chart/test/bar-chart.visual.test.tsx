@@ -1,10 +1,11 @@
 import assume from 'assume';
 import type React from 'react';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { CategoryColorsExample } from '../examples/category-colors';
 import { waitForSelector } from '#test/utils/wait-for-selector.ts';
+import { resetPointer } from '#test/utils/test-helpers.tsx';
 import { CustomDomainExample } from '../examples/custom-domain';
 import { CustomTooltipPeriodComparisonExample } from '../examples/custom-tooltip-period-comparison';
 import { FormattedTickMarksExample } from '../examples/formatted-tick-marks';
@@ -35,6 +36,8 @@ async function renderExampleAndWait(Example: React.ComponentType, width = 900, h
 }
 
 describe('@godaddy/antares', function antares() {
+  beforeEach(resetPointer);
+
   describe('#BarChart', function barChartTests() {
     describe('#basic', function basic() {
       it('default screenshot', async function defaultExample() {

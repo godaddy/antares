@@ -295,10 +295,10 @@ describe('@godaddy/antares', function antares() {
         const { svg, xAxis, lastText } = createAxisWithTwoTicks();
         lastText.setAttribute('transform', 'rotate(-90)');
         // Real browser-reported rect for a 50x10 text rotated -90° would be 10x50.
-        mockRect(svg, { right: 100, width: 100 });
-        mockRect(lastText, { left: 100, right: 110, width: 10, height: 50 });
+        mockRect(svg, { right: 400, width: 400 });
+        mockRect(lastText, { left: 370, right: 380, width: 10, height: 50 });
 
-        expect(getInlineEndMargin(xAxis)).toBe(5);
+        expect(getInlineEndMargin(xAxis, 25)).toBe(5);
       });
 
       it('returns 0 when there is no horizontal overflow', function noOverflow() {
