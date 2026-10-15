@@ -26,12 +26,16 @@ const config: RcFile = {
   sortAz: [],
   formatBugs: false,
   formatRepository: false,
+  dependencyGroups: [
+    { aliasName: 'nx', dependencies: ['nx', '@nx/**'] },
+    { aliasName: 'vitest', dependencies: ['vitest', '@vitest/**'] }
+  ],
   semverGroups: [
     {
       range: '',
       packages: ['**'],
       dependencyTypes: ['prod', 'dev'],
-      dependencies: ['nx']
+      dependencies: ['nx', '@nx/**']
     },
     {
       range: '^',
@@ -66,9 +70,8 @@ const config: RcFile = {
     {
       label: 'Vitest version consistency',
       packages: ['**'],
-      dependencies: ['vitest', '@vitest/coverage-v8', '@vitest/ui'],
-      dependencyTypes: ['dev'],
-      policy: 'sameRange'
+      dependencies: ['vitest'],
+      dependencyTypes: ['dev']
     },
 
     {
