@@ -81,7 +81,7 @@ export function BlockExplorer({ block, children, codeRenderer }: BlockExplorerPr
         </SegmentedController>
       </BlockToolbar>
       {view === 'preview' ? (
-        <Box className={styles.previewSurface} padding="2xl" rounding="md" elevation="card">
+        <Box className={styles.previewSurface} rounding="md" elevation="card">
           {children}
         </Box>
       ) : (

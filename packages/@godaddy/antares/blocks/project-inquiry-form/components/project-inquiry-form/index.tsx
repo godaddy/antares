@@ -164,8 +164,13 @@ export function ProjectInquiryForm() {
 
   return (
     <Box padding="xl" className={styles.root}>
-      <Grid columns="repeat(auto-fit, minmax(min(100%, 30rem), 1fr))" gap="2xl" alignItems="start">
-        <Flex direction="column" gap="xl">
+      <Grid
+        columns="repeat(auto-fit, minmax(min(100%, 30rem), 1fr))"
+        gap="2xl"
+        alignItems="start"
+        className={styles.columns}
+      >
+        <Flex direction="column" gap="xl" className={styles.visualColumn}>
           <Box
             as="img"
             src={heroImage.src}

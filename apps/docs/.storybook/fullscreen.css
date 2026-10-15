@@ -1,0 +1,11 @@
+/* Storybook's fullscreen layout removes the canvas padding but does not create a
+ * percentage-height chain for the story root. Fill the available canvas without
+ * forcing viewport units. */
+html:has(> body.sb-main-fullscreen) {
+  block-size: 100%;
+}
+
+body.sb-main-fullscreen,
+body.sb-main-fullscreen > #storybook-root {
+  block-size: 100%;
+}

@@ -11,7 +11,6 @@ Status: **Proposed**
 - [Components](#components)
 - [Mechanism](#mechanism)
 - [Tokens](#tokens)
-- [Responsive sizes](#responsive-sizes)
 - [Alternatives considered](#alternatives-considered)
 - [Open details](#open-details)
 
@@ -214,8 +213,7 @@ text; owners that size their parts, such as TextLockup, do it with part classes.
 - **Button.** Reads the size in effect from the same context and applies its own size class.
 - **Parts.** Owners add part classes through React Aria contexts.
 
-JavaScript only picks classes from a size; it never computes values from one. That keeps responsive sizes
-possible in CSS.
+JavaScript only picks classes from a size; it never computes values from one.
 
 ## Tokens
 
@@ -236,24 +234,10 @@ The existing role ramps supply every text size. No change to `packages/@godaddy/
   `050`).
 - Spacing follows [the spacing rules](./gu-spacing.md).
 
-## Responsive sizes
-
-Designed in, shipped later:
-
-```tsx
-<SizeProvider size={{ base: 'sm', md: 'md' }}>...</SizeProvider>
-<Button size={{ base: 'lg', md: 'md' }}>Save</Button>
-```
-
-Each breakpoint compiles to a size class inside a media query, so the size resolves in CSS during server
-rendering, with no flash. Portals and Button receive the same object through context and apply the same
-classes. Media queries follow the viewport, so a portal resolves the same size as its trigger. This needs
-breakpoint tokens, which Antares does not have yet.
-
 ## Alternatives considered
 
-- **Compute sizes in React.** Every component reads the size and computes its values. A responsive size
-  would then need JavaScript media queries and would flash after server rendering.
+- **Compute sizes in React.** Every component reads the size and computes its values. The values would
+  move into inline styles, where stylesheets can't override them.
 - **Density only** ([Spectrum `scale`](https://react-spectrum.adobe.com/react-spectrum/Provider.html),
   Carbon, MUI). Scopes resize controls and spacing but not text, so a compact section would still need every
   text size set by hand.
@@ -263,8 +247,7 @@ breakpoint tokens, which Antares does not have yet.
   were sized by hand.
 
 Prior art: [Radix Select](https://github.com/radix-ui/themes/blob/main/packages/radix-ui-themes/src/components/select.tsx)
-shares its root's size with portaled content, [Radix Themes breakpoints](https://www.radix-ui.com/themes/docs/theme/breakpoints)
-compile responsive props to classes, and [Ant Design ConfigProvider](https://ant.design/components/config-provider)
+shares its root's size with portaled content, and [Ant Design ConfigProvider](https://ant.design/components/config-provider)
 provides inherited component sizing.
 
 ## Open details
@@ -272,6 +255,5 @@ provides inherited component sizing.
 - Final tier mappings for Modal title, field description and error, and Label.
 - Whether components with their own sizes today (Tag, Chip, Menu, Switch, ToggleButton, SegmentedController)
   adopt the scale, and how.
-- Breakpoint tokens for responsive sizes.
 
 Out of scope: prose styling for rendered Markdown, leading trim, tabular figures, and a public theme API.

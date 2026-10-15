@@ -1,0 +1,16 @@
+.mediaCard {
+  min-inline-size: 0;
+}
+
+.mediaImage {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+  border-radius: var(--rounding-sm);
+}
+
+.mediaCardContent,
+.mediaCardCopy,
+.mediaCardImage {
+  min-inline-size: 0;
+}

@@ -5,6 +5,8 @@ description: Discover complete UI patterns, inspect how they are built, and use 
 
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Block } from '@bento/block-explorer/runtime';
+import * as OverviewDashboardStories from './overview-dashboard/overview-dashboard.stories.tsx';
+
 import * as SignInFormStories from './sign-in-form/sign-in-form.stories.tsx';
 
 import * as ProjectInquiryFormStories from './project-inquiry-form/project-inquiry-form.stories.tsx';
@@ -20,6 +22,14 @@ npx shadcn@latest add godaddy/antares/blocks/sign-in-form
 ```
 
 ## Blocks
+
+### Overview dashboard
+
+<Block
+  id="overview-dashboard"
+  description="A responsive Antares overview dashboard with users, sales channels, and conversations."
+  of={OverviewDashboardStories.Preview}
+/>
 
 ### Project inquiry form
 

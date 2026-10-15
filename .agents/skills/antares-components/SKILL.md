@@ -116,6 +116,12 @@ export interface ButtonProps extends Omit<RACButtonProps, 'className'> {
 **Read `references/typography.md` when a component uses the size scale or owns text parts.** It covers
 `SizeProvider`, text roles, slot treatments, and explicit size overrides.
 
+## Responsive
+
+**Read `references/responsive.md` when a component adapts to its space, the viewport, or input devices.**
+It covers choosing between intrinsic CSS, container queries, and media queries, the overlay-only viewport
+rule, and tests.
+
 ## Styling
 
 Styled components keep their CSS in `src/index.module.css`. Three rules hold everywhere:
