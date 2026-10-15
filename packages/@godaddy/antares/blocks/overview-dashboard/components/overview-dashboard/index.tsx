@@ -17,6 +17,8 @@ export function OverviewDashboard() {
   const [activeNavigationItem, setActiveNavigationItem] =
     useState<DashboardNavigationItemLabel>(defaultActiveNavigationItem);
   const [isNavigationPinnedOpen, setIsNavigationPinnedOpen] = useState(true);
+  const [isNavigationHovered, setIsNavigationHovered] = useState(false);
+  const [isNavigationHoverSuppressed, setIsNavigationHoverSuppressed] = useState(false);
   const [isCompactLayout, setIsCompactLayout] = useState(false);
   const [isMobileNavigationOpen, setIsMobileNavigationOpen] = useState(false);
 
@@ -64,23 +66,44 @@ export function OverviewDashboard() {
       return;
     }
 
+    if (isNavigationPinnedOpen) {
+      setIsNavigationHoverSuppressed(isNavigationHovered);
+      setIsNavigationHovered(false);
+    }
+
     setIsNavigationPinnedOpen(function togglePinnedNavigation(isOpen) {
       return !isOpen;
     });
+  }
+
+  function handleNavigationHoverChange(isHovering: boolean) {
+    if (!isHovering) {
+      setIsNavigationHoverSuppressed(false);
+      setIsNavigationHovered(false);
+      return;
+    }
+
+    if (!isNavigationHoverSuppressed) {
+      setIsNavigationHovered(true);
+    }
   }
 
   function handleMobileNavigationChange(isOpen: boolean) {
     setIsMobileNavigationOpen(isOpen);
   }
 
+  const isNavigationExpanded = isNavigationPinnedOpen || isNavigationHovered;
+
   return (
     <Box ref={dashboardFrameRef} className={styles.dashboardFrame}>
-      <Grid className={styles.dashboardShell}>
+      <Grid className={styles.dashboardShell} data-navigation-pinned-open={isNavigationPinnedOpen || undefined}>
         <DashboardSidebar
           activeItem={activeNavigationItem}
           isPinnedOpen={isNavigationPinnedOpen}
           onSelectItem={setActiveNavigationItem}
           onToggleCollapse={toggleNavigation}
+          isNavigationExpanded={isNavigationExpanded}
+          onNavigationHoverChange={handleNavigationHoverChange}
           isMobileNavigationOpen={isCompactLayout && isMobileNavigationOpen}
           onMobileNavigationChange={handleMobileNavigationChange}
         />

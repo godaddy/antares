@@ -13,8 +13,8 @@
   flex-shrink: 0;
 }
 
-:where([data-collapsed]) .navigationToggle,
-:where([data-collapsed]) .sideNavContent {
+:where([data-collapsed]):where(:not([data-expanded])) .navigationToggle,
+:where([data-collapsed]):where(:not([data-expanded])) .sideNavContent {
   display: none;
 }
 
@@ -69,14 +69,4 @@
 .sideNavIcon {
   display: inline-flex;
   flex-shrink: 0;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  :where([data-collapsed]):where(:hover) .navigationToggle {
-    display: inline-flex;
-  }
-
-  :where([data-collapsed]):where(:hover) .sideNavContent {
-    display: flex;
-  }
 }

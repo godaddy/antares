@@ -3,9 +3,14 @@
 }
 
 .dashboardShell {
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: 56px minmax(0, 1fr);
   gap: var(--sp-xl);
   min-inline-size: 0;
+  transition: grid-template-columns 300ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.dashboardShell:where([data-navigation-pinned-open]) {
+  grid-template-columns: 224px minmax(0, 1fr);
 }
 
 .dashboardMain {
@@ -14,6 +19,12 @@
 
 .contentGrid {
   grid-template-columns: minmax(0, 2.25fr) minmax(17.5rem, 1fr);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboardShell {
+    transition: none;
+  }
 }
 
 @container (max-width: 56rem) {

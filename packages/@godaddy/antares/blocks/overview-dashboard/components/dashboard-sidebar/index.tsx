@@ -16,6 +16,12 @@ interface DashboardSidebarProps {
   /** Toggles the desktop rail or closes the mobile navigation. */
   onToggleCollapse: () => void;
 
+  /** Whether the desktop rail is expanded by a temporary hover state. */
+  isNavigationExpanded: boolean;
+
+  /** Keeps the desktop rail width in sync with its hover state. */
+  onNavigationHoverChange: (isHovering: boolean) => void;
+
   /** Whether the mobile drawer is currently open. */
   isMobileNavigationOpen: boolean;
 
@@ -29,6 +35,8 @@ export function DashboardSidebar({
   isPinnedOpen,
   onSelectItem,
   onToggleCollapse,
+  isNavigationExpanded,
+  onNavigationHoverChange,
   isMobileNavigationOpen,
   onMobileNavigationChange
 }: DashboardSidebarProps) {
@@ -37,10 +45,11 @@ export function DashboardSidebar({
       <InlineDrawer
         className={styles.sideNavigationContainer}
         placement="left"
-        isExpanded={isPinnedOpen}
+        isExpanded={isNavigationExpanded}
+        onMouseEnter={() => onNavigationHoverChange(true)}
+        onMouseLeave={() => onNavigationHoverChange(false)}
         minSize={56}
         maxSize={224}
-        data-pinned-open={isPinnedOpen || undefined}
         data-collapsed={!isPinnedOpen || undefined}
       >
         <Flex as="nav" className={styles.sideNavigation} direction="column" aria-label="Product navigation">

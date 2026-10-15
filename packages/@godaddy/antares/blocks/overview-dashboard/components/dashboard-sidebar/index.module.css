@@ -17,22 +17,8 @@
   transition: inline-size 300ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.sideNavigationContainer:where([data-pinned-open]) :where(.sideNavigation) {
-  inline-size: var(--_max-size);
-}
-
-.sideNavigationContainer:where([data-pinned-open]) {
+.sideNavigationContainer:where([data-expanded]) {
   z-index: 1;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .sideNavigationContainer:where(:hover):where(:not([data-pinned-open])) {
-    z-index: 1;
-  }
-
-  .sideNavigationContainer:where(:hover):where(:not([data-pinned-open])) :where(.sideNavigation) {
-    inline-size: var(--_max-size);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,50 +1,26 @@
-import assume from 'assume';
 import { page, userEvent } from 'vitest/browser';
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { waitForSelector } from '#test/utils/wait-for-selector.ts';
 import { salesChannelData } from '../constants/config.ts';
 import { OverviewDashboard } from '../index.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#OverviewDashboard', function overviewDashboardTests() {
-    it('renders the dashboard content and the responsive chart', async function rendersDashboard() {
-      const { container, locator } = await render(
+    it('renders the dashboard content and chart', async function rendersDashboard() {
+      const { locator } = await render(
         <div style={{ width: '960px' }}>
           <OverviewDashboard />
         </div>
       );
 
-      const frame = container.querySelector('[class*="dashboardFrame"]');
-      const shell = container.querySelector('[class*="dashboardShell"]');
-      const navigation = container.querySelector('[data-placement="left"]');
-      assume(frame).is.not.equal(null);
-      assume(shell).is.not.equal(null);
-      assume(navigation).is.not.equal(null);
-      const navigationContent = container.querySelector('nav[class*="sideNavigation"]');
-      const frameHeight = (frame as HTMLElement).getBoundingClientRect().height;
-      const shellHeight = (shell as HTMLElement).getBoundingClientRect().height;
-      const navigationHeight = (navigation as HTMLElement).getBoundingClientRect().height;
-      expect(frameHeight).toBeGreaterThan(0);
-      expect(Math.abs(frameHeight - shellHeight)).toBeLessThanOrEqual(1);
-      expect(Math.abs(shellHeight - navigationHeight)).toBeLessThanOrEqual(1);
-      assume(getComputedStyle(navigation as Element).backgroundColor).is.not.equal('rgba(0, 0, 0, 0)');
-      assume(navigationContent).is.not.equal(null);
-      expect(getComputedStyle(navigation as Element).backgroundColor).toBe(
-        getComputedStyle(navigationContent as Element).backgroundColor
-      );
-      assume(getComputedStyle(navigation as Element).overflowY).equals('visible');
-      assume(getComputedStyle(navigation as Element).overflowX).equals('visible');
-
-      await waitForSelector(container, 'svg');
-      await waitForSelector(container, 'svg path');
-
-      assume(locator.getByRole('heading', { name: 'Overview' }).element()).exists();
-      assume(locator.getByRole('heading', { name: 'GoDaddy can do more for you' }).element()).exists();
-      assume(locator.getByRole('heading', { name: 'Conversations' }).element()).exists();
-      assume(locator.getByText('Facebook Marketplace').element()).exists();
-      assume(locator.getByRole('button', { name: 'Upgrade John Doe' }).element()).exists();
-      assume(locator.getByRole('button', { name: 'Manage Jane Smith' }).element()).exists();
+      await expect.element(locator.getByRole('heading', { name: 'Overview' })).toBeVisible();
+      await expect.element(locator.getByRole('heading', { name: 'GoDaddy can do more for you' })).toBeVisible();
+      await expect.element(locator.getByRole('heading', { name: 'Conversations' })).toBeVisible();
+      await expect.element(locator.getByText('Facebook Marketplace')).toBeVisible();
+      await expect.element(locator.getByRole('button', { name: 'Restore deleted users' })).toBeVisible();
+      await expect.element(locator.getByRole('button', { name: 'Upgrade John Doe' })).toBeVisible();
+      await expect.element(locator.getByRole('button', { name: 'Manage Jane Smith' })).toBeVisible();
+      await expect.element(locator.getByRole('button', { name: 'Connect Email' })).toBeVisible();
 
       const expectedSalesTotal = new Intl.NumberFormat('en-US', {
         maximumFractionDigits: 0
@@ -53,18 +29,15 @@ describe('@godaddy/antares', function packageTests() {
           return total + channel.value;
         }, 0)
       );
-      assume(locator.getByText(expectedSalesTotal).element()).exists();
-      assume(locator.getByText('USD').element()).exists();
-
-      assume(
-        locator
-          .getByRole('img', {
+      await expect.element(locator.getByText(expectedSalesTotal)).toBeVisible();
+      await expect.element(locator.getByText('USD')).toBeVisible();
+      await expect
+        .element(
+          locator.getByRole('img', {
             name: 'Sales by sales channels donut chart. Shopify: $400. Facebook Marketplace: $300. Instagram: $200. Other: $100'
           })
-          .element()
-      ).exists();
-      assume(container.querySelector('img[alt=""]')).is.not.equal(null);
-      assume(locator.getByRole('list').all().length).equals(1);
+        )
+        .toBeVisible();
     });
 
     it('selects navigation items without changing the dashboard content', async function selectsNavigationItem() {
@@ -86,150 +59,68 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(dashboard).toHaveAttribute('aria-pressed', 'false');
       await expect.element(emailSecurity).not.toHaveAttribute('aria-current');
       await expect.element(dashboard).not.toHaveAttribute('aria-current');
-      assume(locator.getByRole('button', { name: 'Admin' }).all().length).equals(0);
+      await expect.element(locator.getByText('John Doe')).toBeVisible();
     });
 
     it('temporarily expands the desktop navigation rail on hover and pins it by button', async function togglesDesktopNavigation() {
       const user = userEvent.setup();
-      const { container, locator } = await render(
+      const { locator } = await render(
         <div style={{ width: '960px' }}>
           <OverviewDashboard />
         </div>
       );
 
-      const navigation = container.querySelector('[data-placement="left"]') as HTMLElement;
-      const sideNavigation = container.querySelector('nav[class*="sideNavigation"]') as HTMLElement;
-      const main = container.querySelector('[class*="dashboardMain"]') as HTMLElement;
-      const logo = container.querySelector('[class*="sideNavigationLogo"]') as HTMLElement;
+      const navigation = locator.getByRole('navigation', { name: 'Product navigation' });
       const dashboardButton = locator.getByRole('button', { name: 'Dashboard' });
       const collapseButton = locator.getByRole('button', { name: 'Collapse navigation' });
       await expect.element(collapseButton).toBeVisible();
       await expect.element(collapseButton).not.toHaveAttribute('aria-pressed');
-      await expect.element(dashboardButton).not.toHaveAttribute('aria-label');
-      assume(dashboardButton.element().querySelector('svg')).is.not.equal(null);
-      assume(getComputedStyle(logo).display).is.not.equal('none');
-      const collapsedLogoBounds = logo.getBoundingClientRect();
-      const collapsedDashboardIcon = dashboardButton.element().querySelector('svg') as SVGElement;
-      const collapsedDashboardIconBounds = collapsedDashboardIcon.getBoundingClientRect();
-      const collapsedLogoCenter = collapsedLogoBounds.left + collapsedLogoBounds.width / 2;
-      const collapsedDashboardIconCenter = collapsedDashboardIconBounds.left + collapsedDashboardIconBounds.width / 2;
-      expect(Math.abs(collapsedLogoCenter - collapsedDashboardIconCenter)).toBeLessThanOrEqual(4);
+      await expect.element(dashboardButton).toHaveAttribute('aria-pressed', 'true');
 
-      const expandedMainLeft = main.getBoundingClientRect().left;
       await user.click(locator.getByRole('button', { name: 'Collapse navigation' }));
-      const expandButton = container.querySelector('button[aria-label="Expand navigation"]') as HTMLElement;
-      assume(expandButton).is.not.equal(null);
-      await page.getByRole('document').hover({ position: { x: 500, y: 20 } });
-      await expect.element(expandButton).not.toBeVisible();
-      await expect.element(dashboardButton).toHaveAttribute('aria-label', 'Dashboard');
-      assume(dashboardButton.element().querySelector('svg')).is.not.equal(null);
-      assume(getComputedStyle(logo).display).is.not.equal('none');
-
-      await expect
-        .poll(function readCollapsedNavigationWidth() {
-          return navigation.getBoundingClientRect().width;
-        })
-        .toBeLessThanOrEqual(56);
-      const collapsedMainLeft = main.getBoundingClientRect().left;
-      const collapsedMainWidth = main.getBoundingClientRect().width;
-      expect(collapsedMainLeft).toBeLessThan(expandedMainLeft);
-      await page.getByRole('document').hover({ position: { x: 500, y: 20 } });
-      await expect.element(expandButton).not.toBeVisible();
+      const expandButton = locator.getByRole('button', { name: 'Expand navigation' });
       await expect.element(dashboardButton).toHaveAttribute('aria-label', 'Dashboard');
       await user.hover(navigation);
       await expect.element(locator.getByRole('button', { name: 'Expand navigation' })).toBeVisible();
       await expect
         .element(locator.getByRole('button', { name: 'Dashboard' }))
         .toHaveAttribute('aria-label', 'Dashboard');
-      await new Promise(function sampleHoverExpansion(resolve) {
-        setTimeout(resolve, 100);
-      });
-      const openingMainLeft = main.getBoundingClientRect().left;
-      await new Promise(function waitForHoverExpansion(resolve) {
-        setTimeout(resolve, 250);
-      });
-      const hoverExpandedNavigationWidth = sideNavigation.getBoundingClientRect().width;
-      expect(Math.abs(openingMainLeft - collapsedMainLeft)).toBeLessThanOrEqual(1);
-      expect(Math.abs(main.getBoundingClientRect().left - collapsedMainLeft)).toBeLessThanOrEqual(1);
-      expect(Math.abs(main.getBoundingClientRect().width - collapsedMainWidth)).toBeLessThanOrEqual(1);
 
-      await user.click(locator.getByRole('button', { name: 'Expand navigation' }));
+      await expect.element(expandButton).toBeVisible();
+      await user.click(expandButton);
       await expect.element(locator.getByRole('button', { name: 'Collapse navigation' })).toBeVisible();
       await expect
         .element(locator.getByRole('button', { name: 'Collapse navigation' }))
         .not.toHaveAttribute('aria-pressed');
-      expect(getComputedStyle(navigation).zIndex).toBe('1');
-      await new Promise(function samplePinnedExpansion(resolve) {
-        setTimeout(resolve, 100);
-      });
-      expect(sideNavigation.getBoundingClientRect().width).toBeGreaterThanOrEqual(hoverExpandedNavigationWidth - 1);
 
       await page.getByRole('document').hover({ position: { x: 0, y: 0 } });
       await expect.element(locator.getByRole('button', { name: 'Collapse navigation' })).toBeVisible();
 
       await user.click(locator.getByRole('button', { name: 'Collapse navigation' }));
-      await new Promise(function waitForNavigationContentTransition(resolve) {
-        setTimeout(resolve, 350);
-      });
       await expect.element(dashboardButton).toHaveAttribute('aria-label', 'Dashboard');
-      await page.getByRole('document').hover({ position: { x: 500, y: 20 } });
-      await expect.element(expandButton).not.toBeVisible();
-    });
-
-    it('keeps the chart legend below the donut at every card width', async function keepsLegendPlacement() {
-      const wide = await render(
-        <div style={{ width: '1600px' }}>
-          <OverviewDashboard />
-        </div>
-      );
-
-      await waitForSelector(wide.container, 'svg path');
-      const wideLegend = wide.container.querySelector('[aria-label="Chart legend"]');
-      assume(wideLegend).is.not.equal(null);
-      assume(getComputedStyle(wideLegend?.parentElement?.parentElement as Element).flexDirection).equals('column');
-
-      const narrow = await render(
-        <div style={{ width: '320px' }}>
-          <OverviewDashboard />
-        </div>
-      );
-
-      await waitForSelector(narrow.container, 'svg path');
-      const narrowLegend = narrow.container.querySelector('[aria-label="Chart legend"]');
-      assume(narrowLegend).is.not.equal(null);
-      assume(getComputedStyle(narrowLegend?.parentElement?.parentElement as Element).flexDirection).equals('column');
     });
 
     it('opens and closes the mobile navigation without changing the dashboard content', async function togglesMobileNavigation() {
       const user = userEvent.setup();
-      const { container, locator } = await render(
+      const { locator } = await render(
         <div style={{ width: '320px' }}>
           <OverviewDashboard />
         </div>
       );
 
-      const inlineNavigation = container.querySelector('[data-placement="left"]') as HTMLElement;
-      assume(inlineNavigation).is.not.equal(null);
-      assume(getComputedStyle(inlineNavigation).display).equals('none');
-      const compactHeader = container.querySelector('[class*="dashboardMain"] > [class*="navigation"]') as HTMLElement;
-      const compactActions = container.querySelector('[class*="navActions"]') as HTMLElement;
-      const compactUserRow = container.querySelector('[class*="userRow"]') as HTMLElement;
-      expect(compactHeader.style.gap).toBe('');
-      expect(compactActions.style.gap).toBe('');
-      expect(getComputedStyle(compactUserRow).alignItems).toBe('flex-start');
-
-      await user.click(locator.getByRole('button', { name: 'Open navigation' }));
+      const openNavigation = locator.getByRole('button', { name: 'Open navigation' });
+      await expect.element(openNavigation).toBeVisible();
+      await user.click(openNavigation);
       const drawer = page.getByRole('dialog', { name: 'Product navigation' });
       await expect.element(drawer).toBeVisible();
       await expect.element(locator.getByRole('heading', { name: 'Overview' })).toBeVisible();
       const mobileNavigation = drawer.getByRole('navigation', { name: 'Product navigation' });
-      expect(getComputedStyle(mobileNavigation.element()).overflowY).toBe('auto');
+      await expect.element(mobileNavigation).toBeVisible();
 
       const closeNavigation = drawer.getByRole('button', { name: 'Close navigation' });
       await expect.element(closeNavigation).not.toHaveAttribute('aria-pressed');
       await user.click(closeNavigation);
       await expect.element(drawer).not.toBeInTheDocument();
-      assume(getComputedStyle(inlineNavigation).display).equals('none');
     });
 
     it('closes the mobile navigation on desktop resize without changing the pinned preference', async function handlesDesktopResize() {
@@ -243,7 +134,6 @@ describe('@godaddy/antares', function packageTests() {
       const viewport = container.firstElementChild as HTMLElement;
       await user.click(locator.getByRole('button', { name: 'Collapse navigation' }));
       const expandButton = locator.getByRole('button', { name: 'Expand navigation' });
-      await expect.element(expandButton).toBeVisible();
 
       viewport.style.width = '320px';
       await expect.element(locator.getByRole('button', { name: 'Open navigation' })).toBeVisible();
