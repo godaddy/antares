@@ -73,15 +73,15 @@ describe('@godaddy/antares', function antares() {
       await expect.element(getByRole('button', { name: 'Next' })).not.toBeDisabled();
     });
 
-    it.each([
-      Number.NaN,
-      Number.POSITIVE_INFINITY
-    ])('treats non-finite pageCount as unknown (%s)', async function handlesNonFinitePageCount(pageCount) {
-      const { container, getByRole } = await render(<PlaygroundExample composition="dots" pageCount={pageCount} />);
+    it.each([Number.NaN, Number.POSITIVE_INFINITY])(
+      'treats non-finite pageCount as unknown (%s)',
+      async function handlesNonFinitePageCount(pageCount) {
+        const { container, getByRole } = await render(<PlaygroundExample composition="dots" pageCount={pageCount} />);
 
-      expect(container.querySelectorAll('[data-pagination-dot]')).toHaveLength(0);
-      await expect.element(getByRole('button', { name: 'Next' })).not.toBeDisabled();
-    });
+        expect(container.querySelectorAll('[data-pagination-dot]')).toHaveLength(0);
+        await expect.element(getByRole('button', { name: 'Next' })).not.toBeDisabled();
+      }
+    );
 
     it('navigates forward when pageCount is unknown', async function navigatesUnknownPageCount() {
       const { getByRole } = await render(<PageCountUnknownExample />);

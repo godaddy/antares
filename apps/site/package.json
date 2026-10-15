@@ -25,7 +25,7 @@
     "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.16",
+    "@biomejs/biome": "^2.5.15",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/mdx": "^2.0.14",
     "@types/node": "^25.9.1",
@@ -35,7 +35,7 @@
     "mdast": "^3.0.0",
     "mdast-util-mdx-jsx": "^3.2.0",
     "mdast-util-mdxjs-esm": "^2.0.1",
-    "postcss": "^8.5.29",
+    "postcss": "^8.5.30",
     "remark-mdx": "^3.1.1",
     "remark-parse": "^11.0.0",
     "tailwindcss": "^4.3.3",
