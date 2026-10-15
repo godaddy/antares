@@ -3,6 +3,104 @@
   "name": "antares-blocks",
   "items": [
     {
+      "name": "blocks/overview-dashboard",
+      "type": "registry:block",
+      "title": "Overview dashboard",
+      "dependencies": ["@godaddy/antares"],
+      "files": [
+        {
+          "path": "overview-dashboard/components/appointments-promotion-card/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/overview-dashboard/components/appointments-promotion-card/index.module.css"
+        },
+        {
+          "path": "overview-dashboard/components/appointments-promotion-card/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/overview-dashboard/components/appointments-promotion-card/index.tsx"
+        },
+        {
+          "path": "overview-dashboard/components/conversations-card/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/overview-dashboard/components/conversations-card/index.module.css"
+        },
+        {
+          "path": "overview-dashboard/components/conversations-card/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/overview-dashboard/components/conversations-card/index.tsx"
+        },
+        {
+          "path": "overview-dashboard/components/dashboard-header/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/overview-dashboard/components/dashboard-header/index.module.css"
+        },
+        {
+          "path": "overview-dashboard/components/dashboard-header/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/overview-dashboard/components/dashboard-header/index.tsx"
+        },
+        {
+          "path": "overview-dashboard/components/dashboard-sidebar-content/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/overview-dashboard/components/dashboard-sidebar-content/index.module.css"
+        },
+        {
+          "path": "overview-dashboard/components/dashboard-sidebar-content/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/overview-dashboard/components/dashboard-sidebar-content/index.tsx"
+        },
+        {
+          "path": "overview-dashboard/components/dashboard-sidebar/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/overview-dashboard/components/dashboard-sidebar/index.module.css"
+        },
+        {
+          "path": "overview-dashboard/components/dashboard-sidebar/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/overview-dashboard/components/dashboard-sidebar/index.tsx"
+        },
+        {
+          "path": "overview-dashboard/components/overview-dashboard/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/overview-dashboard/components/overview-dashboard/index.module.css"
+        },
+        {
+          "path": "overview-dashboard/components/overview-dashboard/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/overview-dashboard/components/overview-dashboard/index.tsx"
+        },
+        {
+          "path": "overview-dashboard/components/sales-channels-card/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/overview-dashboard/components/sales-channels-card/index.module.css"
+        },
+        {
+          "path": "overview-dashboard/components/sales-channels-card/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/overview-dashboard/components/sales-channels-card/index.tsx"
+        },
+        {
+          "path": "overview-dashboard/components/users-card/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/overview-dashboard/components/users-card/index.module.css"
+        },
+        {
+          "path": "overview-dashboard/components/users-card/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/overview-dashboard/components/users-card/index.tsx"
+        },
+        {
+          "path": "overview-dashboard/constants/config.ts",
+          "type": "registry:component",
+          "target": "components/blocks/overview-dashboard/constants/config.ts"
+        },
+        {
+          "path": "overview-dashboard/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/overview-dashboard/index.tsx"
+        }
+      ]
+    },
+    {
       "name": "blocks/sign-in-form",
       "type": "registry:block",
       "title": "Sign-in form",

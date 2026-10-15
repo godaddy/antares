@@ -1,0 +1,16 @@
+---
+title: Overview dashboard
+description: A responsive Antares overview dashboard with users, sales channels, and conversations.
+---
+
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Block } from '@bento/block-explorer/runtime';
+import * as Stories from './overview-dashboard.stories.tsx';
+
+<Meta of={Stories} name="Overview" id="blocks-overview-dashboard" />
+
+<Block
+  id="overview-dashboard"
+  description="A responsive Antares overview dashboard with users, sales channels, and conversations."
+  of={Stories.Preview}
+/>
