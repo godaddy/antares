@@ -1,4 +1,16 @@
-import { Avatar, Box, Button, Flex, Icon, Text } from '@godaddy/antares';
+import {
+  Avatar,
+  Box,
+  Button,
+  Flex,
+  Icon,
+  Menu,
+  MenuItem,
+  MenuSeparator,
+  MenuTrigger,
+  Pressable,
+  Text
+} from '@godaddy/antares';
 import styles from './index.module.css';
 
 interface DashboardHeaderProps {
@@ -40,11 +52,20 @@ export function DashboardHeader({ onOpenNavigation }: DashboardHeaderProps) {
         <Button className={styles.mobileNavAction} variant="minimal" size="sm" aria-label="Apps">
           <Icon icon="apps" aria-hidden="true" />
         </Button>
-        <Button variant="minimal" size="sm" aria-label="Account menu">
-          <Avatar size="sm" emphasis="primary">
-            <Text>MT</Text>
-          </Avatar>
-        </Button>
+        <MenuTrigger popoverProps={{ placement: 'bottom end' }}>
+          <Pressable aria-label="Account menu">
+            <Avatar size="sm" emphasis="primary" role="button">
+              <Text>MT</Text>
+            </Avatar>
+          </Pressable>
+          <Menu aria-label="Account actions">
+            <MenuItem id="profile">View profile</MenuItem>
+            <MenuItem id="settings">Account settings</MenuItem>
+            <MenuItem id="switch-account">Switch account</MenuItem>
+            <MenuSeparator />
+            <MenuItem id="sign-out">Sign out</MenuItem>
+          </Menu>
+        </MenuTrigger>
         <Button variant="minimal" size="sm" aria-label="Shopping cart">
           <Icon icon="cart" aria-hidden="true" />
         </Button>

@@ -40,6 +40,27 @@ describe('@godaddy/antares', function packageTests() {
         .toBeVisible();
     });
 
+    it('opens account actions from the avatar menu', async function opensAccountMenu() {
+      const user = userEvent.setup();
+      const { locator } = await render(
+        <div style={{ width: '960px' }}>
+          <OverviewDashboard />
+        </div>
+      );
+
+      const accountMenu = locator.getByRole('button', { name: 'Account menu' });
+      await user.click(accountMenu);
+
+      await expect.element(page.getByRole('menu')).toBeVisible();
+      await expect.element(page.getByRole('menuitem', { name: 'View profile' })).toBeVisible();
+      await expect.element(page.getByRole('menuitem', { name: 'Account settings' })).toBeVisible();
+      await expect.element(page.getByRole('menuitem', { name: 'Sign out' })).toBeVisible();
+
+      await user.click(page.getByRole('menuitem', { name: 'Account settings' }));
+      await expect.element(accountMenu).toHaveAttribute('aria-expanded', 'false');
+      await expect.element(accountMenu).toHaveFocus();
+    });
+
     it('selects navigation items without changing the dashboard content', async function selectsNavigationItem() {
       const user = userEvent.setup();
       const { locator } = await render(

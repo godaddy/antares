@@ -108,22 +108,24 @@ export function OverviewDashboard() {
           onMobileNavigationChange={handleMobileNavigationChange}
         />
 
-        <Flex className={styles.dashboardMain} direction="column" gap="xl" padding="xl">
-          <DashboardHeader onOpenNavigation={openMobileNavigation} />
+        <Flex className={styles.dashboardMain} direction="column">
+          <Flex className={styles.dashboardContent} direction="column" gap="xl" padding="xl">
+            <DashboardHeader onOpenNavigation={openMobileNavigation} />
 
-          <Heading level={2}>Overview</Heading>
+            <Heading level={2}>Overview</Heading>
 
-          <Grid className={styles.contentGrid} gap="xl">
-            <Flex direction="column" gap="xl">
-              <UsersCard />
-              <AppointmentsPromotionCard />
-            </Flex>
+            <Grid className={styles.contentGrid} gap="xl">
+              <Flex direction="column" gap="xl">
+                <UsersCard />
+                <AppointmentsPromotionCard />
+              </Flex>
 
-            <Flex direction="column" gap="xl">
-              <SalesChannelsCard />
-              <ConversationsCard />
-            </Flex>
-          </Grid>
+              <Flex direction="column" gap="xl">
+                <SalesChannelsCard />
+                <ConversationsCard />
+              </Flex>
+            </Grid>
+          </Flex>
         </Flex>
       </Grid>
     </Box>
