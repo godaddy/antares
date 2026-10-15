@@ -1,1 +1,0 @@
-import{i as e}from"./preload-helper-DAJkNc8c.js";import{w as t}from"./chunk-KEIR6QF5-2IYuTIhz.js";import{M as n,N as r}from"./mermaid-parser.core-DK4aDZqO.js";e((()=>{r(),t()}))();export{n as createPacketServices};
