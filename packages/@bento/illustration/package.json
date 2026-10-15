@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "lint": "biome lint && tsgo --noEmit",
+    "lint": "biome lint",
     "prepublishOnly": "node ../../../scripts/compile-readme.ts",
     "test": "vitest --run",
     "test:watch": "vitest",

@@ -33,9 +33,7 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Install Dependencies
-        run: |
-          npm ci
-          npx playwright install --with-deps
+        run: npm ci
 
       - name: Validate shadcn Registry Schema
         run: npm run registry:validate

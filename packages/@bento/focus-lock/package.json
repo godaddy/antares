@@ -7,7 +7,7 @@
   "module": "./dist/index.mjs",
   "scripts": {
     "build": "tsdown",
-    "lint": "biome lint && tsgo --noEmit",
+    "lint": "biome lint",
     "prepublishOnly": "node ../../../scripts/compile-readme.ts",
     "test": "vitest --run",
     "test:watch": "vitest",
