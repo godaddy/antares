@@ -1,19 +1,20 @@
 'use client';
 
-import { useId, useReducer, useState, type ComponentProps, type FormEvent } from 'react';
+import { useId, useReducer, useRef, useState, type FormEvent } from 'react';
 import {
   Alert,
   Box,
   Button,
   Checkbox,
-  DropZone,
   Flex,
   Grid,
   Heading,
   Icon,
   Text,
   TextContext,
-  isFileDropItem
+  isFileDropItem,
+  useDrop,
+  type DropEvent
 } from '@godaddy/antares';
 import type { CalendarDate } from '@godaddy/antares/date';
 import { DropOverlay } from '../drop-overlay';
@@ -33,6 +34,7 @@ const heroImage = {
 
 const fileFormatError = 'Use PDF, JPG, GIF, or PNG files smaller than 256 MiB.';
 const fileLimitError = 'Use up to 10 files with a combined size of 256 MiB or less.';
+const dropZoneLabel = 'Upload project files';
 
 interface AttachmentState {
   files: File[];
@@ -87,11 +89,12 @@ function attachmentReducer(state: AttachmentState, action: AttachmentAction): At
   return { files: nextFiles, error: validationError };
 }
 
-type FormDropEvent = Parameters<NonNullable<ComponentProps<typeof DropZone>['onDrop']>>[0];
+type FormDropEvent = DropEvent;
 
 /** A complete, interactive project inquiry page with a local demo submission. */
 export function ProjectInquiryForm() {
   const headingId = useId();
+  const dropZoneRef = useRef<HTMLDivElement>(null);
   const [values, setValues] = useState(initialValues);
   const [dueDate, setDueDate] = useState<CalendarDate | null>(null);
   const [attachments, dispatchAttachments] = useReducer(attachmentReducer, initialAttachmentState);
@@ -100,6 +103,12 @@ export function ProjectInquiryForm() {
     Object.values(values).every(function isFilled(value) {
       return value.trim().length > 0;
     }) && attachments.files.length > 0;
+
+  const { dropProps, isDropTarget } = useDrop({
+    ref: dropZoneRef,
+    hasDropButton: false,
+    onDrop: handleDrop
+  });
 
   function clearConfirmation() {
     setSubmitted(false);
@@ -170,71 +179,72 @@ export function ProjectInquiryForm() {
           <Benefits />
         </Flex>
 
-        <DropZone
-          aria-label="Upload project files"
+        <Flex
+          ref={dropZoneRef}
+          role="region"
+          aria-label={dropZoneLabel}
           padding="0"
           alignItems="stretch"
           justifyContent="start"
+          {...dropProps}
+          data-drop-target={isDropTarget || undefined}
           className={styles.dropZone}
-          onDrop={handleDrop}
         >
-          {({ isDropTarget }) => (
-            <TextContext.Provider value={null}>
-              <Flex
-                as="form"
-                direction="column"
-                gap="lg"
-                padding="xl"
-                rounding="xl"
-                elevation="card"
-                aria-labelledby={headingId}
-                onSubmit={handleSubmit}
-                className={styles.form}
-              >
-                <Flex direction="column" gap="xs">
-                  <Heading id={headingId} level={2}>
-                    Talk with an expert to help with your project goals.
-                  </Heading>
-                </Flex>
-
-                <Fields
-                  values={values}
-                  dueDate={dueDate}
-                  onChange={handleFieldChange}
-                  onProjectTypeChange={clearConfirmation}
-                  onDateChange={handleDateChange}
-                  onClearDate={handleClearDate}
-                />
-
-                <AttachedFiles
-                  files={attachments.files}
-                  error={attachments.error}
-                  onSelect={addFiles}
-                  onRemove={handleRemoveFile}
-                />
-
-                <Button type="submit" variant="primary" isDisabled={!canSubmit}>
-                  <Icon icon="calendar" aria-hidden="true" />
-                  Schedule a Call
-                </Button>
-
-                <Text>
-                  Or call us at <a href="tel:+14803663344">(480) 366-3344</a>
-                </Text>
-
-                <Checkbox name="receiveTexts" onChange={clearConfirmation}>
-                  I want to receive texts from GoDaddy about these products and services.
-                </Checkbox>
-
-                {submitted ? (
-                  <Alert emphasis="success">Demo complete. No information was sent and no call was scheduled.</Alert>
-                ) : null}
-
-                <DropOverlay isDropTarget={isDropTarget} />
+          <TextContext.Provider value={null}>
+            <Flex
+              as="form"
+              direction="column"
+              gap="lg"
+              padding="xl"
+              rounding="xl"
+              elevation="card"
+              aria-labelledby={headingId}
+              onSubmit={handleSubmit}
+              className={styles.form}
+            >
+              <Flex direction="column" gap="xs">
+                <Heading id={headingId} level={2}>
+                  Talk with an expert to help with your project goals.
+                </Heading>
               </Flex>
-            </TextContext.Provider>
-          )}
-        </DropZone>
+
+              <Fields
+                values={values}
+                dueDate={dueDate}
+                onChange={handleFieldChange}
+                onProjectTypeChange={clearConfirmation}
+                onDateChange={handleDateChange}
+                onClearDate={handleClearDate}
+              />
+
+              <AttachedFiles
+                files={attachments.files}
+                error={attachments.error}
+                onSelect={addFiles}
+                onRemove={handleRemoveFile}
+              />
+
+              <Button type="submit" variant="primary" isDisabled={!canSubmit}>
+                <Icon icon="calendar" aria-hidden="true" />
+                Schedule a Call
+              </Button>
+
+              <Text>
+                Or call us at <a href="tel:+14803663344">(480) 366-3344</a>
+              </Text>
+
+              <Checkbox name="receiveTexts" onChange={clearConfirmation}>
+                I want to receive texts from GoDaddy about these products and services.
+              </Checkbox>
+
+              {submitted ? (
+                <Alert emphasis="success">Demo complete. No information was sent and no call was scheduled.</Alert>
+              ) : null}
+
+              <DropOverlay isDropTarget={isDropTarget} />
+            </Flex>
+          </TextContext.Provider>
+        </Flex>
       </Grid>
     </Box>
   );

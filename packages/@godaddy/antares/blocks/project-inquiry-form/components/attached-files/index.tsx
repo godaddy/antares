@@ -63,7 +63,7 @@ export function AttachedFiles({ files, error, onSelect, onRemove }: AttachedFile
   const pickerButtonRef = useRef<HTMLButtonElement>(null);
 
   const restorePickerFocus = useCallback(function restorePickerFocus() {
-    pickerButtonRef.current?.focus();
+    pickerButtonRef.current?.focus({ preventScroll: true });
   }, []);
 
   return (

@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef } from 'react';
 import {
   Box,
   Button,
@@ -80,6 +81,13 @@ function ContactField({ field, value, onChange }: ContactFieldProps) {
 
 /** Composes the required contact fields with the optional project metadata. */
 export function Fields({ values, dueDate, onChange, onProjectTypeChange, onDateChange, onClearDate }: FieldsProps) {
+  const datePickerTriggerRef = useRef<HTMLButtonElement>(null);
+
+  function handleClearDate() {
+    onClearDate();
+    datePickerTriggerRef.current?.focus({ preventScroll: true });
+  }
+
   return (
     <>
       {fields.map(function renderField(field) {
@@ -100,13 +108,13 @@ export function Fields({ values, dueDate, onChange, onProjectTypeChange, onDateC
       <Flex direction="column" gap="sm">
         <DatePicker name="dueDate" value={dueDate} onChange={onDateChange}>
           <Label>Due date</Label>
-          <Button slot="trigger" />
+          <Button ref={datePickerTriggerRef} slot="trigger" />
           <Text slot="description">Leave blank if there’s no set date.</Text>
           <DatePickerCalendar popoverProps={{ 'aria-label': 'Due date' }} />
         </DatePicker>
         {dueDate ? (
           <Box alignSelf="start">
-            <Button type="button" variant="inline" onPress={onClearDate}>
+            <Button type="button" variant="inline" onPress={handleClearDate}>
               Clear date
             </Button>
           </Box>
