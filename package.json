@@ -22,7 +22,7 @@
     "site": "nx run site:dev --no-tui",
     "site:build": "nx run site:build --no-tui",
     "storybook": "nx run docs:storybook --no-tui",
-    "test": "npm run scripts:test && nx run-many -t test --no-tui",
+    "test": "npm run scripts:test && nx run-many -t test --output-style=static",
     "test:visual": "nx run-many -t test:visual --no-tui",
     "test:visual:update": "nx run-many -t test:visual:update --no-tui",
     "typecheck": "nx run-many -t typecheck --no-tui",
