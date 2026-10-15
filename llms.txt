@@ -38,7 +38,7 @@
 - [Pagination](/docs/components/pagination): A composed pagination primitive for controlled or uncontrolled page navigation.
 - [Popover](/docs/components/popover): The Popover component is an overlay element positioned relative to a trigger element.
 - [Pressable](/docs/components/pressable): A wrapperless interaction primitive that adds accessible press behavior to a single child element.
-- [ProgressBar](/docs/components/progress-bar): A progress bar shows determinate or indeterminate progress of an operation over time
+- [ProgressBar](/docs/components/progress-bar): Composable determinate or indeterminate progress with optional label, value, and description
 - [ProgressSteps](/docs/components/progress-steps): A multi-step progress indicator for wizard and onboarding flows.
 - [Radio](/docs/components/radio): Accessible radio button component for mutually exclusive selections with keyboard navigation, validation states, and flexible layouts.
 - [RangeField](/docs/components/range-field): RangeField lets users select one numeric value or a related set of values on a bounded scale.

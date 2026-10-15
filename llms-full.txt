@@ -2248,6 +2248,21 @@ Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, et
 
 All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
 
+## Context and slots [#context-and-slots]
+
+`BoxContext` supplies default props to Boxes in its subtree. A `slots` map supplies defaults to
+named parts; each Box selects one with `slot`. Explicit consumer props override defaults, while
+classes, styles, and refs are merged. Pass `slot={null}` to opt out of the context.
+
+```tsx
+<BoxContext.Provider value={{ slots: { content: { padding: 'md', className: 'content' } } }}>
+  <Box slot="content">Content</Box>
+</BoxContext.Provider>
+```
+
+Flex and Grid render through Box and also consume BoxContext. Named slot maps require a matching
+slot unless the provider includes an unslotted default. Nested providers replace the outer context.
+
 ## Props [#props]
 
 ### Box [#box]
@@ -2848,17 +2863,29 @@ npm install --save @godaddy/antares
 
 <Examples of={Stories.Examples} />
 
+## Customization [#customization]
+
+Use `Box slot="value"` for formatted or custom content, or `Text slot="value"` for typography controls.
+The root's children render function provides progress state. Customize layout and styling with
+Grid props, `className`, and `style`.
+
 ## Accessibility [#accessibility]
 
-### ARIA Support [#aria-support]
-
-- `role="progressbar"` on the container
-- `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value
-- `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-- `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`)
-- `aria-labelledby` associates the visible label when the `label` prop is provided
+- Provide `Label`, `aria-label`, or `aria-labelledby` for the accessible name.
+- Progress remains accessible without a visible value. Use `valueLabel` to customize its text; indeterminate progress omits the value.
+- `Text slot="description"` is associated automatically, preserving external `aria-describedby` references.
 
 ## Props [#props]
+
+```tsx
+<ProgressBar>
+  <Label />
+  <Box slot="value" />
+  <Box slot="track" />
+  <Text slot="description" />
+  {/* ... */}
+</ProgressBar>
+```
 
 ### ProgressBar [#progressbar]
 
