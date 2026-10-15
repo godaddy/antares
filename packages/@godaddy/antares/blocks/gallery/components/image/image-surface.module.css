@@ -1,0 +1,6 @@
+.openButton {
+  display: block;
+  inline-size: 100%;
+  min-inline-size: 0;
+  padding: 0;
+}

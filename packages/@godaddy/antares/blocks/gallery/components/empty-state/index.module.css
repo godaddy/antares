@@ -1,0 +1,8 @@
+.emptyState {
+  min-block-size: 16rem;
+  text-align: center;
+}
+
+.description {
+  max-inline-size: 30rem;
+}

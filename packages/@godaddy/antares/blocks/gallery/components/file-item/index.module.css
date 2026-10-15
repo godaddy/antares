@@ -1,0 +1,22 @@
+.item {
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+
+.card:where([data-variant="horizontal"]) {
+  block-size: 4.625rem;
+  min-block-size: 4.625rem;
+}
+
+.details {
+  min-inline-size: 0;
+  overflow: hidden;
+}
+
+.details:where([data-variant="vertical"]) {
+  min-block-size: 5.5rem;
+}
+
+.errorDetails {
+  min-inline-size: 0;
+}
