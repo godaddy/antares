@@ -28,7 +28,11 @@ const config: RcFile = {
   formatRepository: false,
   dependencyGroups: [
     { aliasName: 'nx', dependencies: ['nx', '@nx/**'] },
-    { aliasName: 'vitest', dependencies: ['vitest', '@vitest/**'] }
+    { aliasName: 'vitest', dependencies: ['vitest', '@vitest/**'] },
+    { aliasName: 'storybook', dependencies: ['storybook', '@storybook/**'] },
+    { aliasName: 'tailwindcss', dependencies: ['tailwindcss', '@tailwindcss/**'] },
+    { aliasName: 'tsdown', dependencies: ['tsdown', '@tsdown/**'] },
+    { aliasName: 'commitlint', dependencies: ['@commitlint/**'] }
   ],
   semverGroups: [
     {
@@ -65,21 +69,6 @@ const config: RcFile = {
       packages: ['**'],
       dependencies: ['@godaddy/antares/**', '@godaddy/antares'],
       isIgnored: true
-    },
-
-    {
-      label: 'Vitest version consistency',
-      packages: ['**'],
-      dependencies: ['vitest'],
-      dependencyTypes: ['dev']
-    },
-
-    {
-      label: 'Build tools consistency',
-      packages: ['**'],
-      dependencies: ['tsdown', 'typescript'],
-      dependencyTypes: ['dev', 'prod'],
-      policy: 'sameRange'
     }
   ]
 };
