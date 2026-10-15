@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useContext, type ReactElement } from 'react';
+import { useCallback, useEffect, useMemo, useContext, useState, type ReactElement, type SVGProps } from 'react';
 import { Box, type BoxContext } from '@bento/box';
-import { createRoot } from 'react-dom/client';
-import { flushSync } from 'react-dom';
+import { createPortal } from 'react-dom';
 
 /**
  * This is the id of the sprite container that holds all the symbols.
@@ -42,11 +41,16 @@ function sprite(id: string): SVGSVGElement {
   return sprite;
 }
 
+function SpriteRegistration({ children, register }: { children: ReactElement; register: () => void }) {
+  useEffect(register, [register]);
+  return children;
+}
+
 /**
  * React hook that introduces SVG illustrations to a sprite sheet. The hook
  * creates a new symbol element for the provided illustration and adds it to the
  * sprite sheet. The hook returns a React element that references the newly
- * added symbol.
+ * added symbol. Render the returned SVG to register its symbol.
  *
  * @param name - The name of the SVG that should be added to the SVG sprite sheet.
  * @param [Graphic] - The component that renders the SVG content for the sprite sheet.
@@ -57,57 +61,55 @@ export function useSVGSprite(name: string, Graphic: ReactElement | undefined): R
   const { env } = useContext<BoxContext<Record<string, any>>>(Box);
   const id = `${root}-${name}`;
 
+  const props = Graphic?.props as SVGProps<SVGSVGElement> | undefined;
+  const [target, setTarget] = useState<HTMLDivElement | null>(null);
+
   useEffect(
-    function populate() {
-      const sheet = sprite(root);
-      const exists = sheet.querySelector(`symbol[data-symbol="${name}"]`);
+    function prepare() {
+      sprite(root);
+      if (!Graphic || document.getElementById(id)) {
+        setTarget(null);
+        return;
+      }
 
-      if (exists) return;
-      if (!Graphic) return;
-
-      const target = document.createElement('div');
-      const container = createRoot(target);
-      const props = Graphic.props;
-
-      //
-      // We want to render the SVG Component to a string so we can inject it
-      // into the sprite sheet. The `renderToString` API is not available in
-      // `react-dom/client` bundle so we're using a workaround to render the
-      // component to a detached DOM node. This approach has a few caveats:
-      //
-      // 1. We're not allowed to render when React is already rendering, so we
-      //    need to defer the rendering to the next tick to prevent race
-      //    conditions.
-      // 2. The `render` API queues the render update, so we need to flush the
-      //    update synchronously so we can reliably extract the rendered SVG
-      //    content.
-      //
-      // Given that the hook already renders the `<use>` element, it okay to
-      // _slightly_ delay the injection of the symbol into the sprite sheet as
-      // the browser would automatically paint icons once it's available.
-      //
-      queueMicrotask(function delay() {
-        flushSync(() => container.render(Graphic));
-        sheet.innerHTML += `<symbol id="${id}" data-symbol="${name}" viewBox="${(props as any)?.viewBox}">${target.innerHTML}</symbol>`;
-        container.unmount();
-      });
+      setTarget((target) => target ?? document.createElement('div'));
     },
-    [name, Graphic]
+    [id, Graphic]
   );
 
+  const populate = useCallback(
+    function populate() {
+      if (!target || !Graphic) return;
+
+      const sheet = sprite(root);
+      if (!document.getElementById(id)) {
+        const symbol = document.createElementNS(namespace, 'symbol');
+        symbol.id = id;
+        symbol.setAttribute('data-symbol', name);
+        if (props?.viewBox) symbol.setAttribute('viewBox', props.viewBox);
+
+        // Keep a static copy after React removes the temporary portal.
+        for (const child of target.childNodes) symbol.appendChild(child.cloneNode(true));
+        sheet.appendChild(symbol);
+      }
+
+      setTarget(null);
+    },
+    [target, id, name, props?.viewBox, Graphic]
+  );
+
+  // Use a portal so sprite registration does not require react-dom/client in remote hosts.
   return useMemo(
     function useReference() {
       return (
-        <svg
-          viewBox={(Graphic?.props as any)?.viewBox}
-          xmlns={namespace}
-          width={(Graphic?.props as any)?.width}
-          height={(Graphic?.props as any)?.height}
-        >
+        <svg viewBox={props?.viewBox} xmlns={namespace} width={props?.width} height={props?.height}>
           <use xlinkHref={`${env.sprite}#${id}`} fill="currentColor" />
+          {target && Graphic
+            ? createPortal(<SpriteRegistration register={populate}>{Graphic}</SpriteRegistration>, target)
+            : null}
         </svg>
       );
     },
-    [Graphic, id]
+    [Graphic, id, target, env.sprite, props, populate]
   );
 }

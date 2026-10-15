@@ -1,6 +1,8 @@
 import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
-import { describe, it } from 'vitest';
+import { describe, it, expect } from 'vitest';
+import { renderToString } from 'react-dom/server';
+import { BasicUsage } from '../examples/basic';
 import { fileURLToPath } from 'node:url';
 import fs from 'node:fs/promises';
 import assume from 'assume';
@@ -9,6 +11,12 @@ import { useSVGSprite } from '../dist';
 describe('@bento/use-svg-sprite', function bento() {
   it('is a function', function test() {
     assume(useSVGSprite).is.a('function');
+  });
+
+  it('renders an SVG reference during SSR without creating a sprite sheet', function ssr() {
+    const html = renderToString(<BasicUsage />);
+    expect(html).toContain('xlink:href="#bento-svg-spritesheet-check"');
+    expect(html).not.toContain('<symbol');
   });
 
   describe('Public API', function packageSuite() {
