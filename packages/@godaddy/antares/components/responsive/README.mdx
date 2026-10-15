@@ -1,0 +1,60 @@
+---
+title: Responsive
+description: How Antares components adapt, and how to build responsive layouts around them with native CSS.
+---
+
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './responsive.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Components adapt to the space they are given with intrinsic CSS and container queries.
+- Page layout stays in your CSS, with your own media queries and breakpoints.
+- Component sizes can follow `--antares-size`, so your CSS can change them at any breakpoint.
+- Responsive styles are plain CSS, so server rendering needs no viewport guess.
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Customization
+
+Antares publishes no viewport breakpoints. Components don't change by viewport width, except overlays
+such as Modal and Drawer, which document their own thresholds. Choose the breakpoints your layout needs,
+and write them in your own media or container queries.
+
+The examples include their CSS in `<style>` blocks so the complete code is visible. Applications can
+place those rules in their own stylesheets. Layout props such as `columns` and `gap` write inline styles,
+which beat stylesheet rules. When your CSS changes a property across a query, set it in CSS for every
+width and leave the prop unset.
+
+A container can't take its width from its content, so give it one from its parent, as the container
+example does with the `flex` basis of its sidebar and main area. Otherwise it collapses in flex rows and
+other shrink-to-fit layouts. Portaled content is outside the container, so it needs a container in its
+own DOM ancestry.
+
+In media queries, `rem` uses the browser's initial font size.
+
+### Responsive size
+
+Component props, including `size`, take a single value. For a size that changes with the layout, leave
+`size` unset and set `--antares-size` in your CSS. TextLockup reads it for its text parts, so you can set
+the variable on the lockup itself or an ancestor. The responsive size example sets it on a parent. The
+nearest value wins, and an explicit `size` beats it. Without the variable, components follow the
+surrounding `SizeProvider`. Browsers without container style queries ignore the variable.
+
+These components follow `--antares-size`:
+
+| Component    | Values     | Notes                               |
+| ------------ | ---------- | ----------------------------------- |
+| `TextLockup` | `xs`-`2xl` | A `Tag` eyebrow keeps its own size. |
+
+## Accessibility
+
+Preserve reading order, keyboard focus, and entered values as layouts change: reflow one DOM tree with
+CSS instead of rendering different trees. Validate layouts with long text, RTL, narrow widths, text
+enlargement, and browser zoom. Resizing the viewport alone does not test every effect of zoom. Use
+pointer and hover media features to detect input capabilities, not widths.
