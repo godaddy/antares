@@ -192,6 +192,22 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('button', { name: 'Remove notes.txt' })).not.toBeInTheDocument();
     });
 
+    it('keeps accepted files when a picker selection mixes supported and unsupported files', async function mixedSelection() {
+      const screen = await render(<ProjectInquiryForm />);
+      const input = fileInput(screen.container);
+
+      selectFiles(input, [
+        new File(['brief'], 'brief.pdf', { type: 'application/pdf' }),
+        new File(['notes'], 'notes.txt', { type: 'text/plain' })
+      ]);
+
+      await expect
+        .element(screen.getByRole('alert'))
+        .toHaveTextContent('Use PDF, JPG, GIF, or PNG files smaller than 256 MiB.');
+      await expect.element(screen.getByRole('button', { name: 'Remove brief.pdf' })).toBeVisible();
+      await expect.element(screen.getByRole('button', { name: 'Remove notes.txt' })).not.toBeInTheDocument();
+    });
+
     it('supports project selection and optional consent', async function changesOptions() {
       const screen = await render(<ProjectInquiryForm />);
 

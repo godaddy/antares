@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useId, useRef } from 'react';
-import { Button, Detail, FileTrigger, Flex, Icon, Text } from '@godaddy/antares';
+import { Button, Card, CornerActions, Detail, FileTrigger, Flex, Icon, Text } from '@godaddy/antares';
 import { ACCEPTED_FILE_TYPES, fileKey, formatFileSize } from '../../data/files';
 import { FilePreview } from '../file-preview';
 import styles from './index.module.css';
@@ -42,16 +42,18 @@ function AttachmentRow({ file, onRemove, onRestoreFocus }: AttachmentRowProps) {
   );
 
   return (
-    <Flex gap="md" padding="sm" rounding="md" alignItems="center" className={styles.row}>
+    <Card direction="row" gap="sm" padding="sm" rounding="lg" className={styles.row}>
       <FilePreview file={file} />
       <Flex direction="column" gap="sm" flex="1" className={styles.details}>
         <Text className={styles.fileName}>{file.name}</Text>
         <Detail size="sm">{formatFileSize(file)}</Detail>
       </Flex>
-      <Button type="button" variant="minimal" size="sm" aria-label={`Remove ${file.name}`} onPress={handleRemove}>
-        <Icon icon="x" aria-hidden="true" />
-      </Button>
-    </Flex>
+      <CornerActions>
+        <Button type="button" variant="minimal" size="sm" aria-label={`Remove ${file.name}`} onPress={handleRemove}>
+          <Icon icon="x" aria-hidden="true" />
+        </Button>
+      </CornerActions>
+    </Card>
   );
 }
 
