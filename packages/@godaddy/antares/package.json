@@ -1,6 +1,6 @@
 {
   "name": "@godaddy/antares",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "description": "The GoDaddy design component library",
   "type": "module",
   "scripts": {
@@ -40,7 +40,7 @@
     "src"
   ],
   "dependencies": {
-    "@bento/icon": "^0.2.0",
+    "@bento/icon": "^0.2.1",
     "@bento/svg-parser": "^0.1.1",
     "@bento/use-data-attributes": "^0.1.1",
     "@internationalized/date": "^3.12.2",

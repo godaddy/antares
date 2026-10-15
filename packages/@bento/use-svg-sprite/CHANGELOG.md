@@ -1,5 +1,13 @@
 # @bento/use-svg-sprite
 
+## 0.1.3
+
+### Patch Changes
+
+- fix: register SVG sprites through the app's React tree without importing react-dom/client. Render the hook's returned SVG to register its symbol.
+
+  fix: update SVG references when the environment sprite URL changes. ([#383](https://github.com/godaddy/bento/pull/383) by @egaitan-godaddy)
+
 ## 0.1.2
 
 ### Patch Changes

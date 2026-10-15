@@ -1,6 +1,6 @@
 {
   "name": "@bento/listbox",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Listbox component",
   "type": "module",
   "main": "./dist/index.cjs",
