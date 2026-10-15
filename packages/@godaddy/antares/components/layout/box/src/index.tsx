@@ -1,19 +1,16 @@
 import { createContext, forwardRef, type CSSProperties, type ElementType } from 'react';
-import { useContextProps, type ContextValue } from 'react-aria-components';
+import { useContextProps, type ContextValue, type SlotProps } from 'react-aria-components';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '#types/polymorphic-react.ts';
 import { composeClassName, composeStyle } from '#utils/render-props.ts';
 import { toRoundingVar, toSpacingVar, type Elevation, type Rounding, type Spacing } from '../../tokens.ts';
 import styles from './index.module.css';
 
-export interface BoxOwnProps {
+export interface BoxOwnProps extends SlotProps {
   /** Custom data attributes, including props supplied through context. */
   [dataAttribute: `data-${string}`]: string | number | boolean | undefined;
 
   /** Polymorphic element type. @default 'div' */
   as?: ElementType;
-
-  /** Named slot to consume from BoxContext. Pass `null` to opt out. */
-  slot?: string | null;
 
   /** Padding on all sides. Accepts single value or array. */
   padding?: Spacing | Spacing[];
