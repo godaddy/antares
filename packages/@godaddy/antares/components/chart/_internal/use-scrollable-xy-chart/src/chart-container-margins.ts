@@ -131,7 +131,7 @@ export function getBlockEndMargin(
  * overflow check uses the correct edge.
  *
  * @param xAxisElement - X-axis SVG group element
- * @param prevInlineEndMargin - Inline-end margin currently applied (px); kept when removing it would re-introduce overflow
+ * @param prevInlineEndMargin - Inline-end margin currently applied (px), used to check overflow without that margin
  * @param isRtl - Whether the chart is in RTL writing direction
  * @returns Inline-end margin in pixels
  */
@@ -148,16 +148,8 @@ export function getInlineEndMargin(xAxisElement: SVGGraphicsElement, prevInlineE
   if (isRtl) {
     const svgLeft = svgRect?.left ?? 0;
 
-    if (lastTickTextRect.left < svgLeft) {
+    if (lastTickTextRect.left - prevInlineEndMargin < svgLeft) {
       return Math.ceil(lastTickTextRect.width / 2);
-    }
-
-    // The label fits, but the existing margin may be exactly what's keeping it inside the SVG.
-    // Removing it would shift the last tick leftward by `prevInlineEndMargin` (mapped onto
-    // `margin.left` in RTL); if that shift would push the label past the edge, keep the
-    // current margin so the layout does not oscillate.
-    if (prevInlineEndMargin > 0 && lastTickTextRect.left - prevInlineEndMargin < svgLeft) {
-      return prevInlineEndMargin;
     }
 
     return 0;
@@ -165,16 +157,10 @@ export function getInlineEndMargin(xAxisElement: SVGGraphicsElement, prevInlineE
 
   const svgRight = svgRect?.right ?? 0;
 
-  if (lastTickTextRect.right > svgRight) {
+  // Check the unreserved edge, then size the margin from the current label. Retaining the
+  // previous margin would preserve horizontal-label spacing after the labels rotate.
+  if (lastTickTextRect.right + prevInlineEndMargin > svgRight) {
     return Math.ceil(lastTickTextRect.width / 2);
-  }
-
-  // The label fits, but the existing margin may be exactly what's keeping it inside the SVG.
-  // Removing it would shift the last tick rightward by `prevInlineEndMargin` (visx anchors the
-  // last tick at `chartWidth - margin.right` in LTR); if that shift would push the label past
-  // the edge, keep the current margin so the layout does not oscillate.
-  if (prevInlineEndMargin > 0 && lastTickTextRect.right + prevInlineEndMargin > svgRight) {
-    return prevInlineEndMargin;
   }
 
   return 0;

@@ -1,4 +1,5 @@
 import { render } from 'vitest-browser-react';
+import { flushSync } from 'react-dom';
 import { describe, it, expect } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import { DefaultExample } from '../examples/default.tsx';
@@ -69,12 +70,26 @@ describe('@godaddy/antares', function antares() {
 
       await next.click();
       await expect.element(prev).toBeVisible();
+      const control = prev.element() as HTMLButtonElement;
+      await Promise.all(control.getAnimations().map((animation) => animation.finished));
 
-      await prev.click();
+      // Start and pause the fade in the browser, before a driver round trip can finish it.
+      flushSync(() => control.click());
+      const animations = control.getAnimations();
+      expect(animations.length).toBeGreaterThan(0);
+      for (const animation of animations) {
+        animation.pause();
+        animation.currentTime = Number(animation.effect?.getComputedTiming().duration) / 2;
+      }
 
-      // `.hide` is back on: the fade must still be running and the button still painted.
-      expect(getComputedStyle(prev.element()).visibility).toBe('visible');
-      expect(prev.element().getAnimations().length).toBeGreaterThan(0);
+      expect(control).toBeDisabled();
+      expect(getComputedStyle(control).visibility).toBe('visible');
+      const opacity = Number(getComputedStyle(control).opacity);
+      expect(opacity).toBeGreaterThan(0);
+      expect(opacity).toBeLessThan(1);
+
+      for (const animation of animations) animation.finish();
+      await expect.element(prev).not.toBeVisible();
     });
 
     it('hides the next button on the last slide', async function hidesNextAtLast() {
