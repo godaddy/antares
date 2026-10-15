@@ -18,6 +18,10 @@ export default mergeConfig(
       })
     ],
     test: {
+      coverage: {
+        include: ['components/**/*.{ts,tsx}', 'utils/**/*.{ts,tsx}'],
+        exclude: ['**/examples/**', '**/test/**', '**/*.stories.tsx']
+      },
       projects: [ssr, browser, visual]
     }
   })

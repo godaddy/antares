@@ -1,4 +1,4 @@
-import { describe, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import assume from 'assume';
@@ -16,6 +16,20 @@ describe('@godaddy/antares', function antares() {
 
       const trigger = page.getByRole('button');
       assume(trigger).is.not.equal(null);
+    });
+
+    it('preserves the accessible description after selection', async function accessibleDescription() {
+      const user = userEvent.setup();
+      await render(<DefaultExample />);
+
+      const trigger = page.getByRole('button');
+      await expect.element(trigger).toHaveAccessibleDescription('Select your favorite coffee');
+
+      await user.click(trigger);
+      await user.click(page.getByRole('option', { name: 'Espresso' }));
+
+      await expect.element(trigger).toHaveAccessibleName('Espresso Coffee');
+      await expect.element(trigger).toHaveAccessibleDescription('Select your favorite coffee');
     });
 
     it('updates the controlled selection on click', async function controlledInteraction() {
@@ -61,6 +75,9 @@ describe('@godaddy/antares', function antares() {
 
       const field = container.querySelector('[data-interior="box"]') as HTMLElement;
       assume(field.hasAttribute('data-invalid')).equals(true);
+      await expect
+        .element(page.getByRole('button', { name: /Pick a drink/ }))
+        .toHaveAccessibleDescription('Please select an item in the list.');
     });
 
     it('marks the field invalid from the controlled isInvalid prop', async function controlledInvalid() {
@@ -68,6 +85,9 @@ describe('@godaddy/antares', function antares() {
 
       const field = container.querySelector('[data-interior="box"]') as HTMLElement;
       assume(field.hasAttribute('data-invalid')).equals(true);
+      await expect
+        .element(page.getByRole('button', { name: /Pick a drink/ }))
+        .toHaveAccessibleDescription('Please choose a drink');
     });
   });
 });
