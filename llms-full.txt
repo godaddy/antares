@@ -1647,6 +1647,84 @@ For a menu trigger, the button and menu are composed as siblings inside
 <PropTable />
 
 
+# CircularProgress
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A basic determinate progress indicator with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Indeterminate [#indeterminate]
+
+Use indeterminate progress while preparing an upload whose total size is unknown.
+Once the total is known, set `isIndeterminate` to false and supply a measured value.
+
+<Story of="IndeterminateExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, type CircularProgressProps } from '@godaddy/antares';\n\nexport function IndeterminateExample(props: CircularProgressProps) {\n  return (\n    <CircularProgress label=\&#x22;Preparing upload…\&#x22; helperText=\&#x22;Calculating the total size\&#x22; isIndeterminate {...props} />\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+## Props [#props]
+
+### CircularProgress [#circularprogress]
+
+<PropTable />
+
+
 # Collapsible
 
 
@@ -1805,84 +1883,6 @@ Panel content stays mounted when collapsed. Reset form state explicitly when the
 <PropTable />
 
 ### CollapsiblePanel [#collapsiblepanel]
-
-<PropTable />
-
-
-# CircularProgress
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A basic determinate progress indicator with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
-
-<Story of="EmphasisExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Indeterminate [#indeterminate]
-
-Use indeterminate progress while preparing an upload whose total size is unknown.
-Once the total is known, set `isIndeterminate` to false and supply a measured value.
-
-<Story of="IndeterminateExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, type CircularProgressProps } from '@godaddy/antares';\n\nexport function IndeterminateExample(props: CircularProgressProps) {\n  return (\n    <CircularProgress label=\&#x22;Preparing upload…\&#x22; helperText=\&#x22;Calculating the total size\&#x22; isIndeterminate {...props} />\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value (clamped to 0–100)
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-* `aria-describedby` wires the `helperText` to the progressbar for screen readers
-* The decorative SVG and output text are hidden via `aria-hidden="true"`
-
-## Props [#props]
-
-### CircularProgress [#circularprogress]
 
 <PropTable />
 
@@ -3764,6 +3764,103 @@ Compose with `children` to replace the stepper icons with your own content, such
 <PropTable />
 
 
+# Popover
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`PopoverTrigger` wraps a trigger button and a `<Popover>`, handling open state and positioning automatically.
+Based on RAC `DialogTrigger`. To anchor a popover to an element it doesn't wrap, pass `triggerRef` instead.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive trigger element (for example, a `Button`).
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Content, Popover, PopoverTrigger, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover>\n        <Content>This is the popover content!</Content>\n      </Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
+
+### Custom Anchor [#custom-anchor]
+
+To position a popover relative to a different element than its trigger, use the `triggerRef` and `isOpen` props instead of `<PopoverTrigger>`. `onOpenChange` is called when the user opens or closes the popover.
+
+<Story of="CustomAnchorExample" />
+
+<Source language="tsx" code="&#x22;import { Popover, Box, Content, Flex, Button } from '@godaddy/antares';\nimport { useRef, useState } from 'react';\n\nexport function CustomAnchorExample() {\n  const [isOpen, setOpen] = useState(false);\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open Popover\n      </Button>\n\n      <Box elevation=\&#x22;card\&#x22; ref={triggerRef}>\n        Popover will be positioned relative to me\n      </Box>\n\n      <Popover triggerRef={triggerRef} isOpen={isOpen} onOpenChange={setOpen} aria-label=\&#x22;Popover\&#x22;>\n        <Content>Popover content!</Content>\n      </Popover>\n    </Flex>\n  );\n}&#x22;" />
+
+### Title and Close Button [#title-and-close-button]
+
+Add a `Heading slot="title"` and a `CloseButton` for a titled, dismissible popover. The heading
+also gives the dialog its accessible name.
+
+<Story of="WithCloseButtonExample" />
+
+<Source language="tsx" code="&#x22;import { Button, CloseButton, Content, Heading, Popover, PopoverTrigger } from '@godaddy/antares';\n\nexport function WithCloseButtonExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover>\n        <Heading slot=\&#x22;title\&#x22;>Popover title</Heading>\n        <CloseButton />\n        <Content>This is the popover content!</Content>\n      </Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key           | Action                             |
+| ------------- | ---------------------------------- |
+| `Enter/Space` | Opens the popover from its trigger |
+| `Escape`      | Closes the popover                 |
+
+### ARIA [#aria]
+
+* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+* A `Heading slot="title"` labels the dialog via `aria-labelledby`. Without one, a popover inside
+  a `PopoverTrigger` falls back to being labelled by its trigger; standing alone with
+  `triggerRef` it needs an explicit `aria-label`
+
+## Best Practices [#best-practices]
+
+* Pass an `aria-label` when anchoring with `triggerRef` instead of wrapping a `PopoverTrigger`,
+  since there is no trigger to borrow the name from.
+* Popover width is determined by its content, and it's recommended to keep it under 400px.
+
+## Props [#props]
+
+```tsx
+<PopoverTrigger>
+  <Button />
+  <Popover>
+    <Heading slot="title" />
+    <CloseButton />
+    <Content />
+    {/* ... */}
+  </Popover>
+</PopoverTrigger>
+```
+
+### Popover [#popover]
+
+<PropTable />
+
+### PopoverTrigger [#popovertrigger]
+
+<PropTable />
+
+
 # Pagination
 
 
@@ -3896,103 +3993,6 @@ provided by Antares.
 <PropTable />
 
 ### PaginationDots [#paginationdots]
-
-<PropTable />
-
-
-# Popover
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`PopoverTrigger` wraps a trigger button and a `<Popover>`, handling open state and positioning automatically.
-Based on RAC `DialogTrigger`. To anchor a popover to an element it doesn't wrap, pass `triggerRef` instead.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive trigger element (for example, a `Button`).
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Content, Popover, PopoverTrigger, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover>\n        <Content>This is the popover content!</Content>\n      </Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
-
-### Custom Anchor [#custom-anchor]
-
-To position a popover relative to a different element than its trigger, use the `triggerRef` and `isOpen` props instead of `<PopoverTrigger>`. `onOpenChange` is called when the user opens or closes the popover.
-
-<Story of="CustomAnchorExample" />
-
-<Source language="tsx" code="&#x22;import { Popover, Box, Content, Flex, Button } from '@godaddy/antares';\nimport { useRef, useState } from 'react';\n\nexport function CustomAnchorExample() {\n  const [isOpen, setOpen] = useState(false);\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open Popover\n      </Button>\n\n      <Box elevation=\&#x22;card\&#x22; ref={triggerRef}>\n        Popover will be positioned relative to me\n      </Box>\n\n      <Popover triggerRef={triggerRef} isOpen={isOpen} onOpenChange={setOpen} aria-label=\&#x22;Popover\&#x22;>\n        <Content>Popover content!</Content>\n      </Popover>\n    </Flex>\n  );\n}&#x22;" />
-
-### Title and Close Button [#title-and-close-button]
-
-Add a `Heading slot="title"` and a `CloseButton` for a titled, dismissible popover. The heading
-also gives the dialog its accessible name.
-
-<Story of="WithCloseButtonExample" />
-
-<Source language="tsx" code="&#x22;import { Button, CloseButton, Content, Heading, Popover, PopoverTrigger } from '@godaddy/antares';\n\nexport function WithCloseButtonExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover>\n        <Heading slot=\&#x22;title\&#x22;>Popover title</Heading>\n        <CloseButton />\n        <Content>This is the popover content!</Content>\n      </Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key           | Action                             |
-| ------------- | ---------------------------------- |
-| `Enter/Space` | Opens the popover from its trigger |
-| `Escape`      | Closes the popover                 |
-
-### ARIA [#aria]
-
-* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
-* A `Heading slot="title"` labels the dialog via `aria-labelledby`. Without one, a popover inside
-  a `PopoverTrigger` falls back to being labelled by its trigger; standing alone with
-  `triggerRef` it needs an explicit `aria-label`
-
-## Best Practices [#best-practices]
-
-* Pass an `aria-label` when anchoring with `triggerRef` instead of wrapping a `PopoverTrigger`,
-  since there is no trigger to borrow the name from.
-* Popover width is determined by its content, and it's recommended to keep it under 400px.
-
-## Props [#props]
-
-```tsx
-<PopoverTrigger>
-  <Button />
-  <Popover>
-    <Heading slot="title" />
-    <CloseButton />
-    <Content />
-    {/* ... */}
-  </Popover>
-</PopoverTrigger>
-```
-
-### Popover [#popover]
-
-<PropTable />
-
-### PopoverTrigger [#popovertrigger]
 
 <PropTable />
 
@@ -4584,280 +4584,6 @@ Always provide clear error messages:
 <PropTable />
 
 
-# Responsive
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Components adapt to the space they are given with intrinsic CSS and container queries.
-* Page layout stays in your CSS, with your own media queries and breakpoints.
-* Component sizes can follow `--antares-size`, so your CSS can change them at any breakpoint.
-* Responsive styles are plain CSS, so server rendering needs no viewport guess.
-
-## Examples [#examples]
-
-### Intrinsic layout [#intrinsic-layout]
-
-Hosting plans wrap into as many columns as fit, with no breakpoint. `auto-fill` and `minmax()`
-pick the column count from the available width. Start here before reaching for a query.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Grid, Heading, Text } from '@godaddy/antares';\n\nconst plans = [\n  { name: 'Economy', summary: 'One website with 25 GB of storage.' },\n  { name: 'Deluxe', summary: 'Ten websites with 50 GB of storage.' },\n  { name: 'Ultimate', summary: 'Twenty-five websites with 75 GB of storage.' }\n];\n\nexport function DefaultExample() {\n  return (\n    <Grid as=\&#x22;section\&#x22; aria-label=\&#x22;Hosting plans\&#x22; columns=\&#x22;repeat(auto-fill, minmax(min(16rem, 100%), 1fr))\&#x22; gap=\&#x22;md\&#x22;>\n      {plans.map(function plan({ name, summary }) {\n        return (\n          <Flex key={name} direction=\&#x22;column\&#x22; alignItems=\&#x22;start\&#x22; gap=\&#x22;sm\&#x22; padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n            <Heading level={3}>{name}</Heading>\n            <Text>{summary}</Text>\n            <Button variant=\&#x22;secondary\&#x22;>Choose {name}</Button>\n          </Flex>\n        );\n      })}\n    </Grid>\n  );\n}&#x22;" />
-
-### Container query [#container-query]
-
-The same domain card sits in a narrow sidebar and a wide main area. It stacks in the sidebar and
-lines up in the main area at the same viewport width, because it queries its own container. The
-28rem threshold belongs to the card. Its CSS owns the direction and alignment, so those props stay
-unset.
-
-<Story of="ContainerLayoutExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Button, Flex, Heading, Text } from '@godaddy/antares';\n\ninterface DomainCardProps {\n  domain: string;\n  renewal: string;\n}\n\nfunction DomainCard({ domain, renewal }: DomainCardProps) {\n  return (\n    <Box as=\&#x22;article\&#x22; aria-label={domain} padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; className=\&#x22;responsive-domain-card\&#x22;>\n      <Flex gap=\&#x22;sm\&#x22; className=\&#x22;responsive-domain-card-body\&#x22;>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n          <Heading level={3}>{domain}</Heading>\n          <Text>{renewal}</Text>\n        </Flex>\n        <Flex wrap=\&#x22;wrap\&#x22; gap=\&#x22;sm\&#x22;>\n          <Button variant=\&#x22;secondary\&#x22;>Manage DNS</Button>\n          <Button>Renew</Button>\n        </Flex>\n      </Flex>\n    </Box>\n  );\n}\n\nexport function ContainerLayoutExample() {\n  return (\n    <>\n      <style>{`\n        .responsive-container-example-sidebar {\n          flex: 1 1 14rem;\n        }\n\n        .responsive-container-example-main {\n          flex: 3 1 28rem;\n        }\n\n        .responsive-domain-card {\n          container: domain-card / inline-size;\n        }\n\n        .responsive-domain-card-body {\n          flex-direction: column;\n        }\n\n        @container domain-card (min-width: 28rem) {\n          .responsive-domain-card-body {\n            flex-direction: row;\n            align-items: center;\n            justify-content: space-between;\n          }\n        }\n      `}</style>\n      <Flex wrap=\&#x22;wrap\&#x22; gap=\&#x22;md\&#x22;>\n        <Box as=\&#x22;aside\&#x22; aria-label=\&#x22;Sidebar\&#x22; className=\&#x22;responsive-container-example-sidebar\&#x22;>\n          <DomainCard domain=\&#x22;shop.example\&#x22; renewal=\&#x22;Renews on March 2, 2027\&#x22; />\n        </Box>\n        <Box as=\&#x22;main\&#x22; aria-label=\&#x22;Domains\&#x22; className=\&#x22;responsive-container-example-main\&#x22;>\n          <DomainCard domain=\&#x22;example.com\&#x22; renewal=\&#x22;Renews on January 12, 2027\&#x22; />\n        </Box>\n      </Flex>\n    </>\n  );\n}&#x22;" />
-
-### Viewport media query [#viewport-media-query]
-
-Page layout belongs to the app, so its CSS picks the breakpoint. This settings page shows its
-navigation beside the content from `64rem` and stacks it above the content below that. Leave
-`columns` unset so it does not place a competing value in inline styles.
-
-<Story of="ViewportLayoutExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex, Grid, Heading, LinkButton, Text } from '@godaddy/antares';\n\nconst sections = [\n  { name: 'Profile', href: '#profile' },\n  { name: 'Security', href: '#security' },\n  { name: 'Payment methods', href: '#payment-methods' },\n  { name: 'Notifications', href: '#notifications' }\n];\n\nexport function ViewportLayoutExample() {\n  return (\n    <>\n      <style>{`\n        .responsive-viewport-example {\n          grid-template-columns: minmax(0, 1fr);\n        }\n\n        @media (min-width: 64rem) {\n          .responsive-viewport-example {\n            grid-template-columns: 16rem minmax(0, 1fr);\n          }\n        }\n      `}</style>\n      <Grid as=\&#x22;section\&#x22; aria-label=\&#x22;Account settings\&#x22; gap=\&#x22;lg\&#x22; className=\&#x22;responsive-viewport-example\&#x22;>\n        <Box as=\&#x22;nav\&#x22; aria-label=\&#x22;Settings\&#x22;>\n          <Flex direction=\&#x22;column\&#x22; alignItems=\&#x22;start\&#x22; gap=\&#x22;xs\&#x22;>\n            {sections.map(function section({ name, href }) {\n              return (\n                <LinkButton key={name} variant=\&#x22;minimal\&#x22; href={href}>\n                  {name}\n                </LinkButton>\n              );\n            })}\n          </Flex>\n        </Box>\n        <Flex as=\&#x22;section\&#x22; aria-label=\&#x22;Profile\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n          <Heading level={2}>Profile</Heading>\n          <Text>Update the name and contact details on your account.</Text>\n        </Flex>\n      </Grid>\n    </>\n  );\n}&#x22;" />
-
-### Form reflow [#form-reflow]
-
-Billing details in one column on small screens and two from `64rem`. Type into a field and resize:
-CSS reflows the same inputs, preserving their values, focus, and selection. Let CSS own the columns
-and allow long descriptions to wrap.
-
-<Story of="FormExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Input, Label, Text, TextField } from '@godaddy/antares';\n\ninterface FormExampleProps {\n  /** Help text that can wrap onto multiple lines. */\n  description?: string;\n\n  /** Reading direction of the form. */\n  dir?: 'ltr' | 'rtl';\n}\n\nexport function FormExample({ description = 'Use the name on your payment card.', dir }: FormExampleProps) {\n  return (\n    <>\n      <style>{`\n        .responsive-form-example {\n          grid-template-columns: minmax(0, 1fr);\n        }\n\n        .responsive-form-example-field {\n          min-inline-size: 0;\n          overflow-wrap: anywhere;\n        }\n\n        @media (min-width: 64rem) {\n          .responsive-form-example {\n            grid-template-columns: repeat(2, minmax(0, 1fr));\n          }\n\n          .responsive-form-example-wide {\n            grid-column: 1 / -1;\n          }\n        }\n      `}</style>\n      <Grid as=\&#x22;form\&#x22; aria-label=\&#x22;Billing details\&#x22; dir={dir} gap=\&#x22;md\&#x22; className=\&#x22;responsive-form-example\&#x22;>\n        <TextField name=\&#x22;name\&#x22; autoComplete=\&#x22;name\&#x22; className=\&#x22;responsive-form-example-field\&#x22;>\n          <Label>Full name</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>{description}</Text>\n        </TextField>\n        <TextField name=\&#x22;email\&#x22; type=\&#x22;email\&#x22; autoComplete=\&#x22;email\&#x22; className=\&#x22;responsive-form-example-field\&#x22;>\n          <Label>Email</Label>\n          <Input />\n        </TextField>\n        <TextField\n          name=\&#x22;address\&#x22;\n          autoComplete=\&#x22;street-address\&#x22;\n          className=\&#x22;responsive-form-example-field responsive-form-example-wide\&#x22;\n        >\n          <Label>Street address</Label>\n          <Input />\n        </TextField>\n        <TextField name=\&#x22;city\&#x22; autoComplete=\&#x22;address-level2\&#x22; className=\&#x22;responsive-form-example-field\&#x22;>\n          <Label>City</Label>\n          <Input />\n        </TextField>\n        <TextField name=\&#x22;postalCode\&#x22; autoComplete=\&#x22;postal-code\&#x22; className=\&#x22;responsive-form-example-field\&#x22;>\n          <Label>Postal code</Label>\n          <Input />\n        </TextField>\n      </Grid>\n    </>\n  );\n}&#x22;" />
-
-### Responsive size [#responsive-size]
-
-A `TextLockup` without `size` follows `--antares-size` from a parent, so the app's CSS can change it
-at its own breakpoint. This dashboard greeting is `md` on small screens and `xl` from `80rem`.
-Browsers without container style queries fall back to the surrounding size scope (`md` here).
-
-<Story of="ResponsiveSizeExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function ResponsiveSizeExample() {\n  return (\n    <>\n      <style>{`\n        .responsive-size-example {\n          --antares-size: md;\n        }\n\n        @media (min-width: 80rem) {\n          .responsive-size-example {\n            --antares-size: xl;\n          }\n        }\n      `}</style>\n      <Box as=\&#x22;header\&#x22; className=\&#x22;responsive-size-example\&#x22;>\n        <TextLockup>\n          <Text slot=\&#x22;eyebrow\&#x22;>Dashboard</Text>\n          <Heading slot=\&#x22;title\&#x22; level={1}>\n            Welcome back, Ada\n          </Heading>\n          <Text slot=\&#x22;body\&#x22;>Two domains renew this month. Review them to keep your sites online.</Text>\n        </TextLockup>\n      </Box>\n    </>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-Antares publishes no viewport breakpoints. Components don't change by viewport width, except overlays
-such as Modal and Drawer, which document their own thresholds. Choose the breakpoints your layout needs,
-and write them in your own media or container queries.
-
-The examples include their CSS in `<style>` blocks so the complete code is visible. Applications can
-place those rules in their own stylesheets. Layout props such as `columns` and `gap` write inline styles,
-which beat stylesheet rules. When your CSS changes a property across a query, set it in CSS for every
-width and leave the prop unset.
-
-A container can't take its width from its content, so give it one from its parent, as the container
-example does with the `flex` basis of its sidebar and main area. Otherwise it collapses in flex rows and
-other shrink-to-fit layouts. Portaled content is outside the container, so it needs a container in its
-own DOM ancestry.
-
-In media queries, `rem` uses the browser's initial font size.
-
-### Responsive size [#responsive-size-1]
-
-Component props, including `size`, take a single value. For a size that changes with the layout, leave
-`size` unset and set `--antares-size` in your CSS. TextLockup reads it for its text parts, so you can set
-the variable on the lockup itself or an ancestor. The responsive size example sets it on a parent. The
-nearest value wins, and an explicit `size` beats it. Without the variable, components follow the
-surrounding `SizeProvider`. Browsers without container style queries ignore the variable.
-
-These components follow `--antares-size`:
-
-| Component    | Values     | Notes                               |
-| ------------ | ---------- | ----------------------------------- |
-| `TextLockup` | `xs`-`2xl` | A `Tag` eyebrow keeps its own size. |
-
-## Accessibility [#accessibility]
-
-Preserve reading order, keyboard focus, and entered values as layouts change: reflow one DOM tree with
-CSS instead of rendering different trees. Validate layouts with long text, RTL, narrow widths, text
-enlargement, and browser zoom. Resizing the viewport alone does not test every effect of zoom. Use
-pointer and hover media features to detect input capabilities, not widths.
-
-
-# SegmentedController
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;View\&#x22; defaultValue=\&#x22;day\&#x22;>\n      <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [selected, setSelected] = useState('week');\n\n  return (\n    <>\n      <SegmentedController aria-label=\&#x22;View\&#x22; value={selected} onSelectionChange={setSelected}>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n      <p>Current selection: {selected}</p>\n    </>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Three sizes are available: `sm`, `md` (default), and `lg`.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <SegmentedController aria-label=\&#x22;View (small)\&#x22; size=\&#x22;sm\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day sm</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week sm</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month sm</SegmentedControllerItem>\n      </SegmentedController>\n\n      <SegmentedController aria-label=\&#x22;View (medium)\&#x22; size=\&#x22;md\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day md</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week md</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month md</SegmentedControllerItem>\n      </SegmentedController>\n\n      <SegmentedController aria-label=\&#x22;View (large)\&#x22; size=\&#x22;lg\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day lg</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week lg</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month lg</SegmentedControllerItem>\n      </SegmentedController>\n    </Flex>\n  );\n}&#x22;" />
-
-### Icon + Text [#icon--text]
-
-Segments can include an `Icon` alongside text for added visual context.
-
-<Story of="IconExample" />
-
-<Source language="tsx" code="&#x22;import { Icon, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function IconExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;Layout\&#x22; defaultValue=\&#x22;list\&#x22;>\n      <SegmentedControllerItem value=\&#x22;list\&#x22;>\n        <Icon icon=\&#x22;bulleted-list\&#x22; />\n        List\n      </SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;grid\&#x22;>\n        <Icon icon=\&#x22;grid\&#x22; />\n        Grid\n      </SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
-
-### Icon Only [#icon-only]
-
-For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
-
-<Story of="IconOnlyExample" />
-
-<Source language="tsx" code="&#x22;import { Icon, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function IconOnlyExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;Layout\&#x22;>\n      <SegmentedControllerItem value=\&#x22;list\&#x22; aria-label=\&#x22;List view\&#x22;>\n        <Icon icon=\&#x22;bulleted-list\&#x22; />\n      </SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;grid\&#x22; aria-label=\&#x22;Grid view\&#x22;>\n        <Icon icon=\&#x22;grid\&#x22; />\n      </SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
-
-### Overflow [#overflow]
-
-When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
-
-<Story of="OverflowExample" />
-
-<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function OverflowExample({ maxWidth = '300px' }: { maxWidth?: string }) {\n  return (\n    <SegmentedController aria-label=\&#x22;Category\&#x22; defaultValue=\&#x22;electronics\&#x22; style={{ maxWidth }}>\n      <SegmentedControllerItem value=\&#x22;electronics\&#x22;>Electronics</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;clothing\&#x22;>Clothing</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;home\&#x22;>Home</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;sports\&#x22;>Sports</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;toys\&#x22;>Toys</SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
-
-### RTL Direction [#rtl-direction]
-
-The segmented controller follows the current layout direction (LTR or RTL), detected automatically from the browser or system settings.
-
-<Story of="RTLExample" />
-
-<Source language="tsx" code="&#x22;import { RTLProvider } from '#utils/rtl-locale-provider.tsx';\nimport { OverflowExample } from './overflow.tsx';\n\nexport function RTLExample() {\n  return (\n    <RTLProvider>\n      <OverflowExample />\n    </RTLProvider>\n  );\n}&#x22;" />
-
-### Disabled States [#disabled-states]
-
-Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem, Flex } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <label>Disabled group</label>\n      <SegmentedController aria-label=\&#x22;Disabled group\&#x22; isDisabled defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n\n      <label>Individual disabled</label>\n      <SegmentedController aria-label=\&#x22;Individual disabled\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22; isDisabled>\n          Week\n        </SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n    </Flex>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-### Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**SegmentedController Container:** `data-disabled`
-
-**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
-
-## Accessibility [#accessibility]
-
-### Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to/from the segmented controller
-* **Arrow Left/Right**: Move to next/previous segment
-* **Space/Enter**: Select the focused segment
-
-### ARIA Support [#aria-support]
-
-* `role="radiogroup"` on the container
-* `role="radio"` on each segment
-* `aria-checked` indicates selection state
-* `aria-disabled` for disabled segments
-* `aria-label` required on the container for screen readers
-
-## Best Practices [#best-practices]
-
-### When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
-
-* When switching between 2-5 related views within the same context
-* When all options should be visible at once
-* When the selection immediately changes the displayed content
-
-### When Not to Use [#when-not-to-use]
-
-* For more than 5 options (use Tabs or Select instead)
-* For form input (use RadioGroup instead)
-
-## Props [#props]
-
-```tsx
-<SegmentedController>
-  <SegmentedControllerItem />
-  {/* ... */}
-</SegmentedController>
-```
-
-### SegmentedController [#segmentedcontroller]
-
-<PropTable />
-
-### SegmentedControllerItem [#segmentedcontrolleritem]
-
-<PropTable />
-
-
 # RangeField
 
 
@@ -5048,7 +4774,9 @@ Negative values are supported. Set a negative `minValue` and ensure every scalar
 Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
 
 
-# SizeProvider
+# SegmentedController
+
+
 
 
 
@@ -5072,89 +4800,252 @@ Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` 
 
 <Meta of="Stories" name="Overview" />
 
-## Features [#features]
+## Installation [#installation]
 
-* `sm`, `md`, or `lg` for the adopted components inside (listed below): their text, controls, and
-  default spacing.
-* The nearest scope wins, and nested scopes replace the size rather than compounding it.
-* A component's own `size` prop wins for that component only.
-* Overlays opened inside, such as Modal and Select options, open at the scope's size even though
-  they render in a portal.
-* Renders no element, so it never affects layout. Only Antares components follow it; plain HTML
-  keeps its own typography, so put copy in `Text`.
-* Without any scope, components use `md`.
-* Adopted so far by Text, Detail, Heading, Label, Button, LinkButton, TextField, NumberField, Select,
-  DatePicker, DateRangePicker, Calendar, TextLockup, Modal, Drawer, Popover, and Tooltip. Other
-  components keep their own size. Layout spacing props keep their meaning: `gap="md"` is the layout
-  `md` gap in any scope.
+```bash
+npm install --save @godaddy/antares
+```
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-A scope sizes everything inside it: text, controls, and default spacing. A component's own
-`size` still wins.
+An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Button, Flex, Heading, Input, Label, SizeProvider, Text, TextField, TextLockup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22; level={2}>\n            Billing\n          </Heading>\n          <Text slot=\&#x22;body\&#x22;>Manage your payment methods.</Text>\n        </TextLockup>\n\n        <TextField>\n          <Label>Email</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n        </TextField>\n\n        <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n          <Button variant=\&#x22;primary\&#x22;>Update payment method</Button>\n          <Button variant=\&#x22;primary\&#x22; size=\&#x22;md\&#x22;>\n            Contact support\n          </Button>\n        </Flex>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;View\&#x22; defaultValue=\&#x22;day\&#x22;>\n      <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [selected, setSelected] = useState('week');\n\n  return (\n    <>\n      <SegmentedController aria-label=\&#x22;View\&#x22; value={selected} onSelectionChange={setSelected}>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n      <p>Current selection: {selected}</p>\n    </>\n  );\n}&#x22;" />
 
 ### Sizes [#sizes]
 
-The same section at each size. Without a scope, components use `md`.
+Three sizes are available: `sm`, `md` (default), and `lg`.
 
 <Story of="SizesExample" />
 
-<Source language="tsx" code="&#x22;import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      {SIZES.map(function section(size) {\n        return (\n          <SizeProvider key={size} size={size}>\n            <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n              <Heading>Size {size}</Heading>\n              <Text>Body copy follows the scope.</Text>\n              <Detail>Supporting copy too.</Detail>\n              <Button variant=\&#x22;primary\&#x22;>Save</Button>\n            </Flex>\n          </SizeProvider>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <SegmentedController aria-label=\&#x22;View (small)\&#x22; size=\&#x22;sm\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day sm</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week sm</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month sm</SegmentedControllerItem>\n      </SegmentedController>\n\n      <SegmentedController aria-label=\&#x22;View (medium)\&#x22; size=\&#x22;md\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day md</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week md</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month md</SegmentedControllerItem>\n      </SegmentedController>\n\n      <SegmentedController aria-label=\&#x22;View (large)\&#x22; size=\&#x22;lg\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day lg</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week lg</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month lg</SegmentedControllerItem>\n      </SegmentedController>\n    </Flex>\n  );\n}&#x22;" />
 
-### Form [#form]
+### Icon + Text [#icon--text]
 
-Wrap a whole form to size it at once. Fields, their labels and descriptions, choices, and
-buttons all follow the scope, so they stay aligned with each other.
+Segments can include an `Icon` alongside text for added visual context.
 
-<Story of="FormExample" />
+<Story of="IconExample" />
 
-<Source language="tsx" code="&#x22;import {\n  Button,\n  Checkbox,\n  Flex,\n  Heading,\n  Input,\n  Label,\n  Select,\n  SelectItem,\n  SelectOptions,\n  SizeProvider,\n  Text,\n  TextField\n} from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <Heading level={2}>Contact details</Heading>\n\n        <TextField>\n          <Label>Full name</Label>\n          <Input />\n        </TextField>\n\n        <TextField>\n          <Label>Email</Label>\n          <Input type=\&#x22;email\&#x22; />\n          <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n        </TextField>\n\n        <Select placeholder=\&#x22;Pick a country\&#x22;>\n          <Label>Country</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>United States</SelectItem>\n            <SelectItem id=\&#x22;ca\&#x22;>Canada</SelectItem>\n            <SelectItem id=\&#x22;mx\&#x22;>Mexico</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <Checkbox>Email me about offers</Checkbox>\n\n        <Flex gap=\&#x22;sm\&#x22;>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;primary\&#x22;>Save</Button>\n        </Flex>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Icon, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function IconExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;Layout\&#x22; defaultValue=\&#x22;list\&#x22;>\n      <SegmentedControllerItem value=\&#x22;list\&#x22;>\n        <Icon icon=\&#x22;bulleted-list\&#x22; />\n        List\n      </SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;grid\&#x22;>\n        <Icon icon=\&#x22;grid\&#x22; />\n        Grid\n      </SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
 
-### Nested Scopes [#nested-scopes]
+### Icon Only [#icon-only]
 
-The nearest scope wins. An inner scope replaces the outer size rather than scaling it, so an
-`sm` section inside an `lg` page matches `sm` anywhere else.
+For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
 
-<Story of="NestedScopesExample" />
+<Story of="IconOnlyExample" />
 
-<Source language="tsx" code="&#x22;import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nexport function NestedScopesExample() {\n  return (\n    <SizeProvider size=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <Heading level={2}>Your plan</Heading>\n        <Text>Premium hosting, renews on March 1.</Text>\n        <Button variant=\&#x22;primary\&#x22;>Manage plan</Button>\n\n        <SizeProvider size=\&#x22;sm\&#x22;>\n          <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n            <Detail>Need less? You can switch to Basic at any time.</Detail>\n            <Button variant=\&#x22;primary\&#x22;>Compare plans</Button>\n          </Flex>\n        </SizeProvider>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Icon, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function IconOnlyExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;Layout\&#x22;>\n      <SegmentedControllerItem value=\&#x22;list\&#x22; aria-label=\&#x22;List view\&#x22;>\n        <Icon icon=\&#x22;bulleted-list\&#x22; />\n      </SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;grid\&#x22; aria-label=\&#x22;Grid view\&#x22;>\n        <Icon icon=\&#x22;grid\&#x22; />\n      </SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
 
-### Explicit Size [#explicit-size]
+### Overflow [#overflow]
 
-A component's own `size` wins for that component and every part inside it, such as a field's
-label and description. Its siblings keep following the scope.
+When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
 
-<Story of="ExplicitSizeExample" />
+<Story of="OverflowExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Input, Label, SizeProvider, Text, TextField } from '@godaddy/antares';\n\nexport function ExplicitSizeExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <TextField>\n          <Label>Coupon code</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>Follows the scope.</Text>\n        </TextField>\n\n        <TextField size=\&#x22;lg\&#x22;>\n          <Label>Domain name</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>Sized by the field.</Text>\n        </TextField>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function OverflowExample({ maxWidth = '300px' }: { maxWidth?: string }) {\n  return (\n    <SegmentedController aria-label=\&#x22;Category\&#x22; defaultValue=\&#x22;electronics\&#x22; style={{ maxWidth }}>\n      <SegmentedControllerItem value=\&#x22;electronics\&#x22;>Electronics</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;clothing\&#x22;>Clothing</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;home\&#x22;>Home</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;sports\&#x22;>Sports</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;toys\&#x22;>Toys</SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
 
-### Overlays [#overlays]
+### RTL Direction [#rtl-direction]
 
-Overlays open at the size of the scope around their trigger, even though they render in a
-portal. An explicit `size` on the owner sizes its overlay too.
+The segmented controller follows the current layout direction (LTR or RTL), detected automatically from the browser or system settings.
 
-<Story of="OverlaysExample" />
+<Story of="RTLExample" />
 
-<Source language="tsx" code="&#x22;import {\n  Button,\n  ButtonGroup,\n  Content,\n  DatePicker,\n  DatePickerCalendar,\n  DateRangePicker,\n  DateRangePickerCalendar,\n  Flex,\n  Heading,\n  Label,\n  Modal,\n  ModalTrigger,\n  Select,\n  SelectItem,\n  SelectOptions,\n  SizeProvider,\n  Text,\n  Tooltip,\n  TooltipTrigger\n} from '@godaddy/antares';\n\nexport function OverlaysExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex gap=\&#x22;md\&#x22; alignItems=\&#x22;end\&#x22; wrap=\&#x22;wrap\&#x22;>\n        <Select placeholder=\&#x22;Pick a plan\&#x22;>\n          <Label>Plan</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;basic\&#x22;>Basic</SelectItem>\n            <SelectItem id=\&#x22;pro\&#x22;>Pro</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <Select size=\&#x22;lg\&#x22; placeholder=\&#x22;Pick a region\&#x22;>\n          <Label>Region</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>United States</SelectItem>\n            <SelectItem id=\&#x22;eu\&#x22;>Europe</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <DatePicker>\n          <Label>Renewal date</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <DatePickerCalendar />\n        </DatePicker>\n\n        <DateRangePicker size=\&#x22;lg\&#x22;>\n          <Label>Contract dates</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <DateRangePickerCalendar />\n        </DateRangePicker>\n\n        <ModalTrigger>\n          <Button variant=\&#x22;primary\&#x22;>Edit plan</Button>\n          <Modal>\n            <Heading slot=\&#x22;title\&#x22;>Edit plan</Heading>\n            <Content>\n              <Text>Changes apply at the next billing cycle.</Text>\n            </Content>\n            <ButtonGroup>\n              <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n              <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n                Save\n              </Button>\n            </ButtonGroup>\n          </Modal>\n        </ModalTrigger>\n\n        <TooltipTrigger>\n          <Button variant=\&#x22;primary\&#x22;>Help</Button>\n          <Tooltip>Billing questions</Tooltip>\n        </TooltipTrigger>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { RTLProvider } from '#utils/rtl-locale-provider.tsx';\nimport { OverflowExample } from './overflow.tsx';\n\nexport function RTLExample() {\n  return (\n    <RTLProvider>\n      <OverflowExample />\n    </RTLProvider>\n  );\n}&#x22;" />
 
-### Plain Html [#plain-html]
+### Disabled States [#disabled-states]
 
-A scope sizes Antares components only. Plain HTML keeps its own typography, so put copy in
-`Text` to follow the scope.
+Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
 
-<Story of="PlainHtmlExample" />
+<Story of="DisabledExample" />
 
-<Source language="tsx" code="&#x22;import { SizeProvider, Text } from '@godaddy/antares';\n\nexport function PlainHtmlExample() {\n  return (\n    <SizeProvider size=\&#x22;lg\&#x22;>\n      <p>A plain paragraph keeps the page's typography.</p>\n      <Text>Text follows the scope.</Text>\n    </SizeProvider>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem, Flex } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <label>Disabled group</label>\n      <SegmentedController aria-label=\&#x22;Disabled group\&#x22; isDisabled defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n\n      <label>Individual disabled</label>\n      <SegmentedController aria-label=\&#x22;Individual disabled\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22; isDisabled>\n          Week\n        </SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n    </Flex>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+### Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**SegmentedController Container:** `data-disabled`
+
+**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
+
+## Accessibility [#accessibility]
+
+### Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to/from the segmented controller
+* **Arrow Left/Right**: Move to next/previous segment
+* **Space/Enter**: Select the focused segment
+
+### ARIA Support [#aria-support]
+
+* `role="radiogroup"` on the container
+* `role="radio"` on each segment
+* `aria-checked` indicates selection state
+* `aria-disabled` for disabled segments
+* `aria-label` required on the container for screen readers
+
+## Best Practices [#best-practices]
+
+### When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
+
+* When switching between 2-5 related views within the same context
+* When all options should be visible at once
+* When the selection immediately changes the displayed content
+
+### When Not to Use [#when-not-to-use]
+
+* For more than 5 options (use Tabs or Select instead)
+* For form input (use RadioGroup instead)
 
 ## Props [#props]
 
+```tsx
+<SegmentedController>
+  <SegmentedControllerItem />
+  {/* ... */}
+</SegmentedController>
+```
+
+### SegmentedController [#segmentedcontroller]
+
 <PropTable />
+
+### SegmentedControllerItem [#segmentedcontrolleritem]
+
+<PropTable />
+
+
+# Responsive
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Components adapt to the space they are given with intrinsic CSS and container queries.
+* Page layout stays in your CSS, with your own media queries and breakpoints.
+* Component sizes can follow `--antares-size`, so your CSS can change them at any breakpoint.
+* Responsive styles are plain CSS, so server rendering needs no viewport guess.
+
+## Examples [#examples]
+
+### Intrinsic layout [#intrinsic-layout]
+
+Hosting plans wrap into as many columns as fit, with no breakpoint. `auto-fill` and `minmax()`
+pick the column count from the available width. Start here before reaching for a query.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Grid, Heading, Text } from '@godaddy/antares';\n\nconst plans = [\n  { name: 'Economy', summary: 'One website with 25 GB of storage.' },\n  { name: 'Deluxe', summary: 'Ten websites with 50 GB of storage.' },\n  { name: 'Ultimate', summary: 'Twenty-five websites with 75 GB of storage.' }\n];\n\nexport function DefaultExample() {\n  return (\n    <Grid as=\&#x22;section\&#x22; aria-label=\&#x22;Hosting plans\&#x22; columns=\&#x22;repeat(auto-fill, minmax(min(16rem, 100%), 1fr))\&#x22; gap=\&#x22;md\&#x22;>\n      {plans.map(function plan({ name, summary }) {\n        return (\n          <Flex key={name} direction=\&#x22;column\&#x22; alignItems=\&#x22;start\&#x22; gap=\&#x22;sm\&#x22; padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n            <Heading level={3}>{name}</Heading>\n            <Text>{summary}</Text>\n            <Button variant=\&#x22;secondary\&#x22;>Choose {name}</Button>\n          </Flex>\n        );\n      })}\n    </Grid>\n  );\n}&#x22;" />
+
+### Container query [#container-query]
+
+The same domain card sits in a narrow sidebar and a wide main area. It stacks in the sidebar and
+lines up in the main area at the same viewport width, because it queries its own container. The
+28rem threshold belongs to the card. Its CSS owns the direction and alignment, so those props stay
+unset.
+
+<Story of="ContainerLayoutExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Button, Flex, Heading, Text } from '@godaddy/antares';\n\ninterface DomainCardProps {\n  domain: string;\n  renewal: string;\n}\n\nfunction DomainCard({ domain, renewal }: DomainCardProps) {\n  return (\n    <Box as=\&#x22;article\&#x22; aria-label={domain} padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; className=\&#x22;responsive-domain-card\&#x22;>\n      <Flex gap=\&#x22;sm\&#x22; className=\&#x22;responsive-domain-card-body\&#x22;>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n          <Heading level={3}>{domain}</Heading>\n          <Text>{renewal}</Text>\n        </Flex>\n        <Flex wrap=\&#x22;wrap\&#x22; gap=\&#x22;sm\&#x22;>\n          <Button variant=\&#x22;secondary\&#x22;>Manage DNS</Button>\n          <Button>Renew</Button>\n        </Flex>\n      </Flex>\n    </Box>\n  );\n}\n\nexport function ContainerLayoutExample() {\n  return (\n    <>\n      <style>{`\n        .responsive-container-example-sidebar {\n          flex: 1 1 14rem;\n        }\n\n        .responsive-container-example-main {\n          flex: 3 1 28rem;\n        }\n\n        .responsive-domain-card {\n          container: domain-card / inline-size;\n        }\n\n        .responsive-domain-card-body {\n          flex-direction: column;\n        }\n\n        @container domain-card (min-width: 28rem) {\n          .responsive-domain-card-body {\n            flex-direction: row;\n            align-items: center;\n            justify-content: space-between;\n          }\n        }\n      `}</style>\n      <Flex wrap=\&#x22;wrap\&#x22; gap=\&#x22;md\&#x22;>\n        <Box as=\&#x22;aside\&#x22; aria-label=\&#x22;Sidebar\&#x22; className=\&#x22;responsive-container-example-sidebar\&#x22;>\n          <DomainCard domain=\&#x22;shop.example\&#x22; renewal=\&#x22;Renews on March 2, 2027\&#x22; />\n        </Box>\n        <Box as=\&#x22;main\&#x22; aria-label=\&#x22;Domains\&#x22; className=\&#x22;responsive-container-example-main\&#x22;>\n          <DomainCard domain=\&#x22;example.com\&#x22; renewal=\&#x22;Renews on January 12, 2027\&#x22; />\n        </Box>\n      </Flex>\n    </>\n  );\n}&#x22;" />
+
+### Viewport media query [#viewport-media-query]
+
+Page layout belongs to the app, so its CSS picks the breakpoint. This settings page shows its
+navigation beside the content from `64rem` and stacks it above the content below that. Leave
+`columns` unset so it does not place a competing value in inline styles.
+
+<Story of="ViewportLayoutExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex, Grid, Heading, LinkButton, Text } from '@godaddy/antares';\n\nconst sections = [\n  { name: 'Profile', href: '#profile' },\n  { name: 'Security', href: '#security' },\n  { name: 'Payment methods', href: '#payment-methods' },\n  { name: 'Notifications', href: '#notifications' }\n];\n\nexport function ViewportLayoutExample() {\n  return (\n    <>\n      <style>{`\n        .responsive-viewport-example {\n          grid-template-columns: minmax(0, 1fr);\n        }\n\n        @media (min-width: 64rem) {\n          .responsive-viewport-example {\n            grid-template-columns: 16rem minmax(0, 1fr);\n          }\n        }\n      `}</style>\n      <Grid as=\&#x22;section\&#x22; aria-label=\&#x22;Account settings\&#x22; gap=\&#x22;lg\&#x22; className=\&#x22;responsive-viewport-example\&#x22;>\n        <Box as=\&#x22;nav\&#x22; aria-label=\&#x22;Settings\&#x22;>\n          <Flex direction=\&#x22;column\&#x22; alignItems=\&#x22;start\&#x22; gap=\&#x22;xs\&#x22;>\n            {sections.map(function section({ name, href }) {\n              return (\n                <LinkButton key={name} variant=\&#x22;minimal\&#x22; href={href}>\n                  {name}\n                </LinkButton>\n              );\n            })}\n          </Flex>\n        </Box>\n        <Flex as=\&#x22;section\&#x22; aria-label=\&#x22;Profile\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n          <Heading level={2}>Profile</Heading>\n          <Text>Update the name and contact details on your account.</Text>\n        </Flex>\n      </Grid>\n    </>\n  );\n}&#x22;" />
+
+### Form reflow [#form-reflow]
+
+Billing details in one column on small screens and two from `64rem`. Type into a field and resize:
+CSS reflows the same inputs, preserving their values, focus, and selection. Let CSS own the columns
+and allow long descriptions to wrap.
+
+<Story of="FormExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Input, Label, Text, TextField } from '@godaddy/antares';\n\ninterface FormExampleProps {\n  /** Help text that can wrap onto multiple lines. */\n  description?: string;\n\n  /** Reading direction of the form. */\n  dir?: 'ltr' | 'rtl';\n}\n\nexport function FormExample({ description = 'Use the name on your payment card.', dir }: FormExampleProps) {\n  return (\n    <>\n      <style>{`\n        .responsive-form-example {\n          grid-template-columns: minmax(0, 1fr);\n        }\n\n        .responsive-form-example-field {\n          min-inline-size: 0;\n          overflow-wrap: anywhere;\n        }\n\n        @media (min-width: 64rem) {\n          .responsive-form-example {\n            grid-template-columns: repeat(2, minmax(0, 1fr));\n          }\n\n          .responsive-form-example-wide {\n            grid-column: 1 / -1;\n          }\n        }\n      `}</style>\n      <Grid as=\&#x22;form\&#x22; aria-label=\&#x22;Billing details\&#x22; dir={dir} gap=\&#x22;md\&#x22; className=\&#x22;responsive-form-example\&#x22;>\n        <TextField name=\&#x22;name\&#x22; autoComplete=\&#x22;name\&#x22; className=\&#x22;responsive-form-example-field\&#x22;>\n          <Label>Full name</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>{description}</Text>\n        </TextField>\n        <TextField name=\&#x22;email\&#x22; type=\&#x22;email\&#x22; autoComplete=\&#x22;email\&#x22; className=\&#x22;responsive-form-example-field\&#x22;>\n          <Label>Email</Label>\n          <Input />\n        </TextField>\n        <TextField\n          name=\&#x22;address\&#x22;\n          autoComplete=\&#x22;street-address\&#x22;\n          className=\&#x22;responsive-form-example-field responsive-form-example-wide\&#x22;\n        >\n          <Label>Street address</Label>\n          <Input />\n        </TextField>\n        <TextField name=\&#x22;city\&#x22; autoComplete=\&#x22;address-level2\&#x22; className=\&#x22;responsive-form-example-field\&#x22;>\n          <Label>City</Label>\n          <Input />\n        </TextField>\n        <TextField name=\&#x22;postalCode\&#x22; autoComplete=\&#x22;postal-code\&#x22; className=\&#x22;responsive-form-example-field\&#x22;>\n          <Label>Postal code</Label>\n          <Input />\n        </TextField>\n      </Grid>\n    </>\n  );\n}&#x22;" />
+
+### Responsive size [#responsive-size]
+
+A `TextLockup` without `size` follows `--antares-size` from a parent, so the app's CSS can change it
+at its own breakpoint. This dashboard greeting is `md` on small screens and `xl` from `80rem`.
+Browsers without container style queries fall back to the surrounding size scope (`md` here).
+
+<Story of="ResponsiveSizeExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function ResponsiveSizeExample() {\n  return (\n    <>\n      <style>{`\n        .responsive-size-example {\n          --antares-size: md;\n        }\n\n        @media (min-width: 80rem) {\n          .responsive-size-example {\n            --antares-size: xl;\n          }\n        }\n      `}</style>\n      <Box as=\&#x22;header\&#x22; className=\&#x22;responsive-size-example\&#x22;>\n        <TextLockup>\n          <Text slot=\&#x22;eyebrow\&#x22;>Dashboard</Text>\n          <Heading slot=\&#x22;title\&#x22; level={1}>\n            Welcome back, Ada\n          </Heading>\n          <Text slot=\&#x22;body\&#x22;>Two domains renew this month. Review them to keep your sites online.</Text>\n        </TextLockup>\n      </Box>\n    </>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Antares publishes no viewport breakpoints. Components don't change by viewport width, except overlays
+such as Modal and Drawer, which document their own thresholds. Choose the breakpoints your layout needs,
+and write them in your own media or container queries.
+
+The examples include their CSS in `<style>` blocks so the complete code is visible. Applications can
+place those rules in their own stylesheets. Layout props such as `columns` and `gap` write inline styles,
+which beat stylesheet rules. When your CSS changes a property across a query, set it in CSS for every
+width and leave the prop unset.
+
+A container can't take its width from its content, so give it one from its parent, as the container
+example does with the `flex` basis of its sidebar and main area. Otherwise it collapses in flex rows and
+other shrink-to-fit layouts. Portaled content is outside the container, so it needs a container in its
+own DOM ancestry.
+
+In media queries, `rem` uses the browser's initial font size.
+
+### Responsive size [#responsive-size-1]
+
+Component props, including `size`, take a single value. For a size that changes with the layout, leave
+`size` unset and set `--antares-size` in your CSS. TextLockup reads it for its text parts, so you can set
+the variable on the lockup itself or an ancestor. The responsive size example sets it on a parent. The
+nearest value wins, and an explicit `size` beats it. Without the variable, components follow the
+surrounding `SizeProvider`. Browsers without container style queries ignore the variable.
+
+These components follow `--antares-size`:
+
+| Component    | Values     | Notes                               |
+| ------------ | ---------- | ----------------------------------- |
+| `TextLockup` | `xs`-`2xl` | A `Tag` eyebrow keeps its own size. |
+
+## Accessibility [#accessibility]
+
+Preserve reading order, keyboard focus, and entered values as layouts change: reflow one DOM tree with
+CSS instead of rendering different trees. Validate layouts with long text, RTL, narrow widths, text
+enlargement, and browser zoom. Resizing the viewport alone does not test every effect of zoom. Use
+pointer and hover media features to detect input capabilities, not widths.
 
 
 # Select
@@ -5295,6 +5186,94 @@ over the popover and the list.
 <PropTable />
 
 ### SelectItem [#selectitem]
+
+<PropTable />
+
+
+# Structure primitives
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
+
+* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
+* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
+* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
+* **`ButtonGroup`** - a cluster of related actions (a wrapping row with `role="group"`). Overlay parents like `Modal` adopt it with end alignment and padding.
+* **`Group`** — semantic grouping container for field item controls. A parent field injects the box chrome.
+* **`CornerActions`** - an always-visible structural row for actions placed at a surface corner.
+
+## Hybrid styling [#hybrid-styling]
+
+Each container works in two modes:
+
+* **Standalone** - with no parent context it renders with its own structural defaults and looks the same everywhere.
+* **Adopted** - inside a parent that provides its context (e.g. `Modal`), it picks up that parent's styling and spacing automatically. Consumer props still win over the adopted defaults.
+
+## Examples [#examples]
+
+### Default [#default]
+
+The shared structural containers composed together into a card-like layout. Each is a
+plain semantic region here; inside a parent that provides their contexts (e.g. `Modal`)
+they adopt that parent's spacing automatically.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
+
+### Group [#group]
+
+Group is the bordered field box. Size and invalid/disabled chrome apply here.
+
+<Story of="GroupExample" />
+
+<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function GroupExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Group>\n        <Input placeholder=\&#x22;Enter your name\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
+
+### Corner Actions [#corner-actions]
+
+CornerActions is an always-visible structural region. Compose any actions inside it and use
+layout props to reserve room beside the surrounding content.
+
+<Story of="CornerActionsExample" />
+
+<Source language="tsx" code="&#x22;import { Button, CornerActions, Flex, Text } from '@godaddy/antares';\n\nexport function CornerActionsExample() {\n  return (\n    <Flex direction=\&#x22;row\&#x22; alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;space-between\&#x22; gap=\&#x22;md\&#x22;>\n      <Text>Card content</Text>\n      <CornerActions>\n        <Button variant=\&#x22;secondary\&#x22;>More actions</Button>\n        <Button variant=\&#x22;secondary\&#x22;>Share</Button>\n      </CornerActions>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### Content [#content]
+
+<PropTable />
+
+### Header [#header]
+
+<PropTable />
+
+### Footer [#footer]
+
+<PropTable />
+
+### ButtonGroup [#buttongroup]
+
+<PropTable />
+
+### Group [#group-1]
+
+<PropTable />
+
+### CornerActions [#corneractions]
 
 <PropTable />
 
@@ -5498,7 +5477,15 @@ Use the interactive root data attributes for state-based customization. The trac
 <PropTable />
 
 
-# Structure primitives
+# SizeProvider
+
+
+
+
+
+
+
+
 
 
 
@@ -5514,74 +5501,87 @@ Use the interactive root data attributes for state-based customization. The trac
 
 <Meta of="Stories" name="Overview" />
 
-**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
+## Features [#features]
 
-* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
-* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
-* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
-* **`ButtonGroup`** - a cluster of related actions (a wrapping row with `role="group"`). Overlay parents like `Modal` adopt it with end alignment and padding.
-* **`Group`** — semantic grouping container for field item controls. A parent field injects the box chrome.
-* **`CornerActions`** - an always-visible structural row for actions placed at a surface corner.
-
-## Hybrid styling [#hybrid-styling]
-
-Each container works in two modes:
-
-* **Standalone** - with no parent context it renders with its own structural defaults and looks the same everywhere.
-* **Adopted** - inside a parent that provides its context (e.g. `Modal`), it picks up that parent's styling and spacing automatically. Consumer props still win over the adopted defaults.
+* `sm`, `md`, or `lg` for the adopted components inside (listed below): their text, controls, and
+  default spacing.
+* The nearest scope wins, and nested scopes replace the size rather than compounding it.
+* A component's own `size` prop wins for that component only.
+* Overlays opened inside, such as Modal and Select options, open at the scope's size even though
+  they render in a portal.
+* Renders no element, so it never affects layout. Only Antares components follow it; plain HTML
+  keeps its own typography, so put copy in `Text`.
+* Without any scope, components use `md`.
+* Adopted so far by Text, Detail, Heading, Label, Button, LinkButton, TextField, NumberField, Select,
+  DatePicker, DateRangePicker, Calendar, TextLockup, Modal, Drawer, Popover, and Tooltip. Other
+  components keep their own size. Layout spacing props keep their meaning: `gap="md"` is the layout
+  `md` gap in any scope.
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-The shared structural containers composed together into a card-like layout. Each is a
-plain semantic region here; inside a parent that provides their contexts (e.g. `Modal`)
-they adopt that parent's spacing automatically.
+A scope sizes everything inside it: text, controls, and default spacing. A component's own
+`size` still wins.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Flex, Heading, Input, Label, SizeProvider, Text, TextField, TextLockup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <TextLockup>\n          <Heading slot=\&#x22;title\&#x22; level={2}>\n            Billing\n          </Heading>\n          <Text slot=\&#x22;body\&#x22;>Manage your payment methods.</Text>\n        </TextLockup>\n\n        <TextField>\n          <Label>Email</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n        </TextField>\n\n        <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n          <Button variant=\&#x22;primary\&#x22;>Update payment method</Button>\n          <Button variant=\&#x22;primary\&#x22; size=\&#x22;md\&#x22;>\n            Contact support\n          </Button>\n        </Flex>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
 
-### Group [#group]
+### Sizes [#sizes]
 
-Group is the bordered field box. Size and invalid/disabled chrome apply here.
+The same section at each size. Without a scope, components use `md`.
 
-<Story of="GroupExample" />
+<Story of="SizesExample" />
 
-<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function GroupExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Group>\n        <Input placeholder=\&#x22;Enter your name\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nconst SIZES = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      {SIZES.map(function section(size) {\n        return (\n          <SizeProvider key={size} size={size}>\n            <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n              <Heading>Size {size}</Heading>\n              <Text>Body copy follows the scope.</Text>\n              <Detail>Supporting copy too.</Detail>\n              <Button variant=\&#x22;primary\&#x22;>Save</Button>\n            </Flex>\n          </SizeProvider>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
 
-### Corner Actions [#corner-actions]
+### Form [#form]
 
-CornerActions is an always-visible structural region. Compose any actions inside it and use
-layout props to reserve room beside the surrounding content.
+Wrap a whole form to size it at once. Fields, their labels and descriptions, choices, and
+buttons all follow the scope, so they stay aligned with each other.
 
-<Story of="CornerActionsExample" />
+<Story of="FormExample" />
 
-<Source language="tsx" code="&#x22;import { Button, CornerActions, Flex, Text } from '@godaddy/antares';\n\nexport function CornerActionsExample() {\n  return (\n    <Flex direction=\&#x22;row\&#x22; alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;space-between\&#x22; gap=\&#x22;md\&#x22;>\n      <Text>Card content</Text>\n      <CornerActions>\n        <Button variant=\&#x22;secondary\&#x22;>More actions</Button>\n        <Button variant=\&#x22;secondary\&#x22;>Share</Button>\n      </CornerActions>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import {\n  Button,\n  Checkbox,\n  Flex,\n  Heading,\n  Input,\n  Label,\n  Select,\n  SelectItem,\n  SelectOptions,\n  SizeProvider,\n  Text,\n  TextField\n} from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <Heading level={2}>Contact details</Heading>\n\n        <TextField>\n          <Label>Full name</Label>\n          <Input />\n        </TextField>\n\n        <TextField>\n          <Label>Email</Label>\n          <Input type=\&#x22;email\&#x22; />\n          <Text slot=\&#x22;description\&#x22;>We'll send receipts here.</Text>\n        </TextField>\n\n        <Select placeholder=\&#x22;Pick a country\&#x22;>\n          <Label>Country</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>United States</SelectItem>\n            <SelectItem id=\&#x22;ca\&#x22;>Canada</SelectItem>\n            <SelectItem id=\&#x22;mx\&#x22;>Mexico</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <Checkbox>Email me about offers</Checkbox>\n\n        <Flex gap=\&#x22;sm\&#x22;>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;primary\&#x22;>Save</Button>\n        </Flex>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+
+### Nested Scopes [#nested-scopes]
+
+The nearest scope wins. An inner scope replaces the outer size rather than scaling it, so an
+`sm` section inside an `lg` page matches `sm` anywhere else.
+
+<Story of="NestedScopesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Detail, Flex, Heading, SizeProvider, Text } from '@godaddy/antares';\n\nexport function NestedScopesExample() {\n  return (\n    <SizeProvider size=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <Heading level={2}>Your plan</Heading>\n        <Text>Premium hosting, renews on March 1.</Text>\n        <Button variant=\&#x22;primary\&#x22;>Manage plan</Button>\n\n        <SizeProvider size=\&#x22;sm\&#x22;>\n          <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n            <Detail>Need less? You can switch to Basic at any time.</Detail>\n            <Button variant=\&#x22;primary\&#x22;>Compare plans</Button>\n          </Flex>\n        </SizeProvider>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+
+### Explicit Size [#explicit-size]
+
+A component's own `size` wins for that component and every part inside it, such as a field's
+label and description. Its siblings keep following the scope.
+
+<Story of="ExplicitSizeExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Input, Label, SizeProvider, Text, TextField } from '@godaddy/antares';\n\nexport function ExplicitSizeExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n        <TextField>\n          <Label>Coupon code</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>Follows the scope.</Text>\n        </TextField>\n\n        <TextField size=\&#x22;lg\&#x22;>\n          <Label>Domain name</Label>\n          <Input />\n          <Text slot=\&#x22;description\&#x22;>Sized by the field.</Text>\n        </TextField>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+
+### Overlays [#overlays]
+
+Overlays open at the size of the scope around their trigger, even though they render in a
+portal. An explicit `size` on the owner sizes its overlay too.
+
+<Story of="OverlaysExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Button,\n  ButtonGroup,\n  Content,\n  DatePicker,\n  DatePickerCalendar,\n  DateRangePicker,\n  DateRangePickerCalendar,\n  Flex,\n  Heading,\n  Label,\n  Modal,\n  ModalTrigger,\n  Select,\n  SelectItem,\n  SelectOptions,\n  SizeProvider,\n  Text,\n  Tooltip,\n  TooltipTrigger\n} from '@godaddy/antares';\n\nexport function OverlaysExample() {\n  return (\n    <SizeProvider size=\&#x22;sm\&#x22;>\n      <Flex gap=\&#x22;md\&#x22; alignItems=\&#x22;end\&#x22; wrap=\&#x22;wrap\&#x22;>\n        <Select placeholder=\&#x22;Pick a plan\&#x22;>\n          <Label>Plan</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;basic\&#x22;>Basic</SelectItem>\n            <SelectItem id=\&#x22;pro\&#x22;>Pro</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <Select size=\&#x22;lg\&#x22; placeholder=\&#x22;Pick a region\&#x22;>\n          <Label>Region</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>United States</SelectItem>\n            <SelectItem id=\&#x22;eu\&#x22;>Europe</SelectItem>\n          </SelectOptions>\n        </Select>\n\n        <DatePicker>\n          <Label>Renewal date</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <DatePickerCalendar />\n        </DatePicker>\n\n        <DateRangePicker size=\&#x22;lg\&#x22;>\n          <Label>Contract dates</Label>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <DateRangePickerCalendar />\n        </DateRangePicker>\n\n        <ModalTrigger>\n          <Button variant=\&#x22;primary\&#x22;>Edit plan</Button>\n          <Modal>\n            <Heading slot=\&#x22;title\&#x22;>Edit plan</Heading>\n            <Content>\n              <Text>Changes apply at the next billing cycle.</Text>\n            </Content>\n            <ButtonGroup>\n              <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n              <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n                Save\n              </Button>\n            </ButtonGroup>\n          </Modal>\n        </ModalTrigger>\n\n        <TooltipTrigger>\n          <Button variant=\&#x22;primary\&#x22;>Help</Button>\n          <Tooltip>Billing questions</Tooltip>\n        </TooltipTrigger>\n      </Flex>\n    </SizeProvider>\n  );\n}&#x22;" />
+
+### Plain Html [#plain-html]
+
+A scope sizes Antares components only. Plain HTML keeps its own typography, so put copy in
+`Text` to follow the scope.
+
+<Story of="PlainHtmlExample" />
+
+<Source language="tsx" code="&#x22;import { SizeProvider, Text } from '@godaddy/antares';\n\nexport function PlainHtmlExample() {\n  return (\n    <SizeProvider size=\&#x22;lg\&#x22;>\n      <p>A plain paragraph keeps the page's typography.</p>\n      <Text>Text follows the scope.</Text>\n    </SizeProvider>\n  );\n}&#x22;" />
 
 ## Props [#props]
-
-### Content [#content]
-
-<PropTable />
-
-### Header [#header]
-
-<PropTable />
-
-### Footer [#footer]
-
-<PropTable />
-
-### ButtonGroup [#buttongroup]
-
-<PropTable />
-
-### Group [#group-1]
-
-<PropTable />
-
-### CornerActions [#corneractions]
 
 <PropTable />
 
@@ -6728,81 +6728,6 @@ To position a tooltip relative to a different focusable element, use the `trigge
 <PropTable />
 
 
-# DonutChart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Story of="SingleSliceExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Story of="LegendLayoutExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Story of="SmallSlicesExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Story of="FormatValueExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
-
-## Props [#props]
-
-### DonutChart [#donutchart]
-
-<PropTable />
-
-
 # Bar Chart
 
 
@@ -7055,6 +6980,81 @@ For better performance:
 ## Props [#props]
 
 ### BarChart [#barchart]
+
+<PropTable />
+
+
+# DonutChart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Story of="SingleSliceExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Story of="LegendLayoutExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Story of="SmallSlicesExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
+
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Story of="FormatValueExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+## Props [#props]
+
+### DonutChart [#donutchart]
 
 <PropTable />
 
@@ -7916,6 +7916,8 @@ Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid 
 
 
 
+
+
 <Meta title="Blocks" id="blocks" />
 
 ## Install a block [#install-a-block]
@@ -7928,10 +7930,29 @@ npx shadcn@latest add godaddy/antares/blocks/sign-in-form
 
 ## Blocks [#blocks]
 
+### Overview dashboard [#overview-dashboard]
+
+<SiteBlockExplorer block="{&#x22;id&#x22;:&#x22;overview-dashboard&#x22;,&#x22;description&#x22;:&#x22;A responsive Antares overview dashboard with users, sales channels, and conversations.&#x22;,&#x22;installCommand&#x22;:&#x22;npx shadcn@latest add godaddy/antares/blocks/overview-dashboard&#x22;,&#x22;files&#x22;:[{&#x22;path&#x22;:&#x22;components/appointments-promotion-card/index.module.css&#x22;,&#x22;language&#x22;:&#x22;css&#x22;,&#x22;source&#x22;:&#x22;.mediaCard {\n  min-inline-size: 0;\n}\n\n.mediaImage {\n  display: block;\n  max-inline-size: 100%;\n  block-size: auto;\n  border-radius: var(--rounding-sm);\n}\n\n.mediaCardContent,\n.mediaCardCopy,\n.mediaCardImage {\n  min-inline-size: 0;\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/appointments-promotion-card/index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Box, Card, Detail, Flex, Heading, Icon, Image } from '@godaddy/antares';\nimport { appointmentsImage } from '../../constants/config';\nimport styles from './index.module.css';\n\n/** Shows the appointments promotion card below the users card. */\nexport function AppointmentsPromotionCard() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Heading level={3}>GoDaddy can do more for you</Heading>\n      <Card padding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22; className={styles.mediaCard}>\n        <Flex className={styles.mediaCardContent} alignItems=\&#x22;center\&#x22; gap=\&#x22;2xl\&#x22; wrap=\&#x22;wrap\&#x22;>\n          <Flex className={styles.mediaCardCopy} direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; flex=\&#x22;1 1 14rem\&#x22;>\n            <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n              <Icon icon=\&#x22;calendar\&#x22; aria-hidden=\&#x22;true\&#x22; />\n              <Detail emphasis=\&#x22;passive\&#x22;>ONLINE APPOINTMENTS</Detail>\n            </Flex>\n            <Heading level={4}>Start selling your services with online appointments</Heading>\n            <Detail emphasis=\&#x22;passive\&#x22;>\n              Use your professional email to simplify bookings with automated appointment confirmations and seamless\n              calendar syncing.\n            </Detail>\n          </Flex>\n\n          <Box className={styles.mediaCardImage} flex=\&#x22;0 1 11rem\&#x22;>\n            <Image\n              src={appointmentsImage}\n              alt=\&#x22;\&#x22;\n              width={176}\n              height={112}\n              loading=\&#x22;lazy\&#x22;\n              decoding=\&#x22;async\&#x22;\n              className={styles.mediaImage}\n            />\n          </Box>\n        </Flex>\n      </Card>\n    </Flex>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/conversations-card/index.module.css&#x22;,&#x22;language&#x22;:&#x22;css&#x22;,&#x22;source&#x22;:&#x22;.conversationsCard {\n  min-inline-size: 0;\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/conversations-card/index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Button, Card, Flex, Heading, Tag, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Demonstrates a secondary conversations card with a connection action. */\nexport function ConversationsCard() {\n  return (\n    <Card elevation=\&#x22;card\&#x22; className={styles.conversationsCard}>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n        <Flex justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          <Heading level={3}>Conversations</Heading>\n          <Tag emphasis=\&#x22;info\&#x22; size=\&#x22;sm\&#x22;>\n            Included\n          </Tag>\n        </Flex>\n        <Text>Manage all your emails and messages in one place with a unified inbox.</Text>\n        <Button variant=\&#x22;secondary\&#x22; size=\&#x22;sm\&#x22;>\n          Connect Email\n        </Button>\n      </Flex>\n    </Card>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/dashboard-header/index.module.css&#x22;,&#x22;language&#x22;:&#x22;css&#x22;,&#x22;source&#x22;:&#x22;.mobileMenuButton,\n.mobileNavLogo,\n.mobileNavAction {\n  display: none;\n}\n\n.navDivider {\n  block-size: 1.25rem;\n  border-inline-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n}\n\n.navigation {\n  gap: var(--sp-lg);\n}\n\n.navActions {\n  gap: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .mobileMenuButton,\n  .mobileNavLogo,\n  .mobileNavAction {\n    display: inline-flex;\n  }\n\n  .desktopNavAction,\n  .navDivider {\n    display: none;\n  }\n\n  .navigation,\n  .navActions {\n    gap: var(--sp-sm);\n  }\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/dashboard-header/index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import {\n  Avatar,\n  Box,\n  Button,\n  Flex,\n  Icon,\n  Menu,\n  MenuItem,\n  MenuSeparator,\n  MenuTrigger,\n  Pressable,\n  Text\n} from '@godaddy/antares';\nimport styles from './index.module.css';\n\ninterface DashboardHeaderProps {\n  /** Opens the product navigation from the compact mobile header. */\n  onOpenNavigation: () => void;\n}\n\n/** Renders the compact application header shown above the dashboard. */\nexport function DashboardHeader({ onOpenNavigation }: DashboardHeaderProps) {\n  return (\n    <Flex className={styles.navigation} justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; wrap=\&#x22;wrap\&#x22;>\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;lg\&#x22;>\n        <Button\n          className={styles.mobileMenuButton}\n          variant=\&#x22;minimal\&#x22;\n          size=\&#x22;sm\&#x22;\n          aria-label=\&#x22;Open navigation\&#x22;\n          onPress={onOpenNavigation}\n        >\n          <Icon icon=\&#x22;hamburger\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        </Button>\n        <Icon className={styles.mobileNavLogo} icon=\&#x22;gd-the-go\&#x22; aria-label=\&#x22;GoDaddy\&#x22; />\n      </Flex>\n\n      <Flex className={styles.navActions} alignItems=\&#x22;center\&#x22; wrap=\&#x22;wrap\&#x22;>\n        <Button className={styles.desktopNavAction} variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Hire an Expert\&#x22;>\n          Hire an Expert\n        </Button>\n        <Box as=\&#x22;span\&#x22; className={styles.navDivider} aria-hidden=\&#x22;true\&#x22; />\n        <Button className={styles.desktopNavAction} variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Help Center\&#x22;>\n          Help Center\n        </Button>\n        <Button className={styles.mobileNavAction} variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Help Center\&#x22;>\n          <Icon icon=\&#x22;help\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        </Button>\n        <Button className={styles.desktopNavAction} variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Notifications\&#x22;>\n          <Icon icon=\&#x22;bell\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        </Button>\n        <Button className={styles.mobileNavAction} variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Apps\&#x22;>\n          <Icon icon=\&#x22;apps\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        </Button>\n        <MenuTrigger popoverProps={{ placement: 'bottom end' }}>\n          <Pressable aria-label=\&#x22;Account menu\&#x22;>\n            <Avatar size=\&#x22;sm\&#x22; emphasis=\&#x22;primary\&#x22; role=\&#x22;button\&#x22;>\n              <Text>MT</Text>\n            </Avatar>\n          </Pressable>\n          <Menu aria-label=\&#x22;Account actions\&#x22;>\n            <MenuItem id=\&#x22;profile\&#x22;>View profile</MenuItem>\n            <MenuItem id=\&#x22;settings\&#x22;>Account settings</MenuItem>\n            <MenuItem id=\&#x22;switch-account\&#x22;>Switch account</MenuItem>\n            <MenuSeparator />\n            <MenuItem id=\&#x22;sign-out\&#x22;>Sign out</MenuItem>\n          </Menu>\n        </MenuTrigger>\n        <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Shopping cart\&#x22;>\n          <Icon icon=\&#x22;cart\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        </Button>\n      </Flex>\n    </Flex>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/dashboard-sidebar-content/index.module.css&#x22;,&#x22;language&#x22;:&#x22;css&#x22;,&#x22;source&#x22;:&#x22;.content {\n  inline-size: 100%;\n  --navigation-rail-size: 56px;\n}\n\n.navigationHeader {\n  padding-inline-end: var(--sp-sm, 0.25rem);\n  padding-inline-start: calc((var(--navigation-rail-size) - 24px) / 2);\n}\n\n.sideNavigationLogo,\n.navigationToggle {\n  flex-shrink: 0;\n}\n\n:where([data-collapsed]):where(:not([data-expanded])) .navigationToggle,\n:where([data-collapsed]):where(:not([data-expanded])) .sideNavContent {\n  display: none;\n}\n\n.sideNavItem {\n  justify-content: flex-start;\n  inline-size: 100%;\n  padding-inline-end: var(--sp-md, 0.5rem);\n  padding-inline-start: calc((var(--navigation-rail-size) - 1lh) / 2 - 1px);\n  position: relative;\n  text-align: start;\n}\n\n.sideNavItem::before {\n  background: transparent;\n  border-radius: var(--rounding-full);\n  content: \&#x22;\&#x22;;\n  inset-block: 0;\n  inset-inline-start: 0;\n  position: absolute;\n  width: var(--sp-sm);\n}\n\n.sideNavItem:where([aria-pressed=\&#x22;true\&#x22;]) {\n  background: var(--ux-9i7okd, #f5f7f8);\n  font-weight: 600;\n}\n\n.sideNavItem:where([aria-pressed=\&#x22;true\&#x22;]):where([data-hovered]) {\n  background: var(--color-action-background-tertiary-hovered, var(--ux-1m7qrkf, #f5f5f5));\n  color: var(--color-action-text-tertiary-hovered, var(--ux-unx9i2, #008080));\n}\n\n.sideNavItem:where([aria-pressed=\&#x22;true\&#x22;]):where([data-pressed]) {\n  background: var(--color-action-background-tertiary-pressed, var(--ux-9qpf6c, #dcdcdc));\n  color: var(--color-action-text-tertiary-pressed, var(--ux-h6e7c1, #191970));\n}\n\n.sideNavItem:where([aria-pressed=\&#x22;true\&#x22;])::before {\n  background: var(--ux-18lg5k, #a6fff8);\n}\n\n.sideNavContent {\n  min-inline-size: 0;\n}\n\n.sideNavLabel {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.sideNavIcon {\n  display: inline-flex;\n  flex-shrink: 0;\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/dashboard-sidebar-content/index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Button, Flex, Icon, Tag, Text } from '@godaddy/antares';\nimport { dashboardNavigationItems, type DashboardNavigationItemLabel } from '../../constants/config';\nimport styles from './index.module.css';\n\ninterface DashboardSidebarContentProps {\n  /** Item label that receives the active marker. */\n  activeItem: DashboardNavigationItemLabel;\n\n  /** Whether the desktop rail is pinned open. */\n  isPinnedOpen: boolean;\n\n  /** Whether the content is rendered inside the mobile drawer. */\n  isMobileNavigation?: boolean;\n\n  /** Selects a menu item without navigating the example. */\n  onSelectItem: (label: DashboardNavigationItemLabel) => void;\n\n  /** Toggles the desktop rail or closes the mobile navigation. */\n  onToggleCollapse: () => void;\n}\n\n/** Renders the shared navigation content used by desktop and mobile navigation. */\nexport function DashboardSidebarContent({\n  activeItem,\n  isPinnedOpen,\n  isMobileNavigation = false,\n  onSelectItem,\n  onToggleCollapse\n}: DashboardSidebarContentProps) {\n  const navigationToggleLabel = isMobileNavigation\n    ? 'Close navigation'\n    : isPinnedOpen\n      ? 'Collapse navigation'\n      : 'Expand navigation';\n\n  return (\n    <Flex className={styles.content} direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <Flex className={styles.navigationHeader} justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n        <Icon className={styles.sideNavigationLogo} icon=\&#x22;gd-the-go\&#x22; aria-label=\&#x22;GoDaddy\&#x22; />\n        <Button\n          className={styles.navigationToggle}\n          variant=\&#x22;minimal\&#x22;\n          size=\&#x22;sm\&#x22;\n          aria-label={navigationToggleLabel}\n          onPress={onToggleCollapse}\n        >\n          <Icon icon={isPinnedOpen ? 'sidebar-collapse' : 'sidebar-expand'} aria-hidden=\&#x22;true\&#x22; />\n        </Button>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        {dashboardNavigationItems.map(function renderNavigationItem(item) {\n          const isActive = activeItem === item.label;\n\n          return (\n            <Button\n              key={item.label}\n              className={styles.sideNavItem}\n              variant=\&#x22;minimal\&#x22;\n              size=\&#x22;sm\&#x22;\n              aria-pressed={isActive}\n              aria-label={!isPinnedOpen ? item.label : undefined}\n              onPress={() => onSelectItem(item.label)}\n            >\n              <Icon className={styles.sideNavIcon} icon={item.icon} aria-hidden=\&#x22;true\&#x22; />\n              <Flex className={styles.sideNavContent} flex=\&#x22;1\&#x22; alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;flex-start\&#x22; gap=\&#x22;sm\&#x22;>\n                <Text className={styles.sideNavLabel}>{item.label}</Text>\n                {'badge' in item && item.badge ? (\n                  <Tag emphasis=\&#x22;highlight\&#x22; size=\&#x22;sm\&#x22;>\n                    {item.badge}\n                  </Tag>\n                ) : null}\n              </Flex>\n            </Button>\n          );\n        })}\n      </Flex>\n    </Flex>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/dashboard-sidebar/index.module.css&#x22;,&#x22;language&#x22;:&#x22;css&#x22;,&#x22;source&#x22;:&#x22;.sideNavigationContainer {\n  align-self: stretch;\n  background: var(--ux-9i7okd, #f5f7f8);\n  block-size: auto;\n  min-inline-size: 0;\n  overflow: visible;\n  position: relative;\n}\n\n.sideNavigation {\n  background: var(--ux-9i7okd, #f5f7f8);\n  block-size: 100%;\n  inline-size: 100%;\n  min-inline-size: 0;\n  overflow: hidden;\n  padding-block-start: var(--sp-md, 0.5rem);\n  transition: inline-size 300ms cubic-bezier(0.32, 0.72, 0, 1);\n}\n\n.sideNavigationContainer:where([data-expanded]) {\n  z-index: 1;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .sideNavigation {\n    transition: none;\n  }\n}\n\n@container (max-width: 40rem) {\n  .sideNavigationContainer {\n    display: none;\n  }\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/dashboard-sidebar/index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Content, Drawer, Flex, InlineDrawer } from '@godaddy/antares';\nimport type { DashboardNavigationItemLabel } from '../../constants/config';\nimport { DashboardSidebarContent } from '../dashboard-sidebar-content';\nimport styles from './index.module.css';\n\ninterface DashboardSidebarProps {\n  /** Item label that receives the active marker. */\n  activeItem: DashboardNavigationItemLabel;\n\n  /** Whether the navigation is pinned open on desktop. */\n  isPinnedOpen: boolean;\n\n  /** Selects a menu item without navigating the example. */\n  onSelectItem: (label: DashboardNavigationItemLabel) => void;\n\n  /** Toggles the desktop rail or closes the mobile navigation. */\n  onToggleCollapse: () => void;\n\n  /** Whether the desktop rail is expanded by a temporary hover state. */\n  isNavigationExpanded: boolean;\n\n  /** Keeps the desktop rail width in sync with its hover state. */\n  onNavigationHoverChange: (isHovering: boolean) => void;\n\n  /** Whether the mobile drawer is currently open. */\n  isMobileNavigationOpen: boolean;\n\n  /** Keeps the mobile drawer state controlled by the parent. */\n  onMobileNavigationChange: (isOpen: boolean) => void;\n}\n\n/** Renders the responsive desktop rail and mobile navigation drawer. */\nexport function DashboardSidebar({\n  activeItem,\n  isPinnedOpen,\n  onSelectItem,\n  onToggleCollapse,\n  isNavigationExpanded,\n  onNavigationHoverChange,\n  isMobileNavigationOpen,\n  onMobileNavigationChange\n}: DashboardSidebarProps) {\n  return (\n    <>\n      <InlineDrawer\n        className={styles.sideNavigationContainer}\n        placement=\&#x22;left\&#x22;\n        isExpanded={isNavigationExpanded}\n        onMouseEnter={() => onNavigationHoverChange(true)}\n        onMouseLeave={() => onNavigationHoverChange(false)}\n        minSize={56}\n        maxSize={224}\n        data-collapsed={!isPinnedOpen || undefined}\n      >\n        <Flex as=\&#x22;nav\&#x22; className={styles.sideNavigation} direction=\&#x22;column\&#x22; aria-label=\&#x22;Product navigation\&#x22;>\n          <DashboardSidebarContent\n            activeItem={activeItem}\n            isPinnedOpen={isPinnedOpen}\n            onSelectItem={onSelectItem}\n            onToggleCollapse={onToggleCollapse}\n          />\n        </Flex>\n      </InlineDrawer>\n\n      <Drawer\n        placement=\&#x22;left\&#x22;\n        isOpen={isMobileNavigationOpen}\n        onOpenChange={onMobileNavigationChange}\n        isDismissable\n        maxSize={224}\n        aria-label=\&#x22;Product navigation\&#x22;\n      >\n        <Content role=\&#x22;navigation\&#x22; aria-label=\&#x22;Product navigation\&#x22; padding=\&#x22;lg\&#x22;>\n          <DashboardSidebarContent\n            activeItem={activeItem}\n            isPinnedOpen\n            isMobileNavigation\n            onSelectItem={onSelectItem}\n            onToggleCollapse={onToggleCollapse}\n          />\n        </Content>\n      </Drawer>\n    </>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/overview-dashboard/index.module.css&#x22;,&#x22;language&#x22;:&#x22;css&#x22;,&#x22;source&#x22;:&#x22;.dashboardFrame {\n  container-type: inline-size;\n  inline-size: 100%;\n  block-size: 100%;\n}\n\n.dashboardShell {\n  grid-template-columns: 56px minmax(0, 1fr);\n  gap: var(--sp-xl);\n  min-block-size: 100%;\n  min-inline-size: 0;\n  transition: grid-template-columns 300ms cubic-bezier(0.32, 0.72, 0, 1);\n}\n\n.dashboardShell:where([data-navigation-pinned-open]) {\n  grid-template-columns: 224px minmax(0, 1fr);\n}\n\n.dashboardMain {\n  align-items: center;\n  min-block-size: 100%;\n  min-inline-size: 0;\n}\n\n.dashboardContent {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n}\n\n.contentGrid {\n  grid-template-columns: minmax(0, 2.25fr) minmax(17.5rem, 1fr);\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .dashboardShell {\n    transition: none;\n  }\n}\n\n@container (max-width: 56rem) {\n  .contentGrid {\n    grid-template-columns: 1fr;\n  }\n}\n\n@container (max-width: 40rem) {\n  .dashboardShell {\n    grid-template-columns: 1fr;\n  }\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/overview-dashboard/index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;'use client';\n\nimport { Box, Flex, Grid, Heading } from '@godaddy/antares';\nimport { useEffect, useRef, useState } from 'react';\nimport { defaultActiveNavigationItem, type DashboardNavigationItemLabel } from '../../constants/config';\nimport { AppointmentsPromotionCard } from '../appointments-promotion-card';\nimport { ConversationsCard } from '../conversations-card';\nimport { DashboardHeader } from '../dashboard-header';\nimport { DashboardSidebar } from '../dashboard-sidebar';\nimport { SalesChannelsCard } from '../sales-channels-card';\nimport { UsersCard } from '../users-card';\nimport styles from './index.module.css';\n\n/** Renders the responsive overview dashboard block. */\nexport function OverviewDashboard() {\n  const dashboardFrameRef = useRef<HTMLDivElement>(null);\n  const [activeNavigationItem, setActiveNavigationItem] =\n    useState<DashboardNavigationItemLabel>(defaultActiveNavigationItem);\n  const [isNavigationPinnedOpen, setIsNavigationPinnedOpen] = useState(true);\n  const [isNavigationHovered, setIsNavigationHovered] = useState(false);\n  const [isNavigationHoverSuppressed, setIsNavigationHoverSuppressed] = useState(false);\n  const [isCompactLayout, setIsCompactLayout] = useState(false);\n  const [isMobileNavigationOpen, setIsMobileNavigationOpen] = useState(false);\n\n  useEffect(function observeDashboardLayout() {\n    const frame = dashboardFrameRef.current;\n    if (!frame) {\n      return undefined;\n    }\n    const observedFrame = frame;\n\n    function syncDashboardLayout() {\n      const rootFontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;\n      const isCompact = observedFrame.getBoundingClientRect().width <= 40 * rootFontSize;\n\n      setIsCompactLayout(function preserveStableLayout(current) {\n        return current === isCompact ? current : isCompact;\n      });\n    }\n\n    syncDashboardLayout();\n    const observer = new ResizeObserver(syncDashboardLayout);\n    observer.observe(observedFrame);\n\n    return function disconnectDashboardLayoutObserver() {\n      observer.disconnect();\n    };\n  }, []);\n\n  useEffect(\n    function closeMobileNavigationOnDesktopLayout() {\n      if (!isCompactLayout) {\n        setIsMobileNavigationOpen(false);\n      }\n    },\n    [isCompactLayout]\n  );\n\n  function openMobileNavigation() {\n    setIsMobileNavigationOpen(true);\n  }\n\n  function toggleNavigation() {\n    if (isMobileNavigationOpen) {\n      setIsMobileNavigationOpen(false);\n      return;\n    }\n\n    if (isNavigationPinnedOpen) {\n      setIsNavigationHoverSuppressed(isNavigationHovered);\n      setIsNavigationHovered(false);\n    }\n\n    setIsNavigationPinnedOpen(function togglePinnedNavigation(isOpen) {\n      return !isOpen;\n    });\n  }\n\n  function handleNavigationHoverChange(isHovering: boolean) {\n    if (!isHovering) {\n      setIsNavigationHoverSuppressed(false);\n      setIsNavigationHovered(false);\n      return;\n    }\n\n    if (!isNavigationHoverSuppressed) {\n      setIsNavigationHovered(true);\n    }\n  }\n\n  function handleMobileNavigationChange(isOpen: boolean) {\n    setIsMobileNavigationOpen(isOpen);\n  }\n\n  const isNavigationExpanded = isNavigationPinnedOpen || isNavigationHovered;\n\n  return (\n    <Box ref={dashboardFrameRef} className={styles.dashboardFrame}>\n      <Grid className={styles.dashboardShell} data-navigation-pinned-open={isNavigationPinnedOpen || undefined}>\n        <DashboardSidebar\n          activeItem={activeNavigationItem}\n          isPinnedOpen={isNavigationPinnedOpen}\n          onSelectItem={setActiveNavigationItem}\n          onToggleCollapse={toggleNavigation}\n          isNavigationExpanded={isNavigationExpanded}\n          onNavigationHoverChange={handleNavigationHoverChange}\n          isMobileNavigationOpen={isCompactLayout && isMobileNavigationOpen}\n          onMobileNavigationChange={handleMobileNavigationChange}\n        />\n\n        <Flex className={styles.dashboardMain} direction=\&#x22;column\&#x22;>\n          <Flex className={styles.dashboardContent} direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22; padding=\&#x22;xl\&#x22;>\n            <DashboardHeader onOpenNavigation={openMobileNavigation} />\n\n            <Heading level={2}>Overview</Heading>\n\n            <Grid className={styles.contentGrid} gap=\&#x22;xl\&#x22;>\n              <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n                <UsersCard />\n                <AppointmentsPromotionCard />\n              </Flex>\n\n              <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n                <SalesChannelsCard />\n                <ConversationsCard />\n              </Flex>\n            </Grid>\n          </Flex>\n        </Flex>\n      </Grid>\n    </Box>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/sales-channels-card/index.module.css&#x22;,&#x22;language&#x22;:&#x22;css&#x22;,&#x22;source&#x22;:&#x22;.salesCardMeasure {\n  min-inline-size: 0;\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/sales-channels-card/index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Card, DonutChart, Flex, Heading } from '@godaddy/antares';\nimport { salesChannelData } from '../../constants/config';\nimport styles from './index.module.css';\n\nconst currencyFormatter = new Intl.NumberFormat('en-US', {\n  style: 'currency',\n  currency: 'USD',\n  maximumFractionDigits: 0\n});\n\nconst numberFormatter = new Intl.NumberFormat('en-US', {\n  maximumFractionDigits: 0\n});\n\nfunction formatCurrency(value: number): string {\n  return currencyFormatter.format(value);\n}\n\nfunction formatNumber(value: number): string {\n  return numberFormatter.format(value);\n}\n\nconst totalSales = salesChannelData.reduce(function sumSales(total, channel) {\n  return total + channel.value;\n}, 0);\n\nconst salesChannelAriaLabel = [\n  'Sales by sales channels donut chart',\n  ...salesChannelData.map(function describeChannel(channel) {\n    return `${channel.name}: ${formatCurrency(channel.value)}`;\n  })\n].join('. ');\n\n/** Demonstrates sales-channel performance with a responsive donut chart. */\nexport function SalesChannelsCard() {\n  return (\n    <Card elevation=\&#x22;card\&#x22; className={styles.salesCardMeasure}>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n        <Heading level={3}>Sales by Sales Channels</Heading>\n        <DonutChart\n          data={salesChannelData}\n          label={formatNumber(totalSales)}\n          subLabel=\&#x22;USD\&#x22;\n          legend=\&#x22;bottom\&#x22;\n          formatValue={formatCurrency}\n          aria-label={salesChannelAriaLabel}\n        />\n      </Flex>\n    </Card>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/users-card/index.module.css&#x22;,&#x22;language&#x22;:&#x22;css&#x22;,&#x22;source&#x22;:&#x22;.usersCard {\n  min-inline-size: 0;\n}\n\n.userRow {\n  align-items: center;\n}\n\n.userDivider {\n  border: 0;\n  border-block-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n  margin-block: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .restoreUsersLabel {\n    display: none;\n  }\n\n  .userRow {\n    align-items: flex-start;\n  }\n\n  .userActions {\n    inline-size: 100%;\n    justify-content: flex-end;\n  }\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/users-card/index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Box, Button, Card, Detail, Flex, Heading, Icon, Tag, Text } from '@godaddy/antares';\nimport { dashboardUsers } from '../../constants/config';\nimport styles from './index.module.css';\n\n/** Shows the user-management card from the dashboard composition. */\nexport function UsersCard() {\n  return (\n    <Card elevation=\&#x22;card\&#x22; className={styles.usersCard}>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n        <Flex justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          <Heading level={3}>Users</Heading>\n          <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Restore deleted users\&#x22;>\n            <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n              <Icon icon=\&#x22;trash\&#x22; aria-hidden=\&#x22;true\&#x22; />\n              <Text className={styles.restoreUsersLabel}>Restore deleted users</Text>\n            </Flex>\n          </Button>\n        </Flex>\n\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n          {dashboardUsers.map(function renderUser(user, index) {\n            return (\n              <Box key={user.email}>\n                <Flex className={styles.userRow} justifyContent=\&#x22;space-between\&#x22; gap=\&#x22;lg\&#x22; wrap=\&#x22;wrap\&#x22;>\n                  <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n                    <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n                      <Text>{user.name}</Text>\n                      {user.isAdmin ? (\n                        <Tag emphasis=\&#x22;info\&#x22; size=\&#x22;sm\&#x22;>\n                          Admin\n                        </Tag>\n                      ) : null}\n                    </Flex>\n                    <Detail>{user.email}</Detail>\n                  </Flex>\n\n                  <Flex className={styles.userActions} alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n                    <Button variant=\&#x22;tertiary\&#x22; size=\&#x22;sm\&#x22; aria-label={`Upgrade ${user.name}`}>\n                      Upgrade\n                    </Button>\n                    <Button variant=\&#x22;tertiary\&#x22; size=\&#x22;sm\&#x22; aria-label={`Manage ${user.name}`}>\n                      Manage\n                    </Button>\n                  </Flex>\n                </Flex>\n                {index < dashboardUsers.length - 1 ? (\n                  <Box as=\&#x22;hr\&#x22; className={styles.userDivider} aria-hidden=\&#x22;true\&#x22; />\n                ) : null}\n              </Box>\n            );\n          })}\n        </Flex>\n      </Flex>\n    </Card>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;constants/config.ts&#x22;,&#x22;language&#x22;:&#x22;ts&#x22;,&#x22;source&#x22;:&#x22;import type { DonutChartProps } from '@godaddy/antares';\n\n/** Navigation entries shown by the dashboard shell. */\nexport const dashboardNavigationItems = [\n  { label: 'Dashboard', icon: 'dashboard' },\n  { label: 'Advanced Email Security', icon: 'mail-lock' },\n  { label: 'Add-Ons', icon: 'addon' },\n  { label: 'My Brand', icon: 'color-palette' },\n  { label: 'Deals', icon: 'deals', badge: 'New' }\n] as const satisfies readonly { label: string; icon: string; badge?: string }[];\n\nexport type DashboardNavigationItemLabel = (typeof dashboardNavigationItems)[number]['label'];\n\n/** Initial dashboard navigation item. */\nexport const defaultActiveNavigationItem: DashboardNavigationItemLabel = dashboardNavigationItems[0].label;\n\n/** User rows displayed by the dashboard's Users card. */\nexport const dashboardUsers = [\n  { name: 'John Doe', email: 'john@cakebake.com', isAdmin: true },\n  { name: 'Jane Smith', email: 'jane@cakebake.com', isAdmin: false }\n] as const;\n\n/** Sales-channel slices displayed by the responsive chart. */\nexport const salesChannelData = [\n  { id: 'shopify', name: 'Shopify', value: 400 },\n  { id: 'facebook-marketplace', name: 'Facebook Marketplace', value: 300 },\n  { id: 'instagram', name: 'Instagram', value: 200 },\n  { id: 'other', name: 'Other', value: 100 }\n] satisfies DonutChartProps['data'];\n\n/** Self-contained local image used by the appointments promotion card. */\nexport const appointmentsImage =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 176 112%22%3E%3Cdefs%3E%3ClinearGradient id=%22bg%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop stop-color=%22%2302242a%22/%3E%3Cstop offset=%221%22 stop-color=%22%2309757a%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%22176%22 height=%22112%22 rx=%228%22 fill=%22url(%23bg)%22/%3E%3Ccircle cx=%22134%22 cy=%2230%22 r=%2230%22 fill=%22%23d6f5f1%22 opacity=%22.8%22/%3E%3Cpath d=%22M0 86c30-26 54-16 82-34 26-17 41-6 94 26v34H0z%22 fill=%22%23f4b7d7%22 opacity=%22.85%22/%3E%3Cpath d=%22M0 93c27-11 49-5 79-20 24-12 58 3 97 17v22H0z%22 fill=%22%23f7c84b%22 opacity=%22.9%22/%3E%3Ctext x=%2288%22 y=%2262%22 fill=%22white%22 font-family=%22Arial,sans-serif%22 font-size=%2212%22 text-anchor=%22middle%22%3Eappointments%3C/text%3E%3C/svg%3E';\n&#x22;},{&#x22;path&#x22;:&#x22;index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;export { OverviewDashboard } from './components/overview-dashboard';\n&#x22;}]}">
+  <OverviewDashboardStories.Preview />
+</SiteBlockExplorer>
+
 ### Sign-in form [#sign-in-form]
 
 <SiteBlockExplorer block="{&#x22;id&#x22;:&#x22;sign-in-form&#x22;,&#x22;description&#x22;:&#x22;A simple Antares sign-in experience.&#x22;,&#x22;installCommand&#x22;:&#x22;npx shadcn@latest add godaddy/antares/blocks/sign-in-form&#x22;,&#x22;files&#x22;:[{&#x22;path&#x22;:&#x22;components/sign-in-fields.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Flex, Input, Label, TextField } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\n\n/** Groups the accessible fields used by the sign-in form block. */\nexport function SignInFields() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField name=\&#x22;email\&#x22; isRequired>\n        <Label>{signInCopy.emailLabel}</Label>\n        <Input type=\&#x22;email\&#x22; autoComplete=\&#x22;email\&#x22; placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n      <TextField name=\&#x22;password\&#x22; isRequired>\n        <Label>{signInCopy.passwordLabel}</Label>\n        <Input type=\&#x22;password\&#x22; autoComplete=\&#x22;current-password\&#x22; />\n      </TextField>\n    </Flex>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/sign-in-form.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;'use client';\n\nimport { Box, Button, Flex, Heading, Text } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\nimport { SignInFields } from './sign-in-fields';\n\n/**\n * Provides a sign-in form composition to copy and adapt. Submission is prevented\n * until the consuming application supplies its authentication behavior.\n *\n * @example\n * ```tsx\n * <SignInForm />\n * ```\n */\nexport function SignInForm() {\n  return (\n    <Flex justifyContent=\&#x22;center\&#x22;>\n      <Box flex=\&#x22;0 1 28rem\&#x22; padding=\&#x22;xl\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        <Flex\n          as=\&#x22;form\&#x22;\n          direction=\&#x22;column\&#x22;\n          gap=\&#x22;lg\&#x22;\n          onSubmit={function handleSubmit(event) {\n            event.preventDefault();\n          }}\n        >\n          <Heading level={2}>{signInCopy.title}</Heading>\n          <Text>{signInCopy.description}</Text>\n          <SignInFields />\n          <Button type=\&#x22;submit\&#x22; variant=\&#x22;primary\&#x22;>\n            {signInCopy.submitLabel}\n          </Button>\n        </Flex>\n      </Box>\n    </Flex>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;data/copy.ts&#x22;,&#x22;language&#x22;:&#x22;ts&#x22;,&#x22;source&#x22;:&#x22;export const signInCopy = {\n  title: 'Sign in to your account',\n  description: 'Use your email and password to continue.',\n  emailLabel: 'Email',\n  passwordLabel: 'Password',\n  submitLabel: 'Sign in'\n} as const;\n&#x22;},{&#x22;path&#x22;:&#x22;index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;export { SignInForm } from './components/sign-in-form';\n&#x22;}]}">
   <SignInFormStories.Preview />
+</SiteBlockExplorer>
+
+
+# Overview dashboard
+
+
+
+
+
+<Meta of="Stories" name="Overview" id="blocks-overview-dashboard" />
+
+<SiteBlockExplorer block="{&#x22;id&#x22;:&#x22;overview-dashboard&#x22;,&#x22;description&#x22;:&#x22;A responsive Antares overview dashboard with users, sales channels, and conversations.&#x22;,&#x22;installCommand&#x22;:&#x22;npx shadcn@latest add godaddy/antares/blocks/overview-dashboard&#x22;,&#x22;files&#x22;:[{&#x22;path&#x22;:&#x22;components/appointments-promotion-card/index.module.css&#x22;,&#x22;language&#x22;:&#x22;css&#x22;,&#x22;source&#x22;:&#x22;.mediaCard {\n  min-inline-size: 0;\n}\n\n.mediaImage {\n  display: block;\n  max-inline-size: 100%;\n  block-size: auto;\n  border-radius: var(--rounding-sm);\n}\n\n.mediaCardContent,\n.mediaCardCopy,\n.mediaCardImage {\n  min-inline-size: 0;\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/appointments-promotion-card/index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Box, Card, Detail, Flex, Heading, Icon, Image } from '@godaddy/antares';\nimport { appointmentsImage } from '../../constants/config';\nimport styles from './index.module.css';\n\n/** Shows the appointments promotion card below the users card. */\nexport function AppointmentsPromotionCard() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Heading level={3}>GoDaddy can do more for you</Heading>\n      <Card padding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22; className={styles.mediaCard}>\n        <Flex className={styles.mediaCardContent} alignItems=\&#x22;center\&#x22; gap=\&#x22;2xl\&#x22; wrap=\&#x22;wrap\&#x22;>\n          <Flex className={styles.mediaCardCopy} direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; flex=\&#x22;1 1 14rem\&#x22;>\n            <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n              <Icon icon=\&#x22;calendar\&#x22; aria-hidden=\&#x22;true\&#x22; />\n              <Detail emphasis=\&#x22;passive\&#x22;>ONLINE APPOINTMENTS</Detail>\n            </Flex>\n            <Heading level={4}>Start selling your services with online appointments</Heading>\n            <Detail emphasis=\&#x22;passive\&#x22;>\n              Use your professional email to simplify bookings with automated appointment confirmations and seamless\n              calendar syncing.\n            </Detail>\n          </Flex>\n\n          <Box className={styles.mediaCardImage} flex=\&#x22;0 1 11rem\&#x22;>\n            <Image\n              src={appointmentsImage}\n              alt=\&#x22;\&#x22;\n              width={176}\n              height={112}\n              loading=\&#x22;lazy\&#x22;\n              decoding=\&#x22;async\&#x22;\n              className={styles.mediaImage}\n            />\n          </Box>\n        </Flex>\n      </Card>\n    </Flex>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/conversations-card/index.module.css&#x22;,&#x22;language&#x22;:&#x22;css&#x22;,&#x22;source&#x22;:&#x22;.conversationsCard {\n  min-inline-size: 0;\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/conversations-card/index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Button, Card, Flex, Heading, Tag, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Demonstrates a secondary conversations card with a connection action. */\nexport function ConversationsCard() {\n  return (\n    <Card elevation=\&#x22;card\&#x22; className={styles.conversationsCard}>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n        <Flex justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          <Heading level={3}>Conversations</Heading>\n          <Tag emphasis=\&#x22;info\&#x22; size=\&#x22;sm\&#x22;>\n            Included\n          </Tag>\n        </Flex>\n        <Text>Manage all your emails and messages in one place with a unified inbox.</Text>\n        <Button variant=\&#x22;secondary\&#x22; size=\&#x22;sm\&#x22;>\n          Connect Email\n        </Button>\n      </Flex>\n    </Card>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/dashboard-header/index.module.css&#x22;,&#x22;language&#x22;:&#x22;css&#x22;,&#x22;source&#x22;:&#x22;.mobileMenuButton,\n.mobileNavLogo,\n.mobileNavAction {\n  display: none;\n}\n\n.navDivider {\n  block-size: 1.25rem;\n  border-inline-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n}\n\n.navigation {\n  gap: var(--sp-lg);\n}\n\n.navActions {\n  gap: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .mobileMenuButton,\n  .mobileNavLogo,\n  .mobileNavAction {\n    display: inline-flex;\n  }\n\n  .desktopNavAction,\n  .navDivider {\n    display: none;\n  }\n\n  .navigation,\n  .navActions {\n    gap: var(--sp-sm);\n  }\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/dashboard-header/index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import {\n  Avatar,\n  Box,\n  Button,\n  Flex,\n  Icon,\n  Menu,\n  MenuItem,\n  MenuSeparator,\n  MenuTrigger,\n  Pressable,\n  Text\n} from '@godaddy/antares';\nimport styles from './index.module.css';\n\ninterface DashboardHeaderProps {\n  /** Opens the product navigation from the compact mobile header. */\n  onOpenNavigation: () => void;\n}\n\n/** Renders the compact application header shown above the dashboard. */\nexport function DashboardHeader({ onOpenNavigation }: DashboardHeaderProps) {\n  return (\n    <Flex className={styles.navigation} justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; wrap=\&#x22;wrap\&#x22;>\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;lg\&#x22;>\n        <Button\n          className={styles.mobileMenuButton}\n          variant=\&#x22;minimal\&#x22;\n          size=\&#x22;sm\&#x22;\n          aria-label=\&#x22;Open navigation\&#x22;\n          onPress={onOpenNavigation}\n        >\n          <Icon icon=\&#x22;hamburger\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        </Button>\n        <Icon className={styles.mobileNavLogo} icon=\&#x22;gd-the-go\&#x22; aria-label=\&#x22;GoDaddy\&#x22; />\n      </Flex>\n\n      <Flex className={styles.navActions} alignItems=\&#x22;center\&#x22; wrap=\&#x22;wrap\&#x22;>\n        <Button className={styles.desktopNavAction} variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Hire an Expert\&#x22;>\n          Hire an Expert\n        </Button>\n        <Box as=\&#x22;span\&#x22; className={styles.navDivider} aria-hidden=\&#x22;true\&#x22; />\n        <Button className={styles.desktopNavAction} variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Help Center\&#x22;>\n          Help Center\n        </Button>\n        <Button className={styles.mobileNavAction} variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Help Center\&#x22;>\n          <Icon icon=\&#x22;help\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        </Button>\n        <Button className={styles.desktopNavAction} variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Notifications\&#x22;>\n          <Icon icon=\&#x22;bell\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        </Button>\n        <Button className={styles.mobileNavAction} variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Apps\&#x22;>\n          <Icon icon=\&#x22;apps\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        </Button>\n        <MenuTrigger popoverProps={{ placement: 'bottom end' }}>\n          <Pressable aria-label=\&#x22;Account menu\&#x22;>\n            <Avatar size=\&#x22;sm\&#x22; emphasis=\&#x22;primary\&#x22; role=\&#x22;button\&#x22;>\n              <Text>MT</Text>\n            </Avatar>\n          </Pressable>\n          <Menu aria-label=\&#x22;Account actions\&#x22;>\n            <MenuItem id=\&#x22;profile\&#x22;>View profile</MenuItem>\n            <MenuItem id=\&#x22;settings\&#x22;>Account settings</MenuItem>\n            <MenuItem id=\&#x22;switch-account\&#x22;>Switch account</MenuItem>\n            <MenuSeparator />\n            <MenuItem id=\&#x22;sign-out\&#x22;>Sign out</MenuItem>\n          </Menu>\n        </MenuTrigger>\n        <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Shopping cart\&#x22;>\n          <Icon icon=\&#x22;cart\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        </Button>\n      </Flex>\n    </Flex>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/dashboard-sidebar-content/index.module.css&#x22;,&#x22;language&#x22;:&#x22;css&#x22;,&#x22;source&#x22;:&#x22;.content {\n  inline-size: 100%;\n  --navigation-rail-size: 56px;\n}\n\n.navigationHeader {\n  padding-inline-end: var(--sp-sm, 0.25rem);\n  padding-inline-start: calc((var(--navigation-rail-size) - 24px) / 2);\n}\n\n.sideNavigationLogo,\n.navigationToggle {\n  flex-shrink: 0;\n}\n\n:where([data-collapsed]):where(:not([data-expanded])) .navigationToggle,\n:where([data-collapsed]):where(:not([data-expanded])) .sideNavContent {\n  display: none;\n}\n\n.sideNavItem {\n  justify-content: flex-start;\n  inline-size: 100%;\n  padding-inline-end: var(--sp-md, 0.5rem);\n  padding-inline-start: calc((var(--navigation-rail-size) - 1lh) / 2 - 1px);\n  position: relative;\n  text-align: start;\n}\n\n.sideNavItem::before {\n  background: transparent;\n  border-radius: var(--rounding-full);\n  content: \&#x22;\&#x22;;\n  inset-block: 0;\n  inset-inline-start: 0;\n  position: absolute;\n  width: var(--sp-sm);\n}\n\n.sideNavItem:where([aria-pressed=\&#x22;true\&#x22;]) {\n  background: var(--ux-9i7okd, #f5f7f8);\n  font-weight: 600;\n}\n\n.sideNavItem:where([aria-pressed=\&#x22;true\&#x22;]):where([data-hovered]) {\n  background: var(--color-action-background-tertiary-hovered, var(--ux-1m7qrkf, #f5f5f5));\n  color: var(--color-action-text-tertiary-hovered, var(--ux-unx9i2, #008080));\n}\n\n.sideNavItem:where([aria-pressed=\&#x22;true\&#x22;]):where([data-pressed]) {\n  background: var(--color-action-background-tertiary-pressed, var(--ux-9qpf6c, #dcdcdc));\n  color: var(--color-action-text-tertiary-pressed, var(--ux-h6e7c1, #191970));\n}\n\n.sideNavItem:where([aria-pressed=\&#x22;true\&#x22;])::before {\n  background: var(--ux-18lg5k, #a6fff8);\n}\n\n.sideNavContent {\n  min-inline-size: 0;\n}\n\n.sideNavLabel {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.sideNavIcon {\n  display: inline-flex;\n  flex-shrink: 0;\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/dashboard-sidebar-content/index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Button, Flex, Icon, Tag, Text } from '@godaddy/antares';\nimport { dashboardNavigationItems, type DashboardNavigationItemLabel } from '../../constants/config';\nimport styles from './index.module.css';\n\ninterface DashboardSidebarContentProps {\n  /** Item label that receives the active marker. */\n  activeItem: DashboardNavigationItemLabel;\n\n  /** Whether the desktop rail is pinned open. */\n  isPinnedOpen: boolean;\n\n  /** Whether the content is rendered inside the mobile drawer. */\n  isMobileNavigation?: boolean;\n\n  /** Selects a menu item without navigating the example. */\n  onSelectItem: (label: DashboardNavigationItemLabel) => void;\n\n  /** Toggles the desktop rail or closes the mobile navigation. */\n  onToggleCollapse: () => void;\n}\n\n/** Renders the shared navigation content used by desktop and mobile navigation. */\nexport function DashboardSidebarContent({\n  activeItem,\n  isPinnedOpen,\n  isMobileNavigation = false,\n  onSelectItem,\n  onToggleCollapse\n}: DashboardSidebarContentProps) {\n  const navigationToggleLabel = isMobileNavigation\n    ? 'Close navigation'\n    : isPinnedOpen\n      ? 'Collapse navigation'\n      : 'Expand navigation';\n\n  return (\n    <Flex className={styles.content} direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <Flex className={styles.navigationHeader} justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n        <Icon className={styles.sideNavigationLogo} icon=\&#x22;gd-the-go\&#x22; aria-label=\&#x22;GoDaddy\&#x22; />\n        <Button\n          className={styles.navigationToggle}\n          variant=\&#x22;minimal\&#x22;\n          size=\&#x22;sm\&#x22;\n          aria-label={navigationToggleLabel}\n          onPress={onToggleCollapse}\n        >\n          <Icon icon={isPinnedOpen ? 'sidebar-collapse' : 'sidebar-expand'} aria-hidden=\&#x22;true\&#x22; />\n        </Button>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        {dashboardNavigationItems.map(function renderNavigationItem(item) {\n          const isActive = activeItem === item.label;\n\n          return (\n            <Button\n              key={item.label}\n              className={styles.sideNavItem}\n              variant=\&#x22;minimal\&#x22;\n              size=\&#x22;sm\&#x22;\n              aria-pressed={isActive}\n              aria-label={!isPinnedOpen ? item.label : undefined}\n              onPress={() => onSelectItem(item.label)}\n            >\n              <Icon className={styles.sideNavIcon} icon={item.icon} aria-hidden=\&#x22;true\&#x22; />\n              <Flex className={styles.sideNavContent} flex=\&#x22;1\&#x22; alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;flex-start\&#x22; gap=\&#x22;sm\&#x22;>\n                <Text className={styles.sideNavLabel}>{item.label}</Text>\n                {'badge' in item && item.badge ? (\n                  <Tag emphasis=\&#x22;highlight\&#x22; size=\&#x22;sm\&#x22;>\n                    {item.badge}\n                  </Tag>\n                ) : null}\n              </Flex>\n            </Button>\n          );\n        })}\n      </Flex>\n    </Flex>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/dashboard-sidebar/index.module.css&#x22;,&#x22;language&#x22;:&#x22;css&#x22;,&#x22;source&#x22;:&#x22;.sideNavigationContainer {\n  align-self: stretch;\n  background: var(--ux-9i7okd, #f5f7f8);\n  block-size: auto;\n  min-inline-size: 0;\n  overflow: visible;\n  position: relative;\n}\n\n.sideNavigation {\n  background: var(--ux-9i7okd, #f5f7f8);\n  block-size: 100%;\n  inline-size: 100%;\n  min-inline-size: 0;\n  overflow: hidden;\n  padding-block-start: var(--sp-md, 0.5rem);\n  transition: inline-size 300ms cubic-bezier(0.32, 0.72, 0, 1);\n}\n\n.sideNavigationContainer:where([data-expanded]) {\n  z-index: 1;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .sideNavigation {\n    transition: none;\n  }\n}\n\n@container (max-width: 40rem) {\n  .sideNavigationContainer {\n    display: none;\n  }\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/dashboard-sidebar/index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Content, Drawer, Flex, InlineDrawer } from '@godaddy/antares';\nimport type { DashboardNavigationItemLabel } from '../../constants/config';\nimport { DashboardSidebarContent } from '../dashboard-sidebar-content';\nimport styles from './index.module.css';\n\ninterface DashboardSidebarProps {\n  /** Item label that receives the active marker. */\n  activeItem: DashboardNavigationItemLabel;\n\n  /** Whether the navigation is pinned open on desktop. */\n  isPinnedOpen: boolean;\n\n  /** Selects a menu item without navigating the example. */\n  onSelectItem: (label: DashboardNavigationItemLabel) => void;\n\n  /** Toggles the desktop rail or closes the mobile navigation. */\n  onToggleCollapse: () => void;\n\n  /** Whether the desktop rail is expanded by a temporary hover state. */\n  isNavigationExpanded: boolean;\n\n  /** Keeps the desktop rail width in sync with its hover state. */\n  onNavigationHoverChange: (isHovering: boolean) => void;\n\n  /** Whether the mobile drawer is currently open. */\n  isMobileNavigationOpen: boolean;\n\n  /** Keeps the mobile drawer state controlled by the parent. */\n  onMobileNavigationChange: (isOpen: boolean) => void;\n}\n\n/** Renders the responsive desktop rail and mobile navigation drawer. */\nexport function DashboardSidebar({\n  activeItem,\n  isPinnedOpen,\n  onSelectItem,\n  onToggleCollapse,\n  isNavigationExpanded,\n  onNavigationHoverChange,\n  isMobileNavigationOpen,\n  onMobileNavigationChange\n}: DashboardSidebarProps) {\n  return (\n    <>\n      <InlineDrawer\n        className={styles.sideNavigationContainer}\n        placement=\&#x22;left\&#x22;\n        isExpanded={isNavigationExpanded}\n        onMouseEnter={() => onNavigationHoverChange(true)}\n        onMouseLeave={() => onNavigationHoverChange(false)}\n        minSize={56}\n        maxSize={224}\n        data-collapsed={!isPinnedOpen || undefined}\n      >\n        <Flex as=\&#x22;nav\&#x22; className={styles.sideNavigation} direction=\&#x22;column\&#x22; aria-label=\&#x22;Product navigation\&#x22;>\n          <DashboardSidebarContent\n            activeItem={activeItem}\n            isPinnedOpen={isPinnedOpen}\n            onSelectItem={onSelectItem}\n            onToggleCollapse={onToggleCollapse}\n          />\n        </Flex>\n      </InlineDrawer>\n\n      <Drawer\n        placement=\&#x22;left\&#x22;\n        isOpen={isMobileNavigationOpen}\n        onOpenChange={onMobileNavigationChange}\n        isDismissable\n        maxSize={224}\n        aria-label=\&#x22;Product navigation\&#x22;\n      >\n        <Content role=\&#x22;navigation\&#x22; aria-label=\&#x22;Product navigation\&#x22; padding=\&#x22;lg\&#x22;>\n          <DashboardSidebarContent\n            activeItem={activeItem}\n            isPinnedOpen\n            isMobileNavigation\n            onSelectItem={onSelectItem}\n            onToggleCollapse={onToggleCollapse}\n          />\n        </Content>\n      </Drawer>\n    </>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/overview-dashboard/index.module.css&#x22;,&#x22;language&#x22;:&#x22;css&#x22;,&#x22;source&#x22;:&#x22;.dashboardFrame {\n  container-type: inline-size;\n  inline-size: 100%;\n  block-size: 100%;\n}\n\n.dashboardShell {\n  grid-template-columns: 56px minmax(0, 1fr);\n  gap: var(--sp-xl);\n  min-block-size: 100%;\n  min-inline-size: 0;\n  transition: grid-template-columns 300ms cubic-bezier(0.32, 0.72, 0, 1);\n}\n\n.dashboardShell:where([data-navigation-pinned-open]) {\n  grid-template-columns: 224px minmax(0, 1fr);\n}\n\n.dashboardMain {\n  align-items: center;\n  min-block-size: 100%;\n  min-inline-size: 0;\n}\n\n.dashboardContent {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n}\n\n.contentGrid {\n  grid-template-columns: minmax(0, 2.25fr) minmax(17.5rem, 1fr);\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .dashboardShell {\n    transition: none;\n  }\n}\n\n@container (max-width: 56rem) {\n  .contentGrid {\n    grid-template-columns: 1fr;\n  }\n}\n\n@container (max-width: 40rem) {\n  .dashboardShell {\n    grid-template-columns: 1fr;\n  }\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/overview-dashboard/index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;'use client';\n\nimport { Box, Flex, Grid, Heading } from '@godaddy/antares';\nimport { useEffect, useRef, useState } from 'react';\nimport { defaultActiveNavigationItem, type DashboardNavigationItemLabel } from '../../constants/config';\nimport { AppointmentsPromotionCard } from '../appointments-promotion-card';\nimport { ConversationsCard } from '../conversations-card';\nimport { DashboardHeader } from '../dashboard-header';\nimport { DashboardSidebar } from '../dashboard-sidebar';\nimport { SalesChannelsCard } from '../sales-channels-card';\nimport { UsersCard } from '../users-card';\nimport styles from './index.module.css';\n\n/** Renders the responsive overview dashboard block. */\nexport function OverviewDashboard() {\n  const dashboardFrameRef = useRef<HTMLDivElement>(null);\n  const [activeNavigationItem, setActiveNavigationItem] =\n    useState<DashboardNavigationItemLabel>(defaultActiveNavigationItem);\n  const [isNavigationPinnedOpen, setIsNavigationPinnedOpen] = useState(true);\n  const [isNavigationHovered, setIsNavigationHovered] = useState(false);\n  const [isNavigationHoverSuppressed, setIsNavigationHoverSuppressed] = useState(false);\n  const [isCompactLayout, setIsCompactLayout] = useState(false);\n  const [isMobileNavigationOpen, setIsMobileNavigationOpen] = useState(false);\n\n  useEffect(function observeDashboardLayout() {\n    const frame = dashboardFrameRef.current;\n    if (!frame) {\n      return undefined;\n    }\n    const observedFrame = frame;\n\n    function syncDashboardLayout() {\n      const rootFontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;\n      const isCompact = observedFrame.getBoundingClientRect().width <= 40 * rootFontSize;\n\n      setIsCompactLayout(function preserveStableLayout(current) {\n        return current === isCompact ? current : isCompact;\n      });\n    }\n\n    syncDashboardLayout();\n    const observer = new ResizeObserver(syncDashboardLayout);\n    observer.observe(observedFrame);\n\n    return function disconnectDashboardLayoutObserver() {\n      observer.disconnect();\n    };\n  }, []);\n\n  useEffect(\n    function closeMobileNavigationOnDesktopLayout() {\n      if (!isCompactLayout) {\n        setIsMobileNavigationOpen(false);\n      }\n    },\n    [isCompactLayout]\n  );\n\n  function openMobileNavigation() {\n    setIsMobileNavigationOpen(true);\n  }\n\n  function toggleNavigation() {\n    if (isMobileNavigationOpen) {\n      setIsMobileNavigationOpen(false);\n      return;\n    }\n\n    if (isNavigationPinnedOpen) {\n      setIsNavigationHoverSuppressed(isNavigationHovered);\n      setIsNavigationHovered(false);\n    }\n\n    setIsNavigationPinnedOpen(function togglePinnedNavigation(isOpen) {\n      return !isOpen;\n    });\n  }\n\n  function handleNavigationHoverChange(isHovering: boolean) {\n    if (!isHovering) {\n      setIsNavigationHoverSuppressed(false);\n      setIsNavigationHovered(false);\n      return;\n    }\n\n    if (!isNavigationHoverSuppressed) {\n      setIsNavigationHovered(true);\n    }\n  }\n\n  function handleMobileNavigationChange(isOpen: boolean) {\n    setIsMobileNavigationOpen(isOpen);\n  }\n\n  const isNavigationExpanded = isNavigationPinnedOpen || isNavigationHovered;\n\n  return (\n    <Box ref={dashboardFrameRef} className={styles.dashboardFrame}>\n      <Grid className={styles.dashboardShell} data-navigation-pinned-open={isNavigationPinnedOpen || undefined}>\n        <DashboardSidebar\n          activeItem={activeNavigationItem}\n          isPinnedOpen={isNavigationPinnedOpen}\n          onSelectItem={setActiveNavigationItem}\n          onToggleCollapse={toggleNavigation}\n          isNavigationExpanded={isNavigationExpanded}\n          onNavigationHoverChange={handleNavigationHoverChange}\n          isMobileNavigationOpen={isCompactLayout && isMobileNavigationOpen}\n          onMobileNavigationChange={handleMobileNavigationChange}\n        />\n\n        <Flex className={styles.dashboardMain} direction=\&#x22;column\&#x22;>\n          <Flex className={styles.dashboardContent} direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22; padding=\&#x22;xl\&#x22;>\n            <DashboardHeader onOpenNavigation={openMobileNavigation} />\n\n            <Heading level={2}>Overview</Heading>\n\n            <Grid className={styles.contentGrid} gap=\&#x22;xl\&#x22;>\n              <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n                <UsersCard />\n                <AppointmentsPromotionCard />\n              </Flex>\n\n              <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n                <SalesChannelsCard />\n                <ConversationsCard />\n              </Flex>\n            </Grid>\n          </Flex>\n        </Flex>\n      </Grid>\n    </Box>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/sales-channels-card/index.module.css&#x22;,&#x22;language&#x22;:&#x22;css&#x22;,&#x22;source&#x22;:&#x22;.salesCardMeasure {\n  min-inline-size: 0;\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/sales-channels-card/index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Card, DonutChart, Flex, Heading } from '@godaddy/antares';\nimport { salesChannelData } from '../../constants/config';\nimport styles from './index.module.css';\n\nconst currencyFormatter = new Intl.NumberFormat('en-US', {\n  style: 'currency',\n  currency: 'USD',\n  maximumFractionDigits: 0\n});\n\nconst numberFormatter = new Intl.NumberFormat('en-US', {\n  maximumFractionDigits: 0\n});\n\nfunction formatCurrency(value: number): string {\n  return currencyFormatter.format(value);\n}\n\nfunction formatNumber(value: number): string {\n  return numberFormatter.format(value);\n}\n\nconst totalSales = salesChannelData.reduce(function sumSales(total, channel) {\n  return total + channel.value;\n}, 0);\n\nconst salesChannelAriaLabel = [\n  'Sales by sales channels donut chart',\n  ...salesChannelData.map(function describeChannel(channel) {\n    return `${channel.name}: ${formatCurrency(channel.value)}`;\n  })\n].join('. ');\n\n/** Demonstrates sales-channel performance with a responsive donut chart. */\nexport function SalesChannelsCard() {\n  return (\n    <Card elevation=\&#x22;card\&#x22; className={styles.salesCardMeasure}>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n        <Heading level={3}>Sales by Sales Channels</Heading>\n        <DonutChart\n          data={salesChannelData}\n          label={formatNumber(totalSales)}\n          subLabel=\&#x22;USD\&#x22;\n          legend=\&#x22;bottom\&#x22;\n          formatValue={formatCurrency}\n          aria-label={salesChannelAriaLabel}\n        />\n      </Flex>\n    </Card>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/users-card/index.module.css&#x22;,&#x22;language&#x22;:&#x22;css&#x22;,&#x22;source&#x22;:&#x22;.usersCard {\n  min-inline-size: 0;\n}\n\n.userRow {\n  align-items: center;\n}\n\n.userDivider {\n  border: 0;\n  border-block-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n  margin-block: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .restoreUsersLabel {\n    display: none;\n  }\n\n  .userRow {\n    align-items: flex-start;\n  }\n\n  .userActions {\n    inline-size: 100%;\n    justify-content: flex-end;\n  }\n}\n&#x22;},{&#x22;path&#x22;:&#x22;components/users-card/index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;import { Box, Button, Card, Detail, Flex, Heading, Icon, Tag, Text } from '@godaddy/antares';\nimport { dashboardUsers } from '../../constants/config';\nimport styles from './index.module.css';\n\n/** Shows the user-management card from the dashboard composition. */\nexport function UsersCard() {\n  return (\n    <Card elevation=\&#x22;card\&#x22; className={styles.usersCard}>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n        <Flex justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          <Heading level={3}>Users</Heading>\n          <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Restore deleted users\&#x22;>\n            <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n              <Icon icon=\&#x22;trash\&#x22; aria-hidden=\&#x22;true\&#x22; />\n              <Text className={styles.restoreUsersLabel}>Restore deleted users</Text>\n            </Flex>\n          </Button>\n        </Flex>\n\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n          {dashboardUsers.map(function renderUser(user, index) {\n            return (\n              <Box key={user.email}>\n                <Flex className={styles.userRow} justifyContent=\&#x22;space-between\&#x22; gap=\&#x22;lg\&#x22; wrap=\&#x22;wrap\&#x22;>\n                  <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n                    <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n                      <Text>{user.name}</Text>\n                      {user.isAdmin ? (\n                        <Tag emphasis=\&#x22;info\&#x22; size=\&#x22;sm\&#x22;>\n                          Admin\n                        </Tag>\n                      ) : null}\n                    </Flex>\n                    <Detail>{user.email}</Detail>\n                  </Flex>\n\n                  <Flex className={styles.userActions} alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n                    <Button variant=\&#x22;tertiary\&#x22; size=\&#x22;sm\&#x22; aria-label={`Upgrade ${user.name}`}>\n                      Upgrade\n                    </Button>\n                    <Button variant=\&#x22;tertiary\&#x22; size=\&#x22;sm\&#x22; aria-label={`Manage ${user.name}`}>\n                      Manage\n                    </Button>\n                  </Flex>\n                </Flex>\n                {index < dashboardUsers.length - 1 ? (\n                  <Box as=\&#x22;hr\&#x22; className={styles.userDivider} aria-hidden=\&#x22;true\&#x22; />\n                ) : null}\n              </Box>\n            );\n          })}\n        </Flex>\n      </Flex>\n    </Card>\n  );\n}\n&#x22;},{&#x22;path&#x22;:&#x22;constants/config.ts&#x22;,&#x22;language&#x22;:&#x22;ts&#x22;,&#x22;source&#x22;:&#x22;import type { DonutChartProps } from '@godaddy/antares';\n\n/** Navigation entries shown by the dashboard shell. */\nexport const dashboardNavigationItems = [\n  { label: 'Dashboard', icon: 'dashboard' },\n  { label: 'Advanced Email Security', icon: 'mail-lock' },\n  { label: 'Add-Ons', icon: 'addon' },\n  { label: 'My Brand', icon: 'color-palette' },\n  { label: 'Deals', icon: 'deals', badge: 'New' }\n] as const satisfies readonly { label: string; icon: string; badge?: string }[];\n\nexport type DashboardNavigationItemLabel = (typeof dashboardNavigationItems)[number]['label'];\n\n/** Initial dashboard navigation item. */\nexport const defaultActiveNavigationItem: DashboardNavigationItemLabel = dashboardNavigationItems[0].label;\n\n/** User rows displayed by the dashboard's Users card. */\nexport const dashboardUsers = [\n  { name: 'John Doe', email: 'john@cakebake.com', isAdmin: true },\n  { name: 'Jane Smith', email: 'jane@cakebake.com', isAdmin: false }\n] as const;\n\n/** Sales-channel slices displayed by the responsive chart. */\nexport const salesChannelData = [\n  { id: 'shopify', name: 'Shopify', value: 400 },\n  { id: 'facebook-marketplace', name: 'Facebook Marketplace', value: 300 },\n  { id: 'instagram', name: 'Instagram', value: 200 },\n  { id: 'other', name: 'Other', value: 100 }\n] satisfies DonutChartProps['data'];\n\n/** Self-contained local image used by the appointments promotion card. */\nexport const appointmentsImage =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 176 112%22%3E%3Cdefs%3E%3ClinearGradient id=%22bg%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop stop-color=%22%2302242a%22/%3E%3Cstop offset=%221%22 stop-color=%22%2309757a%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%22176%22 height=%22112%22 rx=%228%22 fill=%22url(%23bg)%22/%3E%3Ccircle cx=%22134%22 cy=%2230%22 r=%2230%22 fill=%22%23d6f5f1%22 opacity=%22.8%22/%3E%3Cpath d=%22M0 86c30-26 54-16 82-34 26-17 41-6 94 26v34H0z%22 fill=%22%23f4b7d7%22 opacity=%22.85%22/%3E%3Cpath d=%22M0 93c27-11 49-5 79-20 24-12 58 3 97 17v22H0z%22 fill=%22%23f7c84b%22 opacity=%22.9%22/%3E%3Ctext x=%2288%22 y=%2262%22 fill=%22white%22 font-family=%22Arial,sans-serif%22 font-size=%2212%22 text-anchor=%22middle%22%3Eappointments%3C/text%3E%3C/svg%3E';\n&#x22;},{&#x22;path&#x22;:&#x22;index.tsx&#x22;,&#x22;language&#x22;:&#x22;tsx&#x22;,&#x22;source&#x22;:&#x22;export { OverviewDashboard } from './components/overview-dashboard';\n&#x22;}]}">
+  <Stories.Preview />
 </SiteBlockExplorer>
 
 
