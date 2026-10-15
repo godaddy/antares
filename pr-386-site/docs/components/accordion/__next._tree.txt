@@ -8,4 +8,4 @@
 3:[["children",{"s":"__PAGE__","h":160}]]
 2:[["children",{"s":{"n":"slug","t":"oc","k":"components/accordion","s":[]},"h":64,"c":"$Q3"}]]
 1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
-0:{"b":"FqL7-Mik-9vddNd6P4m6m","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"HQgTJ4ML-7yC95QO9RTjh","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
