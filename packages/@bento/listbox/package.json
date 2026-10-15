@@ -46,7 +46,6 @@
     "@bento/use-data-attributes": "^0.1.1",
     "@bento/use-props": "^0.2.3",
     "@react-aria/collections": "^3.1.0",
-    "@react-types/listbox": "^3.8.0",
     "@react-types/shared": "^3.34.0",
     "react-aria": "^3.53.1",
     "react-aria-components": "^1.22.1",
