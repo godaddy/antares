@@ -69,6 +69,13 @@ const config: RcFile = {
       packages: ['**'],
       dependencies: ['@godaddy/antares/**', '@godaddy/antares'],
       isIgnored: true
+    },
+
+    {
+      label: 'Package family consistency',
+      packages: ['**'],
+      dependencies: ['storybook', 'vitest', 'tailwindcss', 'tsdown', 'commitlint'],
+      policy: 'sameRange'
     }
   ]
 };

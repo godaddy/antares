@@ -404,102 +404,102 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(row).toHaveAttribute('aria-selected', 'false');
       });
 
-      it.each([
-        false,
-        true
-      ])('keeps checkbox presses independent with row action %s', async function checkbox(withAction) {
-        const { getByRole, getByText } = await render(
-          <InteractionsExample selectionMode={withAction ? 'none' : 'multiple'} withAction={withAction} />
-        );
-        const row = getByRole('row', { name: 'Option one' });
-        const checkbox = getByRole('checkbox', { name: 'Remember One' });
-        await userEvent.click(getByText('Remember One'));
-        await expect.element(checkbox).toBeChecked();
-        await expect.element(getByText('Independent activations: 1')).toBeInTheDocument();
-        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
-        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+      it.each([false, true])(
+        'keeps checkbox presses independent with row action %s',
+        async function checkbox(withAction) {
+          const { getByRole, getByText } = await render(
+            <InteractionsExample selectionMode={withAction ? 'none' : 'multiple'} withAction={withAction} />
+          );
+          const row = getByRole('row', { name: 'Option one' });
+          const checkbox = getByRole('checkbox', { name: 'Remember One' });
+          await userEvent.click(getByText('Remember One'));
+          await expect.element(checkbox).toBeChecked();
+          await expect.element(getByText('Independent activations: 1')).toBeInTheDocument();
+          await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+          await expect.element(getByText('Row actions: none')).toBeInTheDocument();
 
-        await userEvent.click(getByText('Remember One'));
-        await expect.element(checkbox).not.toBeChecked();
-        await expect.element(getByText('Independent activations: 2')).toBeInTheDocument();
-        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
-        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
-      });
+          await userEvent.click(getByText('Remember One'));
+          await expect.element(checkbox).not.toBeChecked();
+          await expect.element(getByText('Independent activations: 2')).toBeInTheDocument();
+          await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+          await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+        }
+      );
 
-      it.each([
-        false,
-        true
-      ])('keeps RAC keyboard activation independent with row action %s', async function racKeyboard(withAction) {
-        const { getByRole, getByText } = await render(
-          <InteractionsExample selectionMode={withAction ? 'none' : 'multiple'} withAction={withAction} />
-        );
-        const row = getByRole('row', { name: 'Option one' });
-        await userEvent.tab();
-        await userEvent.tab();
-        await expect.element(getByRole('button', { name: 'Independent One' })).toHaveFocus();
-        await userEvent.keyboard('{Enter}');
-        await expect.element(getByText('Independent activations: 1')).toBeInTheDocument();
-        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
-        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
-        await userEvent.keyboard(' ');
-        await expect.element(getByText('Independent activations: 2')).toBeInTheDocument();
+      it.each([false, true])(
+        'keeps RAC keyboard activation independent with row action %s',
+        async function racKeyboard(withAction) {
+          const { getByRole, getByText } = await render(
+            <InteractionsExample selectionMode={withAction ? 'none' : 'multiple'} withAction={withAction} />
+          );
+          const row = getByRole('row', { name: 'Option one' });
+          await userEvent.tab();
+          await userEvent.tab();
+          await expect.element(getByRole('button', { name: 'Independent One' })).toHaveFocus();
+          await userEvent.keyboard('{Enter}');
+          await expect.element(getByText('Independent activations: 1')).toBeInTheDocument();
+          await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+          await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+          await userEvent.keyboard(' ');
+          await expect.element(getByText('Independent activations: 2')).toBeInTheDocument();
 
-        await userEvent.tab();
-        await expect.element(getByRole('button', { name: 'Custom action One' })).toHaveFocus();
-        await userEvent.keyboard('{Enter}');
-        await expect.element(getByText('Independent activations: 3')).toBeInTheDocument();
-        await userEvent.keyboard(' ');
-        await expect.element(getByText('Independent activations: 4')).toBeInTheDocument();
-        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
-        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+          await userEvent.tab();
+          await expect.element(getByRole('button', { name: 'Custom action One' })).toHaveFocus();
+          await userEvent.keyboard('{Enter}');
+          await expect.element(getByText('Independent activations: 3')).toBeInTheDocument();
+          await userEvent.keyboard(' ');
+          await expect.element(getByText('Independent activations: 4')).toBeInTheDocument();
+          await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+          await expect.element(getByText('Row actions: none')).toBeInTheDocument();
 
-        await userEvent.tab();
-        const checkbox = getByRole('checkbox', { name: 'Remember One' });
-        await expect.element(checkbox).toHaveFocus();
-        await userEvent.keyboard(' ');
-        await expect.element(checkbox).toBeChecked();
-        await expect.element(getByText('Independent activations: 5')).toBeInTheDocument();
+          await userEvent.tab();
+          const checkbox = getByRole('checkbox', { name: 'Remember One' });
+          await expect.element(checkbox).toHaveFocus();
+          await userEvent.keyboard(' ');
+          await expect.element(checkbox).toBeChecked();
+          await expect.element(getByText('Independent activations: 5')).toBeInTheDocument();
 
-        await userEvent.tab();
-        await expect.element(getByRole('link', { name: 'Independent link One' })).toHaveFocus();
-        await userEvent.keyboard('{Enter}');
-        expect(location.hash).toBe('#independent-destination');
-        await expect.element(getByText('Independent activations: 6')).toBeInTheDocument();
-        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
-        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
-      });
+          await userEvent.tab();
+          await expect.element(getByRole('link', { name: 'Independent link One' })).toHaveFocus();
+          await userEvent.keyboard('{Enter}');
+          expect(location.hash).toBe('#independent-destination');
+          await expect.element(getByText('Independent activations: 6')).toBeInTheDocument();
+          await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+          await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+        }
+      );
 
-      it.each([
-        false,
-        true
-      ])('keeps RAC virtual clicks independent with row action %s', async function racVirtualClick(withAction) {
-        const { getByRole, getByText } = await render(
-          <InteractionsExample selectionMode={withAction ? 'none' : 'multiple'} withAction={withAction} />
-        );
-        const row = getByRole('row', { name: 'Option one' });
-        (getByRole('button', { name: 'Independent One' }).element() as HTMLButtonElement).click();
-        await expect.element(getByText('Independent activations: 1')).toBeInTheDocument();
-        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
-        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+      it.each([false, true])(
+        'keeps RAC virtual clicks independent with row action %s',
+        async function racVirtualClick(withAction) {
+          const { getByRole, getByText } = await render(
+            <InteractionsExample selectionMode={withAction ? 'none' : 'multiple'} withAction={withAction} />
+          );
+          const row = getByRole('row', { name: 'Option one' });
+          (getByRole('button', { name: 'Independent One' }).element() as HTMLButtonElement).click();
+          await expect.element(getByText('Independent activations: 1')).toBeInTheDocument();
+          await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+          await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
 
-        (getByRole('button', { name: 'Custom action One' }).element() as HTMLDivElement).click();
-        await expect.element(getByText('Independent activations: 2')).toBeInTheDocument();
-        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
-        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+          (getByRole('button', { name: 'Custom action One' }).element() as HTMLDivElement).click();
+          await expect.element(getByText('Independent activations: 2')).toBeInTheDocument();
+          await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+          await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
 
-        const checkbox = getByRole('checkbox', { name: 'Remember One' });
-        (checkbox.element() as HTMLInputElement).click();
-        await expect.element(checkbox).toBeChecked();
-        await expect.element(getByText('Independent activations: 3')).toBeInTheDocument();
-        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
-        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+          const checkbox = getByRole('checkbox', { name: 'Remember One' });
+          (checkbox.element() as HTMLInputElement).click();
+          await expect.element(checkbox).toBeChecked();
+          await expect.element(getByText('Independent activations: 3')).toBeInTheDocument();
+          await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+          await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
 
-        (getByRole('link', { name: 'Independent link One' }).element() as HTMLAnchorElement).click();
-        expect(location.hash).toBe('#independent-destination');
-        await expect.element(getByText('Independent activations: 4')).toBeInTheDocument();
-        await expect.element(getByText('Row actions: none')).toBeInTheDocument();
-        await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
-      });
+          (getByRole('link', { name: 'Independent link One' }).element() as HTMLAnchorElement).click();
+          expect(location.hash).toBe('#independent-destination');
+          await expect.element(getByText('Independent activations: 4')).toBeInTheDocument();
+          await expect.element(getByText('Row actions: none')).toBeInTheDocument();
+          await expect.element(row).not.toHaveAttribute('aria-selected', 'true');
+        }
+      );
 
       it('drags a nested slider without selecting the row', async function slider() {
         const { getByRole } = await render(<InteractionsExample slider />);
@@ -540,36 +540,36 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     describe('layout', function layoutTests() {
-      it.each([
-        'ltr',
-        'rtl'
-      ] as const)('wraps heading lines around corner actions in %s', async function headingWrap(dir) {
-        const { getByRole, getByText } = await render(<CornerActionsExample dir={dir} />);
-        const heading = getByRole('heading').element();
-        const actions = bounds(getByRole('button', { name: 'Favorite' }).element().parentElement!);
-        const range = document.createRange();
-        range.selectNodeContents(heading);
-        const lines = [...range.getClientRects()];
-        const alongside = lines.filter((line) => line.top < actions.bottom && line.bottom > actions.top);
-        const below = lines.filter((line) => line.top >= actions.bottom);
+      it.each(['ltr', 'rtl'] as const)(
+        'wraps heading lines around corner actions in %s',
+        async function headingWrap(dir) {
+          const { getByRole, getByText } = await render(<CornerActionsExample dir={dir} />);
+          const heading = getByRole('heading').element();
+          const actions = bounds(getByRole('button', { name: 'Favorite' }).element().parentElement!);
+          const range = document.createRange();
+          range.selectNodeContents(heading);
+          const lines = [...range.getClientRects()];
+          const alongside = lines.filter((line) => line.top < actions.bottom && line.bottom > actions.top);
+          const below = lines.filter((line) => line.top >= actions.bottom);
 
-        expect(alongside.length).toBeGreaterThan(0);
-        expect(below.length).toBeGreaterThan(0);
-        for (const line of alongside) {
-          if (dir === 'ltr') expect(line.right).toBeLessThanOrEqual(actions.left);
-          else expect(line.left).toBeGreaterThanOrEqual(actions.right);
+          expect(alongside.length).toBeGreaterThan(0);
+          expect(below.length).toBeGreaterThan(0);
+          for (const line of alongside) {
+            if (dir === 'ltr') expect(line.right).toBeLessThanOrEqual(actions.left);
+            else expect(line.left).toBeGreaterThanOrEqual(actions.right);
+          }
+          expect(below.some((line) => (dir === 'ltr' ? line.right > actions.left : line.left < actions.right))).toBe(
+            true
+          );
+          expect(
+            bounds(
+              getByText(
+                'A practical checklist for your products, payments, shipping, and first marketing campaign.'
+              ).element()
+            ).top
+          ).toBeGreaterThanOrEqual(bounds(heading.parentElement!).bottom);
         }
-        expect(below.some((line) => (dir === 'ltr' ? line.right > actions.left : line.left < actions.right))).toBe(
-          true
-        );
-        expect(
-          bounds(
-            getByText(
-              'A practical checklist for your products, payments, shipping, and first marketing campaign.'
-            ).element()
-          ).top
-        ).toBeGreaterThanOrEqual(bounds(heading.parentElement!).bottom);
-      });
+      );
 
       it('stacks media in narrow containers and places it beside content in wide ones', async function containerQuery() {
         const { getByTestId } = await render(<LayoutExample />);

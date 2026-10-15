@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/godaddy/antares/tree/main",
   "devDependencies": {
-    "@biomejs/biome": "^2.4.16",
+    "@biomejs/biome": "^2.5.15",
     "@changesets/cli": "^2.31.0",
     "@changesets/get-github-info": "^0.8.0",
     "@commitlint/cli": "^21.2.3",
@@ -39,7 +39,7 @@
     "@nx/vite": "23.3.0",
     "@nx/vitest": "23.3.0",
     "@rollup/plugin-replace": "^6.0.3",
-    "@storybook/addon-docs": "^10.6.1",
+    "@storybook/addon-docs": "^10.6.2",
     "@testing-library/user-event": "^14.6.1",
     "@tsdown/css": "^0.23.1",
     "@types/css-modules": "^1.0.5",

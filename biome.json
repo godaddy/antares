@@ -37,7 +37,7 @@
     },
     "includes": ["**", "!.grit/**", "!**/test/fixtures/**"],
     "rules": {
-      "recommended": false,
+      "preset": "none",
       "complexity": {
         "noExtraBooleanCast": "error",
         "noUselessCatch": "error",
@@ -68,7 +68,8 @@
         "useYield": "error",
         "noInvalidBuiltinInstantiation": "error",
         "useValidTypeof": "error",
-        "useImportExtensions": "off"
+        "useImportExtensions": "off",
+        "noUnresolvedImports": "off"
       },
       "nursery": {
         "useAwaitThenable": "error",
