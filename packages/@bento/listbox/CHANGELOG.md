@@ -1,5 +1,12 @@
 # @bento/listbox
 
+## 0.2.3
+
+### Patch Changes
+
+- fix: drop `@react-types/listbox`, which installed Adobe Spectrum and a second copy of `react-aria`. ([#386](https://github.com/godaddy/bento/pull/386) by @egaitan-godaddy)
+- fix: require `react-stately` `^3.51.0`, the version `react-aria` `^3.53.1` uses. ([#386](https://github.com/godaddy/bento/pull/386) by @egaitan-godaddy)
+
 ## 0.2.2
 
 ### Patch Changes
