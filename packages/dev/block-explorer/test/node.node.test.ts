@@ -45,53 +45,53 @@ describe('block manifest utilities', function blockManifestUtilities() {
     });
   });
 
-  it.each([
-    '\n',
-    '\r\n'
-  ])('reads matching live metadata with %j line endings', async function readsLiveMetadata(newline) {
-    await withTemporaryBlock(async function assertLiveMetadata(directory) {
-      const readmePath = resolve(directory, 'README.mdx');
-      await writeFile(
-        readmePath,
-        [
-          '---',
-          'title: >-',
-          '  <Block id="temporary-block" description="YAML example" />',
-          '---',
-          '',
-          '```mdx',
-          '<Block id="temporary-block" description="Fenced example" />',
-          '```',
-          '',
-          '{/* <Block id="temporary-block" description="Comment" /> */}',
-          '',
-          'Use `<Block id="temporary-block" description="Inline example" />`.',
-          '',
-          '<BlockLink id="temporary-block" />',
-          '',
-          '<Block id="another-block" description="Another block" />',
-          '',
-          '<Block',
-          '  id = "temporary-block"',
-          '  description = "Live description"',
-          '  of={Stories.Preview}',
-          '/>',
-          '',
-          '<Block id="temporary-block" description="Later description" />'
-        ].join(newline)
-      );
+  it.each(['\n', '\r\n'])(
+    'reads matching live metadata with %j line endings',
+    async function readsLiveMetadata(newline) {
+      await withTemporaryBlock(async function assertLiveMetadata(directory) {
+        const readmePath = resolve(directory, 'README.mdx');
+        await writeFile(
+          readmePath,
+          [
+            '---',
+            'title: >-',
+            '  <Block id="temporary-block" description="YAML example" />',
+            '---',
+            '',
+            '```mdx',
+            '<Block id="temporary-block" description="Fenced example" />',
+            '```',
+            '',
+            '{/* <Block id="temporary-block" description="Comment" /> */}',
+            '',
+            'Use `<Block id="temporary-block" description="Inline example" />`.',
+            '',
+            '<BlockLink id="temporary-block" />',
+            '',
+            '<Block id="another-block" description="Another block" />',
+            '',
+            '<Block',
+            '  id = "temporary-block"',
+            '  description = "Live description"',
+            '  of={Stories.Preview}',
+            '/>',
+            '',
+            '<Block id="temporary-block" description="Later description" />'
+          ].join(newline)
+        );
 
-      await expect(resolveBlockDirectory(readmePath, 'temporary-block')).resolves.toBe(directory);
-      await expect(loadBlockManifest(directory, { id: 'temporary-block' })).resolves.toMatchObject({
-        description: 'Live description'
+        await expect(resolveBlockDirectory(readmePath, 'temporary-block')).resolves.toBe(directory);
+        await expect(loadBlockManifest(directory, { id: 'temporary-block' })).resolves.toMatchObject({
+          description: 'Live description'
+        });
+        await expect(
+          loadBlockManifest(directory, { id: 'temporary-block', description: 'Override' })
+        ).resolves.toMatchObject({
+          description: 'Override'
+        });
       });
-      await expect(
-        loadBlockManifest(directory, { id: 'temporary-block', description: 'Override' })
-      ).resolves.toMatchObject({
-        description: 'Override'
-      });
-    });
-  });
+    }
+  );
 
   it.each([
     '<BlockLink id="temporary-block" />',
@@ -172,22 +172,21 @@ describe('block manifest utilities', function blockManifestUtilities() {
     );
   });
 
-  it.each([
-    'SignInForm',
-    'sign_in_form',
-    'block--name'
-  ])('rejects invalid IDs when loading a manifest: %s', async function rejectsInvalidManifestId(id) {
-    const invalidDirectory = resolve(fixtureDirectory, '../package/blocks', id);
-    const expectedOverrideError =
-      `${fixtureDirectory}: invalid block id ${JSON.stringify(id)}. ` +
-      'Expected lowercase kebab-case, such as "sign-in-form".';
-    const expectedDirectoryError =
-      `${invalidDirectory}: invalid block id ${JSON.stringify(id)}. ` +
-      'Expected lowercase kebab-case, such as "sign-in-form".';
+  it.each(['SignInForm', 'sign_in_form', 'block--name'])(
+    'rejects invalid IDs when loading a manifest: %s',
+    async function rejectsInvalidManifestId(id) {
+      const invalidDirectory = resolve(fixtureDirectory, '../package/blocks', id);
+      const expectedOverrideError =
+        `${fixtureDirectory}: invalid block id ${JSON.stringify(id)}. ` +
+        'Expected lowercase kebab-case, such as "sign-in-form".';
+      const expectedDirectoryError =
+        `${invalidDirectory}: invalid block id ${JSON.stringify(id)}. ` +
+        'Expected lowercase kebab-case, such as "sign-in-form".';
 
-    await expect(loadBlockManifest(fixtureDirectory, { id })).rejects.toThrow(expectedOverrideError);
-    await expect(loadBlockManifest(invalidDirectory)).rejects.toThrow(expectedDirectoryError);
-  });
+      await expect(loadBlockManifest(fixtureDirectory, { id })).rejects.toThrow(expectedOverrideError);
+      await expect(loadBlockManifest(invalidDirectory)).rejects.toThrow(expectedDirectoryError);
+    }
+  );
 
   it('rejects an installable block id that differs from its directory name', async function rejectsMismatchedId() {
     await withTemporaryBlock(async function assertMismatchedId(directory) {

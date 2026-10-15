@@ -145,27 +145,27 @@ describe('build-registry', function registryBuilderTests() {
     await expect(createRegistry(blocksRoot)).rejects.toBe(manifestError);
   });
 
-  it.each([
-    '\n',
-    '\r\n'
-  ])('reads a multiline YAML title containing JSX with %j endings', async function readsYamlTitle(newline) {
-    const blocksRoot = await createBlocksRoot([
-      {
-        id: 'alpha',
-        readme: [
-          '---',
-          'title: >-',
-          '  A <Block id="documented-example" />',
-          '---',
-          '',
-          '<Block id="alpha" of={Stories.Preview} />'
-        ].join(newline)
-      }
-    ]);
-    loadBlockManifest.mockResolvedValue({ files: [] });
-    const registry = await createRegistry(blocksRoot);
-    expect(registry.items[0].title).toBe('A <Block id="documented-example" />');
-  });
+  it.each(['\n', '\r\n'])(
+    'reads a multiline YAML title containing JSX with %j endings',
+    async function readsYamlTitle(newline) {
+      const blocksRoot = await createBlocksRoot([
+        {
+          id: 'alpha',
+          readme: [
+            '---',
+            'title: >-',
+            '  A <Block id="documented-example" />',
+            '---',
+            '',
+            '<Block id="alpha" of={Stories.Preview} />'
+          ].join(newline)
+        }
+      ]);
+      loadBlockManifest.mockResolvedValue({ files: [] });
+      const registry = await createRegistry(blocksRoot);
+      expect(registry.items[0].title).toBe('A <Block id="documented-example" />');
+    }
+  );
 
   it('rejects malformed MDX before writing a registry', async function rejectsInvalidMdx() {
     const blocksRoot = await createBlocksRoot([{ id: 'broken', readme: '---\ntitle: Broken\n---\n<Block' }]);
