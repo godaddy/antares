@@ -43,18 +43,18 @@
     "@bento/error": "^0.1.1",
     "@bento/forward": "^0.1.0",
     "@bento/use-data-attributes": "^0.1.1",
-    "react-aria": "^3.48.0",
+    "react-aria": "^3.53.1",
     "use-deep-compare": "^1.3.0"
   },
   "devDependencies": {
-    "@types/react": "^19.2.15",
-    "@types/react-dom": "^19.2.3",
-    "react": "^19.2.6",
-    "react-dom": "^19.2.6",
-    "tsdown": "^0.22.14",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "tsdown": "^0.23.1",
     "typescript": "^6.0.3",
     "vitest": "^4.1.11",
-    "vitest-browser-react": "^2.2.0"
+    "vitest-browser-react": "^2.3.0"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",
