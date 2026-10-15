@@ -309,12 +309,21 @@ describe('@godaddy/antares', function antares() {
       await render(<EmptyStateExample />);
 
       assume(page.getByText('No categories yet').query()).is.not.equal(null);
+      await expect
+        .element(page.getByRole('group', { name: 'Categories' }))
+        .toHaveAccessibleDescription('Add a category to get started.');
 
       await user.click(page.getByRole('button', { name: 'Add category' }));
       assume(page.getByRole('row', { name: 'News' }).query()).is.not.equal(null);
+      await expect
+        .element(page.getByRole('grid', { name: 'Categories' }))
+        .toHaveAccessibleDescription('Add a category to get started.');
 
       await user.click(page.getByRole('button', { name: 'Remove News' }));
       assume(page.getByText('No categories yet').query()).is.not.equal(null);
+      await expect
+        .element(page.getByRole('group', { name: 'Categories' }))
+        .toHaveAccessibleDescription('Add a category to get started.');
     });
   });
 });

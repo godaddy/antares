@@ -16,9 +16,10 @@ export const Playground = getStory(PlaygroundExample, {
     size: 'md',
     status: 'default',
     value: 60,
+    showValue: false,
     isIndeterminate: false,
     label: 'Progress',
-    helperText: 'Notice/helper text'
+    description: 'Notice/helper text'
   },
   argTypes: {
     size: {
@@ -39,11 +40,15 @@ export const Playground = getStory(PlaygroundExample, {
       control: { type: 'range', min: 0, max: 100, step: 1 },
       description: 'Current progress value (0–100)'
     },
+    showValue: {
+      control: 'boolean',
+      description: 'Render the optional visible value slot'
+    },
     label: {
       control: 'text',
       description: 'Label text for the progress bar'
     },
-    helperText: {
+    description: {
       control: 'text',
       description: 'Helper or notice text below the track'
     }

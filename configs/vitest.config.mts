@@ -7,9 +7,8 @@ import { playwright } from '@vitest/browser-playwright';
 import type { Plugin } from 'vite';
 
 /**
- * Resolve `@bento/<pkg>` package imports to the package's source entry
- * (`packages/@bento/<pkg>/src/index.{tsx,ts}`) instead of the published
- * `dist/` build output.
+ * Resolve workspace package imports to their source entry instead of the
+ * published `dist/` build output.
  *
  * Why: build tools that pre-bundle CSS Modules (e.g. tsdown) emit pre-hashed
  * class names into `dist/` and may not re-import the `.module.css` file at
@@ -17,18 +16,21 @@ import type { Plugin } from 'vite';
  * (`css.modules.classNameStrategy: 'non-scoped'`) for stable class names and
  * runtime style injection. Routing imports to source restores that pipeline.
  */
-function bentoSourceResolver(): Plugin {
-  const packagesRoot = resolve(__dirname, '..', 'packages', '@bento');
+function workspaceSourceResolver(): Plugin {
+  const packagesRoot = resolve(import.meta.dirname, '..', 'packages');
   return {
-    name: 'bento-source-resolver',
+    name: 'workspace-source-resolver',
     enforce: 'pre',
     resolveId(id) {
-      const match = /^@bento\/([^/]+)$/.exec(id);
+      const match = /^(@bento|@godaddy)\/([^/]+)$/.exec(id);
       if (!match) return null;
 
-      for (const ext of ['tsx', 'ts'] as const) {
-        const candidate = resolve(packagesRoot, match[1], 'src', `index.${ext}`);
-        if (existsSync(candidate)) return candidate;
+      const directories = match[1] === '@bento' ? ['@bento', 'dev'] : ['@godaddy'];
+      for (const directory of directories) {
+        for (const ext of ['tsx', 'ts'] as const) {
+          const candidate = resolve(packagesRoot, directory, match[2], 'src', `index.${ext}`);
+          if (existsSync(candidate)) return candidate;
+        }
       }
       return null;
     }
@@ -39,13 +41,13 @@ function bentoSourceResolver(): Plugin {
  * Mirror the build-time `define` substitutions that
  * `packages/@bento/internal-props/tsdown.config.ts` performs on `major`,
  * `minor`, and `patch` identifiers in its `src/index.ts`. Vitest runs against
- * the source file directly (via `bentoSourceResolver`), so we must apply the
+ * the source file directly (via `workspaceSourceResolver`), so we must apply the
  * same substitution here or the source references undefined globals at
  * runtime.
  */
 function bentoInternalPropsVersionDefine(): Record<string, string> {
   const internalPropsPkg = JSON.parse(
-    readFileSync(resolve(__dirname, '..', 'packages', '@bento', 'internal-props', 'package.json'), 'utf8')
+    readFileSync(resolve(import.meta.dirname, '..', 'packages', '@bento', 'internal-props', 'package.json'), 'utf8')
   ) as { version: string };
   const versionMatch = internalPropsPkg.version.match(/^(\d+)\.(\d+)\.(\d+)/);
   const [major, minor, patch] = versionMatch ? versionMatch.slice(1) : ['0', '0', '0'];
@@ -106,7 +108,7 @@ export const browser: TestProjectConfiguration = {
       }
     },
     include: ['./**/**/*.browser.test.{ts,tsx}'],
-    setupFiles: resolve(__dirname, './vitest.setup.mts'),
+    setupFiles: resolve(import.meta.dirname, './vitest.setup.mts'),
     browser: {
       instances: [{ browser: 'chromium' }],
       provider: playwright(),
@@ -132,7 +134,7 @@ export const visual: TestProjectConfiguration = {
 };
 
 export default defineConfig({
-  plugins: [bentoSourceResolver(), react()],
+  plugins: [workspaceSourceResolver(), react()],
   resolve: {
     tsconfigPaths: true
   },
@@ -142,14 +144,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       enabled: true,
-      include: ['dist/**/*', 'src/**/*'],
-      exclude: [
-        'dist/**/**.d.{ts,cts,mts}',
-        'dist/**/**.map',
-        'dist/**/**.css',
-        'examples/**/!(*.ts|*.tsx)',
-        '**/**/*.module.css'
-      ],
+      include: ['src/**/*.{ts,tsx}'],
       reporter: ['text', 'json', 'html'],
       thresholds: {
         autoUpdate: false,

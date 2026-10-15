@@ -32,19 +32,39 @@
 }
 
 .label {
-  font-size: var(--progress-bar-font-size);
+  grid-area: label;
+  margin-block-end: var(--progress-bar-content-gap);
+  font-size: var(--_type-size, var(--progress-bar-font-size));
   font-weight: bolder;
   line-height: var(--progress-bar-label-lh);
-  color: var(--progress-bar-label-color);
+  --_type-slot-color: var(--progress-bar-label-color);
 }
 
-.valueLabel {
-  font-size: var(--progress-bar-font-size);
+.description {
+  grid-area: description;
+  margin-block-start: var(--progress-bar-content-gap);
+  font-size: var(--_type-size, var(--progress-bar-font-size));
+  line-height: var(--progress-bar-helper-lh);
+  --_type-slot-color: var(--progress-bar-helper-color);
+}
+
+.value {
+  grid-area: value;
+  justify-self: end;
+  margin-block-end: var(--progress-bar-content-gap);
+  font-size: var(--_type-size, var(--progress-bar-font-size));
   line-height: var(--progress-bar-label-lh);
-  color: var(--progress-bar-label-color);
+  --_type-slot-color: var(--progress-bar-label-color);
+  color: var(--_type-color, var(--_type-slot-color));
+
+  &:where(:empty, [data-indeterminate]) {
+    display: none;
+  }
 }
 
 .track {
+  grid-area: track;
+  min-width: 0;
   position: relative;
   height: var(--progress-bar-track-height);
   border-radius: var(--progress-bar-track-radius);
@@ -72,12 +92,6 @@
   &:where([data-indeterminate]:dir(rtl)) {
     --_progress-bar-direction: -1;
   }
-}
-
-.helperText {
-  font-size: var(--progress-bar-font-size);
-  line-height: var(--progress-bar-helper-lh);
-  color: var(--progress-bar-helper-color);
 }
 
 /* Transform percentages are relative to the 40% fill: -175% and 175% fully clear the track. */

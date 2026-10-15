@@ -7,11 +7,11 @@ import {
   useLocale,
   useListBox,
   useFocusRing,
-  ListKeyboardDelegate
+  ListKeyboardDelegate,
+  type AriaListBoxProps
 } from 'react-aria';
 import { type ListState, type SelectionBehavior, useListState, type Orientation, type Node } from 'react-stately';
 import { CollectionBuilder, Collection as AriaCollection } from '@react-aria/collections';
-import type { AriaListBoxProps } from '@react-types/listbox';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useProps } from '@bento/use-props';
 import { withSlots, type Slots } from '@bento/slots';
