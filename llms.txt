@@ -29,8 +29,8 @@
 - [Modal](/docs/components/modal): The Modal component presents a dialog window over the page that focuses the user's attention on a single task or piece of information.
 - [NumberField](/docs/components/number-field): NumberField is a composed numeric input with min/max/step and optional increment/decrement stepper buttons. Use it in forms for quantities, amounts, or percentages.
 - [Pagination](/docs/components/pagination): A composed pagination primitive for controlled or uncontrolled page navigation.
-- [Popover](/docs/components/popover): The Popover component is an overlay element positioned relative to a trigger element.
 - [Pressable](/docs/components/pressable): A wrapperless interaction primitive that adds accessible press behavior to a single child element.
+- [Popover](/docs/components/popover): The Popover component is an overlay element positioned relative to a trigger element.
 - [ProgressBar](/docs/components/progress-bar): A progress bar shows determinate or indeterminate progress of an operation over time
 - [ProgressSteps](/docs/components/progress-steps): A multi-step progress indicator for wizard and onboarding flows.
 - [Radio](/docs/components/radio): Accessible radio button component for mutually exclusive selections with keyboard navigation, validation states, and flexible layouts.
@@ -38,8 +38,8 @@
 - [SegmentedController](/docs/components/segmented-controller): A segmented controller is a linear set of two or more segments, each of which functions as a button. A segmented controller allows users to select options, switch views, or sort elements.
 - [Select](/docs/components/select): Select is a dropdown for picking one or more values from a list of options. It renders a labeled trigger and a popover listbox, supports single and multiple selection, and submits naturally inside a form.
 - [SizeProvider](/docs/components/size-provider): Sizes a section, so the text, controls, and default spacing inside it follow one size.
-- [Structure primitives](/docs/components/structure): Generic structural containers for composing a component's interior.
 - [Switch](/docs/components/switch): A binary toggle control that switches a setting between on and off states, communicated via the WAI-ARIA switch role.
+- [Structure primitives](/docs/components/structure): Generic structural containers for composing a component's interior.
 - [Tabs](/docs/components/tabs): Tabs organize peer sections of content and let users switch between them without leaving the page.
 - [Tag](/docs/components/tag): Non-interactive labels that highlight statuses and categories.
 - [Text](/docs/components/text): Body copy and supporting detail, with size, emphasis, alignment, and truncation options
