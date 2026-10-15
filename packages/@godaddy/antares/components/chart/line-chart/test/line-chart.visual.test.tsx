@@ -1,9 +1,10 @@
 import assume from 'assume';
 import type { ReactNode } from 'react';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { waitForSelector } from '#test/utils/wait-for-selector.ts';
+import { resetPointer } from '#test/utils/test-helpers.tsx';
 import { BandPaddingExample } from '../examples/band-padding';
 import { BaselinesExample } from '../examples/baselines';
 import { BitcoinPriceExample } from '../examples/bitcoin-price';
@@ -51,6 +52,8 @@ async function renderExampleAndWait(children: ReactNode, width = 800, height = 4
 }
 
 describe('@godaddy/antares', function antares() {
+  beforeEach(resetPointer);
+
   describe('#LineChart', function lineChartTests() {
     describe('#basic', function basic() {
       it('default screenshot', async function defaultExample() {
@@ -261,7 +264,12 @@ describe('@godaddy/antares', function antares() {
 
         const svg = container.querySelector('svg') as SVGGraphicsElement;
         const area = svg.parentNode as HTMLElement;
-        area.scrollLeft = 400;
+        await expect
+          .poll(function scrollChart() {
+            area.scrollLeft = 400;
+            return area.scrollLeft;
+          })
+          .toBe(400);
 
         await expect(container).toMatchScreenshot('bitcoin-price-scroll');
       });

@@ -39,6 +39,7 @@
     "@nx/vite": "^23.2.0",
     "@nx/vitest": "^23.2.0",
     "@rollup/plugin-replace": "^6.0.3",
+    "@storybook/addon-docs": "^10.5.7",
     "@testing-library/user-event": "^14.6.1",
     "@tsdown/css": "^0.22.14",
     "@types/css-modules": "^1.0.5",
@@ -84,7 +85,7 @@
     "npm": ">=11"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,mjs,cjs,json,css}": [
+    "{,!(.agents|.claude|.codex|.cursor|.opencode)/**/}*.{js,jsx,ts,tsx,mjs,cjs,json,css}": [
       "biome lint --write --error-on-warnings",
       "biome format --write"
     ],

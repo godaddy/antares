@@ -8,6 +8,7 @@ import { TagEyebrowExample } from '../examples/tag-eyebrow.tsx';
 import { AlignmentExample } from '../examples/alignment.tsx';
 import { LegibleLinesExample } from '../examples/legible-lines.tsx';
 import { WithActionsExample } from '../examples/with-actions.tsx';
+import { CornerActionsExample } from '../examples/corner-actions.tsx';
 
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
@@ -18,6 +19,11 @@ describe('@godaddy/antares', function antares() {
   });
 
   describe('#TextLockup', function textLockupTests() {
+    it('corner actions example', async function cornerActionsRender() {
+      const { container } = await render(<CornerActionsExample />);
+      await expect(container).toMatchScreenshot('corner-actions');
+    });
+
     it('default example', async function defaultRender() {
       const { container } = await render(<DefaultExample />);
       await expect(container).toMatchScreenshot('default');
