@@ -1,14 +1,14 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{t}from"./jsx-runtime-DeHZSEgm.js";import{N as n,P as r,c as i,l as a,n as o,s,u as c}from"./blocks-qlOxaq-P.js";import{a as l,c as u,i as d,n as f,o as p,r as m,s as h,t as g}from"./drop-zone.stories-BSzId9Vs.js";function _(e){let t={code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,li:`li`,ol:`ol`,p:`p`,pre:`pre`,strong:`strong`,table:`table`,tbody:`tbody`,td:`td`,th:`th`,thead:`thead`,tr:`tr`,ul:`ul`,...r(),...e.components};return(0,y.jsxs)(y.Fragment,{children:[(0,y.jsx)(s,{of:h,name:`Overview`}),`
-`,(0,y.jsx)(t.h1,{id:`dropzone`,children:`DropZone`}),`
-`,(0,y.jsx)(t.p,{children:`A standalone region that accepts drag-and-drop file interactions, rendering a clearly defined target area where users can drop files.`}),`
-`,(0,y.jsx)(t.h2,{id:`installation`,children:`Installation`}),`
-`,(0,y.jsx)(t.pre,{children:(0,y.jsx)(t.code,{className:`language-bash`,children:`npm install --save @godaddy/antares
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{t}from"./jsx-runtime-DeHZSEgm.js";import{N as n,P as r,c as i,l as a,n as o,s,u as c}from"./blocks-qlOxaq-P.js";import{n as l}from"./runtime-DQgsNdQi.js";import{a as u,c as d,i as f,n as p,o as m,r as h,s as g,t as _}from"./drop-zone.stories-DPvJadvM.js";function v(e){let t={code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,li:`li`,ol:`ol`,p:`p`,pre:`pre`,strong:`strong`,table:`table`,tbody:`tbody`,td:`td`,th:`th`,thead:`thead`,tr:`tr`,ul:`ul`,...r(),...e.components};return(0,b.jsxs)(b.Fragment,{children:[(0,b.jsx)(s,{of:g,name:`Overview`}),`
+`,(0,b.jsx)(t.h1,{id:`dropzone`,children:`DropZone`}),`
+`,(0,b.jsx)(t.p,{children:`A standalone region that accepts drag-and-drop file interactions, rendering a clearly defined target area where users can drop files.`}),`
+`,(0,b.jsx)(t.h2,{id:`installation`,children:`Installation`}),`
+`,(0,b.jsx)(t.pre,{children:(0,b.jsx)(t.code,{className:`language-bash`,children:`npm install --save @godaddy/antares
 `})}),`
-`,(0,y.jsx)(t.h2,{id:`examples`,children:`Examples`}),`
-`,(0,y.jsx)(t.h3,{id:`default`,children:`Default`}),`
-`,(0,y.jsxs)(t.p,{children:[`A minimal drop zone. The `,(0,y.jsx)(t.code,{children:`onDrop`}),` callback receives the dropped items; use the exported `,(0,y.jsx)(t.code,{children:`isFileDropItem`}),` guard to narrow them to files. Wrap the instructional text in `,(0,y.jsx)(t.code,{children:`<Text slot="label">`}),` so it labels the visually hidden drop button for screen readers.`]}),`
-`,(0,y.jsx)(a,{of:g,inline:!0}),`
-`,(0,y.jsx)(i,{code:`import { DropZone, isFileDropItem, Text } from '@godaddy/antares';
+`,(0,b.jsx)(t.h2,{id:`examples`,children:`Examples`}),`
+`,(0,b.jsx)(t.h3,{id:`default`,children:`Default`}),`
+`,(0,b.jsxs)(t.p,{children:[`A minimal drop zone. The `,(0,b.jsx)(t.code,{children:`onDrop`}),` callback receives the dropped items; use the exported `,(0,b.jsx)(t.code,{children:`isFileDropItem`}),` guard to narrow them to files. Wrap the instructional text in `,(0,b.jsx)(t.code,{children:`<Text slot="label">`}),` so it labels the visually hidden drop button for screen readers.`]}),`
+`,(0,b.jsx)(a,{of:_,inline:!0}),`
+`,(0,b.jsx)(i,{code:`import { DropZone, isFileDropItem, Text } from '@godaddy/antares';
 
 export function DefaultExample() {
   return (
@@ -22,10 +22,10 @@ export function DefaultExample() {
     </DropZone>
   );
 }`,language:`tsx`}),`
-`,(0,y.jsx)(t.h3,{id:`disabled`,children:`Disabled`}),`
-`,(0,y.jsxs)(t.p,{children:[`Set `,(0,y.jsx)(t.code,{children:`isDisabled`}),` to prevent the drop zone from accepting interactions. The zone is dimmed and the cursor indicates it is not interactive.`]}),`
-`,(0,y.jsx)(a,{of:f,inline:!0}),`
-`,(0,y.jsx)(i,{code:`import { DropZone, Text } from '@godaddy/antares';
+`,(0,b.jsx)(t.h3,{id:`disabled`,children:`Disabled`}),`
+`,(0,b.jsxs)(t.p,{children:[`Set `,(0,b.jsx)(t.code,{children:`isDisabled`}),` to prevent the drop zone from accepting interactions. The zone is dimmed and the cursor indicates it is not interactive.`]}),`
+`,(0,b.jsx)(a,{of:p,inline:!0}),`
+`,(0,b.jsx)(i,{code:`import { DropZone, Text } from '@godaddy/antares';
 
 export function DisabledExample() {
   return (
@@ -34,10 +34,10 @@ export function DisabledExample() {
     </DropZone>
   );
 }`,language:`tsx`}),`
-`,(0,y.jsx)(t.h3,{id:`file-upload`,children:`File Upload`}),`
-`,(0,y.jsxs)(t.p,{children:[`A reference composition combining `,(0,y.jsx)(t.code,{children:`DropZone`}),` with `,(0,y.jsx)(t.code,{children:`FileTrigger`}),` to support both click-to-browse and drag-and-drop. Use this as a starting point and adapt the accepted formats, size limit, and handlers to your product's requirements.`]}),`
-`,(0,y.jsx)(a,{of:d,inline:!0}),`
-`,(0,y.jsx)(i,{code:`import { useEffect, useState } from 'react';
+`,(0,b.jsx)(t.h3,{id:`file-upload`,children:`File Upload`}),`
+`,(0,b.jsxs)(t.p,{children:[`A reference composition combining `,(0,b.jsx)(t.code,{children:`DropZone`}),` with `,(0,b.jsx)(t.code,{children:`FileTrigger`}),` to support both click-to-browse and drag-and-drop. Use this as a starting point and adapt the accepted formats, size limit, and handlers to your product's requirements.`]}),`
+`,(0,b.jsx)(a,{of:f,inline:!0}),`
+`,(0,b.jsx)(i,{code:`import { useEffect, useState } from 'react';
 import { Button, DropZone, FileTrigger, Flex, Icon, isFileDropItem, Text } from '@godaddy/antares';
 
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
@@ -140,10 +140,10 @@ export function FileUploadExample() {
     </Flex>
   );
 }`,language:`tsx`}),`
-`,(0,y.jsx)(t.h3,{id:`drop-target-label`,children:`Drop Target Label`}),`
-`,(0,y.jsxs)(t.p,{children:[`Pass a render-prop function as `,(0,y.jsx)(t.code,{children:`children`}),` to change the zone's content while a valid drag is active. Branching on `,(0,y.jsx)(t.code,{children:`isDropTarget`}),` requires no extra state. Pair it with `,(0,y.jsx)(t.code,{children:`getDropOperation`}),` to reject unsupported types - the label only appears when the drag is accepted.`]}),`
-`,(0,y.jsx)(a,{of:m,inline:!0}),`
-`,(0,y.jsx)(i,{code:`import { DropZone, type DropZoneRenderProps, isFileDropItem, Text } from '@godaddy/antares';
+`,(0,b.jsx)(t.h3,{id:`drop-target-label`,children:`Drop Target Label`}),`
+`,(0,b.jsxs)(t.p,{children:[`Pass a render-prop function as `,(0,b.jsx)(t.code,{children:`children`}),` to change the zone's content while a valid drag is active. Branching on `,(0,b.jsx)(t.code,{children:`isDropTarget`}),` requires no extra state. Pair it with `,(0,b.jsx)(t.code,{children:`getDropOperation`}),` to reject unsupported types - the label only appears when the drag is accepted.`]}),`
+`,(0,b.jsx)(a,{of:h,inline:!0}),`
+`,(0,b.jsx)(i,{code:`import { DropZone, type DropZoneRenderProps, isFileDropItem, Text } from '@godaddy/antares';
 
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
 
@@ -181,10 +181,10 @@ export function DropTargetLabelExample() {
     </DropZone>
   );
 }`,language:`tsx`}),`
-`,(0,y.jsx)(t.h3,{id:`replace-existing-file`,children:`Replace Existing File`}),`
-`,(0,y.jsxs)(t.p,{children:[`Use `,(0,y.jsx)(t.code,{children:`children`}),` as a render function to show different content based on the current zone state - here, swapping the default label for "Drop to replace" when a file is already selected and a new drag is active. The same `,(0,y.jsx)(t.code,{children:`onDrop`}),` handler services both the drag path and the `,(0,y.jsx)(t.code,{children:`FileTrigger`}),` click path, so either gesture replaces the selection.`]}),`
-`,(0,y.jsx)(a,{of:p,inline:!0}),`
-`,(0,y.jsx)(i,{code:`import { useEffect, useState } from 'react';
+`,(0,b.jsx)(t.h3,{id:`replace-existing-file`,children:`Replace Existing File`}),`
+`,(0,b.jsxs)(t.p,{children:[`Use `,(0,b.jsx)(t.code,{children:`children`}),` as a render function to show different content based on the current zone state - here, swapping the default label for "Drop to replace" when a file is already selected and a new drag is active. The same `,(0,b.jsx)(t.code,{children:`onDrop`}),` handler services both the drag path and the `,(0,b.jsx)(t.code,{children:`FileTrigger`}),` click path, so either gesture replaces the selection.`]}),`
+`,(0,b.jsx)(a,{of:m,inline:!0}),`
+`,(0,b.jsx)(i,{code:`import { useEffect, useState } from 'react';
 import {
   Button,
   DropZone,
@@ -308,27 +308,29 @@ export function ReplaceFileExample() {
     </div>
   );
 }`,language:`tsx`}),`
-`,(0,y.jsx)(t.h2,{id:`accessibility`,children:`Accessibility`}),`
-`,(0,y.jsx)(t.h3,{id:`keyboard`,children:`Keyboard`}),`
-`,(0,y.jsxs)(t.table,{children:[(0,y.jsx)(t.thead,{children:(0,y.jsxs)(t.tr,{children:[(0,y.jsx)(t.th,{children:`Key`}),(0,y.jsx)(t.th,{children:`Description`})]})}),(0,y.jsxs)(t.tbody,{children:[(0,y.jsxs)(t.tr,{children:[(0,y.jsx)(t.td,{children:(0,y.jsx)(t.code,{children:`Tab`})}),(0,y.jsx)(t.td,{children:`Moves focus to the drop zone`})]}),(0,y.jsxs)(t.tr,{children:[(0,y.jsxs)(t.td,{children:[(0,y.jsx)(t.code,{children:`Enter`}),` / `,(0,y.jsx)(t.code,{children:`Space`})]}),(0,y.jsx)(t.td,{children:`Opens the file picker so files can be selected without a pointer`})]})]})]}),`
-`,(0,y.jsx)(t.h3,{id:`screen-readers`,children:`Screen readers`}),`
-`,(0,y.jsxs)(t.p,{children:[`The drop zone renders a visually hidden `,(0,y.jsx)(t.code,{children:`<button>`}),` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer.`]}),`
-`,(0,y.jsx)(t.p,{children:`The button's accessible name is built from two sources, combined in order:`}),`
-`,(0,y.jsxs)(t.ol,{children:[`
-`,(0,y.jsxs)(t.li,{children:[(0,y.jsx)(t.strong,{children:(0,y.jsx)(t.code,{children:`<Text slot="label">`})}),` — any `,(0,y.jsx)(t.code,{children:`Text`}),` child with `,(0,y.jsx)(t.code,{children:`slot="label"`}),` has its `,(0,y.jsx)(t.code,{children:`id`}),` linked to the button via `,(0,y.jsx)(t.code,{children:`aria-labelledby`}),`. This is the recommended way to provide a contextual label that is also visible to sighted users.`]}),`
-`,(0,y.jsxs)(t.li,{children:[(0,y.jsx)(t.strong,{children:(0,y.jsx)(t.code,{children:`aria-label`})}),` — pass `,(0,y.jsx)(t.code,{children:`aria-label`}),` on the `,(0,y.jsx)(t.code,{children:`DropZone`}),` component to override or supplement the label (e.g. `,(0,y.jsx)(t.code,{children:`aria-label="Upload profile photo"`}),`). When no `,(0,y.jsx)(t.code,{children:`Text slot="label"`}),` is present and no `,(0,y.jsx)(t.code,{children:`aria-label`}),` is set, the button falls back to the default "DropZone" label provided by React Aria.`]}),`
+`,(0,b.jsx)(t.h2,{id:`blocks`,children:`Blocks`}),`
+`,(0,b.jsx)(`a`,{href:`./?path=/docs/blocks-project-inquiry-form--overview`,target:`_top`,children:`project-inquiry-form`}),`
+`,(0,b.jsx)(t.h2,{id:`accessibility`,children:`Accessibility`}),`
+`,(0,b.jsx)(t.h3,{id:`keyboard`,children:`Keyboard`}),`
+`,(0,b.jsxs)(t.table,{children:[(0,b.jsx)(t.thead,{children:(0,b.jsxs)(t.tr,{children:[(0,b.jsx)(t.th,{children:`Key`}),(0,b.jsx)(t.th,{children:`Description`})]})}),(0,b.jsxs)(t.tbody,{children:[(0,b.jsxs)(t.tr,{children:[(0,b.jsx)(t.td,{children:(0,b.jsx)(t.code,{children:`Tab`})}),(0,b.jsx)(t.td,{children:`Moves focus to the drop zone`})]}),(0,b.jsxs)(t.tr,{children:[(0,b.jsxs)(t.td,{children:[(0,b.jsx)(t.code,{children:`Enter`}),` / `,(0,b.jsx)(t.code,{children:`Space`})]}),(0,b.jsx)(t.td,{children:`Opens the file picker so files can be selected without a pointer`})]})]})]}),`
+`,(0,b.jsx)(t.h3,{id:`screen-readers`,children:`Screen readers`}),`
+`,(0,b.jsxs)(t.p,{children:[`The drop zone renders a visually hidden `,(0,b.jsx)(t.code,{children:`<button>`}),` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer.`]}),`
+`,(0,b.jsx)(t.p,{children:`The button's accessible name is built from two sources, combined in order:`}),`
+`,(0,b.jsxs)(t.ol,{children:[`
+`,(0,b.jsxs)(t.li,{children:[(0,b.jsx)(t.strong,{children:(0,b.jsx)(t.code,{children:`<Text slot="label">`})}),` — any `,(0,b.jsx)(t.code,{children:`Text`}),` child with `,(0,b.jsx)(t.code,{children:`slot="label"`}),` has its `,(0,b.jsx)(t.code,{children:`id`}),` linked to the button via `,(0,b.jsx)(t.code,{children:`aria-labelledby`}),`. This is the recommended way to provide a contextual label that is also visible to sighted users.`]}),`
+`,(0,b.jsxs)(t.li,{children:[(0,b.jsx)(t.strong,{children:(0,b.jsx)(t.code,{children:`aria-label`})}),` — pass `,(0,b.jsx)(t.code,{children:`aria-label`}),` on the `,(0,b.jsx)(t.code,{children:`DropZone`}),` component to override or supplement the label (e.g. `,(0,b.jsx)(t.code,{children:`aria-label="Upload profile photo"`}),`). When no `,(0,b.jsx)(t.code,{children:`Text slot="label"`}),` is present and no `,(0,b.jsx)(t.code,{children:`aria-label`}),` is set, the button falls back to the default "DropZone" label provided by React Aria.`]}),`
 `]}),`
-`,(0,y.jsx)(t.pre,{children:(0,y.jsx)(t.code,{className:`language-tsx`,children:`<DropZone onDrop={handleDrop}>
+`,(0,b.jsx)(t.pre,{children:(0,b.jsx)(t.code,{className:`language-tsx`,children:`<DropZone onDrop={handleDrop}>
   <Text slot="label">Drop files to upload.</Text>
 </DropZone>
 `})}),`
-`,(0,y.jsx)(t.h2,{id:`best-practices`,children:`Best Practices`}),`
-`,(0,y.jsxs)(t.ul,{children:[`
-`,(0,y.jsx)(t.li,{children:`Use the drop zone alongside a button-based file picker — drag-and-drop is a convenience, never the only way to upload.`}),`
-`,(0,y.jsxs)(t.li,{children:[`Replace the default text with `,(0,y.jsx)(t.code,{children:`children`}),` to communicate the accepted file types and size limits up front.`]}),`
-`,(0,y.jsx)(t.li,{children:`Let the drop zone fill its container; constrain it with the surrounding layout rather than setting a fixed width on the component itself.`}),`
-`,(0,y.jsx)(t.li,{children:`Reflect upload state (validating, uploading, error) outside the drop zone so the target area stays clear and predictable.`}),`
+`,(0,b.jsx)(t.h2,{id:`best-practices`,children:`Best Practices`}),`
+`,(0,b.jsxs)(t.ul,{children:[`
+`,(0,b.jsx)(t.li,{children:`Use the drop zone alongside a button-based file picker — drag-and-drop is a convenience, never the only way to upload.`}),`
+`,(0,b.jsxs)(t.li,{children:[`Replace the default text with `,(0,b.jsx)(t.code,{children:`children`}),` to communicate the accepted file types and size limits up front.`]}),`
+`,(0,b.jsx)(t.li,{children:`Let the drop zone fill its container; constrain it with the surrounding layout rather than setting a fixed width on the component itself.`}),`
+`,(0,b.jsx)(t.li,{children:`Reflect upload state (validating, uploading, error) outside the drop zone so the target area stays clear and predictable.`}),`
 `]}),`
-`,(0,y.jsx)(t.h2,{id:`props`,children:`Props`}),`
-`,(0,y.jsx)(t.h3,{id:`dropzone-1`,children:`DropZone`}),`
-`,(0,y.jsx)(o,{of:l})]})}function v(e={}){let{wrapper:t}={...r(),...e.components};return t?(0,y.jsx)(t,{...e,children:(0,y.jsx)(_,{...e})}):_(e)}var y;function b(){return(b=e((()=>{y=t(),n(),c(),u()})))()}b();export{v as default};
+`,(0,b.jsx)(t.h2,{id:`props`,children:`Props`}),`
+`,(0,b.jsx)(t.h3,{id:`dropzone-1`,children:`DropZone`}),`
+`,(0,b.jsx)(o,{of:u})]})}function y(e={}){let{wrapper:t}={...r(),...e.components};return t?(0,b.jsx)(t,{...e,children:(0,b.jsx)(v,{...e})}):v(e)}var b;function x(){return(x=e((()=>{b=t(),n(),c(),l(),d()})))()}x();export{y as default};
