@@ -1,6 +1,6 @@
 ---
 title: DatePicker
-description: Date fields that display the selected value as a label and open a calendar popover to pick a single date (DatePicker) or a range (DateRangePicker).
+description: Date fields that display the selected value as a label and open a responsive calendar to pick a single date (DatePicker) or a range (DateRangePicker).
 ---
 
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
@@ -12,9 +12,9 @@ import * as Stories from './date-picker.stories.tsx';
 ## Features
 
 - **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `DatePickerCalendar`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in. `children` also accepts a function for picker state
-- **Trigger and calendar**: An empty `Button slot="trigger"` renders a calendar icon and the formatted value from the field. `DatePickerCalendar` (and `DateRangePickerCalendar`) is the calendar in the popover it opens: it takes `Calendar` props plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `Calendar` yourself to replace the whole overlay
+- **Trigger and calendar**: An empty `Button slot="trigger"` renders a calendar icon and the formatted value from the field. `DatePickerCalendar` (and `DateRangePickerCalendar`) opens a responsive calendar: it takes `Calendar` props plus `popoverProps` and `drawerProps` for its overlay. Write `Popover`, `Content`, and `Calendar` yourself to replace the whole overlay
 - **Sizes**: Each picker is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, trigger, description, error, and the calendar it opens; without it, the picker follows the surrounding scope
-- `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
+- `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar
 - Built on React Aria - native form integration, validation, focus management, and screen-reader support
 - Label formatting via `formatOptions` / `placeholder` on the picker itself, or on `DatePickerValue` / `DateRangePickerValue` in a trigger you write
 - `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
@@ -49,6 +49,47 @@ Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user'
 ## Examples
 
 <Examples of={Stories.Examples} />
+
+## Mobile
+
+Below `40rem`, `DatePickerCalendar` and `DateRangePickerCalendar` open a bottom drawer with vertically
+scrolling months. Each drawer page contains three months by default. Use Previous/Next to change pages,
+choose a month, or type a year to jump directly. The initial date follows `focusedValue`,
+`defaultFocusedValue`, the selected date (range start), then today, constrained by the date bounds.
+
+The overlay keeps its container until it closes, including during resizing. Its next opening uses the
+current viewport. An initially open server-rendered picker keeps its popover through hydration.
+
+- Set `overlay="popover"` on the calendar to always use the desktop presentation.
+- Use `drawerProps` for drawer presentation, such as `maxSize` or an accessible label. It defaults to
+  `85dvh`. Open state stays on the picker; `popoverProps` configures the popover.
+- `pageCount` sets the number of months in either presentation. Defaults: three in the drawer, one in a
+  single-date popover, and two in a range popover. Scrolling stays within the current page. Navigation
+  advances by a full page, or by one month with `pageBehavior="single"`.
+- Range selection and endpoint dragging follow React Aria. Drawers default to `commitBehavior="reset"`:
+  a calendar background press, focus leaving the calendar, or backdrop dismissal cancels a pending
+  range and preserves the previous value. Popovers default to `commitBehavior="select"`, which commits
+  the pending range on background press or blur. Set `commitBehavior` on `DateRangePickerCalendar` to
+  override either default. Escape from a date cell cancels the pending selection.
+- `shouldCloseOnSelect={false}` on the picker keeps either presentation open after a selection.
+
+```tsx
+<DatePicker>
+  <Label>Event date</Label>
+  <Button slot="trigger" />
+  <DatePickerCalendar drawerProps={{ maxSize: '90dvh' }} />
+</DatePicker>
+```
+
+## Accessibility
+
+The drawer has the same accessible name as the picker. Escape, an outside press, or the screen-reader
+dismiss control closes it and returns focus to the trigger. Arrow keys and Page Up/Down retain React
+Aria's calendar navigation. Scrolling does not move keyboard focus or change the selected value. The
+month/year controls follow the focused date, and each grid has its own month heading. Weekday
+labels shorten when the calendar has limited space, including with enlarged text. The weekday row is
+decorative; each date cell provides its full accessible name.
+
 
 ## Props
 

@@ -1,0 +1,449 @@
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { act } from 'react';
+import { hydrateRoot, type Root } from 'react-dom/client';
+import { renderToString } from 'react-dom/server';
+import { page, userEvent } from 'vitest/browser';
+import { cleanup, render } from 'vitest-browser-react';
+import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
+import { MobileExample } from '../examples/mobile.tsx';
+
+describe('@godaddy/antares', function packageTests() {
+  describe('#DatePicker mobile', function mobileTests() {
+    beforeAll(preloadTestIcons);
+    afterEach(async function reset() {
+      await cleanup();
+      vi.unstubAllGlobals();
+      document.documentElement.style.fontSize = '';
+      await page.viewport(1024, 768);
+    });
+
+    it.each([false, true])(
+      'selects in the %s range drawer and restores trigger focus',
+      async function selection(range) {
+        await page.viewport(320, 768);
+        const screen = await render(<MobileExample range={range} />);
+        const trigger = screen.getByRole('button', { name: /Calendar Event dates/ });
+        await trigger.click();
+        await expect.element(screen.getByRole('dialog', { name: /Event dates/ })).toBeVisible();
+        expect(document.querySelector('[data-placement="bottom"]:not([data-trigger])')).not.toBeNull();
+        await screen.getByRole('button', { name: /September 15, 2026/ }).click();
+        if (range) {
+          await expect.element(screen.getByRole('dialog')).toBeVisible();
+          await screen.getByRole('button', { name: /September 18, 2026/ }).click();
+        }
+        await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
+        await expect
+          .element(screen.getByLabelText('Selected dates'))
+          .toHaveTextContent(range ? '2026-09-15/2026-09-18' : '2026-09-15');
+        await expect.element(trigger).toHaveFocus();
+      }
+    );
+
+    it('keeps the container while open and switches on the next opening', async function breakpoint() {
+      await page.viewport(639, 768);
+      const screen = await render(<MobileExample />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      const dialog = screen.getByRole('dialog').element();
+      await page.viewport(640, 768);
+      expect(screen.getByRole('dialog').element()).toBe(dialog);
+      await userEvent.keyboard('{Escape}');
+      await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      expect(document.querySelector('[data-placement="bottom"]:not([data-trigger])')).toBeNull();
+      expect(screen.getByRole('grid').all()).toHaveLength(1);
+    });
+
+    it.each([false, true])('scrolls a fixed page and navigates to other months, range=%s', async function pages(range) {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample range={range} />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      const calendar = screen.getByRole('application');
+      await expect.element(calendar).toHaveAccessibleName(/September.*November 2026/);
+      expect(screen.getByRole('grid').all()).toHaveLength(3);
+      const focused = document.activeElement;
+      const november = document.querySelector('[data-calendar-month="2026-11-01"]') as HTMLElement;
+      november.scrollIntoView();
+      await expect.element(screen.getByRole('button', { name: 'Month' })).toHaveTextContent('September');
+      expect(document.activeElement).toBe(focused);
+      expect(screen.getByRole('grid').all()).toHaveLength(3);
+      await expect.element(screen.getByLabelText('Selected dates')).toBeEmptyDOMElement();
+
+      await screen.getByRole('button', { name: 'Next', exact: true }).all()[0].click();
+      await expect.element(calendar).toHaveAccessibleName(/December 2026.*February 2027/);
+      expect(screen.getByRole('grid').all()).toHaveLength(3);
+      await screen.getByRole('button', { name: 'Previous', exact: true }).click();
+      await expect.element(calendar).toHaveAccessibleName(/September.*November 2026/);
+    });
+
+    it('uses pageCount and React Aria pageBehavior in the drawer', async function pageOptions() {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample pageCount={2} pageBehavior="single" />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      expect(screen.getByRole('grid').all()).toHaveLength(2);
+      await screen.getByRole('button', { name: 'Next', exact: true }).all()[0].click();
+      await expect.element(screen.getByRole('application')).toHaveAccessibleName(/October.*November 2026/);
+      expect(screen.getByRole('grid').all()).toHaveLength(2);
+    });
+
+    it.each(['en-US', 'ar-AE'])(
+      'rounds range segments around unavailable dates in %s',
+      async function rangeBand(locale) {
+        await page.viewport(320, 768);
+        const screen = await render(
+          <MobileExample range keepOpen unavailable allowsNonContiguousRanges locale={locale} />
+        );
+        await screen.getByRole('button', { name: /Event dates/ }).click();
+        const september = screen
+          .getByRole('grid')
+          .all()
+          .find(function month(grid) {
+            return grid.element().closest('[data-calendar-month="2026-09-01"]');
+          })!;
+        await september.getByRole('button').all()[14].click();
+        const november = document.querySelector('[data-calendar-month="2026-11-01"]') as HTMLElement;
+        november.scrollIntoView();
+        await expect
+          .poll(function mounted() {
+            return november.querySelectorAll('[role="button"]:not([data-outside-month])').length;
+          })
+          .toBe(30);
+        const end = november.querySelectorAll<HTMLElement>('[role="button"]:not([data-outside-month])')[11];
+        end.click();
+        await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-11-12');
+        const october = document.querySelector('[data-calendar-month="2026-10-01"]') as HTMLElement;
+        const dates = october.querySelectorAll<HTMLElement>('[role="button"]:not([data-outside-month])');
+        const before = getComputedStyle(dates[18].parentElement!);
+        const after = getComputedStyle(dates[20].parentElement!);
+        expect(before.backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+        expect(after.backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+        expect(before.borderStartEndRadius).not.toBe('0px');
+        expect(after.borderStartStartRadius).not.toBe('0px');
+      }
+    );
+
+    it('keeps the scrolled page and focus while resizing an open drawer', async function resizeScroll() {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      await expect
+        .poll(function settled() {
+          return getComputedStyle(screen.getByRole('dialog').element().parentElement!).transform;
+        })
+        .toBe('none');
+      const focused = document.activeElement;
+      const dialog = screen.getByRole('dialog').element();
+      const month = document.querySelector('[data-calendar-month="2026-11-01"]') as HTMLElement;
+      const viewport = month.parentElement!;
+      month.scrollIntoView();
+      await page.viewport(640, 768);
+      expect(screen.getByRole('dialog').element()).toBe(dialog);
+      expect(document.activeElement).toBe(focused);
+      expect(screen.getByRole('grid').all()).toHaveLength(3);
+      expect(viewport.scrollTop).toBeGreaterThan(0);
+      expect(month.getBoundingClientRect().top).toBeLessThan(viewport.getBoundingClientRect().bottom);
+      expect(month.getBoundingClientRect().bottom).toBeGreaterThan(viewport.getBoundingClientRect().top);
+      await expect.element(screen.getByLabelText('Selected dates')).toBeEmptyDOMElement();
+    });
+
+    it('supports the popover opt-out on a small viewport', async function popover() {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample overlay="popover" />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      expect(document.querySelector('[data-placement="bottom"]:not([data-trigger])')).toBeNull();
+      expect(screen.getByRole('grid').all()).toHaveLength(1);
+    });
+
+    it('keeps a partial range while browsing another month', async function browseRange() {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample range />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      await screen.getByRole('button', { name: /September 15, 2026/ }).click();
+      const november = document.querySelector('[data-calendar-month="2026-11-01"]') as HTMLElement;
+      november.scrollIntoView();
+      await screen.getByRole('button', { name: /November 12, 2026/ }).click();
+      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-11-12');
+    });
+
+    it('uses explicit focus ahead of selection and supports distant year navigation', async function focus() {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample selectedDate="2026-03-15" focusedDate="2026-12-10" />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      await expect.element(screen.getByRole('button', { name: /December 10, 2026/ })).toHaveFocus();
+      const year = screen.getByRole('textbox', { name: 'Year' });
+      await year.fill('1980');
+      await userEvent.keyboard('{Enter}');
+      await expect.element(year).toHaveFocus();
+      await expect.element(screen.getByRole('button', { name: /December 10, 1980/ })).toBeVisible();
+      expect(screen.getByRole('grid').all().length).toBe(3);
+    });
+
+    it('navigates with the month and year controls', async function monthAndYear() {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      await screen.getByRole('button', { name: 'Month' }).click();
+      await screen.getByRole('option', { name: 'February', exact: true }).click();
+      await expect.element(screen.getByRole('button', { name: 'Month' })).toHaveTextContent('February');
+      const year = screen.getByRole('textbox', { name: 'Year' });
+      await year.fill('1980');
+      await userEvent.keyboard('{Enter}');
+      await expect.element(screen.getByRole('button', { name: /February 15, 1980/ })).toBeVisible();
+      await expect.element(year).toHaveFocus();
+      expect(screen.getByRole('grid').all()).toHaveLength(3);
+    });
+
+    it('moves keyboard focus across loaded months', async function keyboard() {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      for (let step = 0; step < 12; step++) await userEvent.keyboard('{PageDown}');
+      await expect.element(screen.getByRole('button', { name: /September 15, 2027/ })).toHaveFocus();
+      await userEvent.keyboard('{Enter}');
+      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2027-09-15');
+    });
+
+    it('cancels an unfinished range with Escape', async function cancelRange() {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample range selectedDate="2026-09-05" />);
+      const trigger = screen.getByRole('button', { name: /Calendar Event dates/ });
+      await trigger.click();
+      await screen.getByRole('button', { name: /September 15, 2026/ }).click();
+      await userEvent.keyboard('{Escape}');
+      await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
+      await expect.element(trigger).toHaveTextContent(/Sep 5.*Sep 8/);
+      await trigger.click();
+      await screen.getByRole('button', { name: /September 18, 2026/ }).click();
+      await expect.element(screen.getByRole('dialog')).toBeVisible();
+      await screen.getByRole('button', { name: /September 19, 2026/ }).click();
+      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-18/2026-09-19');
+    });
+
+    it.each([false, true])(
+      'respects bounds and noncontiguous range policy %s',
+      async function bounds(allowsNonContiguousRanges) {
+        await page.viewport(320, 768);
+        const screen = await render(
+          <MobileExample
+            range
+            min="2026-09-05"
+            max="2026-11-15"
+            unavailable
+            allowsNonContiguousRanges={allowsNonContiguousRanges}
+          />
+        );
+        await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+        await expect
+          .element(screen.getByRole('button', { name: /September 3, 2026/ }))
+          .toHaveAttribute('aria-disabled', 'true');
+        await screen.getByRole('button', { name: /September 15, 2026/ }).click();
+        await expect
+          .element(screen.getByRole('button', { name: /September 20, 2026/ }))
+          .toHaveAttribute('aria-disabled', 'true');
+        if (allowsNonContiguousRanges) {
+          const november = document.querySelector('[data-calendar-month="2026-11-01"]') as HTMLElement;
+          november.scrollIntoView();
+          await screen.getByRole('button', { name: /November 12, 2026/ }).click();
+          await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-11-12');
+        } else {
+          await expect
+            .element(screen.getByRole('button', { name: /September 21, 2026/ }))
+            .toHaveAttribute('aria-disabled', 'true');
+          await screen.getByRole('button', { name: /September 18, 2026/ }).click();
+          await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-09-18');
+        }
+      }
+    );
+
+    it.each([false, true])('starts from the selected value for range=%s', async function selectedFocus(range) {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample range={range} selectedDate="2026-03-15" defaultFocusedDate="" />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      await expect.element(screen.getByRole('button', { name: /March 15, 2026/ })).toHaveFocus();
+    });
+
+    it('honors controlled open state when reopening during exit', async function controlledOpen() {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample isOpen />);
+      await expect.element(screen.getByRole('dialog')).toBeVisible();
+      await screen.rerender(<MobileExample isOpen={false} />);
+      await page.viewport(640, 768);
+      await screen.rerender(<MobileExample isOpen />);
+      await expect.element(screen.getByRole('dialog')).toBeVisible();
+      expect(screen.getByRole('dialog').all()).toHaveLength(1);
+      expect(document.querySelector('[data-placement="bottom"]:not([data-trigger])')).toBeNull();
+    });
+
+    it.each(['closed', 'defaultOpen', 'controlled'] as const)(
+      'hydrates a %s picker at a narrow viewport',
+      async function hydrate(mode) {
+        await page.viewport(320, 768);
+        vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true);
+        const props = { defaultOpen: mode === 'defaultOpen', isOpen: mode === 'controlled' ? true : undefined };
+        const container = document.createElement('div');
+        container.innerHTML = renderToString(<MobileExample {...props} />);
+        document.body.append(container);
+        const onRecoverableError = vi.fn();
+        let root: Root | undefined;
+        try {
+          await act(async function mount() {
+            root = hydrateRoot(container, <MobileExample {...props} />, { onRecoverableError });
+          });
+          if (mode !== 'closed') {
+            await expect.element(page.getByRole('dialog')).toBeVisible();
+            expect(document.querySelector('[data-placement="bottom"]:not([data-trigger])')).toBeNull();
+            await act(async function close() {
+              if (mode === 'controlled') root?.render(<MobileExample isOpen={false} />);
+              else await userEvent.keyboard('{Escape}');
+            });
+            await act(async function finishExit() {
+              await Promise.all(
+                document.getAnimations().map(function finish(animation) {
+                  return animation.finished;
+                })
+              );
+            });
+            await expect.element(page.getByRole('dialog')).not.toBeInTheDocument();
+          }
+          await act(async function open() {
+            if (mode === 'controlled') root?.render(<MobileExample isOpen />);
+            else await page.getByRole('button', { name: /Calendar Event dates/ }).click();
+          });
+          await expect.element(page.getByRole('dialog')).toBeVisible();
+          expect(page.getByRole('dialog').all()).toHaveLength(1);
+          expect(document.querySelector('[data-placement="bottom"]:not([data-trigger])')).not.toBeNull();
+          expect(onRecoverableError).not.toHaveBeenCalled();
+        } finally {
+          await act(async function unmount() {
+            root?.unmount();
+          });
+          container.remove();
+        }
+      }
+    );
+
+    it.each(['en-US', 'ar-AE'])('fits a 320px viewport with enlarged text in %s', async function enlargedText(locale) {
+      await page.viewport(320, 768);
+      document.documentElement.style.fontSize = '200%';
+      const screen = await render(<MobileExample locale={locale} defaultOpen />);
+      const dialog = screen.getByRole('dialog').element();
+      for (const grid of screen.getByRole('grid').all()) {
+        const rect = grid.element().getBoundingClientRect();
+        expect(rect.left).toBeGreaterThanOrEqual(dialog.getBoundingClientRect().left);
+        expect(rect.right).toBeLessThanOrEqual(dialog.getBoundingClientRect().right);
+      }
+      const viewport = document.querySelector('[data-calendar-month]')!.parentElement!;
+      expect(viewport.scrollWidth).toBe(viewport.clientWidth);
+      for (const control of dialog.querySelectorAll('header button, header input, footer button')) {
+        const rect = control.getBoundingClientRect();
+        expect(rect.left).toBeGreaterThanOrEqual(dialog.getBoundingClientRect().left);
+        expect(rect.right).toBeLessThanOrEqual(dialog.getBoundingClientRect().right);
+      }
+    });
+
+    it.each(['select', 'reset'] as const)(
+      'uses React Aria range commitBehavior=%s',
+      async function commitBehavior(behavior) {
+        await page.viewport(320, 768);
+        const screen = await render(
+          <MobileExample range keepOpen commitBehavior={behavior} selectedDate="2026-09-05" />
+        );
+        await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+        await userEvent.keyboard('{Enter}');
+        const label = document.querySelector('[data-calendar-month="2026-09-01"]')!.firstElementChild as HTMLElement;
+        await userEvent.click(label);
+        if (behavior === 'select') {
+          await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-09-16');
+        } else {
+          await expect.element(screen.getByLabelText('Selected dates')).toBeEmptyDOMElement();
+          await screen.getByRole('button', { name: /September 18, 2026/ }).click();
+          await expect.element(screen.getByLabelText('Selected dates')).toBeEmptyDOMElement();
+          await screen.getByRole('button', { name: /September 19, 2026/ }).click();
+          await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-18/2026-09-19');
+        }
+      }
+    );
+
+    it('clamps committed header years to the date bounds', async function yearBounds() {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample min="2026-01-01" max="2027-12-31" />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      const year = screen.getByRole('textbox', { name: 'Year' });
+      await year.fill('1980');
+      await userEvent.keyboard('{Enter}');
+      await expect.element(year).toHaveValue('2026');
+      await year.fill('2030');
+      await userEvent.keyboard('{Enter}');
+      await expect.element(year).toHaveValue('2027');
+    });
+
+    it('updates month choices when navigating between Hebrew common and leap years', async function leapYear() {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample locale="en-US-u-ca-hebrew" />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      const year = screen.getByRole('textbox', { name: 'Year' });
+      await year.fill('5786');
+      await userEvent.keyboard('{Enter}');
+      await screen.getByRole('button', { name: 'Month' }).click();
+      expect(screen.getByRole('option').all()).toHaveLength(12);
+      await userEvent.keyboard('{Escape}');
+      await year.fill('5787');
+      await userEvent.keyboard('{Enter}');
+      await screen.getByRole('button', { name: 'Month' }).click();
+      expect(screen.getByRole('option').all()).toHaveLength(13);
+    });
+
+    it('reveals controlled focus changes without selecting', async function controlledFocus() {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample keepOpen focusedDate="2026-09-15" />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      const dialog = screen.getByRole('dialog').element();
+      await screen.getByRole('button', { name: /September 15, 2026/ }).click();
+      await screen.rerender(<MobileExample keepOpen focusedDate="2026-11-15" />);
+      await expect.element(screen.getByRole('button', { name: /November 15, 2026/ })).toHaveFocus();
+      const cell = screen.getByRole('button', { name: /November 15, 2026/ }).element();
+      const viewport = cell.closest('[data-calendar-month]')!.parentElement!;
+      const cellRect = cell.getBoundingClientRect();
+      const viewportRect = viewport.getBoundingClientRect();
+      expect(cellRect.top).toBeGreaterThanOrEqual(viewportRect.top);
+      expect(cellRect.bottom).toBeLessThanOrEqual(viewportRect.bottom);
+      await screen.rerender(<MobileExample keepOpen focusedDate="1980-06-12" />);
+      await expect.element(screen.getByRole('button', { name: /June 12, 1980/ })).toHaveFocus();
+      expect(screen.getByRole('dialog').element()).toBe(dialog);
+      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15');
+    });
+
+    it('uses locale calendar dates with Gregorian bounds and values', async function localeCalendar() {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample locale="ar-SA-u-ca-islamic" min="2026-09-05" max="2026-11-15" />);
+      await screen.getByRole('button', { name: /Event dates/ }).click();
+      await userEvent.keyboard('{Enter}');
+      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15');
+    });
+
+    it('preserves the visible month when completing a range', async function rangePosition() {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample range keepOpen />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      const month = document.querySelector('[data-calendar-month="2026-09-01"]') as HTMLElement;
+      await expect
+        .poll(function settled() {
+          return getComputedStyle(screen.getByRole('dialog').element().parentElement!).transform;
+        })
+        .toBe('none');
+      const before = month.getBoundingClientRect().top;
+      await screen.getByRole('button', { name: /September 15, 2026/ }).click();
+      await screen.getByRole('button', { name: /September 25, 2026/ }).click();
+      expect(Math.abs(month.getBoundingClientRect().top - before)).toBeLessThan(2);
+      await expect.element(screen.getByRole('button', { name: 'Month' })).toHaveTextContent('September');
+    });
+
+    it('does not close when shouldCloseOnSelect is false', async function stayOpen() {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample keepOpen />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      await screen.getByRole('button', { name: /September 15, 2026/ }).click();
+      await expect.element(screen.getByRole('dialog')).toBeVisible();
+      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15');
+    });
+  });
+});
