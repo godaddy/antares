@@ -1,0 +1,37 @@
+.root {
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: 80rem;
+  min-inline-size: 0;
+  margin-inline: auto;
+}
+
+.columns {
+  min-inline-size: 0;
+}
+
+.visualColumn {
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+
+.heroImage {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.form {
+  position: relative;
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+
+.dropZone {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+}

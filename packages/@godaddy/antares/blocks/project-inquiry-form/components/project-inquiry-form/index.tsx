@@ -1,0 +1,256 @@
+'use client';
+
+import { useId, useReducer, useRef, useState, type FormEvent } from 'react';
+import {
+  Alert,
+  Box,
+  Button,
+  Checkbox,
+  Flex,
+  Grid,
+  Heading,
+  Icon,
+  Text,
+  TextContext,
+  isFileDropItem,
+  useDrop,
+  type DropEvent
+} from '@godaddy/antares';
+import type { CalendarDate } from '@godaddy/antares/date';
+import { DropOverlay } from '../drop-overlay';
+import { AttachedFiles } from '../attached-files';
+import { Benefits } from '../benefits';
+import { type FieldName, Fields } from '../fields';
+import { fileKey, isAcceptedFile, MAX_FILE_COUNT, MAX_TOTAL_FILE_SIZE } from '../../data/files';
+import styles from './index.module.css';
+
+const initialValues: Record<FieldName, string> = { fullName: '', email: '', phone: '' };
+const heroImage = {
+  src: 'data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" viewBox="0 0 1280 720"%3E%3Crect width="1280" height="720" fill="%23eef2f7"%2F%3E%3Ctext x="640" y="360" fill="%23667085" font-family="sans-serif" font-size="48" text-anchor="middle"%3EProject image%3C%2Ftext%3E%3C%2Fsvg%3E',
+  alt: 'Project image placeholder',
+  width: 1280,
+  height: 720
+};
+
+const fileFormatError = 'Use PDF, JPG, GIF, or PNG files smaller than 256 MiB.';
+const fileLimitError = 'Use up to 10 files with a combined size of 256 MiB or less.';
+const dropZoneLabel = 'Upload project files';
+
+interface AttachmentState {
+  files: File[];
+  error: string;
+}
+
+type AttachmentAction = { type: 'add'; files: File[] } | { type: 'read-error' } | { type: 'remove'; file: File };
+
+const initialAttachmentState: AttachmentState = { files: [], error: '' };
+
+function attachmentReducer(state: AttachmentState, action: AttachmentAction): AttachmentState {
+  if (action.type === 'read-error') {
+    return { ...state, error: 'We couldn’t read these files. Please try again.' };
+  }
+
+  if (action.type === 'remove') {
+    return {
+      files: state.files.filter(function keepFile(candidate) {
+        return fileKey(candidate) !== fileKey(action.file);
+      }),
+      error: ''
+    };
+  }
+
+  const valid = action.files.filter(isAcceptedFile);
+  const validationError = valid.length === action.files.length ? '' : fileFormatError;
+
+  if (valid.length === 0) {
+    return { ...state, error: validationError };
+  }
+
+  const unique = new Map(
+    state.files.map(function identify(file) {
+      return [fileKey(file), file];
+    })
+  );
+
+  for (const file of valid) {
+    const key = fileKey(file);
+    if (!unique.has(key)) unique.set(key, file);
+  }
+
+  const nextFiles = Array.from(unique.values());
+  const totalSize = nextFiles.reduce(function sumFileSizes(total, file) {
+    return total + file.size;
+  }, 0);
+
+  if (nextFiles.length > MAX_FILE_COUNT || totalSize > MAX_TOTAL_FILE_SIZE) {
+    return { ...state, error: fileLimitError };
+  }
+
+  return { files: nextFiles, error: validationError };
+}
+
+type FormDropEvent = DropEvent;
+
+/** A complete, interactive project inquiry page with a local demo submission. */
+export function ProjectInquiryForm() {
+  const headingId = useId();
+  const dropZoneRef = useRef<HTMLDivElement>(null);
+  const [values, setValues] = useState(initialValues);
+  const [dueDate, setDueDate] = useState<CalendarDate | null>(null);
+  const [attachments, dispatchAttachments] = useReducer(attachmentReducer, initialAttachmentState);
+  const [submitted, setSubmitted] = useState(false);
+  const canSubmit =
+    Object.values(values).every(function isFilled(value) {
+      return value.trim().length > 0;
+    }) && attachments.files.length > 0;
+
+  const { dropProps, isDropTarget } = useDrop({
+    ref: dropZoneRef,
+    hasDropButton: false,
+    onDrop: handleDrop
+  });
+
+  function clearConfirmation() {
+    setSubmitted(false);
+  }
+
+  function addFiles(list: FileList | File[] | null) {
+    if (!list?.length) return;
+
+    const incoming = Array.from(list);
+    dispatchAttachments({ type: 'add', files: incoming });
+    if (incoming.some(isAcceptedFile)) clearConfirmation();
+  }
+
+  async function handleDrop(event: FormDropEvent) {
+    try {
+      const dropped = await Promise.all(
+        event.items.filter(isFileDropItem).map(function readFile(item) {
+          return item.getFile();
+        })
+      );
+      addFiles(dropped);
+    } catch {
+      dispatchAttachments({ type: 'read-error' });
+    }
+  }
+
+  function handleFieldChange(name: FieldName, value: string) {
+    setValues(function updateValues(previous) {
+      return { ...previous, [name]: value };
+    });
+    clearConfirmation();
+  }
+
+  function handleDateChange(value: CalendarDate | null) {
+    setDueDate(value);
+    clearConfirmation();
+  }
+
+  function handleClearDate() {
+    setDueDate(null);
+    clearConfirmation();
+  }
+
+  function handleRemoveFile(file: File) {
+    dispatchAttachments({ type: 'remove', file });
+    clearConfirmation();
+  }
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (canSubmit) setSubmitted(true);
+  }
+
+  return (
+    <Box padding="xl" className={styles.root}>
+      <Grid
+        columns="repeat(auto-fit, minmax(min(100%, 30rem), 1fr))"
+        gap="2xl"
+        alignItems="start"
+        className={styles.columns}
+      >
+        <Flex direction="column" gap="xl" className={styles.visualColumn}>
+          <Box
+            as="img"
+            src={heroImage.src}
+            alt={heroImage.alt}
+            width={heroImage.width}
+            height={heroImage.height}
+            rounding="xl"
+            alignSelf="start"
+            className={styles.heroImage}
+          />
+          <Benefits />
+        </Flex>
+
+        <Flex
+          ref={dropZoneRef}
+          role="region"
+          aria-label={dropZoneLabel}
+          padding="0"
+          alignItems="stretch"
+          justifyContent="start"
+          {...dropProps}
+          data-drop-target={isDropTarget || undefined}
+          className={styles.dropZone}
+        >
+          <TextContext.Provider value={null}>
+            <Flex
+              as="form"
+              direction="column"
+              gap="lg"
+              padding="xl"
+              rounding="xl"
+              elevation="card"
+              aria-labelledby={headingId}
+              onSubmit={handleSubmit}
+              className={styles.form}
+            >
+              <Flex direction="column" gap="xs">
+                <Heading id={headingId} level={2}>
+                  Talk with an expert to help with your project goals.
+                </Heading>
+              </Flex>
+
+              <Fields
+                values={values}
+                dueDate={dueDate}
+                onChange={handleFieldChange}
+                onProjectTypeChange={clearConfirmation}
+                onDateChange={handleDateChange}
+                onClearDate={handleClearDate}
+              />
+
+              <AttachedFiles
+                files={attachments.files}
+                error={attachments.error}
+                onSelect={addFiles}
+                onRemove={handleRemoveFile}
+              />
+
+              <Button type="submit" variant="primary" isDisabled={!canSubmit}>
+                <Icon icon="calendar" aria-hidden="true" />
+                Schedule a Call
+              </Button>
+
+              <Text>
+                Or call us at <a href="tel:+14803663344">(480) 366-3344</a>
+              </Text>
+
+              <Checkbox name="receiveTexts" onChange={clearConfirmation}>
+                I want to receive texts from GoDaddy about these products and services.
+              </Checkbox>
+
+              {submitted ? (
+                <Alert emphasis="success">Demo complete. No information was sent and no call was scheduled.</Alert>
+              ) : null}
+
+              <DropOverlay isDropTarget={isDropTarget} />
+            </Flex>
+          </TextContext.Provider>
+        </Flex>
+      </Grid>
+    </Box>
+  );
+}

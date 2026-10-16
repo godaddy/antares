@@ -240,6 +240,7 @@ export async function buildRegistry({
 }: BuildRegistryOptions): Promise<AntaresRegistry> {
   const registry = await createRegistry(blocksRoot);
 
+  // biome-ignore lint/nursery/useAwaitThenable: RegistryWriter returns a Promise; Biome 2.5 misses the destructured default
   await writeRegistry(registryPath, serializeRegistry(registry));
 
   return registry;
