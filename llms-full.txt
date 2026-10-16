@@ -1508,6 +1508,10 @@ npm install --save @godaddy/antares
 
 <Examples of={Stories.Examples} />
 
+## Blocks [#blocks]
+
+<BlockLink id="project-inquiry-form" />
+
 ## Accessibility [#accessibility]
 
 ### Keyboard [#keyboard]
@@ -4292,6 +4296,10 @@ npx shadcn@latest add godaddy/antares/blocks/sign-in-form
   of={OverviewDashboardStories.Preview}
 />
 
+### Project inquiry form [#project-inquiry-form]
+
+<Block id="project-inquiry-form" description="A responsive project inquiry page with local file previews." of={ProjectInquiryFormStories.Preview} />
+
 ### Sign-in form [#sign-in-form]
 
 <Block id="sign-in-form" description="A simple Antares sign-in experience." of={SignInFormStories.Preview} />
@@ -4304,6 +4312,17 @@ npx shadcn@latest add godaddy/antares/blocks/sign-in-form
 <Block
   id="overview-dashboard"
   description="A responsive Antares overview dashboard with users, sales channels, and conversations."
+  of={Stories.Preview}
+/>
+
+
+# Project inquiry form
+
+<Meta of={Stories} name="Overview" id="blocks-project-inquiry-form" />
+
+<Block
+  id="project-inquiry-form"
+  description="A responsive project inquiry page with local file previews."
   of={Stories.Preview}
 />
 
