@@ -1,5 +1,11 @@
 # @godaddy/antares
 
+## 0.12.0
+
+### Minor Changes
+
+- Expose React Aria's `useDrop` hook and related types through the public `DropZone` export. ([#366](https://github.com/godaddy/bento/pull/366) by @rmojica-godaddy)
+
 ## 0.11.0
 
 ### Minor Changes
