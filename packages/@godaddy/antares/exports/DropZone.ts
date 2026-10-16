@@ -4,5 +4,9 @@ export {
   type DropZoneRenderProps,
   isFileDropItem,
   isTextDropItem,
-  isDirectoryDropItem
+  isDirectoryDropItem,
+  useDrop,
+  type DropEvent,
+  type DropOptions,
+  type DropResult
 } from '#components/drop-zone';

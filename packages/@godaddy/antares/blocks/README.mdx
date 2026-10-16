@@ -9,6 +9,8 @@ import * as OverviewDashboardStories from './overview-dashboard/overview-dashboa
 
 import * as SignInFormStories from './sign-in-form/sign-in-form.stories.tsx';
 
+import * as ProjectInquiryFormStories from './project-inquiry-form/project-inquiry-form.stories.tsx';
+
 <Meta title="Blocks" id="blocks" />
 
 ## Install a block
@@ -28,6 +30,10 @@ npx shadcn@latest add godaddy/antares/blocks/sign-in-form
   description="A responsive Antares overview dashboard with users, sales channels, and conversations."
   of={OverviewDashboardStories.Preview}
 />
+
+### Project inquiry form
+
+<Block id="project-inquiry-form" description="A responsive project inquiry page with local file previews." of={ProjectInquiryFormStories.Preview} />
 
 ### Sign-in form
 
