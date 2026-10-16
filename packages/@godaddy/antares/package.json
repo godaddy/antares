@@ -57,7 +57,7 @@
     "@visx/tooltip": "^4.0.1-alpha.0",
     "@visx/xychart": "^4.0.1-alpha.0",
     "cva": "npm:class-variance-authority@^0.7.1",
-    "embla-carousel": "^9.0.0-rc02",
+    "embla-carousel": "^9.0.0-rc04",
     "embla-carousel-accessibility": "^9.0.0-rc02",
     "embla-carousel-react": "^9.0.0-rc02",
     "react-aria-components": "^1.22.1"
