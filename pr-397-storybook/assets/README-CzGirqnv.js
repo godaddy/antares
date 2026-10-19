@@ -1,0 +1,137 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{t}from"./jsx-runtime-DeHZSEgm.js";import{N as n,P as r,c as i,l as a,n as o,s,u as c}from"./blocks-D7y6D1LN.js";import{a as l,c as u,d,f,i as p,l as m,n as h,o as g,r as _,s as v,t as y,u as b}from"./text.stories-DBFRInTU.js";function x(e){let t={code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,li:`li`,p:`p`,pre:`pre`,ul:`ul`,...r(),...e.components};return(0,C.jsxs)(C.Fragment,{children:[(0,C.jsx)(s,{of:f,name:`Overview`}),`
+`,(0,C.jsx)(t.h1,{id:`text`,children:`Text`}),`
+`,(0,C.jsx)(t.p,{children:`Body copy and supporting detail, with size, emphasis, alignment, and truncation options`}),`
+`,(0,C.jsxs)(t.p,{children:[(0,C.jsx)(t.code,{children:`Text`}),` is body copy and `,(0,C.jsx)(t.code,{children:`Detail`}),` is supporting copy: captions, metadata, and hints.`]}),`
+`,(0,C.jsx)(t.h2,{id:`features`,children:`Features`}),`
+`,(0,C.jsxs)(t.ul,{children:[`
+`,(0,C.jsxs)(t.li,{children:[(0,C.jsx)(t.code,{children:`Text`}),` applies the body role and `,(0,C.jsx)(t.code,{children:`Detail`}),` the detail role, each at the tier of the nearest
+`,(0,C.jsx)(t.code,{children:`SizeProvider`}),`, or `,(0,C.jsx)(t.code,{children:`md`}),` outside any scope.`]}),`
+`,(0,C.jsxs)(t.li,{children:[`Inside a component's named part, such as a field description or a lockup body, the part sets the
+treatment. Inside a control, the label keeps the control's type, so
+`,(0,C.jsx)(t.code,{children:`<Button><Text>Save</Text></Button>`}),` looks exactly like `,(0,C.jsx)(t.code,{children:`<Button>Save</Button>`}),`.`]}),`
+`,(0,C.jsxs)(t.li,{children:[(0,C.jsx)(t.code,{children:`size`}),` picks a step on the component's own ramp (`,(0,C.jsx)(t.code,{children:`xs`}),` to `,(0,C.jsx)(t.code,{children:`2xl`}),`) and changes only the font size.`]}),`
+`,(0,C.jsxs)(t.li,{children:[(0,C.jsx)(t.code,{children:`emphasis`}),` picks a feedback color and changes only the color.`]}),`
+`,(0,C.jsxs)(t.li,{children:[`For semantic emphasis, render `,(0,C.jsx)(t.code,{children:`as="strong"`}),` or `,(0,C.jsx)(t.code,{children:`as="em"`}),`.`]}),`
+`]}),`
+`,(0,C.jsx)(t.h2,{id:`installation`,children:`Installation`}),`
+`,(0,C.jsx)(t.pre,{children:(0,C.jsx)(t.code,{className:`language-bash`,children:`npm install --save @godaddy/antares
+`})}),`
+`,(0,C.jsx)(t.h2,{id:`examples`,children:`Examples`}),`
+`,(0,C.jsx)(t.h3,{id:`default`,children:`Default`}),`
+`,(0,C.jsx)(t.p,{children:`Basic text content.`}),`
+`,(0,C.jsx)(a,{of:_,inline:!0}),`
+`,(0,C.jsx)(i,{code:`import { Text, type TextProps } from '@godaddy/antares';
+
+export function DefaultExample(args: TextProps) {
+  return <Text {...args}>Hello, world!</Text>;
+}`,language:`tsx`}),`
+`,(0,C.jsx)(t.h3,{id:`as`,children:`As`}),`
+`,(0,C.jsxs)(t.p,{children:[`Setting the `,(0,C.jsx)(t.code,{children:`as`}),` prop allows you to change the HTML tag of the `,(0,C.jsx)(t.code,{children:`Text`}),` component.`]}),`
+`,(0,C.jsx)(a,{of:h,inline:!0}),`
+`,(0,C.jsx)(i,{code:`import { Text, type TextProps } from '@godaddy/antares';
+
+export function AsExample(args: TextProps) {
+  return (
+    <Text {...args} as="marquee">
+      A scrolling marquee
+    </Text>
+  );
+}`,language:`tsx`}),`
+`,(0,C.jsx)(t.h3,{id:`align`,children:`Align`}),`
+`,(0,C.jsxs)(t.p,{children:[`Setting the `,(0,C.jsx)(t.code,{children:`align`}),` prop allows you to change the alignment of the text. Choose from `,(0,C.jsx)(t.code,{children:`start`}),`, `,(0,C.jsx)(t.code,{children:`center`}),`, `,(0,C.jsx)(t.code,{children:`end`}),`, or `,(0,C.jsx)(t.code,{children:`justify`}),`; the logical keywords support RTL languages.`]}),`
+`,(0,C.jsx)(a,{of:y,inline:!0}),`
+`,(0,C.jsx)(i,{code:`import { Text, type TextProps } from '@godaddy/antares';
+
+export function AlignExample(args: TextProps) {
+  return (
+    <Text {...args} as="p" align="center">
+      Text is aligned to the center
+    </Text>
+  );
+}`,language:`tsx`}),`
+`,(0,C.jsx)(t.h3,{id:`max-lines`,children:`Max Lines`}),`
+`,(0,C.jsxs)(t.p,{children:[`Setting the `,(0,C.jsx)(t.code,{children:`maxLines`}),` prop limits the number of displayed lines using an ellipsis.`]}),`
+`,(0,C.jsx)(a,{of:v,inline:!0}),`
+`,(0,C.jsx)(i,{code:`import { Text, type TextProps } from '@godaddy/antares';
+
+export function MaxLinesExample(args: TextProps) {
+  return (
+    <div style={{ width: '300px', border: '1px solid red' }}>
+      <Text {...args} as="p" maxLines={2}>
+        This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua.
+      </Text>
+    </div>
+  );
+}`,language:`tsx`}),`
+`,(0,C.jsx)(t.h3,{id:`wrap`,children:`Wrap`}),`
+`,(0,C.jsxs)(t.p,{children:[`Setting the `,(0,C.jsx)(t.code,{children:`wrap`}),` prop controls text wrapping with values such as `,(0,C.jsx)(t.code,{children:`wrap`}),`, `,(0,C.jsx)(t.code,{children:`nowrap`}),`, `,(0,C.jsx)(t.code,{children:`balance`}),`, `,(0,C.jsx)(t.code,{children:`pretty`}),`, or `,(0,C.jsx)(t.code,{children:`stable`}),`.`]}),`
+`,(0,C.jsx)(a,{of:b,inline:!0}),`
+`,(0,C.jsx)(i,{code:`import { Text, type TextProps } from '@godaddy/antares';
+
+export function WrapExample(args: TextProps) {
+  return (
+    <div style={{ width: '300px', border: '1px solid red' }}>
+      <Text {...args} as="p" wrap="pretty">
+        Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and
+        legibility. Because counting characters and balancing them across multiple lines is computationally expensive,
+        this value is only supported for blocks of text spanning a limited number of lines
+      </Text>
+    </div>
+  );
+}`,language:`tsx`}),`
+`,(0,C.jsx)(t.h3,{id:`sizes`,children:`Sizes`}),`
+`,(0,C.jsxs)(t.p,{children:[`Without `,(0,C.jsx)(t.code,{children:`size`}),`, text takes the scope's body tier, or `,(0,C.jsx)(t.code,{children:`md`}),` outside any scope. `,(0,C.jsx)(t.code,{children:`size`}),` picks a step
+on the body ramp and changes only the font size.`]}),`
+`,(0,C.jsx)(a,{of:m,inline:!0}),`
+`,(0,C.jsx)(i,{code:`import { Flex, Text } from '@godaddy/antares';
+
+export function SizesExample() {
+  return (
+    <Flex direction="column" gap="sm">
+      <Text>Default</Text>
+      <Text size="xs">Extra small</Text>
+      <Text size="sm">Small</Text>
+      <Text size="md">Medium</Text>
+      <Text size="lg">Large</Text>
+      <Text size="xl">Extra large</Text>
+      <Text size="2xl">2x large</Text>
+    </Flex>
+  );
+}`,language:`tsx`}),`
+`,(0,C.jsx)(t.h3,{id:`emphasis`,children:`Emphasis`}),`
+`,(0,C.jsxs)(t.p,{children:[(0,C.jsx)(t.code,{children:`emphasis`}),` selects a feedback color and changes nothing else. Without it, text inherits the
+surrounding color.`]}),`
+`,(0,C.jsx)(a,{of:g,inline:!0}),`
+`,(0,C.jsx)(i,{code:`import { Flex, Text } from '@godaddy/antares';
+
+export function EmphasisExample() {
+  return (
+    <Flex direction="column" gap="sm">
+      <Text emphasis="critical">Payment failed</Text>
+      <Text emphasis="warning">Card expires soon</Text>
+      <Text emphasis="success">Payment received</Text>
+      <Text emphasis="info">Invoice sent</Text>
+      <Text emphasis="passive">No recent activity</Text>
+    </Flex>
+  );
+}`,language:`tsx`}),`
+`,(0,C.jsx)(t.h3,{id:`detail`,children:`Detail`}),`
+`,(0,C.jsxs)(t.p,{children:[(0,C.jsx)(t.code,{children:`Detail`}),` is supporting copy, such as captions and metadata, on the detail ramp. It keeps the
+surrounding color; add `,(0,C.jsx)(t.code,{children:`emphasis="passive"`}),` to mute it.`]}),`
+`,(0,C.jsx)(a,{of:p,inline:!0}),`
+`,(0,C.jsx)(i,{code:`import { Detail, Flex, Text } from '@godaddy/antares';
+
+export function DetailExample() {
+  return (
+    <Flex direction="column" gap="xs">
+      <Text>Quarterly report</Text>
+      <Detail emphasis="passive">Updated 2 hours ago</Detail>
+    </Flex>
+  );
+}`,language:`tsx`}),`
+`,(0,C.jsx)(t.h2,{id:`props`,children:`Props`}),`
+`,(0,C.jsx)(t.h3,{id:`text-1`,children:`Text`}),`
+`,(0,C.jsx)(o,{of:u}),`
+`,(0,C.jsx)(t.h3,{id:`detail-1`,children:`Detail`}),`
+`,(0,C.jsx)(o,{of:l})]})}function S(e={}){let{wrapper:t}={...r(),...e.components};return t?(0,C.jsx)(t,{...e,children:(0,C.jsx)(x,{...e})}):x(e)}var C;function w(){return(w=e((()=>{C=t(),n(),c(),d()})))()}w();export{S as default};
