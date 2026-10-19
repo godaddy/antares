@@ -32,6 +32,7 @@ const config: RcFile = {
     { aliasName: 'storybook', dependencies: ['storybook', '@storybook/**'] },
     { aliasName: 'tailwindcss', dependencies: ['tailwindcss', '@tailwindcss/**'] },
     { aliasName: 'tsdown', dependencies: ['tsdown', '@tsdown/**'] },
+    { aliasName: 'embla-carousel', dependencies: ['embla-carousel', 'embla-carousel-*'] },
     { aliasName: 'commitlint', dependencies: ['@commitlint/**'] }
   ],
   semverGroups: [
@@ -74,7 +75,7 @@ const config: RcFile = {
     {
       label: 'Package family consistency',
       packages: ['**'],
-      dependencies: ['storybook', 'vitest', 'tailwindcss', 'tsdown', 'commitlint'],
+      dependencies: ['storybook', 'vitest', 'tailwindcss', 'tsdown', 'commitlint', 'embla-carousel'],
       policy: 'sameRange'
     }
   ]
