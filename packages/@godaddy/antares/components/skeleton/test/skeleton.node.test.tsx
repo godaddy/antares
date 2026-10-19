@@ -7,6 +7,7 @@ import { LoadingRegionExample } from '../examples/loading-region.tsx';
 import { MediaCardExample } from '../examples/media-card.tsx';
 import { RoundingsExample } from '../examples/roundings.tsx';
 import { RowExample } from '../examples/row.tsx';
+import { RTLExample } from '../examples/rtl.tsx';
 import { ShapesExample } from '../examples/shapes.tsx';
 import { PlaygroundExample } from '../examples/skeleton-playground.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
@@ -52,6 +53,10 @@ describe('@godaddy/antares', function antares() {
 
     it('renders LoadingRegionExample', function loadingRegionExample() {
       expect(renderToString(<LoadingRegionExample />)).toMatchSnapshot();
+    });
+
+    it('renders RTLExample', function rtlExample() {
+      expect(renderToString(<RTLExample />)).toMatchSnapshot();
     });
 
     it('renders PlaygroundExample', function playgroundExample() {

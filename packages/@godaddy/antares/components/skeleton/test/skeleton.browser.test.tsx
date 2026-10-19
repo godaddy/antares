@@ -7,6 +7,8 @@ import { DefaultExample } from '../examples/default.tsx';
 import { LoadingRegionExample } from '../examples/loading-region.tsx';
 import { RoundingsExample } from '../examples/roundings.tsx';
 import { RowExample } from '../examples/row.tsx';
+import { RTLExample } from '../examples/rtl.tsx';
+import { TextBlockExample } from '../examples/text-block.tsx';
 import { ShapesExample } from '../examples/shapes.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 
@@ -93,11 +95,15 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('mirrors the shimmer in RTL', async function rtl() {
-      const screen = await render(<DefaultExample data-testid="skeleton" dir="ltr" />);
-      const skeleton = screen.getByTestId('skeleton').element();
-      expect(getComputedStyle(skeleton).getPropertyValue('--_skeleton-direction').trim()).toBe('1');
-      await screen.rerender(<DefaultExample data-testid="skeleton" dir="rtl" />);
-      expect(getComputedStyle(skeleton).getPropertyValue('--_skeleton-direction').trim()).toBe('-1');
+      const directions = (container: HTMLElement) =>
+        skeletons(container).map((skeleton) =>
+          getComputedStyle(skeleton).getPropertyValue('--_skeleton-direction').trim()
+        );
+      const ltr = await render(<TextBlockExample />);
+      expect(new Set(directions(ltr.container))).toEqual(new Set(['1']));
+      await ltr.unmount();
+      const rtl = await render(<RTLExample />);
+      expect(new Set(directions(rtl.container))).toEqual(new Set(['-1']));
     });
 
     it('stops the shimmer when reduced motion is preferred', async function reducedMotion() {

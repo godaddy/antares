@@ -41,6 +41,10 @@ npm install @godaddy/antares
 - Vary the widths of text bars so a paragraph reads like real sentences.
 - Match `width` to `size` for squares, and add `full` rounding for circles.
 
+## Troubleshooting
+
+- If the shimmer doesn't reverse in a right-to-left app, set `dir="rtl"` on `<html>` or a parent element. Skeleton follows the `dir` attribute, and a locale set only through `I18nProvider` doesn't change it.
+
 ## Props
 
 <ArgTypes of={Stories.Props} />
