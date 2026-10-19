@@ -1,0 +1,45 @@
+---
+title: Skeleton
+description: A placeholder that previews the layout of content while it loads.
+---
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './skeleton.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Six height presets, from `xs` (0.75rem) to `2xl` (3.5rem)
+- Custom width and height for media and other non-standard shapes
+- `default`, `full`, and `none` rounding
+- A subtle shimmer that reverses in right-to-left locales and stops when reduced motion is preferred
+- Composable into text blocks, avatars, cards, and other loading patterns
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Accessibility
+
+- Every Skeleton is hidden from assistive technology, so a page with many placeholders stays quiet.
+- Mark the region the Skeletons fill with `role="status"`, `aria-busy="true"`, and an `aria-label` that describes what is loading.
+- Set `aria-busy` to `false`, or remove it, once the real content replaces the Skeletons.
+- The shimmer stops when the user prefers reduced motion, and the shape gets an outline in forced colors mode.
+
+## Best Practices
+
+- Approximate the final layout; a skeleton doesn't need to be pixel-perfect.
+- Use size presets for text and basic controls, and custom dimensions for images and media.
+- Vary the widths of text bars so a paragraph reads like real sentences.
+- Match `width` to `size` with `full` rounding for circular avatars.
+
+## Props
+
+<ArgTypes of={Stories.Props} />

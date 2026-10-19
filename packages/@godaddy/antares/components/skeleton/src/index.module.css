@@ -1,0 +1,95 @@
+.skeleton {
+  --_skeleton-size-xs: 0.75rem;
+  --_skeleton-size-sm: 1rem;
+  --_skeleton-size-md: 1.5rem;
+  --_skeleton-size-lg: 2rem;
+  --_skeleton-size-xl: 2.5rem;
+  --_skeleton-size-2xl: 3.5rem;
+  --_skeleton-color: var(--ux-1m9ys0v, #767676);
+  --_skeleton-direction: 1;
+
+  display: block;
+  position: relative;
+  width: 100%;
+  height: var(--_skeleton-size-md);
+  overflow: hidden;
+  border-radius: var(--ux-2jubes, 6px);
+  background-color: color-mix(in oklch, transparent, var(--_skeleton-color) 20%);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+      to right,
+      transparent,
+      color-mix(in oklch, transparent, var(--_skeleton-color) 10%),
+      transparent
+    );
+    transform: translateX(calc(-100% * var(--_skeleton-direction)));
+  }
+
+  &:where(:dir(rtl)) {
+    --_skeleton-direction: -1;
+  }
+
+  /* Default-width Skeletons stay shrinkable so they fill what fixed shapes leave in a Flex row. */
+  &:where([data-fixed-width]) {
+    flex-shrink: 0;
+  }
+
+  &:where([data-size="xs"]) {
+    height: var(--_skeleton-size-xs);
+  }
+
+  &:where([data-size="sm"]) {
+    height: var(--_skeleton-size-sm);
+  }
+
+  &:where([data-size="lg"]) {
+    height: var(--_skeleton-size-lg);
+  }
+
+  &:where([data-size="xl"]) {
+    height: var(--_skeleton-size-xl);
+  }
+
+  &:where([data-size="2xl"]) {
+    height: var(--_skeleton-size-2xl);
+  }
+
+  &:where([data-rounding="full"]) {
+    border-radius: 9999px;
+  }
+
+  &:where([data-rounding="none"]) {
+    border-radius: 0;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    transform: translateX(calc(-100% * var(--_skeleton-direction)));
+  }
+
+  to {
+    transform: translateX(calc(100% * var(--_skeleton-direction)));
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .skeleton::after {
+    animation: skeleton-shimmer 3000ms cubic-bezier(0.77, 0, 0.175, 1) infinite;
+  }
+}
+
+@media (forced-colors: active) {
+  .skeleton {
+    outline: 1px solid GrayText;
+    outline-offset: -1px;
+
+    &::after {
+      display: none;
+    }
+  }
+}

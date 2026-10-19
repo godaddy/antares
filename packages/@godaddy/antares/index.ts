@@ -54,5 +54,6 @@ export * from './exports/Card';
 export * from './exports/SizeProvider';
 export * from './exports/Accordion';
 export * from './exports/Collapsible';
+export * from './exports/Skeleton';
 
 export { FocusScope, type FocusScopeProps } from '@react-aria/focus';
