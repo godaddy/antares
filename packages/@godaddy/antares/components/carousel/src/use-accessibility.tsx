@@ -26,10 +26,10 @@ export function useAccessibility(props: UseAccessibilityProps) {
     function setupAccessibility(emblaApi: EmblaCarouselType) {
       const accessibility = emblaApi.plugins().accessibility;
 
-      if (!accessibility || !previousButton || !nextButton || !liveRegion) return;
+      if (!accessibility) return;
 
-      accessibility.setupLiveRegion(liveRegion);
-      accessibility.setupPrevAndNextButtons(previousButton, nextButton);
+      if (liveRegion) accessibility.setupLiveRegion(liveRegion);
+      if (previousButton && nextButton) accessibility.setupPrevAndNextButtons(previousButton, nextButton);
     },
     [previousButton, nextButton, liveRegion]
   );

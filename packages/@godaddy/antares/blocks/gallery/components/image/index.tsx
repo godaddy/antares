@@ -1,9 +1,10 @@
 'use client';
 
-import { Button, Flex, Icon, Text } from '@godaddy/antares';
+import { Button, type ButtonProps, Flex, Icon, Text } from '@godaddy/antares';
 import type { ImageItem } from '../../data/types';
 import { ImageSurface, useImageLoadState } from './image-surface';
 import styles from './index.module.css';
+import surfaceStyles from './image-surface.module.css';
 
 interface GalleryImageProps {
   /** Image to load; remount this component when its identity changes. */
@@ -23,6 +24,12 @@ interface GalleryImageProps {
 
   /** Loading strategy for the image resource. */
   loading?: 'eager' | 'lazy';
+
+  /** Keyboard position in the thumbnail rail. */
+  tabIndex?: number;
+
+  /** Handles thumbnail keyboard navigation. */
+  onKeyDown?: NonNullable<ButtonProps['onKeyDown']>;
 }
 
 /** Handles image loading failures without simulating an upload. */
@@ -32,16 +39,23 @@ export function GalleryImage({
   onOpen,
   label,
   selected,
-  loading = 'lazy'
+  loading = 'lazy',
+  tabIndex,
+  onKeyDown
 }: GalleryImageProps) {
-  const { attempt, imageRef, onError, onLoad, retry, src, state } = useImageLoadState(image.src, {
-    resetKey: image.id
-  });
+  const { attempt, imageRef, onError, onLoad, retry, src, state } = useImageLoadState(
+    variant === 'thumbnail' ? (image.thumbnailSrc ?? image.src) : image.src,
+    {
+      resetKey: image.id
+    }
+  );
 
   if (state === 'error') {
     if (variant === 'thumbnail') {
       const errorSurface = (
         <Flex
+          alignItems="center"
+          justifyContent="center"
           className={`${styles.image} ${styles.errorSurface}`}
           data-variant={variant}
           role="img"
@@ -57,9 +71,11 @@ export function GalleryImage({
         <Button
           variant={selected ? 'secondary' : 'minimal'}
           aria-label={label ?? `View ${image.name}`}
+          excludeFromTabOrder={tabIndex === -1}
+          onKeyDown={onKeyDown}
           aria-current={selected ? 'true' : undefined}
           onPress={() => onOpen(image.id)}
-          className={styles.openButton}
+          className={surfaceStyles.openButton}
         >
           {errorSurface}
         </Button>
@@ -82,7 +98,13 @@ export function GalleryImage({
       ref={imageRef}
       key={attempt}
       src={src}
-      alt={image.name}
+      alt={image.alt ?? image.name}
+      srcSet={variant === 'thumbnail' ? undefined : image.srcSet}
+      sizes={variant === 'thumbnail' ? undefined : image.sizes}
+      width={variant === 'thumbnail' ? 80 : image.width}
+      height={variant === 'thumbnail' ? 60 : image.height}
+      tabIndex={tabIndex}
+      onKeyDown={onKeyDown}
       className={styles.image}
       variant={variant}
       loading={loading}

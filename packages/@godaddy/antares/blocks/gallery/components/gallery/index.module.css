@@ -3,27 +3,27 @@
   min-inline-size: 0;
 }
 
+/* Keep the live region mounted without reserving a gap before the first update. */
+.notice:where(:empty) {
+  position: absolute;
+}
+
 .dropOverlay {
   position: absolute;
   inset: 0;
   z-index: 1;
-  border: 1.5px dashed var(--ux-187j9dd, #00a4a6);
+  border: 1px dashed var(--ux-f7kpiw, #00a4a6);
   border-radius: var(--ux-2jubes, 16px);
-  background: rgba(216, 239, 239, 0.9);
+  background-color: rgba(216, 239, 239, 0.9);
+  color: var(--color-surface-text-base, var(--ux-1leynsm, #111));
   pointer-events: none;
 }
 
 .dropZone {
+  position: relative;
+  box-sizing: border-box;
   inline-size: 100%;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-}
-
-@media (max-width: 48rem) {
-  .toolbarActions {
-    flex-basis: 100%;
-    inline-size: 100%;
-    justify-content: space-between;
-  }
+  max-inline-size: 80rem;
+  min-inline-size: 0;
+  margin-inline: auto;
 }

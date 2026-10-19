@@ -1,12 +1,15 @@
 .surface {
-  display: block;
   max-inline-size: 100%;
   object-fit: cover;
 }
 
+.surface:where(img) {
+  display: block;
+}
+
 .surface:where([data-variant="horizontal"]) {
-  inline-size: 3.5rem;
-  block-size: 3.5rem;
+  inline-size: 56px;
+  block-size: 56px;
 }
 
 .surface:where([data-variant="vertical"]) {
@@ -15,7 +18,6 @@
 }
 
 .error {
-  display: flex;
   background: var(--color-feedback-critical-subtle, var(--ux-1iiiqs3, #fde8e7));
   color: var(--color-feedback-critical-onsubtle, var(--ux-xaxxaq, #8b0000));
 }

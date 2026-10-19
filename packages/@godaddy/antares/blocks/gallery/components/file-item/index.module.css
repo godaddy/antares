@@ -3,18 +3,21 @@
   min-inline-size: 0;
 }
 
-.card:where([data-variant="horizontal"]) {
-  block-size: 4.625rem;
-  min-block-size: 4.625rem;
+.card {
+  --_gallery-file-action-space: calc(var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5)) * 2);
+}
+
+.card:where([data-error]) {
+  border-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));
 }
 
 .details {
   min-inline-size: 0;
-  overflow: hidden;
+  padding-inline-end: var(--_gallery-file-action-space);
 }
 
 .details:where([data-variant="vertical"]) {
-  min-block-size: 5.5rem;
+  padding-inline-end: 0;
 }
 
 .errorDetails {

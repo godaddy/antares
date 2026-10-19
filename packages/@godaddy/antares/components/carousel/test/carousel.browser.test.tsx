@@ -1,7 +1,10 @@
 import { render } from 'vitest-browser-react';
 import { flushSync } from 'react-dom';
+import { createRef } from 'react';
 import { describe, it, expect } from 'vitest';
-import { userEvent } from 'vitest/browser';
+import { cdp, userEvent } from 'vitest/browser';
+import type { CarouselRef } from '@godaddy/antares';
+import { InteractionCarousel } from './fixtures/interaction-carousel.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { ExternalControlsControlledExample } from '../examples/external-controls-controlled.tsx';
@@ -220,4 +223,64 @@ describe('@godaddy/antares', function antares() {
     await expect.element(next).toBeVisible();
     await expect.element(next).not.toBeDisabled();
   });
+
+  it.each(['ltr', 'rtl'] as const)(
+    'announces externally navigated slides with hidden controls in %s',
+    async function hiddenAnnouncements(dir) {
+      const ref = createRef<CarouselRef>();
+      const { container, getByText } = await render(<InteractionCarousel carouselRef={ref} dir={dir} />);
+      await expect.poll(() => ref.current?.emblaApi).toBeDefined();
+      ref.current?.emblaApi?.goTo(1, true);
+      await expect.element(getByText('Showing slide 2 of 3')).toBeInTheDocument();
+      await expect.element(getByText('Slide 2', { exact: true })).not.toHaveAttribute('aria-hidden');
+      expect(container.firstElementChild?.getAttribute('dir')).toBe(dir);
+    }
+  );
+
+  it.each(['ltr', 'rtl'] as const)(
+    'settles a drag without continuing inertia under reduced motion in %s',
+    async function reducedMotionDrag(dir) {
+      const session = cdp() as unknown as { send: (method: string, params: unknown) => Promise<void> };
+      try {
+        await session.send('Emulation.setEmulatedMedia', {
+          features: [{ name: 'prefers-reduced-motion', value: 'reduce' }]
+        });
+        const ref = createRef<CarouselRef>();
+        const { getByText } = await render(<InteractionCarousel carouselRef={ref} dir={dir} />);
+        await expect.poll(() => ref.current?.emblaApi).toBeDefined();
+        const api = ref.current!.emblaApi!;
+        const bounds = api.rootNode().getBoundingClientRect();
+        const start = dir === 'ltr' ? bounds.right - 40 : bounds.left + 40;
+        const end = dir === 'ltr' ? bounds.left + 40 : bounds.right - 40;
+        const y = bounds.top + bounds.height / 2;
+        api
+          .rootNode()
+          .dispatchEvent(
+            new MouseEvent('mousedown', { bubbles: true, clientX: start, clientY: y, button: 0, buttons: 1 })
+          );
+        for (let step = 1; step <= 6; step++) {
+          document.dispatchEvent(
+            new MouseEvent('mousemove', {
+              bubbles: true,
+              clientX: start + ((end - start) * step) / 6,
+              clientY: y,
+              buttons: 1
+            })
+          );
+        }
+        document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, clientX: end, clientY: y, button: 0 }));
+        const nextFrame = () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+        await nextFrame();
+        await nextFrame();
+        const stopped = api.scrollProgress();
+        await nextFrame();
+        expect(api.scrollProgress()).toBe(stopped);
+        expect(api.selectedSnap()).toBe(1);
+        expect(stopped).toBeCloseTo(0.5, 5);
+        await expect.element(getByText('Showing slide 2 of 3')).toBeInTheDocument();
+      } finally {
+        await session.send('Emulation.setEmulatedMedia', { features: [] });
+      }
+    }
+  );
 });

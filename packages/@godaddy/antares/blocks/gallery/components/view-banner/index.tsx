@@ -16,15 +16,15 @@ interface ViewBannerProps {
   onShowAll: () => void;
 }
 
-/** Counter and image-error feedback used below the Figma list layouts. */
+/** Counter and image-error feedback used below the file list. */
 export function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: ViewBannerProps) {
   const hasMore = visibleCount < totalCount;
   if (!hasMore && errorCount === 0) return null;
 
   return (
-    <Flex direction="column" gap="sm" blockPadding="sm" aria-label="Gallery file status">
+    <Flex direction="column" gap="sm" blockPadding="sm">
       <Flex justifyContent="space-between" alignItems="center" gap="sm">
-        <Text role="status" aria-live="polite">
+        <Text>
           {visibleCount} of {totalCount} files
         </Text>
         {hasMore ? (
@@ -35,7 +35,7 @@ export function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: 
       </Flex>
 
       {errorCount > 0 ? (
-        <Flex justifyContent="center" alignItems="center" gap="xs" role="alert" aria-live="assertive">
+        <Flex justifyContent="center" alignItems="center" gap="xs" role="alert">
           <Icon icon="alert" aria-hidden="true" />
           <Text emphasis="critical">
             {errorCount} file{errorCount === 1 ? ' needs' : 's need'} attention.

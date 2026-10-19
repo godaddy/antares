@@ -25,13 +25,13 @@ interface GridViewProps {
   onLoadSuccess: (id: string) => void;
 }
 
-/** Full-width responsive image grid with gallery-sized cards. */
+/** Cards keep a consistent preview size, including small collections. */
 export function GridView({ images, onOpen, onRemove, onRetry, onLoadError, onLoadSuccess }: GridViewProps) {
   return (
     <Grid
       as="ul"
-      columns="repeat(auto-fill, minmax(min(100%, 15rem), 1fr))"
-      gap="md"
+      columns="repeat(auto-fill, minmax(min(100%, 240px), 1fr))"
+      gap="sm"
       justifyContent="start"
       alignItems="start"
       aria-label="Gallery image grid"

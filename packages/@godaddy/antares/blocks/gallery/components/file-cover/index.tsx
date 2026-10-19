@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Flex, Icon } from '@godaddy/antares';
 import type { ImageItem } from '../../data/types';
 import { ImageSurface, useImageLoadState } from '../image/image-surface';
@@ -28,9 +28,17 @@ interface FileCoverProps {
 
 /** A small, reusable image/error surface shared by every Gallery presentation. */
 export function FileCover({ image, variant, onOpen, onLoadError, onLoadSuccess }: FileCoverProps) {
-  const reportLoadError = useCallback(() => onLoadError?.(image.id), [image.id, onLoadError]);
+  const [failedThumbnail, setFailedThumbnail] = useState<string | null>(null);
+  const thumbnail = image.thumbnailSrc && failedThumbnail !== image.thumbnailSrc ? image.thumbnailSrc : undefined;
+  const reportLoadError = useCallback(
+    function reportLoadError() {
+      if (thumbnail) setFailedThumbnail(thumbnail);
+      else onLoadError?.(image.id);
+    },
+    [thumbnail, image.id, onLoadError]
+  );
   const reportLoadSuccess = useCallback(() => onLoadSuccess?.(image.id), [image.id, onLoadSuccess]);
-  const { state, imageRef, onLoad, onError } = useImageLoadState(image.src, {
+  const { state, imageRef, onLoad, onError } = useImageLoadState(thumbnail ?? image.src, {
     resetKey: `${image.id}:${image.status ?? ''}`,
     onLoad: onLoadSuccess ? reportLoadSuccess : undefined,
     onError: reportLoadError
@@ -56,8 +64,12 @@ export function FileCover({ image, variant, onOpen, onLoadError, onLoadSuccess }
   return (
     <ImageSurface
       ref={imageRef}
-      src={image.src}
-      alt={image.name}
+      src={thumbnail ?? image.src}
+      srcSet={thumbnail ? undefined : image.srcSet}
+      sizes={thumbnail ? undefined : image.sizes}
+      width={thumbnail ? undefined : image.width}
+      height={thumbnail ? undefined : image.height}
+      alt={image.alt ?? image.name}
       className={styles.surface}
       variant={variant}
       loading="lazy"

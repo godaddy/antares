@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, type KeyboardEvent as ReactKeyboardEvent } from 'react';
-import { Button, Carousel, CloseButton, Content, Flex, Heading, Icon, Modal, Text } from '@godaddy/antares';
+import { Button, Carousel, Box, CloseButton, Content, Flex, Heading, Icon, Modal, Text } from '@godaddy/antares';
 import { GalleryImage } from '../image';
 import type { ImageItem } from '../../data/types';
 import styles from './index.module.css';
@@ -11,6 +11,9 @@ type PropagatingKeyboardEvent<T extends Element> = ReactKeyboardEvent<T> & {
 };
 
 interface ViewerProps {
+  /** Shared direction for layout, keyboard navigation, and carousel gestures. */
+  dir: 'ltr' | 'rtl';
+
   /** Current viewable gallery order, shared by the list and grid views. */
   images: ImageItem[];
 
@@ -25,7 +28,7 @@ interface ViewerProps {
 }
 
 /** Modal image viewer that reuses Antares Carousel for the main image sequence. */
-export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps) {
+export function Viewer({ dir, images, activeId, onClose, onSelectImage }: ViewerProps) {
   const strip = useRef<HTMLUListElement>(null);
   const closeButton = useRef<HTMLButtonElement>(null);
   const previousButton = useRef<HTMLButtonElement>(null);
@@ -53,7 +56,9 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
       const nextImage = images[index + offset];
       if (!nextImage) return;
 
+      // Boundary controls become disabled; focus the current thumbnail before continuing by Tab.
       focusCurrentThumbnail.current =
+        focusCurrentThumbnail.current ||
         (document.activeElement === previousButton.current && index + offset === 0) ||
         (document.activeElement === nextButton.current && index + offset === images.length - 1);
       onSelectImage(nextImage.id);
@@ -64,17 +69,20 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
   const navigate = useCallback(
     function navigate(event: ReactKeyboardEvent<HTMLElement>) {
       if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
-      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
         event.preventDefault();
-        move(event.key === 'ArrowLeft' ? -1 : 1);
+        focusCurrentThumbnail.current = !!strip.current?.contains(document.activeElement);
+        if (event.key === 'Home') move(-index);
+        else if (event.key === 'End') move(images.length - 1 - index);
+        else move((event.key === 'ArrowLeft' ? -1 : 1) * (dir === 'rtl' ? -1 : 1));
       }
     },
-    [move]
+    [dir, images.length, index, move]
   );
 
   const handleCloseKeyDown = useCallback(
     function handleCloseKeyDown(event: PropagatingKeyboardEvent<HTMLButtonElement>) {
-      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') navigate(event);
+      if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) navigate(event);
       else event.continuePropagation();
     },
     [navigate]
@@ -110,38 +118,44 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
   );
 
   const renderSlide = useCallback(
-    function renderSlide(slideImage: ImageItem) {
+    function renderSlide(slideImage: ImageItem, slideIndex: number) {
       return (
         <Flex key={slideImage.id} alignItems="center" justifyContent="center" className={styles.slide}>
-          <GalleryImage image={slideImage} variant="viewer" loading={slideImage.id === activeId ? 'eager' : 'lazy'} />
+          {Math.abs(slideIndex - index) <= 1 ? (
+            <GalleryImage image={slideImage} variant="viewer" loading={slideImage.id === activeId ? 'eager' : 'lazy'} />
+          ) : (
+            <Box aria-hidden="true" />
+          )}
         </Flex>
       );
     },
-    [activeId]
+    [activeId, index]
   );
 
   const renderThumbnail = useCallback(
     function renderThumbnail(thumbnailImage: ImageItem) {
       return (
-        <Flex as="li" key={thumbnailImage.id} flex="0 0 5rem">
+        <Flex as="li" key={thumbnailImage.id} flexShrink={0}>
           <GalleryImage
             image={thumbnailImage}
             variant="thumbnail"
             selected={thumbnailImage.id === activeId}
             label={`View ${thumbnailImage.name}`}
+            tabIndex={thumbnailImage.id === activeId ? 0 : -1}
+            onKeyDown={handleCloseKeyDown}
             onOpen={onSelectImage}
           />
         </Flex>
       );
     },
-    [activeId, onSelectImage]
+    [activeId, handleCloseKeyDown, onSelectImage]
   );
 
   if (!image) return null;
 
   return (
-    <Modal isOpen aria-label="Media gallery" onOpenChange={handleOpenChange} className={styles.modal}>
-      <Heading slot="title" level={2} className={styles.visuallyHidden}>
+    <Modal isOpen dir={dir} aria-label="Media gallery" onOpenChange={handleOpenChange} className={styles.modal}>
+      <Heading slot="title" level={2}>
         Media gallery
       </Heading>
       <CloseButton ref={closeButton} aria-label="Close gallery" onKeyDown={handleCloseKeyDown} />
@@ -152,32 +166,35 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
           hideDots
           hideNavigationControls
           hideMaskEdges
-          aria-label="Gallery images"
+          emblaOptions={{ direction: dir, duration: 0 }}
+          emblaAccessibilityOptions={{ carouselAriaLabel: 'Gallery images', announceChanges: false }}
         >
           {images.map(renderSlide)}
         </Carousel>
         <Flex justifyContent="space-between" alignItems="center" gap="sm" wrap="wrap">
-          <Text className={styles.name} role="status" aria-live="polite" aria-atomic="true">
-            {image.name}
+          <Text className={styles.name} role="status" aria-atomic="true">
+            {image.name} · {index + 1} of {images.length}
           </Text>
           <Flex gap="xs" alignItems="center">
             <Button
               ref={previousButton}
+              onKeyDown={handleCloseKeyDown}
               variant="secondary"
               aria-label="Previous image"
               isDisabled={index === 0}
               onPress={handlePrevious}
             >
-              <Icon icon="chevron-left" aria-hidden="true" />
+              <Icon icon={dir === 'rtl' ? 'chevron-right' : 'chevron-left'} aria-hidden="true" />
             </Button>
             <Button
               ref={nextButton}
+              onKeyDown={handleCloseKeyDown}
               variant="secondary"
               aria-label="Next image"
               isDisabled={index === images.length - 1}
               onPress={handleNext}
             >
-              <Icon icon="chevron-right" aria-hidden="true" />
+              <Icon icon={dir === 'rtl' ? 'chevron-left' : 'chevron-right'} aria-hidden="true" />
             </Button>
           </Flex>
         </Flex>

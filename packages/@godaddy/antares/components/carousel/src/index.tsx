@@ -1,4 +1,13 @@
-import { type ReactNode, cloneElement, forwardRef, isValidElement, useState, useImperativeHandle, useRef } from 'react';
+import {
+  type ReactNode,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  useState,
+  useImperativeHandle,
+  useRef,
+  useEffect
+} from 'react';
 import type { EmblaOptionsType, EmblaCarouselType } from 'embla-carousel';
 import { VisuallyHidden, useLocale } from 'react-aria-components';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -91,10 +100,24 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(function Carousel
   const children = Array.isArray(props.children) ? props.children : [props.children];
   const controlledMode = activeIndex !== undefined;
   const [startSnap] = useState(controlledMode ? activeIndex : (defaultActiveIndex ?? 0));
-  const { direction } = useLocale();
+  const locale = useLocale();
+  const direction = emblaOptions?.direction ?? locale.direction;
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: false, align: 'center', startSnap, direction, ...emblaOptions },
+    {
+      loop: false,
+      align: 'center',
+      startSnap,
+      direction,
+      ...emblaOptions,
+      breakpoints: {
+        ...emblaOptions?.breakpoints,
+        '(prefers-reduced-motion: reduce)': {
+          ...emblaOptions?.breakpoints?.['(prefers-reduced-motion: reduce)'],
+          duration: 0
+        }
+      }
+    },
     [EmblaAccessibility({ announceChanges: true, ...emblaAccessibilityOptions })]
   );
 
@@ -102,6 +125,24 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(function Carousel
     useNavigationControls({ emblaApi, activeIndex, defaultActiveIndex, onChange, onPrev, onNext });
   const finalActiveIndex = controlledMode ? activeIndex : uncontrolledActiveIndex;
   const shouldRenderPagination = !hideNavigationControls || !hideDots;
+
+  useEffect(
+    function respectReducedMotion() {
+      if (!emblaApi) return;
+      const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+      function finishMovement() {
+        if (preference.matches) emblaApi?.goTo(emblaApi.selectedSnap(), true);
+      }
+      emblaApi.on('pointerup', finishMovement);
+      preference.addEventListener('change', finishMovement);
+      finishMovement();
+      return function cleanup() {
+        emblaApi.off('pointerup', finishMovement);
+        preference.removeEventListener('change', finishMovement);
+      };
+    },
+    [emblaApi]
+  );
 
   useAccessibility({
     emblaApi,
@@ -187,7 +228,7 @@ function CarouselSlide(children: ReactNode, key: string | number) {
   if (isValidElement<{ className?: string }>(children)) {
     return cloneElement(children, {
       className: cx(styles.slide, children.props.className),
-      key: key
+      key: children.key ?? key
     });
   }
 

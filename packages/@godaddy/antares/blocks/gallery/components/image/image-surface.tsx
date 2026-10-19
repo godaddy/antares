@@ -1,7 +1,7 @@
 'use client';
 
-import { forwardRef, useCallback, useEffect, useRef, useState, type ReactEventHandler } from 'react';
-import { Box, Button, Image } from '@godaddy/antares';
+import { forwardRef, useCallback, useRef, useState, type ReactEventHandler } from 'react';
+import { Box, Button, type ButtonProps, Image } from '@godaddy/antares';
 import styles from './image-surface.module.css';
 
 type ImageLoadState = 'loading' | 'ready' | 'error';
@@ -17,7 +17,11 @@ interface UseImageLoadStateOptions {
   onError?: () => void;
 }
 
-/** Shares image loading, retry, and complete-image handling across Gallery surfaces. */
+/**
+ * Shares image loading and retry across covers, slides, and thumbnails.
+ * The ref inspects cached images whose native load event may precede React's handlers.
+ * Report each outcome once per resource/attempt: callback refs also run when handlers change.
+ */
 export function useImageLoadState(
   src: string,
   { resetKey = '', onLoad: reportLoad, onError: reportError }: UseImageLoadStateOptions = {}
@@ -33,6 +37,9 @@ export function useImageLoadState(
     previousResourceKey.current = resourceKey;
     reportedErrorKey.current = null;
     reportedLoadKey.current = null;
+    // Reset before the image ref inspects a resource that may already be complete.
+    setAttempt(0);
+    setState('loading');
   }
 
   const loadKey = `${resourceKey}:${attempt}`;
@@ -55,14 +62,6 @@ export function useImageLoadState(
       reportError?.();
     },
     [loadKey, reportError]
-  );
-
-  useEffect(
-    function resetImageState() {
-      setAttempt(0);
-      setState('loading');
-    },
-    [resetKey, src]
   );
 
   const imageRef = useCallback(
@@ -107,30 +106,75 @@ export function useImageLoadState(
 }
 
 interface ImageSurfaceProps {
-  /** Image source and accessible name. */
+  /** Resource to display. */
   src: string;
+
+  /** Responsive candidates for the displayed resource. */
+  srcSet?: string;
+
+  /** Sizes corresponding to responsive candidates. */
+  sizes?: string;
+
+  /** Intrinsic width, when known. */
+  width?: number;
+
+  /** Intrinsic height, when known. */
+  height?: number;
+
+  /** Keyboard position for an interactive thumbnail. */
+  tabIndex?: number;
+
+  /** Keyboard navigation supplied by the viewer. */
+  onKeyDown?: NonNullable<ButtonProps['onKeyDown']>;
+
+  /** Image name; decorative inside a separately named action. */
   alt: string;
 
   /** Presentation variant consumed by the caller's stylesheet. */
   variant?: string;
 
-  /** Image presentation and loading behavior. */
+  /** Styles owned by the calling cover, slide, or thumbnail. */
   className?: string;
+
+  /** Prioritize the active slide; defer offscreen resources. */
   loading?: 'eager' | 'lazy';
 
-  /** Native image lifecycle handlers. */
+  /** Native successful decode notification. */
   onLoad?: ReactEventHandler<HTMLImageElement>;
+
+  /** Native decode or network error notification. */
   onError?: ReactEventHandler<HTMLImageElement>;
 
   /** Optional activation wrapper for a viewable image. */
   onOpen?: () => void;
+
+  /** Name of the image action, including its filename. */
   label?: string;
+
+  /** Marks the active thumbnail without introducing selection semantics. */
   selected?: boolean;
 }
 
 /** Renders the shared image element and optional accessible action wrapper. */
 export const ImageSurface = forwardRef<HTMLImageElement, ImageSurfaceProps>(function ImageSurface(
-  { src, alt, variant, className, loading = 'lazy', onLoad, onError, onOpen, label, selected },
+  {
+    src,
+    srcSet,
+    sizes,
+    width,
+    height,
+    alt,
+    variant,
+    className,
+    loading = 'lazy',
+    onLoad,
+    onError,
+    onOpen,
+    label,
+    selected,
+    tabIndex,
+    onKeyDown
+  },
   ref
 ) {
   const image = (
@@ -138,8 +182,11 @@ export const ImageSurface = forwardRef<HTMLImageElement, ImageSurfaceProps>(func
       as={Image}
       ref={ref}
       src={src}
+      srcSet={srcSet}
+      sizes={sizes}
+      width={width}
+      height={height}
       alt={onOpen ? '' : alt}
-      aria-hidden={onOpen ? true : undefined}
       className={className}
       data-variant={variant}
       rounding="md"
@@ -158,6 +205,8 @@ export const ImageSurface = forwardRef<HTMLImageElement, ImageSurfaceProps>(func
       aria-label={label ?? `Open ${alt}`}
       aria-current={selected ? 'true' : undefined}
       onPress={onOpen}
+      excludeFromTabOrder={tabIndex === -1}
+      onKeyDown={onKeyDown}
       className={styles.openButton}
     >
       {image}

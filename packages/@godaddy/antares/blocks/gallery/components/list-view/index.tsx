@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Flex } from '@godaddy/antares';
 import { FileItems } from '../file-items';
 import { ViewBanner } from '../view-banner';
@@ -17,7 +17,7 @@ interface ListViewProps {
   /** Removes an image from the collection. */
   onRemove: (image: ImageItem) => void;
 
-  /** Retries a failed upload. */
+  /** Retries a failed image. */
   onRetry: (image: ImageItem) => void;
 
   /** Reports an image decode or network failure. */
@@ -29,17 +29,36 @@ interface ListViewProps {
 
 const MAX_VISIBLE_ITEMS = 5;
 
-/** Figma-aligned horizontal file list with counter and error banner. */
+/** Horizontal file list with counter and error banner. */
 export function ListView({ images, onOpen, onRemove, onRetry, onLoadError, onLoadSuccess }: ListViewProps) {
   const [showAll, setShowAll] = useState(false);
+  const listRef = useRef<HTMLUListElement>(null);
+  const firstRevealedIndex = useRef<number | null>(null);
   const visibleImages = showAll ? images : images.slice(0, MAX_VISIBLE_ITEMS);
   const errorCount = images.filter(function countError(image) {
     return image.status === 'error';
   }).length;
 
+  useEffect(
+    function focusRevealedFile() {
+      const index = firstRevealedIndex.current;
+      if (index === null) return;
+
+      firstRevealedIndex.current = null;
+      const item = listRef.current?.children[index];
+      item?.querySelector<HTMLButtonElement>('button')?.focus();
+    },
+    [showAll]
+  );
+
+  function handleShowAll() {
+    firstRevealedIndex.current = visibleImages.length;
+    setShowAll(true);
+  }
+
   return (
     <Flex direction="column" gap="sm" className={styles.root}>
-      <Flex as="ul" direction="column" gap="sm" aria-label="Gallery files" className={styles.items}>
+      <Flex as="ul" ref={listRef} direction="column" gap="sm" aria-label="Gallery files" className={styles.items}>
         <FileItems
           images={visibleImages}
           variant="horizontal"
@@ -54,7 +73,7 @@ export function ListView({ images, onOpen, onRemove, onRetry, onLoadError, onLoa
         visibleCount={visibleImages.length}
         totalCount={images.length}
         errorCount={errorCount}
-        onShowAll={() => setShowAll(true)}
+        onShowAll={handleShowAll}
       />
     </Flex>
   );

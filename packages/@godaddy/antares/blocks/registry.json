@@ -114,9 +114,19 @@
           "target": "components/blocks/gallery/components/viewer/index.tsx"
         },
         {
+          "path": "gallery/data/sample-images.ts",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/data/sample-images.ts"
+        },
+        {
           "path": "gallery/data/types.ts",
           "type": "registry:component",
           "target": "components/blocks/gallery/data/types.ts"
+        },
+        {
+          "path": "gallery/hooks/use-gallery-images.ts",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/hooks/use-gallery-images.ts"
         },
         {
           "path": "gallery/index.tsx",
