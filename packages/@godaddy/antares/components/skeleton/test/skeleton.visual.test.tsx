@@ -1,6 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { cdp } from 'vitest/browser';
+import { AspectRatioExample } from '../examples/aspect-ratio.tsx';
 import { CustomSizeExample } from '../examples/custom-size.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { MediaCardExample } from '../examples/media-card.tsx';
@@ -45,6 +46,11 @@ describe('@godaddy/antares', function antares() {
     it('custom size', async function customSizeRender() {
       const { container } = await render(<CustomSizeExample />);
       await expect(container).toMatchScreenshot('custom-size');
+    });
+
+    it('aspect ratio', async function aspectRatioRender() {
+      const { container } = await render(<AspectRatioExample />);
+      await expect(container).toMatchScreenshot('aspect-ratio');
     });
 
     it('media card', async function mediaCardRender() {

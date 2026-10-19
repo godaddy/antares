@@ -1,8 +1,8 @@
 import { Flex, Skeleton } from '@godaddy/antares';
 
 /**
- * Set `width` and `height` for placeholders such as images. Numbers are pixels, and strings take
- * any CSS length. A custom `height` overrides `size`.
+ * Set `width` and `height` for placeholders with non-standard dimensions. Numbers are pixels, and
+ * strings take any CSS length. A custom `height` overrides `size`.
  * @title Custom size
  * @order 4
  */

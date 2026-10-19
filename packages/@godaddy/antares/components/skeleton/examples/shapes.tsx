@@ -1,13 +1,13 @@
 import { Flex, Skeleton } from '@godaddy/antares';
 
-const sizes = ['sm', 'md', 'lg', 'xl'] as const;
+const sizes = ['sm', 'md', 'lg', 'xl', '2xl'] as const;
 
 /**
- * Match `width` to `size` for avatar placeholders. Use `full` rounding for people and the default
- * rounding for businesses and accounts.
- * @order 5
+ * Match `width` to `size` to make a square, and add `full` rounding to make a circle.
+ * @title Circles and squares
+ * @order 6
  */
-export function AvatarExample() {
+export function ShapesExample() {
   return (
     <Flex direction="column" gap="md">
       <Flex alignItems="center" gap="md">

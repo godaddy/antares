@@ -1,12 +1,13 @@
 import { renderToString } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import { AvatarExample } from '../examples/avatar.tsx';
+import { AspectRatioExample } from '../examples/aspect-ratio.tsx';
 import { CustomSizeExample } from '../examples/custom-size.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { LoadingRegionExample } from '../examples/loading-region.tsx';
 import { MediaCardExample } from '../examples/media-card.tsx';
 import { RoundingsExample } from '../examples/roundings.tsx';
 import { RowExample } from '../examples/row.tsx';
+import { ShapesExample } from '../examples/shapes.tsx';
 import { PlaygroundExample } from '../examples/skeleton-playground.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 import { TextBlockExample } from '../examples/text-block.tsx';
@@ -29,8 +30,12 @@ describe('@godaddy/antares', function antares() {
       expect(renderToString(<CustomSizeExample />)).toMatchSnapshot();
     });
 
-    it('renders AvatarExample', function avatarExample() {
-      expect(renderToString(<AvatarExample />)).toMatchSnapshot();
+    it('renders AspectRatioExample', function aspectRatioExample() {
+      expect(renderToString(<AspectRatioExample />)).toMatchSnapshot();
+    });
+
+    it('renders ShapesExample', function shapesExample() {
+      expect(renderToString(<ShapesExample />)).toMatchSnapshot();
     });
 
     it('renders TextBlockExample', function textBlockExample() {

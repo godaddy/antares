@@ -2,7 +2,7 @@ import { Flex, Skeleton } from '@godaddy/antares';
 
 /**
  * Stack bars of varying widths so a paragraph reads like real sentences.
- * @order 6
+ * @order 7
  */
 export function TextBlockExample() {
   return (

@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { cdp } from 'vitest/browser';
-import { AvatarExample } from '../examples/avatar.tsx';
+import { AspectRatioExample } from '../examples/aspect-ratio.tsx';
 import { CustomSizeExample } from '../examples/custom-size.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { LoadingRegionExample } from '../examples/loading-region.tsx';
 import { RoundingsExample } from '../examples/roundings.tsx';
 import { RowExample } from '../examples/row.tsx';
+import { ShapesExample } from '../examples/shapes.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 
 type CDPSession = { send: (method: string, params: unknown) => Promise<void> };
@@ -43,8 +44,19 @@ describe('@godaddy/antares', function antares() {
       expect(relative.getBoundingClientRect().height).toBe(80);
     });
 
+    it('derives the height from the aspect ratio', async function aspectRatio() {
+      const { container } = await render(<AspectRatioExample />);
+      const ratios = skeletons(container).map(function toRatio(skeleton) {
+        const { width, height } = skeleton.getBoundingClientRect();
+        return width / height;
+      });
+      for (const [index, expected] of [16 / 9, 4 / 3, 1, 3 / 4, 9 / 16].entries()) {
+        expect(ratios[index]).toBeCloseTo(expected, 1);
+      }
+    });
+
     it('resolves size presets passed as width', async function presetWidth() {
-      const { container } = await render(<AvatarExample />);
+      const { container } = await render(<ShapesExample />);
       for (const skeleton of skeletons(container)) {
         const { width, height } = skeleton.getBoundingClientRect();
         expect(width).toBe(height);

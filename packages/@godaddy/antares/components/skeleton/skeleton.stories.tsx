@@ -16,7 +16,8 @@ export const Playground = getStory(PlaygroundExample, {
     size: 'md',
     rounding: 'default',
     width: '',
-    height: ''
+    height: '',
+    aspectRatio: ''
   },
   argTypes: {
     size: {
@@ -35,7 +36,11 @@ export const Playground = getStory(PlaygroundExample, {
     },
     height: {
       control: 'text',
-      description: 'Custom height as a CSS length. Overrides size.'
+      description: 'Custom height as a CSS length. Overrides size and aspectRatio.'
+    },
+    aspectRatio: {
+      control: 'text',
+      description: 'Width-to-height ratio, such as 16 / 9. Overrides size.'
     }
   }
 });

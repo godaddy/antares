@@ -4,7 +4,7 @@ import { Flex, Grid, Skeleton } from '@godaddy/antares';
  * Skeletons are hidden from assistive technology. Mark the region they fill with `role="status"`,
  * `aria-busy`, and an `aria-label`, then set `aria-busy` to `false` when the content arrives.
  * @title Loading region
- * @order 9
+ * @order 10
  */
 export function LoadingRegionExample() {
   return (

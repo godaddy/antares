@@ -11,14 +11,17 @@ export type SkeletonRounding = 'default' | 'full' | 'none';
 
 /** Props for the Skeleton component. */
 export interface SkeletonProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'aria-hidden' | 'children'> {
-  /** Height preset, from `xs` (0.75rem) to `2xl` (3.5rem). @default 'md' */
+  /** Height preset. @default 'md' */
   size?: SkeletonSize;
 
   /** Width as a size preset, a CSS length, or a number of pixels. @default '100%' */
   width?: SkeletonSize | number | (string & {});
 
-  /** Custom height as a CSS length or a number of pixels. Overrides `size`. */
+  /** Custom height as a CSS length or a number of pixels. Overrides `size` and `aspectRatio`. */
   height?: number | string;
+
+  /** Width-to-height ratio, such as `'16 / 9'` or `1`. Derives the height from the width and overrides `size`. */
+  aspectRatio?: number | string;
 
   /**
    * Corner rounding. `default` follows the theme radius, `full` makes a pill (or a circle when
@@ -47,7 +50,8 @@ function toLength(value: number | string | undefined): string | undefined {
  * @param props - {@link SkeletonProps}
  */
 export const Skeleton = forwardRef<HTMLSpanElement, SkeletonProps>(function Skeleton(props, ref) {
-  const { size = 'md', width, height, rounding = 'default', className, style, ...rest } = props;
+  const { size = 'md', width, height, aspectRatio, rounding = 'default', className, style, ...rest } = props;
+  const resolvedHeight = height ?? (aspectRatio === undefined ? undefined : 'auto');
 
   return (
     <span
@@ -58,7 +62,7 @@ export const Skeleton = forwardRef<HTMLSpanElement, SkeletonProps>(function Skel
       data-rounding={rounding}
       data-fixed-width={width === undefined ? undefined : ''}
       className={cx(styles.skeleton, className)}
-      style={{ width: toLength(width), height: toLength(height), ...style }}
+      style={{ width: toLength(width), height: toLength(resolvedHeight), aspectRatio, ...style }}
     />
   );
 });

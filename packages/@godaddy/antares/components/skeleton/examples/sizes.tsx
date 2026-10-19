@@ -3,8 +3,7 @@ import { Grid, Skeleton, Text } from '@godaddy/antares';
 const sizes = ['xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const;
 
 /**
- * Size presets set the height, from `xs` (0.75rem) to `2xl` (3.5rem). They suit text and basic
- * controls such as inputs and buttons.
+ * Size presets set the height. They suit text and basic controls such as inputs and buttons.
  * @order 2
  */
 export function SizesExample() {
