@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{w as t}from"./chunk-KEIR6QF5-ftuIwtpr.js";import{J as n,q as r}from"./mermaid-parser.core-C4I74hv0.js";function i(){return(i=e((()=>{n(),t()})))()}i();export{r as createArchitectureServices};
