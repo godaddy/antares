@@ -3499,8 +3499,9 @@ npm install --save @godaddy/antares
 
 ## Features [#features]
 
-- Six height presets, from `xs` (0.75rem) to `2xl` (3.5rem)
-- Custom width and height for media and other non-standard shapes
+- Height presets from `xs` to `2xl`
+- Aspect ratios for images and other media
+- Custom width and height for non-standard shapes
 - `default`, `full`, and `none` rounding
 - A subtle shimmer that reverses in right-to-left locales and stops when reduced motion is preferred
 - Composable into text blocks, avatars, cards, and other loading patterns
@@ -3525,9 +3526,9 @@ npm install @godaddy/antares
 ## Best Practices [#best-practices]
 
 - Approximate the final layout; a skeleton doesn't need to be pixel-perfect.
-- Use size presets for text and basic controls, and custom dimensions for images and media.
+- Use size presets for text and basic controls, and `aspectRatio` for images and media.
 - Vary the widths of text bars so a paragraph reads like real sentences.
-- Match `width` to `size` with `full` rounding for circular avatars.
+- Match `width` to `size` for squares, and add `full` rounding for circles.
 
 ## Props [#props]
 
