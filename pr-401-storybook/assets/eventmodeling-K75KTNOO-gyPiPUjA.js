@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{w as t}from"./chunk-NGNAAXSQ-DdD2yRdz.js";import{H as n,V as r}from"./mermaid-parser.core-x9L4dLX1.js";function i(){return(i=e((()=>{n(),t()})))()}i();export{r as createEventModelingServices};
