@@ -19,18 +19,5 @@ export function getPropJSDoc(node: ts.Node): {
 }
 
 export function normalizeComment(comment: string | ts.NodeArray<ts.JSDocComment> | undefined): string | undefined {
-  if (typeof comment === 'string') {
-    const trimmed = comment.trim();
-    return trimmed || undefined;
-  }
-
-  if (comment) {
-    const text = comment
-      .map((part) => part.getText())
-      .join('')
-      .trim();
-    return text || undefined;
-  }
-
-  return undefined;
+  return ts.getTextOfJSDocComment(comment)?.trim() || undefined;
 }
