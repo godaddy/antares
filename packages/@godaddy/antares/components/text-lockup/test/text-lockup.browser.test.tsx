@@ -51,10 +51,10 @@ describe('@godaddy/antares', function antares() {
       const { getByRole } = await render(<CornerActionsExample />);
       await userEvent.click(getByRole('button', { name: 'More options' }));
       await userEvent.click(getByRole('menuitem', { name: 'Mark as read' }));
-      await expect.element(getByRole('status')).toHaveTextContent('Marked as read');
+      await expect.element(getByRole('status')).toMatchTextContent('Marked as read');
       await userEvent.click(getByRole('button', { name: 'More options' }));
       await userEvent.click(getByRole('menuitem', { name: 'Mark as unread' }));
-      await expect.element(getByRole('status')).toHaveTextContent('5 min read');
+      await expect.element(getByRole('status')).toMatchTextContent('5 min read');
     });
 
     it('pairs a tag eyebrow size with the lockup size', async function tagSize() {

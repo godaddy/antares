@@ -3,6 +3,10 @@ import { experimental_indexers, processPropsDoc, toStorybookArgTypes, viteFinal 
 import type { DocsOptions, PropDoc, PropsDoc, StorybookDocs } from '../src/index.ts';
 import { generateCSFPlugin } from '../src/storybook/plugin.ts';
 
+vi.mock('../src/storybook/csf-transformer.ts', () => ({
+  csfTransformer: vi.fn().mockReturnValue('mocked-code')
+}));
+
 describe('index.ts', function coverageTests() {
   it('exports docs model, processor, and Storybook adapter from the root', function exportsDocsHelpers() {
     const props = [{ name: 'label', type: 'string', required: true }] satisfies PropDoc[];
@@ -23,9 +27,6 @@ describe('index.ts', function coverageTests() {
     (viteFinal as any)({});
 
     // plugin
-    vi.mock('../src/storybook/csf-transformer.ts', () => ({
-      csfTransformer: vi.fn().mockReturnValue('mocked-code')
-    }));
     const mockContext = { addWatchFile: vi.fn() };
     const plugin = generateCSFPlugin(/\.stories\.tsx$/);
     await (plugin.load as any)?.call(mockContext, 'test.stories.tsx');

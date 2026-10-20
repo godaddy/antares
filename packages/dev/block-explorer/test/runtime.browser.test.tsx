@@ -27,13 +27,13 @@ describe('block explorer runtime', function runtimeTests() {
     await userEvent.click(getByRole('radio', { name: 'Code' }));
     await expect.element(getByText('Files')).toBeVisible();
     await expect.element(getByRole('heading', { name: 'Files' })).not.toBeInTheDocument();
-    await expect.element(getByTestId('source-file')).toHaveTextContent('index.tsx');
+    await expect.element(getByTestId('source-file')).toMatchTextContent('index.tsx');
     const activeFileButton = getByRole('button', { name: 'index.tsx', exact: true });
     await expect.element(activeFileButton).toHaveAttribute('aria-pressed', 'true');
 
     await userEvent.click(getByRole('button', { name: 'theme.css', exact: true }));
-    await expect.element(getByTestId('source-file')).toHaveTextContent('styles/theme.css');
-    await expect.element(getByTestId('source-code')).toHaveTextContent(':root');
+    await expect.element(getByTestId('source-file')).toMatchTextContent('styles/theme.css');
+    await expect.element(getByTestId('source-code')).toMatchTextContent(':root');
   });
 
   it('collapses and reopens folders without losing the selected source', async function togglesFolders() {
@@ -50,7 +50,7 @@ describe('block explorer runtime', function runtimeTests() {
     await userEvent.click(fileButton);
     await userEvent.click(folderButton);
     await expect.element(fileButton).not.toBeInTheDocument();
-    await expect.element(getByTestId('source-file')).toHaveTextContent('styles/theme.css');
+    await expect.element(getByTestId('source-file')).toMatchTextContent('styles/theme.css');
 
     await userEvent.click(folderButton);
     await expect.element(fileButton).toBeVisible();
@@ -74,12 +74,12 @@ describe('block explorer runtime', function runtimeTests() {
     await userEvent.click(copyButton);
     expect(writeText).toHaveBeenCalledWith(fixtureManifest.files[0]?.source);
     const copiedButton = getByRole('button', { name: 'Copied index.tsx' });
-    await expect.element(copiedButton).toHaveTextContent('Copied');
+    await expect.element(copiedButton).toMatchTextContent('Copied');
 
     writeText.mockRejectedValueOnce(new Error('Clipboard unavailable'));
     await userEvent.click(copiedButton);
-    await expect.element(getByRole('status')).toHaveTextContent('Could not copy index.tsx.');
-    await expect.element(getByRole('button', { name: 'Retry copying index.tsx' })).toHaveTextContent('Retry');
+    await expect.element(getByRole('status')).toMatchTextContent('Could not copy index.tsx.');
+    await expect.element(getByRole('button', { name: 'Retry copying index.tsx' })).toMatchTextContent('Retry');
   });
 
   it('announces successful and failed install command copies', async function copiesInstallCommand() {
@@ -101,14 +101,14 @@ describe('block explorer runtime', function runtimeTests() {
 
     expect(writeText).toHaveBeenCalledWith(command);
     const copiedButton = getByRole('button', { name: 'Copied for fixture-block' });
-    await expect.element(copiedButton).toHaveTextContent('Copied');
+    await expect.element(copiedButton).toMatchTextContent('Copied');
 
     writeText.mockRejectedValueOnce(new Error('Clipboard unavailable'));
     await userEvent.click(copiedButton);
-    await expect.element(getByRole('status')).toHaveTextContent('Could not copy install command.');
+    await expect.element(getByRole('status')).toMatchTextContent('Could not copy install command.');
     await expect
       .element(getByRole('button', { name: 'Retry copying install command for fixture-block' }))
-      .toHaveTextContent('Retry');
+      .toMatchTextContent('Retry');
   });
 
   it('resets copy feedback when selecting another source file', async function resetsCopyFeedback() {
@@ -126,10 +126,10 @@ describe('block explorer runtime', function runtimeTests() {
 
     await userEvent.click(getByRole('radio', { name: 'Code' }));
     await userEvent.click(getByRole('button', { name: 'Copy index.tsx' }));
-    await expect.element(getByRole('button', { name: 'Copied index.tsx' })).toHaveTextContent('Copied');
+    await expect.element(getByRole('button', { name: 'Copied index.tsx' })).toMatchTextContent('Copied');
 
     await userEvent.click(getByRole('button', { name: 'theme.css', exact: true }));
-    await expect.element(getByRole('button', { name: 'Copy styles/theme.css' })).toHaveTextContent('Copy');
+    await expect.element(getByRole('button', { name: 'Copy styles/theme.css' })).toMatchTextContent('Copy');
   });
 
   it('keeps the code view usable when a block has no source files', async function handlesEmptyManifest() {

@@ -111,6 +111,7 @@ export const browser: TestProjectConfiguration = {
     setupFiles: resolve(import.meta.dirname, './vitest.setup.mts'),
     browser: {
       instances: [{ browser: 'chromium' }],
+      locators: { exact: false },
       provider: playwright(),
       headless: true,
       enabled: true,
@@ -149,7 +150,8 @@ export default defineConfig({
       thresholds: {
         autoUpdate: false,
         perFile: true,
-        'src/**.{ts,tsx}': {
+        'src/**/*.{ts,tsx}': {
+          perFile: true,
           statements: 90,
           functions: 90,
           branches: 90,

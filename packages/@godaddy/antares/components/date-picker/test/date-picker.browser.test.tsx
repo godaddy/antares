@@ -36,7 +36,7 @@ describe('@godaddy/antares', function antares() {
       const { getByRole } = await render(<ControlledExample />);
       await userEvent.click(getByRole('button'));
       await userEvent.click(getByRole('button', { name: /March 20/ }));
-      await expect.element(getByRole('button')).toHaveTextContent(/Mar 20/);
+      await expect.element(getByRole('button')).toMatchTextContent(/Mar 20/);
     });
 
     it('renders an error message when invalid', async function error() {
@@ -48,7 +48,7 @@ describe('@godaddy/antares', function antares() {
       const { getByRole } = await render(<ComposedExample />);
       await userEvent.click(getByRole('button'));
       await userEvent.click(getByRole('button', { name: /March 20/ }));
-      await expect.element(getByRole('button')).toHaveTextContent(/Mar 20/);
+      await expect.element(getByRole('button')).toMatchTextContent(/Mar 20/);
     });
 
     it('opens the range calendar from a composed interior', async function composedRange() {

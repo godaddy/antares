@@ -1,3 +1,4 @@
+import type * as React from 'react';
 import type { ImportedProps, RenamedProps as AliasProps } from './imported.ts';
 import type { ImportedProps as ReExportedImportedProps, ExportedAliasProps } from './re-export.ts';
 import type { RenamedProps as StarExportedRenamedProps } from './re-export-all.ts';
@@ -82,6 +83,46 @@ export type UnsupportedKeyofPickProps = Pick<ChildProps, keyof ChildProps>;
 
 export type UnsupportedKeyofOmitProps = Omit<ChildProps, keyof ParentProps>;
 
+export interface UnionKeyBaseProps {
+  a: string;
+  b: number;
+  c: boolean;
+}
+
+export type PickedUnionProps = Pick<UnionKeyBaseProps, 'a' | 'c'>;
+
+export type OmittedUnionProps = Omit<UnionKeyBaseProps, 'a' | 'c'>;
+
+export type UnsupportedUnionPickProps = Pick<UnionKeyBaseProps, 'a' | keyof ChildProps>;
+
+export interface QuotedNameProps {
+  'aria-label'?: string;
+  'data-testid': string;
+}
+
+export interface DataAttributeProps {
+  label: string;
+  [attribute: `data-${string}`]: string;
+}
+
+export interface NativeHeritageProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  tone: string;
+}
+
+export interface DeprecatedBaseProps {
+  /** @deprecated Use `tone` instead. */
+  variant?: string;
+}
+
+export interface DeprecatedOverrideProps extends DeprecatedBaseProps {
+  /** Visual style. */
+  variant?: string;
+}
+
+export enum Tone {
+  Neutral = 'neutral'
+}
+
 export type AliasCycleAProps = AliasCycleBProps & {
   a: string;
 };
@@ -125,6 +166,12 @@ export type GenericWrapper<T> = T & {
 };
 
 export type UsesGenericWrapperProps = GenericWrapper<GenericOwnProps>;
+
+export type DefaultedWrapper<Own = GenericOwnProps> = Own & {
+  wrapped: string;
+};
+
+export type UsesDefaultedWrapperProps = DefaultedWrapper;
 
 export interface GenericLayoutOwnProps {
   /** layout own description */

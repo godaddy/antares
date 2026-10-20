@@ -44,7 +44,7 @@
     "typescript": "^6.0.3",
     "vfile": "^6.0.3",
     "vite": "^8.3.4",
-    "vitest": "^4.1.11",
+    "vitest": "^5.0.5",
     "vitest-browser-react": "^2.3.0"
   },
   "peerDependencies": {

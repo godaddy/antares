@@ -17,6 +17,7 @@ const localExportListImporterFixturesPath = path.join(__dirname, 'fixtures/engin
 const importExportListFixturesPath = path.join(__dirname, 'fixtures/engine/import-export-list.ts');
 const importExportListBarrelFixturesPath = path.join(__dirname, 'fixtures/engine/import-export-list-barrel.ts');
 const importExportListImporterFixturesPath = path.join(__dirname, 'fixtures/engine/import-export-list-importer.ts');
+const unresolvableReExportFixturesPath = path.join(__dirname, 'fixtures/engine/unresolvable-re-export.ts');
 const tsconfigPathsEntryPath = path.join(__dirname, 'fixtures/engine/tsconfig-paths/entry.ts');
 const tsconfigPathsMappedPath = path.join(__dirname, 'fixtures/engine/tsconfig-paths/mapped/mapped.ts');
 
@@ -245,6 +246,25 @@ describe('createResolver', function createResolverTests() {
     }
 
     expect(hiddenLocal).toBeUndefined();
+  });
+
+  it('skips unresolvable and namespace re-exports while searching', function skipsUnusableReExports() {
+    const resolver = createResolver(unresolvableReExportFixturesPath);
+    const sourceFile = resolver.getSourceFile(unresolvableReExportFixturesPath);
+
+    expect(resolver.resolveSymbol('MissingProps', sourceFile)).toBeUndefined();
+    expect(resolver.resolveSymbol('Imported', sourceFile)).toBeUndefined();
+    expectResolvedSymbol(resolver.resolveSymbol('ImportedProps', sourceFile), {
+      name: 'ImportedProps',
+      sourceFileName: importedFixturesPath,
+      isDeclarationKind: ts.isInterfaceDeclaration
+    });
+  });
+
+  it('accepts a directory entry and uses its tsconfig', function resolvesDirectoryEntry() {
+    const resolver = createResolver(path.dirname(tsconfigPathsEntryPath));
+
+    expect(resolver.resolveModule('#fixtures/mapped', tsconfigPathsEntryPath)).toBe(tsconfigPathsMappedPath);
   });
 
   it('uses nearest tsconfig paths when resolving modules', function resolvesTsconfigPaths() {

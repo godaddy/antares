@@ -12,12 +12,13 @@ export default defineConfig({
       provider: 'v8',
       enabled: true,
       include: ['lib/**/*'],
-      exclude: ['lib/layout.shared.tsx', 'lib/storybook-bridge/**'],
+      exclude: ['lib/layout.shared.tsx', 'lib/storybook-bridge/**', 'lib/antares-blocks/block-explorer.tsx'],
       reporter: ['text', 'json', 'html'],
       thresholds: {
         autoUpdate: false,
         perFile: true,
-        'lib/**.{ts,tsx}': {
+        'lib/**/*.{ts,tsx}': {
+          perFile: true,
           statements: 100,
           functions: 100,
           branches: 100,

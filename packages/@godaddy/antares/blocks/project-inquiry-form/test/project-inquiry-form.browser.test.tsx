@@ -171,7 +171,7 @@ describe('@godaddy/antares', function packageTests() {
 
       await expect
         .element(screen.getByRole('alert'))
-        .toHaveTextContent('We couldn’t read these files. Please try again.');
+        .toMatchTextContent('We couldn’t read these files. Please try again.');
       await expect.element(screen.getByRole('button', { name: 'Remove existing.pdf' })).toBeVisible();
       await expect.element(screen.getByRole('button', { name: 'Remove unreadable.pdf' })).not.toBeInTheDocument();
     });
@@ -187,7 +187,7 @@ describe('@godaddy/antares', function packageTests() {
       sendDrag(target, 'drop', transfer);
       await expect
         .element(screen.getByRole('alert'))
-        .toHaveTextContent('Use PDF, JPG, GIF, or PNG files smaller than 256 MiB.');
+        .toMatchTextContent('Use PDF, JPG, GIF, or PNG files smaller than 256 MiB.');
       sendDrag(target, 'dragleave', transfer);
       await expect.element(screen.getByRole('button', { name: 'Remove notes.txt' })).not.toBeInTheDocument();
     });
@@ -203,7 +203,7 @@ describe('@godaddy/antares', function packageTests() {
 
       await expect
         .element(screen.getByRole('alert'))
-        .toHaveTextContent('Use PDF, JPG, GIF, or PNG files smaller than 256 MiB.');
+        .toMatchTextContent('Use PDF, JPG, GIF, or PNG files smaller than 256 MiB.');
       await expect.element(screen.getByRole('button', { name: 'Remove brief.pdf' })).toBeVisible();
       await expect.element(screen.getByRole('button', { name: 'Remove notes.txt' })).not.toBeInTheDocument();
     });
@@ -214,15 +214,15 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('button', { name: 'Schedule a Call' })).toBeDisabled();
 
       const project = screen.getByRole('button', { name: /Project type/ });
-      await expect.element(project).toHaveTextContent('Airo App Builder');
+      await expect.element(project).toMatchTextContent('Airo App Builder');
 
       await userEvent.click(project);
       await userEvent.click(screen.getByRole('option', { name: 'GoDaddy Antares' }));
-      await expect.element(project).toHaveTextContent('GoDaddy Antares');
+      await expect.element(project).toMatchTextContent('GoDaddy Antares');
 
       await userEvent.click(project);
       await userEvent.click(screen.getByRole('option', { name: 'None', exact: true }));
-      await expect.element(project).toHaveTextContent('None');
+      await expect.element(project).toMatchTextContent('None');
 
       const checkbox = screen.getByRole('checkbox');
       await expect.element(checkbox).not.toBeChecked();
@@ -238,10 +238,10 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.click(trigger);
       await userEvent.click(screen.getByRole('button', { name: /15, \d{4}$/ }));
       await expect.element(screen.getByRole('button', { name: 'Clear date' })).toBeVisible();
-      await expect.element(trigger).not.toHaveTextContent('Select a date');
+      await expect.element(trigger).not.toMatchTextContent('Select a date');
 
       await userEvent.click(screen.getByRole('button', { name: 'Clear date' }));
-      await expect.element(trigger).toHaveTextContent('Select a date');
+      await expect.element(trigger).toMatchTextContent('Select a date');
       await expect.element(trigger).toHaveFocus();
       await expect.element(screen.getByRole('button', { name: 'Clear date' })).not.toBeInTheDocument();
     });
@@ -267,7 +267,7 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.click(submit);
       await expect
         .element(screen.getByRole('alert'))
-        .toHaveTextContent('Demo complete. No information was sent and no call was scheduled.');
+        .toMatchTextContent('Demo complete. No information was sent and no call was scheduled.');
 
       await userEvent.fill(email, 'updated@example.com');
       await expect.element(screen.getByRole('alert')).not.toBeInTheDocument();
@@ -325,7 +325,7 @@ describe('@godaddy/antares', function packageTests() {
 
       await expect
         .element(screen.getByRole('alert'))
-        .toHaveTextContent('Use PDF, JPG, GIF, or PNG files smaller than 256 MiB.');
+        .toMatchTextContent('Use PDF, JPG, GIF, or PNG files smaller than 256 MiB.');
       await expect.element(screen.getByRole('button', { name: 'Remove large.pdf' })).not.toBeInTheDocument();
     });
 
@@ -358,7 +358,7 @@ describe('@godaddy/antares', function packageTests() {
 
       await expect
         .element(screen.getByRole('alert'))
-        .toHaveTextContent('Use up to 10 files with a combined size of 256 MiB or less.');
+        .toMatchTextContent('Use up to 10 files with a combined size of 256 MiB or less.');
       await expect.element(screen.getByRole('button', { name: 'Remove brief-0.pdf' })).not.toBeInTheDocument();
     });
 
@@ -378,7 +378,7 @@ describe('@godaddy/antares', function packageTests() {
 
       await expect
         .element(screen.getByRole('alert'))
-        .toHaveTextContent('Use up to 10 files with a combined size of 256 MiB or less.');
+        .toMatchTextContent('Use up to 10 files with a combined size of 256 MiB or less.');
 
       await userEvent.click(screen.getByRole('button', { name: 'Remove brief-0.pdf' }));
       await expect.element(screen.getByRole('alert')).not.toBeInTheDocument();

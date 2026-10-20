@@ -18,7 +18,7 @@ describe('@bento/checkbox', function bento() {
       assume(result).includes('type="checkbox"');
       expect(checkbox).toHaveAttribute('name', 'checkbox-example');
       expect(checkbox).toHaveAttribute('value', 'checkbox-value');
-      expect(checkboxLabel).toHaveTextContent('Checkbox Label');
+      expect(checkboxLabel).toMatchTextContent('Checkbox Label');
       expect(checkbox).not.toHaveAttribute('checked');
     });
 
@@ -176,7 +176,7 @@ describe('@bento/checkbox', function bento() {
         const group = container.querySelector('[role="group"]');
         const labelId = group?.getAttribute('aria-labelledby');
         const labelElement = container.querySelector(`[id="${labelId}"]`);
-        expect(labelElement).toHaveTextContent('Checkbox Group');
+        expect(labelElement).toMatchTextContent('Checkbox Group');
       });
     });
 
