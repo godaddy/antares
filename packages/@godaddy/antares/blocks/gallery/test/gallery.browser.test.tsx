@@ -111,7 +111,8 @@ describe('@godaddy/antares', function packageTests() {
 
     it('restores the image size after retrying an error item', async function retryPreservesMetadata() {
       controlImageEvents();
-      vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
+      const completed = vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
+      vi.spyOn(HTMLImageElement.prototype, 'naturalWidth', 'get').mockReturnValue(1);
       const screen = await render(
         <Gallery
           initialImages={[
@@ -132,6 +133,7 @@ describe('@godaddy/antares', function packageTests() {
 
       const image = screen.container.querySelector<HTMLImageElement>('img');
       if (!image) throw new Error('Expected the retried gallery image');
+      completed.mockReturnValue(true);
       image.dispatchEvent(new Event('load'));
 
       await expect.element(screen.getByRole('button', { name: 'Open failed.png' })).toBeVisible();
@@ -222,6 +224,8 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('shows five list items before revealing the complete collection', async function listPagination() {
+      controlImageEvents();
+      vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
       const screen = await render(<Gallery initialImages={browserSamples} defaultView="list" />);
 
       await expect.element(screen.getByText('5 of 11 files', { exact: true })).toBeVisible();
@@ -233,7 +237,11 @@ describe('@godaddy/antares', function packageTests() {
 
       await expect.element(screen.getByText('11 of 11 files', { exact: true })).toBeVisible();
       expect(screen.getByRole('listitem').all()).toHaveLength(11);
-      await expect.element(screen.getByRole('button', { name: 'Open Photo_6.png' })).toHaveFocus();
+      const remove = screen.getByRole('button', { name: 'Remove Photo_6.png' });
+      await expect.element(remove).toHaveFocus();
+      screen.getByRole('img', { name: 'Photo_6.png', exact: true }).element().dispatchEvent(new Event('load'));
+      await expect.element(screen.getByRole('button', { name: 'Open Photo_6.png' })).toBeVisible();
+      await expect.element(remove).toHaveFocus();
       await expect.element(screen.getByRole('button', { name: 'Show all', exact: true })).not.toBeInTheDocument();
     });
 
@@ -264,7 +272,8 @@ describe('@godaddy/antares', function packageTests() {
       'keeps focus in the file while retrying and after completion in %s view',
       async function retryFocus(view) {
         controlImageEvents();
-        vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
+        const completed = vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
+        vi.spyOn(HTMLImageElement.prototype, 'naturalWidth', 'get').mockReturnValue(1);
         const screen = await render(
           <Gallery defaultView={view} initialImages={[{ ...samples[0], status: 'error' }]} />
         );
@@ -276,6 +285,7 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(screen.getByText('Loading image…')).toBeVisible();
         await expect.element(screen.getByRole('button', { name: 'Open one.png' })).not.toBeInTheDocument();
         const picture = screen.getByRole('img', { name: 'one.png' });
+        completed.mockReturnValue(true);
         picture.element().dispatchEvent(new Event('load'));
 
         await expect.element(screen.getByRole('button', { name: 'Open one.png' })).toBeVisible();
@@ -552,18 +562,89 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(dialog).not.toBeInTheDocument();
     });
 
-    it('closes the viewer when its active image fails', async function closesFailedViewer() {
-      const screen = await render(<Gallery initialImages={samples} />);
-      await userEvent.click(screen.getByRole('button', { name: 'Open one.png' }));
-      await expect.element(screen.getByRole('dialog', { name: 'Media gallery' })).toBeVisible();
+    it.each(['grid', 'list'] as const)(
+      'opens only loaded covers and restores keyboard focus in %s view',
+      async function loadedCover(view) {
+        controlImageEvents();
+        vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
+        const screen = await render(<Gallery initialImages={[samples[0]]} defaultView={view} />);
+        const opener = screen.getByRole('button', { name: 'Open one.png' });
+        await expect.element(opener).not.toBeInTheDocument();
+        screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('load'));
 
-      const cardImage = screen.container.querySelector<HTMLImageElement>('img[alt=""]');
-      if (!cardImage) throw new Error('Expected the gallery card image');
-      cardImage.dispatchEvent(new Event('error'));
+        await expect.element(opener).toBeVisible();
+        opener.element().focus();
+        await userEvent.keyboard('{Enter}');
+        const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
+        await expect.element(dialog).toBeVisible();
+        dialog.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('error'));
+        await expect.element(dialog.getByRole('button', { name: 'Retry one.png' })).toBeVisible();
+        await expect.element(dialog).toBeVisible();
+        await userEvent.keyboard('{Escape}');
+        await expect.element(dialog).not.toBeInTheDocument();
+        await expect.element(opener).toHaveFocus();
+      }
+    );
 
-      await expect.element(screen.getByRole('dialog', { name: 'Media gallery' })).not.toBeInTheDocument();
-      await expect.element(screen.getByRole('button', { name: 'Add files', exact: true })).toBeEnabled();
-    });
+    it.each(['grid', 'list'] as const)(
+      'keeps a pending cover failure out of the viewer in %s view',
+      async function pendingCoverFailure(view) {
+        controlImageEvents();
+        vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
+        const screen = await render(<Gallery initialImages={[samples[0]]} defaultView={view} />);
+        const remove = screen.getByRole('button', { name: 'Remove one.png' });
+        remove.element().focus();
+        screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('error'));
+
+        await expect.element(screen.getByRole('button', { name: 'Retry one.png' })).toBeVisible();
+        await expect.element(screen.getByRole('button', { name: 'Open one.png' })).not.toBeInTheDocument();
+        await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
+        await expect.element(remove).toHaveFocus();
+      }
+    );
+
+    it.each(['grid', 'list'] as const)(
+      'restores the loaded opener when another active cover fails in %s view',
+      async function navigatedCoverFailure(view) {
+        controlImageEvents();
+        vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
+        const screen = await render(<Gallery initialImages={samples} defaultView={view} />);
+        screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('load'));
+        const opener = screen.getByRole('button', { name: 'Open one.png' });
+        await userEvent.click(opener);
+        await userEvent.click(screen.getByRole('button', { name: 'Next image' }));
+        const pendingCover = screen.container.querySelector<HTMLImageElement>('[data-gallery-image-id="two"] img');
+        if (!pendingCover) throw new Error('Expected the pending gallery cover');
+        pendingCover.dispatchEvent(new Event('error'));
+
+        await expect.element(screen.getByRole('dialog', { name: 'Media gallery' })).not.toBeInTheDocument();
+        await expect.element(opener).toHaveFocus();
+      }
+    );
+
+    it.each(['grid', 'list'] as const)(
+      'focuses Retry after the cover that opened the viewer fails in %s view',
+      async function failedOpener(view) {
+        controlImageEvents();
+        vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
+        const screen = await render(<Gallery initialImages={[samples[0]]} defaultView={view} />);
+        screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('load'));
+        const opener = screen.getByRole('button', { name: 'Open one.png' });
+        await expect.element(opener).toBeVisible();
+        const openerElement = opener.element();
+        opener.element().focus();
+        await userEvent.keyboard('{Enter}');
+        await expect.element(screen.getByRole('dialog')).toBeVisible();
+        const cover = screen.container.querySelector<HTMLImageElement>('[data-gallery-image-id="one"] img');
+        if (!cover) throw new Error('Expected the cover that opened the viewer');
+        cover.dispatchEvent(new Event('error'));
+        await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
+        const retryCover = screen.getByRole('button', { name: 'Retry image preview for one.png' });
+        expect(retryCover.element()).toBe(openerElement);
+        await expect.element(retryCover).toHaveFocus();
+        await expect.element(screen.getByRole('button', { name: 'Retry one.png' })).toBeVisible();
+      }
+    );
 
     it('removes preloaded images and reaches the empty state', async function removeSamples() {
       const screen = await render(<Gallery initialImages={samples} />);
@@ -695,6 +776,24 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('alert')).not.toBeInTheDocument();
     });
 
+    it.each(['count', 'bytes'] as const)(
+      'reports duplicates before the collection %s budget',
+      async function duplicateAtCapacity(budget) {
+        const file = png();
+        const screen = await render(
+          <Gallery limits={budget === 'count' ? { maxFiles: 1 } : { maxTotalSize: file.size }} />
+        );
+        selectFiles(screen.container, [file]);
+        await expect.element(screen.getByRole('button', { name: 'Open local.png' })).toBeVisible();
+        selectFiles(screen.container, [png()]);
+        await expect.element(screen.getByRole('status')).toHaveTextContent('1 duplicate skipped.');
+        await expect.element(screen.getByRole('alert')).not.toBeInTheDocument();
+        await expect.element(screen.getByText('1 image', { exact: true })).toBeVisible();
+        selectFiles(screen.container, [png('different.png')]);
+        await expect.element(screen.getByRole('alert')).toHaveTextContent('Gallery limit reached');
+      }
+    );
+
     it('isolates unreadable files without discarding the rest of their batch', async function unreadableFile() {
       const unreadable = png('unreadable.png');
       vi.spyOn(unreadable, 'arrayBuffer').mockRejectedValue(new Error('Read failed'));
@@ -789,6 +888,74 @@ describe('@godaddy/antares', function packageTests() {
       expect(fullResources()).toHaveLength(2);
       await expect.element(dialog.getByRole('status')).toHaveTextContent('10 of 10');
     });
+
+    it.each([
+      ['grid', false],
+      ['grid', true],
+      ['list', false],
+      ['list', true]
+    ] as const)(
+      'preserves dimensioned cover geometry in %s; thumbnail fallback: %s',
+      async function coverGeometry(view, withThumbnail) {
+        controlImageEvents();
+        vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
+        const screen = await render(
+          <div style={{ width: 320 }}>
+            <Gallery
+              defaultView={view}
+              initialImages={[
+                {
+                  ...samples[0],
+                  width: 960,
+                  height: 640,
+                  thumbnailSrc: withThumbnail ? 'data:image/png;base64,broken' : undefined
+                }
+              ]}
+            />
+          </div>
+        );
+        const picture = screen.getByRole('img', { name: 'one.png', exact: true });
+        const opener = screen.getByRole('button', { name: 'Open one.png' });
+        if (withThumbnail) {
+          picture.element().dispatchEvent(new Event('error'));
+          await expect.poll(() => picture.element().getAttribute('src')).toBe(samples[0].src);
+          await expect.element(opener).not.toBeInTheDocument();
+        }
+        picture.element().dispatchEvent(new Event('load'));
+        await expect.element(opener).toBeVisible();
+        const cover = opener.element().querySelector('img');
+        if (!cover) throw new Error('Expected the gallery cover');
+        expect(cover.getBoundingClientRect().width).toBeGreaterThan(0);
+        await expect
+          .poll(function coverSizeDifference() {
+            const { width, height } = cover.getBoundingClientRect();
+            return Math.abs(height - (view === 'grid' ? width : 56));
+          })
+          .toBeLessThan(1);
+        if (view === 'list') expect(cover.getBoundingClientRect().width).toBe(56);
+      }
+    );
+
+    it.each(['grid', 'list'] as const)(
+      'reports failures and allows retries when the thumbnail equals the source in %s view',
+      async function identicalThumbnail(view) {
+        controlImageEvents();
+        const completed = vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
+        vi.spyOn(HTMLImageElement.prototype, 'naturalWidth', 'get').mockReturnValue(1);
+        const screen = await render(
+          <Gallery defaultView={view} initialImages={[{ ...samples[0], thumbnailSrc: samples[0].src }]} />
+        );
+        screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('error'));
+        const retry = screen.getByRole('button', { name: 'Retry one.png' });
+        await expect.element(retry).toBeVisible();
+        await expect.element(screen.getByRole('button', { name: 'Open one.png' })).not.toBeInTheDocument();
+        await userEvent.click(retry);
+        completed.mockReturnValue(true);
+        screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('load'));
+        await expect.element(screen.getByRole('button', { name: 'Open one.png' })).toBeVisible();
+        await expect.element(retry).not.toBeInTheDocument();
+      }
+    );
 
     it('falls back to the full image when a cover thumbnail cannot load', async function thumbnailFallback() {
       const screen = await render(

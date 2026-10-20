@@ -68,6 +68,8 @@ export function Gallery({
     useGalleryImages(initialImages, resolvedLimits, onImagesChange);
   const [view, setView] = useState(defaultView);
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [viewerOpenerId, setViewerOpenerId] = useState<string | null>(null);
+  const [failedOpenerId, setFailedOpenerId] = useState<string | null>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const addButton = useRef<HTMLButtonElement>(null);
   const removalFocus = useRef<{ id: string | null } | null>(null);
@@ -121,20 +123,29 @@ export function Gallery({
     if (key === 'list' || key === 'grid') setView(key);
   }, []);
 
-  const handleOpenImage = useCallback(function handleOpenImage(id: string) {
-    setActiveId(id);
-  }, []);
+  const handleOpenImage = useCallback(
+    function handleOpenImage(id: string) {
+      if (activeId === null) {
+        setViewerOpenerId(id);
+        setFailedOpenerId(null);
+      }
+      setActiveId(id);
+    },
+    [activeId]
+  );
 
   const handleImageLoadError = useCallback(
     function handleImageLoadError(id: string) {
+      if (activeId !== null && viewerOpenerId === id) setFailedOpenerId(id);
       setActiveId((current) => (current === id ? null : current));
       markError(id);
     },
-    [markError]
+    [activeId, markError, viewerOpenerId]
   );
 
   const handleCloseViewer = useCallback(function handleCloseViewer() {
     setActiveId(null);
+    setViewerOpenerId(null);
   }, []);
 
   const { dropProps, isDropTarget } = useDrop({
@@ -215,6 +226,7 @@ export function Gallery({
                 onRetry={retryImage}
                 onLoadError={handleImageLoadError}
                 onLoadSuccess={markReady}
+                preserveFocusActionId={failedOpenerId}
               />
             ) : (
               <GridView
@@ -224,6 +236,7 @@ export function Gallery({
                 onRetry={retryImage}
                 onLoadError={handleImageLoadError}
                 onLoadSuccess={markReady}
+                preserveFocusActionId={failedOpenerId}
               />
             )}
           </Box>

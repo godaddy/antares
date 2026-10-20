@@ -23,10 +23,21 @@ interface GridViewProps {
 
   /** Reports a successful image load. */
   onLoadSuccess: (id: string) => void;
+
+  /** Keeps the viewer opener mounted if that same file fails. */
+  preserveFocusActionId?: string | null;
 }
 
 /** Cards keep a consistent preview size, including small collections. */
-export function GridView({ images, onOpen, onRemove, onRetry, onLoadError, onLoadSuccess }: GridViewProps) {
+export function GridView({
+  images,
+  onOpen,
+  onRemove,
+  onRetry,
+  onLoadError,
+  onLoadSuccess,
+  preserveFocusActionId
+}: GridViewProps) {
   return (
     <Grid
       as="ul"
@@ -45,6 +56,7 @@ export function GridView({ images, onOpen, onRemove, onRetry, onLoadError, onLoa
         onRetry={onRetry}
         onLoadError={onLoadError}
         onLoadSuccess={onLoadSuccess}
+        preserveFocusActionId={preserveFocusActionId}
       />
     </Grid>
   );

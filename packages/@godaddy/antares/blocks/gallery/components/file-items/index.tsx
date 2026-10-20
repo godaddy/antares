@@ -10,10 +10,22 @@ interface FileItemsProps
 
   /** Layout variant shared by every item in the collection. */
   variant: FileItemProps['variant'];
+
+  /** Keeps the viewer opener mounted if that same file fails. */
+  preserveFocusActionId?: string | null;
 }
 
 /** Shared collection renderer used by the list and grid layouts. */
-export function FileItems({ images, variant, onOpen, onRemove, onRetry, onLoadError, onLoadSuccess }: FileItemsProps) {
+export function FileItems({
+  images,
+  variant,
+  onOpen,
+  onRemove,
+  onRetry,
+  onLoadError,
+  onLoadSuccess,
+  preserveFocusActionId
+}: FileItemsProps) {
   return images.map(function renderFileItem(image) {
     return (
       <FileItem
@@ -25,6 +37,7 @@ export function FileItems({ images, variant, onOpen, onRemove, onRetry, onLoadEr
         onRetry={onRetry}
         onLoadError={onLoadError}
         onLoadSuccess={onLoadSuccess}
+        preserveFocusAction={image.id === preserveFocusActionId}
       />
     );
   });

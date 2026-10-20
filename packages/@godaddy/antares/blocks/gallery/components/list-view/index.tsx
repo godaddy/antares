@@ -25,12 +25,23 @@ interface ListViewProps {
 
   /** Reports a successful image load. */
   onLoadSuccess: (id: string) => void;
+
+  /** Keeps the viewer opener mounted if that same file fails. */
+  preserveFocusActionId?: string | null;
 }
 
 const MAX_VISIBLE_ITEMS = 5;
 
 /** Horizontal file list with counter and error banner. */
-export function ListView({ images, onOpen, onRemove, onRetry, onLoadError, onLoadSuccess }: ListViewProps) {
+export function ListView({
+  images,
+  onOpen,
+  onRemove,
+  onRetry,
+  onLoadError,
+  onLoadSuccess,
+  preserveFocusActionId
+}: ListViewProps) {
   const [showAll, setShowAll] = useState(false);
   const listRef = useRef<HTMLUListElement>(null);
   const firstRevealedIndex = useRef<number | null>(null);
@@ -67,6 +78,7 @@ export function ListView({ images, onOpen, onRemove, onRetry, onLoadError, onLoa
           onRetry={onRetry}
           onLoadError={onLoadError}
           onLoadSuccess={onLoadSuccess}
+          preserveFocusActionId={preserveFocusActionId}
         />
       </Flex>
       <ViewBanner

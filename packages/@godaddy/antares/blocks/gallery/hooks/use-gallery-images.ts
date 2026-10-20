@@ -94,17 +94,17 @@ export function useGalleryImages(
               invalid++;
               continue;
             }
-            const totalBytes = collection.current.reduce((total, image) => total + (image.size ?? 0), 0);
-            if (collection.current.length >= limits.maxFiles || totalBytes + file.size > limits.maxTotalSize) {
-              overBudget++;
-              continue;
-            }
             const hash = await contentKey(file);
             if (!mounted.current) return;
             const id = `local-${instanceId}-${counter.current++}`;
             const key = hash ? JSON.stringify([file.name, hash]) : `unique:${id}`;
             if (hash && owned.current.has(key)) {
               duplicates++;
+              continue;
+            }
+            const totalBytes = collection.current.reduce((total, image) => total + (image.size ?? 0), 0);
+            if (collection.current.length >= limits.maxFiles || totalBytes + file.size > limits.maxTotalSize) {
+              overBudget++;
               continue;
             }
             const url = URL.createObjectURL(file);

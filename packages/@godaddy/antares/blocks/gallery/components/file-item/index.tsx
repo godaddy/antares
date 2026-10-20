@@ -27,6 +27,9 @@ export interface FileItemProps {
 
   /** Reports a successful image load. */
   onLoadSuccess: (id: string) => void;
+
+  /** Keeps this file's cover action mounted when it is the active viewer opener. */
+  preserveFocusAction?: boolean;
 }
 
 const fileSizeFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
@@ -40,7 +43,16 @@ function formatFileSize(bytes: number | undefined) {
 }
 
 /** One file item with the same actions and states across list and grid views. */
-export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadError, onLoadSuccess }: FileItemProps) {
+export function FileItem({
+  image,
+  variant,
+  onOpen,
+  onRemove,
+  onRetry,
+  onLoadError,
+  onLoadSuccess,
+  preserveFocusAction = false
+}: FileItemProps) {
   const removeButton = useRef<HTMLButtonElement>(null);
   const size = formatFileSize(image.size);
   const isError = image.status === 'error';
@@ -70,6 +82,8 @@ export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadErro
             onOpen={canOpen ? onOpen : undefined}
             onLoadError={onLoadError}
             onLoadSuccess={isLoading ? onLoadSuccess : undefined}
+            onRetry={handleRetry}
+            preserveErrorAction={preserveFocusAction}
           />
         </Box>
 
@@ -96,7 +110,13 @@ export function FileItem({ image, variant, onOpen, onRemove, onRetry, onLoadErro
               <Detail emphasis="critical" maxLines={1}>
                 {image.errorMessage ?? 'File needs attention.'}
               </Detail>
-              <Button variant="inline" size="sm" aria-label={`Retry ${image.name}`} onPress={handleRetry}>
+              <Button
+                data-gallery-retry=""
+                variant="inline"
+                size="sm"
+                aria-label={`Retry ${image.name}`}
+                onPress={handleRetry}
+              >
                 <Icon icon="refresh" aria-hidden="true" />
                 Retry
               </Button>
