@@ -44,10 +44,10 @@ export interface RangeFieldProps<T extends number | number[] = number | number[]
   defaultValue?: T;
 
   /** Callback fired when the value or values change. */
-  onChange?(value: T): void;
+  onChange?: (value: T) => void;
 
   /** Callback fired with the value or values when the user finishes an adjustment. */
-  onChangeEnd?(value: T): void;
+  onChangeEnd?: (value: T) => void;
 
   /** Minimum value. @default 0 */
   minValue?: number;
