@@ -51,6 +51,19 @@ const config: RcFile = {
   ],
   versionGroups: [
     {
+      label: 'Antares native compiler',
+      packages: ['@godaddy/antares'],
+      dependencies: ['typescript'],
+      policy: 'sameRange'
+    },
+
+    {
+      label: 'TypeScript compiler API compatibility',
+      packages: ['**'],
+      dependencies: ['typescript'],
+      policy: 'sameRange'
+    },
+    {
       label: 'React peer dependencies',
       packages: ['**'],
       dependencies: ['react', 'react-dom'],

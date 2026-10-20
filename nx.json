@@ -5,6 +5,9 @@
     "autoExit": true
   },
   "targetDefaults": {
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["default", "^default"],

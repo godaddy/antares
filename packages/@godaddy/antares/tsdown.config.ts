@@ -1,3 +1,5 @@
+import { createRequire } from 'node:module';
+import { dirname, join } from 'node:path';
 import packageJson from './package.json' with { type: 'json' };
 import { replacePlugin } from 'rolldown/plugins';
 import { mergeConfig } from 'tsdown';
@@ -15,7 +17,15 @@ import { CDN, ICON_PACKAGE, DESIGN_ASSETS_VERSION } from './utils/icon-cdn.ts';
 const versionMatch = packageJson.version.match(/^(\d+)\.(\d+)\.(\d+)/);
 const versionParts = versionMatch ? versionMatch.slice(1) : ['0', '0', '0'];
 
+const require = createRequire(import.meta.url);
+const { default: getExePath } = require(join(dirname(require.resolve('typescript/package.json')), 'lib/getExePath.js'));
+const compilerPath = getExePath();
+
 const mergedConfig = mergeConfig(config, {
+  // Resolve Antares' stable native compiler instead of the shared preview.
+  dts: {
+    tsgo: { path: compilerPath }
+  },
   plugins: [
     replacePlugin({
       major: versionParts[0],

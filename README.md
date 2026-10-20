@@ -140,6 +140,21 @@ npm run build
 npm run test
 ```
 
+### TypeScript compiler
+
+`@godaddy/antares` uses stable TypeScript 7 for type checking and declaration
+emit. Its `typecheck` task runs the package-local `tsc`, and its tsdown config
+resolves that same compiler explicitly. Run it with:
+
+```sh
+npm exec nx run @godaddy/antares:typecheck
+```
+
+The workspace root and the Storybook helpers retain TypeScript 6 because Nx and
+the documentation engine still use the classic JavaScript compiler API, which
+TypeScript 7 does not provide. Other packages keep their existing native preview
+checks. Keep these dependency groups separate in `syncpack.config.ts`.
+
 ### Vitest in VS Code or Cursor
 
 Run and debug component tests right from your editor with the [Vitest extension](https://marketplace.visualstudio.com/items?itemName=vitest.explorer) (`vitest.explorer`). The workspace [`.vscode/settings.json`](./.vscode/settings.json) already points the extension at `@godaddy/antares` and keeps it focused on the `SSR` and `Browser` projects, so your test runs stay quick — just install the recommended extension and reload the window.
