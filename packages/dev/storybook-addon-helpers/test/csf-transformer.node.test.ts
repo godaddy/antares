@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest';
 import path from 'node:path';
 import fs from 'node:fs';
 import { execSync } from 'node:child_process';
-import ts from 'typescript';
+import * as ts from 'typescript/unstable/ast';
+import { openTypeScriptSession } from '../src/engine/typescript-session.ts';
 import { csfTransformer } from '../src/storybook/csf-transformer.ts';
 
 /**
@@ -10,10 +11,29 @@ import { csfTransformer } from '../src/storybook/csf-transformer.ts';
  * @see https://github.com/biomejs/biome/discussions/2855
  */
 function formatTypeScript(code: string): string {
-  const sourceFile = ts.createSourceFile('file.tsx', code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
-  const parsedCode = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed, removeComments: true }).printFile(sourceFile);
-
-  return execSync('biome format --stdin-file-path=file.tsx', { input: parsedCode }).toString();
+  const session = openTypeScriptSession({ fileName: 'file.tsx', code, isolated: true });
+  try {
+    const ranges = new Map<number, number>();
+    function collect(node: ts.Node): void {
+      for (const range of [
+        ...(ts.getLeadingCommentRanges(code, node.pos) ?? []),
+        ...(ts.getTrailingCommentRanges(code, node.end) ?? [])
+      ]) {
+        ranges.set(range.pos, range.end);
+      }
+      node.forEachChild(collect);
+    }
+    collect(session.sourceFile);
+    let parsedCode = code;
+    for (const [start, end] of [...ranges].sort(([a], [b]) => b - a)) {
+      parsedCode = parsedCode.slice(0, start) + parsedCode.slice(end);
+    }
+    return execSync('biome format --stdin-file-path=file.tsx', { input: parsedCode })
+      .toString()
+      .replace(/\n\s*\n/g, '\n');
+  } finally {
+    session.close();
+  }
 }
 
 describe('csf-transformer', function csfTransformerTests() {

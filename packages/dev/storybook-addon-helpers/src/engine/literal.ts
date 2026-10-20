@@ -1,12 +1,14 @@
-import ts from 'typescript';
+import * as ts from 'typescript/unstable/ast';
+import * as factory from 'typescript/unstable/ast/factory';
 
 export function toTsExpression(value: unknown): ts.Expression {
-  const factory = ts.factory;
-
-  if (value === null || value === undefined) return factory.createNull();
-  if (typeof value === 'string') return factory.createStringLiteral(value);
-  if (typeof value === 'number') return factory.createNumericLiteral(value);
-  if (typeof value === 'boolean') return value ? factory.createTrue() : factory.createFalse();
+  if (value === null || value === undefined) return factory.createKeywordExpression(ts.SyntaxKind.NullKeyword);
+  if (typeof value === 'string') return factory.createStringLiteral(value, ts.TokenFlags.None);
+  if (typeof value === 'number') return factory.createNumericLiteral(String(value), ts.TokenFlags.None);
+  if (typeof value === 'boolean')
+    return value
+      ? factory.createKeywordExpression(ts.SyntaxKind.TrueKeyword)
+      : factory.createKeywordExpression(ts.SyntaxKind.FalseKeyword);
 
   if (Array.isArray(value)) {
     return factory.createArrayLiteralExpression(
@@ -19,13 +21,20 @@ export function toTsExpression(value: unknown): ts.Expression {
     return factory.createObjectLiteralExpression(
       Object.entries(value as Record<string, unknown>).map(([key, item]) =>
         // Quote keys so non-identifier prop names (e.g. `aria-label`, `data-x`) emit valid JS.
-        factory.createPropertyAssignment(factory.createStringLiteral(key), toTsExpression(item))
+        factory.createPropertyAssignment(
+          undefined,
+          factory.createStringLiteral(key, ts.TokenFlags.None),
+          undefined,
+          // TS7 declares this unused property-assignment type as required.
+          undefined!,
+          toTsExpression(item)
+        )
       ),
       true
     );
   }
 
-  return factory.createNull();
+  return factory.createKeywordExpression(ts.SyntaxKind.NullKeyword);
 }
 
 export function toLiteralValue(node: ts.Expression): unknown {

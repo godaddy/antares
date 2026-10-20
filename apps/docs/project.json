@@ -1,0 +1,64 @@
+{
+  "name": "docs",
+  "targets": {
+    "build": {
+      "outputs": ["{projectRoot}/storybook-static"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "env": "STORYBOOK_BASE_PATH"
+        }
+      ]
+    },
+    "build:storybook": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["storybook"]
+        },
+        {
+          "env": "STORYBOOK_BASE_PATH"
+        }
+      ],
+      "outputs": ["{projectRoot}/storybook-static"],
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/docs",
+        "command": "storybook build"
+      }
+    },
+    "serve:storybook": {
+      "continuous": true,
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/docs",
+        "command": "storybook dev"
+      }
+    },
+    "build-deps": {
+      "dependsOn": ["^build"],
+      "executor": "nx:noop"
+    },
+    "watch-deps": {
+      "continuous": true,
+      "dependsOn": ["build-deps"],
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm exec -- nx watch --projects docs --includeDependencies -- npm exec -- nx build-deps docs"
+      }
+    },
+    "static-storybook": {
+      "continuous": true,
+      "dependsOn": ["build:storybook"],
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/docs",
+        "command": "vite preview --outDir storybook-static"
+      }
+    }
+  }
+}

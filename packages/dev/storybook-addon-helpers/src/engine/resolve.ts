@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import ts from 'typescript';
+import * as ts from 'typescript/unstable/ast';
+import { openTypeScriptSession, type TypeScriptSession } from './typescript-session.ts';
 
 export interface ResolvedSymbol {
   name: string;
@@ -9,6 +10,8 @@ export interface ResolvedSymbol {
 }
 
 export interface Resolver {
+  close(): void;
+  printNode(node: ts.Node): string;
   getSourceFile(fileName: string): ts.SourceFile;
   resolveModule(moduleName: string, containingFile: string): string | undefined;
   resolveSymbol(symbolName: string, sourceFile: ts.SourceFile): ResolvedSymbol | undefined;
@@ -16,39 +19,55 @@ export interface Resolver {
 
 type LookupMode = 'local' | 'exported';
 
-export function createResolver(entryFileName: string): Resolver {
+export function createResolver(entryFileName: string, code?: string, options: { isolated?: boolean } = {}): Resolver {
   const parsedFiles = new Map<string, ts.SourceFile>();
-  const compilerOptions = loadCompilerOptions(entryFileName);
+  const sessions = new Map<string, TypeScriptSession>();
+  const sourceSessions = new Map<string, TypeScriptSession>();
+  let closed = false;
 
   function getSourceFile(fileName: string): ts.SourceFile {
+    if (closed) throw new Error('TypeScript resolver is closed');
     const absolutePath = path.resolve(fileName);
     const cached = parsedFiles.get(absolutePath);
     if (cached) return cached;
 
-    const code = fs.readFileSync(absolutePath, 'utf8');
-    const sourceFile = ts.createSourceFile(
-      absolutePath,
-      code,
-      ts.ScriptTarget.Latest,
-      true,
-      getScriptKind(absolutePath)
-    );
-    parsedFiles.set(absolutePath, sourceFile);
-    return sourceFile;
+    for (const session of sessions.values()) {
+      const source = session.project.program.getSourceFile(absolutePath);
+      if (source) {
+        parsedFiles.set(absolutePath, source);
+        sourceSessions.set(absolutePath, session);
+        return source;
+      }
+    }
+    const session = openTypeScriptSession({
+      fileName: absolutePath,
+      code:
+        absolutePath === path.resolve(entryFileName) && code !== undefined
+          ? code
+          : fs.readFileSync(absolutePath, 'utf8'),
+      extendsConfig: findConfig(absolutePath),
+      isolated: options.isolated
+    });
+    sessions.set(absolutePath, session);
+    sourceSessions.set(absolutePath, session);
+    parsedFiles.set(absolutePath, session.sourceFile);
+    return session.sourceFile;
   }
 
   function resolveModule(moduleName: string, containingFile: string): string | undefined {
-    const resolved = ts.resolveModuleName(moduleName, containingFile, compilerOptions, ts.sys);
-    if (resolved.resolvedModule?.resolvedFileName) return path.resolve(resolved.resolvedModule.resolvedFileName);
-
-    if (moduleName.startsWith('.')) {
-      const basePath = path.resolve(path.dirname(containingFile), moduleName);
-      for (const extension of ['.ts', '.tsx', '.d.ts', '.js', '.jsx']) {
-        const candidate = basePath.endsWith(extension) ? basePath : `${basePath}${extension}`;
-        if (fs.existsSync(candidate)) return candidate;
+    const source = getSourceFile(containingFile);
+    const session = sourceSessions.get(path.resolve(containingFile));
+    if (!session) return undefined;
+    for (const statement of source.statements) {
+      if (!ts.isImportDeclaration(statement) && !ts.isExportDeclaration(statement)) continue;
+      const specifier = statement.moduleSpecifier;
+      if (!specifier || !ts.isStringLiteral(specifier) || specifier.text !== moduleName) continue;
+      const symbol = session.project.checker.getSymbolAtLocation(specifier);
+      for (const handle of symbol?.declarations ?? []) {
+        const declaration = handle.resolve(session.project);
+        if (declaration && ts.isSourceFile(declaration)) return path.resolve(declaration.fileName);
       }
     }
-
     return undefined;
   }
 
@@ -157,62 +176,38 @@ export function createResolver(entryFileName: string): Resolver {
   }
 
   return {
+    printNode(node) {
+      getSourceFile(entryFileName);
+      const session = sourceSessions.get(path.resolve(entryFileName));
+      if (!session) throw new Error('No active TypeScript session');
+      return session.project.emitter.printNode(node);
+    },
+    close() {
+      if (closed) return;
+      closed = true;
+      try {
+        for (const session of sessions.values()) session.close();
+      } finally {
+        sessions.clear();
+        sourceSessions.clear();
+        parsedFiles.clear();
+      }
+    },
     getSourceFile,
     resolveModule,
     resolveSymbol
   };
 }
 
-function getScriptKind(fileName: string): ts.ScriptKind {
-  const getScriptKindFromFileName = (
-    ts as typeof ts & { getScriptKindFromFileName?: (fileName: string) => ts.ScriptKind }
-  ).getScriptKindFromFileName;
-  const scriptKind = getScriptKindFromFileName?.(fileName);
-  if (scriptKind) return scriptKind;
-
-  if (fileName.endsWith('.tsx')) return ts.ScriptKind.TSX;
-  if (fileName.endsWith('.jsx')) return ts.ScriptKind.JSX;
-  if (fileName.endsWith('.js')) return ts.ScriptKind.JS;
-  return ts.ScriptKind.TS;
-}
-
-function loadCompilerOptions(entryFileName: string): ts.CompilerOptions {
-  const fallbackOptions = getFallbackCompilerOptions();
-  const configSearchPath = getConfigSearchPath(entryFileName);
-  const configFileName = ts.findConfigFile(configSearchPath, ts.sys.fileExists);
-  if (!configFileName) return fallbackOptions;
-
-  const configFile = ts.readConfigFile(configFileName, ts.sys.readFile);
-  if (configFile.error) return fallbackOptions;
-
-  const parsedConfig = ts.parseJsonConfigFileContent(
-    configFile.config,
-    ts.sys,
-    path.dirname(configFileName),
-    fallbackOptions,
-    configFileName
-  );
-
-  return parsedConfig.options;
-}
-
-function getConfigSearchPath(entryFileName: string): string {
-  const entryPath = path.resolve(entryFileName);
-
-  if (fs.existsSync(entryPath) && fs.statSync(entryPath).isDirectory()) return entryPath;
-  return path.dirname(entryPath);
-}
-
-function getFallbackCompilerOptions(): ts.CompilerOptions {
-  return {
-    allowJs: true,
-    allowSyntheticDefaultImports: true,
-    esModuleInterop: true,
-    jsx: ts.JsxEmit.ReactJSX,
-    module: ts.ModuleKind.ESNext,
-    moduleResolution: ts.ModuleResolutionKind.Bundler,
-    target: ts.ScriptTarget.Latest
-  };
+function findConfig(fileName: string): string | undefined {
+  let directory = path.dirname(path.resolve(fileName));
+  while (true) {
+    const candidate = path.join(directory, 'tsconfig.json');
+    if (fs.existsSync(candidate)) return candidate;
+    const parent = path.dirname(directory);
+    if (parent === directory) return undefined;
+    directory = parent;
+  }
 }
 
 function findDeclaration(
@@ -246,6 +241,9 @@ function findDeclaration(
 }
 
 function hasExportModifier(node: ts.Node): boolean {
-  if (!ts.canHaveModifiers(node)) return false;
-  return Boolean(ts.getModifiers(node)?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword));
+  return (
+    'modifiers' in node &&
+    Array.isArray(node.modifiers) &&
+    node.modifiers.some((modifier: ts.ModifierLike) => modifier.kind === ts.SyntaxKind.ExportKeyword)
+  );
 }

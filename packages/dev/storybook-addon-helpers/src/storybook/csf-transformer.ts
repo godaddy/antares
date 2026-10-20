@@ -1,4 +1,7 @@
-import ts from 'typescript';
+import * as ts from 'typescript/unstable/ast';
+import { createResolver, type Resolver } from '../engine/resolve.ts';
+import { openTypeScriptSession } from '../engine/typescript-session.ts';
+import * as factory from 'typescript/unstable/ast/factory';
 import { readFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { extractVariantNames } from './getters-parser.ts';
@@ -10,13 +13,13 @@ import { toTsExpression } from '../engine/literal.ts';
 import type { DocsDefaults } from '../types.ts';
 
 const RENDER_STR = 'render';
-const factory = ts.factory;
 
 type TransformerFn = (
   node: ts.Node,
   sourceFile: ts.SourceFile,
-  defaults?: DocsDefaults
-) => ts.VisitResult<ts.Node> | undefined;
+  defaults: DocsDefaults | undefined,
+  resolver: Resolver
+) => ts.Node | undefined;
 
 /**
  * Applies transformers to a CSF file or code and outputs the transformed CSF code.
@@ -31,21 +34,33 @@ export async function csfTransformer(input: {
 }): Promise<string> {
   const filePath = input.filePath ?? '';
   const code = input.filePath ? await readFile(input.filePath, 'utf8') : (input.code ?? '');
-  const sourceFile = ts.createSourceFile(filePath, code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
-
   const examples = await scanExamples(filePath, code);
-
-  const result = ts.transform(sourceFile, [
-    applyTransformers(
-      [transformGetMeta, transformGetStory, transformGetVariants, transformGetComponentDocs, transformGetTypeDocs],
+  const resolver = createResolver(filePath || 'inline.tsx', code, {
+    isolated: !code.includes(GET_COMPONENT_DOCS) && !code.includes(GET_TYPE_DOCS)
+  });
+  try {
+    const sourceFile = resolver.getSourceFile(filePath || 'inline.tsx');
+    const edits: SourceEdit[] = [];
+    const statements = applyTransformers(
+      sourceFile,
+      [transformGetMeta, transformGetStory, transformGetComponentDocs, transformGetTypeDocs],
+      resolver,
+      edits,
       input.defaults
-    ),
-    transformExamples(examples, filePath),
-    pruneUnusedImports(),
-    assertNoStoryCollisions(examples, filePath)
-  ]);
-  const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
-  return printer.printFile(result.transformed[0] as ts.SourceFile);
+    );
+    const expanded = transformExamples(statements, examples, filePath, resolver, edits);
+    pruneUnusedImports(expanded, resolver, edits);
+    // TS7 encodes synthetic positions as zero. Printing a mixed source tree
+    // consequently repeats its first comment on generated nodes. Emit standalone
+    // replacements and retain authored source/trivia outside their AST ranges.
+    const output = edits
+      .sort((a, b) => b.start - a.start || b.end - a.end)
+      .reduce((text, edit) => text.slice(0, edit.start) + edit.text + text.slice(edit.end), code);
+    assertNoStoryCollisions(output, examples, filePath);
+    return output;
+  } finally {
+    resolver.close();
+  }
 }
 
 /**
@@ -94,7 +109,12 @@ function transformGetStory(node: ts.Node) {
 
   if (isValidObj) return upsertObjectProp(storyObj, RENDER_STR, renderFn);
 
-  return factory.createObjectLiteralExpression([factory.createPropertyAssignment(RENDER_STR, renderFn)], true);
+  return factory.createObjectLiteralExpression(
+    [
+      factory.createPropertyAssignment(undefined, factory.createIdentifier(RENDER_STR), undefined, undefined!, renderFn)
+    ],
+    true
+  );
 }
 
 /**
@@ -145,9 +165,16 @@ function transformGetVariants(node: ts.Node) {
 
     out.push(
       factory.createVariableStatement(
-        [factory.createModifier(ts.SyntaxKind.ExportKeyword)],
+        [factory.createToken(ts.SyntaxKind.ExportKeyword)],
         factory.createVariableDeclarationList(
-          [factory.createVariableDeclaration(exportName, undefined, undefined, variantInitializer)],
+          [
+            factory.createVariableDeclaration(
+              factory.createIdentifier(exportName),
+              undefined,
+              undefined,
+              variantInitializer
+            )
+          ],
           ts.NodeFlags.Const
         )
       )
@@ -166,22 +193,26 @@ function transformGetVariants(node: ts.Node) {
 async function scanExamples(filePath: string, code: string): Promise<ExampleDescriptor[]> {
   if (!filePath || !code.includes(GET_EXAMPLES)) return [];
 
-  const sourceFile = ts.createSourceFile(filePath, code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
-
   let examplesDir: string | undefined;
   let present = false;
-
-  sourceFile.forEachChild(function find(statement) {
-    if (present) return;
-    const call = getExamplesGetterCall(statement);
-    if (!call) return;
-    present = true;
-    const arg = call.arguments[0];
-    if (arg && ts.isStringLiteral(arg)) examplesDir = arg.text;
-  });
+  const session = openTypeScriptSession({ fileName: filePath, code, isolated: true });
+  try {
+    session.sourceFile.forEachChild(function find(statement) {
+      if (present) return;
+      const call = getExamplesGetterCall(statement);
+      if (!call) return;
+      present = true;
+      const arg = call.arguments[0];
+      if (arg && ts.isStringLiteral(arg)) examplesDir = arg.text;
+    });
+  } finally {
+    session.close();
+  }
 
   if (!present) return [];
 
+  // File discovery yields to other Vite transforms. Keep native sessions out of
+  // that wait so concurrent stories do not retain one compiler process each.
   return discoverExamples({ dir: dirname(filePath), examplesDir });
 }
 
@@ -215,37 +246,33 @@ function getExamplesGetterCall(statement: ts.Node): ts.CallExpression | undefine
  * export const Primary = __example_Primary;
  * ```
  */
-function transformExamples(examples: ExampleDescriptor[], filePath: string): ts.TransformerFactory<ts.SourceFile> {
-  return function _transformer() {
-    return function _visit(sourceFile: ts.SourceFile): ts.SourceFile {
-      // Inline code has no folder to resolve the call against, so it stays as authored.
-      // A real file that resolved nothing still drops the marker below - leaving it would
-      // keep the build-time addon import in browser-facing output.
-      if (examples.length === 0 && !filePath) return sourceFile;
-
-      let found = false;
-      const body: ts.Statement[] = [];
-
-      for (const statement of sourceFile.statements) {
-        if (getExamplesGetterCall(statement)) {
-          found = true;
-          for (const example of examples) {
-            body.push(createStoryExport(example.storyName, exampleLocalName(example)));
-          }
-        } else {
-          body.push(statement);
-        }
-      }
-
-      if (!found) return sourceFile;
-
-      const imports = examples.map((example) =>
-        createNamedImport(example.componentExportName, exampleLocalName(example), example.importPath)
-      );
-
-      return factory.updateSourceFile(sourceFile, [...imports, ...body]);
-    };
-  };
+function transformExamples(
+  statements: readonly ts.Statement[],
+  examples: ExampleDescriptor[],
+  filePath: string,
+  resolver: Resolver,
+  edits: SourceEdit[]
+): readonly ts.Statement[] {
+  if (examples.length === 0 && !filePath) return statements;
+  let found = false;
+  const body = statements.flatMap(function expandExamples(statement) {
+    if (!getExamplesGetterCall(statement)) return [statement];
+    found = true;
+    const stories = examples.map((example) => createStoryExport(example.storyName, exampleLocalName(example)));
+    edits.push({
+      start: statement.getStart(),
+      end: statement.end,
+      text: stories.map((node) => resolver.printNode(node)).join('\n')
+    });
+    return stories;
+  });
+  if (!found) return statements;
+  const imports = examples.map((example) =>
+    createNamedImport(example.componentExportName, exampleLocalName(example), example.importPath)
+  );
+  if (imports.length)
+    edits.push({ start: 0, end: 0, text: imports.map((node) => resolver.printNode(node)).join('\n') + '\n' });
+  return [...imports, ...body];
 }
 
 /** The reserved local an example is imported as. Story names are unique, so these are too. */
@@ -282,78 +309,47 @@ const COLLISION_DIAGNOSTICS = new Set([
  * getter. It cannot clear one that survives on its own merits - `getMeta({ component })`
  * keeps its reference - so the remainder is reported here.
  */
-function assertNoStoryCollisions(
-  examples: ExampleDescriptor[],
-  filePath: string
-): ts.TransformerFactory<ts.SourceFile> {
-  return function _transformer() {
-    return function _visit(sourceFile: ts.SourceFile): ts.SourceFile {
-      if (examples.length === 0) return sourceFile;
+function assertNoStoryCollisions(code: string, examples: ExampleDescriptor[], filePath: string): void {
+  if (examples.length === 0) return;
 
-      const where = filePath || 'stories file';
-      const byStoryName = new Map<string, ExampleDescriptor>();
+  const where = filePath || 'stories file';
+  const byStoryName = new Map<string, ExampleDescriptor>();
 
-      // Two examples reducing to one story name collide on their own, and naming both
-      // files beats the checker's report of a redeclared variable.
-      for (const example of examples) {
-        const existing = byStoryName.get(example.storyName);
-        if (existing) {
-          throw new Error(
-            `${where}: ${existing.importPath} and ${example.importPath} both generate a story ` +
-              `named "${example.storyName}". Rename one of the example exports.`
-          );
-        }
-        byStoryName.set(example.storyName, example);
-      }
-
-      const collision = findCollision(sourceFile);
-      if (!collision) return sourceFile;
-
-      const stories = examples.map((example) => `"${example.storyName}" (${example.importPath})`).join(', ');
-
+  // Two examples reducing to one story name collide on their own, and naming both
+  // files beats the checker's report of a redeclared variable.
+  for (const example of examples) {
+    const existing = byStoryName.get(example.storyName);
+    if (existing) {
       throw new Error(
-        `${where}: the transformed stories file is invalid - ${collision} Generated example ` +
-          `stories: ${stories}. Rename the example export or the binding it collides with.`
+        `${where}: ${existing.importPath} and ${example.importPath} both generate a story ` +
+          `named "${example.storyName}". Rename one of the example exports.`
       );
-    };
-  };
+    }
+    byStoryName.set(example.storyName, example);
+  }
+
+  const collision = findCollision(code);
+  if (!collision) return;
+
+  const stories = examples.map((example) => `"${example.storyName}" (${example.importPath})`).join(', ');
+
+  throw new Error(
+    `${where}: the transformed stories file is invalid - ${collision} Generated example ` +
+      `stories: ${stories}. Rename the example export or the binding it collides with.`
+  );
 }
 
 /** Type-checks the printed output in isolation, returning the first name-collision error. */
-function findCollision(sourceFile: ts.SourceFile): string | undefined {
-  const fileName = 'transformed.tsx';
-  const code = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed }).printFile(sourceFile);
-  const parsed = ts.createSourceFile(fileName, code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
-
-  // `noResolve`/`noLib` keep this to the one file: imports stay unresolved (reported as
-  // 2307, which is ignored) and no lib or dependency graph is loaded.
-  const host: ts.CompilerHost = {
-    getSourceFile: (name) => (name === fileName ? parsed : undefined),
-    writeFile: () => undefined,
-    getDefaultLibFileName: () => 'lib.d.ts',
-    getCurrentDirectory: () => '',
-    getCanonicalFileName: (name) => name,
-    useCaseSensitiveFileNames: () => true,
-    getNewLine: () => '\n',
-    fileExists: (name) => name === fileName,
-    readFile: (name) => (name === fileName ? code : undefined)
-  };
-
-  const program = ts.createProgram(
-    [fileName],
-    {
-      noResolve: true,
-      noLib: true,
-      noImplicitAny: false,
-      types: [],
-      jsx: ts.JsxEmit.Preserve
-    },
-    host
-  );
-
-  const found = program.getSemanticDiagnostics(parsed).find((diagnostic) => COLLISION_DIAGNOSTICS.has(diagnostic.code));
-
-  return found ? ts.flattenDiagnosticMessageText(found.messageText, ' ') : undefined;
+function findCollision(code: string): string | undefined {
+  const session = openTypeScriptSession({ fileName: 'transformed.tsx', code, isolated: true });
+  try {
+    const found = session.project.program
+      .getSemanticDiagnostics(session.sourceFile.fileName)
+      .find((diagnostic) => COLLISION_DIAGNOSTICS.has(diagnostic.code));
+    return found?.text;
+  } finally {
+    session.close();
+  }
 }
 
 /**
@@ -365,47 +361,28 @@ function findCollision(sourceFile: ts.SourceFile): string | undefined {
  *
  * Default, namespace, side-effect and type-only imports are left untouched.
  */
-function pruneUnusedImports(): ts.TransformerFactory<ts.SourceFile> {
-  return function _transformer() {
-    return function _visit(sourceFile: ts.SourceFile): ts.SourceFile {
-      const references = collectValueReferences(
-        sourceFile.statements.filter((statement) => !ts.isImportDeclaration(statement))
-      );
-
-      let changed = false;
-      const statements: ts.Statement[] = [];
-
-      for (const statement of sourceFile.statements) {
-        if (!ts.isImportDeclaration(statement)) {
-          statements.push(statement);
-          continue;
-        }
-
-        const clause = statement.importClause;
-        const pruned =
-          clause && clause.phaseModifier === undefined ? keepReferencedBindings(clause, references) : clause;
-        if (pruned === clause) {
-          statements.push(statement);
-          continue;
-        }
-
-        changed = true;
-        if (pruned) {
-          statements.push(
-            factory.updateImportDeclaration(
-              statement,
-              statement.modifiers,
-              pruned,
-              statement.moduleSpecifier,
-              statement.attributes
-            )
-          );
-        }
-      }
-
-      return changed ? factory.updateSourceFile(sourceFile, statements) : sourceFile;
-    };
-  };
+function pruneUnusedImports(statements: readonly ts.Statement[], resolver: Resolver, edits: SourceEdit[]): void {
+  const references = collectValueReferences(statements.filter((statement) => !ts.isImportDeclaration(statement)));
+  for (const statement of statements) {
+    if (!ts.isImportDeclaration(statement)) continue;
+    const clause = statement.importClause;
+    const pruned = clause && clause.phaseModifier === undefined ? keepReferencedBindings(clause, references) : clause;
+    if (pruned === clause) continue;
+    const replacement = pruned
+      ? factory.updateImportDeclaration(
+          statement,
+          statement.modifiers,
+          pruned,
+          statement.moduleSpecifier,
+          statement.attributes
+        )
+      : undefined;
+    edits.push({
+      start: statement.getStart(),
+      end: statement.end,
+      text: replacement ? resolver.printNode(replacement) : ''
+    });
+  }
 }
 
 /**
@@ -422,7 +399,6 @@ function keepReferencedBindings(clause: ts.ImportClause, references: Set<string>
 
   return factory.updateImportClause(
     clause,
-    clause.phaseModifier,
     clause.name,
     kept.length > 0 ? factory.createNamedImports(kept) : undefined
   );
@@ -444,7 +420,7 @@ function collectValueReferences(statements: readonly ts.Statement[]): Set<string
     }
 
     const name = nonReferenceName(node);
-    ts.forEachChild(node, function visitReference(child) {
+    node.forEachChild(function visitReference(child) {
       if (child !== name) visit(child);
     });
   }
@@ -465,7 +441,7 @@ function nonReferenceName(node: ts.Node): ts.Node | undefined {
 
   const declaresName =
     ts.isVariableDeclaration(node) ||
-    ts.isParameter(node) ||
+    ts.isParameterDeclaration(node) ||
     ts.isBindingElement(node) ||
     ts.isFunctionDeclaration(node) ||
     ts.isFunctionExpression(node) ||
@@ -484,22 +460,29 @@ function createNamedImport(exportName: string, localName: string, modulePath: st
   return factory.createImportDeclaration(
     undefined,
     factory.createImportClause(
-      false,
+      undefined,
       undefined,
       factory.createNamedImports([
         factory.createImportSpecifier(false, factory.createIdentifier(exportName), factory.createIdentifier(localName))
       ])
     ),
-    factory.createStringLiteral(modulePath)
+    factory.createStringLiteral(modulePath, ts.TokenFlags.None)
   );
 }
 
 /** Builds `export const <storyName> = <componentName>;` */
 function createStoryExport(storyName: string, componentName: string): ts.VariableStatement {
   return factory.createVariableStatement(
-    [factory.createModifier(ts.SyntaxKind.ExportKeyword)],
+    [factory.createToken(ts.SyntaxKind.ExportKeyword)],
     factory.createVariableDeclarationList(
-      [factory.createVariableDeclaration(storyName, undefined, undefined, factory.createIdentifier(componentName))],
+      [
+        factory.createVariableDeclaration(
+          factory.createIdentifier(storyName),
+          undefined,
+          undefined,
+          factory.createIdentifier(componentName)
+        )
+      ],
       ts.NodeFlags.Const
     )
   );
@@ -519,10 +502,15 @@ function createStoryExport(storyName: string, componentName: string): ts.Variabl
  * export const ButtonDocs = { tags: ['!dev'], argTypes: { ... } };
  * ```
  */
-function transformGetComponentDocs(node: ts.Node, sourceFile: ts.SourceFile, defaults?: DocsDefaults) {
+function transformGetComponentDocs(
+  node: ts.Node,
+  sourceFile: ts.SourceFile,
+  defaults: DocsDefaults | undefined,
+  resolver: Resolver
+) {
   if (!isCallTo(node, GET_COMPONENT_DOCS) || !ts.isIdentifier(node.arguments[0])) return;
 
-  const doc = docFromCall(node, sourceFile, undefined, defaults);
+  const doc = docFromCall(node, sourceFile, resolver, defaults);
   if (!doc) return;
 
   return toTsExpression(toStorybookArgTypes(doc));
@@ -546,11 +534,12 @@ function transformGetComponentDocs(node: ts.Node, sourceFile: ts.SourceFile, def
 function transformGetTypeDocs(
   node: ts.Node,
   sourceFile: ts.SourceFile,
-  defaults?: DocsDefaults
+  defaults: DocsDefaults | undefined,
+  resolver: Resolver
 ): ts.Expression | undefined {
   if (!isCallTo(node, GET_TYPE_DOCS) || node.typeArguments?.length !== 1) return;
 
-  const doc = docFromCall(node, sourceFile, undefined, defaults);
+  const doc = docFromCall(node, sourceFile, resolver, defaults);
   if (!doc) return;
 
   return toTsExpression(toStorybookArgTypes(doc));
@@ -562,22 +551,43 @@ function transformGetTypeDocs(
  * @param transformers - The transformers to apply.
  * @returns The transformed CSF file.
  */
+interface SourceEdit {
+  start: number;
+  end: number;
+  text: string;
+}
+
 function applyTransformers(
+  sourceFile: ts.SourceFile,
   transformers: TransformerFn[],
+  resolver: Resolver,
+  edits: SourceEdit[],
   defaults?: DocsDefaults
-): ts.TransformerFactory<ts.SourceFile> {
-  return function _transformer(context) {
-    return function _visit(sourceFile: ts.SourceFile): ts.SourceFile {
-      function visit(node: ts.Node): ts.VisitResult<ts.Node> {
-        for (const transformer of transformers) {
-          const result = transformer(node, sourceFile, defaults);
-          if (result) return result;
-        }
-        return ts.visitEachChild(node, visit, context);
+): ts.Statement[] {
+  function visit(node: ts.Node): ts.Node {
+    for (const transformer of transformers) {
+      const result = transformer(node, sourceFile, defaults, resolver);
+      if (result) {
+        edits.push({
+          start: node.getStart(sourceFile),
+          end: node.end,
+          text: result.pos >= 0 ? result.getText(sourceFile) : resolver.printNode(result)
+        });
+        return result;
       }
-      return ts.visitNode(sourceFile, visit) as ts.SourceFile;
-    };
-  };
+    }
+    return ts.visitEachChild(node, visit);
+  }
+  return sourceFile.statements.flatMap(function expandExamples(statement) {
+    const variants = transformGetVariants(statement);
+    if (!variants) return [visit(statement) as ts.Statement];
+    edits.push({
+      start: statement.getStart(sourceFile),
+      end: statement.end,
+      text: variants.map((node) => resolver.printNode(node)).join('\n')
+    });
+    return variants;
+  });
 }
 
 /**
@@ -606,8 +616,11 @@ function upsertObjectProp(
   valueExpr: ts.Expression
 ): ts.ObjectLiteralExpression {
   if (objectHasProp(obj, propName)) return obj;
-  return ts.factory.createObjectLiteralExpression(
-    [...obj.properties, ts.factory.createPropertyAssignment(propName, valueExpr)],
+  return factory.createObjectLiteralExpression(
+    [
+      ...obj.properties,
+      factory.createPropertyAssignment(undefined, factory.createIdentifier(propName), undefined, undefined!, valueExpr)
+    ],
     true
   );
 }
@@ -615,11 +628,14 @@ function upsertObjectProp(
 /**
  * Creates a render function: args => <Component {...args} />
  */
-function createRenderFunction(factory: ts.NodeFactory, component: ts.Expression): ts.ArrowFunction {
+function createRenderFunction(
+  factory: typeof import('typescript/unstable/ast/factory'),
+  component: ts.Expression
+): ts.ArrowFunction {
   return factory.createArrowFunction(
     undefined,
     undefined,
-    [factory.createParameterDeclaration(undefined, undefined, 'args')],
+    [factory.createParameterDeclaration(undefined, undefined, factory.createIdentifier('args'))],
     undefined,
     factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
     factory.createJsxSelfClosingElement(

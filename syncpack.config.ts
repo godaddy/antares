@@ -40,6 +40,12 @@ const config: RcFile = {
       range: '',
       packages: ['**'],
       dependencyTypes: ['prod', 'dev'],
+      dependencies: ['typescript']
+    },
+    {
+      range: '',
+      packages: ['**'],
+      dependencyTypes: ['prod', 'dev'],
       dependencies: ['nx', '@nx/**']
     },
     {
@@ -51,14 +57,7 @@ const config: RcFile = {
   ],
   versionGroups: [
     {
-      label: 'Antares native compiler',
-      packages: ['@godaddy/antares'],
-      dependencies: ['typescript'],
-      policy: 'sameRange'
-    },
-
-    {
-      label: 'TypeScript compiler API compatibility',
+      label: 'Stable TypeScript compiler',
       packages: ['**'],
       dependencies: ['typescript'],
       policy: 'sameRange'

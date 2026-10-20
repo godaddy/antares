@@ -10,7 +10,8 @@
     "lint": "biome lint",
     "lint:fix": "biome lint --write",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -42,7 +43,8 @@
     "vitest": "^4.1.11",
     "yaml": "^2.9.1",
     "ajv": "^8.20.0",
-    "@upft/schemas": "^0.0.6"
+    "@upft/schemas": "^0.0.6",
+    "typescript": "7.0.2"
   },
   "exports": {
     "./css-in-js": {
