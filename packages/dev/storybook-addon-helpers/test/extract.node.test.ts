@@ -133,9 +133,42 @@ describe('extractTypeDocs', function extractTypeDocsTests() {
     });
   });
 
+  it('applies union key lists in Pick and Omit', function extractsUnionUtilityKeys() {
+    expect(extract('PickedUnionProps').props.map((prop) => prop.name)).toEqual(['a', 'c']);
+    expect(extract('OmittedUnionProps').props.map((prop) => prop.name)).toEqual(['b']);
+  });
+
   it('keeps base props for unsupported utility key expressions', function extractsUnsupportedUtilityKeys() {
     expect(extract('UnsupportedKeyofPickProps').props.map((prop) => prop.name)).toEqual(['child', 'parent']);
     expect(extract('UnsupportedKeyofOmitProps').props.map((prop) => prop.name)).toEqual(['child', 'parent']);
+    expect(extract('UnsupportedUnionPickProps').props.map((prop) => prop.name)).toEqual(['a', 'b', 'c']);
+  });
+
+  it('extracts quoted property names', function extractsQuotedNames() {
+    expect(extract('QuotedNameProps').props).toMatchObject([
+      { name: 'aria-label', required: false },
+      { name: 'data-testid', required: true }
+    ]);
+  });
+
+  it('skips index signatures', function skipsIndexSignatures() {
+    expect(extract('DataAttributeProps').props.map((prop) => prop.name)).toEqual(['label']);
+  });
+
+  it('skips namespaced heritage such as React.ButtonHTMLAttributes', function skipsNamespacedHeritage() {
+    expect(extract('NativeHeritageProps').props.map((prop) => prop.name)).toEqual(['tone']);
+  });
+
+  it('keeps a prop deprecated when an overridden declaration is deprecated', function extractsDeprecatedOverride() {
+    expect(extract('DeprecatedBaseProps').props).toMatchObject([{ name: 'variant', deprecated: true }]);
+    expect(extract('DeprecatedOverrideProps').props).toMatchObject([
+      { name: 'variant', description: 'Visual style.', deprecated: true, declaringType: 'DeprecatedOverrideProps' }
+    ]);
+  });
+
+  it('returns no props for unknown or non-object type names', function extractsNonObjectTypes() {
+    expect(extract('MissingProps')).toEqual({ name: 'MissingProps', props: [] });
+    expect(extract('Tone')).toEqual({ name: 'Tone', props: [] });
   });
 
   it('substitutes a generic type argument used directly in an alias body', function extractsGenericArgument() {
@@ -146,6 +179,10 @@ describe('extractTypeDocs', function extractTypeDocsTests() {
       description: 'own description',
       declaringType: 'GenericOwnProps'
     });
+  });
+
+  it('falls back to a generic parameter default when no argument is given', function extractsGenericDefault() {
+    expect(extract('UsesDefaultedWrapperProps').props.map((prop) => prop.name)).toEqual(['own', 'wrapped']);
   });
 
   it('substitutes generic arguments threaded through nested aliases and heritage', function extractsGenericHeritage() {

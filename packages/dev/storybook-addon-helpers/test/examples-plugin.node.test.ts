@@ -45,6 +45,11 @@ describe('examples-plugin', function examplesPluginTests() {
     expect(result?.match(/from '@storybook\/addon-docs\/blocks'/g)).toHaveLength(1);
   });
 
+  it('puts the doc blocks import first when the README has no frontmatter', async function importsWithoutFrontmatter() {
+    const result = await load(path.join(FIXTURES, 'examples-no-frontmatter/README.mdx'));
+    expect(result?.startsWith("import { Source, Story } from '@storybook/addon-docs/blocks';\n")).toBe(true);
+  });
+
   it('drops the marker when the component has no examples', async function noExamples() {
     const result = await load(path.join(FIXTURES, 'no-examples/README.mdx'));
     expect(result).not.toContain('<Examples');

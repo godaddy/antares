@@ -12,6 +12,10 @@ updates:
       embla-carousel:
         patterns:
           - "embla-carousel*"
+      vitest:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
       storybook:
         patterns:
           - "storybook"

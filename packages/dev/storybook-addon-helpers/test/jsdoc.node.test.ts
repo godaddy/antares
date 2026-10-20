@@ -44,6 +44,24 @@ describe('getPropJSDoc', function getPropJSDocTests() {
     });
   });
 
+  it('keeps inline {@link} tags readable in descriptions and defaults', function keepsInlineLinks() {
+    const member = getFirstProperty(`
+      interface Props {
+        /**
+         * Pairs with {@link Other} for layout.
+         * @default {@link DEFAULT_SIZE}
+         */
+        size?: string;
+      }
+    `);
+
+    expect(getPropJSDoc(member)).toEqual({
+      description: 'Pairs with {@link Other} for layout.',
+      defaultValue: '{@link DEFAULT_SIZE}',
+      deprecated: false
+    });
+  });
+
   it('flags props tagged @deprecated', function flagsDeprecated() {
     const member = getFirstProperty(`
       interface Props {

@@ -124,7 +124,7 @@ describe('@godaddy/antares', function antares() {
         await render(<TypesExample />);
 
         await expect.element(page.getByRole('tablist', { name: 'Account settings' })).toBeVisible();
-        await expect.element(page.getByRole('tabpanel')).toHaveTextContent('Account settings');
+        await expect.element(page.getByRole('tabpanel')).toMatchTextContent('Account settings');
       });
     });
 
@@ -133,7 +133,7 @@ describe('@godaddy/antares', function antares() {
         await render(<DefaultExample />);
 
         await expect.element(page.getByRole('tab', { name: 'Account' })).toHaveAttribute('aria-selected', 'true');
-        await expect.element(page.getByRole('tabpanel')).toHaveTextContent('Account settings');
+        await expect.element(page.getByRole('tabpanel')).toMatchTextContent('Account settings');
         await expect.element(page.getByRole('tab', { name: 'Billing' })).toHaveAttribute('aria-selected', 'false');
       });
 
@@ -146,7 +146,7 @@ describe('@godaddy/antares', function antares() {
         await user.click(page.getByRole('tab', { name: 'Billing' }));
 
         await expect.element(page.getByRole('tab', { name: 'Billing' })).toHaveAttribute('aria-selected', 'true');
-        await expect.element(page.getByRole('tabpanel')).toHaveTextContent('Billing settings');
+        await expect.element(page.getByRole('tabpanel')).toMatchTextContent('Billing settings');
       });
 
       it('selects a Manilla tab and shows its panel', async function manillaSelection() {
@@ -155,13 +155,13 @@ describe('@godaddy/antares', function antares() {
 
         await expect.element(page.getByRole('tablist', { name: 'Documents' })).toBeVisible();
         await expect.element(page.getByRole('tab', { name: 'Recent' })).toHaveAttribute('aria-selected', 'true');
-        await expect.element(page.getByRole('tabpanel')).toHaveTextContent('Recent documents');
+        await expect.element(page.getByRole('tabpanel')).toMatchTextContent('Recent documents');
 
         await user.click(page.getByRole('tab', { name: 'Shared' }));
 
         await expect.element(page.getByRole('tab', { name: 'Shared' })).toHaveAttribute('aria-selected', 'true');
         await expect.element(page.getByRole('tab', { name: 'Recent' })).toHaveAttribute('aria-selected', 'false');
-        await expect.element(page.getByRole('tabpanel')).toHaveTextContent('Shared documents');
+        await expect.element(page.getByRole('tabpanel')).toMatchTextContent('Shared documents');
       });
 
       it('starts with and updates controlled selection', async function controlledSelection() {
@@ -172,7 +172,7 @@ describe('@godaddy/antares', function antares() {
         await expect.element(page.getByText('Current selection: billing')).toBeVisible();
         await user.click(page.getByRole('tab', { name: 'Security' }));
         await expect.element(page.getByText('Current selection: security')).toBeVisible();
-        await expect.element(page.getByRole('tabpanel')).toHaveTextContent('Security settings');
+        await expect.element(page.getByRole('tabpanel')).toMatchTextContent('Security settings');
       });
     });
 
@@ -185,7 +185,7 @@ describe('@godaddy/antares', function antares() {
         await user.keyboard('{ArrowRight}');
 
         await expect.element(page.getByRole('tab', { name: 'Billing' })).toHaveAttribute('aria-selected', 'true');
-        await expect.element(page.getByRole('tabpanel')).toHaveTextContent('Billing settings');
+        await expect.element(page.getByRole('tabpanel')).toMatchTextContent('Billing settings');
       });
 
       it('requires activation after focus in manual mode', async function manualActivation() {
@@ -204,7 +204,7 @@ describe('@godaddy/antares', function antares() {
         await user.keyboard('{Enter}');
 
         await expect.element(billing).toHaveAttribute('aria-selected', 'true');
-        await expect.element(page.getByRole('tabpanel')).toHaveTextContent('Billing');
+        await expect.element(page.getByRole('tabpanel')).toMatchTextContent('Billing');
       });
 
       it('supports Arrow, Home, and End navigation', async function keyboardNavigation() {

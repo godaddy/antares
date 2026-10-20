@@ -36,6 +36,15 @@ describe('extractComponentDocs', function extractComponentDocsTests() {
     expect(extract('ForwardRefExoticComponent').props.map((prop) => prop.name)).toEqual(['exotic']);
   });
 
+  it('extracts props from the render function passed to withSlots', function extractsWithSlots() {
+    expect(extract('SlottedComponent').props.map((prop) => prop.name)).toEqual(['slotted']);
+    expect(extract('SlottedArrowComponent').props.map((prop) => prop.name)).toEqual(['slotted']);
+  });
+
+  it('returns no props when the name is not a component', function ignoresNonComponents() {
+    expect(extract('FunctionProps')).toEqual({ name: 'FunctionProps', props: [] });
+  });
+
   it('ignores a non-React type sharing a component type name', function ignoresForeignQualifiedType() {
     expect(extract('RegistryEntry').props).toEqual([]);
   });

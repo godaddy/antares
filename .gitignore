@@ -63,7 +63,7 @@ packages/@godaddy/**/test/__screenshots__/**/*-darwin.png
 # folder dump folder of all the compiled assets.
 .vite-node
 
-.vitest-attachments/
+.vitest/
 
 # Claude
 .claude/settings.local.json

@@ -53,23 +53,18 @@ export function extractFromTypeNode(
     const binding = env.get(typeName);
     if (binding) return extractFromTypeNode(binding.typeNode, binding.sourceFile, resolver, active, binding.env);
 
-    const innerType = getUtilityInnerType(typeName, typeNode.typeArguments ?? []);
+    const typeArguments = typeNode.typeArguments ?? [];
+    const innerType = getUtilityInnerType(typeName, typeArguments);
 
     if (innerType) {
       const props = extractFromTypeNode(innerType, sourceFile, resolver, active, env);
-      return applyUtilityType(typeName, props, typeNode.typeArguments ?? []) ?? props;
+      return applyUtilityType(typeName, props, typeArguments) ?? props;
     }
 
     const symbol = resolver.resolveSymbol(typeName, sourceFile);
     if (!symbol) return [];
 
-    const nextEnv = bindTypeParameters(
-      symbol.declaration,
-      typeNode.typeArguments ?? [],
-      sourceFile,
-      symbol.sourceFile,
-      env
-    );
+    const nextEnv = bindTypeParameters(symbol.declaration, typeArguments, sourceFile, symbol.sourceFile, env);
     return extractFromDeclaration(symbol.declaration, symbol.sourceFile, resolver, active, nextEnv);
   }
 

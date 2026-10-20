@@ -20,7 +20,7 @@ describe('@godaddy/antares', function antares() {
       const { getByRole } = await render(<CalendarWithValueExample />);
       await userEvent.click(getByRole('button', { name: /Month/ }));
       await userEvent.click(getByRole('option', { name: /January/ }));
-      await expect.element(getByRole('button', { name: /Month/ })).toHaveTextContent(/January/);
+      await expect.element(getByRole('button', { name: /Month/ })).toMatchTextContent(/January/);
     });
 
     it('jumps to a year typed into the year input', async function yearInput() {
@@ -35,8 +35,8 @@ describe('@godaddy/antares', function antares() {
       const screen = await render(<RangeCalendarExample />);
       const monthSelects = screen.getByRole('button', { name: 'Month' }).all();
       expect(monthSelects.length).toBe(2);
-      await expect.element(monthSelects[0]).toHaveTextContent('March');
-      await expect.element(monthSelects[1]).toHaveTextContent('April');
+      await expect.element(monthSelects[0]).toMatchTextContent('March');
+      await expect.element(monthSelects[1]).toMatchTextContent('April');
     });
 
     it('range calendar pages by the full visible range', async function navRange() {
@@ -45,8 +45,8 @@ describe('@godaddy/antares', function antares() {
       const [nextButton] = screen.getByRole('button', { name: 'Next' }).all();
       await userEvent.click(nextButton);
       const monthSelects = screen.getByRole('button', { name: 'Month' }).all();
-      await expect.element(monthSelects[0]).toHaveTextContent('May');
-      await expect.element(monthSelects[1]).toHaveTextContent('June');
+      await expect.element(monthSelects[0]).toMatchTextContent('May');
+      await expect.element(monthSelects[1]).toMatchTextContent('June');
     });
 
     it('editing the second month keeps the two months contiguous', async function anchor() {
@@ -55,8 +55,8 @@ describe('@godaddy/antares', function antares() {
       await userEvent.click(monthSelects[1]);
       await userEvent.click(screen.getByRole('option', { name: 'December' }));
       const updated = screen.getByRole('button', { name: 'Month' }).all();
-      await expect.element(updated[0]).toHaveTextContent('November');
-      await expect.element(updated[1]).toHaveTextContent('December');
+      await expect.element(updated[0]).toMatchTextContent('November');
+      await expect.element(updated[1]).toMatchTextContent('December');
     });
 
     it('keeps month headings fixed when focus moves into the second month', async function headingsTrackVisibleRange() {
@@ -65,8 +65,8 @@ describe('@godaddy/antares', function antares() {
       // visible range — and therefore both headings — should stay March / April.
       await userEvent.click(screen.getByRole('button', { name: /April 20, 2024/ }));
       const monthSelects = screen.getByRole('button', { name: 'Month' }).all();
-      await expect.element(monthSelects[0]).toHaveTextContent('March');
-      await expect.element(monthSelects[1]).toHaveTextContent('April');
+      await expect.element(monthSelects[0]).toMatchTextContent('March');
+      await expect.element(monthSelects[1]).toMatchTextContent('April');
     });
 
     it('does not select an unavailable day on click', async function unavailable() {

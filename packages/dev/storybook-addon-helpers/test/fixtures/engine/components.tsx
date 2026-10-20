@@ -37,6 +37,19 @@ export interface QualifiedFCProps {
 
 export const QualifiedFCComponent: React.FC<QualifiedFCProps> = (props) => <div>{props.qualifiedFc}</div>;
 
+declare function withSlots<P>(name: string, component: (props: P) => React.ReactNode): (props: P) => React.ReactNode;
+
+export interface SlottedProps {
+  slotted: string;
+}
+
+// Mirrors how `@bento/*` components are declared.
+export const SlottedComponent = withSlots('BentoSlotted', function SlottedComponent(args: SlottedProps) {
+  return <div>{args.slotted}</div>;
+});
+
+export const SlottedArrowComponent = withSlots('BentoSlottedArrow', (args: SlottedProps) => <div>{args.slotted}</div>);
+
 export interface ExoticProps {
   exotic: string;
 }
