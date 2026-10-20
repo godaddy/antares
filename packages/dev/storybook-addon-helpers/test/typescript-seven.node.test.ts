@@ -1,6 +1,7 @@
 import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { runInNewContext } from 'node:vm';
 import * as ts from 'typescript/unstable/ast';
 import { docFromCall, resolvePropsDoc } from '../src/docs.ts';
 import { parseSource } from './typescript.ts';
@@ -8,30 +9,56 @@ import { API, Emitter, Snapshot } from 'typescript/unstable/sync';
 import { version } from 'typescript';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { csfTransformer } from '../src/storybook/csf-transformer.ts';
+import { getExportedVariables } from '../src/storybook/getters-parser.ts';
 import { openTypeScriptSession } from '../src/engine/typescript-session.ts';
 import * as examples from '../src/examples.ts';
 
 afterEach(() => vi.restoreAllMocks());
 
 describe('TypeScript 7 integration', function typeScriptSevenTests() {
-  it('releases native sessions before asynchronous example discovery', async function closesBeforeDiscovery() {
-    const directory = mkdtempSync(join(tmpdir(), 'antares-ts7-discovery-'));
-    const filePath = join(directory, 'widget.stories.tsx');
-    const open = vi.spyOn(API.prototype, 'updateSnapshot');
-    const close = vi.spyOn(API.prototype, 'close');
-    const discover = vi.spyOn(examples, 'discoverExamples').mockImplementation(async function inspectSessions() {
-      expect(open).toHaveBeenCalled();
-      expect(close).toHaveBeenCalledTimes(open.mock.calls.length);
-      return [];
-    });
-    try {
-      writeFileSync(filePath, 'export const examples = getExamples();');
-      await csfTransformer({ filePath });
-      expect(discover).toHaveBeenCalledOnce();
-      expect(close).toHaveBeenCalledTimes(open.mock.calls.length);
-    } finally {
-      rmSync(directory, { recursive: true, force: true });
+  it.each([
+    { operation: 'transformer', run: csfTransformer },
+    { operation: 'indexer', run: getExportedVariables }
+  ])(
+    'releases native sessions before asynchronous example discovery in the $operation',
+    async function closesBeforeDiscovery({ run }) {
+      const directory = mkdtempSync(join(tmpdir(), 'antares-ts7-discovery-'));
+      const filePath = join(directory, 'widget.stories.tsx');
+      const open = vi.spyOn(API.prototype, 'updateSnapshot');
+      const close = vi.spyOn(API.prototype, 'close');
+      const discover = vi.spyOn(examples, 'discoverExamples').mockImplementation(async function inspectSessions() {
+        expect(open).toHaveBeenCalled();
+        expect(close).toHaveBeenCalledTimes(open.mock.calls.length);
+        return [];
+      });
+      try {
+        writeFileSync(filePath, 'export const examples = getExamples();');
+        await run({ filePath });
+        expect(discover).toHaveBeenCalledOnce();
+        expect(close).toHaveBeenCalledTimes(open.mock.calls.length);
+      } finally {
+        rmSync(directory, { recursive: true, force: true });
+      }
     }
+  );
+
+  it.each([
+    {
+      context: 'an arrow function returning an object',
+      code: "const makeMeta = () => getMeta({ title: 'Widget' }); makeMeta();",
+      expected: { title: 'Widget' }
+    },
+    {
+      context: 'a conditional followed by property access',
+      code: `const primary = { title: 'Primary' };
+        const secondary = { title: 'Secondary' };
+        getMeta(true ? primary : secondary).title;`,
+      expected: 'Primary'
+    }
+  ])('preserves expression semantics in $context', async function preservesExpressionSemantics({ code, expected }) {
+    const output = await csfTransformer({ code });
+
+    expect(runInNewContext(output)).toEqual(expected);
   });
 
   it('emits valid TSX without duplicating leading comments on generated nodes', async function keepsComments() {

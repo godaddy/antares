@@ -568,10 +568,12 @@ function applyTransformers(
     for (const transformer of transformers) {
       const result = transformer(node, sourceFile, defaults, resolver);
       if (result) {
+        const expression = result.pos >= 0 ? result.getText(sourceFile) : resolver.printNode(result);
         edits.push({
           start: node.getStart(sourceFile),
           end: node.end,
-          text: result.pos >= 0 ? result.getText(sourceFile) : resolver.printNode(result)
+          // A call is atomic in its parent expression; preserve that grouping.
+          text: `(${expression})`
         });
         return result;
       }

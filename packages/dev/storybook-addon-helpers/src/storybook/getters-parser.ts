@@ -94,6 +94,8 @@ export async function getExportedVariables(input: { filePath?: string; code?: st
       }
     });
 
+    session.close();
+
     if (hasExamples && input.filePath) {
       const descriptors = await discoverExamples({ dir: dirname(input.filePath), examplesDir: examplesArg });
       for (const descriptor of descriptors) {
