@@ -50,7 +50,7 @@
     "@vitejs/plugin-react": "^6.1.2",
     "@vitest/browser": "^4.1.11",
     "@vitest/browser-playwright": "^4.1.11",
-    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/coverage-v8": "^5.0.5",
     "@vitest/ui": "^4.1.11",
     "assume": "^2.3.0",
     "esbuild": "^0.28.1",
