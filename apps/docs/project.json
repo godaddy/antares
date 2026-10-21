@@ -6,6 +6,7 @@
       "inputs": [
         "default",
         "^default",
+        "{workspaceRoot}/docs/**/*",
         {
           "env": "STORYBOOK_BASE_PATH"
         }
@@ -17,6 +18,7 @@
       "inputs": [
         "default",
         "^default",
+        "{workspaceRoot}/docs/**/*",
         {
           "externalDependencies": ["storybook"]
         },
