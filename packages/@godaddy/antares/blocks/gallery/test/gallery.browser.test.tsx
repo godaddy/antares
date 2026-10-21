@@ -744,6 +744,38 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(thumbnail).toHaveAttribute('aria-current', 'true');
       await expect.element(dialog.getByRole('status')).toHaveTextContent('two.png');
     });
+
+    it.each(['loading', 'ready'] as const)(
+      'preserves keyboard focus when a %s thumbnail fails',
+      async function focusedThumbnailFailure(initialState) {
+        controlImageEvents();
+        vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
+        const screen = await render(<Gallery initialImages={samples} />);
+        screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('load'));
+        await userEvent.click(screen.getByRole('button', { name: 'Open one.png' }));
+        const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
+        const thumbnail = dialog.getByRole('button', { name: 'View one.png' });
+        const image = thumbnail.element().querySelector('img');
+        if (!image) throw new Error('Expected the thumbnail image');
+
+        thumbnail.element().focus();
+        if (initialState === 'ready') image.dispatchEvent(new Event('load'));
+        await expect.element(thumbnail).toHaveFocus();
+        image.dispatchEvent(new Event('error'));
+
+        await expect.element(dialog.getByRole('img', { name: 'one.png failed to load' })).toBeVisible();
+        await expect.element(thumbnail).toHaveFocus();
+        await userEvent.keyboard('{ArrowRight}');
+        await expect.element(dialog.getByRole('button', { name: 'View two.png' })).toHaveFocus();
+        await expect.element(dialog.getByRole('status')).toHaveTextContent('two.png');
+        await userEvent.keyboard('{ArrowLeft}');
+        await expect.element(thumbnail).toHaveFocus();
+        await expect.element(dialog.getByRole('status')).toHaveTextContent('one.png');
+        await userEvent.keyboard('{Enter}');
+        await expect.element(thumbnail).toHaveAttribute('aria-current', 'true');
+      }
+    );
+
     it.each(['list', 'grid'] as const)(
       'continues deletion on the adjacent file in %s view',
       async function removalFocus(view) {

@@ -166,7 +166,7 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
           hideDots
           hideNavigationControls
           hideMaskEdges
-          emblaOptions={{ direction: dir, duration: 0 }}
+          emblaOptions={{ direction: dir }}
           emblaAccessibilityOptions={{ carouselAriaLabel: 'Gallery images', announceChanges: false }}
         >
           {images.map(renderSlide)}

@@ -50,38 +50,7 @@ export function GalleryImage({
     }
   );
 
-  if (state === 'error') {
-    if (variant === 'thumbnail') {
-      const errorSurface = (
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          className={`${styles.image} ${styles.errorSurface}`}
-          data-variant={variant}
-          role="img"
-          aria-label={`${image.name} failed to load`}
-        >
-          <Icon icon="alert" aria-hidden="true" />
-        </Flex>
-      );
-
-      if (!onOpen) return errorSurface;
-
-      return (
-        <Button
-          variant={selected ? 'secondary' : 'minimal'}
-          aria-label={label ?? `View ${image.name}`}
-          excludeFromTabOrder={tabIndex === -1}
-          onKeyDown={onKeyDown}
-          aria-current={selected ? 'true' : undefined}
-          onPress={() => onOpen(image.id)}
-          className={surfaceStyles.openButton}
-        >
-          {errorSurface}
-        </Button>
-      );
-    }
-
+  if (state === 'error' && variant !== 'thumbnail') {
     return (
       <Flex direction="column" gap="xs" padding="sm" role="alert">
         <Icon icon="alert" aria-hidden="true" />
@@ -93,32 +62,58 @@ export function GalleryImage({
     );
   }
 
-  const picture = (
-    <ImageSurface
-      ref={imageRef}
-      key={attempt}
-      src={src}
-      alt={image.alt ?? image.name}
-      srcSet={variant === 'thumbnail' ? undefined : image.srcSet}
-      sizes={variant === 'thumbnail' ? undefined : image.sizes}
-      width={variant === 'thumbnail' ? 80 : image.width}
-      height={variant === 'thumbnail' ? 60 : image.height}
-      tabIndex={tabIndex}
-      onKeyDown={onKeyDown}
-      className={styles.image}
-      variant={variant}
-      loading={loading}
-      onLoad={onLoad}
-      onError={onError}
-      onOpen={onOpen ? () => onOpen(image.id) : undefined}
-      label={label ?? `View ${image.name}`}
-      selected={selected}
-    />
-  );
+  const picture =
+    state === 'error' ? (
+      <Flex
+        alignItems="center"
+        justifyContent="center"
+        className={`${styles.image} ${styles.errorSurface}`}
+        data-variant={variant}
+        role="img"
+        aria-label={`${image.name} failed to load`}
+      >
+        <Icon icon="alert" aria-hidden="true" />
+      </Flex>
+    ) : (
+      <ImageSurface
+        ref={imageRef}
+        key={attempt}
+        src={src}
+        alt={variant === 'thumbnail' && onOpen ? '' : (image.alt ?? image.name)}
+        srcSet={variant === 'thumbnail' ? undefined : image.srcSet}
+        sizes={variant === 'thumbnail' ? undefined : image.sizes}
+        width={variant === 'thumbnail' ? 80 : image.width}
+        height={variant === 'thumbnail' ? 60 : image.height}
+        tabIndex={tabIndex}
+        onKeyDown={onKeyDown}
+        className={styles.image}
+        variant={variant}
+        loading={loading}
+        onLoad={onLoad}
+        onError={onError}
+        onOpen={variant !== 'thumbnail' && onOpen ? () => onOpen(image.id) : undefined}
+        label={label ?? `View ${image.name}`}
+        selected={selected}
+      />
+    );
 
   return (
     <Flex direction="column" gap="xs" aria-busy={state === 'loading'} className={styles.container}>
-      {picture}
+      {variant === 'thumbnail' && onOpen ? (
+        <Button
+          variant={selected ? 'secondary' : 'minimal'}
+          aria-label={label ?? `View ${image.name}`}
+          excludeFromTabOrder={tabIndex === -1}
+          onKeyDown={onKeyDown}
+          aria-current={selected ? 'true' : undefined}
+          onPress={() => onOpen(image.id)}
+          className={surfaceStyles.openButton}
+        >
+          {picture}
+        </Button>
+      ) : (
+        picture
+      )}
       {state === 'loading' ? <Text>Loading image…</Text> : null}
     </Flex>
   );
