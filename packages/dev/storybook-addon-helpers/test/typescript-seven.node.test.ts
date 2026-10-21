@@ -54,6 +54,26 @@ describe('TypeScript 7 integration', function typeScriptSevenTests() {
         const secondary = { title: 'Secondary' };
         getMeta(true ? primary : secondary).title;`,
       expected: 'Primary'
+    },
+    {
+      context: 'a semicolonless statement followed by a getter',
+      code: "const previous = 1\ngetMeta({ title: 'Widget' });",
+      expected: { title: 'Widget' }
+    },
+    {
+      context: 'a semicolonless statement followed by getter property access',
+      code: "const previous = 1\ngetMeta({ title: 'Widget' }).title;",
+      expected: 'Widget'
+    },
+    {
+      context: 'a semicolonless statement inside a block',
+      code: "{ const previous = 1\ngetMeta({ title: 'Widget' }).title; }",
+      expected: 'Widget'
+    },
+    {
+      context: 'an unbraced conditional body',
+      code: 'let invoked = 0; if (false) getMeta(++invoked); invoked;',
+      expected: 0
     }
   ])('preserves expression semantics in $context', async function preservesExpressionSemantics({ code, expected }) {
     const output = await csfTransformer({ code });

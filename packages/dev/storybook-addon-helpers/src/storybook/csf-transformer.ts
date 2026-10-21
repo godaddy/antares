@@ -564,25 +564,38 @@ function applyTransformers(
   edits: SourceEdit[],
   defaults?: DocsDefaults
 ): ts.Statement[] {
-  function visit(node: ts.Node): ts.Node {
+  function visit(node: ts.Node, parent?: ts.Node, statementStart?: number): ts.Node {
+    if (ts.isExpressionStatement(node)) {
+      // Only statement lists can accept a leading semicolon without changing an unbraced body.
+      statementStart =
+        parent &&
+        (ts.isSourceFile(parent) ||
+          ts.isBlock(parent) ||
+          ts.isModuleBlock(parent) ||
+          ts.isCaseClause(parent) ||
+          ts.isDefaultClause(parent))
+          ? node.getStart(sourceFile)
+          : undefined;
+    }
     for (const transformer of transformers) {
       const result = transformer(node, sourceFile, defaults, resolver);
       if (result) {
         const expression = result.pos >= 0 ? result.getText(sourceFile) : resolver.printNode(result);
+        const start = node.getStart(sourceFile);
         edits.push({
-          start: node.getStart(sourceFile),
+          start,
           end: node.end,
-          // A call is atomic in its parent expression; preserve that grouping.
-          text: `(${expression})`
+          // Preserve grouping and prevent a leading parenthesis from joining the previous statement.
+          text: `${start === statementStart ? ';' : ''}(${expression})`
         });
         return result;
       }
     }
-    return ts.visitEachChild(node, visit);
+    return ts.visitEachChild(node, (child) => visit(child, node, statementStart));
   }
   return sourceFile.statements.flatMap(function expandExamples(statement) {
     const variants = transformGetVariants(statement);
-    if (!variants) return [visit(statement) as ts.Statement];
+    if (!variants) return [visit(statement, sourceFile) as ts.Statement];
     edits.push({
       start: statement.getStart(sourceFile),
       end: statement.end,
