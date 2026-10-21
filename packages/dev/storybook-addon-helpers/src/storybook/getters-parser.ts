@@ -114,7 +114,7 @@ export async function getExportedVariables(input: { filePath?: string; code?: st
  */
 export function extractVariantNames(baseName: string, variants: ts.ObjectLiteralExpression): string[] {
   return variants.properties.map((p) =>
-    camelCase([baseName, 'name' in p ? (p.name as ts.Identifier).text : ''], { pascalCase: true })
+    camelCase([baseName, 'name' in p && p.name ? (p.name as ts.Identifier).text : ''], { pascalCase: true })
   );
 }
 

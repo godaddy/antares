@@ -601,7 +601,8 @@ function applyTransformers(
     edits.push({
       start: statement.getStart(sourceFile),
       end: statement.end,
-      text: variants.map((node) => resolver.printNode(node)).join('\n')
+      // Keep adjacent semicolonless statements separate when no variants are generated.
+      text: variants.length ? variants.map((node) => resolver.printNode(node)).join('\n') : ';'
     });
     return variants;
   });

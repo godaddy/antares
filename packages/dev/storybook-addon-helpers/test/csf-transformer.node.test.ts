@@ -225,6 +225,26 @@ describe('csf-transformer', function csfTransformerTests() {
     expect(await csfTransformer({ code })).not.toContain('import { Widget }');
   });
 
+  it.each([
+    ['accessors', 'get primary() { return {}; }'],
+    ['shorthand properties', 'primary'],
+    ['spreads', '...variants']
+  ])(
+    'preserves statement boundaries when variants contain only %s',
+    async function preservesVariantsBoundary(_, properties) {
+      const actual = await csfTransformer({
+        code: `setup()
+        const Variants = getVariants(Button, { ${properties} });
+        (() => 42)();`
+      });
+      const setup = vi.fn();
+
+      expect(actual).not.toContain('getVariants');
+      expect(runInNewContext(actual, { setup })).toBe(42);
+      expect(setup).toHaveBeenCalledOnce();
+    }
+  );
+
   it('should skip non-property-assignment in variants', async function nonPropertyAssignment() {
     const code = `
       import { getVariants } from '@bento/storybook-addon-helpers';
