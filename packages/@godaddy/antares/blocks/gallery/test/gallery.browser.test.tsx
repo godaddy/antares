@@ -1,9 +1,10 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { cdp, page, userEvent } from 'vitest/browser';
+import { I18nProvider as RACI18nProvider } from 'react-aria-components';
 import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
 import { Gallery, type ImageItem } from '../index.tsx';
-import { GalleryImage } from '../components/image/index.tsx';
+import { GalleryImage } from '../components/image';
 
 const pixel = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZ1EAAAAASUVORK5CYII=';
 const samples: ImageItem[] = [
@@ -98,8 +99,8 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByText('11 images', { exact: true })).toBeVisible();
       await expect.element(screen.getByRole('button', { name: 'Add files', exact: true })).toBeEnabled();
       await expect.element(screen.getByRole('radio', { name: 'Grid', exact: true })).toBeEnabled();
-      await expect.element(screen.getByRole('button', { name: 'Open Photo_2.png' })).toBeVisible();
-      await expect.element(screen.getByRole('button', { name: 'Retry Photo_error.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Open Photo_2.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Retry Photo_error.png' })).toBeVisible();
     });
 
     it('starts empty when no initial images are provided', async function emptyByDefault() {
@@ -128,7 +129,7 @@ describe('@godaddy/antares', function packageTests() {
         />
       );
 
-      await userEvent.click(screen.getByRole('button', { name: 'Retry failed.png' }));
+      await userEvent.click(screen.getByRole('row', { name: 'Retry failed.png' }));
       await expect.element(screen.getByText('Loading image…')).toBeVisible();
 
       const image = screen.container.querySelector<HTMLImageElement>('img');
@@ -136,7 +137,7 @@ describe('@godaddy/antares', function packageTests() {
       completed.mockReturnValue(true);
       image.dispatchEvent(new Event('load'));
 
-      await expect.element(screen.getByRole('button', { name: 'Open failed.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Open failed.png' })).toBeVisible();
       await expect.element(screen.getByText('5 MiB', { exact: true })).toBeVisible();
       await expect.element(screen.getByRole('status')).toHaveTextContent('Image is ready to view.');
     });
@@ -158,17 +159,17 @@ describe('@godaddy/antares', function packageTests() {
         />
       );
 
-      await userEvent.click(screen.getByRole('button', { name: 'Retry failed.png' }));
+      await userEvent.click(screen.getByRole('row', { name: 'Retry failed.png' }));
       let image = screen.container.querySelector<HTMLImageElement>('img');
       if (!image) throw new Error('Expected the first retried gallery image');
       image.dispatchEvent(new Event('error'));
-      await expect.element(screen.getByRole('button', { name: 'Retry failed.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Retry failed.png' })).toBeVisible();
 
-      await userEvent.click(screen.getByRole('button', { name: 'Retry failed.png' }));
+      await userEvent.click(screen.getByRole('row', { name: 'Retry failed.png' }));
       image = screen.container.querySelector<HTMLImageElement>('img');
       if (!image) throw new Error('Expected the second retried gallery image');
       image.dispatchEvent(new Event('error'));
-      await expect.element(screen.getByRole('button', { name: 'Retry failed.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Retry failed.png' })).toBeVisible();
     });
 
     it('formats small files and fractional MiB without losing precision', async function fractionalSizes() {
@@ -194,7 +195,7 @@ describe('@godaddy/antares', function packageTests() {
       if (!image) throw new Error('Expected a gallery image');
       image.dispatchEvent(new Event('error'));
 
-      await expect.element(screen.getByRole('button', { name: 'Retry one.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Retry one.png' })).toBeVisible();
       await expect.element(screen.getByRole('alert')).toHaveTextContent('1 file needs attention.');
     });
 
@@ -206,7 +207,7 @@ describe('@godaddy/antares', function packageTests() {
       image.dispatchEvent(new Event('error'));
 
       await expect.element(screen.getByRole('alert')).toHaveTextContent('Couldn’t load one.png.');
-      await expect.element(screen.getByRole('button', { name: 'Retry one.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Retry one.png' })).toBeVisible();
     });
 
     it('switches views without losing the collection and supports keyboard selection', async function views() {
@@ -220,7 +221,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(list).toHaveAttribute('aria-checked', 'true');
       await expect.element(screen.getByText('one.png', { exact: true })).toBeVisible();
       await userEvent.click(screen.getByRole('radio', { name: 'Grid', exact: true }));
-      expect(screen.getByRole('button', { name: /^Open / }).all()).toHaveLength(2);
+      expect(screen.getByRole('row', { name: /^Open / }).all()).toHaveLength(2);
     });
 
     it('shows five list items before revealing the complete collection', async function listPagination() {
@@ -229,24 +230,80 @@ describe('@godaddy/antares', function packageTests() {
       const screen = await render(<Gallery initialImages={browserSamples} defaultView="list" />);
 
       await expect.element(screen.getByText('5 of 11 files', { exact: true })).toBeVisible();
-      expect(screen.getByRole('listitem').all()).toHaveLength(5);
+      expect(screen.getByRole('row').all()).toHaveLength(5);
       await expect.element(screen.getByRole('button', { name: 'Show all', exact: true })).toBeVisible();
 
       screen.getByRole('button', { name: 'Show all', exact: true }).element().focus();
       await userEvent.keyboard('{Enter}');
 
       await expect.element(screen.getByText('11 of 11 files', { exact: true })).toBeVisible();
-      expect(screen.getByRole('listitem').all()).toHaveLength(11);
-      const remove = screen.getByRole('button', { name: 'Remove Photo_6.png' });
-      await expect.element(remove).toHaveFocus();
+      expect(screen.getByRole('row').all()).toHaveLength(11);
+      const revealed = screen.getByRole('row', { name: 'Photo_6.png', exact: true }).element();
+      await expect.element(revealed).toHaveFocus();
       screen.getByRole('img', { name: 'Photo_6.png', exact: true }).element().dispatchEvent(new Event('load'));
-      await expect.element(screen.getByRole('button', { name: 'Open Photo_6.png' })).toBeVisible();
-      await expect.element(remove).toHaveFocus();
+      await expect.element(screen.getByRole('row', { name: 'Open Photo_6.png' })).toBeVisible();
+      await expect.element(revealed).toHaveFocus();
+      await expect.element(screen.getByRole('button', { name: 'Show all', exact: true })).not.toBeInTheDocument();
+    });
+
+    it.each(['grid', 'list'] as const)(
+      'navigates rows, opens with Enter and Space, and tabs to Remove in %s view',
+      async function collectionKeyboard(view) {
+        const screen = await render(<Gallery initialImages={samples} defaultView={view} />);
+        const first = screen.getByRole('row', { name: 'Open one.png', exact: true });
+        const second = screen.getByRole('row', { name: 'Open two.png', exact: true });
+        await expect.element(first).toBeVisible();
+        await expect.element(second).toBeVisible();
+        const collection = screen.getByRole('grid');
+        expect(collection.getByRole('button').all()).toHaveLength(2);
+        first.element().focus();
+        await userEvent.keyboard(view === 'grid' ? '{ArrowRight}' : '{ArrowDown}');
+        await expect.element(second).toHaveFocus();
+        await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
+        for (const key of ['{Enter}', ' ']) {
+          await userEvent.keyboard(key);
+          const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
+          await expect.element(dialog).toBeVisible();
+          await expect.element(dialog.getByRole('status')).toHaveTextContent('two.png');
+          await expect.element(dialog.getByRole('row', { name: 'View two.png' })).toHaveFocus();
+          await userEvent.keyboard('{ArrowLeft}');
+          await expect.element(dialog.getByRole('row', { name: 'View one.png' })).toHaveFocus();
+          await expect.element(dialog.getByRole('status')).toHaveTextContent('one.png');
+          await userEvent.keyboard('{Escape}');
+          await expect.element(second).toHaveFocus();
+        }
+        await userEvent.keyboard('{Tab}');
+        await expect.element(screen.getByRole('button', { name: 'Remove two.png' })).toHaveFocus();
+        await userEvent.keyboard('{Enter}');
+        await expect.element(second).not.toBeInTheDocument();
+        await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
+        await expect.element(first).toHaveFocus();
+        await userEvent.click(screen.getByText('one.png', { exact: true }));
+        await expect.element(screen.getByRole('dialog')).toBeVisible();
+      }
+    );
+
+    it('preserves the expanded list across layout changes', async function expandedList() {
+      const screen = await render(<Gallery initialImages={browserSamples} defaultView="list" />);
+      await userEvent.click(screen.getByRole('button', { name: 'Show all', exact: true }));
+      await userEvent.click(screen.getByRole('radio', { name: 'Grid', exact: true }));
+      await userEvent.click(screen.getByRole('radio', { name: 'List', exact: true }));
+      await expect.element(screen.getByRole('button', { name: 'Remove Photo_10.png' })).toBeVisible();
+      await expect.element(screen.getByRole('button', { name: 'Show all', exact: true })).not.toBeInTheDocument();
+    });
+
+    it('reveals accepted files beyond the collapsed list without moving focus', async function addedFileVisibility() {
+      const screen = await render(<Gallery initialImages={browserSamples.slice(0, 5)} defaultView="list" />);
+      const add = screen.getByRole('button', { name: 'Add files', exact: true });
+      add.element().focus();
+      selectFiles(screen.container, [png('new.png')]);
+      await expect.element(screen.getByRole('row', { name: 'Open new.png' })).toBeVisible();
+      await expect.element(add).toHaveFocus();
       await expect.element(screen.getByRole('button', { name: 'Show all', exact: true })).not.toBeInTheDocument();
     });
 
     it.each(['error', 'loading'] as const)(
-      'focuses an available action when the first revealed file is %s',
+      'focuses the revealed row when the first revealed file is %s',
       async function revealFile(status) {
         controlImageEvents();
         vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
@@ -263,33 +320,38 @@ describe('@godaddy/antares', function packageTests() {
 
         await expect.element(screen.getByText('Photo_6.png', { exact: true })).toBeVisible();
         await expect
-          .element(screen.getByRole('button', { name: `${status === 'error' ? 'Retry' : 'Remove'} Photo_6.png` }))
+          .element(screen.getByRole('row', { name: `${status === 'error' ? 'Retry ' : ''}Photo_6.png`, exact: true }))
           .toHaveFocus();
       }
     );
 
-    it.each(['grid', 'list'] as const)(
-      'keeps focus in the file while retrying and after completion in %s view',
-      async function retryFocus(view) {
+    it.each([
+      ['grid', '{Enter}'],
+      ['grid', ' '],
+      ['list', '{Enter}'],
+      ['list', ' ']
+    ] as const)(
+      'keeps focus in the file while retrying with %s / %s and after completion',
+      async function retryFocus(view, key) {
         controlImageEvents();
         const completed = vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
         vi.spyOn(HTMLImageElement.prototype, 'naturalWidth', 'get').mockReturnValue(1);
         const screen = await render(
           <Gallery defaultView={view} initialImages={[{ ...samples[0], status: 'error' }]} />
         );
-        screen.getByRole('button', { name: 'Retry one.png' }).element().focus();
-        await userEvent.keyboard('{Enter}');
+        const row = screen.getByRole('row', { name: 'Retry one.png' }).element();
+        row.focus();
+        await userEvent.keyboard(key);
 
-        const remove = screen.getByRole('button', { name: 'Remove one.png' });
-        await expect.element(remove).toHaveFocus();
+        await expect.element(row).toHaveFocus();
         await expect.element(screen.getByText('Loading image…')).toBeVisible();
-        await expect.element(screen.getByRole('button', { name: 'Open one.png' })).not.toBeInTheDocument();
+        await expect.element(screen.getByRole('row', { name: 'Open one.png' })).not.toBeInTheDocument();
         const picture = screen.getByRole('img', { name: 'one.png' });
         completed.mockReturnValue(true);
         picture.element().dispatchEvent(new Event('load'));
 
-        await expect.element(screen.getByRole('button', { name: 'Open one.png' })).toBeVisible();
-        await expect.element(remove).toHaveFocus();
+        await expect.element(screen.getByRole('row', { name: 'Open one.png' })).toBeVisible();
+        await expect.element(row).toHaveFocus();
         await expect.element(screen.getByText('Loading image…')).not.toBeInTheDocument();
       }
     );
@@ -311,7 +373,7 @@ describe('@godaddy/antares', function packageTests() {
       const screen = await render(<Gallery initialImages={[]} />);
       const file = png();
       selectFiles(screen.container, [file, file]);
-      await expect.element(screen.getByRole('button', { name: 'Open local.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Open local.png' })).toBeVisible();
       await expect.element(screen.getByRole('status')).toHaveTextContent('1 image added. 1 duplicate skipped.');
       selectFiles(screen.container, [file]);
       await expect.element(screen.getByRole('status')).toHaveTextContent('1 duplicate skipped.');
@@ -320,7 +382,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByText('Start your gallery')).toBeVisible();
       await expect.element(screen.getByRole('button', { name: 'Add files', exact: true })).toHaveFocus();
       selectFiles(screen.container, [file]);
-      await expect.element(screen.getByRole('button', { name: 'Open local.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Open local.png' })).toBeVisible();
     });
 
     it('preserves images from overlapping selections and skips their duplicates', async function overlappingSelections() {
@@ -332,7 +394,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByText('3 images', { exact: true })).toBeVisible();
       await expect.element(screen.getByRole('status')).toHaveTextContent('1 image added. 1 duplicate skipped.');
       for (const name of ['first.png', 'second.png', 'third.png']) {
-        await expect.element(screen.getByRole('button', { name: `Open ${name}` })).toBeVisible();
+        await expect.element(screen.getByRole('row', { name: `Open ${name}` })).toBeVisible();
       }
     });
 
@@ -349,7 +411,7 @@ describe('@godaddy/antares', function packageTests() {
       const screen = await render(<Gallery />);
       selectFiles(screen.container, [png()]);
 
-      await expect.element(screen.getByRole('button', { name: 'Open local.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Open local.png' })).toBeVisible();
       await expect.element(screen.getByRole('status')).toHaveTextContent('1 image added.');
     });
 
@@ -361,7 +423,7 @@ describe('@godaddy/antares', function packageTests() {
       selectFiles(screen.container, [png()]);
       await expect.element(screen.getByRole('alert')).toHaveTextContent('We couldn’t read some images.');
       selectFiles(screen.container, [png()]);
-      await expect.element(screen.getByRole('button', { name: 'Open local.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Open local.png' })).toBeVisible();
       await expect.element(screen.getByRole('alert')).not.toBeInTheDocument();
     });
 
@@ -419,10 +481,10 @@ describe('@godaddy/antares', function packageTests() {
     it('keeps valid files in a mixed batch and rejects unsupported types and the size boundary', async function validation() {
       const screen = await render(<Gallery initialImages={[]} />);
       const large = png('large.png');
-      Object.defineProperty(large, 'size', { value: 256 * 1024 * 1024 });
+      Object.defineProperty(large, 'size', { value: 20 * 1024 * 1024 });
       selectFiles(screen.container, [png(), large, new File(['text'], 'notes.txt', { type: 'text/plain' })]);
-      await expect.element(screen.getByRole('alert')).toHaveTextContent('smaller than 256 MiB');
-      await expect.element(screen.getByRole('button', { name: 'Open local.png' })).toBeVisible();
+      await expect.element(screen.getByRole('alert')).toHaveTextContent('smaller than 20 MiB');
+      await expect.element(screen.getByRole('row', { name: 'Open local.png' })).toBeVisible();
       expect(screen.getByRole('button', { name: /^Remove / }).all()).toHaveLength(1);
     });
 
@@ -431,7 +493,7 @@ describe('@godaddy/antares', function packageTests() {
       const root = screen.getByRole('region', { name: 'Add files to gallery' }).element();
       const targets = [
         screen.getByRole('heading', { name: 'Gallery', exact: true }).element(),
-        screen.getByRole('button', { name: 'Open one.png' }).element(),
+        screen.getByRole('row', { name: 'Open one.png' }).element(),
         root
       ];
       for (const [index, target] of targets.entries()) {
@@ -440,7 +502,7 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(screen.getByText('Drop files to upload.')).toBeVisible();
         drag(target, 'dragover', data);
         drag(target, 'drop', data);
-        await expect.element(screen.getByRole('button', { name: `Open drop-${index}.png` })).toBeVisible();
+        await expect.element(screen.getByRole('row', { name: `Open drop-${index}.png` })).toBeVisible();
         await expect.element(screen.getByText('Drop files to upload.')).not.toBeInTheDocument();
       }
       expect(screen.getByRole('button', { name: /^Remove / }).all()).toHaveLength(5);
@@ -449,7 +511,7 @@ describe('@godaddy/antares', function packageTests() {
     it('keeps the hint while moving between descendants and clears it on exit', async function hover() {
       const screen = await render(<Gallery initialImages={samples} />);
       const heading = screen.getByRole('heading', { name: 'Gallery', exact: true }).element();
-      const card = screen.getByRole('button', { name: 'Open one.png' }).element();
+      const card = screen.getByRole('row', { name: 'Open one.png' }).element();
       const data = transfer([png()]);
       drag(heading, 'dragenter', data);
       await expect.element(screen.getByText('Drop files to upload.')).toBeVisible();
@@ -485,7 +547,7 @@ describe('@godaddy/antares', function packageTests() {
       drag(empty.element(), 'drop', data);
 
       await expect.element(empty).not.toBeInTheDocument();
-      await expect.element(screen.getByRole('button', { name: 'Open local.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Open local.png' })).toBeVisible();
       await expect.element(screen.getByText('1 image', { exact: true })).toBeVisible();
       await expect.element(screen.getByText('Drop files to upload.')).not.toBeInTheDocument();
       await expect.element(screen.getByText('or drag them here.')).toBeVisible();
@@ -494,7 +556,7 @@ describe('@godaddy/antares', function packageTests() {
     it('ignores drops while the media viewer is open and accepts them after closing', async function modalDrop() {
       const screen = await render(<Gallery initialImages={samples} />);
       const region = screen.getByRole('region', { name: 'Add files to gallery' }).element();
-      await userEvent.click(screen.getByRole('button', { name: 'Open one.png' }));
+      await userEvent.click(screen.getByRole('row', { name: 'Open one.png' }));
       const data = transfer([png()]);
       drag(region, 'dragenter', data);
       drag(region, 'dragover', data);
@@ -502,52 +564,40 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByText('Drop files to upload.')).not.toBeInTheDocument();
       await userEvent.keyboard('{Escape}');
       await expect.element(screen.getByText('2 images', { exact: true })).toBeVisible();
-      await expect.element(screen.getByRole('button', { name: 'Open local.png' })).not.toBeInTheDocument();
+      await expect.element(screen.getByRole('row', { name: 'Open local.png' })).not.toBeInTheDocument();
 
       drag(region, 'dragenter', data);
       await expect.element(screen.getByText('Drop files to upload.')).toBeVisible();
       drag(region, 'dragover', data);
       drag(region, 'drop', data);
-      await expect.element(screen.getByRole('button', { name: 'Open local.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Open local.png' })).toBeVisible();
     });
 
     it('opens an image, navigates by buttons, keys and thumbnails, then restores focus', async function viewer() {
       const screen = await render(<Gallery initialImages={samples} />);
-      const opener = screen.getByRole('button', { name: 'Open one.png' });
+      const opener = screen.getByRole('row', { name: 'Open one.png' });
       opener.element().focus();
       await userEvent.keyboard('{Enter}');
       const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
       await expect.element(dialog).toBeVisible();
-      await expect
-        .element(dialog.getByRole('button', { name: 'View one.png' }))
-        .toHaveAttribute('aria-current', 'true');
+      await expect.element(dialog.getByRole('row', { name: 'View one.png' })).toHaveAttribute('aria-selected', 'true');
       screen.getByRole('button', { name: 'Close gallery' }).element().focus();
       await userEvent.keyboard('{ArrowRight}');
-      await expect
-        .element(dialog.getByRole('button', { name: 'View two.png' }))
-        .toHaveAttribute('aria-current', 'true');
+      await expect.element(dialog.getByRole('row', { name: 'View two.png' })).toHaveAttribute('aria-selected', 'true');
       await expect.element(dialog.getByRole('status')).toHaveTextContent('two.png');
       await userEvent.keyboard('{ArrowLeft}');
-      await expect
-        .element(dialog.getByRole('button', { name: 'View one.png' }))
-        .toHaveAttribute('aria-current', 'true');
+      await expect.element(dialog.getByRole('row', { name: 'View one.png' })).toHaveAttribute('aria-selected', 'true');
       await expect.element(screen.getByRole('button', { name: 'Previous image' })).toBeDisabled();
       await userEvent.click(screen.getByRole('button', { name: 'Next image' }));
-      await expect
-        .element(dialog.getByRole('button', { name: 'View two.png' }))
-        .toHaveAttribute('aria-current', 'true');
+      await expect.element(dialog.getByRole('row', { name: 'View two.png' })).toHaveAttribute('aria-selected', 'true');
       await expect.element(screen.getByRole('button', { name: 'Next image' })).toBeDisabled();
       await userEvent.click(screen.getByRole('button', { name: 'Previous image' }));
       await expect.element(dialog.getByRole('status')).toHaveTextContent('one.png');
       await userEvent.click(screen.getByRole('button', { name: 'Next image' }));
       await userEvent.keyboard('{ArrowLeft}');
-      await expect
-        .element(dialog.getByRole('button', { name: 'View one.png' }))
-        .toHaveAttribute('aria-current', 'true');
-      await userEvent.click(screen.getByRole('button', { name: 'View two.png' }));
-      await expect
-        .element(dialog.getByRole('button', { name: 'View two.png' }))
-        .toHaveAttribute('aria-current', 'true');
+      await expect.element(dialog.getByRole('row', { name: 'View one.png' })).toHaveAttribute('aria-selected', 'true');
+      await userEvent.click(screen.getByRole('row', { name: 'View two.png' }));
+      await expect.element(dialog.getByRole('row', { name: 'View two.png' })).toHaveAttribute('aria-selected', 'true');
       await userEvent.keyboard('{Tab}');
       expect(dialog.element().contains(document.activeElement)).toBe(true);
       await userEvent.keyboard('{Escape}');
@@ -568,8 +618,11 @@ describe('@godaddy/antares', function packageTests() {
         controlImageEvents();
         vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
         const screen = await render(<Gallery initialImages={[samples[0]]} defaultView={view} />);
-        const opener = screen.getByRole('button', { name: 'Open one.png' });
+        const opener = screen.getByRole('row', { name: 'Open one.png' });
         await expect.element(opener).not.toBeInTheDocument();
+        screen.getByRole('row', { name: 'one.png', exact: true }).element().focus();
+        await userEvent.keyboard('{Enter} ');
+        await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
         screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('load'));
 
         await expect.element(opener).toBeVisible();
@@ -586,6 +639,62 @@ describe('@godaddy/antares', function packageTests() {
       }
     );
 
+    it('keeps the modal and controls stationary while slides and loading states change', async function stableViewerGeometry() {
+      controlImageEvents();
+      vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
+      const images = browserSamples.slice(0, 10).map((image, index) => ({
+        ...image,
+        name: index === 1 ? 'long-filename-'.repeat(12) + '.png' : image.name,
+        width: index % 2 === 0 ? 960 : 320,
+        height: index % 2 === 0 ? 320 : 960
+      }));
+      const screen = await render(<Gallery initialImages={images} />);
+      screen.getByRole('img', { name: 'file_name.png', exact: true }).element().dispatchEvent(new Event('load'));
+      await userEvent.click(screen.getByRole('row', { name: 'Open file_name.png' }));
+      const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
+      const next = dialog.getByRole('button', { name: 'Next image' });
+      await expect.poll(() => dialog.element().closest('[data-entering]')).toBeNull();
+      await expect.poll(() => getComputedStyle(dialog.element().parentElement!).transform).toBe('none');
+      const initialDialog = dialog.element().getBoundingClientRect();
+      const initialNext = next.element().getBoundingClientRect();
+      const initialScroll = document.scrollingElement?.scrollTop;
+      for (const name of [images[1].name, images[2].name]) {
+        await userEvent.click(next);
+        const picture = dialog.getByRole('img', { name, exact: true });
+        for (const state of ['loading', 'ready']) {
+          if (state === 'ready') picture.element().dispatchEvent(new Event('load'));
+          await expect.poll(() => dialog.element().getBoundingClientRect().width).toBeCloseTo(initialDialog.width, 0);
+          await expect.poll(() => dialog.element().getBoundingClientRect().top).toBeCloseTo(initialDialog.top, 0);
+          await expect.poll(() => next.element().getBoundingClientRect().top).toBeCloseTo(initialNext.top, 0);
+        }
+      }
+      await userEvent.click(dialog.getByRole('row', { name: 'View Photo_10.png' }));
+      await expect.element(dialog.getByRole('status')).toHaveTextContent('10 of 10');
+      expect(document.scrollingElement?.scrollTop).toBe(initialScroll);
+      await expect.poll(() => dialog.element().getBoundingClientRect().top).toBeCloseTo(initialDialog.top, 0);
+    });
+
+    it('keeps focus on a stable viewer control during retry and completion', async function viewerRetryFocus() {
+      controlImageEvents();
+      vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
+      const screen = await render(<Gallery initialImages={samples} />);
+      screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('load'));
+      await userEvent.click(screen.getByRole('row', { name: 'Open one.png' }));
+      const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
+      dialog.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('error'));
+      const retry = dialog.getByRole('button', { name: 'Retry one.png' });
+      await userEvent.click(retry);
+      const thumbnail = dialog.getByRole('row', { name: 'View one.png' });
+      await expect.element(thumbnail).toHaveFocus();
+      dialog.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('load'));
+      await expect.element(thumbnail).toHaveFocus();
+      await userEvent.keyboard('{ArrowRight}');
+      await expect.element(dialog.getByRole('row', { name: 'View two.png' })).toHaveFocus();
+      await expect.element(dialog.getByRole('status')).toHaveTextContent('two.png');
+      await userEvent.keyboard('{Escape}');
+      await expect.element(screen.getByRole('row', { name: 'Open one.png' })).toHaveFocus();
+    });
+
     it.each(['grid', 'list'] as const)(
       'keeps a pending cover failure out of the viewer in %s view',
       async function pendingCoverFailure(view) {
@@ -596,8 +705,8 @@ describe('@godaddy/antares', function packageTests() {
         remove.element().focus();
         screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('error'));
 
-        await expect.element(screen.getByRole('button', { name: 'Retry one.png' })).toBeVisible();
-        await expect.element(screen.getByRole('button', { name: 'Open one.png' })).not.toBeInTheDocument();
+        await expect.element(screen.getByRole('row', { name: 'Retry one.png' })).toBeVisible();
+        await expect.element(screen.getByRole('row', { name: 'Open one.png' })).not.toBeInTheDocument();
         await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
         await expect.element(remove).toHaveFocus();
       }
@@ -610,10 +719,10 @@ describe('@godaddy/antares', function packageTests() {
         vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
         const screen = await render(<Gallery initialImages={samples} defaultView={view} />);
         screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('load'));
-        const opener = screen.getByRole('button', { name: 'Open one.png' });
+        const opener = screen.getByRole('row', { name: 'Open one.png' });
         await userEvent.click(opener);
         await userEvent.click(screen.getByRole('button', { name: 'Next image' }));
-        const pendingCover = screen.container.querySelector<HTMLImageElement>('[data-gallery-image-id="two"] img');
+        const pendingCover = screen.container.querySelector<HTMLImageElement>('[data-key="two"] img');
         if (!pendingCover) throw new Error('Expected the pending gallery cover');
         pendingCover.dispatchEvent(new Event('error'));
 
@@ -623,26 +732,26 @@ describe('@godaddy/antares', function packageTests() {
     );
 
     it.each(['grid', 'list'] as const)(
-      'focuses Retry after the cover that opened the viewer fails in %s view',
+      'restores the same row after its viewer cover fails in %s view',
       async function failedOpener(view) {
         controlImageEvents();
         vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
         const screen = await render(<Gallery initialImages={[samples[0]]} defaultView={view} />);
         screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('load'));
-        const opener = screen.getByRole('button', { name: 'Open one.png' });
+        const opener = screen.getByRole('row', { name: 'Open one.png' });
         await expect.element(opener).toBeVisible();
         const openerElement = opener.element();
         opener.element().focus();
         await userEvent.keyboard('{Enter}');
         await expect.element(screen.getByRole('dialog')).toBeVisible();
-        const cover = screen.container.querySelector<HTMLImageElement>('[data-gallery-image-id="one"] img');
+        const cover = screen.container.querySelector<HTMLImageElement>('[data-key="one"] img');
         if (!cover) throw new Error('Expected the cover that opened the viewer');
         cover.dispatchEvent(new Event('error'));
         await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
-        const retryCover = screen.getByRole('button', { name: 'Retry image preview for one.png' });
+        const retryCover = screen.getByRole('row', { name: 'Retry one.png' });
         expect(retryCover.element()).toBe(openerElement);
         await expect.element(retryCover).toHaveFocus();
-        await expect.element(screen.getByRole('button', { name: 'Retry one.png' })).toBeVisible();
+        await expect.element(screen.getByRole('row', { name: 'Retry one.png' })).toBeVisible();
       }
     );
 
@@ -656,13 +765,13 @@ describe('@godaddy/antares', function packageTests() {
 
     it('disables both navigation boundaries for a single viewable image', async function singleImage() {
       const screen = await render(<Gallery initialImages={[samples[0], { ...samples[1], status: 'error' }]} />);
-      await userEvent.click(screen.getByRole('button', { name: 'Open one.png' }));
+      await userEvent.click(screen.getByRole('row', { name: 'Open one.png' }));
       const dialog = screen.getByRole('dialog');
       await expect.element(dialog.getByRole('button', { name: 'Previous image' })).toBeDisabled();
       await expect.element(dialog.getByRole('button', { name: 'Next image' })).toBeDisabled();
-      expect(dialog.getByRole('button', { name: /^View / }).all()).toHaveLength(1);
+      expect(dialog.getByRole('row', { name: /^View / }).all()).toHaveLength(1);
       await userEvent.keyboard('{Escape}');
-      await expect.element(screen.getByRole('button', { name: 'Open one.png' })).toHaveFocus();
+      await expect.element(screen.getByRole('row', { name: 'Open one.png' })).toHaveFocus();
     });
 
     it.each(['grid', 'list'] as const)(
@@ -675,13 +784,90 @@ describe('@godaddy/antares', function packageTests() {
             <Gallery defaultView={view} initialImages={[{ ...samples[0], name }]} />
           </div>
         );
-        await userEvent.click(screen.getByRole('button', { name: 'Open ' + name }));
+        await userEvent.click(screen.getByRole('row', { name: 'Open ' + name }));
         await expect.element(screen.getByRole('dialog')).toBeVisible();
         await userEvent.keyboard('{Escape}');
         await userEvent.click(screen.getByRole('button', { name: 'Remove ' + name }));
         await expect.element(screen.getByRole('region', { name: 'Empty gallery' })).toBeVisible();
       }
     );
+
+    it.each([
+      [320, 568, '100%'],
+      [320, 568, '200%'],
+      [568, 320, '100%']
+    ] as const)(
+      'fits the viewer in a %s by %s viewport with %s text',
+      async function mobileViewer(width, height, fontSize) {
+        const originalFontSize = document.documentElement.style.fontSize;
+        try {
+          await page.viewport(width, height);
+          document.documentElement.style.fontSize = fontSize;
+          const screen = await render(<Gallery initialImages={browserSamples.slice(0, 4)} />);
+          await expect.poll(() => document.documentElement.scrollWidth).toBeLessThanOrEqual(width);
+          await userEvent.click(screen.getByRole('row', { name: 'Open file_name.png' }));
+          const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
+          await expect.element(dialog).toBeVisible();
+          const bounds = dialog.element().getBoundingClientRect();
+          expect(bounds.left).toBeGreaterThanOrEqual(0);
+          expect(bounds.right).toBeLessThanOrEqual(width);
+          expect(bounds.top).toBeGreaterThanOrEqual(0);
+          expect(bounds.bottom).toBeLessThanOrEqual(height);
+          await expect.poll(() => dialog.element().scrollWidth - dialog.element().clientWidth).toBeLessThanOrEqual(1);
+          await userEvent.click(dialog.getByRole('button', { name: 'Next image' }));
+          await expect.element(dialog.getByRole('status')).toHaveTextContent('2 of 4');
+          await userEvent.keyboard('{Escape}');
+          await expect.element(screen.getByRole('row', { name: 'Open file_name.png' })).toHaveFocus();
+        } finally {
+          document.documentElement.style.fontSize = originalFontSize;
+          await page.viewport(1280, 800);
+        }
+      }
+    );
+
+    it('uses regional formatting and translated labels in the collection and portaled viewer', async function translatedGallery() {
+      const screen = await render(
+        <Gallery
+          locale="es-CO"
+          initialImages={[{ ...samples[0], size: 1.5 * 1024 * 1024 }]}
+          messages={{
+            gallery: 'Galería',
+            addFiles: 'Añadir archivos',
+            mediaGallery: 'Visor de imágenes',
+            openImage: (name) => `Abrir ${name}`,
+            viewImage: (name) => `Ver ${name}`,
+            removeImage: (name) => `Eliminar ${name}`,
+            removedImage: (name) => `${name} eliminado.`,
+            imagePosition: (name, current, total) => `${name} · ${current} de ${total}`
+          }}
+        />
+      );
+      await expect.element(screen.getByRole('heading', { name: 'Galería' })).toBeVisible();
+      await expect.element(screen.getByText('1,5 MiB', { exact: true })).toBeVisible();
+      await expect.element(screen.getByRole('button', { name: 'Añadir archivos' })).toBeVisible();
+      await userEvent.click(screen.getByRole('row', { name: 'Abrir one.png' }));
+      const dialog = screen.getByRole('dialog', { name: 'Visor de imágenes' });
+      await expect.element(dialog).toHaveAttribute('lang', 'es-CO');
+      await expect.element(dialog.getByRole('row', { name: 'Ver one.png' })).toBeVisible();
+      await expect.element(dialog.getByRole('status')).toHaveTextContent('1 de 1');
+      await userEvent.keyboard('{Escape}');
+      await userEvent.click(screen.getByRole('button', { name: 'Eliminar one.png' }));
+      await expect.element(screen.getByRole('status')).toHaveTextContent('one.png eliminado.');
+    });
+
+    it('uses the theme surface and text colors for the drop overlay', async function themedDropOverlay() {
+      const screen = await render(<Gallery />);
+      screen.container.style.setProperty('--color-surface-background-base', 'rgb(17, 17, 17)');
+      screen.container.style.setProperty('--color-surface-text-base', 'rgb(255, 255, 255)');
+      const target = screen.getByRole('region', { name: 'Add files to gallery' }).element();
+      drag(target, 'dragenter', transfer([png()]));
+      await expect.element(screen.getByText('Drop files to upload.')).toBeVisible();
+      const message = screen.getByText('Drop files to upload.').element();
+      const overlay = message.parentElement;
+      if (!overlay) throw new Error('Expected the drop overlay');
+      await expect.poll(() => getComputedStyle(overlay).backgroundColor).toBe('rgb(17, 17, 17)');
+      expect(getComputedStyle(overlay).color).toBe('rgb(255, 255, 255)');
+    });
 
     it('shows an already completed image without a loading state', async function cachedImage() {
       controlImageEvents();
@@ -725,15 +911,15 @@ describe('@godaddy/antares', function packageTests() {
       const screen = await render(<Gallery initialImages={[samples[0]]} />);
 
       await expect.element(screen.getByRole('alert')).toHaveTextContent('Couldn’t load one.png.');
-      await expect.element(screen.getByRole('button', { name: 'Retry one.png' })).toBeVisible();
-      expect(screen.getByRole('button', { name: 'Open one.png' }).all()).toHaveLength(0);
+      await expect.element(screen.getByRole('row', { name: 'Retry one.png' })).toBeVisible();
+      expect(screen.getByRole('row', { name: 'Open one.png' }).all()).toHaveLength(0);
     });
 
     it('keeps a failed thumbnail selectable and announces the selected image', async function failedThumbnail() {
       const screen = await render(<Gallery initialImages={samples} />);
-      await userEvent.click(screen.getByRole('button', { name: 'Open one.png' }));
+      await userEvent.click(screen.getByRole('row', { name: 'Open one.png' }));
       const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
-      const thumbnail = dialog.getByRole('button', { name: 'View two.png' });
+      const thumbnail = dialog.getByRole('row', { name: 'View two.png' });
       const image = thumbnail.element().querySelector('img');
       if (!image) throw new Error('Expected the thumbnail image');
       image.dispatchEvent(new Event('error'));
@@ -741,7 +927,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(dialog.getByRole('img', { name: 'two.png failed to load' })).toBeVisible();
       await expect.element(dialog.getByRole('alert')).not.toBeInTheDocument();
       await userEvent.click(thumbnail);
-      await expect.element(thumbnail).toHaveAttribute('aria-current', 'true');
+      await expect.element(thumbnail).toHaveAttribute('aria-selected', 'true');
       await expect.element(dialog.getByRole('status')).toHaveTextContent('two.png');
     });
 
@@ -752,9 +938,9 @@ describe('@godaddy/antares', function packageTests() {
         vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
         const screen = await render(<Gallery initialImages={samples} />);
         screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('load'));
-        await userEvent.click(screen.getByRole('button', { name: 'Open one.png' }));
+        await userEvent.click(screen.getByRole('row', { name: 'Open one.png' }));
         const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
-        const thumbnail = dialog.getByRole('button', { name: 'View one.png' });
+        const thumbnail = dialog.getByRole('row', { name: 'View one.png' });
         const image = thumbnail.element().querySelector('img');
         if (!image) throw new Error('Expected the thumbnail image');
 
@@ -766,25 +952,27 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(dialog.getByRole('img', { name: 'one.png failed to load' })).toBeVisible();
         await expect.element(thumbnail).toHaveFocus();
         await userEvent.keyboard('{ArrowRight}');
-        await expect.element(dialog.getByRole('button', { name: 'View two.png' })).toHaveFocus();
+        await expect.element(dialog.getByRole('row', { name: 'View two.png' })).toHaveFocus();
         await expect.element(dialog.getByRole('status')).toHaveTextContent('two.png');
         await userEvent.keyboard('{ArrowLeft}');
         await expect.element(thumbnail).toHaveFocus();
         await expect.element(dialog.getByRole('status')).toHaveTextContent('one.png');
         await userEvent.keyboard('{Enter}');
-        await expect.element(thumbnail).toHaveAttribute('aria-current', 'true');
+        await expect.element(thumbnail).toHaveAttribute('aria-selected', 'true');
       }
     );
 
     it.each(['list', 'grid'] as const)(
-      'continues deletion on the adjacent file in %s view',
+      'restores adjacent-row focus after deletion in %s view',
       async function removalFocus(view) {
         const screen = await render(<Gallery defaultView={view} initialImages={browserSamples.slice(0, 3)} />);
         await userEvent.click(screen.getByRole('button', { name: 'Remove Photo_2.png' }));
+        await expect.element(screen.getByRole('row', { name: 'Open Photo_3.png', exact: true })).toHaveFocus();
+        await userEvent.keyboard('{Tab}');
         await expect.element(screen.getByRole('button', { name: 'Remove Photo_3.png' })).toHaveFocus();
         await userEvent.keyboard('{Enter}');
-        await expect.element(screen.getByRole('button', { name: 'Remove file_name.png' })).toHaveFocus();
-        await userEvent.keyboard('{Enter}');
+        await expect.element(screen.getByRole('row', { name: 'Open file_name.png', exact: true })).toHaveFocus();
+        await userEvent.keyboard('{Tab}{Enter}');
         await expect.element(screen.getByRole('button', { name: 'Add files', exact: true })).toHaveFocus();
         await expect.element(screen.getByRole('region', { name: 'Empty gallery' })).toBeVisible();
       }
@@ -799,8 +987,8 @@ describe('@godaddy/antares', function packageTests() {
         });
       const screen = await render(<Gallery />);
       selectFiles(screen.container, [png('first.png'), png('second.png'), png('third.png')]);
-      await expect.element(screen.getByRole('button', { name: 'Open first.png' })).toBeVisible();
-      await expect.element(screen.getByRole('button', { name: 'Open third.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Open first.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Open third.png' })).toBeVisible();
       await expect.element(screen.getByRole('alert')).toHaveTextContent('We couldn’t read some images.');
       selectFiles(screen.container, [png('first.png'), png('second.png')]);
       await expect.element(screen.getByText('3 images', { exact: true })).toBeVisible();
@@ -816,7 +1004,7 @@ describe('@godaddy/antares', function packageTests() {
           <Gallery limits={budget === 'count' ? { maxFiles: 1 } : { maxTotalSize: file.size }} />
         );
         selectFiles(screen.container, [file]);
-        await expect.element(screen.getByRole('button', { name: 'Open local.png' })).toBeVisible();
+        await expect.element(screen.getByRole('row', { name: 'Open local.png' })).toBeVisible();
         selectFiles(screen.container, [png()]);
         await expect.element(screen.getByRole('status')).toHaveTextContent('1 duplicate skipped.');
         await expect.element(screen.getByRole('alert')).not.toBeInTheDocument();
@@ -826,12 +1014,35 @@ describe('@godaddy/antares', function packageTests() {
       }
     );
 
+    it.each(['count', 'bytes'] as const)(
+      'rejects nonduplicate files over the %s budget before reading them',
+      async function earlyBudgetRejection(budget) {
+        const existing = png('existing.png');
+        const screen = await render(
+          <Gallery limits={budget === 'count' ? { maxFiles: 1 } : { maxTotalSize: existing.size }} />
+        );
+        selectFiles(screen.container, [existing]);
+        await expect.element(screen.getByRole('row', { name: 'Open existing.png' })).toBeVisible();
+        const rejected = png('rejected.png');
+        const read = vi.spyOn(rejected, 'arrayBuffer');
+        selectFiles(screen.container, [rejected]);
+        await expect.element(screen.getByRole('alert')).toHaveTextContent('Gallery limit reached');
+        expect(read).not.toHaveBeenCalled();
+        // A matching name/size still needs hashing: it might be a duplicate or different content.
+        selectFiles(screen.container, [existing]);
+        await expect.element(screen.getByRole('status')).toHaveTextContent('1 duplicate skipped.');
+        selectFiles(screen.container, [differentPng('existing.png')]);
+        await expect.element(screen.getByRole('alert')).toHaveTextContent('Gallery limit reached');
+        await expect.element(screen.getByText('1 image', { exact: true })).toBeVisible();
+      }
+    );
+
     it('isolates unreadable files without discarding the rest of their batch', async function unreadableFile() {
       const unreadable = png('unreadable.png');
       vi.spyOn(unreadable, 'arrayBuffer').mockRejectedValue(new Error('Read failed'));
       const screen = await render(<Gallery />);
       selectFiles(screen.container, [unreadable, png('readable.png')]);
-      await expect.element(screen.getByRole('button', { name: 'Open readable.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Open readable.png' })).toBeVisible();
       await expect.element(screen.getByRole('alert')).toHaveTextContent('couldn’t read some images');
       expect(screen.getByRole('button', { name: 'Remove unreadable.png' }).all()).toHaveLength(0);
     });
@@ -841,10 +1052,10 @@ describe('@godaddy/antares', function packageTests() {
       selectFiles(screen.container, [png('first.png'), png('second.png')]);
       await expect.element(screen.getByText('2 images', { exact: true })).toBeVisible();
       await expect.element(screen.getByRole('alert')).toHaveTextContent('Gallery limit reached: 2 images');
-      expect(screen.getByRole('button', { name: 'Open second.png' }).all()).toHaveLength(0);
+      expect(screen.getByRole('row', { name: 'Open second.png' }).all()).toHaveLength(0);
       await userEvent.click(screen.getByRole('button', { name: 'Remove first.png' }));
       selectFiles(screen.container, [png('second.png')]);
-      await expect.element(screen.getByRole('button', { name: 'Open second.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Open second.png' })).toBeVisible();
     });
 
     it('enforces aggregate bytes across overlapping batches and retains initial images', async function byteBudget() {
@@ -855,12 +1066,12 @@ describe('@godaddy/antares', function packageTests() {
       );
       selectFiles(screen.container, [first]);
       selectFiles(screen.container, [second]);
-      await expect.element(screen.getByRole('button', { name: 'Open first.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Open first.png' })).toBeVisible();
       await expect.element(screen.getByRole('alert')).toHaveTextContent('Gallery limit reached');
-      expect(screen.getByRole('button', { name: 'Open second.png' }).all()).toHaveLength(0);
+      expect(screen.getByRole('row', { name: 'Open second.png' }).all()).toHaveLength(0);
       await userEvent.click(screen.getByRole('button', { name: 'Remove one.png' }));
       selectFiles(screen.container, [second]);
-      await expect.element(screen.getByRole('button', { name: 'Open second.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Open second.png' })).toBeVisible();
     });
 
     it('reports queued processing and publishes accepted files before the batch finishes', async function ingestionProgress() {
@@ -875,7 +1086,7 @@ describe('@godaddy/antares', function packageTests() {
         .toHaveAttribute('aria-valuenow', '0');
       await expect.poll(() => pending.length).toBe(1);
       pending[0](new ArrayBuffer(32));
-      await expect.element(screen.getByRole('button', { name: 'Open first.png' })).toBeVisible();
+      await expect.element(screen.getByRole('row', { name: 'Open first.png' })).toBeVisible();
       await expect.element(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
       selectFiles(screen.container, [png('third.png')]);
       await expect.element(screen.getByRole('progressbar')).toHaveAttribute('aria-valuemax', '3');
@@ -906,17 +1117,17 @@ describe('@godaddy/antares', function packageTests() {
         alt: `Description of ${image.name}`
       }));
       const screen = await render(<Gallery initialImages={images} />);
-      await userEvent.click(screen.getByRole('button', { name: 'Open Photo_5.png' }));
+      await userEvent.click(screen.getByRole('row', { name: 'Open Photo_5.png' }));
       const dialog = screen.getByRole('dialog');
       await expect.element(dialog.getByRole('region', { name: 'Gallery images' })).toBeVisible();
       await expect.element(dialog.getByRole('img', { name: 'Description of Photo_5.png', exact: true })).toBeVisible();
       const fullResources = () =>
         Array.from(dialog.element().querySelectorAll('img')).filter((image) => image.src.endsWith('#full'));
       expect(fullResources()).toHaveLength(3);
-      expect(dialog.getByRole('button', { name: 'View Photo_5.png' }).element().querySelector('img')?.src).toBe(
+      expect(dialog.getByRole('row', { name: 'View Photo_5.png' }).element().querySelector('img')?.src).toBe(
         images[4].thumbnailSrc
       );
-      await userEvent.click(dialog.getByRole('button', { name: 'View Photo_10.png' }));
+      await userEvent.click(dialog.getByRole('row', { name: 'View Photo_10.png' }));
       expect(fullResources()).toHaveLength(2);
       await expect.element(dialog.getByRole('status')).toHaveTextContent('10 of 10');
     });
@@ -947,7 +1158,7 @@ describe('@godaddy/antares', function packageTests() {
           </div>
         );
         const picture = screen.getByRole('img', { name: 'one.png', exact: true });
-        const opener = screen.getByRole('button', { name: 'Open one.png' });
+        const opener = screen.getByRole('row', { name: 'Open one.png' });
         if (withThumbnail) {
           picture.element().dispatchEvent(new Event('error'));
           await expect.poll(() => picture.element().getAttribute('src')).toBe(samples[0].src);
@@ -978,13 +1189,13 @@ describe('@godaddy/antares', function packageTests() {
           <Gallery defaultView={view} initialImages={[{ ...samples[0], thumbnailSrc: samples[0].src }]} />
         );
         screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('error'));
-        const retry = screen.getByRole('button', { name: 'Retry one.png' });
+        const retry = screen.getByRole('row', { name: 'Retry one.png' });
         await expect.element(retry).toBeVisible();
-        await expect.element(screen.getByRole('button', { name: 'Open one.png' })).not.toBeInTheDocument();
+        await expect.element(screen.getByRole('row', { name: 'Open one.png' })).not.toBeInTheDocument();
         await userEvent.click(retry);
         completed.mockReturnValue(true);
         screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('load'));
-        await expect.element(screen.getByRole('button', { name: 'Open one.png' })).toBeVisible();
+        await expect.element(screen.getByRole('row', { name: 'Open one.png' })).toBeVisible();
         await expect.element(retry).not.toBeInTheDocument();
       }
     );
@@ -993,26 +1204,31 @@ describe('@godaddy/antares', function packageTests() {
       const screen = await render(
         <Gallery initialImages={[{ ...samples[0], thumbnailSrc: 'data:image/png;base64,broken' }]} />
       );
-      await expect.element(screen.getByRole('button', { name: 'Open one.png' })).toBeVisible();
-      const cover = screen.getByRole('button', { name: 'Open one.png' }).element().querySelector('img');
+      await expect.element(screen.getByRole('row', { name: 'Open one.png' })).toBeVisible();
+      const cover = screen.getByRole('row', { name: 'Open one.png' }).element().querySelector('img');
       await expect.poll(() => cover?.getAttribute('src')).toBe(samples[0].src);
-      await userEvent.click(screen.getByRole('button', { name: 'Open one.png' }));
+      await userEvent.click(screen.getByRole('row', { name: 'Open one.png' }));
       await expect.element(screen.getByRole('dialog')).toBeVisible();
     });
 
     it.each(['ltr', 'rtl'] as const)(
       'navigates the thumbnail rail with a single Tab stop in %s',
       async function thumbnailKeyboard(dir) {
-        const screen = await render(<Gallery dir={dir} initialImages={browserSamples.slice(0, 4)} />);
-        await userEvent.click(screen.getByRole('button', { name: 'Open file_name.png' }));
+        // The host owns RAC's locale; Gallery only supplies its layout direction and formatted copy.
+        const screen = await render(
+          <RACI18nProvider locale={dir === 'rtl' ? 'ar' : 'en-US'}>
+            <Gallery dir={dir} initialImages={browserSamples.slice(0, 4)} />
+          </RACI18nProvider>
+        );
+        await userEvent.click(screen.getByRole('row', { name: 'Open file_name.png' }));
         const dialog = screen.getByRole('dialog');
-        const first = dialog.getByRole('button', { name: 'View file_name.png' });
+        const first = dialog.getByRole('row', { name: 'View file_name.png' });
         first.element().focus();
         await userEvent.keyboard(dir === 'rtl' ? '{ArrowLeft}' : '{ArrowRight}');
-        await expect.element(dialog.getByRole('button', { name: 'View Photo_2.png' })).toHaveFocus();
+        await expect.element(dialog.getByRole('row', { name: 'View Photo_2.png' })).toHaveFocus();
         await expect.element(dialog.getByRole('status')).toHaveTextContent('2 of 4');
         await userEvent.keyboard('{End}');
-        await expect.element(dialog.getByRole('button', { name: 'View Photo_4.png' })).toHaveFocus();
+        await expect.element(dialog.getByRole('row', { name: 'View Photo_4.png' })).toHaveFocus();
         await userEvent.keyboard('{Home}');
         await expect.element(first).toHaveFocus();
         await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
@@ -1028,7 +1244,7 @@ describe('@godaddy/antares', function packageTests() {
       const session = cdp() as unknown as { send: (method: string, params: unknown) => Promise<void> };
       try {
         const screen = await render(<Gallery initialImages={browserSamples.slice(0, 4)} />);
-        await userEvent.click(screen.getByRole('button', { name: 'Open Photo_2.png' }));
+        await userEvent.click(screen.getByRole('row', { name: 'Open Photo_2.png' }));
         const dialog = screen.getByRole('dialog');
         await session.send('Emulation.setEmulatedMedia', {
           features: [{ name: 'prefers-reduced-motion', value: 'reduce' }]
@@ -1040,7 +1256,7 @@ describe('@godaddy/antares', function packageTests() {
         await session.send('Emulation.setEmulatedMedia', { features: [] });
         await expect.element(dialog.getByRole('status')).toHaveTextContent('3 of 4');
         await userEvent.keyboard('{Escape}');
-        await expect.element(screen.getByRole('button', { name: 'Open Photo_2.png' })).toHaveFocus();
+        await expect.element(screen.getByRole('row', { name: 'Open Photo_2.png' })).toHaveFocus();
       } finally {
         await session.send('Emulation.setEmulatedMedia', { features: [] });
       }

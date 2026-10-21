@@ -1,14 +1,17 @@
-.item {
+.card {
   inline-size: 100%;
   min-inline-size: 0;
-}
-
-.card {
   --_gallery-file-action-space: calc(var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5)) * 2);
 }
 
 .card:where([data-error]) {
   border-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));
+}
+
+.cover {
+  box-sizing: border-box;
+  min-inline-size: 0;
+  border: 1px solid transparent;
 }
 
 .details {
@@ -22,4 +25,12 @@
 
 .errorDetails {
   min-inline-size: 0;
+}
+
+.retry {
+  text-decoration: underline;
+}
+
+.collection {
+  inline-size: 100%;
 }

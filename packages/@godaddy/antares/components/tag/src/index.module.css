@@ -146,21 +146,13 @@
 
   /* Emphasis: passive (default) */
   &:where([data-emphasis="passive"]) {
-    --ux-tag-fill-color: var(--ux-122byqq, var(--ux-1u2jy43, var(--color-feedback-passive-subtle, #f5f5f5)));
-    --ux-tag-content-color: var(--ux-119z9pz, var(--ux-e5ryhe, var(--color-feedback-passive-onsubtle, #2f4f4f)));
+    --ux-tag-fill-color: var(--ux-122byqq, var(--ux-1u2jy43, gray));
+    --ux-tag-content-color: var(--ux-119z9pz, var(--ux-e5ryhe, white));
   }
 
   &:where([data-high-contrast][data-emphasis="passive"]) {
     --ux-tag-fill-color: var(--ux-8r1h1q, var(--ux-1m9ys0v, gray));
     --ux-tag-content-color: var(--ux-12y347v, var(--ux-1j2zkam, white));
-  }
-
-  &:where([data-emphasis="passive"][data-design="inline"]:not([data-high-contrast])) {
-    color: var(--ux-122byqq, var(--ux-1u2jy43, var(--color-feedback-passive-text, #2f4f4f)));
-  }
-
-  &:where([data-emphasis="passive"][data-indicator]:not([data-high-contrast])) {
-    --ux-tag-fill-color: var(--ux-122byqq, var(--ux-1u2jy43, var(--color-feedback-passive-text, #2f4f4f)));
   }
 
   /* Emphasis: premium */

@@ -2,10 +2,11 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { GalleryLimits, ImageItem } from '../data/types';
+import { useGalleryCopy } from '../data/copy';
 
 export const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 const MiB = 1024 * 1024;
-export const defaultLimits: Required<GalleryLimits> = { maxFiles: 50, maxFileSize: 256 * MiB, maxTotalSize: 256 * MiB };
+export const defaultLimits: Required<GalleryLimits> = { maxFiles: 50, maxFileSize: 20 * MiB, maxTotalSize: 256 * MiB };
 
 /** Hashing is optional; an unreadable file still fails independently of the rest of its batch. */
 async function contentKey(file: File) {
@@ -26,6 +27,7 @@ export function useGalleryImages(
   limits: Required<GalleryLimits>,
   onImagesChange?: (images: ImageItem[]) => void
 ) {
+  const { messages } = useGalleryCopy();
   const [images, setImages] = useState(() => [...initialImages]);
   const collection = useRef(images);
   const [error, setError] = useState('');
@@ -35,7 +37,7 @@ export function useGalleryImages(
   const mounted = useRef(false);
   const instanceId = useId();
   const counter = useRef(0);
-  const owned = useRef(new Map<string, { id: string; url: string }>());
+  const owned = useRef(new Map<string, { id: string; url: string; name: string; size: number }>());
   const keys = useRef(new Map<string, string>());
   const queue = useRef(Promise.resolve());
   const callback = useRef(onImagesChange);
@@ -94,6 +96,18 @@ export function useGalleryImages(
               invalid++;
               continue;
             }
+            const exceedsBudget = function exceedsBudget() {
+              const totalBytes = collection.current.reduce((total, image) => total + (image.size ?? 0), 0);
+              return collection.current.length >= limits.maxFiles || totalBytes + file.size > limits.maxTotalSize;
+            };
+            // At capacity, only a possible duplicate needs a content read. Metadata alone never proves equality.
+            const possibleDuplicate = Array.from(owned.current.values()).some(
+              (entry) => entry.name === file.name && entry.size === file.size
+            );
+            if (exceedsBudget() && !possibleDuplicate) {
+              overBudget++;
+              continue;
+            }
             const hash = await contentKey(file);
             if (!mounted.current) return;
             const id = `local-${instanceId}-${counter.current++}`;
@@ -102,13 +116,12 @@ export function useGalleryImages(
               duplicates++;
               continue;
             }
-            const totalBytes = collection.current.reduce((total, image) => total + (image.size ?? 0), 0);
-            if (collection.current.length >= limits.maxFiles || totalBytes + file.size > limits.maxTotalSize) {
+            if (exceedsBudget()) {
               overBudget++;
               continue;
             }
             const url = URL.createObjectURL(file);
-            owned.current.set(key, { id, url });
+            owned.current.set(key, { id, url, name: file.name, size: file.size });
             keys.current.set(id, key);
             updateImages((previous) => [...previous, { id, name: file.name, size: file.size, src: url }]);
             added++;
@@ -121,20 +134,19 @@ export function useGalleryImages(
         }
         if (!mounted.current) return;
         const errors = [];
-        if (invalid) errors.push(`Use JPG, PNG, GIF, or WebP images smaller than ${limits.maxFileSize / MiB} MiB.`);
-        if (overBudget)
-          errors.push(`Gallery limit reached: ${limits.maxFiles} images and ${limits.maxTotalSize / MiB} MiB total.`);
-        if (unreadable) errors.push('We couldn’t read some images. Please try again.');
+        if (invalid) errors.push(messages.invalidFiles(limits.maxFileSize / MiB));
+        if (overBudget) errors.push(messages.limitReached(limits.maxFiles, limits.maxTotalSize / MiB));
+        if (unreadable) errors.push(messages.unreadableImages);
         setError(errors.join(' '));
-        const messages = [];
-        if (added) messages.push(`${added} ${added === 1 ? 'image' : 'images'} added.`);
-        if (duplicates) messages.push(`${duplicates} ${duplicates === 1 ? 'duplicate' : 'duplicates'} skipped.`);
-        setNotice(messages.join(' '));
+        const notices = [];
+        if (added) notices.push(messages.addedImages(added));
+        if (duplicates) notices.push(messages.skippedDuplicates(duplicates));
+        setNotice(notices.join(' '));
       };
       const pending = queue.current.then(process);
       queue.current = pending
         .catch(function failedBatch() {
-          reportError('We couldn’t read these images. Please try again.');
+          reportError(messages.unreadableBatch);
         })
         .finally(function finishBatch() {
           if (progress.current.completed === progress.current.total) {
@@ -144,7 +156,7 @@ export function useGalleryImages(
         });
       return queue.current;
     },
-    [instanceId, limits.maxFiles, limits.maxFileSize, limits.maxTotalSize, reportError, updateImages]
+    [instanceId, limits.maxFiles, limits.maxFileSize, limits.maxTotalSize, messages, reportError, updateImages]
   );
 
   const removeImage = useCallback(
@@ -157,9 +169,9 @@ export function useGalleryImages(
         keys.current.delete(image.id);
       }
       updateImages((previous) => previous.filter((item) => item.id !== image.id));
-      setNotice(`${image.name} removed.`);
+      setNotice(messages.removedImage(image.name));
     },
-    [updateImages]
+    [messages, updateImages]
   );
 
   const retryImage = useCallback(
@@ -167,9 +179,9 @@ export function useGalleryImages(
       updateImages((previous) =>
         previous.map((item) => (item.id === image.id ? { ...item, status: 'loading', errorMessage: undefined } : item))
       );
-      setNotice(`${image.name} is retrying.`);
+      setNotice(messages.retryingImage(image.name));
     },
-    [updateImages]
+    [messages, updateImages]
   );
 
   const markReady = useCallback(
@@ -177,21 +189,21 @@ export function useGalleryImages(
       updateImages((previous) =>
         previous.map((item) => (item.id === id ? { ...item, status: 'ready', errorMessage: undefined } : item))
       );
-      setNotice('Image is ready to view.');
+      setNotice(messages.imageReady);
     },
-    [updateImages]
+    [messages, updateImages]
   );
 
   const markError = useCallback(
     function markError(id: string) {
       updateImages((previous) =>
         previous.map((item) =>
-          item.id === id ? { ...item, status: 'error', errorMessage: `Couldn’t load ${item.name}.` } : item
+          item.id === id ? { ...item, status: 'error', errorMessage: messages.failedImage(item.name) } : item
         )
       );
-      setNotice('Image failed to load.');
+      setNotice(messages.imageFailed);
     },
-    [updateImages]
+    [messages, updateImages]
   );
 
   return { images, error, notice, processing, addFiles, removeImage, retryImage, markReady, markError, reportError };

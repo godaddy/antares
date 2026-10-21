@@ -3,7 +3,6 @@
   min-inline-size: 0;
 }
 
-/* Keep the live region mounted without reserving a gap before the first update. */
 .notice:where(:empty) {
   position: absolute;
 }
@@ -14,8 +13,8 @@
   z-index: 1;
   border: 1px dashed var(--ux-f7kpiw, #00a4a6);
   border-radius: var(--ux-2jubes, 16px);
-  background-color: rgba(216, 239, 239, 0.9);
-  color: var(--color-surface-text-base, var(--ux-1leynsm, #111));
+  background-color: var(--color-surface-background-base, var(--ux-cao06b, Canvas));
+  color: var(--color-surface-text-base, var(--ux-1leynsm, CanvasText));
   pointer-events: none;
 }
 
@@ -26,4 +25,13 @@
   max-inline-size: 80rem;
   min-inline-size: 0;
   margin-inline: auto;
+}
+
+.emptyState {
+  min-block-size: 256px;
+  text-align: center;
+}
+
+.description {
+  max-inline-size: 30rem;
 }

@@ -45,7 +45,7 @@ export interface GalleryLimits {
   /** Maximum collection size, including initial images. Defaults to 50. */
   maxFiles?: number;
 
-  /** Exclusive per-file byte limit. Defaults to 256 MiB. */
+  /** Exclusive per-file byte limit. Defaults to 20 MiB. */
   maxFileSize?: number;
 
   /** Inclusive total byte budget for images with a known size. Defaults to 256 MiB. */
