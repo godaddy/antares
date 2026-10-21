@@ -8,7 +8,7 @@ d:"/antares/pr-380-site/_next/static/chunks/0cq_r7uivgtia.js"
 e:"/antares/pr-380-site/_next/static/chunks/44d0fxytx9jkg.js"
 f:"/antares/pr-380-site/_next/static/chunks/0y43-9m1z7bvl.js"
 10:"/antares/pr-380-site/_next/static/chunks/2f_a87zzluj--.js"
-11:"/antares/pr-380-site/_next/static/chunks/0r07p8gx7ap0b.js"
+11:"/antares/pr-380-site/_next/static/chunks/2jzz_zl4p3jq7.js"
 12:"/antares/pr-380-site/_next/static/chunks/2znf03_833nl7.js"
 13:"/antares/pr-380-site/_next/static/chunks/428imhwwk-ha_.js"
 14:"/antares/pr-380-site/_next/static/chunks/32o7tmg2i-rss.js"
@@ -894,7 +894,7 @@ export const ImageSurface = forwardRef<HTMLImageElement, ImageSurfaceProps>(func
     </Button>
   );
 });
-23:Te34,'use client';
+23:Te78,'use client';
 
 import { Button, type ButtonProps, Flex, Icon, Text } from '@godaddy/antares';
 import type { ImageItem } from '../../data/types';
@@ -946,38 +946,7 @@ export function GalleryImage({
     }
   );
 
-  if (state === 'error') {
-    if (variant === 'thumbnail') {
-      const errorSurface = (
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          className={`${styles.image} ${styles.errorSurface}`}
-          data-variant={variant}
-          role="img"
-          aria-label={`${image.name} failed to load`}
-        >
-          <Icon icon="alert" aria-hidden="true" />
-        </Flex>
-      );
-
-      if (!onOpen) return errorSurface;
-
-      return (
-        <Button
-          variant={selected ? 'secondary' : 'minimal'}
-          aria-label={label ?? `View ${image.name}`}
-          excludeFromTabOrder={tabIndex === -1}
-          onKeyDown={onKeyDown}
-          aria-current={selected ? 'true' : undefined}
-          onPress={() => onOpen(image.id)}
-          className={surfaceStyles.openButton}
-        >
-          {errorSurface}
-        </Button>
-      );
-    }
-
+  if (state === 'error' && variant !== 'thumbnail') {
     return (
       <Flex direction="column" gap="xs" padding="sm" role="alert">
         <Icon icon="alert" aria-hidden="true" />
@@ -989,32 +958,58 @@ export function GalleryImage({
     );
   }
 
-  const picture = (
-    <ImageSurface
-      ref={imageRef}
-      key={attempt}
-      src={src}
-      alt={image.alt ?? image.name}
-      srcSet={variant === 'thumbnail' ? undefined : image.srcSet}
-      sizes={variant === 'thumbnail' ? undefined : image.sizes}
-      width={variant === 'thumbnail' ? 80 : image.width}
-      height={variant === 'thumbnail' ? 60 : image.height}
-      tabIndex={tabIndex}
-      onKeyDown={onKeyDown}
-      className={styles.image}
-      variant={variant}
-      loading={loading}
-      onLoad={onLoad}
-      onError={onError}
-      onOpen={onOpen ? () => onOpen(image.id) : undefined}
-      label={label ?? `View ${image.name}`}
-      selected={selected}
-    />
-  );
+  const picture =
+    state === 'error' ? (
+      <Flex
+        alignItems="center"
+        justifyContent="center"
+        className={`${styles.image} ${styles.errorSurface}`}
+        data-variant={variant}
+        role="img"
+        aria-label={`${image.name} failed to load`}
+      >
+        <Icon icon="alert" aria-hidden="true" />
+      </Flex>
+    ) : (
+      <ImageSurface
+        ref={imageRef}
+        key={attempt}
+        src={src}
+        alt={variant === 'thumbnail' && onOpen ? '' : (image.alt ?? image.name)}
+        srcSet={variant === 'thumbnail' ? undefined : image.srcSet}
+        sizes={variant === 'thumbnail' ? undefined : image.sizes}
+        width={variant === 'thumbnail' ? 80 : image.width}
+        height={variant === 'thumbnail' ? 60 : image.height}
+        tabIndex={tabIndex}
+        onKeyDown={onKeyDown}
+        className={styles.image}
+        variant={variant}
+        loading={loading}
+        onLoad={onLoad}
+        onError={onError}
+        onOpen={variant !== 'thumbnail' && onOpen ? () => onOpen(image.id) : undefined}
+        label={label ?? `View ${image.name}`}
+        selected={selected}
+      />
+    );
 
   return (
     <Flex direction="column" gap="xs" aria-busy={state === 'loading'} className={styles.container}>
-      {picture}
+      {variant === 'thumbnail' && onOpen ? (
+        <Button
+          variant={selected ? 'secondary' : 'minimal'}
+          aria-label={label ?? `View ${image.name}`}
+          excludeFromTabOrder={tabIndex === -1}
+          onKeyDown={onKeyDown}
+          aria-current={selected ? 'true' : undefined}
+          onPress={() => onOpen(image.id)}
+          className={surfaceStyles.openButton}
+        >
+          {picture}
+        </Button>
+      ) : (
+        picture
+      )}
       {state === 'loading' ? <Text>Loading image…</Text> : null}
     </Flex>
   );
@@ -1209,7 +1204,7 @@ export function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: 
     </Flex>
   );
 }
-27:T1c5a,'use client';
+27:T1c4d,'use client';
 
 import { useCallback, useEffect, useRef, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Button, Carousel, Box, CloseButton, Content, Flex, Heading, Icon, Modal, Text } from '@godaddy/antares';
@@ -1377,7 +1372,7 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
           hideDots
           hideNavigationControls
           hideMaskEdges
-          emblaOptions={{ direction: dir, duration: 0 }}
+          emblaOptions={{ direction: dir }}
           emblaAccessibilityOptions={{ carouselAriaLabel: 'Gallery images', announceChanges: false }}
         >
           {images.map(renderSlide)}
@@ -1764,7 +1759,7 @@ export function useGalleryImages(
 b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L15",null,{"toc":[],"footer":{"enabled":true},"children":[["$","$L16",null,{"children":"Gallery"}],["$","$L17",null,{"className":"mb-0","children":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L18",null,{"markdownUrl":"/docs/blocks/gallery.mdx"}],["$","$L19",null,{"markdownUrl":"/docs/blocks/gallery.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/gallery/README.mdx"}]]}],["$","$L1a",null,{"children":[null,"\n",["$","$L1c",null,{"block":{"id":"gallery","description":"Browse images in a list or grid, add local files, and open a media viewer.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/empty-state/index.module.css","language":"css","source":".emptyState {\n  min-block-size: 256px;\n  text-align: center;\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/empty-state/index.tsx","language":"tsx","source":"import { Box, Flex, Heading, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Welcomes users to an empty gallery and points them to the upload action. */\nexport function EmptyState() {\n  return (\n    <Flex\n      direction=\"column\"\n      alignItems=\"center\"\n      justifyContent=\"center\"\n      gap=\"sm\"\n      padding=\"2xl\"\n      role=\"region\"\n      aria-label=\"Empty gallery\"\n      className={styles.emptyState}\n    >\n      <Box padding=\"md\" rounding=\"full\" elevation=\"card\" aria-hidden=\"true\">\n        <Icon icon=\"upload\" />\n      </Box>\n      <Heading level={3}>Start your gallery</Heading>\n      <Text className={styles.description}>Drop images here or choose Add files above to upload.</Text>\n    </Flex>\n  );\n}\n"},{"path":"components/file-cover/index.module.css","language":"css","source":".surface {\n  max-inline-size: 100%;\n  object-fit: cover;\n}\n\n.surface:where(img) {\n  display: block;\n}\n\n.surface:where([data-variant=\"horizontal\"]) {\n  inline-size: 56px;\n  block-size: 56px;\n}\n\n.surface:where([data-variant=\"vertical\"]) {\n  inline-size: 100%;\n  block-size: auto;\n  aspect-ratio: 1;\n}\n\n.error {\n  background: var(--color-feedback-critical-subtle, var(--ux-1iiiqs3, #fde8e7));\n  color: var(--color-feedback-critical-onsubtle, var(--ux-xaxxaq, #8b0000));\n}\n"},{"path":"components/file-cover/index.tsx","language":"tsx","source":"$1d"},{"path":"components/file-item/index.module.css","language":"css","source":".item {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.card {\n  --_gallery-file-action-space: calc(var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5)) * 2);\n}\n\n.card:where([data-error]) {\n  border-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--_gallery-file-action-space);\n}\n\n.details:where([data-variant=\"vertical\"]) {\n  padding-inline-end: 0;\n}\n\n.errorDetails {\n  min-inline-size: 0;\n}\n"},{"path":"components/file-item/index.tsx","language":"tsx","source":"$1e"},{"path":"components/file-items/index.tsx","language":"tsx","source":"$1f"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n/* Keep the live region mounted without reserving a gap before the first update. */\n.notice:where(:empty) {\n  position: absolute;\n}\n\n.dropOverlay {\n  position: absolute;\n  inset: 0;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  color: var(--color-surface-text-base, var(--ux-1leynsm, #111));\n  pointer-events: none;\n}\n\n.dropZone {\n  position: relative;\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$20"},{"path":"components/grid-view/index.module.css","language":"css","source":".items {\n  inline-size: 100%;\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/grid-view/index.tsx","language":"tsx","source":"$21"},{"path":"components/image/image-surface.module.css","language":"css","source":".openButton {\n  display: block;\n  inline-size: 100%;\n  min-inline-size: 0;\n  padding: 0;\n}\n"},{"path":"components/image/image-surface.tsx","language":"tsx","source":"$22"},{"path":"components/image/index.module.css","language":"css","source":".image {\n  max-inline-size: 100%;\n}\n\n.image:where(img) {\n  display: block;\n}\n\n.image:where([data-variant=\"viewer\"]) {\n  inline-size: 100%;\n  max-block-size: 55dvh;\n  object-fit: contain;\n}\n\n.image:where([data-variant=\"thumbnail\"]) {\n  inline-size: 80px;\n  block-size: 60px;\n  object-fit: cover;\n}\n\n.container {\n  min-inline-size: 0;\n}\n\n.errorSurface {\n  background: var(--color-feedback-critical-subtle, var(--ux-1iiiqs3, #fde8e7));\n  color: var(--color-feedback-critical-onsubtle, var(--ux-xaxxaq, #8b0000));\n}\n"},{"path":"components/image/index.tsx","language":"tsx","source":"$23"},{"path":"components/list-view/index.module.css","language":"css","source":".root {\n  inline-size: 100%;\n}\n\n.items {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/list-view/index.tsx","language":"tsx","source":"$24"},{"path":"components/upload-prompt/index.tsx","language":"tsx","source":"$25"},{"path":"components/view-banner/index.tsx","language":"tsx","source":"$26"},{"path":"components/viewer/index.module.css","language":"css","source":".modal {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n}\n\n.slide {\n  min-inline-size: 0;\n  max-inline-size: 100%;\n}\n\n.name {\n  overflow-wrap: anywhere;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  margin: 0;\n  padding: 0;\n  overflow-x: auto;\n  list-style: none;\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$27"},{"path":"data/sample-images.ts","language":"ts","source":"$28"},{"path":"data/types.ts","language":"ts","source":"$29"},{"path":"examples/empty.tsx","language":"tsx","source":"import { Gallery } from '../index';\n\nexport function EmptyGalleryExample() {\n  return <Gallery />;\n}\n"},{"path":"examples/grid.tsx","language":"tsx","source":"import { Gallery } from '../index';\nimport { sampleImages } from '../data/sample-images';\n\nexport function GridGalleryExample() {\n  return <Gallery initialImages={sampleImages} defaultView=\"grid\" />;\n}\n"},{"path":"examples/list.tsx","language":"tsx","source":"import { Gallery } from '../index';\nimport { sampleImages } from '../data/sample-images';\n\nexport function ListGalleryExample() {\n  return <Gallery initialImages={sampleImages} defaultView=\"list\" />;\n}\n"},{"path":"hooks/use-gallery-images.ts","language":"ts","source":"$2a"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery';\nexport type { ImageItem } from './data/types';\n"}]},"children":"$L2b"}]]}]]}],["$L2c","$L2d"],"$L2e"]}],"p":"$@2f","v":null,"s":"$a"}}]]
 2:[["children",{"s":{"n":"slug","t":"oc","k":"blocks/gallery","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
 1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
-0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L31",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L33",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$34",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Gallery"}],["$","meta","1",{"name":"description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","2",{"property":"og:title","content":"Gallery"}],["$","meta","3",{"property":"og:description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/gallery/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Gallery"}],["$","meta","7",{"name":"twitter:description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/gallery/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@35","v":null,"s":"$a"}},"a":"$@36","u":"$@37","b":"aTeC9SYQSTxypg8YuWQun"}
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L31",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L33",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$34",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Gallery"}],["$","meta","1",{"name":"description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","2",{"property":"og:title","content":"Gallery"}],["$","meta","3",{"property":"og:description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/gallery/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Gallery"}],["$","meta","7",{"name":"twitter:description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/gallery/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@35","v":null,"s":"$a"}},"a":"$@36","u":"$@37","b":"qklyaXkBL4bhLTygIlnly"}
 38:I[128903,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
 39:I[897367,["$4","$5"],"OutletBoundary"]
 2b:["$","$L38",null,{}]

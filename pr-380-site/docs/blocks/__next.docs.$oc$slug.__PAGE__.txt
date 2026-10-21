@@ -8,7 +8,7 @@ d:"/antares/pr-380-site/_next/static/chunks/0cq_r7uivgtia.js"
 e:"/antares/pr-380-site/_next/static/chunks/44d0fxytx9jkg.js"
 f:"/antares/pr-380-site/_next/static/chunks/0y43-9m1z7bvl.js"
 10:"/antares/pr-380-site/_next/static/chunks/2f_a87zzluj--.js"
-11:"/antares/pr-380-site/_next/static/chunks/0r07p8gx7ap0b.js"
+11:"/antares/pr-380-site/_next/static/chunks/2jzz_zl4p3jq7.js"
 12:"/antares/pr-380-site/_next/static/chunks/2znf03_833nl7.js"
 13:"/antares/pr-380-site/_next/static/chunks/428imhwwk-ha_.js"
 14:"/antares/pr-380-site/_next/static/chunks/32o7tmg2i-rss.js"
@@ -658,7 +658,7 @@ export const appointmentsImage =
 b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L15",null,{"toc":[{"depth":2,"url":"#install-a-block","title":"Install a block"},{"depth":2,"url":"#blocks","title":"Blocks"},{"depth":3,"url":"#overview-dashboard","title":"Overview dashboard"},{"depth":3,"url":"#project-inquiry-form","title":"Project inquiry form"},{"depth":3,"url":"#gallery","title":"Gallery"},{"depth":3,"url":"#sign-in-form","title":"Sign-in form"}],"footer":{"enabled":true},"children":[["$","$L16",null,{"children":"Build product experiences with Antares."}],["$","$L17",null,{"className":"mb-0","children":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L18",null,{"markdownUrl":"/docs/blocks.mdx"}],["$","$L19",null,{"markdownUrl":"/docs/blocks.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/README.mdx"}]]}],["$","$L1a",null,{"children":[null,"\n",["$","$L1b",null,{"as":"h2","id":"install-a-block","children":"Install a block"}],"\n",["$","p",null,{"children":"From the root of your application, run the command copied by the block's Install button:"}],"\n",["$","$L1c",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$L1d",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npx"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" shadcn@latest"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" add"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" godaddy/antares/blocks/sign-in-form"}]]}]}]}]}],"\n",["$","$L1b",null,{"as":"h2","id":"blocks","children":"Blocks"}],"\n",["$","$L1b",null,{"as":"h3","id":"overview-dashboard","children":"Overview dashboard"}],"\n",["$","$L1f",null,{"block":{"id":"overview-dashboard","description":"A responsive Antares overview dashboard with users, sales channels, and conversations.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/overview-dashboard","files":[{"path":"components/appointments-promotion-card/index.module.css","language":"css","source":".mediaCard {\n  min-inline-size: 0;\n}\n\n.mediaImage {\n  display: block;\n  max-inline-size: 100%;\n  block-size: auto;\n  border-radius: var(--rounding-sm);\n}\n\n.mediaCardContent,\n.mediaCardCopy,\n.mediaCardImage {\n  min-inline-size: 0;\n}\n"},{"path":"components/appointments-promotion-card/index.tsx","language":"tsx","source":"$20"},{"path":"components/conversations-card/index.module.css","language":"css","source":".conversationsCard {\n  min-inline-size: 0;\n}\n"},{"path":"components/conversations-card/index.tsx","language":"tsx","source":"import { Button, Card, Flex, Heading, Tag, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Demonstrates a secondary conversations card with a connection action. */\nexport function ConversationsCard() {\n  return (\n    <Card elevation=\"card\" className={styles.conversationsCard}>\n      <Flex direction=\"column\" gap=\"md\">\n        <Flex justifyContent=\"space-between\" alignItems=\"center\" gap=\"md\">\n          <Heading level={3}>Conversations</Heading>\n          <Tag emphasis=\"info\" size=\"sm\">\n            Included\n          </Tag>\n        </Flex>\n        <Text>Manage all your emails and messages in one place with a unified inbox.</Text>\n        <Button variant=\"secondary\" size=\"sm\">\n          Connect Email\n        </Button>\n      </Flex>\n    </Card>\n  );\n}\n"},{"path":"components/dashboard-header/index.module.css","language":"css","source":".mobileMenuButton,\n.mobileNavLogo,\n.mobileNavAction {\n  display: none;\n}\n\n.navDivider {\n  block-size: 1.25rem;\n  border-inline-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n}\n\n.navigation {\n  gap: var(--sp-lg);\n}\n\n.navActions {\n  gap: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .mobileMenuButton,\n  .mobileNavLogo,\n  .mobileNavAction {\n    display: inline-flex;\n  }\n\n  .desktopNavAction,\n  .navDivider {\n    display: none;\n  }\n\n  .navigation,\n  .navActions {\n    gap: var(--sp-sm);\n  }\n}\n"},{"path":"components/dashboard-header/index.tsx","language":"tsx","source":"$21"},{"path":"components/dashboard-sidebar-content/index.module.css","language":"css","source":"$22"},{"path":"components/dashboard-sidebar-content/index.tsx","language":"tsx","source":"$23"},{"path":"components/dashboard-sidebar/index.module.css","language":"css","source":".sideNavigationContainer {\n  align-self: stretch;\n  background: var(--ux-9i7okd, #f5f7f8);\n  block-size: auto;\n  min-inline-size: 0;\n  overflow: visible;\n  position: relative;\n}\n\n.sideNavigation {\n  background: var(--ux-9i7okd, #f5f7f8);\n  block-size: 100%;\n  inline-size: 100%;\n  min-inline-size: 0;\n  overflow: hidden;\n  padding-block-start: var(--sp-md, 0.5rem);\n  transition: inline-size 300ms cubic-bezier(0.32, 0.72, 0, 1);\n}\n\n.sideNavigationContainer:where([data-expanded]) {\n  z-index: 1;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .sideNavigation {\n    transition: none;\n  }\n}\n\n@container (max-width: 40rem) {\n  .sideNavigationContainer {\n    display: none;\n  }\n}\n"},{"path":"components/dashboard-sidebar/index.tsx","language":"tsx","source":"$24"},{"path":"components/overview-dashboard/index.module.css","language":"css","source":".dashboardFrame {\n  container-type: inline-size;\n  inline-size: 100%;\n  block-size: 100%;\n}\n\n.dashboardShell {\n  grid-template-columns: 56px minmax(0, 1fr);\n  gap: var(--sp-xl);\n  min-block-size: 100%;\n  min-inline-size: 0;\n  transition: grid-template-columns 300ms cubic-bezier(0.32, 0.72, 0, 1);\n}\n\n.dashboardShell:where([data-navigation-pinned-open]) {\n  grid-template-columns: 224px minmax(0, 1fr);\n}\n\n.dashboardMain {\n  align-items: center;\n  min-block-size: 100%;\n  min-inline-size: 0;\n}\n\n.dashboardContent {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n}\n\n.contentGrid {\n  grid-template-columns: minmax(0, 2.25fr) minmax(17.5rem, 1fr);\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .dashboardShell {\n    transition: none;\n  }\n}\n\n@container (max-width: 56rem) {\n  .contentGrid {\n    grid-template-columns: 1fr;\n  }\n}\n\n@container (max-width: 40rem) {\n  .dashboardShell {\n    grid-template-columns: 1fr;\n  }\n}\n"},{"path":"components/overview-dashboard/index.tsx","language":"tsx","source":"$25"},{"path":"components/sales-channels-card/index.module.css","language":"css","source":".salesCardMeasure {\n  min-inline-size: 0;\n}\n"},{"path":"components/sales-channels-card/index.tsx","language":"tsx","source":"$26"},{"path":"components/users-card/index.module.css","language":"css","source":".usersCard {\n  min-inline-size: 0;\n}\n\n.userRow {\n  align-items: center;\n}\n\n.userDivider {\n  border: 0;\n  border-block-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n  margin-block: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .restoreUsersLabel {\n    display: none;\n  }\n\n  .userRow {\n    align-items: flex-start;\n  }\n\n  .userActions {\n    inline-size: 100%;\n    justify-content: flex-end;\n  }\n}\n"},{"path":"components/users-card/index.tsx","language":"tsx","source":"$27"},{"path":"constants/config.ts","language":"ts","source":"$28"},{"path":"index.tsx","language":"tsx","source":"export { OverviewDashboard } from './components/overview-dashboard';\n"}]},"children":"$L29"}],"\n","$L2a","\n","$L2b","\n","$L2c","\n","$L2d","\n","$L2e","\n","$L2f"]}]]}],["$L30","$L31"],"$L32"]}],"p":"$@33","v":null,"s":"$a"}}]]
 2:[["children",{"s":{"n":"slug","t":"oc","k":"blocks","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
 1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
-0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L35",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L37",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$38",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Build product experiences with Antares."}],["$","meta","1",{"name":"description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","2",{"property":"og:title","content":"Build product experiences with Antares."}],["$","meta","3",{"property":"og:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Build product experiences with Antares."}],["$","meta","7",{"name":"twitter:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@39","v":null,"s":"$a"}},"a":"$@3a","u":"$@3b","b":"aTeC9SYQSTxypg8YuWQun"}
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L35",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L37",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$38",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Build product experiences with Antares."}],["$","meta","1",{"name":"description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","2",{"property":"og:title","content":"Build product experiences with Antares."}],["$","meta","3",{"property":"og:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Build product experiences with Antares."}],["$","meta","7",{"name":"twitter:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@39","v":null,"s":"$a"}},"a":"$@3a","u":"$@3b","b":"qklyaXkBL4bhLTygIlnly"}
 3c:I[260568,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
 53:I[342785,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
 54:I[897367,["$4","$5"],"OutletBoundary"]
@@ -2194,7 +2194,7 @@ export const ImageSurface = forwardRef<HTMLImageElement, ImageSurfaceProps>(func
     </Button>
   );
 });
-4a:Te34,'use client';
+4a:Te78,'use client';
 
 import { Button, type ButtonProps, Flex, Icon, Text } from '@godaddy/antares';
 import type { ImageItem } from '../../data/types';
@@ -2246,38 +2246,7 @@ export function GalleryImage({
     }
   );
 
-  if (state === 'error') {
-    if (variant === 'thumbnail') {
-      const errorSurface = (
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          className={`${styles.image} ${styles.errorSurface}`}
-          data-variant={variant}
-          role="img"
-          aria-label={`${image.name} failed to load`}
-        >
-          <Icon icon="alert" aria-hidden="true" />
-        </Flex>
-      );
-
-      if (!onOpen) return errorSurface;
-
-      return (
-        <Button
-          variant={selected ? 'secondary' : 'minimal'}
-          aria-label={label ?? `View ${image.name}`}
-          excludeFromTabOrder={tabIndex === -1}
-          onKeyDown={onKeyDown}
-          aria-current={selected ? 'true' : undefined}
-          onPress={() => onOpen(image.id)}
-          className={surfaceStyles.openButton}
-        >
-          {errorSurface}
-        </Button>
-      );
-    }
-
+  if (state === 'error' && variant !== 'thumbnail') {
     return (
       <Flex direction="column" gap="xs" padding="sm" role="alert">
         <Icon icon="alert" aria-hidden="true" />
@@ -2289,32 +2258,58 @@ export function GalleryImage({
     );
   }
 
-  const picture = (
-    <ImageSurface
-      ref={imageRef}
-      key={attempt}
-      src={src}
-      alt={image.alt ?? image.name}
-      srcSet={variant === 'thumbnail' ? undefined : image.srcSet}
-      sizes={variant === 'thumbnail' ? undefined : image.sizes}
-      width={variant === 'thumbnail' ? 80 : image.width}
-      height={variant === 'thumbnail' ? 60 : image.height}
-      tabIndex={tabIndex}
-      onKeyDown={onKeyDown}
-      className={styles.image}
-      variant={variant}
-      loading={loading}
-      onLoad={onLoad}
-      onError={onError}
-      onOpen={onOpen ? () => onOpen(image.id) : undefined}
-      label={label ?? `View ${image.name}`}
-      selected={selected}
-    />
-  );
+  const picture =
+    state === 'error' ? (
+      <Flex
+        alignItems="center"
+        justifyContent="center"
+        className={`${styles.image} ${styles.errorSurface}`}
+        data-variant={variant}
+        role="img"
+        aria-label={`${image.name} failed to load`}
+      >
+        <Icon icon="alert" aria-hidden="true" />
+      </Flex>
+    ) : (
+      <ImageSurface
+        ref={imageRef}
+        key={attempt}
+        src={src}
+        alt={variant === 'thumbnail' && onOpen ? '' : (image.alt ?? image.name)}
+        srcSet={variant === 'thumbnail' ? undefined : image.srcSet}
+        sizes={variant === 'thumbnail' ? undefined : image.sizes}
+        width={variant === 'thumbnail' ? 80 : image.width}
+        height={variant === 'thumbnail' ? 60 : image.height}
+        tabIndex={tabIndex}
+        onKeyDown={onKeyDown}
+        className={styles.image}
+        variant={variant}
+        loading={loading}
+        onLoad={onLoad}
+        onError={onError}
+        onOpen={variant !== 'thumbnail' && onOpen ? () => onOpen(image.id) : undefined}
+        label={label ?? `View ${image.name}`}
+        selected={selected}
+      />
+    );
 
   return (
     <Flex direction="column" gap="xs" aria-busy={state === 'loading'} className={styles.container}>
-      {picture}
+      {variant === 'thumbnail' && onOpen ? (
+        <Button
+          variant={selected ? 'secondary' : 'minimal'}
+          aria-label={label ?? `View ${image.name}`}
+          excludeFromTabOrder={tabIndex === -1}
+          onKeyDown={onKeyDown}
+          aria-current={selected ? 'true' : undefined}
+          onPress={() => onOpen(image.id)}
+          className={surfaceStyles.openButton}
+        >
+          {picture}
+        </Button>
+      ) : (
+        picture
+      )}
       {state === 'loading' ? <Text>Loading image…</Text> : null}
     </Flex>
   );
@@ -2509,7 +2504,7 @@ export function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: 
     </Flex>
   );
 }
-4e:T1c5a,'use client';
+4e:T1c4d,'use client';
 
 import { useCallback, useEffect, useRef, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Button, Carousel, Box, CloseButton, Content, Flex, Heading, Icon, Modal, Text } from '@godaddy/antares';
@@ -2677,7 +2672,7 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
           hideDots
           hideNavigationControls
           hideMaskEdges
-          emblaOptions={{ direction: dir, duration: 0 }}
+          emblaOptions={{ direction: dir }}
           emblaAccessibilityOptions={{ carouselAriaLabel: 'Gallery images', announceChanges: false }}
         >
           {images.map(renderSlide)}
