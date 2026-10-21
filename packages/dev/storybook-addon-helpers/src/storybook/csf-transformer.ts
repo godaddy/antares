@@ -262,7 +262,8 @@ function transformExamples(
     edits.push({
       start: statement.getStart(),
       end: statement.end,
-      text: stories.map((node) => resolver.printNode(node)).join('\n')
+      // Keep adjacent semicolonless statements separate when the marker produces no stories.
+      text: stories.length ? stories.map((node) => resolver.printNode(node)).join('\n') : ';'
     });
     return stories;
   });
@@ -380,7 +381,8 @@ function pruneUnusedImports(statements: readonly ts.Statement[], resolver: Resol
     edits.push({
       start: statement.getStart(),
       end: statement.end,
-      text: replacement ? resolver.printNode(replacement) : ''
+      // Removing an interleaved import must retain its statement boundary.
+      text: replacement ? resolver.printNode(replacement) : ';'
     });
   }
 }

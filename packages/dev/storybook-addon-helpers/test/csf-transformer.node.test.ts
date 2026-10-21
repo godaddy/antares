@@ -1,7 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import path from 'node:path';
 import fs from 'node:fs';
 import { execSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
+import { runInNewContext } from 'node:vm';
 import * as ts from 'typescript/unstable/ast';
 import { openTypeScriptSession } from '../src/engine/typescript-session.ts';
 import { csfTransformer } from '../src/storybook/csf-transformer.ts';
@@ -30,7 +32,8 @@ function formatTypeScript(code: string): string {
     }
     return execSync('biome format --stdin-file-path=file.tsx', { input: parsedCode })
       .toString()
-      .replace(/\n\s*\n/g, '\n');
+      .replace(/\n\s*\n/g, '\n')
+      .trim();
   } finally {
     session.close();
   }
@@ -145,6 +148,19 @@ describe('csf-transformer', function csfTransformerTests() {
     expect(actual).not.toContain('@bento/storybook-addon-helpers');
   });
 
+  it('preserves statement boundaries when dropping an interleaved import', async function preservesImportBoundary() {
+    const actual = await csfTransformer({
+      code: `setup()
+        import { getMeta } from '@bento/storybook-addon-helpers';
+        (() => 42)();`
+    });
+    const setup = vi.fn();
+
+    expect(actual).not.toContain('@bento/storybook-addon-helpers');
+    expect(runInNewContext(actual, { setup })).toBe(42);
+    expect(setup).toHaveBeenCalledOnce();
+  });
+
   it('does not let a docs import collide with a same-named example story export', async function noDuplicateDeclaration() {
     const actual = await csfTransformer({
       filePath: path.join(fixturesPath, 'collision-fixture/collision.stories.tsx')
@@ -171,6 +187,27 @@ describe('csf-transformer', function csfTransformerTests() {
 
     expect(actual).not.toContain('getExamples');
     expect(actual).not.toContain('@bento/storybook-addon-helpers');
+  });
+
+  it('preserves statement boundaries when dropping an empty examples marker', async function preservesMarkerBoundary() {
+    const directory = fs.mkdtempSync(path.join(tmpdir(), 'antares-empty-examples-'));
+    const filePath = path.join(directory, 'widget.stories.tsx');
+    try {
+      fs.writeFileSync(
+        filePath,
+        `setup()
+        export const examples = getExamples('./no-such-examples');
+        (() => 42)();`
+      );
+      const actual = await csfTransformer({ filePath });
+      const setup = vi.fn();
+
+      expect(actual).not.toContain('getExamples');
+      expect(runInNewContext(actual, { setup })).toBe(42);
+      expect(setup).toHaveBeenCalledOnce();
+    } finally {
+      fs.rmSync(directory, { recursive: true, force: true });
+    }
   });
 
   it('fails when two examples reduce to the same story name', async function reportsDuplicateStoryName() {
