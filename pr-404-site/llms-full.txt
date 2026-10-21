@@ -38,6 +38,14 @@ import { BarChart } from '@godaddy/antares/Chart';
 
 This also works with autocomplete in IDEs and LLMs, so you can import from the root package and let your editor/agent suggest the available components.
 
+## AI Agent Skills [#ai-agent-skills]
+
+Install the `antares-builder` skill so AI coding agents can build with Antares:
+
+```bash
+npx skills add godaddy/antares --skill antares-builder
+```
+
 ## Framework Setup [#framework-setup]
 
 Antares ships CSS alongside its JavaScript modules. Each component chunk imports a corresponding `.css` file (e.g., `import './src-BZhWcxqJ.css'`). Most bundlers handle this automatically, but some frameworks need extra configuration to process CSS imports from `node_modules`.
@@ -3487,6 +3495,52 @@ npm install --save @godaddy/antares
 ## Examples [#examples]
 
 <Examples of={Stories.Examples} />
+
+## Props [#props]
+
+<ArgTypes of={Stories.Props} />
+
+
+# Skeleton
+
+<Meta of={Stories} name="Overview" />
+
+## Features [#features]
+
+- Height presets from `xs` to `2xl`
+- Aspect ratios for images and other media
+- Custom width and height for non-standard shapes
+- `default`, `full`, and `none` rounding
+- A subtle shimmer that reverses in right-to-left locales and stops when reduced motion is preferred
+- Composable into text blocks, avatars, cards, and other loading patterns
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+<Examples of={Stories.Examples} />
+
+## Accessibility [#accessibility]
+
+- Every Skeleton is hidden from assistive technology, so a page with many placeholders stays quiet.
+- Mark the region the Skeletons fill with `role="status"`, `aria-busy="true"`, and an `aria-label` that describes what is loading.
+- Set `aria-busy` to `false`, or remove it, once the real content replaces the Skeletons.
+- The shimmer stops when the user prefers reduced motion, and the shape gets an outline in forced colors mode.
+
+## Best Practices [#best-practices]
+
+- Approximate the final layout; a skeleton doesn't need to be pixel-perfect.
+- Use size presets for text and basic controls, and `aspectRatio` for images and media.
+- Vary the widths of text bars so a paragraph reads like real sentences.
+- Match `width` to `size` for squares, and add `full` rounding for circles.
+
+## Troubleshooting [#troubleshooting]
+
+- If the shimmer doesn't reverse in a right-to-left app, set `dir="rtl"` on `<html>` or a parent element. Skeleton follows the `dir` attribute, and a locale set only through `I18nProvider` doesn't change it.
 
 ## Props [#props]
 
