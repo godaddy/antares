@@ -38,6 +38,14 @@ import { BarChart } from '@godaddy/antares/Chart';
 
 This also works with autocomplete in IDEs and LLMs, so you can import from the root package and let your editor/agent suggest the available components.
 
+## AI Agent Skills
+
+Install the `antares-builder` skill so AI coding agents can build with Antares:
+
+```bash
+npx skills add godaddy/antares --skill antares-builder
+```
+
 ## Framework Setup
 
 Antares ships CSS alongside its JavaScript modules. Each component chunk imports a corresponding `.css` file (e.g., `import './src-BZhWcxqJ.css'`). Most bundlers handle this automatically, but some frameworks need extra configuration to process CSS imports from `node_modules`.

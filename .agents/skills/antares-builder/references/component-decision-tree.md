@@ -51,6 +51,7 @@ For layered content, read [modal layers](composition-patterns.md#modal-layers):
 - Operation progress → `ProgressBar` or compact `CircularProgress`; a numeric input belongs to RangeField.
 - Text-first KPI/trend → `MetricsLockup`.
 - Category comparison → `BarChart`; continuous/time trend → `LineChart`; few parts of a whole → `DonutChart`; one measure against a scale → `GaugeChart`.
+- Content still loading → `Skeleton`, composed into the shape of the content it previews.
 
 Read [charts](charts.md) for chart data/accessors, dimensions, axes, legends and accessibility; read [progress, pagination and feedback](composition-patterns.md#progress-pagination-and-feedback) for feedback and navigation contracts.
 
@@ -69,4 +70,4 @@ Read [layout and styling](layout-and-styling.md) for composition and responsive 
 
 ## API gaps
 
-Do not infer Antares exports such as `Combobox`, `Table`, `Toast`, `Skeleton`, `EmptyState`, `NativeSelect`, `Link`, `Breadcrumb`, `Sidebar` or `FileUpload` from other libraries. Check the installed export map first. When a required component is unavailable, use semantic HTML or the application's established solution. A separate RAC dependency is an option when its API and styling fit the requirement; it does not create an Antares export. For empty states, Antares typography, media, actions and layout can form a suitable composition.
+Do not infer Antares exports such as `Combobox`, `Table`, `Toast`, `EmptyState`, `NativeSelect`, `Link`, `Breadcrumb`, `Sidebar` or `FileUpload` from other libraries. Check the installed export map first. When a required component is unavailable, use semantic HTML or the application's established solution. A separate RAC dependency is an option when its API and styling fit the requirement; it does not create an Antares export. For empty states, Antares typography, media, actions and layout can form a suitable composition.

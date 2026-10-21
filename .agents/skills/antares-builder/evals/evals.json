@@ -138,6 +138,17 @@
         "ProgressSteps shows the zero-based currentStep and the middle step's Carousel supports keyboard and button navigation between slides, each with a meaningful label.",
         "Advancing or returning between wizard steps preserves state correctly without resetting unrelated progress."
       ]
+    },
+    {
+      "id": 13,
+      "prompt": "Build a profile card that shows Skeleton placeholders matching the final layout (a circular avatar plus two lines of text) while the profile loads, then swaps to the real content once it arrives.",
+      "expected_output": "An accessible loading state that previews the real layout and hands off cleanly to real content.",
+      "files": [],
+      "assertions": [
+        "Skeleton composition matches the final layout: a circular avatar (rounding=\"full\", width equal to height) plus two text-line Skeletons of differing widths.",
+        "The loading region is marked with role=\"status\", aria-busy=\"true\" and a descriptive aria-label while loading.",
+        "Once data resolves, aria-busy is set to false (or removed) and the real content fully replaces the Skeletons — no stale placeholders left visible."
+      ]
     }
   ]
 }

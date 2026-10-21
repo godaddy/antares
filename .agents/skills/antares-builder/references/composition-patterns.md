@@ -226,3 +226,5 @@ import { Box, Label, ProgressBar, Text } from '@godaddy/antares';
 When a step or panel holds its own state (a Carousel's position, a form draft), keep it mounted and toggle its visibility rather than conditionally rendering it away and back in — unmounting resets that state.
 
 `Alert` supplies a persistent in-page live alert; avoid using it for ordinary static copy. `Tag` is a static status/category span (`TagContext` provides advanced defaults). `MetricsLockup` composes a KPI label, value, trend and optional contextual tooltip.
+
+`Skeleton` previews a loading layout; compose several to sketch text, media or cards, matching `size`/`width`/`aspectRatio`/`rounding` to the real content's shape. Each `Skeleton` is hidden from assistive technology, so mark the region it fills with `role="status"`, `aria-busy="true"` and a describing `aria-label`, then set `aria-busy` to `false` (or remove it) once real content replaces the placeholders. Its shimmer already respects reduced motion and `dir="rtl"`; no extra handling needed for those.
