@@ -1,0 +1,113 @@
+3:"$Sreact.fragment"
+4:"/antares/pr-403-site/_next/static/chunks/2blaxxgljm_07.js"
+5:"/antares/pr-403-site/_next/static/chunks/2r_m38nsypzx8.js"
+6:I[339756,["$4","$5"],"default"]
+7:I[837457,["$4","$5"],"default"]
+c:"/antares/pr-403-site/_next/static/chunks/2j8vsmtuocz3w.js"
+d:"/antares/pr-403-site/_next/static/chunks/0cq_r7uivgtia.js"
+e:"/antares/pr-403-site/_next/static/chunks/44d0fxytx9jkg.js"
+f:"/antares/pr-403-site/_next/static/chunks/0y43-9m1z7bvl.js"
+10:"/antares/pr-403-site/_next/static/chunks/2f_a87zzluj--.js"
+11:"/antares/pr-403-site/_next/static/chunks/3_60hcbmzh6l3.js"
+12:"/antares/pr-403-site/_next/static/chunks/2znf03_833nl7.js"
+13:"/antares/pr-403-site/_next/static/chunks/428imhwwk-ha_.js"
+14:"/antares/pr-403-site/_next/static/chunks/32o7tmg2i-rss.js"
+15:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsPage"]
+16:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsTitle"]
+17:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsDescription"]
+18:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"LLMCopyButton"]
+19:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"ViewOptions"]
+1a:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsBody"]
+1b:I[494157,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Heading"]
+1c:I[144324,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"CodeBlock"]
+1d:I[144324,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Pre"]
+1e:I[403113,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"StoryRenderer"]
+1f:I[958092,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DefaultExample"]
+20:"DynamicCodeBlock"
+21:I[904143,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$20"]
+22:I[539433,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"SizesExample"]
+54:"ViewportBoundary"
+55:I[897367,["$4","$5"],"$54"]
+56:"MetadataBoundary"
+57:I[897367,["$4","$5"],"$56"]
+58:"$Sreact.suspense"
+9:X
+9:C
+a:X
+b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L15",null,{"toc":[{"depth":2,"url":"#features","title":"Features"},{"depth":2,"url":"#installation","title":"Installation"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#default","title":"Default"},{"depth":3,"url":"#sizes","title":"Sizes"},{"depth":3,"url":"#roundings","title":"Roundings"},{"depth":3,"url":"#custom-size","title":"Custom size"},{"depth":3,"url":"#aspect-ratio","title":"Aspect ratio"},{"depth":3,"url":"#circles-and-squares","title":"Circles and squares"},{"depth":3,"url":"#text-block","title":"Text Block"},{"depth":3,"url":"#media-card","title":"Media card"},{"depth":3,"url":"#in-a-row","title":"In a row"},{"depth":3,"url":"#loading-region","title":"Loading region"},{"depth":3,"url":"#rtl-direction","title":"RTL direction"},{"depth":2,"url":"#accessibility","title":"Accessibility"},{"depth":2,"url":"#best-practices","title":"Best Practices"},{"depth":2,"url":"#troubleshooting","title":"Troubleshooting"},{"depth":2,"url":"#props","title":"Props"}],"footer":{"enabled":true},"children":[["$","$L16",null,{"children":"Skeleton"}],["$","$L17",null,{"className":"mb-0","children":"A placeholder that previews the layout of content while it loads."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L18",null,{"markdownUrl":"/docs/components/skeleton.mdx"}],["$","$L19",null,{"markdownUrl":"/docs/components/skeleton.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/skeleton/README.mdx"}]]}],["$","$L1a",null,{"children":[null,"\n",["$","$L1b",null,{"as":"h2","id":"features","children":"Features"}],"\n",["$","ul",null,{"children":["\n",["$","li",null,{"children":["Height presets from ",["$","code",null,{"children":"xs"}]," to ",["$","code",null,{"children":"2xl"}]]}],"\n",["$","li",null,{"children":"Aspect ratios for images and other media"}],"\n",["$","li",null,{"children":"Custom width and height for non-standard shapes"}],"\n",["$","li",null,{"children":[["$","code",null,{"children":"default"}],", ",["$","code",null,{"children":"full"}],", and ",["$","code",null,{"children":"none"}]," rounding"]}],"\n",["$","li",null,{"children":"A subtle shimmer that reverses in right-to-left locales and stops when reduced motion is preferred"}],"\n",["$","li",null,{"children":"Composable into text blocks, avatars, cards, and other loading patterns"}],"\n"]}],"\n",["$","$L1b",null,{"as":"h2","id":"installation","children":"Installation"}],"\n",["$","$L1c",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$L1d",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npm"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" install"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" @godaddy/antares"}]]}]}]}]}],"\n",["$","$L1b",null,{"as":"h2","id":"examples","children":"Examples"}],"\n",["$","$L1b",null,{"as":"h3","id":"default","children":"Default"}],"\n",["$","p",null,{"children":["A Skeleton fills the width of its container at the ",["$","code",null,{"children":"md"}]," height."]}],"\n",["$","$L1e",null,{"component":"$1f"}],"\n",["$","$L21",null,{"lang":"tsx","code":"import { Skeleton, type SkeletonProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: SkeletonProps) {\n  return <Skeleton {...props} />;\n}"}],"\n",["$","$L1b",null,{"as":"h3","id":"sizes","children":"Sizes"}],"\n",["$","p",null,{"children":"Size presets set the height. They suit text and basic controls such as inputs and buttons."}],"\n",["$","$L1e",null,{"component":"$22"}],"\n","$L23","\n","$L24","\n","$L25","\n","$L26","\n","$L27","\n","$L28","\n","$L29","\n","$L2a","\n","$L2b","\n","$L2c","\n","$L2d","\n","$L2e","\n","$L2f","\n","$L30","\n","$L31","\n","$L32","\n","$L33","\n","$L34","\n","$L35","\n","$L36","\n","$L37","\n","$L38","\n","$L39","\n","$L3a","\n","$L3b","\n","$L3c","\n","$L3d","\n","$L3e","\n","$L3f","\n","$L40","\n","$L41","\n","$L42","\n","$L43","\n","$L44","\n","$L45","\n","$L46","\n","$L47","\n","$L48","\n","$L49","\n","$L4a","\n","$L4b","\n","$L4c","\n","$L4d","\n","$L4e","\n","$L4f"]}]]}],["$L50","$L51"],"$L52"]}],"p":"$@53","v":null,"s":"$a"}}]]
+2:[["children",{"s":{"n":"slug","t":"oc","k":"components/skeleton","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
+1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L55",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L57",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$58",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Skeleton"}],["$","meta","1",{"name":"description","content":"A placeholder that previews the layout of content while it loads."}],["$","meta","2",{"property":"og:title","content":"Skeleton"}],["$","meta","3",{"property":"og:description","content":"A placeholder that previews the layout of content while it loads."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/components/skeleton/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Skeleton"}],["$","meta","7",{"name":"twitter:description","content":"A placeholder that previews the layout of content while it loads."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/components/skeleton/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@59","v":null,"s":"$a"}},"a":"$@5a","u":"$@5b","b":"al1D11ECkSsOGhYgRDdgi"}
+5c:"RoundingsExample"
+5d:I[401968,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$5c"]
+5e:"CustomSizeExample"
+5f:I[721320,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$5e"]
+60:"AspectRatioExample"
+61:I[903366,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$60"]
+62:I[387745,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"ShapesExample"]
+63:"TextBlockExample"
+64:I[900628,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$63"]
+65:"MediaCardExample"
+66:I[428864,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$65"]
+67:I[635847,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"RowExample"]
+68:"LoadingRegionExample"
+69:I[377092,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$68"]
+6a:I[635148,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"RTLExample"]
+6b:I[403299,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"PropTableClient"]
+6c:I[897367,["$4","$5"],"OutletBoundary"]
+23:["$","$L21",null,{"lang":"tsx","code":"import { Grid, Skeleton, Text } from '@godaddy/antares';\n\nconst sizes = ['xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const;\n\nexport function SizesExample() {\n  return (\n    <Grid columns=\"2.5rem 1fr\" alignItems=\"center\" gap=\"md\">\n      {sizes.map(function renderSize(size) {\n        return [<Text key={`${size}-label`}>{size}</Text>, <Skeleton key={size} size={size} />];\n      })}\n    </Grid>\n  );\n}"}]
+24:["$","$L1b",null,{"as":"h3","id":"roundings","children":"Roundings"}]
+25:["$","p",null,{"children":[["$","code",null,{"children":"default"}]," follows the theme radius, ",["$","code",null,{"children":"full"}]," makes a pill or, with a matching width, a circle,\nand ",["$","code",null,{"children":"none"}]," keeps square corners."]}]
+26:["$","$L1e",null,{"component":"$5d"}]
+27:["$","$L21",null,{"lang":"tsx","code":"import { Flex, Skeleton } from '@godaddy/antares';\n\nexport function RoundingsExample() {\n  return (\n    <Flex direction=\"column\" gap=\"md\">\n      <Skeleton rounding=\"default\" />\n      <Skeleton rounding=\"full\" />\n      <Skeleton rounding=\"full\" width=\"md\" />\n      <Skeleton rounding=\"none\" />\n    </Flex>\n  );\n}"}]
+28:["$","$L1b",null,{"as":"h3","id":"custom-size","children":"Custom size"}]
+29:["$","p",null,{"children":["Set ",["$","code",null,{"children":"width"}]," and ",["$","code",null,{"children":"height"}]," for placeholders with non-standard dimensions. Numbers are pixels, and\nstrings take any CSS length. A custom ",["$","code",null,{"children":"height"}]," overrides ",["$","code",null,{"children":"size"}],"."]}]
+2a:["$","$L1e",null,{"component":"$5f"}]
+2b:["$","$L21",null,{"lang":"tsx","code":"import { Flex, Skeleton } from '@godaddy/antares';\n\nexport function CustomSizeExample() {\n  return (\n    <Flex direction=\"column\" gap=\"md\">\n      <Skeleton width={240} height={120} />\n      <Skeleton width=\"50%\" height=\"5rem\" />\n    </Flex>\n  );\n}"}]
+2c:["$","$L1b",null,{"as":"h3","id":"aspect-ratio","children":"Aspect ratio"}]
+2d:["$","p",null,{"children":["Set ",["$","code",null,{"children":"aspectRatio"}]," for images and other media. The height follows the width, so the placeholder\nkeeps its proportions at any size."]}]
+2e:["$","$L1e",null,{"component":"$61"}]
+2f:["$","$L21",null,{"lang":"tsx","code":"import { Grid, Skeleton } from '@godaddy/antares';\n\nconst ratios = ['16 / 9', '4 / 3', '1', '3 / 4', '9 / 16'] as const;\n\nexport function AspectRatioExample() {\n  return (\n    <Grid columns={`repeat(${ratios.length}, 1fr)`} gap=\"md\" alignItems=\"end\">\n      {ratios.map(function renderRatio(ratio) {\n        return <Skeleton key={ratio} aspectRatio={ratio} />;\n      })}\n    </Grid>\n  );\n}"}]
+30:["$","$L1b",null,{"as":"h3","id":"circles-and-squares","children":"Circles and squares"}]
+31:["$","p",null,{"children":["Match ",["$","code",null,{"children":"width"}]," to ",["$","code",null,{"children":"size"}]," to make a square, and add ",["$","code",null,{"children":"full"}]," rounding to make a circle."]}]
+32:["$","$L1e",null,{"component":"$62"}]
+33:["$","$L21",null,{"lang":"tsx","code":"import { Flex, Skeleton } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg', 'xl', '2xl'] as const;\n\nexport function ShapesExample() {\n  return (\n    <Flex direction=\"column\" gap=\"md\">\n      <Flex alignItems=\"center\" gap=\"md\">\n        {sizes.map(function renderCircle(size) {\n          return <Skeleton key={size} size={size} width={size} rounding=\"full\" />;\n        })}\n      </Flex>\n      <Flex alignItems=\"center\" gap=\"md\">\n        {sizes.map(function renderSquare(size) {\n          return <Skeleton key={size} size={size} width={size} />;\n        })}\n      </Flex>\n    </Flex>\n  );\n}"}]
+34:["$","$L1b",null,{"as":"h3","id":"text-block","children":"Text Block"}]
+35:["$","p",null,{"children":"Stack bars of varying widths so a paragraph reads like real sentences."}]
+36:["$","$L1e",null,{"component":"$64"}]
+37:["$","$L21",null,{"lang":"tsx","code":"import { Flex, Skeleton } from '@godaddy/antares';\n\nexport function TextBlockExample() {\n  return (\n    <Flex direction=\"column\" gap=\"sm\">\n      <Skeleton size=\"xs\" width=\"25%\" />\n      <Skeleton size=\"lg\" width=\"50%\" />\n      <Skeleton size=\"sm\" width=\"95%\" />\n      <Skeleton size=\"sm\" />\n      <Skeleton size=\"sm\" width=\"60%\" />\n    </Flex>\n  );\n}"}]
+38:["$","$L1b",null,{"as":"h3","id":"media-card","children":"Media card"}]
+39:["$","p",null,{"children":"Compose Skeletons inside a Card to preview media and text."}]
+3a:["$","$L1e",null,{"component":"$66"}]
+3b:["$","$L21",null,{"lang":"tsx","code":"import { Card, Flex, Grid, Skeleton } from '@godaddy/antares';\n\nexport function MediaCardExample() {\n  return (\n    <Grid columns=\"repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\" gap=\"lg\" alignItems=\"start\">\n      <Card>\n        <Skeleton aspectRatio=\"16 / 9\" />\n        <Flex direction=\"column\" gap=\"sm\">\n          <Skeleton size=\"lg\" width=\"60%\" />\n          <Skeleton size=\"sm\" />\n          <Skeleton size=\"sm\" width=\"80%\" />\n        </Flex>\n      </Card>\n\n      <Card>\n        <Grid columns=\"6rem 1fr\" gap=\"lg\" alignItems=\"center\">\n          <Skeleton aspectRatio={1} />\n          <Flex direction=\"column\" gap=\"sm\">\n            <Skeleton size=\"lg\" width=\"70%\" />\n            <Skeleton size=\"sm\" />\n            <Skeleton size=\"sm\" width=\"50%\" />\n          </Flex>\n        </Grid>\n      </Card>\n    </Grid>\n  );\n}"}]
+3c:["$","$L1b",null,{"as":"h3","id":"in-a-row","children":"In a row"}]
+3d:["$","p",null,{"children":["In a Flex row, a Skeleton with a ",["$","code",null,{"children":"width"}]," keeps its shape, and a default Skeleton fills the\nremaining space."]}]
+3e:["$","$L1e",null,{"component":"$67"}]
+3f:["$","$L21",null,{"lang":"tsx","code":"import { Flex, Skeleton } from '@godaddy/antares';\n\nexport function RowExample() {\n  return (\n    <Flex alignItems=\"center\" gap=\"md\">\n      <Skeleton size=\"xl\" width=\"xl\" rounding=\"full\" />\n      <Skeleton />\n    </Flex>\n  );\n}"}]
+40:["$","$L1b",null,{"as":"h3","id":"loading-region","children":"Loading region"}]
+41:["$","p",null,{"children":["Skeletons are hidden from assistive technology. Mark the region they fill with ",["$","code",null,{"children":"role=\"status\""}],",\n",["$","code",null,{"children":"aria-busy"}],", and an ",["$","code",null,{"children":"aria-label"}],", then set ",["$","code",null,{"children":"aria-busy"}]," to ",["$","code",null,{"children":"false"}]," when the content arrives."]}]
+42:["$","$L1e",null,{"component":"$69"}]
+43:["$","$L21",null,{"lang":"tsx","code":"import { Flex, Grid, Skeleton } from '@godaddy/antares';\n\nexport function LoadingRegionExample() {\n  return (\n    <Grid role=\"status\" aria-busy=\"true\" aria-label=\"Loading profile\" columns=\"auto 1fr\" gap=\"md\" alignItems=\"center\">\n      <Skeleton size=\"xl\" width=\"xl\" rounding=\"full\" />\n      <Flex direction=\"column\" gap=\"sm\">\n        <Skeleton size=\"sm\" width=\"40%\" />\n        <Skeleton size=\"xs\" width=\"25%\" />\n      </Flex>\n    </Grid>\n  );\n}"}]
+44:["$","$L1b",null,{"as":"h3","id":"rtl-direction","children":"RTL direction"}]
+45:["$","p",null,{"children":["Skeleton follows the ",["$","code",null,{"children":"dir"}]," of the page or a parent element. In right-to-left layouts, bars align\nto the right and the shimmer moves from right to left."]}]
+46:["$","$L1e",null,{"component":"$6a"}]
+47:["$","$L21",null,{"lang":"tsx","code":"import { Box } from '@godaddy/antares';\nimport { TextBlockExample } from './text-block.tsx';\n\nexport function RTLExample() {\n  return (\n    <Box dir=\"rtl\">\n      <TextBlockExample />\n    </Box>\n  );\n}"}]
+48:["$","$L1b",null,{"as":"h2","id":"accessibility","children":"Accessibility"}]
+49:["$","ul",null,{"children":["\n",["$","li",null,{"children":"Every Skeleton is hidden from assistive technology, so a page with many placeholders stays quiet."}],"\n",["$","li",null,{"children":["Mark the region the Skeletons fill with ",["$","code",null,{"children":"role=\"status\""}],", ",["$","code",null,{"children":"aria-busy=\"true\""}],", and an ",["$","code",null,{"children":"aria-label"}]," that describes what is loading."]}],"\n",["$","li",null,{"children":["Set ",["$","code",null,{"children":"aria-busy"}]," to ",["$","code",null,{"children":"false"}],", or remove it, once the real content replaces the Skeletons."]}],"\n",["$","li",null,{"children":"The shimmer stops when the user prefers reduced motion, and the shape gets an outline in forced colors mode."}],"\n"]}]
+4a:["$","$L1b",null,{"as":"h2","id":"best-practices","children":"Best Practices"}]
+4b:["$","ul",null,{"children":["\n",["$","li",null,{"children":"Approximate the final layout; a skeleton doesn't need to be pixel-perfect."}],"\n",["$","li",null,{"children":["Use size presets for text and basic controls, and ",["$","code",null,{"children":"aspectRatio"}]," for images and media."]}],"\n",["$","li",null,{"children":"Vary the widths of text bars so a paragraph reads like real sentences."}],"\n",["$","li",null,{"children":["Match ",["$","code",null,{"children":"width"}]," to ",["$","code",null,{"children":"size"}]," for squares, and add ",["$","code",null,{"children":"full"}]," rounding for circles."]}],"\n"]}]
+4c:["$","$L1b",null,{"as":"h2","id":"troubleshooting","children":"Troubleshooting"}]
+4d:["$","ul",null,{"children":["\n",["$","li",null,{"children":["If the shimmer doesn't reverse in a right-to-left app, set ",["$","code",null,{"children":"dir=\"rtl\""}]," on ",["$","code",null,{"children":"<html>"}]," or a parent element. Skeleton follows the ",["$","code",null,{"children":"dir"}]," attribute, and a locale set only through ",["$","code",null,{"children":"I18nProvider"}]," doesn't change it."]}],"\n"]}]
+4e:["$","$L1b",null,{"as":"h2","id":"props","children":"Props"}]
+4f:["$","$L6b",null,{"entries":[{"name":"size","type":"SkeletonSize","default":"'md'","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Height preset."}]],"required":false},{"name":"width","type":"SkeletonSize | number | (string & {})","default":"'100%'","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Width as a size preset, a CSS length, or a number of pixels."}]],"required":false},{"name":"height","type":"number | string","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Custom height as a CSS length or a number of pixels. Overrides ",["$","code","code-0",{"className":"font-mono","children":"size"}]," and ",["$","code","code-1",{"className":"font-mono","children":"aspectRatio"}],"."]}]],"required":false},{"name":"aspectRatio","type":"number | string","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Width-to-height ratio, such as ",["$","code","code-0",{"className":"font-mono","children":"'16 / 9'"}]," or ",["$","code","code-1",{"className":"font-mono","children":"1"}],". Derives the height from the width and overrides ",["$","code","code-2",{"className":"font-mono","children":"size"}],"."]}]],"required":false},{"name":"rounding","type":"SkeletonRounding","default":"'default'","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Corner rounding. ",["$","code","code-0",{"className":"font-mono","children":"default"}]," follows the theme radius, ",["$","code","code-1",{"className":"font-mono","children":"full"}]," makes a pill (or a circle when\nwidth matches height), and ",["$","code","code-2",{"className":"font-mono","children":"none"}]," keeps square corners."]}]],"required":false},{"name":"className","type":"string","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Additional class names applied to the skeleton."}]],"required":false}],"categories":{}}]
+50:["$","script","script-0",{"src":"/antares/pr-403-site/_next/static/chunks/428imhwwk-ha_.js","async":true}]
+51:["$","script","script-1",{"src":"/antares/pr-403-site/_next/static/chunks/32o7tmg2i-rss.js","async":true}]
+52:["$","$L6c",null,{"children":["$","$58",null,{"name":"Next.MetadataOutlet","children":"$@6d"}]}]
+5b:true
+a:300
+6d:null
+a:C
+5a:0
+8:"$undefined"
+59:"$undefined"
+53:"$undefined"
