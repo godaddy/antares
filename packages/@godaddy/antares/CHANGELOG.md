@@ -1,5 +1,34 @@
 # @godaddy/antares
 
+## 0.11.0
+
+### Minor Changes
+
+- Add `Card`, `CardGroup`, and `CardSelectionIndicator` for static cards, links, selection, and row actions.
+  Add `CornerActions` for media overlays in Card and wrapping headings in `TextLockup`. ([#346](https://github.com/godaddy/bento/pull/346) by @egaitan-godaddy)
+- Make ProgressBar composable with `Label`, `Box` value/track slots, and `Text` descriptions, replacing the `label` and `helperText` props. Visible value output is optional and customizable.
+
+  Add `BoxContext` to supply Box props and named slots. ([#377](https://github.com/godaddy/bento/pull/377) by @egaitan-godaddy)
+
+- Rebuild Pagination as a composed component with controlled and uncontrolled page state, React Aria contexts, and the PaginationDots primitive. ([#367](https://github.com/godaddy/bento/pull/367) by @rmojica-godaddy)
+- feat(antares): add CSS-driven TextLockup sizing and responsive layout guidance ([#360](https://github.com/godaddy/bento/pull/360) by @egaitan-godaddy)
+
+### Patch Changes
+
+- fix: register SVG sprites through the app's React tree without importing react-dom/client. Render the hook's returned SVG to register its symbol.
+
+  fix: update SVG references when the environment sprite URL changes. ([#383](https://github.com/godaddy/bento/pull/383) by @egaitan-godaddy)
+
+- Recalculate chart margins when axis labels rotate so time-series layouts stay consistent.
+
+  Size popovers from their content so positioning near a viewport edge does not trigger resize loops. ([#384](https://github.com/godaddy/bento/pull/384) by @egaitan-godaddy)
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/icon@0.2.1
+</details>
+
 ## 0.10.1
 
 ### Patch Changes

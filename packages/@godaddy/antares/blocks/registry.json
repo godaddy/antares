@@ -101,6 +101,79 @@
       ]
     },
     {
+      "name": "blocks/project-inquiry-form",
+      "type": "registry:block",
+      "title": "Project inquiry form",
+      "dependencies": ["@godaddy/antares"],
+      "files": [
+        {
+          "path": "project-inquiry-form/components/attached-files/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/project-inquiry-form/components/attached-files/index.module.css"
+        },
+        {
+          "path": "project-inquiry-form/components/attached-files/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/components/attached-files/index.tsx"
+        },
+        {
+          "path": "project-inquiry-form/components/benefits/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/project-inquiry-form/components/benefits/index.module.css"
+        },
+        {
+          "path": "project-inquiry-form/components/benefits/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/components/benefits/index.tsx"
+        },
+        {
+          "path": "project-inquiry-form/components/drop-overlay/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/project-inquiry-form/components/drop-overlay/index.module.css"
+        },
+        {
+          "path": "project-inquiry-form/components/drop-overlay/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/components/drop-overlay/index.tsx"
+        },
+        {
+          "path": "project-inquiry-form/components/fields/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/components/fields/index.tsx"
+        },
+        {
+          "path": "project-inquiry-form/components/file-preview/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/project-inquiry-form/components/file-preview/index.module.css"
+        },
+        {
+          "path": "project-inquiry-form/components/file-preview/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/components/file-preview/index.tsx"
+        },
+        {
+          "path": "project-inquiry-form/components/project-inquiry-form/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/project-inquiry-form/components/project-inquiry-form/index.module.css"
+        },
+        {
+          "path": "project-inquiry-form/components/project-inquiry-form/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/components/project-inquiry-form/index.tsx"
+        },
+        {
+          "path": "project-inquiry-form/data/files.ts",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/data/files.ts"
+        },
+        {
+          "path": "project-inquiry-form/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/project-inquiry-form/index.tsx"
+        }
+      ]
+    },
+    {
       "name": "blocks/sign-in-form",
       "type": "registry:block",
       "title": "Sign-in form",

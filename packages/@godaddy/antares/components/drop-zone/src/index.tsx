@@ -12,6 +12,7 @@ import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
 export { isFileDropItem, isTextDropItem, isDirectoryDropItem };
+export { useDrop, type DropEvent, type DropOptions, type DropResult } from 'react-aria';
 
 /**
  * Render props received by a function child of {@link DropZone}.

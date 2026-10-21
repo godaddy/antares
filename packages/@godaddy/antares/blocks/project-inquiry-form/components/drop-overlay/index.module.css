@@ -1,0 +1,10 @@
+.overlay {
+  position: absolute;
+  z-index: 1;
+  border: 1px dashed var(--ux-f7kpiw, #00a4a6);
+  border-radius: inherit;
+  background-color: rgba(216, 239, 239, 0.9);
+  color: var(--color-surface-text-base, var(--ux-1leynsm, #111));
+  pointer-events: none;
+  inset: 0;
+}

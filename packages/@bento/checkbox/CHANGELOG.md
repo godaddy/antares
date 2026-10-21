@@ -1,5 +1,17 @@
 # @bento/checkbox
 
+## 0.2.4
+
+### Patch Changes
+
+- fix: require `react-stately` `^3.51.0`, the version `react-aria` `^3.53.1` uses. ([#386](https://github.com/godaddy/bento/pull/386) by @egaitan-godaddy)
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/icon@0.2.1
+</details>
+
 ## 0.2.3
 
 ### Patch Changes
