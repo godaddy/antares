@@ -1,4 +1,4 @@
-import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { runInNewContext } from 'node:vm';
@@ -100,6 +100,95 @@ describe('TypeScript 7 integration', function typeScriptSevenTests() {
       session.close();
     }
   });
+
+  it('preserves header, helper-leading, inner and trailing comments through full-file emission', async function preservesTrivia() {
+    const code = `/** File header. */
+      import { getMeta, getStory, getVariants } from '@bento/storybook-addon-helpers';
+      const Button = () => <button />;
+      const meta = /* Meta call. */ getMeta({ /* Meta object. */ title: 'Widget' });
+      /** Story docs. */
+      export const Default = /* Story call. */ getStory(Button, { /* Story object. */ args: { label: 'Hello' } });
+      /** Variant docs. */
+      export const Sizes = getVariants(Button, { small: { /* Variant object. */ args: { size: 'sm' } } });
+      export default meta;
+      // File footer.
+    `;
+
+    const first = await csfTransformer({ code });
+    const second = await csfTransformer({ code: first });
+    for (const output of [first, second]) {
+      for (const comment of [
+        'File header.',
+        'Meta call.',
+        'Meta object.',
+        'Story docs.',
+        'Story call.',
+        'Story object.',
+        'Variant docs.',
+        'Variant object.',
+        'File footer.'
+      ]) {
+        expect(output.split(comment)).toHaveLength(2);
+      }
+      const session = openTypeScriptSession({ fileName: 'output.tsx', code: output, isolated: true });
+      try {
+        expect(session.project.program.getSyntacticDiagnostics(session.sourceFile.fileName)).toEqual([]);
+      } finally {
+        session.close();
+      }
+    }
+  });
+
+  it.each([false, true])(
+    'replaces an examples marker containing a nested getter without damaging the following export (examples: %s)',
+    async function replacesNestedMarker(withExamples) {
+      const directory = mkdtempSync(join(tmpdir(), 'antares-ts7-nested-marker-'));
+      const filePath = join(directory, 'widget.stories.tsx');
+      try {
+        if (withExamples) {
+          mkdirSync(join(directory, 'examples'));
+          writeFileSync(join(directory, 'examples/default.tsx'), 'export function DefaultExample() { return null; }');
+        }
+        writeFileSync(
+          filePath,
+          `/** File header. */
+          'use client';
+          import { getMeta, getExamples } from '@bento/storybook-addon-helpers';
+          /** Examples docs. */
+          export const examples = getExamples(getMeta({ title: './examples' }).title);
+          // Next export.
+          export default getMeta({ title: 'Widget' });
+          // File footer.
+        `
+        );
+
+        const output = await csfTransformer({ filePath });
+        expect(output).not.toContain('getExamples');
+        expect(output).not.toContain('getMeta');
+        expect(output).toContain('export default { title:');
+        for (const comment of ['File header.', 'Examples docs.', 'Next export.', 'File footer.']) {
+          expect(output.split(comment)).toHaveLength(2);
+        }
+        const session = openTypeScriptSession({ fileName: 'output.tsx', code: output, isolated: true });
+        try {
+          expect(session.project.program.getSyntacticDiagnostics(session.sourceFile.fileName)).toEqual([]);
+          const directive = session.sourceFile.statements[0];
+          expect(
+            ts.isExpressionStatement(directive) && ts.isStringLiteral(directive.expression) && directive.expression.text
+          ).toBe('use client');
+          expect(session.sourceFile.statements.filter(ts.isImportDeclaration)).toHaveLength(withExamples ? 1 : 0);
+          const exports = session.sourceFile.statements.filter(ts.isVariableStatement);
+          expect(exports.map((statement) => statement.declarationList.declarations[0].name.getText())).toEqual(
+            withExamples ? ['Default'] : []
+          );
+        } finally {
+          session.close();
+        }
+      } finally {
+        rmSync(directory, { recursive: true, force: true });
+      }
+    }
+  );
 
   it('closes snapshots and native processes when emitting a story fails', async function closesFailedTransform() {
     const close = vi.spyOn(API.prototype, 'close');

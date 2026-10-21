@@ -40,22 +40,17 @@ export async function csfTransformer(input: {
   });
   try {
     const sourceFile = resolver.getSourceFile(filePath || 'inline.tsx');
-    const edits: SourceEdit[] = [];
     const statements = applyTransformers(
       sourceFile,
       [transformGetMeta, transformGetStory, transformGetComponentDocs, transformGetTypeDocs],
       resolver,
-      edits,
       input.defaults
     );
-    const expanded = transformExamples(statements, examples, filePath, resolver, edits);
-    pruneUnusedImports(expanded, resolver, edits);
-    // TS7 encodes synthetic positions as zero. Printing a mixed source tree
-    // consequently repeats its first comment on generated nodes. Emit standalone
-    // replacements and retain authored source/trivia outside their AST ranges.
-    const output = edits
-      .sort((a, b) => b.start - a.start || b.end - a.end)
-      .reduce((text, edit) => text.slice(0, edit.start) + edit.text + text.slice(edit.end), code);
+    const expanded = transformExamples(statements, examples, filePath);
+    const pruned = pruneUnusedImports(expanded);
+    const transformed = updateSourceFile(sourceFile, pruned);
+    prepareForEmit(transformed, sourceFile.end);
+    const output = resolver.printNode(transformed);
     assertNoStoryCollisions(output, examples, filePath);
     return output;
   } finally {
@@ -249,9 +244,7 @@ function getExamplesGetterCall(statement: ts.Node): ts.CallExpression | undefine
 function transformExamples(
   statements: readonly ts.Statement[],
   examples: ExampleDescriptor[],
-  filePath: string,
-  resolver: Resolver,
-  edits: SourceEdit[]
+  filePath: string
 ): readonly ts.Statement[] {
   if (examples.length === 0 && !filePath) return statements;
   let found = false;
@@ -259,21 +252,19 @@ function transformExamples(
     if (!getExamplesGetterCall(statement)) return [statement];
     found = true;
     const stories = examples.map((example) => createStoryExport(example.storyName, exampleLocalName(example)));
-    edits.push({
-      start: statement.getStart(),
-      end: statement.end,
-      // Keep adjacent semicolonless statements separate when the marker produces no stories.
-      text: stories.length ? stories.map((node) => resolver.printNode(node)).join('\n') : ';'
-    });
-    return stories;
+    return stories.length
+      ? stories.map((story, index) => (index === 0 ? retainSourceRange(story, statement) : story))
+      : [omitStatement(statement)];
   });
   if (!found) return statements;
   const imports = examples.map((example) =>
     createNamedImport(example.componentExportName, exampleLocalName(example), example.importPath)
   );
-  if (imports.length)
-    edits.push({ start: 0, end: 0, text: imports.map((node) => resolver.printNode(node)).join('\n') + '\n' });
-  return [...imports, ...body];
+  const firstNonDirective = body.findIndex(
+    (statement) => !ts.isExpressionStatement(statement) || !ts.isStringLiteral(statement.expression)
+  );
+  const importIndex = firstNonDirective < 0 ? body.length : firstNonDirective;
+  return [...body.slice(0, importIndex), ...imports, ...body.slice(importIndex)];
 }
 
 /** The reserved local an example is imported as. Story names are unique, so these are too. */
@@ -362,29 +353,27 @@ function findCollision(code: string): string | undefined {
  *
  * Default, namespace, side-effect and type-only imports are left untouched.
  */
-function pruneUnusedImports(statements: readonly ts.Statement[], resolver: Resolver, edits: SourceEdit[]): void {
+function pruneUnusedImports(statements: readonly ts.Statement[]): ts.Statement[] {
   const references = collectValueReferences(statements.filter((statement) => !ts.isImportDeclaration(statement)));
-  for (const statement of statements) {
-    if (!ts.isImportDeclaration(statement)) continue;
+  return statements.flatMap(function pruneImport(statement) {
+    if (!ts.isImportDeclaration(statement)) return [statement];
     const clause = statement.importClause;
     const pruned = clause && clause.phaseModifier === undefined ? keepReferencedBindings(clause, references) : clause;
-    if (pruned === clause) continue;
-    const replacement = pruned
-      ? factory.updateImportDeclaration(
+    if (pruned === clause) return [statement];
+    if (!pruned) return [omitStatement(statement)];
+    return [
+      retainSourceRange(
+        factory.updateImportDeclaration(
           statement,
           statement.modifiers,
           pruned,
           statement.moduleSpecifier,
           statement.attributes
-        )
-      : undefined;
-    edits.push({
-      start: statement.getStart(),
-      end: statement.end,
-      // Removing an interleaved import must retain its statement boundary.
-      text: replacement ? resolver.printNode(replacement) : ';'
-    });
-  }
+        ),
+        statement
+      )
+    ];
+  });
 }
 
 /**
@@ -399,10 +388,18 @@ function keepReferencedBindings(clause: ts.ImportClause, references: Set<string>
   if (kept.length === bindings.elements.length) return clause;
   if (kept.length === 0 && !clause.name) return undefined;
 
-  return factory.updateImportClause(
-    clause,
-    clause.name,
-    kept.length > 0 ? factory.createNamedImports(kept) : undefined
+  return retainSourceRange(
+    factory.updateImportClause(
+      clause,
+      clause.name,
+      kept.length > 0
+        ? retainSourceRange(
+            factory.createNamedImports(factory.createNodeArray(kept, bindings.elements.pos, kept[kept.length - 1].end)),
+            bindings
+          )
+        : undefined
+    ),
+    clause
   );
 }
 
@@ -553,59 +550,104 @@ function transformGetTypeDocs(
  * @param transformers - The transformers to apply.
  * @returns The transformed CSF file.
  */
-interface SourceEdit {
-  start: number;
-  end: number;
-  text: string;
-}
-
 function applyTransformers(
   sourceFile: ts.SourceFile,
   transformers: TransformerFn[],
   resolver: Resolver,
-  edits: SourceEdit[],
   defaults?: DocsDefaults
 ): ts.Statement[] {
-  function visit(node: ts.Node, parent?: ts.Node, statementStart?: number): ts.Node {
-    if (ts.isExpressionStatement(node)) {
-      // Only statement lists can accept a leading semicolon without changing an unbraced body.
-      statementStart =
-        parent &&
-        (ts.isSourceFile(parent) ||
-          ts.isBlock(parent) ||
-          ts.isModuleBlock(parent) ||
-          ts.isCaseClause(parent) ||
-          ts.isDefaultClause(parent))
-          ? node.getStart(sourceFile)
-          : undefined;
-    }
+  function visit(node: ts.Node): ts.Node {
     for (const transformer of transformers) {
       const result = transformer(node, sourceFile, defaults, resolver);
-      if (result) {
-        const expression = result.pos >= 0 ? result.getText(sourceFile) : resolver.printNode(result);
-        const start = node.getStart(sourceFile);
-        edits.push({
-          start,
-          end: node.end,
-          // Preserve grouping and prevent a leading parenthesis from joining the previous statement.
-          text: `${start === statementStart ? ';' : ''}(${expression})`
-        });
-        return result;
-      }
+      if (result) return retainSourceRange(result, node);
     }
-    return ts.visitEachChild(node, (child) => visit(child, node, statementStart));
+    const result = ts.visitEachChild(node, visit);
+    return result === node ? node : retainSourceRange(result, node);
   }
-  return sourceFile.statements.flatMap(function expandExamples(statement) {
+  return sourceFile.statements.flatMap(function expandVariants(statement) {
     const variants = transformGetVariants(statement);
-    if (!variants) return [visit(statement, sourceFile) as ts.Statement];
-    edits.push({
-      start: statement.getStart(sourceFile),
-      end: statement.end,
-      // Keep adjacent semicolonless statements separate when no variants are generated.
-      text: variants.length ? variants.map((node) => resolver.printNode(node)).join('\n') : ';'
-    });
-    return variants;
+    if (!variants) return [visit(statement) as ts.Statement];
+    return variants.length
+      ? variants.map((variant, index) => (index === 0 ? retainSourceRange(variant, statement) : variant))
+      : [omitStatement(statement)];
   });
+}
+
+/** Preserves EOF comments too: TS7 can omit them when emitting an updated file. */
+function updateSourceFile(sourceFile: ts.SourceFile, statements: readonly ts.Statement[]): ts.SourceFile {
+  const eof = sourceFile.endOfFileToken;
+  const hasFooter = ts.getLeadingCommentRanges(sourceFile.text, eof.pos)?.length;
+  const body = hasFooter ? [...statements, retainSourceRange(factory.createEmptyStatement(), eof)] : statements;
+  const endOfFile = hasFooter
+    ? Object.assign(factory.cloneNode(eof), { pos: sourceFile.end, end: sourceFile.end })
+    : eof;
+  const statementList = factory.createNodeArray(
+    body,
+    sourceFile.statements.pos,
+    hasFooter ? sourceFile.end : sourceFile.statements.end
+  );
+  return retainSourceRange(factory.updateSourceFile(sourceFile, statementList, endOfFile), sourceFile);
+}
+
+/** An empty AST statement keeps comments on removed syntax; TS7 drops them on NotEmittedStatement. */
+function omitStatement(statement: ts.Statement): ts.EmptyStatement {
+  return retainSourceRange(factory.createEmptyStatement(), statement);
+}
+
+/**
+ * Keeps source trivia without mutating a parsed native node. For the same syntax
+ * kind, corresponding child lists occupy the same visitor slots; factory updates
+ * reset their ranges too, so retain those unless a narrower range was supplied.
+ */
+function retainSourceRange<T extends ts.Node>(node: T, original: ts.Node): T {
+  const replacement = Object.assign(factory.cloneNode(node), { pos: original.pos, end: original.end });
+  if (node.kind === original.kind) {
+    const sourceLists: ts.NodeArray<ts.Node>[] = [];
+    original.forEachChild(
+      () => undefined,
+      function collectSourceList(children) {
+        sourceLists.push(children);
+      }
+    );
+    let index = 0;
+    replacement.forEachChild(
+      () => undefined,
+      function retainListRange(children) {
+        const source = sourceLists[index++];
+        if (source && source !== children) {
+          if (children.pos < 0) Object.assign(children, { pos: source.pos });
+          if (children.end < 0) Object.assign(children, { end: source.end });
+        }
+      }
+    );
+  }
+  return replacement;
+}
+
+/**
+ * TS7 encodes synthetic negative ranges as zero, which would attach the file's
+ * first comment to every generated node. Anchor synthetic nodes and lists at EOF
+ * instead; retained source ranges continue to supply authored comments.
+ */
+function prepareForEmit(node: ts.Node, sourceEnd: number): void {
+  if (node.pos < 0 || node.end < 0) {
+    Object.assign(node, {
+      pos: node.pos < 0 ? sourceEnd : node.pos,
+      end: node.end < 0 ? sourceEnd : node.end
+    });
+  }
+  node.forEachChild(
+    (child) => prepareForEmit(child, sourceEnd),
+    function prepareListForEmit(children) {
+      if (children.pos < 0 || children.end < 0) {
+        Object.assign(children, {
+          pos: children.pos < 0 ? sourceEnd : children.pos,
+          end: children.end < 0 ? sourceEnd : children.end
+        });
+      }
+      children.forEach((child) => prepareForEmit(child, sourceEnd));
+    }
+  );
 }
 
 /**
@@ -634,12 +676,21 @@ function upsertObjectProp(
   valueExpr: ts.Expression
 ): ts.ObjectLiteralExpression {
   if (objectHasProp(obj, propName)) return obj;
-  return factory.createObjectLiteralExpression(
-    [
-      ...obj.properties,
-      factory.createPropertyAssignment(undefined, factory.createIdentifier(propName), undefined, undefined!, valueExpr)
-    ],
-    true
+  return retainSourceRange(
+    factory.createObjectLiteralExpression(
+      [
+        ...obj.properties,
+        factory.createPropertyAssignment(
+          undefined,
+          factory.createIdentifier(propName),
+          undefined,
+          undefined!,
+          valueExpr
+        )
+      ],
+      obj.multiLine
+    ),
+    obj
   );
 }
 

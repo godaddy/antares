@@ -257,10 +257,7 @@ describe('csf-transformer', function csfTransformerTests() {
 
     const actual = formatTypeScript(await csfTransformer({ code }));
     const expected = formatTypeScript(`
-      export const VariantsSmall = {
-        args: { size: 'small' },
-        render: args => <TestComponent {...args} />
-      };
+      export const VariantsSmall = { args: { size: 'small' }, render: args => <TestComponent {...args} /> };
     `);
 
     expect(actual).toEqual(expected);
