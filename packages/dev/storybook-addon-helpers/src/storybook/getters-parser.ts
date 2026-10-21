@@ -50,8 +50,11 @@ export async function getExportedVariables(input: { filePath?: string; code?: st
               const variants = initializer.arguments[1];
 
               if (variants && ts.isObjectLiteralExpression(variants)) {
-                for (const variantName of extractVariantNames(varName, variants)) {
-                  exported.set(variantName, {});
+                const variantNames = extractVariantNames(varName, variants);
+                for (let i = 0; i < variants.properties.length; i++) {
+                  if (ts.isPropertyAssignment(variants.properties[i])) {
+                    exported.set(variantNames[i], {});
+                  }
                 }
               }
 
