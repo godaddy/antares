@@ -50,4 +50,4 @@ Extend styles through `className` and confirmed state attributes such as `[data-
 - `Avatar` presents identity; compose Image and fallback Text using the installed version's examples.
 - `Icon` uses Antares's icon system. Verify the icon identifier in the installed package/docs. Name an icon-only control on the control; hide decorative icons from assistive technology. The advanced `set`, `ondemand` and `parser` exports configure icon sets/loading/parsing, rather than adding a new UI component.
 
-`BoxContext`, `HeadingContext`, `TextContext`, `ImageContext` and `IconContext` are public advanced defaults/context APIs. Prefer ordinary props and parent compositions for routine UI.
+The matching contexts here are `BoxContext`, `HeadingContext`, `TextContext`, `ImageContext` and `IconContext`.

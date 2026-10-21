@@ -32,7 +32,7 @@ Read [actions and slots](composition-patterns.md#actions-slots-and-state) or [co
 - Expand a rail/panel within page flow → `InlineDrawer`.
 - Replace peer panels in one view → `Tabs`.
 - Communicate wizard stages → `ProgressSteps` with `ProgressStep`.
-- Move through a dataset's pages → `Pagination`; decorative page omissions → `PaginationDots`.
+- Move through a dataset's pages → `Pagination`; a passive current-page dot indicator (one dot per page, no ellipsis or page-omission support) → `PaginationDots`.
 - Browse sequential gallery/feature panels → `Carousel`.
 
 See [disclosure and tabs](composition-patterns.md#disclosure-and-tabs) and [progress, pagination and feedback](composition-patterns.md#progress-pagination-and-feedback).

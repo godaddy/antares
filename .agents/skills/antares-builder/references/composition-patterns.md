@@ -2,11 +2,13 @@
 
 Read only the sections relevant to the task. These shapes are verified against the package's component READMEs and examples. Use the consumer's installed types for detailed props and adapt data and handlers to the product. RAC conventions explain behavior but do not replace Antares's explicit children and slots.
 
+Most composed parts also publish a matching `*Context` (for example `ButtonContext`, `InputContext`, `AccordionContext`, `ChipContext`) that lets an advanced consumer set subtree-wide defaults; ordinary composition through explicit children and props never needs these.
+
 ## Actions, slots and state
 
 `Button` uses RAC button behavior; `LinkButton` uses link behavior. `Pressable` adds press/focus/hover behavior to exactly one child that forwards its ref and DOM/ARIA props, without rendering a wrapper. Prefer the semantic Button/LinkButton when they fit. Name icon-only controls on the control itself.
 
-Parents publish behavior and presentation through slots. Keep field triggers as `Button slot="trigger"`, steppers as `slot="decrement"`/`slot="increment"`, and dismissal as `slot="close"`. Slot names are parent-specific. `ButtonContext` is an advanced defaults API; ordinary compositions do not require a custom provider. Button omits RAC's `isPending` prop; use application-owned pending state and supported disabled/content props.
+Parents publish behavior and presentation through slots. Keep field triggers as `Button slot="trigger"`, steppers as `slot="decrement"`/`slot="increment"`, and dismissal as `slot="close"`. Slot names are parent-specific. Button omits RAC's `isPending` prop; use application-owned pending state and supported disabled/content props.
 
 Match the actual state model: field `value`/`onChange`, collection `selectedKeys`/`onSelectionChange`, boolean `isSelected`/`onChange`, and disclosure `isExpanded`/`onExpandedChange` are not interchangeable. Use defaults for uncontrolled state, or update state from the controlled callback; do not combine both modes accidentally.
 
@@ -14,7 +16,7 @@ Match the actual state model: field `value`/`onChange`, collection `selectedKeys
 
 `TextField` and `NumberField` provide the field relationship, while children provide visible parts. The field's `isInvalid` state controls whether `FieldError` renders. Use `Text slot="description"` for persistent help.
 
-Set `name` for native form submission and use supported root props such as `isRequired`, `isDisabled` and `isInvalid`. Keep the application's form/validation library and connect its state to the exact Antares value/change API. Place controls in a semantic form and choose submit/reset button types deliberately. The following field fragments assume `emailError` comes from that validation state.
+Set `name` for native form submission and use supported root props such as `isRequired`, `isDisabled` and `isInvalid`. Keep the application's form/validation library and connect its state to the exact Antares value/change API. Place controls in a semantic form and choose submit/reset button types deliberately. On a failed submission, move focus to the first invalid field so assistive technology announces its error immediately; do not leave focus on the submit control. The following field fragments assume `emailError` comes from that validation state.
 
 ```tsx
 import { Button, FieldError, Group, Input, Label, NumberField, Text, TextArea, TextField } from '@godaddy/antares';
@@ -43,7 +45,7 @@ import { Button, FieldError, Group, Input, Label, NumberField, Text, TextArea, T
 
 An `Input` inside NumberField is numeric because the field supplies its context. Do not switch it to a plain TextField for exact numeric behavior. A `Button slot="control"` inside a TextField `Group` is an interactive affix. For a required group of independent options, use `CheckboxGroup`; for one exclusive answer, `RadioGroup`. Their composed structure is `Label`, `Group` with items, optional description and `FieldError`.
 
-`CheckboxIndicator` supplies the visual check in custom Checkbox compositions. A standalone Checkbox or Switch needs visible children or an accessible name. `RangeField` uses RAC Slider behavior and supports multiple thumb values; supply corresponding `thumbLabels` for a range. `InputContext`, `TextAreaContext`, `LabelContext` and `FieldErrorContext` are advanced field-part context APIs.
+`CheckboxIndicator` supplies the visual check in custom Checkbox compositions. A standalone Checkbox or Switch needs visible children or an accessible name. `RangeField` uses RAC Slider behavior and supports multiple thumb values; supply corresponding `thumbLabels` for a range. The matching field-part contexts are `InputContext`, `TextAreaContext`, `LabelContext` and `FieldErrorContext`.
 
 ```tsx
 import { Checkbox, CheckboxGroup, Group, Label, Radio, RadioGroup } from '@godaddy/antares';
@@ -91,7 +93,7 @@ Use stable IDs/keys for collections. Give composed items `textValue` when visibl
 
 - `MenuTrigger` wraps a trigger and `Menu`; commands are `MenuItem` children. `MenuGroup` groups commands, `MenuSeparator` divides them, and `SubmenuTrigger` connects a submenu. Preserve the menu's keyboard model; arbitrary form controls belong in a Popover.
 - `SegmentedController` contains `SegmentedControllerItem value="..."` children. Its single string `value`/`defaultValue` pairs with `onSelectionChange(value)`. `ToggleButtonGroup` instead uses selection keys and `ToggleButton id="..."` children. Both build on RAC toggle behavior.
-- `ChipGroup` + `ChipList` + `Chip` wrap RAC TagGroup/TagList/Tag behavior. When removal is enabled, the group's `onRemove` must update the consumer's item collection. `ChipButton` is a standalone action. `ChipContext` is an advanced defaults API.
+- `ChipGroup` + `ChipList` + `Chip` wrap RAC TagGroup/TagList/Tag behavior. When removal is enabled, the group's `onRemove` must update the consumer's item collection. `ChipButton` is a standalone action, with its own `ChipContext`.
 - `CardGroup` + `Card` wrap RAC GridList behavior. Name the group and give composed cards stable IDs and `textValue`; `CardSelectionIndicator` optionally displays selection. A standalone Card can be static or use `href`; keep nested controls out of a standalone card link.
 
 ## Dates and locale
@@ -117,7 +119,7 @@ import { parseDate } from '@godaddy/antares/date';
 
 One revealable section uses `Collapsible`; related sections use an `Accordion` group. The trigger must have `slot="trigger"`, and each grouped section needs a stable ID. The Accordion controls `expandedKeys`/`onExpandedChange`; a standalone Collapsible controls `isExpanded`/`onExpandedChange`.
 
-These wrap RAC DisclosureGroup/Disclosure/DisclosurePanel. `InlineDrawer` + `InlineDrawerPanel` use disclosure behavior while occupying page flow. `AccordionContext` and `CollapsibleContext` are advanced context APIs.
+These wrap RAC DisclosureGroup/Disclosure/DisclosurePanel. `InlineDrawer` + `InlineDrawerPanel` use disclosure behavior while occupying page flow. Their contexts are `AccordionContext` and `CollapsibleContext`.
 
 ```tsx
 import { Accordion, Button, Collapsible, CollapsiblePanel, Heading, Text } from '@godaddy/antares';
@@ -176,7 +178,7 @@ import { Button, ButtonGroup, CloseButton, Content, Heading, Modal, ModalTrigger
 
 Wire a confirming action to application logic and close only after the action succeeds. `slot="close"` dismisses, so avoid applying it to a button that must wait for an async operation. `CloseButton` is already named and slotted. React Aria's modal stack supplies focus containment and return; do not build a second focus trap.
 
-`FocusScope` is an advanced root-only export from `@react-aria/focus` for custom focus containment/restoration. Existing overlay behavior is the default. Advanced structural contexts are `ContentContext`, `HeaderContext`, `FooterContext`, `ButtonGroupContext`, `GroupContext` and `CornerActionsContext`; they provide defaults rather than visible UI.
+`FocusScope` is an advanced root-only export from `@react-aria/focus` for custom focus containment/restoration. Existing overlay behavior is the default. The structural contexts are `ContentContext`, `HeaderContext`, `FooterContext`, `ButtonGroupContext`, `GroupContext` and `CornerActionsContext`.
 
 ## File input
 
@@ -220,5 +222,7 @@ import { Box, Label, ProgressBar, Text } from '@godaddy/antares';
 `Pagination` has one-based state and intentionally leaves page count, separator and page-size selector to the consumer. Give the region, previous/next buttons and single page input accessible names. `PaginationDots` does not replace page controls. For cursor-based data, omit `pageCount` and disable Next when there is no next page.
 
 `ProgressSteps` contains `ProgressStep` children and uses zero-based `currentStep`; a step's `onPress` enables navigation. `Carousel` uses Embla rather than a RAC collection; check its installed API for slide content and controls. Keep a finite panel gallery's labels and keyboard navigation meaningful.
+
+When a step or panel holds its own state (a Carousel's position, a form draft), keep it mounted and toggle its visibility rather than conditionally rendering it away and back in — unmounting resets that state.
 
 `Alert` supplies a persistent in-page live alert; avoid using it for ordinary static copy. `Tag` is a static status/category span (`TagContext` provides advanced defaults). `MetricsLockup` composes a KPI label, value, trend and optional contextual tooltip.

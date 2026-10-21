@@ -1,6 +1,6 @@
 ---
 name: antares-builder
-description: Build, adapt, or review React interfaces with @godaddy/antares. Use for component selection and composition, forms, accessible interactions, responsive layouts, charts, and consumer setup. Do not use for authoring the Antares library itself.
+description: Build, adapt, fix, or review React interfaces with @godaddy/antares. Use for component selection and composition, forms, accessible interactions, responsive layouts, charts (including chart data and rendering bugs), and consumer setup. Do not use for authoring the Antares library itself.
 ---
 
 # Antares Builder
@@ -13,7 +13,9 @@ Follow the steps relevant to the request. Load only the reference sections neede
 
 Inspect `package.json`, the lockfile, framework configuration and neighboring UI. Identify the Antares version, package manager, routing, form library, CSS conventions and locale. Preserve those conventions when adapting existing UI.
 
-Check the installed package's public exports/types before using an unfamiliar API. Follow [API and documentation discovery](references/setup.md#resolve-the-installed-api-and-documentation) for commands, official sources and mismatches; a consumer may not have the library's source checkout. Adapt these references to that installed API. For installation, imports, CSS failures or server/client boundaries, read the relevant setup sections.
+Resolve the Antares version used by the consuming application and verify its public exports and types before using unfamiliar APIs. Use the [Antares repository](https://github.com/godaddy/antares) for documentation matching that version. When sources disagree, prioritize the installed public API over documentation and this skill's examples.
+
+For installation, imports, CSS failures or server/client boundaries, read the relevant [setup](references/setup.md) sections.
 
 Use public root or subpath imports. Do not derive Antares APIs from another design system or import `#components/*`, `dist` files or transitive internals.
 

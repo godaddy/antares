@@ -1,6 +1,6 @@
 # Consumer setup
 
-Read this for package installation, import resolution, missing CSS or framework integration. Resolve API differences using the installed package's metadata, public types and matching README.
+Read this for package installation, import resolution, missing CSS or framework integration.
 
 ## Install and import
 
