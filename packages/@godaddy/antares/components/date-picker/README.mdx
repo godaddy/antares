@@ -47,10 +47,8 @@ controls to jump directly. Resizing changes the presentation on the next opening
 
 - `overlay="popover"` always uses the desktop presentation.
 - `drawerProps` customizes the drawer, which defaults to `85dvh`; `popoverProps` customizes the popover.
-- `pageCount` controls months per desktop page or the mobile scroll buffer. Defaults: three in a
-  drawer, one in a single-date popover, and two in a range popover.
-- Pending ranges reset on background press or blur in drawers and commit in popovers. Override this
-  with `commitBehavior` on `DateRangePickerCalendar`.
+- `pageCount` sets months per popover page: one for single dates and two for ranges by default.
+- `commitBehavior` on `DateRangePickerCalendar` applies to both presentations.
 - `shouldCloseOnSelect={false}` on the picker keeps the calendar open after selection.
 
 ```tsx

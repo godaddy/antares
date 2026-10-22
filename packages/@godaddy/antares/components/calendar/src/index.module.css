@@ -95,9 +95,17 @@
   color: var(--color-action-text-tertiary-default, var(--ux-ut3xrx, #111));
   inline-size: 100%;
   block-size: var(--_calendar-cell-size);
+  position: relative;
   cursor: pointer;
   font-family: var(--ux-gfnupv, sans-serif);
   line-height: var(--ux-jw5s9j, 1.375);
+
+  /* Row gaps belong to the date, so a press between rows is not a background press. */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: calc(var(--_calendar-gap) / -2 - 1px) -1px;
+  }
 
   &:where([data-today]) {
     border-color: currentColor;
@@ -125,7 +133,6 @@
   &:where([data-focus-visible]) {
     outline: 2px solid Highlight;
     outline-offset: 2px;
-    position: relative;
   }
 
   &:where([data-outside-month]) {
@@ -147,8 +154,8 @@
   container: calendar-months / inline-size;
   inline-size: 100%;
   max-inline-size: calc(var(--_calendar-cell-size) * 7 + var(--_calendar-gap) * 2);
+  flex: 1 1 auto;
   min-block-size: 0;
-  block-size: 100%;
   margin-inline: auto;
   overflow: hidden;
 }

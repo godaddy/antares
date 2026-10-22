@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { I18nProvider, useLocale } from 'react-aria';
 import {
   Button,
   DatePicker,
@@ -7,7 +6,6 @@ import {
   DateRangePicker,
   DateRangePickerCalendar,
   Label,
-  type CalendarProps,
   type RangeCalendarProps,
   type ScaleSize
 } from '@godaddy/antares';
@@ -25,9 +23,6 @@ interface MobileExampleProps {
 
   /** Controlled open state, when supplied. */
   isOpen?: boolean;
-
-  /** Locale used by the calendar and its controls. */
-  locale?: string;
 
   /** Keep the overlay open after selection. */
   keepOpen?: boolean;
@@ -53,13 +48,7 @@ interface MobileExampleProps {
   /** Allow a range to cross unavailable dates. */
   allowsNonContiguousRanges?: boolean;
 
-  /** Number of months buffered on either side while scrolling. */
-  pageCount?: number;
-
-  /** Amount to advance using the navigation buttons. */
-  pageBehavior?: CalendarProps['pageBehavior'];
-
-  /** React Aria's behavior when focus leaves an unfinished range. */
+  /** React Aria's behavior when an unfinished range loses focus. */
   commitBehavior?: RangeCalendarProps['commitBehavior'];
 
   /** Component size. */
@@ -67,19 +56,10 @@ interface MobileExampleProps {
 }
 
 /**
- * Below 40rem, the picker opens a scrolling drawer. Resize after closing to switch containers.
- * @title Mobile
- * @order 3
+ * Responsive picker states exercised by tests.
+ * @ignore
  */
-export function MobileExample(props: MobileExampleProps) {
-  return (
-    <I18nProvider locale={props.locale}>
-      <MobilePicker {...props} />
-    </I18nProvider>
-  );
-}
-
-function MobilePicker({
+export function MobileExample({
   range = false,
   overlay,
   defaultOpen,
@@ -92,12 +72,9 @@ function MobilePicker({
   max,
   unavailable,
   allowsNonContiguousRanges,
-  pageCount,
-  pageBehavior,
   commitBehavior,
   size
 }: MobileExampleProps) {
-  const { direction } = useLocale();
   const [selection, setSelection] = useState('');
   const [focus, setFocus] = useState(focusedDate);
   const [lastFocusedDate, setLastFocusedDate] = useState(focusedDate);
@@ -107,9 +84,6 @@ function MobilePicker({
   }
   const calendarProps = {
     overlay,
-    pageCount,
-    pageBehavior,
-    dir: direction,
     focusedValue: focus ? parseDate(focus) : undefined,
     defaultFocusedValue: defaultFocusedDate ? parseDate(defaultFocusedDate) : undefined,
     onFocusChange: focus

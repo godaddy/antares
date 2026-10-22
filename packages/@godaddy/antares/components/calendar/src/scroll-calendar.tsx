@@ -1,20 +1,5 @@
-import {
-  useContext,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type ContextType,
-  type Dispatch,
-  type SetStateAction
-} from 'react';
-import {
-  endOfMonth,
-  getWeeksInMonth,
-  isSameMonth,
-  startOfMonth,
-  type CalendarDate,
-  type DateValue
-} from '@internationalized/date';
+import { useContext, useLayoutEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react';
+import { endOfMonth, isSameMonth, startOfMonth, type CalendarDate } from '@internationalized/date';
 import {
   Calendar as RACCalendar,
   RangeCalendar as RACRangeCalendar,
@@ -23,7 +8,6 @@ import {
   RangeCalendarStateContext as RACRangeCalendarStateContext,
   CalendarContext as RACCalendarContext,
   RangeCalendarContext as RACRangeCalendarContext,
-  useLocale,
   useSlottedContext
 } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
@@ -34,293 +18,140 @@ import { CalendarGrid, type CalendarGridProps } from './calendar-grid.tsx';
 import { MonthControls } from './calendar-header.tsx';
 import styles from './index.module.css';
 
-/** Internal single-date calendar laid out vertically inside a picker's drawer. */
-export function ScrollCalendar({ pageCount = 3, className, ...props }: CalendarProps) {
+/** Months added on each side of the focused month whenever scrolling nears an edge. */
+const BUFFER = 3;
+
+/** Internal single-date calendar that scrolls through months inside a picker's drawer. */
+export function ScrollCalendar({ className, ...props }: Omit<CalendarProps, 'pageCount'>) {
   const size = useDeclaredSize();
-  const [months, setMonths] = useState(pageCount * 2 + 1);
+  const [months, setMonths] = useState(BUFFER * 2 + 1);
   return (
     <Flex
       as={RACCalendar<CalendarDate>}
+      pageBehavior="single"
       {...props}
       selectionAlignment="center"
-      direction="column"
       visibleDuration={{ months }}
+      direction="column"
       data-size={size}
       className={composeClassName(className, styles.calendar, styles.scrollCalendar, sizeScaleClassName(size))}
     >
-      <ScrollCalendarBody type="single" pageCount={pageCount} setMonths={setMonths} />
+      <MonthScroller type="single" months={months} setMonths={setMonths} />
     </Flex>
   );
 }
 
-/** Internal range calendar with React Aria's selection and navigation behavior. */
-export function ScrollRangeCalendar({
-  pageCount = 3,
-  className,
-  commitBehavior = 'reset',
-  ...props
-}: RangeCalendarProps) {
+/** Internal range calendar that scrolls through months inside a picker's drawer. */
+export function ScrollRangeCalendar({ className, ...props }: Omit<RangeCalendarProps, 'pageCount'>) {
   const size = useDeclaredSize();
-  const [months, setMonths] = useState(pageCount * 2 + 1);
+  const [months, setMonths] = useState(BUFFER * 2 + 1);
   return (
     <Flex
       as={RACRangeCalendar<CalendarDate>}
+      pageBehavior="single"
       {...props}
       selectionAlignment="center"
-      commitBehavior={commitBehavior}
-      direction="column"
       visibleDuration={{ months }}
+      direction="column"
       data-size={size}
       className={composeClassName(className, styles.calendar, styles.scrollCalendar, sizeScaleClassName(size))}
     >
-      <ScrollCalendarBody type="range" pageCount={pageCount} setMonths={setMonths} />
+      <MonthScroller type="range" months={months} setMonths={setMonths} />
     </Flex>
   );
 }
 
-interface ScrollCalendarBodyProps extends Pick<CalendarGridProps, 'type'> {
-  /** Number of months to load on either side of the visible month. */
-  pageCount: number;
+interface MonthScrollerProps extends Pick<CalendarGridProps, 'type'> {
+  /** Months in React Aria's visible range, all of which are rendered. */
+  months: number;
 
-  /** Keep React Aria's logical range large enough for the rendered months. */
+  /** Widens the visible range around the focused month. */
   setMonths: Dispatch<SetStateAction<number>>;
 }
 
-interface ScrollAnchor {
-  month: string;
-  offset: number;
-}
-
-function monthDistance(from: CalendarDate, to: CalendarDate) {
-  const direction = from.compare(to) <= 0 ? 1 : -1;
-  let cursor = startOfMonth(from);
-  let distance = 0;
-  while (!isSameMonth(cursor, to)) {
-    const next = cursor.add({ months: direction });
-    if (isSameMonth(cursor, next)) break;
-    cursor = next;
-    distance += direction;
-  }
-  return distance;
-}
-
-function surroundingMonths(date: CalendarDate, count: number, min?: DateValue | null, max?: DateValue | null) {
-  const months: CalendarDate[] = [];
-  for (let offset = -count; offset <= count; offset++) {
-    const month = startOfMonth(date.add({ months: offset }));
-    if ((min && endOfMonth(month).compare(min) < 0) || (max && month.compare(max) > 0)) continue;
-    if (!months.some((value) => isSameMonth(value, month))) months.push(month);
-  }
-  return months;
-}
-
-function ScrollCalendarBody({ type, pageCount, setMonths }: ScrollCalendarBodyProps) {
+function MonthScroller({ type, months, setMonths }: MonthScrollerProps) {
   const calendarState = useContext(RACCalendarStateContext);
   const rangeState = useContext(RACRangeCalendarStateContext);
+  const state = (calendarState ?? rangeState)!;
   const calendarProps = useSlottedContext(RACCalendarContext);
   const rangeProps = useSlottedContext(RACRangeCalendarContext);
-  const bounds = calendarProps ?? rangeProps ?? {};
-  const state = calendarState ?? rangeState;
-  const { locale } = useLocale();
-  if (!state) return null;
-
-  return (
-    <MonthScroller
-      key={`${locale}/${state.focusedDate.calendar.identifier}/${bounds.minValue}/${bounds.maxValue}/${bounds.firstDayOfWeek}/${bounds.weeksInMonth}`}
-      state={state}
-      bounds={bounds}
-      type={type}
-      pageCount={pageCount}
-      setMonths={setMonths}
-    />
-  );
-}
-
-interface MonthScrollerProps extends ScrollCalendarBodyProps {
-  /** Shared React Aria owner of focus and selection. */
-  state:
-    | NonNullable<ContextType<typeof RACCalendarStateContext>>
-    | NonNullable<ContextType<typeof RACRangeCalendarStateContext>>;
-
-  /** Original bounds and grid options, before pending ranges narrow selectable dates. */
-  bounds: Pick<CalendarProps, 'minValue' | 'maxValue' | 'firstDayOfWeek' | 'weeksInMonth'>;
-}
-
-function MonthScroller({ state, bounds, type, pageCount, setMonths }: MonthScrollerProps) {
-  const { locale } = useLocale();
-  const count = Math.max(1, pageCount);
+  // A pending range narrows the state's bounds, so months are filtered by the calendar's own props.
+  const { minValue, maxValue } = calendarProps ?? rangeProps ?? {};
   const viewport = useRef<HTMLDivElement>(null);
-  const anchor = useRef<ScrollAnchor | null>(null);
-  const visibleAnchor = useRef<ScrollAnchor | null>(null);
-  const scrollToFocus = useRef(true);
-  const [metrics, setMetrics] = useState({ row: 0, chrome: 0 });
-  const [window, setWindow] = useState(function initialMonths() {
-    return {
-      months: surroundingMonths(state.focusedDate, count, bounds.minValue, bounds.maxValue),
-      active: startOfMonth(state.focusedDate)
-    };
+  const anchor = useRef<{ month: string; offset: number } | null>({
+    month: startOfMonth(state.focusedDate).toString(),
+    offset: 0
   });
-  const [lastFocus, setLastFocus] = useState(state.focusedDate);
-  if (lastFocus.compare(state.focusedDate) !== 0) {
-    setLastFocus(state.focusedDate);
-    if (!window.months.some((month) => isSameMonth(month, state.focusedDate))) {
-      resetWindow(state.focusedDate);
-    }
-  }
+  const [active, setActive] = useState(() => startOfMonth(state.focusedDate));
 
-  const first = window.months[0] ?? startOfMonth(state.focusedDate);
-  const last = window.months.at(-1) ?? first;
-  const focusedIndex = window.months.findIndex((month) => isSameMonth(month, state.focusedDate));
-  const needed = 2 * Math.max(count, focusedIndex, window.months.length - 1 - focusedIndex) + 1;
-  useLayoutEffect(
-    function coverMonths() {
-      setMonths(needed);
-    },
-    [needed, setMonths]
-  );
-
-  function readAnchor(): ScrollAnchor | null {
-    const root = viewport.current;
-    if (!root) return null;
-    const top = root.getBoundingClientRect().top;
-    const element = Array.from(root.children).find((child) => child.getBoundingClientRect().bottom > top + 1) as
-      | HTMLElement
-      | undefined;
-    return element
-      ? {
-          month: element.dataset.calendarMonth!,
-          offset: element.getBoundingClientRect().top - top
-        }
-      : null;
-  }
-
-  useLayoutEffect(function preservePosition() {
-    const root = viewport.current;
-    if (!root) return;
-    const target = scrollToFocus.current
-      ? { month: startOfMonth(state.focusedDate).toString(), offset: 0 }
-      : anchor.current;
-    if (target) {
-      const element = Array.from(root.children).find(
-        (child) => (child as HTMLElement).dataset.calendarMonth === target.month
-      );
-      if (element) {
-        root.scrollTop += element.getBoundingClientRect().top - root.getBoundingClientRect().top - target.offset;
-        visibleAnchor.current = readAnchor();
-      }
-    }
-    scrollToFocus.current = false;
-    anchor.current = null;
-  });
-
-  useLayoutEffect(function measureMonths() {
-    const table = viewport.current?.querySelector('table');
-    const month = table?.parentElement;
-    const rows = table?.tBodies[0]?.rows;
-    if (!table || !month || !rows?.length) return;
-    function measure() {
-      if (!table || !month || !rows) return;
-      const gap = Number.parseFloat(getComputedStyle(table).borderSpacing.split(' ').at(-1) ?? '0');
-      const row = rows[0].getBoundingClientRect().height + gap;
-      const chrome = month.getBoundingClientRect().height - row * rows.length;
-      if (Math.abs(metrics.row - row) < 0.5 && Math.abs(metrics.chrome - chrome) < 0.5) return;
-      anchor.current ??= visibleAnchor.current ?? readAnchor();
-      setMetrics({ row, chrome });
-    }
-    measure();
-    let frame = 0;
-    const observer = new ResizeObserver(function scheduleMeasurement() {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(measure);
-    });
-    observer.observe(table);
-    observer.observe(month);
-    return function disconnect() {
-      observer.disconnect();
-      cancelAnimationFrame(frame);
-    };
+  const start = state.visibleRange.start;
+  const offsets = Array.from({ length: months }, (_, offset) => offset).filter(function inBounds(offset) {
+    const month = start.add({ months: offset });
+    return !(minValue && endOfMonth(month).compare(minValue) < 0) && !(maxValue && month.compare(maxValue) > 0);
   });
 
   useLayoutEffect(
     function revealFocusedDate() {
       const root = viewport.current;
-      const cell = root?.querySelector<HTMLElement>('[tabindex="0"]');
+      const cell = root?.querySelector<HTMLElement>('[role="gridcell"] [tabindex="0"]');
       if (!root || !cell) return;
       const view = root.getBoundingClientRect();
       const date = cell.getBoundingClientRect();
-      // Reveal off-screen focus without moving visible cells during pointer interaction.
       if (date.bottom <= view.top || date.top >= view.bottom) cell.scrollIntoView({ block: 'nearest' });
     },
     [state.focusedDate.toString()]
   );
 
-  function scroll() {
-    const current = readAnchor();
-    if (!current) return;
-    visibleAnchor.current = current;
-    const index = window.months.findIndex((month) => month.toString() === current.month);
-    const active = window.months[index];
-    if (!active) return;
-    const before =
-      index < count
-        ? surroundingMonths(first, count, bounds.minValue, bounds.maxValue).filter((month) => month.compare(first) < 0)
-        : [];
-    const after =
-      index >= window.months.length - count - 1
-        ? surroundingMonths(last, count, bounds.minValue, bounds.maxValue).filter((month) => month.compare(last) > 0)
-        : [];
-    if (before.length || after.length || !isSameMonth(active, window.active)) {
-      anchor.current = current;
-      setWindow({ months: [...before, ...window.months, ...after], active });
-    }
+  useLayoutEffect(function restoreAnchor() {
+    const root = viewport.current;
+    const target = anchor.current;
+    const element = target && root?.querySelector(`[data-calendar-month="${target.month}"]`);
+    if (!root || !element) return;
+    const distance = () => element.getBoundingClientRect().top - root.getBoundingClientRect().top - target.offset;
+    root.scrollTop += distance();
+    // Keep the anchor until enough months exist around it to reach its position.
+    if (Math.abs(distance()) < 1 || !grow(distance() < 0, distance() > 0)) anchor.current = null;
+  });
+
+  function grow(up: boolean, down: boolean) {
+    if (!(up && !state.isPreviousVisibleRangeInvalid()) && !(down && !state.isNextVisibleRangeInvalid())) return false;
+    const focused = offsets.find((offset) => isSameMonth(start.add({ months: offset }), state.focusedDate)) ?? 0;
+    setMonths(2 * (Math.max(focused, months - 1 - focused) + BUFFER) + 1);
+    return true;
   }
 
-  function resetWindow(date: CalendarDate) {
-    scrollToFocus.current = true;
-    setWindow({
-      months: surroundingMonths(date, count, bounds.minValue, bounds.maxValue),
-      active: startOfMonth(date)
-    });
+  function scroll() {
+    const root = viewport.current!;
+    const top = root.getBoundingClientRect().top;
+    const index = Array.from(root.children).findIndex((child) => child.getBoundingClientRect().bottom > top + 1);
+    const element = root.children[index] as HTMLElement | undefined;
+    if (!element) return;
+    const month = start.add({ months: offsets[index] });
+    if (!isSameMonth(month, active)) setActive(month);
+
+    const remaining = root.scrollHeight - root.scrollTop - root.clientHeight;
+    if (anchor.current || !grow(root.scrollTop < root.clientHeight, remaining < root.clientHeight)) return;
+    anchor.current = { month: element.dataset.calendarMonth!, offset: element.getBoundingClientRect().top - top };
   }
 
   function navigate(date: CalendarDate) {
+    anchor.current = { month: startOfMonth(date).toString(), offset: 0 };
+    setActive(startOfMonth(date));
     state.setFocusedDate(date);
-    resetWindow(date);
   }
-
-  const firstOffset = monthDistance(state.visibleRange.start, first);
-  const activeIndex = window.months.findIndex((month) => isSameMonth(month, window.active));
 
   return (
     <>
       <Flex as="header" justifyContent="center" className={styles.scrollHeader}>
-        <MonthControls date={window.active} minValue={bounds.minValue} maxValue={bounds.maxValue} onChange={navigate} />
+        <MonthControls date={active} minValue={minValue} maxValue={maxValue} onChange={navigate} />
       </Flex>
       <div ref={viewport} className={styles.monthViewport} onScroll={scroll}>
-        {window.months.map(function renderMonth(month, index) {
-          const mounted = Math.abs(index - activeIndex) < Math.max(2, count) || index === focusedIndex;
-          const offset = firstOffset + index;
+        {offsets.map(function renderMonth(offset) {
+          const month = start.add({ months: offset }).toString();
           return (
-            <div
-              key={month.toString()}
-              data-calendar-month={month.toString()}
-              className={styles.month}
-              style={
-                !mounted && metrics.row
-                  ? {
-                      blockSize:
-                        metrics.chrome +
-                        metrics.row * (bounds.weeksInMonth ?? getWeeksInMonth(month, locale, bounds.firstDayOfWeek))
-                    }
-                  : undefined
-              }
-            >
-              {mounted && (
-                <>
-                  <RACCalendarHeading offset={{ months: offset }} className={styles.monthLabel} />
-                  <CalendarGrid type={type} offset={{ months: offset }} />
-                </>
-              )}
+            <div key={month} data-calendar-month={month} className={styles.month}>
+              <RACCalendarHeading offset={{ months: offset }} className={styles.monthLabel} />
+              <CalendarGrid type={type} offset={{ months: offset }} />
             </div>
           );
         })}

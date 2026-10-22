@@ -1,7 +1,6 @@
 import { type ReactNode, type Ref, useContext, useMemo, useRef } from 'react';
 import { DateFormatter, getLocalTimeZone, type CalendarDate } from '@internationalized/date';
 import { mergeProps } from 'react-aria';
-import { useOverlayTriggerState } from 'react-stately';
 import {
   DEFAULT_SLOT,
   DatePicker as RACDatePicker,
@@ -259,70 +258,61 @@ interface PickerOverlayProps extends PickerOverlayOptions {
 }
 
 function PickerOverlay({ popoverProps, drawerProps, overlay, children }: PickerOverlayProps) {
-  const context = useContext(OverlayTriggerStateContext);
-  const local = useOverlayTriggerState(popoverProps ?? {});
-  const state =
-    popoverProps?.isOpen !== undefined || popoverProps?.defaultOpen !== undefined || !context ? local : context;
-  const container = useOverlayContainer({ isOpen: state.isOpen, overlay });
+  const isOpen = useContext(OverlayTriggerStateContext)?.isOpen ?? false;
+  const container = useOverlayContainer({ isOpen, overlay });
 
   if (container === 'drawer') {
     return (
-      <Drawer
-        placement="bottom"
-        minSize={drawerProps?.maxSize ?? '85dvh'}
-        maxSize="85dvh"
-        isDismissable
-        {...drawerProps}
-        isOpen={state.isOpen}
-        onOpenChange={state.setOpen}
-      >
-        <Content style={{ overflow: 'hidden' }}>{children(container)}</Content>
+      <Drawer placement="bottom" maxSize="85dvh" isDismissable {...drawerProps}>
+        <Content>{children(container)}</Content>
       </Drawer>
     );
   }
 
   return (
-    <Popover hideArrow {...popoverProps} isOpen={state.isOpen} onOpenChange={state.setOpen}>
+    <Popover hideArrow {...popoverProps}>
       <Content>{children(container)}</Content>
     </Popover>
   );
 }
 
-export interface DatePickerCalendarProps extends CalendarProps, PickerOverlayOptions {
-  /** Months per desktop page or mobile scroll buffer. Defaults to one in a popover and three in a drawer. */
-  pageCount?: number;
-}
+export interface DatePickerCalendarProps extends CalendarProps, PickerOverlayOptions {}
 
-/** The responsive calendar overlay opened by a DatePicker. */
-export function DatePickerCalendar({ popoverProps, drawerProps, overlay, ...props }: DatePickerCalendarProps) {
+/** The responsive calendar overlay opened by a DatePicker. `pageCount` applies to the popover. */
+export function DatePickerCalendar({
+  popoverProps,
+  drawerProps,
+  overlay,
+  pageCount,
+  ...props
+}: DatePickerCalendarProps) {
   return (
     <PickerOverlay popoverProps={popoverProps} drawerProps={drawerProps} overlay={overlay}>
       {function calendar(container) {
-        return container === 'drawer' ? <ScrollCalendar {...props} /> : <Calendar {...props} />;
+        return container === 'drawer' ? <ScrollCalendar {...props} /> : <Calendar pageCount={pageCount} {...props} />;
       }}
     </PickerOverlay>
   );
 }
 
-export interface DateRangePickerCalendarProps extends RangeCalendarProps, PickerOverlayOptions {
-  /** Months per desktop page or mobile scroll buffer. Defaults to two in a popover and three in a drawer. */
-  pageCount?: number;
+export interface DateRangePickerCalendarProps extends RangeCalendarProps, PickerOverlayOptions {}
 
-  /** Pending range behavior on background press or blur. Defaults to reset in a drawer and select in a popover. */
-  commitBehavior?: RangeCalendarProps['commitBehavior'];
-}
-
-/** The responsive calendar overlay opened by a DateRangePicker. */
+/** The responsive calendar overlay opened by a DateRangePicker. `pageCount` applies to the popover. */
 export function DateRangePickerCalendar({
   popoverProps,
   drawerProps,
   overlay,
+  pageCount,
   ...props
 }: DateRangePickerCalendarProps) {
   return (
     <PickerOverlay popoverProps={popoverProps} drawerProps={drawerProps} overlay={overlay}>
       {function calendar(container) {
-        return container === 'drawer' ? <ScrollRangeCalendar {...props} /> : <RangeCalendar {...props} />;
+        return container === 'drawer' ? (
+          <ScrollRangeCalendar {...props} />
+        ) : (
+          <RangeCalendar pageCount={pageCount} {...props} />
+        );
       }}
     </PickerOverlay>
   );

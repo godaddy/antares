@@ -50,7 +50,7 @@ describe('@godaddy/antares', function packageTests() {
           });
           await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
           await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
-          if (commitBehavior === 'select') {
+          if (commitBehavior !== 'reset') {
             await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-09-15');
           } else {
             await expect.element(screen.getByLabelText('Selected dates')).toBeEmptyDOMElement();

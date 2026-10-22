@@ -1,5 +1,6 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
+import { I18nProvider } from 'react-aria-components';
 import { MobileExample } from '../examples/mobile.tsx';
 import { render } from 'vitest-browser-react';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
@@ -55,7 +56,11 @@ describe('@godaddy/antares', function antares() {
     it('mobile RTL with enlarged text', async function rtl() {
       await page.viewport(320, 768);
       document.documentElement.style.fontSize = '200%';
-      const screen = await render(<MobileExample locale="ar-AE" />);
+      const screen = await render(
+        <I18nProvider locale="ar-AE">
+          <MobileExample />
+        </I18nProvider>
+      );
       await screen.getByRole('button', { name: /Event dates/ }).click();
       await expect(screen.getByRole('dialog')).toMatchScreenshot('date-picker-mobile-rtl-large-text');
     });

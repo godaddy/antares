@@ -4,6 +4,7 @@ import { hydrateRoot, type Root } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
 import { page, userEvent } from 'vitest/browser';
 import { cleanup, render } from 'vitest-browser-react';
+import { I18nProvider } from 'react-aria-components';
 import { preloadTestIcons, resetPointer } from '#test/utils/test-helpers.tsx';
 import { MobileExample } from '../examples/mobile.tsx';
 import { parseDate } from '@godaddy/antares/date';
@@ -78,16 +79,13 @@ describe('@godaddy/antares', function packageTests() {
           })
         ]) {
           const date = start.add({ months: offset });
-          const month = document.querySelector(`[data-calendar-month="${date}"]`) as HTMLElement;
-          expect(month).not.toBeNull();
-          month.scrollIntoView({ block: 'start' });
           await expect
-            .poll(function mounted() {
-              return month.querySelector('table');
+            .poll(function loaded() {
+              return document.querySelector(`[data-calendar-month="${date}"]`);
             })
             .not.toBeNull();
+          document.querySelector(`[data-calendar-month="${date}"]`)!.scrollIntoView({ block: 'start' });
           expect(document.activeElement).toBe(focused);
-          expect(screen.getByRole('grid').all().length).toBeLessThanOrEqual(6);
           await expect.element(screen.getByLabelText('Selected dates')).toBeEmptyDOMElement();
         }
         await screen.getByRole('button', { name: /March 12, 2026/ }).click();
@@ -97,32 +95,18 @@ describe('@godaddy/antares', function packageTests() {
       }
     );
 
-    it.each([1, 2])('continues scrolling with a buffer of %i months', async function buffer(pageCount) {
+    it('describes and pages through the rendered months like React Aria', async function rangeName() {
       await page.viewport(320, 768);
-      const screen = await render(<MobileExample pageCount={pageCount} />);
+      const screen = await render(<MobileExample keepOpen />);
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
-      await expect
-        .poll(function entered() {
-          return getComputedStyle(screen.getByRole('dialog').element().parentElement!).transform;
-        })
-        .toBe('none');
-      for (let offset = 1; offset <= 6; offset++) {
-        const date = parseDate('2026-09-01').add({ months: offset });
-        await expect
-          .poll(function loaded() {
-            return document.querySelector(`[data-calendar-month="${date}"]`);
-          })
-          .not.toBeNull();
-        const month = document.querySelector(`[data-calendar-month="${date}"]`) as HTMLElement;
-        month.scrollIntoView({ block: 'start' });
-        await expect
-          .poll(function mounted() {
-            return month.querySelector('table');
-          })
-          .not.toBeNull();
-      }
-      await screen.getByRole('button', { name: /March 12, 2027/ }).click();
-      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2027-03-12');
+      const calendar = document.querySelector<HTMLElement>('[role="dialog"] [role="application"]')!;
+      const grids = screen.getByRole('grid').all();
+      const [first, last] = [grids[0], grids.at(-1)!].map(function month(grid) {
+        return grid.element().getAttribute('aria-label')!.split(' ')[0];
+      });
+      expect(calendar.getAttribute('aria-label')).toMatch(new RegExp(`${first}.*${last}`));
+      calendar.querySelector<HTMLButtonElement>('button[aria-label="Next"]')!.click();
+      await expect.element(screen.getByRole('button', { name: /October 15, 2026/ })).toHaveFocus();
     });
 
     it.each(['en-US', 'ar-AE'])(
@@ -130,7 +114,9 @@ describe('@godaddy/antares', function packageTests() {
       async function rangeBand(locale) {
         await page.viewport(320, 768);
         const screen = await render(
-          <MobileExample range keepOpen unavailable allowsNonContiguousRanges locale={locale} />
+          <I18nProvider locale={locale}>
+            <MobileExample range keepOpen unavailable allowsNonContiguousRanges />
+          </I18nProvider>
         );
         await screen.getByRole('button', { name: /Event dates/ }).click();
         const september = screen
@@ -178,7 +164,6 @@ describe('@godaddy/antares', function packageTests() {
       await page.viewport(640, 768);
       expect(screen.getByRole('dialog').element()).toBe(dialog);
       expect(document.activeElement).toBe(focused);
-      expect(screen.getByRole('grid').all().length).toBeLessThanOrEqual(6);
       expect(viewport.scrollTop).toBeGreaterThan(0);
       expect(month.getBoundingClientRect().top).toBeLessThan(viewport.getBoundingClientRect().bottom);
       expect(month.getBoundingClientRect().bottom).toBeGreaterThan(viewport.getBoundingClientRect().top);
@@ -233,7 +218,6 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.keyboard('{Enter}');
       await expect.element(year).toHaveFocus();
       await expect.element(screen.getByRole('button', { name: /December 10, 1980/ })).toBeVisible();
-      expect(screen.getByRole('grid').all().length).toBeLessThanOrEqual(6);
     });
 
     it('navigates with the month and year controls', async function monthAndYear() {
@@ -248,7 +232,6 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.keyboard('{Enter}');
       await expect.element(screen.getByRole('button', { name: /February 15, 1980/ })).toBeVisible();
       await expect.element(year).toHaveFocus();
-      expect(screen.getByRole('grid').all().length).toBeLessThanOrEqual(6);
     });
 
     it('moves keyboard focus across loaded months', async function keyboard() {
@@ -385,9 +368,14 @@ describe('@godaddy/antares', function packageTests() {
       async function enlargedText(locale) {
         await page.viewport(320, 768);
         document.documentElement.style.fontSize = '200%';
-        const screen = await render(<MobileExample locale={locale} />);
+        const screen = await render(
+          <I18nProvider locale={locale}>
+            <MobileExample />
+          </I18nProvider>
+        );
         await screen.getByRole('button', { name: /Event dates/ }).click();
         const dialog = screen.getByRole('dialog').element();
+        expect(getComputedStyle(dialog).direction).toBe(locale === 'ar-AE' ? 'rtl' : 'ltr');
         const cell = document.querySelector<HTMLElement>('[data-calendar-month="2026-09-01"] [tabindex="0"]')!;
         const text = document.createRange();
         text.selectNodeContents(cell);
@@ -446,7 +434,11 @@ describe('@godaddy/antares', function packageTests() {
 
     it('updates month choices when navigating between Hebrew common and leap years', async function leapYear() {
       await page.viewport(320, 768);
-      const screen = await render(<MobileExample locale="en-US-u-ca-hebrew" />);
+      const screen = await render(
+        <I18nProvider locale="en-US-u-ca-hebrew">
+          <MobileExample />
+        </I18nProvider>
+      );
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
       const year = screen.getByRole('textbox', { name: 'Year' });
       await year.fill('5786');
@@ -482,7 +474,11 @@ describe('@godaddy/antares', function packageTests() {
 
     it('uses locale calendar dates with Gregorian bounds and values', async function localeCalendar() {
       await page.viewport(320, 768);
-      const screen = await render(<MobileExample locale="ar-SA-u-ca-islamic" min="2026-09-05" max="2026-11-15" />);
+      const screen = await render(
+        <I18nProvider locale="ar-SA-u-ca-islamic">
+          <MobileExample min="2026-09-05" max="2026-11-15" />
+        </I18nProvider>
+      );
       await screen.getByRole('button', { name: /Event dates/ }).click();
       await userEvent.keyboard('{Enter}');
       await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15');
