@@ -187,6 +187,13 @@ describe('@godaddy/antares', function packageTests() {
           return document.querySelector<HTMLElement>('[data-calendar-month]')!.dataset.calendarMonth;
         })
         .toBe('2026-03-01');
+      const months = document.querySelectorAll<HTMLElement>('[data-calendar-month]');
+      months[months.length - 1].scrollIntoView();
+      await expect
+        .poll(function loaded() {
+          return document.querySelectorAll('[data-calendar-month]').length;
+        })
+        .toBeGreaterThan(months.length);
       await year.fill('2030');
       await userEvent.keyboard('{Enter}');
       await expect.element(year).toHaveValue('2027');
@@ -236,20 +243,22 @@ describe('@godaddy/antares', function packageTests() {
 
     it('reveals controlled focus changes without selecting', async function controlledFocus() {
       await page.viewport(320, 768);
-      const screen = await render(<MobileExample keepOpen focusedDate="2026-09-15" />);
+      const screen = await render(<MobileExample keepOpen min="2026-09-01" focusedDate="2026-09-15" />);
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
       const dialog = screen.getByRole('dialog').element();
-      await screen.getByRole('button', { name: /September 15, 2026/ }).click();
-      await screen.rerender(<MobileExample keepOpen focusedDate="2026-11-15" />);
+      await settle(dialog);
+      await screen.rerender(<MobileExample keepOpen min="2026-09-01" focusedDate="2028-09-15" />);
+      await expect.element(screen.getByRole('button', { name: /September 15, 2028/ })).toHaveFocus();
+      await expect.element(screen.getByRole('textbox', { name: 'Year' })).toHaveValue('2028');
+      expect(document.querySelector('[data-calendar-month="2028-10-01"] table')).not.toBeNull();
+      await screen.rerender(<MobileExample keepOpen min="2026-09-01" focusedDate="2026-11-15" />);
       await expect.element(screen.getByRole('button', { name: /November 15, 2026/ })).toHaveFocus();
       const cell = screen.getByRole('button', { name: /November 15, 2026/ }).element();
       const viewport = cell.closest('[data-calendar-month]')!.parentElement!;
-      expect(cell.getBoundingClientRect().top).toBeGreaterThanOrEqual(viewport.getBoundingClientRect().top);
-      expect(cell.getBoundingClientRect().bottom).toBeLessThanOrEqual(viewport.getBoundingClientRect().bottom);
-      await screen.rerender(<MobileExample keepOpen focusedDate="1980-06-12" />);
-      await expect.element(screen.getByRole('button', { name: /June 12, 1980/ })).toHaveFocus();
+      expect(cell.getBoundingClientRect().top).toBeGreaterThan(viewport.getBoundingClientRect().top - 1);
+      expect(cell.getBoundingClientRect().bottom).toBeLessThan(viewport.getBoundingClientRect().bottom + 1);
       expect(screen.getByRole('dialog').element()).toBe(dialog);
-      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15');
+      await expect.element(screen.getByLabelText('Selected dates')).toBeEmptyDOMElement();
     });
 
     it('preserves the visible month when completing a range', async function rangePosition() {

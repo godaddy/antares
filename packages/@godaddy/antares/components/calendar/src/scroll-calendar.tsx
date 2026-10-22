@@ -138,14 +138,29 @@ function MonthScroller({ type, months, setMonths }: MonthScrollerProps) {
     return true;
   }
 
-  function scroll() {
+  useLayoutEffect(
+    function syncActiveMonth() {
+      if (!anchor.current) firstVisibleMonth();
+    },
+    [start.toString()]
+  );
+
+  /** Syncs the header with the first visible month and returns its element. */
+  function firstVisibleMonth() {
     const root = viewport.current!;
     const top = root.getBoundingClientRect().top;
     const index = Array.from(root.children).findIndex((child) => child.getBoundingClientRect().bottom > top + 1);
-    const element = root.children[index] as HTMLElement | undefined;
-    if (!element) return;
+    if (index < 0) return;
     const month = start.add({ months: offsets[index] });
     if (!isSameMonth(month, active)) setActive(month);
+    return root.children[index] as HTMLElement;
+  }
+
+  function scroll() {
+    const root = viewport.current!;
+    const top = root.getBoundingClientRect().top;
+    const element = firstVisibleMonth();
+    if (!element) return;
 
     const remaining = root.scrollHeight - root.scrollTop - root.clientHeight;
     if (anchor.current || !grow(root.scrollTop < root.clientHeight, remaining < root.clientHeight)) return;
