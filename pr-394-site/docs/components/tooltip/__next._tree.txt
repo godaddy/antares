@@ -9,4 +9,4 @@
 3:[["children",{"s":"__PAGE__","h":160}]]
 2:[["children",{"s":{"n":"slug","t":"oc","k":"components/tooltip","s":[]},"h":64,"c":"$Q3"}]]
 1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
-0:{"b":"lfS4mcfMbwkYgtKU49VIa","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"AbFnq5HcbThxXcIwT4Q0b","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
