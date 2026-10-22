@@ -1,0 +1,1919 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{t}from"./jsx-runtime-MKhVqBIO.js";import{N as n,P as r,l as i,s as a,u as o}from"./blocks-DupWEMCh.js";import{n as s}from"./runtime-CrhuJ8bq.js";import{n as c,t as l}from"./storybook-runtime-m8v_97_C.js";import{n as u,r as d,t as f}from"./gallery.stories-BYO2XoS-.js";function p(e){let t={h1:`h1`,p:`p`,...r(),...e.components};return(0,h.jsxs)(h.Fragment,{children:[(0,h.jsx)(a,{of:u,name:`Overview`,id:`blocks-gallery`}),`
+`,(0,h.jsx)(t.h1,{id:`gallery`,children:`Gallery`}),`
+`,(0,h.jsx)(t.p,{children:`Browse images in a list or grid, add local files, and open a media viewer.`}),`
+`,(0,h.jsx)(l,{block:{id:`gallery`,description:`Browse images in a list or grid, add local files, and open a media viewer.`,installCommand:`npx shadcn@latest add godaddy/antares/blocks/gallery`,files:[{path:`components/file-items/index.module.css`,language:`css`,source:`.card {
+  inline-size: 100%;
+  min-inline-size: 0;
+  --_gallery-file-action-space: calc(var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5)) * 2);
+}
+
+.card:where([data-error]) {
+  border-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));
+}
+
+.cover {
+  box-sizing: border-box;
+  min-inline-size: 0;
+  border: 1px solid transparent;
+}
+
+.details {
+  min-inline-size: 0;
+  padding-inline-end: var(--_gallery-file-action-space);
+}
+
+.details:where([data-variant="vertical"]) {
+  padding-inline-end: 0;
+}
+
+.errorDetails {
+  min-inline-size: 0;
+}
+
+.retry {
+  text-decoration: underline;
+}
+
+.collection {
+  inline-size: 100%;
+}
+`},{path:`components/file-items/index.tsx`,language:`tsx`,source:`'use client';
+
+import { useCallback, useRef, useState } from 'react';
+import {
+  Box,
+  Button,
+  Card,
+  CardGroup,
+  CornerActions,
+  Detail,
+  Flex,
+  Icon,
+  Text,
+  type CardGroupProps
+} from '@godaddy/antares';
+import { FileCover, type FileCoverVariant } from '../image';
+import type { ImageItem } from '../../data/types';
+import { useGalleryCopy } from '../../data/copy';
+import styles from './index.module.css';
+
+interface FileItemsProps extends Pick<FileItemProps, 'onRemove' | 'onLoadError' | 'onLoadSuccess'> {
+  /** Presentation chosen by Gallery. */
+  view: 'list' | 'grid';
+
+  /** Shared collection order. */
+  images: ImageItem[];
+
+  /** Whether the list shows every file. */
+  showAll: boolean;
+
+  /** Reveals the remaining files. */
+  onShowAll: () => void;
+
+  /** Opens a successful image in the viewer. */
+  onOpen: (id: string) => void;
+
+  /** Retries an error item. */
+  onRetry: (image: ImageItem) => void;
+}
+
+const MAX_VISIBLE_ITEMS = 5;
+
+/** Renders the same collection with either list or grid geometry. */
+export function FileItems({
+  view,
+  images,
+  showAll,
+  onShowAll,
+  onOpen,
+  onRemove,
+  onRetry,
+  onLoadError,
+  onLoadSuccess
+}: FileItemsProps) {
+  const { messages } = useGalleryCopy();
+  const isList = view === 'list';
+  const firstRevealedId = useRef<string | null>(null);
+  const visibleImages = isList && !showAll ? images.slice(0, MAX_VISIBLE_ITEMS) : images;
+  const errorCount = images.filter((image) => image.status === 'error').length;
+
+  const registerItem = useCallback(function registerItem(id: string, element: HTMLElement | null) {
+    if (element && firstRevealedId.current === id) {
+      firstRevealedId.current = null;
+      element.focus();
+    }
+  }, []);
+
+  function handleShowAll() {
+    firstRevealedId.current = images[visibleImages.length]?.id ?? null;
+    onShowAll();
+  }
+
+  const handleSelection = useCallback<NonNullable<CardGroupProps<ImageItem>['onSelectionChange']>>(
+    function handleSelection(keys) {
+      if (keys === 'all') return;
+      const id = keys.values().next().value;
+      const image = images.find((image) => image.id === id);
+      if (!image) return;
+      if (image.status === 'error') onRetry(image);
+      else onOpen(image.id);
+    },
+    [images, onOpen, onRetry]
+  );
+
+  return (
+    <Flex direction="column" gap="sm" className={styles.collection}>
+      <CardGroup
+        key={view}
+        selectionMode="single"
+        selectionBehavior="toggle"
+        shouldSelectOnPressUp
+        selectedKeys={[]}
+        onSelectionChange={handleSelection}
+        disabledBehavior="selection"
+        keyboardNavigationBehavior="tab"
+        columns={isList ? '1fr' : 'repeat(auto-fill, minmax(min(100%, 240px), 1fr))'}
+        gap="sm"
+        justifyContent="start"
+        alignItems="start"
+        aria-label={isList ? messages.files : messages.imageGrid}
+      >
+        {visibleImages.map((image) => (
+          <FileItem
+            key={image.id}
+            image={image}
+            variant={isList ? 'horizontal' : 'vertical'}
+            onRemove={onRemove}
+            onLoadError={onLoadError}
+            onLoadSuccess={onLoadSuccess}
+            onItemRef={registerItem}
+          />
+        ))}
+      </CardGroup>
+      {isList ? (
+        <ViewBanner
+          visibleCount={visibleImages.length}
+          totalCount={images.length}
+          errorCount={errorCount}
+          onShowAll={handleShowAll}
+        />
+      ) : null}
+    </Flex>
+  );
+}
+
+interface FileItemProps {
+  /** File to render. */
+  image: ImageItem;
+
+  /** Presentation variant from the parent view. */
+  variant: FileCoverVariant;
+
+  /** Removes the file. */
+  onRemove: (image: ImageItem) => void;
+
+  /** Reports an image decode or network failure. */
+  onLoadError: (id: string) => void;
+
+  /** Reports a successful image load. */
+  onLoadSuccess: (id: string) => void;
+
+  /** Registers the collection row for revealing expanded files. */
+  onItemRef?: (id: string, element: HTMLElement | null) => void;
+}
+
+/** Preserves useful precision for small files instead of rounding their size to zero MiB. */
+function formatFileSize(bytes: number, fileSizeFormatter: Intl.NumberFormat) {
+  if (bytes < 1024) return fileSizeFormatter.format(bytes) + ' B';
+  if (bytes < 1024 * 1024) return fileSizeFormatter.format(bytes / 1024) + ' KiB';
+  return fileSizeFormatter.format(bytes / (1024 * 1024)) + ' MiB';
+}
+
+/** One file item with the same actions and states across list and grid views. */
+function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItemRef }: FileItemProps) {
+  const { messages, number } = useGalleryCopy();
+  const [coverReady, setCoverReady] = useState(false);
+  const size = image.size === undefined ? messages.sizeUnavailable : formatFileSize(image.size, number);
+  const isError = image.status === 'error';
+  const isLoading = image.status === 'loading';
+  const canOpen = !isError && !isLoading && coverReady;
+
+  const handleLoadSuccess = useCallback(
+    function handleLoadSuccess(id: string) {
+      setCoverReady(true);
+      if (isLoading) onLoadSuccess(id);
+    },
+    [isLoading, onLoadSuccess]
+  );
+
+  const handleLoadError = useCallback(
+    function handleLoadError(id: string) {
+      setCoverReady(false);
+      onLoadError(id);
+    },
+    [onLoadError]
+  );
+
+  return (
+    <Card
+      id={image.id}
+      textValue={image.name}
+      aria-label={isError ? messages.retryImage(image.name) : canOpen ? messages.openImage(image.name) : image.name}
+      ref={(element) => onItemRef?.(image.id, element)}
+      isDisabled={!isError && !canOpen}
+      direction={variant === 'horizontal' ? 'row' : 'column'}
+      gap="sm"
+      padding="sm"
+      alignItems={variant === 'horizontal' ? 'center' : undefined}
+      className={styles.card}
+      data-error={isError || undefined}
+    >
+      <Box flexShrink={0} className={styles.cover}>
+        <FileCover image={image} variant={variant} onLoadError={handleLoadError} onLoadSuccess={handleLoadSuccess} />
+      </Box>
+
+      <Flex
+        direction="column"
+        gap="sm"
+        justifyContent="center"
+        flex="1 1 auto"
+        className={styles.details}
+        data-variant={variant}
+      >
+        <Text maxLines={1} emphasis={isError ? 'critical' : undefined}>
+          {image.name}
+        </Text>
+        {isError ? (
+          <Flex
+            direction={variant === 'horizontal' ? 'row' : 'column'}
+            gap="xs"
+            alignItems={variant === 'horizontal' ? 'center' : 'start'}
+            wrap={variant === 'horizontal' ? 'nowrap' : undefined}
+            className={styles.errorDetails}
+            role={variant === 'vertical' ? 'alert' : undefined}
+          >
+            <Detail emphasis="critical" maxLines={1}>
+              {image.errorMessage ?? messages.needsAttention}
+            </Detail>
+            <Flex alignItems="center" gap="xs" className={styles.retry}>
+              <Icon icon="refresh" aria-hidden="true" />
+              <Text size="sm">{messages.retry}</Text>
+            </Flex>
+          </Flex>
+        ) : (
+          <Detail>{isLoading ? messages.loadingImage : size}</Detail>
+        )}
+      </Flex>
+
+      <CornerActions>
+        <Button
+          variant="secondary"
+          size="sm"
+          aria-label={messages.removeImage(image.name)}
+          onPress={() => onRemove(image)}
+        >
+          <Icon icon="x" aria-hidden="true" />
+        </Button>
+      </CornerActions>
+    </Card>
+  );
+}
+
+interface ViewBannerProps {
+  /** Number of files currently rendered. */
+  visibleCount: number;
+
+  /** Number of files in the collection. */
+  totalCount: number;
+
+  /** Number of failed files. */
+  errorCount: number;
+
+  /** Reveals the remaining files. */
+  onShowAll: () => void;
+}
+
+/** Counter and image-error feedback used below the file list. */
+function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: ViewBannerProps) {
+  const { messages } = useGalleryCopy();
+  const hasMore = visibleCount < totalCount;
+  if (!hasMore && errorCount === 0) return null;
+
+  return (
+    <Flex direction="column" gap="sm" blockPadding="sm">
+      <Flex justifyContent="space-between" alignItems="center" gap="sm">
+        <Text>{messages.fileCount(visibleCount, totalCount)}</Text>
+        {hasMore ? (
+          <Button variant="inline" onPress={onShowAll}>
+            {messages.showAll}
+          </Button>
+        ) : null}
+      </Flex>
+
+      {errorCount > 0 ? (
+        <Flex justifyContent="center" alignItems="center" gap="xs" role="alert">
+          <Icon icon="alert" aria-hidden="true" />
+          <Text emphasis="critical">{messages.filesNeedAttention(errorCount)}</Text>
+        </Flex>
+      ) : null}
+    </Flex>
+  );
+}
+`},{path:`components/gallery/index.module.css`,language:`css`,source:`.content {
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+
+.notice:where(:empty) {
+  position: absolute;
+}
+
+.dropOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: 1px dashed var(--ux-f7kpiw, #00a4a6);
+  border-radius: var(--ux-2jubes, 16px);
+  background-color: rgba(216, 239, 239, 0.9);
+  color: var(--color-surface-text-base, var(--ux-1leynsm, CanvasText));
+  pointer-events: none;
+}
+
+.dropZone {
+  position: relative;
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: 80rem;
+  min-inline-size: 0;
+  margin-inline: auto;
+}
+
+.emptyState {
+  min-block-size: 256px;
+  text-align: center;
+}
+
+.description {
+  max-inline-size: 30rem;
+}
+
+.issueSlot:where([data-empty]) {
+  visibility: hidden;
+}
+
+.uploadIssues {
+  max-inline-size: 24rem;
+}
+
+.announcement {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+`},{path:`components/gallery/index.tsx`,language:`tsx`,source:`'use client';
+
+import { forwardRef, useCallback, useId, useLayoutEffect, useRef, useState } from 'react';
+import {
+  Box,
+  Button,
+  CloseButton,
+  Content,
+  Detail,
+  type DropEvent,
+  type DropOptions,
+  FileTrigger,
+  Flex,
+  Heading,
+  Icon,
+  Label,
+  Popover,
+  PopoverTrigger,
+  ProgressBar,
+  SegmentedController,
+  SegmentedControllerItem,
+  Tag,
+  Text,
+  Tooltip,
+  TooltipTrigger,
+  isFileDropItem,
+  useDrop
+} from '@godaddy/antares';
+import type { GalleryLimits, ImageItem } from '../../data/types';
+import { GalleryCopyProvider, type GalleryMessages, useGalleryCopy } from '../../data/copy';
+import { acceptedTypes, defaultLimits, useGalleryImages } from '../../hooks/use-gallery-images';
+import { FileItems } from '../file-items';
+import { Viewer } from '../viewer';
+import styles from './index.module.css';
+
+export interface GalleryProps {
+  /** Initial images; read once on mount. Defaults to an empty gallery. IDs must be unique. */
+  initialImages?: ImageItem[];
+
+  /** Initial presentation; switching views preserves the collection. */
+  defaultView?: 'list' | 'grid';
+
+  /** Local ingestion budgets. Initial images are retained even when they exceed a budget. */
+  limits?: GalleryLimits;
+
+  /** Layout and viewer navigation direction. Match the host application's locale direction. Defaults to ltr. */
+  dir?: 'ltr' | 'rtl';
+
+  /** Notifies the host after collection or load-state changes. Blob URLs remain owned by this instance. */
+  onImagesChange?: (images: ImageItem[]) => void;
+
+  /** Locale used for file sizes and numeric feedback. Defaults to en-US. */
+  locale?: string;
+
+  /** Translated labels and announcements; omitted messages retain their English defaults. */
+  messages?: Partial<GalleryMessages>;
+}
+
+/**
+ * Copyable local gallery with shared list/grid state and a modal image viewer.
+ * Files stay in this browser session. Replace ingestion/removal with your service integration
+ * when persistence is needed; initialImages is read only on mount.
+ *
+ * @example
+ * <Gallery initialImages={[{ id: 'cover', name: 'Cover.jpg', src: '/cover.jpg' }]} />
+ */
+export function Gallery({ locale = 'en-US', messages, dir = 'ltr', ...props }: GalleryProps) {
+  return (
+    <GalleryCopyProvider locale={locale} messages={messages}>
+      <GalleryContent {...props} dir={dir} />
+    </GalleryCopyProvider>
+  );
+}
+
+/** Owns collection and presentation state within the gallery's locale scope. */
+function GalleryContent({
+  initialImages = [],
+  defaultView = 'grid',
+  limits,
+  dir = 'ltr',
+  onImagesChange
+}: GalleryProps) {
+  const { locale, messages } = useGalleryCopy();
+  const resolvedLimits = {
+    maxFiles: limits?.maxFiles ?? defaultLimits.maxFiles,
+    maxFileSize: limits?.maxFileSize ?? defaultLimits.maxFileSize,
+    maxTotalSize: limits?.maxTotalSize ?? defaultLimits.maxTotalSize
+  };
+  const { images, errors, notice, processing, addFiles, removeImage, retryImage, markReady, markError, reportError } =
+    useGalleryImages(initialImages, resolvedLimits, onImagesChange);
+  const [view, setView] = useState(defaultView);
+  const [showAll, setShowAll] = useState(false);
+  const previousImages = useRef(images);
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const dropZoneRef = useRef<HTMLDivElement>(null);
+  const addButton = useRef<HTMLButtonElement>(null);
+
+  useLayoutEffect(
+    function revealAddedImages() {
+      const previousIds = new Set(previousImages.current.map((image) => image.id));
+      const hasAddedImages = images.some((image) => !previousIds.has(image.id));
+      previousImages.current = images;
+      if (hasAddedImages) setShowAll(true);
+    },
+    [images]
+  );
+
+  const handleShowAll = useCallback(function handleShowAll() {
+    setShowAll(true);
+  }, []);
+
+  const handleRemoveImage = useCallback(
+    function handleRemoveImage(image: ImageItem) {
+      // The collection restores adjacent-row focus. The final removal unmounts it entirely.
+      if (images.length === 1) addButton.current?.focus({ preventScroll: true });
+      removeImage(image);
+    },
+    [images.length, removeImage]
+  );
+
+  const handleDropOperation = useCallback<NonNullable<DropOptions['getDropOperation']>>(function handleDropOperation(
+    types
+  ) {
+    return acceptedTypes.some(function supportsType(type) {
+      return types.has(type);
+    })
+      ? 'copy'
+      : 'cancel';
+  }, []);
+
+  const handleDrop = useCallback(
+    async function handleDrop(event: DropEvent) {
+      const results = await Promise.allSettled(event.items.filter(isFileDropItem).map((item) => item.getFile()));
+      const files = results.flatMap((result) => (result.status === 'fulfilled' ? [result.value] : []));
+      await addFiles(files);
+      if (results.some((result) => result.status === 'rejected')) {
+        reportError(messages.unreadableDrop);
+      }
+    },
+    [addFiles, messages.unreadableDrop, reportError]
+  );
+
+  const handleViewChange = useCallback(function handleViewChange(key: string) {
+    if (key === 'list' || key === 'grid') setView(key);
+  }, []);
+
+  const handleOpenImage = useCallback(function handleOpenImage(id: string) {
+    setActiveId(id);
+  }, []);
+
+  const handleImageLoadError = useCallback(
+    function handleImageLoadError(id: string) {
+      setActiveId((current) => (current === id ? null : current));
+      markError(id);
+    },
+    [markError]
+  );
+
+  const handleCloseViewer = useCallback(function handleCloseViewer() {
+    setActiveId(null);
+  }, []);
+
+  const { dropProps, isDropTarget } = useDrop({
+    ref: dropZoneRef,
+    hasDropButton: false,
+    isDisabled: activeId !== null,
+    getDropOperation: handleDropOperation,
+    onDrop: handleDrop
+  });
+
+  return (
+    <>
+      <Flex
+        ref={dropZoneRef}
+        dir={dir}
+        lang={locale}
+        role="region"
+        aria-label={messages.addFilesRegion}
+        padding="0"
+        alignItems="stretch"
+        justifyContent="start"
+        {...dropProps}
+        className={styles.dropZone}
+      >
+        <Flex direction="column" gap="lg" padding="lg" className={styles.content}>
+          <Flex gap="md" wrap="wrap" alignItems="center" justifyContent="space-between">
+            <Flex alignItems="center" gap="sm" wrap="wrap">
+              <Heading level={2}>{messages.gallery}</Heading>
+              <Tag size="sm">{messages.imageCount(images.length)}</Tag>
+            </Flex>
+
+            <Flex alignItems="center" gap="sm" wrap="wrap">
+              <UploadPrompt
+                ref={addButton}
+                isDropTarget={isDropTarget}
+                errors={errors}
+                acceptedTypes={acceptedTypes}
+                onSelect={addFiles}
+              />
+              <SegmentedController aria-label={messages.layout} value={view} onSelectionChange={handleViewChange}>
+                <SegmentedControllerItem value="list">
+                  <Icon icon="bulleted-list" />
+                  {messages.list}
+                </SegmentedControllerItem>
+                <SegmentedControllerItem value="grid">
+                  <Icon icon="grid" />
+                  {messages.grid}
+                </SegmentedControllerItem>
+              </SegmentedController>
+            </Flex>
+          </Flex>
+
+          <Box role="region" aria-label={view === 'list' ? messages.listView : messages.gridView}>
+            {images.length === 0 ? (
+              <EmptyState />
+            ) : (
+              <FileItems
+                view={view}
+                images={images}
+                showAll={showAll}
+                onShowAll={handleShowAll}
+                onOpen={handleOpenImage}
+                onRemove={handleRemoveImage}
+                onRetry={retryImage}
+                onLoadError={handleImageLoadError}
+                onLoadSuccess={markReady}
+              />
+            )}
+          </Box>
+          {processing ? (
+            <ProgressBar
+              value={processing.completed}
+              maxValue={processing.total}
+              valueLabel={messages.processedFiles(processing.completed, processing.total)}
+            >
+              <Label>{messages.processingImages}</Label>
+              <Box slot="value" />
+              <Box slot="track" />
+            </ProgressBar>
+          ) : null}
+
+          <Detail role="status" aria-label={messages.updates} aria-atomic="true" className={styles.notice}>
+            {notice}
+          </Detail>
+        </Flex>
+        {isDropTarget ? (
+          <Flex
+            role="status"
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            gap="sm"
+            padding="lg"
+            className={styles.dropOverlay}
+          >
+            <Icon icon="upload" aria-hidden="true" />
+            <Text as="strong">{messages.dropFiles}</Text>
+          </Flex>
+        ) : null}
+      </Flex>
+      <Viewer
+        images={images.filter(function filterViewableImage(image) {
+          return image.status !== 'error' && image.status !== 'loading';
+        })}
+        dir={dir}
+        activeId={activeId}
+        onClose={handleCloseViewer}
+        onSelectImage={handleOpenImage}
+      />
+    </>
+  );
+}
+
+/** Welcomes users to an empty gallery and points them to the upload action. */
+function EmptyState() {
+  const { messages } = useGalleryCopy();
+  return (
+    <Flex
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      gap="sm"
+      padding="2xl"
+      role="region"
+      aria-label={messages.emptyGallery}
+      className={styles.emptyState}
+    >
+      <Box padding="md" rounding="full" elevation="card" aria-hidden="true">
+        <Icon icon="upload" />
+      </Box>
+      <Heading level={3}>{messages.startGallery}</Heading>
+      <Text className={styles.description}>{messages.emptyDescription}</Text>
+    </Flex>
+  );
+}
+
+interface UploadPromptProps {
+  /** Whether an accepted file is currently over the gallery. */
+  isDropTarget: boolean;
+
+  /** Validation issues shared with the picker and drop target. */
+  errors: string[];
+
+  /** MIME types accepted by the gallery picker. */
+  acceptedTypes: string[];
+
+  /** Adds files selected from the native picker. */
+  onSelect: (files: FileList | null) => void;
+}
+
+/** Compact file-upload action shared by Gallery's list and grid views. */
+const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(function UploadPrompt(
+  { isDropTarget, errors, acceptedTypes, onSelect },
+  ref
+) {
+  const { messages } = useGalleryCopy();
+  const helpId = useId();
+  const errorId = useId();
+  const hasErrors = errors.length > 0;
+  const issueButton = (
+    <Button variant="minimal" size="sm" aria-label={messages.reviewUploadIssues} isDisabled={!hasErrors}>
+      <Icon icon="alert" color="var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802))" aria-hidden="true" />
+    </Button>
+  );
+  const describedBy = [isDropTarget ? null : helpId, hasErrors ? errorId : null].filter(Boolean).join(' ') || undefined;
+  return (
+    <Flex alignItems="center" gap="sm" wrap="wrap" role="group" aria-label={messages.addFilesRegion}>
+      <Flex alignItems="center" gap="xs">
+        <FileTrigger allowsMultiple acceptedFileTypes={acceptedTypes} onSelect={onSelect}>
+          <Button
+            ref={ref}
+            type="button"
+            size="md"
+            variant="secondary"
+            aria-label={messages.addFiles}
+            aria-describedby={describedBy}
+          >
+            <Icon icon="upload" aria-hidden="true" />
+            {messages.addFiles}
+          </Button>
+        </FileTrigger>
+        <Box className={styles.issueSlot} data-empty={!hasErrors || undefined}>
+          {hasErrors ? (
+            <PopoverTrigger>
+              <TooltipTrigger>
+                {issueButton}
+                <Tooltip>{messages.reviewUploadIssues}</Tooltip>
+              </TooltipTrigger>
+              <Popover placement="bottom end" className={styles.uploadIssues}>
+                <Heading slot="title" level={3}>
+                  {messages.uploadIssues}
+                </Heading>
+                <CloseButton aria-label={messages.closeUploadIssues} />
+                <Content gap="sm">
+                  {errors.map((error) => (
+                    <Text key={error}>{error}</Text>
+                  ))}
+                </Content>
+              </Popover>
+            </PopoverTrigger>
+          ) : (
+            issueButton
+          )}
+        </Box>
+      </Flex>
+      {isDropTarget ? null : <Text id={helpId}>{messages.dragHint}</Text>}
+      {hasErrors ? (
+        <Text id={errorId} role="alert" className={styles.announcement}>
+          {errors.join(' ')}
+        </Text>
+      ) : null}
+    </Flex>
+  );
+});
+`},{path:`components/image/index.module.css`,language:`css`,source:`.surface {
+  max-inline-size: 100%;
+  object-fit: cover;
+}
+
+.surface:where(img) {
+  display: block;
+}
+
+.surface:where([data-variant="horizontal"]) {
+  inline-size: 56px;
+  block-size: 56px;
+}
+
+.surface:where([data-variant="vertical"]) {
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 1;
+}
+
+.error {
+  background: var(--color-feedback-critical-subtle, var(--ux-1iiiqs3, #fde8e7));
+  color: var(--color-feedback-critical-onsubtle, var(--ux-xaxxaq, #8b0000));
+}
+
+.image {
+  max-inline-size: 100%;
+}
+
+.image:where(img) {
+  display: block;
+}
+
+.image:where([data-variant="viewer"]) {
+  inline-size: 100%;
+  block-size: 100%;
+  max-block-size: 100%;
+  object-fit: contain;
+}
+
+.image:where([data-variant="thumbnail"]) {
+  inline-size: 80px;
+  block-size: 60px;
+  object-fit: cover;
+}
+
+.container {
+  min-inline-size: 0;
+}
+
+.container:where([data-variant="viewer"]) {
+  position: relative;
+  inline-size: 100%;
+  block-size: 100%;
+  min-block-size: 0;
+}
+
+.loading {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  text-align: center;
+}
+
+.errorSurface {
+  background: var(--color-feedback-critical-subtle, var(--ux-1iiiqs3, #fde8e7));
+  color: var(--color-feedback-critical-onsubtle, var(--ux-xaxxaq, #8b0000));
+}
+
+.surface:where([data-loading]),
+.image:where([data-loading]) {
+  background: var(--color-surface-background-subdued, var(--ux-1u2jy43, #d6d6d6));
+  color: transparent;
+}
+`},{path:`components/image/index.tsx`,language:`tsx`,source:`'use client';
+
+import { forwardRef, useCallback, useRef, useState, type ReactEventHandler } from 'react';
+import { Box, Button, Flex, Icon, Image, Text } from '@godaddy/antares';
+import type { ImageItem } from '../../data/types';
+import { useGalleryCopy } from '../../data/copy';
+import styles from './index.module.css';
+
+type ImageLoadState = 'loading' | 'ready' | 'error';
+
+interface UseImageLoadStateOptions {
+  /** Resets the resource when the owning image changes state. */
+  resetKey?: string;
+
+  /** Called after the image loads successfully. */
+  onLoad?: () => void;
+
+  /** Called after the image fails to load. */
+  onError?: () => void;
+}
+
+/**
+ * Shares image loading and retry across covers, slides, and thumbnails.
+ * The ref inspects cached images whose native load event may precede React's handlers.
+ * Report each outcome once per resource/attempt: callback refs also run when handlers change.
+ */
+function useImageLoadState(
+  src: string,
+  { resetKey = '', onLoad: reportLoad, onError: reportError }: UseImageLoadStateOptions = {}
+) {
+  const [attempt, setAttempt] = useState(0);
+  const [state, setState] = useState<ImageLoadState>('loading');
+  const reportedErrorKey = useRef<string | null>(null);
+  const reportedLoadKey = useRef<string | null>(null);
+  const resourceKey = JSON.stringify([src, resetKey]);
+  const previousResourceKey = useRef(resourceKey);
+
+  if (previousResourceKey.current !== resourceKey) {
+    previousResourceKey.current = resourceKey;
+    reportedErrorKey.current = null;
+    reportedLoadKey.current = null;
+    // Reset before the image ref inspects a resource that may already be complete.
+    setAttempt(0);
+    setState('loading');
+  }
+
+  const loadKey = \`\${resourceKey}:\${attempt}\`;
+
+  const reportLoadOnce = useCallback(
+    function reportLoadedResource() {
+      if (reportedLoadKey.current === loadKey) return;
+
+      reportedLoadKey.current = loadKey;
+      reportLoad?.();
+    },
+    [loadKey, reportLoad]
+  );
+
+  const reportErrorOnce = useCallback(
+    function reportFailedResource() {
+      if (reportedErrorKey.current === loadKey) return;
+
+      reportedErrorKey.current = loadKey;
+      reportError?.();
+    },
+    [loadKey, reportError]
+  );
+
+  const imageRef = useCallback(
+    function inspectLoadedImage(element: HTMLImageElement | null) {
+      if (!element?.complete) return;
+
+      if (element.naturalWidth > 0) {
+        setState('ready');
+        reportLoadOnce();
+      } else {
+        setState('error');
+        reportErrorOnce();
+      }
+    },
+    [reportErrorOnce, reportLoadOnce]
+  );
+
+  const onLoad = useCallback(
+    function handleLoad() {
+      setState('ready');
+      reportLoadOnce();
+    },
+    [reportLoadOnce]
+  );
+
+  const onError = useCallback(
+    function handleError() {
+      setState('error');
+      reportErrorOnce();
+    },
+    [reportErrorOnce]
+  );
+
+  const retry = useCallback(function retryImage() {
+    setAttempt(function increment(value) {
+      return value + 1;
+    });
+    setState('loading');
+  }, []);
+
+  return { attempt, imageRef, onLoad, onError, retry, src, state };
+}
+
+interface ImageSurfaceProps {
+  /** Resource to display. */
+  src: string;
+
+  /** Responsive candidates for the displayed resource. */
+  srcSet?: string;
+
+  /** Sizes corresponding to responsive candidates. */
+  sizes?: string;
+
+  /** Intrinsic width, when known. */
+  width?: number;
+
+  /** Intrinsic height, when known. */
+  height?: number;
+
+  /** Image name; decorative inside a separately named action. */
+  alt: string;
+
+  /** Presentation variant consumed by the caller's stylesheet. */
+  variant?: string;
+
+  /** Styles owned by the calling cover, slide, or thumbnail. */
+  className?: string;
+
+  /** Prioritize the active slide; defer offscreen resources. */
+  loading?: 'eager' | 'lazy';
+
+  /** Displays a placeholder while this resource is loading. */
+  isLoading?: boolean;
+
+  /** Native successful decode notification. */
+  onLoad?: ReactEventHandler<HTMLImageElement>;
+
+  /** Native decode or network error notification. */
+  onError?: ReactEventHandler<HTMLImageElement>;
+}
+
+/** Renders the shared image element; its owner supplies any interaction. */
+const ImageSurface = forwardRef<HTMLImageElement, ImageSurfaceProps>(function ImageSurface(
+  { src, srcSet, sizes, width, height, alt, variant, className, loading = 'lazy', isLoading, onLoad, onError },
+  ref
+) {
+  return (
+    <Box
+      as={Image}
+      ref={ref}
+      src={src}
+      srcSet={srcSet}
+      sizes={sizes}
+      width={width}
+      height={height}
+      alt={alt}
+      className={className}
+      data-variant={variant}
+      data-loading={isLoading || undefined}
+      aria-busy={isLoading || undefined}
+      rounding="md"
+      loading={loading}
+      decoding="async"
+      onLoad={onLoad}
+      onError={onError}
+    />
+  );
+});
+
+/** Cover geometry used by Gallery's list and grid presentations. */
+export type FileCoverVariant = 'horizontal' | 'vertical';
+
+interface FileCoverProps {
+  /** File represented by the cover. */
+  image: ImageItem;
+
+  /** Cover geometry used by the parent presentation. */
+  variant: FileCoverVariant;
+
+  /** Reports an image decode or network failure to the owning gallery. */
+  onLoadError?: (id: string) => void;
+
+  /** Reports a successful retry to the owning gallery. */
+  onLoadSuccess?: (id: string) => void;
+}
+
+/** A small, reusable image/error surface shared by every Gallery presentation. */
+export function FileCover({ image, variant, onLoadError, onLoadSuccess }: FileCoverProps) {
+  const { messages } = useGalleryCopy();
+  const [failedThumbnail, setFailedThumbnail] = useState<string | null>(null);
+  const thumbnail = image.thumbnailSrc && failedThumbnail !== image.thumbnailSrc ? image.thumbnailSrc : undefined;
+  const reportLoadError = useCallback(
+    function reportLoadError() {
+      if (thumbnail && thumbnail !== image.src) setFailedThumbnail(thumbnail);
+      else onLoadError?.(image.id);
+    },
+    [thumbnail, image.src, image.id, onLoadError]
+  );
+  const reportLoadSuccess = useCallback(
+    function reportLoadSuccess() {
+      onLoadSuccess?.(image.id);
+    },
+    [image.id, onLoadSuccess]
+  );
+  const { state, imageRef, onLoad, onError } = useImageLoadState(thumbnail ?? image.src, {
+    resetKey: \`\${image.id}:\${image.status ?? ''}\`,
+    onLoad: reportLoadSuccess,
+    onError: reportLoadError
+  });
+  const hasError = image.status === 'error' || state === 'error';
+  return hasError ? (
+    <Flex
+      alignItems="center"
+      justifyContent="center"
+      role="img"
+      aria-label={\`\${image.name}: \${image.errorMessage ?? messages.needsAttention}\`}
+      rounding="md"
+      className={\`\${styles.surface} \${styles.error}\`}
+      data-variant={variant}
+    >
+      <Icon icon="alert" aria-hidden="true" />
+    </Flex>
+  ) : (
+    <ImageSurface
+      ref={imageRef}
+      src={thumbnail ?? image.src}
+      srcSet={thumbnail ? undefined : image.srcSet}
+      sizes={thumbnail ? undefined : image.sizes}
+      width={thumbnail ? undefined : image.width}
+      height={thumbnail ? undefined : image.height}
+      alt={image.alt ?? image.name}
+      className={styles.surface}
+      variant={variant}
+      loading="lazy"
+      isLoading={state === 'loading'}
+      onLoad={onLoad}
+      onError={onError}
+    />
+  );
+}
+
+interface GalleryImageProps {
+  /** Image to load; remount this component when its identity changes. */
+  image: ImageItem;
+
+  /** Presentation size for the image. */
+  variant?: 'default' | 'viewer' | 'thumbnail';
+
+  /** Loading strategy for the image resource. */
+  loading?: 'eager' | 'lazy';
+
+  /** Moves focus to a stable viewer control before the retry button disappears. */
+  onRetryStart?: () => void;
+}
+
+/** Handles image loading failures without simulating an upload. */
+export function GalleryImage({ image, variant = 'default', loading = 'lazy', onRetryStart }: GalleryImageProps) {
+  const { messages } = useGalleryCopy();
+  const { attempt, imageRef, onError, onLoad, retry, src, state } = useImageLoadState(
+    variant === 'thumbnail' ? (image.thumbnailSrc ?? image.src) : image.src,
+    {
+      resetKey: image.id
+    }
+  );
+
+  if (state === 'error' && variant !== 'thumbnail') {
+    return (
+      <Flex direction="column" gap="xs" padding="sm" role="alert">
+        <Icon icon="alert" aria-hidden="true" />
+        <Text emphasis="critical">{messages.failedImage(image.name)}</Text>
+        <Button
+          variant="inline"
+          aria-label={messages.retryImage(image.name)}
+          onPress={function handleRetry() {
+            onRetryStart?.();
+            retry();
+          }}
+        >
+          {messages.retry}
+        </Button>
+      </Flex>
+    );
+  }
+
+  const picture =
+    state === 'error' ? (
+      <Flex
+        alignItems="center"
+        justifyContent="center"
+        className={\`\${styles.image} \${styles.errorSurface}\`}
+        data-variant={variant}
+        role="img"
+        aria-label={messages.failedThumbnail(image.name)}
+      >
+        <Icon icon="alert" aria-hidden="true" />
+      </Flex>
+    ) : (
+      <ImageSurface
+        ref={imageRef}
+        key={attempt}
+        src={src}
+        alt={variant === 'thumbnail' ? '' : (image.alt ?? image.name)}
+        srcSet={variant === 'thumbnail' ? undefined : image.srcSet}
+        sizes={variant === 'thumbnail' ? undefined : image.sizes}
+        width={variant === 'thumbnail' ? 80 : image.width}
+        height={variant === 'thumbnail' ? 60 : image.height}
+        className={styles.image}
+        variant={variant}
+        loading={loading}
+        isLoading={state === 'loading'}
+        onLoad={onLoad}
+        onError={onError}
+      />
+    );
+
+  return (
+    <Flex
+      direction="column"
+      gap="xs"
+      aria-busy={state === 'loading'}
+      className={styles.container}
+      data-variant={variant}
+    >
+      {picture}
+      {state === 'loading' && variant !== 'thumbnail' ? (
+        <Text className={variant === 'viewer' ? styles.loading : undefined}>{messages.loadingImage}</Text>
+      ) : null}
+    </Flex>
+  );
+}
+`},{path:`components/viewer/index.module.css`,language:`css`,source:`.modalContainer {
+  inline-size: 100%;
+  max-inline-size: 60rem;
+  min-inline-size: 0;
+}
+
+.modal {
+  inline-size: 100%;
+  max-inline-size: 100%;
+}
+
+.slide {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  block-size: 55dvh;
+}
+
+.name {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+.thumbnails {
+  min-inline-size: 0;
+  overflow-x: auto;
+  scroll-padding-inline: var(--sp-sm);
+}
+`},{path:`components/viewer/index.tsx`,language:`tsx`,source:`'use client';
+
+import { useCallback, useEffect, useRef, type KeyboardEvent } from 'react';
+import {
+  Button,
+  Carousel,
+  Box,
+  CloseButton,
+  Content,
+  Flex,
+  Heading,
+  Icon,
+  CardGroup,
+  Card,
+  Modal,
+  Pagination,
+  Text,
+  type CardGroupProps
+} from '@godaddy/antares';
+import { GalleryImage } from '../image';
+import type { ImageItem } from '../../data/types';
+import { useGalleryCopy } from '../../data/copy';
+import styles from './index.module.css';
+
+type PropagatingKeyboardEvent<T extends Element> = KeyboardEvent<T> & {
+  continuePropagation(): void;
+};
+
+interface ViewerProps {
+  /** Shared direction for layout, keyboard navigation, and carousel gestures. */
+  dir: 'ltr' | 'rtl';
+
+  /** Current viewable gallery order, shared by the list and grid views. */
+  images: ImageItem[];
+
+  /** Stable image ID, or null while the viewer is closed. */
+  activeId: string | null;
+
+  /** Closes the viewer. */
+  onClose: () => void;
+
+  /** Selects an image from the viewer controls or thumbnail rail. */
+  onSelectImage: (id: string) => void;
+}
+
+/** Modal image viewer that reuses Antares Carousel for the main image sequence. */
+export function Viewer({ dir, images, activeId, onClose, onSelectImage }: ViewerProps) {
+  const { locale, messages } = useGalleryCopy();
+  const strip = useRef<HTMLDivElement>(null);
+  const thumbnails = useRef(new Map<string, HTMLElement>());
+  const closeButton = useRef<HTMLButtonElement>(null);
+  const previousButton = useRef<HTMLButtonElement>(null);
+  const nextButton = useRef<HTMLButtonElement>(null);
+  const focusCurrentThumbnail = useRef(false);
+  const index = images.findIndex(function findActiveImage(image) {
+    return image.id === activeId;
+  });
+  const image = images[index];
+
+  const focusActiveThumbnail = useCallback(
+    function focusActiveThumbnail() {
+      const thumbnail = activeId ? thumbnails.current.get(activeId) : undefined;
+      (thumbnail ?? closeButton.current)?.focus({ preventScroll: true });
+    },
+    [activeId]
+  );
+
+  useEffect(
+    function revealCurrentThumbnail() {
+      const thumbnail = activeId ? thumbnails.current.get(activeId) : undefined;
+      const rail = strip.current;
+      if (thumbnail && rail) {
+        const target = thumbnail.getBoundingClientRect();
+        const bounds = rail.getBoundingClientRect();
+        // Reveal horizontally without scrolling the modal or the page behind it.
+        if (target.left < bounds.left) rail.scrollBy({ left: target.left - bounds.left });
+        else if (target.right > bounds.right) rail.scrollBy({ left: target.right - bounds.right });
+      }
+      if (focusCurrentThumbnail.current) {
+        (thumbnail ?? closeButton.current)?.focus({ preventScroll: true });
+        focusCurrentThumbnail.current = false;
+      }
+    },
+    [activeId]
+  );
+
+  const move = useCallback(
+    function move(offset: number) {
+      const nextImage = images[index + offset];
+      if (!nextImage) return;
+
+      // Boundary controls become disabled; focus the current thumbnail before continuing by Tab.
+      focusCurrentThumbnail.current =
+        focusCurrentThumbnail.current ||
+        (document.activeElement === previousButton.current && index + offset === 0) ||
+        (document.activeElement === nextButton.current && index + offset === images.length - 1);
+      onSelectImage(nextImage.id);
+    },
+    [images, index, onSelectImage]
+  );
+
+  const navigate = useCallback(
+    function navigate(event: KeyboardEvent<HTMLElement>) {
+      // The CardGroup owns its arrow, Home, End, and typeahead navigation.
+      if (strip.current?.contains(event.target as Node)) return;
+      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+      if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
+        event.preventDefault();
+        if (event.key === 'Home') move(-index);
+        else if (event.key === 'End') move(images.length - 1 - index);
+        else move((event.key === 'ArrowLeft' ? -1 : 1) * (dir === 'rtl' ? -1 : 1));
+      }
+    },
+    [dir, images.length, index, move]
+  );
+
+  const handleOpenChange = useCallback(
+    function handleOpenChange(open: boolean) {
+      if (!open) onClose();
+    },
+    [onClose]
+  );
+
+  const handleCloseKeyDown = useCallback(
+    function handleCloseKeyDown(event: PropagatingKeyboardEvent<HTMLButtonElement>) {
+      if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) navigate(event);
+      else event.continuePropagation();
+    },
+    [navigate]
+  );
+
+  const handlePageChange = useCallback(
+    function handlePageChange(page: number) {
+      move(page - 1 - index);
+    },
+    [index, move]
+  );
+
+  const handleCarouselChange = useCallback(
+    function handleCarouselChange(nextIndex: number) {
+      const nextImage = images[nextIndex];
+      if (nextImage && nextImage.id !== activeId) onSelectImage(nextImage.id);
+    },
+    [activeId, images, onSelectImage]
+  );
+
+  const handleThumbnailSelection = useCallback<NonNullable<CardGroupProps<ImageItem>['onSelectionChange']>>(
+    function handleThumbnailSelection(keys) {
+      if (keys === 'all') return;
+      const id = keys.values().next().value;
+      if (typeof id === 'string' && id !== activeId) onSelectImage(id);
+    },
+    [activeId, onSelectImage]
+  );
+
+  const renderSlide = useCallback(
+    function renderSlide(slideImage: ImageItem, slideIndex: number) {
+      return (
+        <Flex key={slideImage.id} alignItems="center" justifyContent="center" className={styles.slide}>
+          {Math.abs(slideIndex - index) <= 1 ? (
+            <GalleryImage
+              image={slideImage}
+              variant="viewer"
+              loading={slideImage.id === activeId ? 'eager' : 'lazy'}
+              onRetryStart={focusActiveThumbnail}
+            />
+          ) : (
+            <Box aria-hidden="true" />
+          )}
+        </Flex>
+      );
+    },
+    [activeId, focusActiveThumbnail, index]
+  );
+
+  const renderThumbnail = useCallback(
+    function renderThumbnail(thumbnailImage: ImageItem) {
+      return (
+        <Card
+          id={thumbnailImage.id}
+          textValue={thumbnailImage.name}
+          aria-label={messages.viewImage(thumbnailImage.name)}
+          ref={function registerThumbnail(element) {
+            if (element) thumbnails.current.set(thumbnailImage.id, element);
+            else thumbnails.current.delete(thumbnailImage.id);
+          }}
+          padding="0"
+          gap="0"
+        >
+          <GalleryImage image={thumbnailImage} variant="thumbnail" />
+        </Card>
+      );
+    },
+    [messages]
+  );
+
+  if (!image) return null;
+
+  return (
+    <Modal
+      isOpen
+      dir={dir}
+      lang={locale}
+      aria-label={messages.mediaGallery}
+      onOpenChange={handleOpenChange}
+      containerProps={{ className: styles.modalContainer }}
+      className={styles.modal}
+    >
+      <Heading slot="title" level={2}>
+        {messages.mediaGallery}
+      </Heading>
+      <CloseButton ref={closeButton} aria-label={messages.closeGallery} onKeyDown={handleCloseKeyDown} />
+      <Content onKeyDownCapture={navigate}>
+        <Carousel
+          activeIndex={index}
+          onChange={handleCarouselChange}
+          hideDots
+          hideNavigationControls
+          hideMaskEdges
+          emblaOptions={{ direction: dir }}
+          emblaAccessibilityOptions={{ carouselAriaLabel: messages.galleryImages, announceChanges: false }}
+        >
+          {images.map(renderSlide)}
+        </Carousel>
+        <Flex justifyContent="space-between" alignItems="center" gap="sm">
+          <Text className={styles.name} maxLines={1} wrap="nowrap" role="status" aria-atomic="true">
+            {messages.imagePosition(image.name, index + 1, images.length)}
+          </Text>
+          <Pagination
+            value={index + 1}
+            pageCount={images.length}
+            onChange={handlePageChange}
+            aria-label={messages.galleryImages}
+            gap="xs"
+            flexShrink={0}
+          >
+            <Button ref={previousButton} slot="previous" variant="secondary" aria-label={messages.previousImage}>
+              <Icon icon={dir === 'rtl' ? 'chevron-right' : 'chevron-left'} aria-hidden="true" />
+            </Button>
+            <Button ref={nextButton} slot="next" variant="secondary" aria-label={messages.nextImage}>
+              <Icon icon={dir === 'rtl' ? 'chevron-left' : 'chevron-right'} aria-hidden="true" />
+            </Button>
+          </Pagination>
+        </Flex>
+        <CardGroup
+          ref={strip}
+          items={images}
+          columns="none"
+          rows="max-content"
+          autoFlow="column"
+          autoColumns="max-content"
+          orientation="horizontal"
+          gap="md"
+          padding="sm"
+          aria-label={messages.thumbnails}
+          className={styles.thumbnails}
+          selectionMode="single"
+          autoFocus
+          selectionBehavior="replace"
+          escapeKeyBehavior="none"
+          disallowEmptySelection
+          selectedKeys={activeId ? [activeId] : []}
+          onSelectionChange={handleThumbnailSelection}
+        >
+          {renderThumbnail}
+        </CardGroup>
+      </Content>
+    </Modal>
+  );
+}
+`},{path:`data/copy.tsx`,language:`tsx`,source:`'use client';
+
+import { createContext, useContext, useMemo, type ReactNode } from 'react';
+
+/** Copy shared by the collection, file actions, ingestion feedback, and viewer. */
+function createGalleryCopy(locale: string) {
+  const number = new Intl.NumberFormat(locale, { maximumFractionDigits: 2 });
+  const format = (value: number) => number.format(value);
+  return {
+    gallery: 'Gallery',
+    imageCount: (count: number) => \`\${format(count)} \${count === 1 ? 'image' : 'images'}\`,
+    addFilesRegion: 'Add files to gallery',
+    addFiles: 'Add files',
+    uploadIssues: 'Upload issues',
+    reviewUploadIssues: 'Review upload issues',
+    closeUploadIssues: 'Close upload issues',
+    dragHint: 'or drag them here.',
+    dropFiles: 'Drop files to upload.',
+    layout: 'Layout',
+    list: 'List',
+    grid: 'Grid',
+    listView: 'List view',
+    gridView: 'Grid view',
+    files: 'Gallery files',
+    imageGrid: 'Gallery image grid',
+    updates: 'Gallery updates',
+    processingImages: 'Processing images',
+    processedFiles: (completed: number, total: number) => \`\${format(completed)} of \${format(total)} files processed\`,
+    emptyGallery: 'Empty gallery',
+    startGallery: 'Start your gallery',
+    emptyDescription: 'Drop images here or choose Add files above to upload.',
+    loadingImage: 'Loading image…',
+    loadingPreview: (name: string) => \`Loading \${name}\`,
+    openImage: (name: string) => \`Open \${name}\`,
+    viewImage: (name: string) => \`View \${name}\`,
+    removeImage: (name: string) => \`Remove \${name}\`,
+    retryImage: (name: string) => \`Retry \${name}\`,
+    retryPreview: (name: string) => \`Retry image preview for \${name}\`,
+    retry: 'Retry',
+    failedImage: (name: string) => \`Couldn’t load \${name}.\`,
+    failedThumbnail: (name: string) => \`\${name} failed to load\`,
+    needsAttention: 'File needs attention.',
+    sizeUnavailable: 'Size unavailable',
+    mediaGallery: 'Media gallery',
+    closeGallery: 'Close gallery',
+    previousImage: 'Previous image',
+    nextImage: 'Next image',
+    galleryImages: 'Gallery images',
+    thumbnails: 'Image thumbnails',
+    imagePosition: (name: string, current: number, total: number) => \`\${name} · \${format(current)} of \${format(total)}\`,
+    showAll: 'Show all',
+    fileCount: (visible: number, total: number) => \`\${format(visible)} of \${format(total)} files\`,
+    filesNeedAttention: (count: number) => \`\${format(count)} file\${count === 1 ? ' needs' : 's need'} attention.\`,
+    invalidFiles: (maxMiB: number) => \`Use JPG, PNG, GIF, or WebP images smaller than \${format(maxMiB)} MiB.\`,
+    limitReached: (maxFiles: number, maxMiB: number) =>
+      \`Gallery limit reached: \${format(maxFiles)} images and \${format(maxMiB)} MiB total.\`,
+    unreadableDrop: 'Some dropped files couldn’t be read. Please select them again.',
+    unreadableImages: 'We couldn’t read some images. Please try again.',
+    unreadableBatch: 'We couldn’t read these images. Please try again.',
+    addedImages: (count: number) => \`\${format(count)} \${count === 1 ? 'image' : 'images'} added.\`,
+    skippedDuplicates: (count: number) => \`\${format(count)} \${count === 1 ? 'duplicate' : 'duplicates'} skipped.\`,
+    removedImage: (name: string) => \`\${name} removed.\`,
+    retryingImage: (name: string) => \`\${name} is retrying.\`,
+    imageReady: 'Image is ready to view.',
+    imageFailed: 'Image failed to load.'
+  };
+}
+
+/** Override individual messages, including action names and live announcements. */
+export type GalleryMessages = ReturnType<typeof createGalleryCopy>;
+
+const defaultCopy = {
+  locale: 'en-US',
+  messages: createGalleryCopy('en-US'),
+  number: new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 })
+};
+const GalleryCopyContext = createContext(defaultCopy);
+
+/** Keeps translated copy and regional formatting consistent, including portaled viewer content. */
+export function GalleryCopyProvider({
+  locale = 'en-US',
+  messages,
+  children
+}: {
+  locale?: string;
+  messages?: Partial<GalleryMessages>;
+  children: ReactNode;
+}) {
+  const value = useMemo(
+    () => ({
+      locale,
+      messages: { ...createGalleryCopy(locale), ...messages },
+      number: new Intl.NumberFormat(locale, { maximumFractionDigits: 2 })
+    }),
+    [locale, messages]
+  );
+  return <GalleryCopyContext.Provider value={value}>{children}</GalleryCopyContext.Provider>;
+}
+
+/** Reads the gallery's copy without threading it through every presentation component. */
+export function useGalleryCopy() {
+  return useContext(GalleryCopyContext);
+}
+`},{path:`data/sample-images.ts`,language:`ts`,source:`import type { ImageItem } from './types';
+
+/** Fixed IDs keep the sample photographs consistent between visits. */
+const photographs: ImageItem[] = [
+  {
+    id: 'sample-1015',
+    name: 'file_name.png',
+    alt: 'Blue fjord between rocky mountains',
+    src: 'https://picsum.photos/id/1015/960/640',
+    size: 5 * 1024 * 1024
+  },
+  {
+    id: 'sample-1016',
+    name: 'Photo_2.png',
+    alt: 'Red sandstone mesas beneath a cloudy sky',
+    src: 'https://picsum.photos/id/1016/960/640',
+    size: 2 * 1024 * 1024
+  },
+  {
+    id: 'sample-1018',
+    name: 'Photo_3.png',
+    alt: 'Winding road beneath grass-covered cliffs',
+    src: 'https://picsum.photos/id/1018/960/640',
+    size: 4 * 1024 * 1024
+  },
+  {
+    id: 'sample-1025',
+    name: 'Photo_4.png',
+    alt: 'Pug wrapped in a blanket',
+    src: 'https://picsum.photos/id/1025/960/640',
+    size: 6 * 1024 * 1024
+  },
+  {
+    id: 'sample-1035',
+    name: 'Photo_5.png',
+    alt: 'Waterfall flowing over a rocky cliff',
+    src: 'https://picsum.photos/id/1035/960/640',
+    size: 3 * 1024 * 1024
+  },
+  {
+    id: 'sample-1043',
+    name: 'Photo_6.png',
+    alt: 'Granite cliffs above a river and pine forest',
+    src: 'https://picsum.photos/id/1043/960/640',
+    size: 4 * 1024 * 1024
+  },
+  {
+    id: 'sample-1050',
+    name: 'Photo_7.png',
+    alt: 'White sea stacks along a rugged coast',
+    src: 'https://picsum.photos/id/1050/960/640',
+    size: 5 * 1024 * 1024
+  },
+  {
+    id: 'sample-1069',
+    name: 'Photo_8.png',
+    alt: 'Jellyfish in dark blue water',
+    src: 'https://picsum.photos/id/1069/960/640',
+    size: 3 * 1024 * 1024
+  },
+  {
+    id: 'sample-1068',
+    name: 'Photo_9.png',
+    alt: 'Potted plant and glass jar on a table against a blue wall',
+    src: 'https://picsum.photos/id/1068/960/640',
+    size: 4 * 1024 * 1024
+  },
+  {
+    id: 'sample-1074',
+    name: 'Photo_10.png',
+    alt: 'Close-up of a lioness against a dark background',
+    src: 'https://picsum.photos/id/1074/960/640',
+    size: 6 * 1024 * 1024
+  },
+  {
+    id: 'sample-error',
+    name: 'Photo_error.png',
+    alt: 'Landscape photograph that could not be loaded',
+    src: 'https://picsum.photos/id/1084/960/640',
+    size: 5 * 1024 * 1024,
+    status: 'error',
+    errorMessage: 'Couldn’t load Photo_error.png.'
+  }
+];
+
+/** Small previews and responsive originals illustrate an image-service integration. */
+export const sampleImages: ImageItem[] = photographs.map((image) => ({
+  ...image,
+  thumbnailSrc: image.src.replace('/960/640', '/240/160'),
+  width: 960,
+  height: 640,
+  srcSet: \`\${image.src.replace('/960/640', '/480/320')} 480w, \${image.src} 960w\`,
+  sizes: '(max-width: 60rem) 90vw, 960px'
+}));
+`},{path:`data/types.ts`,language:`ts`,source:`/** The load state shown by a gallery file item. */
+type ImageStatus = 'ready' | 'loading' | 'error';
+
+/** An image shown by the gallery. IDs must be unique and stable. */
+export interface ImageItem {
+  /** Identity used by navigation and removal. */
+  id: string;
+
+  /** Visible filename and accessible action name. */
+  name: string;
+
+  /** Description of the visual content. Falls back to the filename for file-management use cases. */
+  alt?: string;
+
+  /** Remote URL, data URL, or locally owned object URL for the full image. */
+  src: string;
+
+  /** Smaller resource for covers and the thumbnail rail; defaults to src. */
+  thumbnailSrc?: string;
+
+  /** Responsive full-image candidates supplied by the image service. */
+  srcSet?: string;
+
+  /** Display sizes corresponding to srcSet. */
+  sizes?: string;
+
+  /** Intrinsic full-image width, when known. */
+  width?: number;
+
+  /** Intrinsic full-image height, when known. */
+  height?: number;
+
+  /** Actual bytes when known; unknown remote sizes are excluded from the byte budget. */
+  size?: number;
+
+  /** Current image load state. */
+  status?: ImageStatus;
+
+  /** Optional message associated with an image error. */
+  errorMessage?: string;
+}
+
+/** Local collection budgets. Initial images count toward these limits but are never discarded. */
+export interface GalleryLimits {
+  /** Maximum collection size, including initial images. Defaults to 50. */
+  maxFiles?: number;
+
+  /** Exclusive per-file byte limit. Defaults to 20 MiB. */
+  maxFileSize?: number;
+
+  /** Inclusive total byte budget for images with a known size. Defaults to 256 MiB. */
+  maxTotalSize?: number;
+}
+`},{path:`hooks/use-gallery-images.ts`,language:`ts`,source:`'use client';
+
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import type { GalleryLimits, ImageItem } from '../data/types';
+import { useGalleryCopy } from '../data/copy';
+
+export const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+const MiB = 1024 * 1024;
+export const defaultLimits: Required<GalleryLimits> = { maxFiles: 50, maxFileSize: 20 * MiB, maxTotalSize: 256 * MiB };
+
+/** Hashing is optional; an unreadable file still fails independently of the rest of its batch. */
+async function contentKey(file: File) {
+  const subtle = globalThis.crypto?.subtle;
+  if (!subtle) return null;
+  const bytes = await file.arrayBuffer();
+  try {
+    const digest = await subtle.digest('SHA-256', bytes);
+    return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join('');
+  } catch {
+    return null;
+  }
+}
+
+/** Owns local resources, serialized ingestion, and the image collection independently of its presentation. */
+export function useGalleryImages(
+  initialImages: ImageItem[],
+  limits: Required<GalleryLimits>,
+  onImagesChange?: (images: ImageItem[]) => void
+) {
+  const { messages } = useGalleryCopy();
+  const [images, setImages] = useState(() => [...initialImages]);
+  const collection = useRef(images);
+  const [errors, setErrors] = useState<string[]>([]);
+  const [notice, setNotice] = useState('');
+  const [processing, setProcessing] = useState<{ completed: number; total: number } | null>(null);
+  const progress = useRef({ completed: 0, total: 0 });
+  const mounted = useRef(false);
+  const instanceId = useId();
+  const counter = useRef(0);
+  const owned = useRef(new Map<string, { id: string; url: string; name: string; size: number }>());
+  const keys = useRef(new Map<string, string>());
+  const queue = useRef(Promise.resolve());
+  const callback = useRef(onImagesChange);
+  callback.current = onImagesChange;
+  const previous = useRef(images);
+
+  useEffect(
+    function notifyCollectionChange() {
+      if (previous.current !== images) {
+        previous.current = images;
+        callback.current?.([...images]);
+      }
+    },
+    [images]
+  );
+
+  useEffect(function manageResources() {
+    mounted.current = true;
+    const urls = owned.current;
+    const ids = keys.current;
+    return function releaseResources() {
+      mounted.current = false;
+      for (const { url } of urls.values()) URL.revokeObjectURL(url);
+      urls.clear();
+      ids.clear();
+    };
+  }, []);
+
+  const updateImages = useCallback(function updateImages(update: (previous: ImageItem[]) => ImageItem[]) {
+    collection.current = update(collection.current);
+    setImages(collection.current);
+  }, []);
+
+  const reportError = useCallback(function reportError(message: string) {
+    if (mounted.current) setErrors((previous) => (previous.includes(message) ? previous : [...previous, message]));
+  }, []);
+
+  const addFiles = useCallback(
+    function addFiles(list: FileList | File[] | null) {
+      const files = Array.from(list ?? []);
+      if (!mounted.current || !files.length) return Promise.resolve();
+      progress.current.total += files.length;
+      setProcessing({ ...progress.current });
+
+      const process = async function processFiles() {
+        if (!mounted.current) return;
+        let added = 0;
+        let duplicates = 0;
+        let invalid = 0;
+        let overBudget = 0;
+        let unreadable = 0;
+        for (const file of files) {
+          if (!mounted.current) return;
+          try {
+            if (!acceptedTypes.includes(file.type) || file.size >= limits.maxFileSize) {
+              invalid++;
+              continue;
+            }
+            const exceedsBudget = function exceedsBudget() {
+              const totalBytes = collection.current.reduce((total, image) => total + (image.size ?? 0), 0);
+              return collection.current.length >= limits.maxFiles || totalBytes + file.size > limits.maxTotalSize;
+            };
+            // At capacity, only a possible duplicate needs a content read. Metadata alone never proves equality.
+            const possibleDuplicate = Array.from(owned.current.values()).some(
+              (entry) => entry.name === file.name && entry.size === file.size
+            );
+            if (exceedsBudget() && !possibleDuplicate) {
+              overBudget++;
+              continue;
+            }
+            const hash = await contentKey(file);
+            if (!mounted.current) return;
+            const id = \`local-\${instanceId}-\${counter.current++}\`;
+            const key = hash ? JSON.stringify([file.name, hash]) : \`unique:\${id}\`;
+            if (hash && owned.current.has(key)) {
+              duplicates++;
+              continue;
+            }
+            if (exceedsBudget()) {
+              overBudget++;
+              continue;
+            }
+            const url = URL.createObjectURL(file);
+            owned.current.set(key, { id, url, name: file.name, size: file.size });
+            keys.current.set(id, key);
+            updateImages((previous) => [...previous, { id, name: file.name, size: file.size, src: url }]);
+            added++;
+          } catch {
+            unreadable++;
+          } finally {
+            progress.current.completed++;
+            if (mounted.current) setProcessing({ ...progress.current });
+          }
+        }
+        if (!mounted.current) return;
+        const errors = [];
+        if (invalid) errors.push(messages.invalidFiles(limits.maxFileSize / MiB));
+        if (overBudget) errors.push(messages.limitReached(limits.maxFiles, limits.maxTotalSize / MiB));
+        if (unreadable) errors.push(messages.unreadableImages);
+        setErrors(errors);
+        const notices = [];
+        if (added) notices.push(messages.addedImages(added));
+        if (duplicates) notices.push(messages.skippedDuplicates(duplicates));
+        setNotice(notices.join(' '));
+      };
+      const pending = queue.current.then(process);
+      queue.current = pending
+        .catch(function failedBatch() {
+          reportError(messages.unreadableBatch);
+        })
+        .finally(function finishBatch() {
+          if (progress.current.completed === progress.current.total) {
+            progress.current = { completed: 0, total: 0 };
+            if (mounted.current) setProcessing(null);
+          }
+        });
+      return queue.current;
+    },
+    [instanceId, limits.maxFiles, limits.maxFileSize, limits.maxTotalSize, messages, reportError, updateImages]
+  );
+
+  const removeImage = useCallback(
+    function removeImage(image: ImageItem) {
+      const key = keys.current.get(image.id);
+      const entry = key ? owned.current.get(key) : undefined;
+      if (key && entry) {
+        URL.revokeObjectURL(entry.url);
+        owned.current.delete(key);
+        keys.current.delete(image.id);
+      }
+      updateImages((previous) => previous.filter((item) => item.id !== image.id));
+      setNotice(messages.removedImage(image.name));
+    },
+    [messages, updateImages]
+  );
+
+  const retryImage = useCallback(
+    function retryImage(image: ImageItem) {
+      updateImages((previous) =>
+        previous.map((item) => (item.id === image.id ? { ...item, status: 'loading', errorMessage: undefined } : item))
+      );
+      setNotice(messages.retryingImage(image.name));
+    },
+    [messages, updateImages]
+  );
+
+  const markReady = useCallback(
+    function markReady(id: string) {
+      updateImages((previous) =>
+        previous.map((item) => (item.id === id ? { ...item, status: 'ready', errorMessage: undefined } : item))
+      );
+      setNotice(messages.imageReady);
+    },
+    [messages, updateImages]
+  );
+
+  const markError = useCallback(
+    function markError(id: string) {
+      updateImages((previous) =>
+        previous.map((item) =>
+          item.id === id ? { ...item, status: 'error', errorMessage: messages.failedImage(item.name) } : item
+        )
+      );
+      setNotice(messages.imageFailed);
+    },
+    [messages, updateImages]
+  );
+
+  return { images, errors, notice, processing, addFiles, removeImage, retryImage, markReady, markError, reportError };
+}
+`},{path:`index.tsx`,language:`tsx`,source:`export { Gallery, type GalleryProps } from './components/gallery';
+export type { ImageItem } from './data/types';
+`}]},children:(0,h.jsx)(i,{of:f,inline:!0})})]})}function m(e={}){let{wrapper:t}={...r(),...e.components};return t?(0,h.jsx)(t,{...e,children:(0,h.jsx)(p,{...e})}):p(e)}var h;function g(){return(g=e((()=>{h=t(),n(),c(),o(),s(),d()})))()}g();export{m as default};
