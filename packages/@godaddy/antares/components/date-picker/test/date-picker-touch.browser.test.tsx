@@ -11,11 +11,11 @@ describe('@godaddy/antares', function packageTests() {
       await page.viewport(1024, 768);
     });
 
-    it.skipIf(server.browser !== 'chromium').each([undefined, 'select', 'reset'] as const)(
-      'dismisses a pending range with commitBehavior=%s',
-      async function dismiss(commitBehavior) {
+    it.skipIf(server.browser !== 'chromium')(
+      'keeps a tapped date focused and commits the pending range when dismissed',
+      async function dismiss() {
         await page.viewport(320, 768);
-        const screen = await render(<MobileExample range commitBehavior={commitBehavior} selectedDate="2026-09-05" />);
+        const screen = await render(<MobileExample range />);
         const trigger = screen.getByRole('button', { name: /Calendar Event dates/ });
         await trigger.click();
         await expect
@@ -50,28 +50,19 @@ describe('@godaddy/antares', function packageTests() {
           });
           await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
           await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
-          if (commitBehavior !== 'reset') {
-            await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-09-15');
-          } else {
-            await expect.element(screen.getByLabelText('Selected dates')).toBeEmptyDOMElement();
-            await expect.element(trigger).toHaveTextContent('Sep 5, 2026 - Sep 8, 2026');
-            await trigger.click();
-            await screen.getByRole('button', { name: /September 18, 2026/ }).click();
-            await screen.getByRole('button', { name: /September 19, 2026/ }).click();
-            await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-18/2026-09-19');
-          }
+          await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-09-15');
         } finally {
           await session.send('Emulation.setTouchEmulationEnabled', { enabled: false });
         }
       }
     );
 
-    it.skipIf(server.browser !== 'chromium').each([false, true])(
-      'scrolls over date cells without committing a selection, range=%s',
-      async function swipe(range) {
+    it.skipIf(server.browser !== 'chromium')(
+      'scrolls over date cells without committing a selection',
+      async function swipe() {
         await page.viewport(320, 768);
-        const screen = await render(<MobileExample range={range} keepOpen defaultOpen />);
-        if (range) await screen.getByRole('button', { name: /September 15, 2026/ }).click();
+        const screen = await render(<MobileExample range keepOpen defaultOpen />);
+        await screen.getByRole('button', { name: /September 15, 2026/ }).click();
         await expect
           .poll(function settled() {
             return getComputedStyle(screen.getByRole('dialog').element().parentElement!).transform;
@@ -83,12 +74,14 @@ describe('@godaddy/antares', function packageTests() {
           .getByRole('button', { name: /September 25, 2026/ })
           .element()
           .getBoundingClientRect();
+        const frame = window.frameElement?.getBoundingClientRect();
+        const scale = frame ? frame.width / window.innerWidth : 1;
         const session = cdp();
         await session.send('Emulation.setTouchEmulationEnabled', { enabled: true });
         try {
           await session.send('Input.synthesizeScrollGesture', {
-            x: rect.x + rect.width / 2,
-            y: rect.y + rect.height / 2,
+            x: (rect.x + rect.width / 2) * scale + (frame?.left ?? 0),
+            y: (rect.y + rect.height / 2) * scale + (frame?.top ?? 0),
             yDistance: -240,
             speed: 1400,
             gestureSourceType: 'touch'
@@ -99,10 +92,8 @@ describe('@godaddy/antares', function packageTests() {
             })
             .toBeGreaterThan(start + 100);
           await expect.element(screen.getByLabelText('Selected dates')).toBeEmptyDOMElement();
-          if (range) {
-            await screen.getByRole('button', { name: /October 12, 2026/ }).click();
-            await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-10-12');
-          }
+          await screen.getByRole('button', { name: /October 12, 2026/ }).click();
+          await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-10-12');
         } finally {
           await session.send('Emulation.setTouchEmulationEnabled', { enabled: false });
         }

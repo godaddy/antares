@@ -6,7 +6,6 @@ import {
   DateRangePicker,
   DateRangePickerCalendar,
   Label,
-  type RangeCalendarProps,
   type ScaleSize
 } from '@godaddy/antares';
 import { parseDate, type DateValue } from '@godaddy/antares/date';
@@ -21,20 +20,11 @@ interface MobileExampleProps {
   /** Start with the overlay open. */
   defaultOpen?: boolean;
 
-  /** Controlled open state, when supplied. */
-  isOpen?: boolean;
-
   /** Keep the overlay open after selection. */
   keepOpen?: boolean;
 
   /** Calendar focus supplied by the consumer. */
   focusedDate?: string;
-
-  /** Initial focus when no controlled focus is supplied. */
-  defaultFocusedDate?: string;
-
-  /** Initial selection. */
-  selectedDate?: string;
 
   /** Earliest selectable date. */
   min?: string;
@@ -48,9 +38,6 @@ interface MobileExampleProps {
   /** Allow a range to cross unavailable dates. */
   allowsNonContiguousRanges?: boolean;
 
-  /** React Aria's behavior when an unfinished range loses focus. */
-  commitBehavior?: RangeCalendarProps['commitBehavior'];
-
   /** Component size. */
   size?: ScaleSize;
 }
@@ -63,16 +50,12 @@ export function MobileExample({
   range = false,
   overlay,
   defaultOpen,
-  isOpen,
   keepOpen,
   focusedDate,
-  defaultFocusedDate = '2026-09-15',
-  selectedDate,
   min,
   max,
   unavailable,
   allowsNonContiguousRanges,
-  commitBehavior,
   size
 }: MobileExampleProps) {
   const [selection, setSelection] = useState('');
@@ -85,7 +68,7 @@ export function MobileExample({
   const calendarProps = {
     overlay,
     focusedValue: focus ? parseDate(focus) : undefined,
-    defaultFocusedValue: defaultFocusedDate ? parseDate(defaultFocusedDate) : undefined,
+    defaultFocusedValue: parseDate('2026-09-15'),
     onFocusChange: focus
       ? function changeFocus(date: ReturnType<typeof parseDate>) {
           setFocus(date.toString());
@@ -94,7 +77,6 @@ export function MobileExample({
   };
   const shared = {
     defaultOpen,
-    isOpen,
     shouldCloseOnSelect: !keepOpen,
     minValue: min ? parseDate(min) : undefined,
     maxValue: max ? parseDate(max) : undefined,
@@ -110,11 +92,7 @@ export function MobileExample({
       <Label>Event dates</Label>
       <Button slot="trigger" />
       {range ? (
-        <DateRangePickerCalendar
-          {...calendarProps}
-          allowsNonContiguousRanges={allowsNonContiguousRanges}
-          commitBehavior={commitBehavior}
-        />
+        <DateRangePickerCalendar {...calendarProps} allowsNonContiguousRanges={allowsNonContiguousRanges} />
       ) : (
         <DatePickerCalendar {...calendarProps} />
       )}
@@ -126,9 +104,6 @@ export function MobileExample({
       {range ? (
         <DateRangePicker
           {...shared}
-          defaultValue={
-            selectedDate ? { start: parseDate(selectedDate), end: parseDate(selectedDate).add({ days: 3 }) } : undefined
-          }
           onChange={function selected(value) {
             setSelection(value ? `${value.start}/${value.end}` : '');
           }}
@@ -138,7 +113,6 @@ export function MobileExample({
       ) : (
         <DatePicker
           {...shared}
-          defaultValue={selectedDate ? parseDate(selectedDate) : undefined}
           onChange={function selected(value) {
             setSelection(value?.toString() ?? '');
           }}
