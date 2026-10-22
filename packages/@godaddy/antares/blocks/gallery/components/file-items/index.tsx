@@ -15,7 +15,6 @@ import {
 } from '@godaddy/antares';
 import { FileCover, type FileCoverVariant } from '../image';
 import type { ImageItem } from '../../data/types';
-import { useGalleryCopy } from '../../data/copy';
 import styles from './index.module.css';
 
 interface FileItemsProps extends Pick<FileItemProps, 'onRemove' | 'onLoadError' | 'onLoadSuccess'> {
@@ -39,6 +38,7 @@ interface FileItemsProps extends Pick<FileItemProps, 'onRemove' | 'onLoadError' 
 }
 
 const MAX_VISIBLE_ITEMS = 5;
+const fileSizeFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
 /** Renders the same collection with either list or grid geometry. */
 export function FileItems({
@@ -52,7 +52,6 @@ export function FileItems({
   onLoadError,
   onLoadSuccess
 }: FileItemsProps) {
-  const { messages } = useGalleryCopy();
   const isList = view === 'list';
   const firstRevealedId = useRef<string | null>(null);
   const visibleImages = isList && !showAll ? images.slice(0, MAX_VISIBLE_ITEMS) : images;
@@ -85,7 +84,6 @@ export function FileItems({
   return (
     <Flex direction="column" gap="sm" className={styles.collection}>
       <CardGroup
-        key={view}
         selectionMode="single"
         selectionBehavior="toggle"
         shouldSelectOnPressUp
@@ -97,7 +95,7 @@ export function FileItems({
         gap="sm"
         justifyContent="start"
         alignItems="start"
-        aria-label={isList ? messages.files : messages.imageGrid}
+        aria-label={isList ? 'Gallery files' : 'Gallery image grid'}
       >
         {visibleImages.map((image) => (
           <FileItem
@@ -144,7 +142,7 @@ interface FileItemProps {
 }
 
 /** Preserves useful precision for small files instead of rounding their size to zero MiB. */
-function formatFileSize(bytes: number, fileSizeFormatter: Intl.NumberFormat) {
+function formatFileSize(bytes: number) {
   if (bytes < 1024) return fileSizeFormatter.format(bytes) + ' B';
   if (bytes < 1024 * 1024) return fileSizeFormatter.format(bytes / 1024) + ' KiB';
   return fileSizeFormatter.format(bytes / (1024 * 1024)) + ' MiB';
@@ -152,9 +150,8 @@ function formatFileSize(bytes: number, fileSizeFormatter: Intl.NumberFormat) {
 
 /** One file item with the same actions and states across list and grid views. */
 function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItemRef }: FileItemProps) {
-  const { messages, number } = useGalleryCopy();
   const [coverReady, setCoverReady] = useState(false);
-  const size = image.size === undefined ? messages.sizeUnavailable : formatFileSize(image.size, number);
+  const size = image.size === undefined ? 'Size unavailable' : formatFileSize(image.size);
   const isError = image.status === 'error';
   const isLoading = image.status === 'loading';
   const canOpen = !isError && !isLoading && coverReady;
@@ -179,7 +176,7 @@ function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItem
     <Card
       id={image.id}
       textValue={image.name}
-      aria-label={isError ? messages.retryImage(image.name) : canOpen ? messages.openImage(image.name) : image.name}
+      aria-label={isError ? `Retry ${image.name}` : canOpen ? `Open ${image.name}` : image.name}
       ref={(element) => onItemRef?.(image.id, element)}
       isDisabled={!isError && !canOpen}
       direction={variant === 'horizontal' ? 'row' : 'column'}
@@ -206,33 +203,22 @@ function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItem
         </Text>
         {isError ? (
           <Flex
-            direction={variant === 'horizontal' ? 'row' : 'column'}
+            as={Detail}
             gap="xs"
-            alignItems={variant === 'horizontal' ? 'center' : 'start'}
-            wrap={variant === 'horizontal' ? 'nowrap' : undefined}
-            className={styles.errorDetails}
+            alignItems="center"
+            className={styles.retry}
             role={variant === 'vertical' ? 'alert' : undefined}
           >
-            <Detail emphasis="critical" maxLines={1}>
-              {image.errorMessage ?? messages.needsAttention}
-            </Detail>
-            <Flex alignItems="center" gap="xs" className={styles.retry}>
-              <Icon icon="refresh" aria-hidden="true" />
-              <Text size="sm">{messages.retry}</Text>
-            </Flex>
+            <Icon icon="refresh" aria-hidden="true" />
+            Retry
           </Flex>
         ) : (
-          <Detail>{isLoading ? messages.loadingImage : size}</Detail>
+          <Detail>{isLoading ? 'Loading image…' : size}</Detail>
         )}
       </Flex>
 
       <CornerActions>
-        <Button
-          variant="secondary"
-          size="sm"
-          aria-label={messages.removeImage(image.name)}
-          onPress={() => onRemove(image)}
-        >
+        <Button variant="secondary" size="sm" aria-label={`Remove ${image.name}`} onPress={() => onRemove(image)}>
           <Icon icon="x" aria-hidden="true" />
         </Button>
       </CornerActions>
@@ -256,17 +242,18 @@ interface ViewBannerProps {
 
 /** Counter and image-error feedback used below the file list. */
 function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: ViewBannerProps) {
-  const { messages } = useGalleryCopy();
   const hasMore = visibleCount < totalCount;
   if (!hasMore && errorCount === 0) return null;
 
   return (
     <Flex direction="column" gap="sm" blockPadding="sm">
       <Flex justifyContent="space-between" alignItems="center" gap="sm">
-        <Text>{messages.fileCount(visibleCount, totalCount)}</Text>
+        <Text>
+          {visibleCount.toLocaleString('en-US')} of {totalCount.toLocaleString('en-US')} files
+        </Text>
         {hasMore ? (
           <Button variant="inline" onPress={onShowAll}>
-            {messages.showAll}
+            Show all
           </Button>
         ) : null}
       </Flex>
@@ -274,7 +261,9 @@ function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: ViewBan
       {errorCount > 0 ? (
         <Flex justifyContent="center" alignItems="center" gap="xs" role="alert">
           <Icon icon="alert" aria-hidden="true" />
-          <Text emphasis="critical">{messages.filesNeedAttention(errorCount)}</Text>
+          <Text emphasis="critical">
+            {errorCount.toLocaleString('en-US')} file{errorCount === 1 ? ' needs' : 's need'} attention.
+          </Text>
         </Flex>
       ) : null}
     </Flex>

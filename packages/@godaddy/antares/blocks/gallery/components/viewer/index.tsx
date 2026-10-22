@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, type KeyboardEvent } from 'react';
+import { useCallback, useRef } from 'react';
 import {
   Button,
   Carousel,
@@ -19,17 +19,9 @@ import {
 } from '@godaddy/antares';
 import { GalleryImage } from '../image';
 import type { ImageItem } from '../../data/types';
-import { useGalleryCopy } from '../../data/copy';
 import styles from './index.module.css';
 
-type PropagatingKeyboardEvent<T extends Element> = KeyboardEvent<T> & {
-  continuePropagation(): void;
-};
-
 interface ViewerProps {
-  /** Shared direction for layout, keyboard navigation, and carousel gestures. */
-  dir: 'ltr' | 'rtl';
-
   /** Current viewable gallery order, shared by the list and grid views. */
   images: ImageItem[];
 
@@ -44,75 +36,21 @@ interface ViewerProps {
 }
 
 /** Modal image viewer that reuses Antares Carousel for the main image sequence. */
-export function Viewer({ dir, images, activeId, onClose, onSelectImage }: ViewerProps) {
-  const { locale, messages } = useGalleryCopy();
-  const strip = useRef<HTMLDivElement>(null);
-  const thumbnails = useRef(new Map<string, HTMLElement>());
-  const closeButton = useRef<HTMLButtonElement>(null);
-  const previousButton = useRef<HTMLButtonElement>(null);
-  const nextButton = useRef<HTMLButtonElement>(null);
-  const focusCurrentThumbnail = useRef(false);
+export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps) {
+  const activeThumbnail = useRef<HTMLElement>(null);
   const index = images.findIndex(function findActiveImage(image) {
     return image.id === activeId;
   });
   const image = images[index];
 
-  const focusActiveThumbnail = useCallback(
-    function focusActiveThumbnail() {
-      const thumbnail = activeId ? thumbnails.current.get(activeId) : undefined;
-      (thumbnail ?? closeButton.current)?.focus({ preventScroll: true });
-    },
-    [activeId]
-  );
+  const registerActiveThumbnail = useCallback(function registerActiveThumbnail(element: HTMLElement | null) {
+    activeThumbnail.current = element;
+    element?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }, []);
 
-  useEffect(
-    function revealCurrentThumbnail() {
-      const thumbnail = activeId ? thumbnails.current.get(activeId) : undefined;
-      const rail = strip.current;
-      if (thumbnail && rail) {
-        const target = thumbnail.getBoundingClientRect();
-        const bounds = rail.getBoundingClientRect();
-        // Reveal horizontally without scrolling the modal or the page behind it.
-        if (target.left < bounds.left) rail.scrollBy({ left: target.left - bounds.left });
-        else if (target.right > bounds.right) rail.scrollBy({ left: target.right - bounds.right });
-      }
-      if (focusCurrentThumbnail.current) {
-        (thumbnail ?? closeButton.current)?.focus({ preventScroll: true });
-        focusCurrentThumbnail.current = false;
-      }
-    },
-    [activeId]
-  );
-
-  const move = useCallback(
-    function move(offset: number) {
-      const nextImage = images[index + offset];
-      if (!nextImage) return;
-
-      // Boundary controls become disabled; focus the current thumbnail before continuing by Tab.
-      focusCurrentThumbnail.current =
-        focusCurrentThumbnail.current ||
-        (document.activeElement === previousButton.current && index + offset === 0) ||
-        (document.activeElement === nextButton.current && index + offset === images.length - 1);
-      onSelectImage(nextImage.id);
-    },
-    [images, index, onSelectImage]
-  );
-
-  const navigate = useCallback(
-    function navigate(event: KeyboardEvent<HTMLElement>) {
-      // The CardGroup owns its arrow, Home, End, and typeahead navigation.
-      if (strip.current?.contains(event.target as Node)) return;
-      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
-      if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
-        event.preventDefault();
-        if (event.key === 'Home') move(-index);
-        else if (event.key === 'End') move(images.length - 1 - index);
-        else move((event.key === 'ArrowLeft' ? -1 : 1) * (dir === 'rtl' ? -1 : 1));
-      }
-    },
-    [dir, images.length, index, move]
-  );
+  const focusActiveThumbnail = useCallback(function focusActiveThumbnail() {
+    activeThumbnail.current?.focus({ preventScroll: true });
+  }, []);
 
   const handleOpenChange = useCallback(
     function handleOpenChange(open: boolean) {
@@ -121,19 +59,12 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
     [onClose]
   );
 
-  const handleCloseKeyDown = useCallback(
-    function handleCloseKeyDown(event: PropagatingKeyboardEvent<HTMLButtonElement>) {
-      if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) navigate(event);
-      else event.continuePropagation();
-    },
-    [navigate]
-  );
-
   const handlePageChange = useCallback(
     function handlePageChange(page: number) {
-      move(page - 1 - index);
+      const nextImage = images[page - 1];
+      if (nextImage) onSelectImage(nextImage.id);
     },
-    [index, move]
+    [images, onSelectImage]
   );
 
   const handleCarouselChange = useCallback(
@@ -153,98 +84,70 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
     [activeId, onSelectImage]
   );
 
-  const renderSlide = useCallback(
-    function renderSlide(slideImage: ImageItem, slideIndex: number) {
-      return (
-        <Flex key={slideImage.id} alignItems="center" justifyContent="center" className={styles.slide}>
-          {Math.abs(slideIndex - index) <= 1 ? (
-            <GalleryImage
-              image={slideImage}
-              variant="viewer"
-              loading={slideImage.id === activeId ? 'eager' : 'lazy'}
-              onRetryStart={focusActiveThumbnail}
-            />
-          ) : (
-            <Box aria-hidden="true" />
-          )}
-        </Flex>
-      );
-    },
-    [activeId, focusActiveThumbnail, index]
-  );
-
-  const renderThumbnail = useCallback(
-    function renderThumbnail(thumbnailImage: ImageItem) {
-      return (
-        <Card
-          id={thumbnailImage.id}
-          textValue={thumbnailImage.name}
-          aria-label={messages.viewImage(thumbnailImage.name)}
-          ref={function registerThumbnail(element) {
-            if (element) thumbnails.current.set(thumbnailImage.id, element);
-            else thumbnails.current.delete(thumbnailImage.id);
-          }}
-          padding="0"
-          gap="0"
-        >
-          <GalleryImage image={thumbnailImage} variant="thumbnail" />
-        </Card>
-      );
-    },
-    [messages]
-  );
-
   if (!image) return null;
 
   return (
     <Modal
       isOpen
-      dir={dir}
-      lang={locale}
-      aria-label={messages.mediaGallery}
+      lang="en-US"
+      aria-label="Media gallery"
       onOpenChange={handleOpenChange}
       containerProps={{ className: styles.modalContainer }}
       className={styles.modal}
     >
       <Heading slot="title" level={2}>
-        {messages.mediaGallery}
+        Media gallery
       </Heading>
-      <CloseButton ref={closeButton} aria-label={messages.closeGallery} onKeyDown={handleCloseKeyDown} />
-      <Content onKeyDownCapture={navigate}>
+      <CloseButton aria-label="Close gallery" />
+      <Content>
         <Carousel
           activeIndex={index}
           onChange={handleCarouselChange}
           hideDots
           hideNavigationControls
           hideMaskEdges
-          emblaOptions={{ direction: dir }}
-          emblaAccessibilityOptions={{ carouselAriaLabel: messages.galleryImages, announceChanges: false }}
+          emblaAccessibilityOptions={{ carouselAriaLabel: 'Gallery images', announceChanges: false }}
         >
-          {images.map(renderSlide)}
+          {images.map(function renderSlide(slideImage, slideIndex) {
+            return (
+              <Flex key={slideImage.id} alignItems="center" justifyContent="center" className={styles.slide}>
+                {Math.abs(slideIndex - index) <= 1 ? (
+                  <GalleryImage
+                    image={slideImage}
+                    variant="viewer"
+                    loading={slideImage.id === activeId ? 'eager' : 'lazy'}
+                    onRetryStart={focusActiveThumbnail}
+                  />
+                ) : (
+                  <Box aria-hidden="true" />
+                )}
+              </Flex>
+            );
+          })}
         </Carousel>
         <Flex justifyContent="space-between" alignItems="center" gap="sm">
           <Text className={styles.name} maxLines={1} wrap="nowrap" role="status" aria-atomic="true">
-            {messages.imagePosition(image.name, index + 1, images.length)}
+            {image.name} · {(index + 1).toLocaleString('en-US')} of {images.length.toLocaleString('en-US')}
           </Text>
           <Pagination
             value={index + 1}
             pageCount={images.length}
             onChange={handlePageChange}
-            aria-label={messages.galleryImages}
+            aria-label="Gallery images"
             gap="xs"
             flexShrink={0}
           >
-            <Button ref={previousButton} slot="previous" variant="secondary" aria-label={messages.previousImage}>
-              <Icon icon={dir === 'rtl' ? 'chevron-right' : 'chevron-left'} aria-hidden="true" />
+            <Button slot="previous" variant="secondary" aria-label="Previous image">
+              <Icon icon="chevron-left" aria-hidden="true" />
             </Button>
-            <Button ref={nextButton} slot="next" variant="secondary" aria-label={messages.nextImage}>
-              <Icon icon={dir === 'rtl' ? 'chevron-left' : 'chevron-right'} aria-hidden="true" />
+            <Button slot="next" variant="secondary" aria-label="Next image">
+              <Icon icon="chevron-right" aria-hidden="true" />
             </Button>
           </Pagination>
         </Flex>
         <CardGroup
-          ref={strip}
           items={images}
+          dependencies={[activeId]}
           columns="none"
           rows="max-content"
           autoFlow="column"
@@ -252,7 +155,7 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
           orientation="horizontal"
           gap="md"
           padding="sm"
-          aria-label={messages.thumbnails}
+          aria-label="Image thumbnails"
           className={styles.thumbnails}
           selectionMode="single"
           autoFocus
@@ -262,7 +165,20 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
           selectedKeys={activeId ? [activeId] : []}
           onSelectionChange={handleThumbnailSelection}
         >
-          {renderThumbnail}
+          {function renderThumbnail(thumbnailImage) {
+            return (
+              <Card
+                id={thumbnailImage.id}
+                textValue={thumbnailImage.name}
+                aria-label={`View ${thumbnailImage.name}`}
+                ref={thumbnailImage.id === activeId ? registerActiveThumbnail : undefined}
+                padding="0"
+                gap="0"
+              >
+                <GalleryImage image={thumbnailImage} variant="thumbnail" />
+              </Card>
+            );
+          }}
         </CardGroup>
       </Content>
     </Modal>

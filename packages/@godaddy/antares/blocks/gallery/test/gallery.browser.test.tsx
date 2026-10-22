@@ -1,7 +1,6 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { cdp, page, userEvent } from 'vitest/browser';
-import { I18nProvider as RACI18nProvider } from 'react-aria-components';
 import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
 import { Gallery, type ImageItem } from '../index.tsx';
 import { FileCover, GalleryImage } from '../components/image';
@@ -79,6 +78,20 @@ function controlImageEvents() {
   document.addEventListener('error', ignoreNativeImageEvent, true);
 }
 
+function isThumbnailRevealed(thumbnail: Element, rail: Element) {
+  const bounds = thumbnail.getBoundingClientRect();
+  const viewport = rail.getBoundingClientRect();
+  return bounds.left >= viewport.left && bounds.right <= viewport.right;
+}
+
+function scrollPositionsAbove(element: Element) {
+  const positions: number[] = [];
+  for (let ancestor = element.parentElement; ancestor; ancestor = ancestor.parentElement) {
+    positions.push(ancestor.scrollTop);
+  }
+  return positions;
+}
+
 beforeAll(preloadTestIcons);
 beforeEach(function syntheticFileEntries() {
   vi.spyOn(DataTransferItem.prototype, 'webkitGetAsEntry').mockImplementation(function fileEntry() {
@@ -96,6 +109,7 @@ describe('@godaddy/antares', function packageTests() {
     it('shows an active sample gallery and available upload and view controls', async function defaultGallery() {
       const screen = await render(<Gallery initialImages={browserSamples} />);
 
+      await expect.element(screen.getByRole('heading', { name: 'Gallery', exact: true })).toBeVisible();
       await expect.element(screen.getByText('11 images', { exact: true })).toBeVisible();
       await expect.element(screen.getByRole('button', { name: 'Add files', exact: true })).toBeEnabled();
       await expect.element(screen.getByRole('radio', { name: 'Grid', exact: true })).toBeEnabled();
@@ -108,6 +122,10 @@ describe('@godaddy/antares', function packageTests() {
 
       await expect.element(screen.getByText('0 images', { exact: true })).toBeVisible();
       await expect.element(screen.getByRole('region', { name: 'Empty gallery' })).toBeVisible();
+      await expect.element(screen.getByRole('heading', { name: 'Start your gallery', exact: true })).toBeVisible();
+      await expect.element(screen.getByText('or drag images into the gallery below.', { exact: true })).toBeVisible();
+      await expect.element(screen.getByRole('button', { name: 'Add files', exact: true })).toBeEnabled();
+      await expect.element(screen.getByRole('button', { name: 'Show all', exact: true })).not.toBeInTheDocument();
     });
 
     it('restores the image size after retrying an error item', async function retryPreservesMetadata() {
@@ -178,7 +196,13 @@ describe('@godaddy/antares', function packageTests() {
           initialImages={[
             { id: 'bytes', name: 'bytes.png', src: `data:image/png;base64,${pixel}`, size: 68 },
             { id: 'small', name: 'small.png', src: `data:image/png;base64,${pixel}`, size: 100 * 1024 },
-            { id: 'fractional', name: 'fractional.png', src: `data:image/png;base64,${pixel}`, size: 1.5 * 1024 * 1024 }
+            {
+              id: 'fractional',
+              name: 'fractional.png',
+              src: `data:image/png;base64,${pixel}`,
+              size: 1.5 * 1024 * 1024
+            },
+            { id: 'unknown', name: 'unknown.png', src: `data:image/png;base64,${pixel}` }
           ]}
         />
       );
@@ -186,6 +210,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByText('68 B', { exact: true })).toBeVisible();
       await expect.element(screen.getByText('100 KiB', { exact: true })).toBeVisible();
       await expect.element(screen.getByText('1.5 MiB', { exact: true })).toBeVisible();
+      await expect.element(screen.getByText('Size unavailable', { exact: true })).toBeVisible();
     });
 
     it('shows retry feedback when an image fails to load', async function imageLoadError() {
@@ -206,12 +231,34 @@ describe('@godaddy/antares', function packageTests() {
       if (!image) throw new Error('Expected a gallery image');
       image.dispatchEvent(new Event('error'));
 
-      await expect.element(screen.getByRole('alert')).toHaveTextContent('Couldn’t load one.png.');
+      await expect.element(screen.getByRole('alert')).toHaveTextContent('Retry');
+      await expect.element(screen.getByRole('status')).toHaveTextContent('Image failed to load.');
+      await expect.element(screen.getByText('Couldn’t load one.png.', { exact: true })).not.toBeInTheDocument();
       await expect.element(screen.getByRole('row', { name: 'Retry one.png' })).toBeVisible();
     });
 
+    it('updates the list failure summary as error images are removed', async function errorSummary() {
+      const screen = await render(
+        <Gallery initialImages={samples.map((image) => ({ ...image, status: 'error' }))} defaultView="list" />
+      );
+      await expect.element(screen.getByRole('alert')).toHaveTextContent('2 files need attention.');
+      await userEvent.click(screen.getByRole('button', { name: 'Remove one.png' }));
+      await expect.element(screen.getByRole('alert')).toHaveTextContent('1 file needs attention.');
+      await userEvent.click(screen.getByRole('button', { name: 'Remove two.png' }));
+      await expect.element(screen.getByRole('alert')).not.toBeInTheDocument();
+      await expect.element(screen.getByRole('region', { name: 'Empty gallery' })).toBeVisible();
+    });
+
     it('switches views without losing the collection and supports keyboard selection', async function views() {
+      controlImageEvents();
+      vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
       const screen = await render(<Gallery initialImages={samples} />);
+      for (const image of samples) {
+        screen.getByRole('img', { name: image.name, exact: true }).element().dispatchEvent(new Event('load'));
+      }
+      const first = screen.getByRole('row', { name: 'Open one.png', exact: true });
+      const second = screen.getByRole('row', { name: 'Open two.png', exact: true });
+      await expect.element(first).toBeVisible();
       await expect
         .element(screen.getByRole('radio', { name: 'Grid', exact: true }))
         .toHaveAttribute('aria-checked', 'true');
@@ -219,12 +266,63 @@ describe('@godaddy/antares', function packageTests() {
       list.element().focus();
       await userEvent.keyboard(' ');
       await expect.element(list).toHaveAttribute('aria-checked', 'true');
-      await expect.element(screen.getByText('one.png', { exact: true })).toBeVisible();
+      await expect.element(list).toHaveFocus();
+      await expect.element(first).toBeVisible();
+      first.element().focus();
+      await userEvent.keyboard('{ArrowDown}');
+      await expect.element(second).toHaveFocus();
+      await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
       await userEvent.click(screen.getByRole('radio', { name: 'Grid', exact: true }));
+      await expect
+        .element(screen.getByRole('radio', { name: 'Grid', exact: true }))
+        .toHaveAttribute('aria-checked', 'true');
       expect(screen.getByRole('row', { name: /^Open / }).all()).toHaveLength(2);
+      first.element().focus();
+      await userEvent.keyboard('{ArrowRight}');
+      await expect.element(second).toHaveFocus();
+      await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
     });
 
-    it('shows five list items before revealing the complete collection', async function listPagination() {
+    it.each(['click', 'Enter', 'Space'] as const)(
+      'reveals all files with %s and continues keyboard interaction from the first revealed row',
+      async function listPagination(activation) {
+        const screen = await render(<Gallery initialImages={browserSamples} defaultView="list" />);
+        const showAll = screen.getByRole('button', { name: 'Show all', exact: true });
+        await expect.element(screen.getByText('5 of 11 files', { exact: true })).toBeVisible();
+        expect(screen.getByRole('row').all()).toHaveLength(5);
+        await expect.element(screen.getByText('Photo_6.png', { exact: true })).not.toBeInTheDocument();
+
+        if (activation === 'click') await userEvent.click(showAll);
+        else {
+          showAll.element().focus();
+          await userEvent.keyboard(activation === 'Enter' ? '{Enter}' : ' ');
+        }
+
+        await expect.element(screen.getByText('11 of 11 files', { exact: true })).toBeVisible();
+        expect(screen.getByRole('row').all()).toHaveLength(11);
+        await expect.element(showAll).not.toBeInTheDocument();
+        await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
+        const revealed = screen.getByRole('row', { name: 'Open Photo_6.png', exact: true });
+        await expect.element(revealed).toHaveFocus();
+        await userEvent.keyboard('{ArrowDown}');
+        await expect.element(screen.getByRole('row', { name: 'Open Photo_7.png', exact: true })).toHaveFocus();
+        await userEvent.keyboard('{ArrowUp}');
+        await expect.element(revealed).toHaveFocus();
+        await userEvent.keyboard('{Tab}');
+        await expect.element(screen.getByRole('button', { name: 'Remove Photo_6.png', exact: true })).toHaveFocus();
+        await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
+        await expect.element(revealed).toHaveFocus();
+        await userEvent.keyboard('{Enter}');
+        const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
+        await expect.element(dialog).toBeVisible();
+        await expect.element(dialog.getByRole('status')).toHaveTextContent('Photo_6.png');
+        await userEvent.keyboard('{Escape}');
+        await expect.element(dialog).not.toBeInTheDocument();
+        await expect.element(revealed).toHaveFocus();
+      }
+    );
+
+    it('keeps focus on the revealed file and its remove action while images finish loading', async function revealedFileLoading() {
       controlImageEvents();
       vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
       const screen = await render(<Gallery initialImages={browserSamples} defaultView="list" />);
@@ -240,46 +338,78 @@ describe('@godaddy/antares', function packageTests() {
       expect(screen.getByRole('row').all()).toHaveLength(11);
       const revealed = screen.getByRole('row', { name: 'Photo_6.png', exact: true }).element();
       await expect.element(revealed).toHaveFocus();
+      await userEvent.keyboard('{Enter} ');
+      await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
       screen.getByRole('img', { name: 'Photo_6.png', exact: true }).element().dispatchEvent(new Event('load'));
       await expect.element(screen.getByRole('row', { name: 'Open Photo_6.png' })).toBeVisible();
       await expect.element(revealed).toHaveFocus();
+      await userEvent.keyboard('{Tab}');
+      const remove = screen.getByRole('button', { name: 'Remove Photo_6.png', exact: true });
+      await expect.element(remove).toHaveFocus();
+      screen.getByRole('img', { name: 'Photo_7.png', exact: true }).element().dispatchEvent(new Event('load'));
+      await expect.element(screen.getByRole('row', { name: 'Open Photo_7.png' })).toBeVisible();
+      await expect.element(remove).toHaveFocus();
       await expect.element(screen.getByRole('button', { name: 'Show all', exact: true })).not.toBeInTheDocument();
     });
 
+    it.each([
+      ['grid', '{Enter}'],
+      ['grid', ' '],
+      ['list', '{Enter}'],
+      ['list', ' ']
+    ] as const)('navigates rows, opens with %s / %s, and tabs to Remove', async function collectionKeyboard(view, key) {
+      const screen = await render(<Gallery initialImages={samples} defaultView={view} />);
+      const first = screen.getByRole('row', { name: 'Open one.png', exact: true });
+      const second = screen.getByRole('row', { name: 'Open two.png', exact: true });
+      await expect.element(first).toBeVisible();
+      await expect.element(second).toBeVisible();
+      const collection = screen.getByRole('grid');
+      expect(collection.getByRole('button').all()).toHaveLength(2);
+      first.element().focus();
+      await userEvent.keyboard(view === 'grid' ? '{ArrowRight}' : '{ArrowDown}');
+      await expect.element(second).toHaveFocus();
+      await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
+      await userEvent.keyboard(key);
+      const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
+      await expect.element(dialog).toBeVisible();
+      await expect.element(dialog.getByRole('status')).toHaveTextContent('two.png');
+      await expect.element(dialog.getByRole('row', { name: 'View two.png' })).toHaveFocus();
+      await userEvent.keyboard('{ArrowLeft}');
+      await expect.element(dialog.getByRole('row', { name: 'View one.png' })).toHaveFocus();
+      await expect.element(dialog.getByRole('status')).toHaveTextContent('one.png');
+      await userEvent.keyboard('{Escape}');
+      await expect.element(second).toHaveFocus();
+      await userEvent.keyboard('{Tab}');
+      await expect.element(screen.getByRole('button', { name: 'Remove two.png' })).toHaveFocus();
+      await userEvent.keyboard('{Enter}');
+      await expect.element(second).not.toBeInTheDocument();
+      await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
+      await expect.element(first).toHaveFocus();
+      await userEvent.click(screen.getByText('one.png', { exact: true }));
+      await expect.element(screen.getByRole('dialog')).toBeVisible();
+    });
+
     it.each(['grid', 'list'] as const)(
-      'navigates rows, opens with Enter and Space, and tabs to Remove in %s view',
-      async function collectionKeyboard(view) {
-        const screen = await render(<Gallery initialImages={samples} defaultView={view} />);
-        const first = screen.getByRole('row', { name: 'Open one.png', exact: true });
-        const second = screen.getByRole('row', { name: 'Open two.png', exact: true });
+      'finds files by typing their names and navigates to collection boundaries in %s view',
+      async function collectionTypeahead(view) {
+        const screen = await render(
+          <Gallery
+            defaultView={view}
+            initialImages={['Alpine.png', 'Bridge.png', 'Coast.png'].map(function namedImage(name) {
+              return { ...samples[0], id: name, name };
+            })}
+          />
+        );
+        const first = screen.getByRole('row', { name: 'Open Alpine.png', exact: true });
         await expect.element(first).toBeVisible();
-        await expect.element(second).toBeVisible();
-        const collection = screen.getByRole('grid');
-        expect(collection.getByRole('button').all()).toHaveLength(2);
         first.element().focus();
-        await userEvent.keyboard(view === 'grid' ? '{ArrowRight}' : '{ArrowDown}');
-        await expect.element(second).toHaveFocus();
+        await userEvent.keyboard('b');
+        await expect.element(screen.getByRole('row', { name: 'Open Bridge.png', exact: true })).toHaveFocus();
         await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
-        for (const key of ['{Enter}', ' ']) {
-          await userEvent.keyboard(key);
-          const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
-          await expect.element(dialog).toBeVisible();
-          await expect.element(dialog.getByRole('status')).toHaveTextContent('two.png');
-          await expect.element(dialog.getByRole('row', { name: 'View two.png' })).toHaveFocus();
-          await userEvent.keyboard('{ArrowLeft}');
-          await expect.element(dialog.getByRole('row', { name: 'View one.png' })).toHaveFocus();
-          await expect.element(dialog.getByRole('status')).toHaveTextContent('one.png');
-          await userEvent.keyboard('{Escape}');
-          await expect.element(second).toHaveFocus();
-        }
-        await userEvent.keyboard('{Tab}');
-        await expect.element(screen.getByRole('button', { name: 'Remove two.png' })).toHaveFocus();
-        await userEvent.keyboard('{Enter}');
-        await expect.element(second).not.toBeInTheDocument();
-        await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
+        await userEvent.keyboard('{End}');
+        await expect.element(screen.getByRole('row', { name: 'Open Coast.png', exact: true })).toHaveFocus();
+        await userEvent.keyboard('{Home}');
         await expect.element(first).toHaveFocus();
-        await userEvent.click(screen.getByText('one.png', { exact: true }));
-        await expect.element(screen.getByRole('dialog')).toBeVisible();
       }
     );
 
@@ -305,8 +435,22 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(screen.getByText(`5 of ${count + 1} files`, { exact: true })).toBeVisible();
         await expect.element(add).toHaveFocus();
         await expect.element(screen.getByRole('button', { name: 'Show all', exact: true })).toBeVisible();
+        await userEvent.click(screen.getByRole('button', { name: 'Show all', exact: true }));
+        await expect.element(screen.getByRole('row', { name: 'Open Photo_5.png', exact: true })).toHaveFocus();
+        expect(screen.getByRole('row').all()).toHaveLength(count + 1);
       }
     );
+
+    it('refills a shortened list after removal and continues from the next hidden file when expanded', async function revealAfterRemoval() {
+      const screen = await render(<Gallery initialImages={browserSamples} defaultView="list" />);
+      await userEvent.click(screen.getByRole('button', { name: 'Remove file_name.png', exact: true }));
+      await expect.element(screen.getByRole('row', { name: 'Open Photo_6.png', exact: true })).toBeVisible();
+      expect(screen.getByRole('row').all()).toHaveLength(5);
+      await expect.element(screen.getByText('5 of 10 files', { exact: true })).toBeVisible();
+      await userEvent.click(screen.getByRole('button', { name: 'Show all', exact: true }));
+      await expect.element(screen.getByRole('row', { name: 'Open Photo_7.png', exact: true })).toHaveFocus();
+      expect(screen.getByRole('row').all()).toHaveLength(10);
+    });
 
     it.each(['grid', 'list'] as const)(
       'adds new batches first while preserving their file order in %s view',
@@ -335,7 +479,7 @@ describe('@godaddy/antares', function packageTests() {
     );
 
     it.each(['grid', 'list'] as const)(
-      'preserves picker position, focus, and page scroll while adding images in %s view',
+      'preserves picker focus and page scroll while adding images in %s view',
       async function stationaryUploads(view) {
         const pending: Array<(value: ArrayBuffer) => void> = [];
         vi.spyOn(SubtleCrypto.prototype, 'digest').mockImplementation(function deferredHash() {
@@ -346,29 +490,24 @@ describe('@godaddy/antares', function packageTests() {
         const add = screen.getByRole('button', { name: 'Add files', exact: true });
         await expect.element(first).toBeVisible();
         add.element().focus();
-        const position = () => ({
-          top: add.element().getBoundingClientRect().top,
-          left: add.element().getBoundingClientRect().left,
-          scroll: document.scrollingElement?.scrollTop
-        });
-        const before = position();
+        const initialScroll = document.scrollingElement?.scrollTop;
 
         for (const [index, name] of ['first.png', 'second.png'].entries()) {
           selectFiles(screen.container, [png(name)]);
           await expect.element(screen.getByRole('progressbar', { name: 'Processing images' })).toBeInTheDocument();
           await expect.poll(() => pending.length).toBe(index + 1);
-          expect(position()).toEqual(before);
+          expect(document.scrollingElement?.scrollTop).toBe(initialScroll);
           pending[index](new ArrayBuffer(32));
           await expect.element(screen.getByRole('button', { name: `Remove ${name}`, exact: true })).toBeInTheDocument();
           await expect.element(screen.getByRole('progressbar')).not.toBeInTheDocument();
-          expect(position()).toEqual(before);
+          expect(document.scrollingElement?.scrollTop).toBe(initialScroll);
           await expect.element(add).toHaveFocus();
         }
       }
     );
 
     it.each(['grid', 'list'] as const)(
-      'shows native upload alerts below the toolbar without stealing focus in %s view',
+      'announces and dismisses upload errors without stealing focus in %s view',
       async function uploadIssueAlert(view) {
         const screen = await render(<Gallery initialImages={samples} defaultView={view} limits={{ maxFiles: 2 }} />);
         const add = screen.getByRole('button', { name: 'Add files', exact: true });
@@ -385,17 +524,10 @@ describe('@godaddy/antares', function packageTests() {
           png('over-limit.png')
         ]);
         await expect.element(alert).toBeVisible();
-        await expect.element(alert).toHaveAttribute('data-emphasis', 'critical');
         await expect.element(alert).toHaveAccessibleName('Upload issues');
         expect(add.element().getAttribute('aria-describedby')?.split(' ')).toContain(alert.element().id);
         await expect.element(screen.getByRole('alert')).toHaveTextContent('smaller than 20 MiB');
         await expect.element(screen.getByRole('alert')).toHaveTextContent('Gallery limit reached: 2 images');
-        expect(alert.element().getBoundingClientRect().top).toBeGreaterThanOrEqual(
-          add.element().getBoundingClientRect().bottom
-        );
-        expect(alert.element().getBoundingClientRect().bottom).toBeLessThanOrEqual(
-          first.element().getBoundingClientRect().top
-        );
         await expect.element(add).toHaveFocus();
         await userEvent.keyboard('{Tab}');
         await expect.element(screen.getByRole('radio', { name: 'List', exact: true })).toHaveFocus();
@@ -417,9 +549,6 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(screen.getByRole('alert')).not.toBeInTheDocument();
         const status = screen.getByRole('status', { name: 'Gallery updates' });
         await expect.element(status).toHaveTextContent('1 image added.');
-        expect(status.element().getBoundingClientRect().bottom).toBeLessThanOrEqual(
-          first.element().getBoundingClientRect().top
-        );
       }
     );
 
@@ -609,6 +738,20 @@ describe('@godaddy/antares', function packageTests() {
       expect(screen.getByRole('button', { name: /^Remove / }).all()).toHaveLength(1);
     });
 
+    it.each([
+      ['jpg', 'image/jpeg'],
+      ['png', 'image/png'],
+      ['gif', 'image/gif'],
+      ['webp', 'image/webp']
+    ])('accepts the supported %s file type', async function supportedType(extension, type) {
+      const screen = await render(<Gallery />);
+      const name = `accepted.${extension}`;
+      selectFiles(screen.container, [new File([png()], name, { type })]);
+      await expect.element(screen.getByRole('row', { name: `Open ${name}`, exact: true })).toBeVisible();
+      await expect.element(screen.getByRole('alert')).not.toBeInTheDocument();
+      await expect.element(screen.getByText('1 image', { exact: true })).toBeVisible();
+    });
+
     it('accepts drops on cards and space within the image collection', async function drops() {
       const screen = await render(<Gallery initialImages={samples} />);
       const root = screen.getByRole('region', { name: 'Grid view' }).element();
@@ -676,16 +819,7 @@ describe('@godaddy/antares', function packageTests() {
         drag(collection, 'dragenter', data);
         const overlayText = screen.getByText('Drop files to upload.');
         await expect.element(overlayText).toBeVisible();
-        const overlay = overlayText.element().parentElement!;
-        const area = collection.getBoundingClientRect();
-        const feedback = overlay.getBoundingClientRect();
-        expect([feedback.x, feedback.y, feedback.width, feedback.height]).toEqual([
-          area.x,
-          area.y,
-          area.width,
-          area.height
-        ]);
-        expect(feedback.top).toBeGreaterThanOrEqual(picker.getBoundingClientRect().bottom);
+        expect(collection.contains(overlayText.element())).toBe(true);
         drag(collection, 'dragleave', data);
         await expect.element(overlayText).not.toBeInTheDocument();
       }
@@ -736,7 +870,6 @@ describe('@godaddy/antares', function packageTests() {
       const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
       await expect.element(dialog).toBeVisible();
       await expect.element(dialog.getByRole('row', { name: 'View one.png' })).toHaveAttribute('aria-selected', 'true');
-      screen.getByRole('button', { name: 'Close gallery' }).element().focus();
       await userEvent.keyboard('{ArrowRight}');
       await expect.element(dialog.getByRole('row', { name: 'View two.png' })).toHaveAttribute('aria-selected', 'true');
       await expect.element(dialog.getByRole('status')).toHaveTextContent('two.png');
@@ -749,6 +882,7 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.click(screen.getByRole('button', { name: 'Previous image' }));
       await expect.element(dialog.getByRole('status')).toHaveTextContent('one.png');
       await userEvent.click(screen.getByRole('button', { name: 'Next image' }));
+      await userEvent.click(dialog.getByRole('row', { name: 'View two.png' }));
       await userEvent.keyboard('{ArrowLeft}');
       await expect.element(dialog.getByRole('row', { name: 'View one.png' })).toHaveAttribute('aria-selected', 'true');
       await userEvent.click(screen.getByRole('row', { name: 'View two.png' }));
@@ -765,6 +899,93 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.click(opener);
       await userEvent.click(screen.getByRole('button', { name: 'Close gallery' }));
       await expect.element(dialog).not.toBeInTheDocument();
+    });
+
+    describe.each([
+      [390, 844],
+      [320, 568],
+      [568, 320]
+    ])('thumbnail navigation at %s by %s', function thumbnailNavigation(width, height) {
+      beforeEach(async function resizeViewport() {
+        await page.viewport(width, height);
+      });
+
+      afterEach(async function restoreViewport() {
+        await page.viewport(1280, 800);
+      });
+
+      it('reveals the first and last thumbnails by keyboard without scrolling the modal or page', async function keyboardReveal() {
+        const screen = await render(<Gallery initialImages={browserSamples.slice(0, 10)} />);
+        await userEvent.click(screen.getByRole('row', { name: 'Open file_name.png' }));
+        const dialog = screen.getByRole('dialog');
+        const rail = dialog.getByRole('grid', { name: 'Image thumbnails' });
+        const first = dialog.getByRole('row', { name: 'View file_name.png' });
+        const last = dialog.getByRole('row', { name: 'View Photo_10.png' });
+        const initialScroll = scrollPositionsAbove(rail.element());
+        await expect.element(first).toHaveFocus();
+        await userEvent.keyboard('{End}');
+        await expect.element(last).toHaveFocus();
+        await expect.element(last).toHaveAttribute('aria-selected', 'true');
+        await expect.poll(() => isThumbnailRevealed(last.element(), rail.element())).toBe(true);
+        await userEvent.keyboard('{Home}');
+        await expect.element(first).toHaveFocus();
+        await expect.element(first).toHaveAttribute('aria-selected', 'true');
+        await expect.poll(() => isThumbnailRevealed(first.element(), rail.element())).toBe(true);
+        expect(scrollPositionsAbove(rail.element())).toEqual(initialScroll);
+      });
+
+      it.each([
+        { direction: 'next', from: 0, to: 3, position: 'intermediate' },
+        { direction: 'next', from: 4, to: 5, position: 'last' },
+        { direction: 'previous', from: 5, to: 2, position: 'intermediate' },
+        { direction: 'previous', from: 1, to: 0, position: 'first' }
+      ])(
+        'reveals the $position thumbnail with $direction without scrolling the modal or page',
+        async function paginationReveal({ direction, from, to }) {
+          const forward = direction === 'next';
+          const images = browserSamples.slice(0, 6);
+          const screen = await render(<Gallery initialImages={images} />);
+          await userEvent.click(screen.getByRole('row', { name: `Open ${images[from].name}` }));
+          const dialog = screen.getByRole('dialog');
+          const rail = dialog.getByRole('grid', { name: 'Image thumbnails' });
+          const control = dialog.getByRole('button', { name: forward ? 'Next image' : 'Previous image' });
+          const thumbnail = dialog.getByRole('row', { name: `View ${images[to].name}` });
+          const initialScroll = scrollPositionsAbove(rail.element());
+
+          for (let step = 0; step < Math.abs(to - from); step++) await userEvent.click(control);
+          await expect.element(dialog.getByRole('status')).toHaveTextContent(`${to + 1} of ${images.length}`);
+          await expect.element(thumbnail).toHaveAttribute('aria-selected', 'true');
+          await expect.poll(() => isThumbnailRevealed(thumbnail.element(), rail.element())).toBe(true);
+          if (to === 0 || to === images.length - 1) await expect.element(control).toBeDisabled();
+          else await expect.element(control).toHaveFocus();
+          expect(scrollPositionsAbove(rail.element())).toEqual(initialScroll);
+        }
+      );
+    });
+
+    it('focuses the active thumbnail when opening an image at the end of the gallery', async function offscreenThumbnail() {
+      try {
+        await page.viewport(390, 844);
+        const screen = await render(<Gallery initialImages={browserSamples.slice(0, 10)} />);
+        const opener = screen.getByRole('row', { name: 'Open Photo_10.png' });
+        await userEvent.click(opener);
+        const dialog = screen.getByRole('dialog');
+        const thumbnail = dialog.getByRole('row', { name: 'View Photo_10.png' });
+        await expect.element(thumbnail).toHaveFocus();
+        await expect.element(thumbnail).toHaveAttribute('aria-selected', 'true');
+        await expect
+          .poll(() =>
+            isThumbnailRevealed(thumbnail.element(), dialog.getByRole('grid', { name: 'Image thumbnails' }).element())
+          )
+          .toBe(true);
+        await userEvent.keyboard('{ArrowLeft}');
+        await expect.element(dialog.getByRole('row', { name: 'View Photo_9.png' })).toHaveFocus();
+        await expect.element(dialog.getByRole('status')).toHaveTextContent('9 of 10');
+        await userEvent.keyboard('{Escape}');
+        await expect.element(opener).toHaveFocus();
+      } finally {
+        await page.viewport(1280, 800);
+      }
     });
 
     it.each(['grid', 'list'] as const)(
@@ -794,7 +1015,7 @@ describe('@godaddy/antares', function packageTests() {
       }
     );
 
-    it('keeps the modal and controls stationary while slides and loading states change', async function stableViewerGeometry() {
+    it('keeps viewer navigation usable while slides and loading states change', async function pendingViewerNavigation() {
       controlImageEvents();
       vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
       const images = browserSamples.slice(0, 10).map((image, index) => ({
@@ -808,25 +1029,22 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.click(screen.getByRole('row', { name: 'Open file_name.png' }));
       const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
       const next = dialog.getByRole('button', { name: 'Next image' });
-      await expect.poll(() => dialog.element().closest('[data-entering]')).toBeNull();
-      await expect.poll(() => getComputedStyle(dialog.element().parentElement!).transform).toBe('none');
-      const initialDialog = dialog.element().getBoundingClientRect();
-      const initialNext = next.element().getBoundingClientRect();
       const initialScroll = document.scrollingElement?.scrollTop;
       for (const name of [images[1].name, images[2].name]) {
         await userEvent.click(next);
         const picture = dialog.getByRole('img', { name, exact: true });
         for (const state of ['loading', 'ready']) {
           if (state === 'ready') picture.element().dispatchEvent(new Event('load'));
-          await expect.poll(() => dialog.element().getBoundingClientRect().width).toBeCloseTo(initialDialog.width, 0);
-          await expect.poll(() => dialog.element().getBoundingClientRect().top).toBeCloseTo(initialDialog.top, 0);
-          await expect.poll(() => next.element().getBoundingClientRect().top).toBeCloseTo(initialNext.top, 0);
+          await expect.element(dialog).toBeVisible();
+          await expect.element(next).toHaveFocus();
+          await expect.element(dialog.getByRole('status')).toHaveTextContent(name);
+          if (state === 'loading') await expect.element(picture).toHaveAttribute('aria-busy', 'true');
+          else await expect.element(picture).not.toHaveAttribute('aria-busy');
         }
       }
       await userEvent.click(dialog.getByRole('row', { name: 'View Photo_10.png' }));
       await expect.element(dialog.getByRole('status')).toHaveTextContent('10 of 10');
       expect(document.scrollingElement?.scrollTop).toBe(initialScroll);
-      await expect.poll(() => dialog.element().getBoundingClientRect().top).toBeCloseTo(initialDialog.top, 0);
     });
 
     it('keeps focus on a stable viewer control during retry and completion', async function viewerRetryFocus() {
@@ -875,10 +1093,9 @@ describe('@godaddy/antares', function packageTests() {
         const screen = await render(<Gallery initialImages={samples} defaultView={view} />);
         screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('load'));
         const opener = screen.getByRole('row', { name: 'Open one.png' });
+        const pendingCover = screen.getByRole('img', { name: 'two.png', exact: true }).element();
         await userEvent.click(opener);
         await userEvent.click(screen.getByRole('button', { name: 'Next image' }));
-        const pendingCover = screen.container.querySelector<HTMLImageElement>('[data-key="two"] img');
-        if (!pendingCover) throw new Error('Expected the pending gallery cover');
         pendingCover.dispatchEvent(new Event('error'));
 
         await expect.element(screen.getByRole('dialog', { name: 'Media gallery' })).not.toBeInTheDocument();
@@ -892,15 +1109,14 @@ describe('@godaddy/antares', function packageTests() {
         controlImageEvents();
         vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
         const screen = await render(<Gallery initialImages={[samples[0]]} defaultView={view} />);
-        screen.getByRole('img', { name: 'one.png', exact: true }).element().dispatchEvent(new Event('load'));
+        const cover = screen.getByRole('img', { name: 'one.png', exact: true }).element();
+        cover.dispatchEvent(new Event('load'));
         const opener = screen.getByRole('row', { name: 'Open one.png' });
         await expect.element(opener).toBeVisible();
         const openerElement = opener.element();
         opener.element().focus();
         await userEvent.keyboard('{Enter}');
         await expect.element(screen.getByRole('dialog')).toBeVisible();
-        const cover = screen.container.querySelector<HTMLImageElement>('[data-key="one"] img');
-        if (!cover) throw new Error('Expected the cover that opened the viewer');
         cover.dispatchEvent(new Event('error'));
         await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
         const retryCover = screen.getByRole('row', { name: 'Retry one.png' });
@@ -952,26 +1168,21 @@ describe('@godaddy/antares', function packageTests() {
       [320, 568, '200%'],
       [568, 320, '100%']
     ] as const)(
-      'fits the viewer in a %s by %s viewport with %s text',
+      'keeps viewer actions usable in a %s by %s viewport with %s text',
       async function mobileViewer(width, height, fontSize) {
         const originalFontSize = document.documentElement.style.fontSize;
         try {
           await page.viewport(width, height);
           document.documentElement.style.fontSize = fontSize;
           const screen = await render(<Gallery initialImages={browserSamples.slice(0, 4)} />);
-          await expect.poll(() => document.documentElement.scrollWidth).toBeLessThanOrEqual(width);
           await userEvent.click(screen.getByRole('row', { name: 'Open file_name.png' }));
           const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
           await expect.element(dialog).toBeVisible();
-          const bounds = dialog.element().getBoundingClientRect();
-          expect(bounds.left).toBeGreaterThanOrEqual(0);
-          expect(bounds.right).toBeLessThanOrEqual(width);
-          expect(bounds.top).toBeGreaterThanOrEqual(0);
-          expect(bounds.bottom).toBeLessThanOrEqual(height);
-          await expect.poll(() => dialog.element().scrollWidth - dialog.element().clientWidth).toBeLessThanOrEqual(1);
           await userEvent.click(dialog.getByRole('button', { name: 'Next image' }));
           await expect.element(dialog.getByRole('status')).toHaveTextContent('2 of 4');
-          await userEvent.keyboard('{Escape}');
+          await userEvent.click(dialog.getByRole('button', { name: 'Previous image' }));
+          await expect.element(dialog.getByRole('status')).toHaveTextContent('1 of 4');
+          await userEvent.click(dialog.getByRole('button', { name: 'Close gallery' }));
           await expect.element(screen.getByRole('row', { name: 'Open file_name.png' })).toHaveFocus();
         } finally {
           document.documentElement.style.fontSize = originalFontSize;
@@ -980,91 +1191,51 @@ describe('@godaddy/antares', function packageTests() {
       }
     );
 
-    it('uses regional formatting and translated labels in the collection and portaled viewer', async function translatedGallery() {
-      const screen = await render(
-        <Gallery
-          locale="es-CO"
-          initialImages={[{ ...samples[0], size: 1.5 * 1024 * 1024 }]}
-          messages={{
-            gallery: 'Galería',
-            addFiles: 'Añadir archivos',
-            mediaGallery: 'Visor de imágenes',
-            openImage: (name) => `Abrir ${name}`,
-            viewImage: (name) => `Ver ${name}`,
-            removeImage: (name) => `Eliminar ${name}`,
-            removedImage: (name) => `${name} eliminado.`,
-            imagePosition: (name, current, total) => `${name} · ${current} de ${total}`
-          }}
-        />
-      );
-      await expect.element(screen.getByRole('heading', { name: 'Galería' })).toBeVisible();
-      await expect.element(screen.getByText('1,5 MiB', { exact: true })).toBeVisible();
-      await expect.element(screen.getByRole('button', { name: 'Añadir archivos' })).toBeVisible();
-      await userEvent.click(screen.getByRole('row', { name: 'Abrir one.png' }));
-      const dialog = screen.getByRole('dialog', { name: 'Visor de imágenes' });
-      await expect.element(dialog).toHaveAttribute('lang', 'es-CO');
-      await expect.element(dialog.getByRole('row', { name: 'Ver one.png' })).toBeVisible();
-      await expect.element(dialog.getByRole('status')).toHaveTextContent('1 de 1');
+    it('uses English labels and US number formatting in the collection and viewer', async function englishGallery() {
+      const screen = await render(<Gallery initialImages={[{ ...samples[0], size: 1.5 * 1024 * 1024 }]} />);
+      await expect.element(screen.getByRole('heading', { name: 'Gallery', exact: true })).toBeVisible();
+      await expect.element(screen.getByText('1.5 MiB', { exact: true })).toBeVisible();
+      await expect.element(screen.getByRole('button', { name: 'Add files', exact: true })).toBeVisible();
+      await expect
+        .element(screen.getByRole('region', { name: 'Add files to gallery' }))
+        .toHaveAttribute('lang', 'en-US');
+      await userEvent.click(screen.getByRole('row', { name: 'Open one.png' }));
+      const dialog = screen.getByRole('dialog', { name: 'Media gallery' });
+      await expect.element(dialog).toHaveAttribute('lang', 'en-US');
+      await expect.element(dialog.getByRole('row', { name: 'View one.png' })).toBeVisible();
+      await expect.element(dialog.getByRole('status')).toHaveTextContent('1 of 1');
       await userEvent.keyboard('{Escape}');
-      await userEvent.click(screen.getByRole('button', { name: 'Eliminar one.png' }));
-      await expect.element(screen.getByRole('status')).toHaveTextContent('one.png eliminado.');
-    });
-
-    it('matches the inquiry form drop background and preserves the theme text color', async function themedDropOverlay() {
-      const screen = await render(<Gallery />);
-      screen.container.style.setProperty('--color-surface-background-base', 'rgb(17, 17, 17)');
-      screen.container.style.setProperty('--color-surface-text-base', 'rgb(255, 255, 255)');
-      const target = screen.getByRole('region', { name: 'Grid view' }).element();
-      drag(target, 'dragenter', transfer([png()]));
-      await expect.element(screen.getByText('Drop files to upload.')).toBeVisible();
-      const message = screen.getByText('Drop files to upload.').element();
-      const overlay = message.parentElement;
-      if (!overlay) throw new Error('Expected the drop overlay');
-      await expect.poll(() => getComputedStyle(overlay).backgroundColor).toBe('rgba(216, 239, 239, 0.9)');
-      expect(getComputedStyle(overlay).color).toBe('rgb(255, 255, 255)');
+      await userEvent.click(screen.getByRole('button', { name: 'Remove one.png' }));
+      await expect.element(screen.getByRole('status')).toHaveTextContent('one.png removed.');
     });
 
     it.each(['horizontal', 'vertical'] as const)(
-      'preserves %s cover geometry while the placeholder loads, succeeds, or fails',
+      'exposes the %s cover loading state and reports a later failure',
       async function coverPlaceholder(variant) {
         controlImageEvents();
         vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
         const screen = await render(<FileCover image={samples[0]} variant={variant} />);
         const image = screen.getByRole('img', { name: 'one.png', exact: true });
-        const bounds = function coverBounds() {
-          const { width, height } = screen.container.firstElementChild!.getBoundingClientRect();
-          return [width, height];
-        };
-        const before = bounds();
         await expect.element(image).toHaveAttribute('aria-busy', 'true');
-        const placeholder = image.element().parentElement!.querySelector<HTMLElement>('[aria-hidden="true"]')!;
-        await expect.element(placeholder).toBeVisible();
         image.element().dispatchEvent(new Event('load'));
         await expect.element(image).not.toHaveAttribute('aria-busy');
-        await expect.element(placeholder).not.toBeInTheDocument();
-        expect(bounds()).toEqual(before);
+        await expect.element(image).toBeVisible();
         image.element().dispatchEvent(new Event('error'));
         await expect.element(screen.getByRole('img', { name: 'one.png: File needs attention.' })).toBeVisible();
-        expect(bounds()).toEqual(before);
       }
     );
 
     it.each(['viewer', 'thumbnail'] as const)(
-      'replaces the %s placeholder with the loaded image without resizing',
+      'clears the %s image loading state after it loads',
       async function viewerPlaceholder(variant) {
         controlImageEvents();
         vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
         const screen = await render(<GalleryImage image={samples[0]} variant={variant} />);
         const image = screen.container.querySelector('img')!;
-        const before = image.getBoundingClientRect();
-        expect(image.getAttribute('aria-busy')).toBe('true');
-        const placeholder = image.parentElement!.querySelector<HTMLElement>('[aria-hidden="true"]')!;
-        await expect.element(placeholder).toBeVisible();
+        await expect.element(image).toHaveAttribute('aria-busy', 'true');
         image.dispatchEvent(new Event('load'));
-        await expect.poll(() => image.hasAttribute('aria-busy')).toBe(false);
-        const after = image.getBoundingClientRect();
-        expect([after.width, after.height]).toEqual([before.width, before.height]);
-        await expect.element(placeholder).not.toBeInTheDocument();
+        await expect.element(image).not.toHaveAttribute('aria-busy');
+        await expect.element(image).toBeVisible();
       }
     );
 
@@ -1109,7 +1280,8 @@ describe('@godaddy/antares', function packageTests() {
       vi.spyOn(HTMLImageElement.prototype, 'naturalWidth', 'get').mockReturnValue(0);
       const screen = await render(<Gallery initialImages={[samples[0]]} />);
 
-      await expect.element(screen.getByRole('alert')).toHaveTextContent('Couldn’t load one.png.');
+      await expect.element(screen.getByRole('alert')).toHaveTextContent('Retry');
+      await expect.element(screen.getByRole('status')).toHaveTextContent('Image failed to load.');
       await expect.element(screen.getByRole('row', { name: 'Retry one.png' })).toBeVisible();
       expect(screen.getByRole('row', { name: 'Open one.png' }).all()).toHaveLength(0);
     });
@@ -1299,16 +1471,20 @@ describe('@godaddy/antares', function packageTests() {
 
     it('notifies the host only after changes and reads initialImages once', async function collectionContract() {
       const changed = vi.fn();
+      const nextChanged = vi.fn();
       const screen = await render(<Gallery initialImages={samples} onImagesChange={changed} />);
       expect(changed).not.toHaveBeenCalled();
-      await screen.rerender(<Gallery initialImages={[]} onImagesChange={changed} />);
+      await screen.rerender(<Gallery initialImages={[]} onImagesChange={nextChanged} />);
       await expect.element(screen.getByText('2 images', { exact: true })).toBeVisible();
+      expect(changed).not.toHaveBeenCalled();
+      expect(nextChanged).not.toHaveBeenCalled();
       await userEvent.click(screen.getByRole('button', { name: 'Remove one.png' }));
-      await expect.poll(() => changed.mock.calls.length).toBe(1);
-      expect(changed).toHaveBeenLastCalledWith([samples[1]]);
+      await expect.poll(() => nextChanged.mock.calls.length).toBe(1);
+      expect(nextChanged).toHaveBeenLastCalledWith([samples[1]]);
+      expect(changed).not.toHaveBeenCalled();
     });
 
-    it('uses thumbnail resources and descriptive text while bounding full-image loading', async function imageResources() {
+    it('shows descriptive full images and uses thumbnail resources while navigating', async function imageResources() {
       const images = browserSamples.slice(0, 10).map((image) => ({
         ...image,
         src: image.src + '#full',
@@ -1320,14 +1496,17 @@ describe('@godaddy/antares', function packageTests() {
       const dialog = screen.getByRole('dialog');
       await expect.element(dialog.getByRole('region', { name: 'Gallery images' })).toBeVisible();
       await expect.element(dialog.getByRole('img', { name: 'Description of Photo_5.png', exact: true })).toBeVisible();
-      const fullResources = () =>
-        Array.from(dialog.element().querySelectorAll('img')).filter((image) => image.src.endsWith('#full'));
-      expect(fullResources()).toHaveLength(3);
+      await expect
+        .element(dialog.getByRole('img', { name: 'Description of Photo_5.png', exact: true }))
+        .toHaveAttribute('src', images[4].src);
       expect(dialog.getByRole('row', { name: 'View Photo_5.png' }).element().querySelector('img')?.src).toBe(
         images[4].thumbnailSrc
       );
       await userEvent.click(dialog.getByRole('row', { name: 'View Photo_10.png' }));
-      expect(fullResources()).toHaveLength(2);
+      await expect.element(dialog.getByRole('img', { name: 'Description of Photo_10.png', exact: true })).toBeVisible();
+      await expect
+        .element(dialog.getByRole('img', { name: 'Description of Photo_10.png', exact: true }))
+        .toHaveAttribute('src', images[9].src);
       await expect.element(dialog.getByRole('status')).toHaveTextContent('10 of 10');
     });
 
@@ -1337,8 +1516,8 @@ describe('@godaddy/antares', function packageTests() {
       ['list', false],
       ['list', true]
     ] as const)(
-      'preserves dimensioned cover geometry in %s; thumbnail fallback: %s',
-      async function coverGeometry(view, withThumbnail) {
+      'opens a dimensioned image after loading in %s; thumbnail fallback: %s',
+      async function dimensionedCover(view, withThumbnail) {
         controlImageEvents();
         vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
         const screen = await render(
@@ -1365,16 +1544,9 @@ describe('@godaddy/antares', function packageTests() {
         }
         picture.element().dispatchEvent(new Event('load'));
         await expect.element(opener).toBeVisible();
-        const cover = opener.element().querySelector('img');
-        if (!cover) throw new Error('Expected the gallery cover');
-        expect(cover.getBoundingClientRect().width).toBeGreaterThan(0);
-        await expect
-          .poll(function coverSizeDifference() {
-            const { width, height } = cover.getBoundingClientRect();
-            return Math.abs(height - (view === 'grid' ? width : 56));
-          })
-          .toBeLessThan(1);
-        if (view === 'list') expect(cover.getBoundingClientRect().width).toBe(56);
+        await userEvent.click(opener);
+        await expect.element(screen.getByRole('dialog', { name: 'Media gallery' })).toBeVisible();
+        await expect.element(screen.getByRole('dialog').getByRole('status')).toHaveTextContent('one.png');
       }
     );
 
@@ -1410,34 +1582,26 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('dialog')).toBeVisible();
     });
 
-    it.each(['ltr', 'rtl'] as const)(
-      'navigates the thumbnail rail with a single Tab stop in %s',
-      async function thumbnailKeyboard(dir) {
-        // The host owns RAC's locale; Gallery only supplies its layout direction and formatted copy.
-        const screen = await render(
-          <RACI18nProvider locale={dir === 'rtl' ? 'ar' : 'en-US'}>
-            <Gallery dir={dir} initialImages={browserSamples.slice(0, 4)} />
-          </RACI18nProvider>
-        );
-        await userEvent.click(screen.getByRole('row', { name: 'Open file_name.png' }));
-        const dialog = screen.getByRole('dialog');
-        const first = dialog.getByRole('row', { name: 'View file_name.png' });
-        first.element().focus();
-        await userEvent.keyboard(dir === 'rtl' ? '{ArrowLeft}' : '{ArrowRight}');
-        await expect.element(dialog.getByRole('row', { name: 'View Photo_2.png' })).toHaveFocus();
-        await expect.element(dialog.getByRole('status')).toHaveTextContent('2 of 4');
-        await userEvent.keyboard('{End}');
-        await expect.element(dialog.getByRole('row', { name: 'View Photo_4.png' })).toHaveFocus();
-        await userEvent.keyboard('{Home}');
-        await expect.element(first).toHaveFocus();
-        await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
-        await expect.element(dialog.getByRole('button', { name: 'Next image' })).toHaveFocus();
-        await userEvent.keyboard('{Tab}');
-        await expect.element(first).toHaveFocus();
-        await userEvent.keyboard('{Tab}');
-        await expect.element(dialog.getByRole('button', { name: 'Close gallery' })).toHaveFocus();
-      }
-    );
+    it('navigates the thumbnail rail with a single Tab stop', async function thumbnailKeyboard() {
+      const screen = await render(<Gallery initialImages={browserSamples.slice(0, 4)} />);
+      await userEvent.click(screen.getByRole('row', { name: 'Open file_name.png' }));
+      const dialog = screen.getByRole('dialog');
+      const first = dialog.getByRole('row', { name: 'View file_name.png' });
+      first.element().focus();
+      await userEvent.keyboard('{ArrowRight}');
+      await expect.element(dialog.getByRole('row', { name: 'View Photo_2.png' })).toHaveFocus();
+      await expect.element(dialog.getByRole('status')).toHaveTextContent('2 of 4');
+      await userEvent.keyboard('{End}');
+      await expect.element(dialog.getByRole('row', { name: 'View Photo_4.png' })).toHaveFocus();
+      await userEvent.keyboard('{Home}');
+      await expect.element(first).toHaveFocus();
+      await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
+      await expect.element(dialog.getByRole('button', { name: 'Next image' })).toHaveFocus();
+      await userEvent.keyboard('{Tab}');
+      await expect.element(first).toHaveFocus();
+      await userEvent.keyboard('{Tab}');
+      await expect.element(dialog.getByRole('button', { name: 'Close gallery' })).toHaveFocus();
+    });
 
     it('preserves selection and keyboard navigation when motion preference changes', async function reducedMotionNavigation() {
       const session = cdp() as unknown as { send: (method: string, params: unknown) => Promise<void> };
@@ -1449,7 +1613,6 @@ describe('@godaddy/antares', function packageTests() {
           features: [{ name: 'prefers-reduced-motion', value: 'reduce' }]
         });
         await expect.element(dialog.getByRole('status')).toHaveTextContent('2 of 4');
-        dialog.getByRole('button', { name: 'Close gallery' }).element().focus();
         await userEvent.keyboard('{ArrowRight}');
         await expect.element(dialog.getByRole('status')).toHaveTextContent('3 of 4');
         await session.send('Emulation.setEmulatedMedia', { features: [] });

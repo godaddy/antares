@@ -23,10 +23,6 @@
   padding-inline-end: 0;
 }
 
-.errorDetails {
-  min-inline-size: 0;
-}
-
 .retry {
   text-decoration: underline;
 }

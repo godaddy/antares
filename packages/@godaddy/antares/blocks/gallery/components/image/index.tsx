@@ -3,7 +3,6 @@
 import { forwardRef, useCallback, useRef, useState, type ReactEventHandler } from 'react';
 import { Box, Button, Flex, Icon, Image, Skeleton, Text } from '@godaddy/antares';
 import type { ImageItem } from '../../data/types';
-import { useGalleryCopy } from '../../data/copy';
 import styles from './index.module.css';
 
 type ImageLoadState = 'loading' | 'ready' | 'error';
@@ -194,7 +193,6 @@ interface FileCoverProps {
 
 /** A small, reusable image/error surface shared by every Gallery presentation. */
 export function FileCover({ image, variant, onLoadError, onLoadSuccess }: FileCoverProps) {
-  const { messages } = useGalleryCopy();
   const [failedThumbnail, setFailedThumbnail] = useState<string | null>(null);
   const thumbnail = image.thumbnailSrc && failedThumbnail !== image.thumbnailSrc ? image.thumbnailSrc : undefined;
   const reportLoadError = useCallback(
@@ -221,7 +219,7 @@ export function FileCover({ image, variant, onLoadError, onLoadSuccess }: FileCo
       alignItems="center"
       justifyContent="center"
       role="img"
-      aria-label={`${image.name}: ${image.errorMessage ?? messages.needsAttention}`}
+      aria-label={`${image.name}: ${image.errorMessage ?? 'File needs attention.'}`}
       rounding="md"
       className={`${styles.surface} ${styles.error}`}
       data-variant={variant}
@@ -263,7 +261,6 @@ interface GalleryImageProps {
 
 /** Handles image loading failures without simulating an upload. */
 export function GalleryImage({ image, variant = 'default', loading = 'lazy', onRetryStart }: GalleryImageProps) {
-  const { messages } = useGalleryCopy();
   const { attempt, imageRef, onError, onLoad, retry, src, state } = useImageLoadState(
     variant === 'thumbnail' ? (image.thumbnailSrc ?? image.src) : image.src,
     {
@@ -275,16 +272,16 @@ export function GalleryImage({ image, variant = 'default', loading = 'lazy', onR
     return (
       <Flex direction="column" gap="xs" padding="sm" role="alert">
         <Icon icon="alert" aria-hidden="true" />
-        <Text emphasis="critical">{messages.failedImage(image.name)}</Text>
+        <Text emphasis="critical">Couldn’t load {image.name}.</Text>
         <Button
           variant="inline"
-          aria-label={messages.retryImage(image.name)}
+          aria-label={`Retry ${image.name}`}
           onPress={function handleRetry() {
             onRetryStart?.();
             retry();
           }}
         >
-          {messages.retry}
+          Retry
         </Button>
       </Flex>
     );
@@ -298,7 +295,7 @@ export function GalleryImage({ image, variant = 'default', loading = 'lazy', onR
         className={`${styles.image} ${styles.errorSurface}`}
         data-variant={variant}
         role="img"
-        aria-label={messages.failedThumbnail(image.name)}
+        aria-label={`${image.name} failed to load`}
       >
         <Icon icon="alert" aria-hidden="true" />
       </Flex>
@@ -331,7 +328,7 @@ export function GalleryImage({ image, variant = 'default', loading = 'lazy', onR
     >
       {picture}
       {state === 'loading' && variant !== 'thumbnail' ? (
-        <Text className={variant === 'viewer' ? styles.loading : undefined}>{messages.loadingImage}</Text>
+        <Text className={variant === 'viewer' ? styles.loading : undefined}>Loading image…</Text>
       ) : null}
     </Flex>
   );

@@ -2,10 +2,10 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { GalleryLimits, ImageItem } from '../data/types';
-import { useGalleryCopy } from '../data/copy';
 
 export const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 const MiB = 1024 * 1024;
+const numberFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 export const defaultLimits: Required<GalleryLimits> = { maxFiles: 50, maxFileSize: 20 * MiB, maxTotalSize: 256 * MiB };
 
 /** Hashing is optional; an unreadable file still fails independently of the rest of its batch. */
@@ -27,7 +27,6 @@ export function useGalleryImages(
   limits: Required<GalleryLimits>,
   onImagesChange?: (images: ImageItem[]) => void
 ) {
-  const { messages } = useGalleryCopy();
   const [images, setImages] = useState(() => [...initialImages]);
   const collection = useRef(images);
   const [errors, setErrors] = useState<string[]>([]);
@@ -40,18 +39,16 @@ export function useGalleryImages(
   const owned = useRef(new Map<string, { id: string; url: string; name: string; size: number }>());
   const keys = useRef(new Map<string, string>());
   const queue = useRef(Promise.resolve());
-  const callback = useRef(onImagesChange);
-  callback.current = onImagesChange;
   const previous = useRef(images);
 
   useEffect(
     function notifyCollectionChange() {
       if (previous.current !== images) {
         previous.current = images;
-        callback.current?.([...images]);
+        onImagesChange?.([...images]);
       }
     },
-    [images]
+    [images, onImagesChange]
   );
 
   useEffect(function manageResources() {
@@ -148,19 +145,30 @@ export function useGalleryImages(
         }
         if (!mounted.current) return;
         const errors = [];
-        if (invalid) errors.push(messages.invalidFiles(limits.maxFileSize / MiB));
-        if (overBudget) errors.push(messages.limitReached(limits.maxFiles, limits.maxTotalSize / MiB));
-        if (unreadable) errors.push(messages.unreadableImages);
+        if (invalid) {
+          errors.push(
+            `Use JPG, PNG, GIF, or WebP images smaller than ${numberFormatter.format(limits.maxFileSize / MiB)} MiB.`
+          );
+        }
+        if (overBudget) {
+          errors.push(
+            `Gallery limit reached: ${numberFormatter.format(limits.maxFiles)} images and ${numberFormatter.format(limits.maxTotalSize / MiB)} MiB total.`
+          );
+        }
+        if (unreadable) errors.push('We couldn’t read some images. Please try again.');
         setErrors(errors);
         const notices = [];
-        if (added) notices.push(messages.addedImages(added));
-        if (duplicates) notices.push(messages.skippedDuplicates(duplicates));
+        if (added) notices.push(`${numberFormatter.format(added)} ${added === 1 ? 'image' : 'images'} added.`);
+        if (duplicates)
+          notices.push(
+            `${numberFormatter.format(duplicates)} ${duplicates === 1 ? 'duplicate' : 'duplicates'} skipped.`
+          );
         setNotice(notices.join(' '));
       };
       const pending = queue.current.then(process);
       queue.current = pending
         .catch(function failedBatch() {
-          reportError(messages.unreadableBatch);
+          reportError('We couldn’t read these images. Please try again.');
         })
         .finally(function finishBatch() {
           if (progress.current.completed === progress.current.total) {
@@ -170,7 +178,7 @@ export function useGalleryImages(
         });
       return queue.current;
     },
-    [instanceId, limits.maxFiles, limits.maxFileSize, limits.maxTotalSize, messages, reportError, updateImages]
+    [instanceId, limits.maxFiles, limits.maxFileSize, limits.maxTotalSize, reportError, updateImages]
   );
 
   const removeImage = useCallback(
@@ -183,9 +191,9 @@ export function useGalleryImages(
         keys.current.delete(image.id);
       }
       updateImages((previous) => previous.filter((item) => item.id !== image.id));
-      setNotice(messages.removedImage(image.name));
+      setNotice(`${image.name} removed.`);
     },
-    [messages, updateImages]
+    [updateImages]
   );
 
   const retryImage = useCallback(
@@ -193,9 +201,9 @@ export function useGalleryImages(
       updateImages((previous) =>
         previous.map((item) => (item.id === image.id ? { ...item, status: 'loading', errorMessage: undefined } : item))
       );
-      setNotice(messages.retryingImage(image.name));
+      setNotice(`${image.name} is retrying.`);
     },
-    [messages, updateImages]
+    [updateImages]
   );
 
   const markReady = useCallback(
@@ -203,21 +211,21 @@ export function useGalleryImages(
       updateImages((previous) =>
         previous.map((item) => (item.id === id ? { ...item, status: 'ready', errorMessage: undefined } : item))
       );
-      setNotice(messages.imageReady);
+      setNotice('Image is ready to view.');
     },
-    [messages, updateImages]
+    [updateImages]
   );
 
   const markError = useCallback(
     function markError(id: string) {
       updateImages((previous) =>
         previous.map((item) =>
-          item.id === id ? { ...item, status: 'error', errorMessage: messages.failedImage(item.name) } : item
+          item.id === id ? { ...item, status: 'error', errorMessage: `Couldn’t load ${item.name}.` } : item
         )
       );
-      setNotice(messages.imageFailed);
+      setNotice('Image failed to load.');
     },
-    [messages, updateImages]
+    [updateImages]
   );
 
   return {

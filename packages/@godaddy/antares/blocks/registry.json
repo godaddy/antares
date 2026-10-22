@@ -49,11 +49,6 @@
           "target": "components/blocks/gallery/components/viewer/index.tsx"
         },
         {
-          "path": "gallery/data/copy.tsx",
-          "type": "registry:component",
-          "target": "components/blocks/gallery/data/copy.tsx"
-        },
-        {
           "path": "gallery/data/sample-images.ts",
           "type": "registry:component",
           "target": "components/blocks/gallery/data/sample-images.ts"
