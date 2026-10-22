@@ -24,7 +24,7 @@ describe('runtime entry', function runtimeEntryTests() {
   it('does not bundle Node-only dependencies', async function excludesNodeDeps() {
     const runtimeSource = await readFile(join(distDir, 'runtime.mjs'), 'utf8');
 
-    assume(runtimeSource).not.match(/from "typescript"/);
+    assume(runtimeSource).not.match(/(?:from|require\()\s*["']typescript(?:\/[^"']*)?["']/);
     assume(runtimeSource).not.match(/node:fs/);
   });
 });

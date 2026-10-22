@@ -1,13 +1,14 @@
-import ts from 'typescript';
+import * as ts from 'typescript/unstable/ast';
+import { parseSource } from './typescript.ts';
 import { describe, expect, it } from 'vitest';
 import { getPropJSDoc } from '../src/engine/jsdoc.ts';
 
-function getFirstProperty(code: string): ts.PropertySignature {
-  const sourceFile = ts.createSourceFile('doc.ts', code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+function getFirstProperty(code: string): ts.PropertySignatureDeclaration {
+  const sourceFile = parseSource(code, 'doc.ts');
   const declaration = sourceFile.statements[0];
   if (!ts.isInterfaceDeclaration(declaration)) throw new Error('Expected interface declaration');
   const member = declaration.members[0];
-  if (!ts.isPropertySignature(member)) throw new Error('Expected property signature');
+  if (!ts.isPropertySignatureDeclaration(member)) throw new Error('Expected property signature');
   return member;
 }
 

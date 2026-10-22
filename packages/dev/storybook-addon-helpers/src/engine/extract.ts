@@ -1,4 +1,5 @@
-import ts from 'typescript';
+import * as ts from 'typescript/unstable/ast';
+import * as factory from 'typescript/unstable/ast/factory';
 import { getPropJSDoc } from './jsdoc.ts';
 import type { Resolver } from './resolve.ts';
 import { applyUtilityType, getUtilityInnerType } from './utility-types.ts';
@@ -149,8 +150,12 @@ function bindTypeParameters(
       return;
     }
 
-    if (parameter.default) {
-      bindings.set(parameter.name.text, { typeNode: parameter.default, sourceFile: declSourceFile, env: EMPTY_ENV });
+    if (parameter.defaultType) {
+      bindings.set(parameter.name.text, {
+        typeNode: parameter.defaultType,
+        sourceFile: declSourceFile,
+        env: EMPTY_ENV
+      });
     }
   });
 
@@ -173,7 +178,7 @@ function extractFromHeritageType(
 ): PropDoc[] {
   if (!ts.isIdentifier(typeExpression.expression)) return [];
 
-  const typeNode = ts.factory.createTypeReferenceNode(typeExpression.expression, typeExpression.typeArguments);
+  const typeNode = factory.createTypeReferenceNode(typeExpression.expression, typeExpression.typeArguments);
   return extractFromTypeNode(typeNode, sourceFile, resolver, active, env);
 }
 
@@ -185,7 +190,7 @@ function extractMembers(
   const props: PropDoc[] = [];
 
   for (const member of members) {
-    if (!ts.isPropertySignature(member)) continue;
+    if (!ts.isPropertySignatureDeclaration(member)) continue;
     const name = getPropertyName(member.name);
     if (!name) continue;
 
@@ -193,7 +198,7 @@ function extractMembers(
     props.push({
       name,
       type: member.type?.getText(sourceFile) ?? 'any',
-      required: !member.questionToken,
+      required: member.postfixToken?.kind !== ts.SyntaxKind.QuestionToken,
       description: jsDoc.description,
       defaultValue: jsDoc.defaultValue,
       sourceFile: sourceFile.fileName,

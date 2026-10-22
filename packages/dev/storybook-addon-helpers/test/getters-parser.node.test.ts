@@ -1,5 +1,5 @@
 import path from 'node:path';
-import type ts from 'typescript';
+import type * as ts from 'typescript/unstable/ast';
 import { describe, expect, it } from 'vitest';
 import { getExportedVariables, extractVariantNames } from '../src/storybook/getters-parser.ts';
 import { toTsExpression } from '../src/engine/literal.ts';

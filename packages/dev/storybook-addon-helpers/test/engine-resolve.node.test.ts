@@ -1,7 +1,7 @@
 import path from 'node:path';
-import ts from 'typescript';
+import * as ts from 'typescript/unstable/ast';
 import { describe, expect, it } from 'vitest';
-import { createResolver } from '../src/engine/resolve.ts';
+import { testResolver as createResolver } from './typescript.ts';
 import type { ResolvedSymbol } from '../src/engine/resolve.ts';
 
 const fixturesPath = path.join(__dirname, 'fixtures/engine/types.ts');

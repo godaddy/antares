@@ -7,6 +7,6 @@ export const config = defineConfig({
   treeshake: true,
   dts: {
     sourcemap: true,
-    tsgo: true
+    tsgo: {}
   }
 });

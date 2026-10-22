@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import * as ts from 'typescript/unstable/ast';
 import { extractFromTypeNode } from './extract.ts';
 import type { Resolver } from './resolve.ts';
 import type { PropsDoc } from '../types.ts';
@@ -73,7 +73,7 @@ function getFunctionArgPropsType(call: ts.CallExpression): ts.TypeNode | undefin
 
 /** Unwraps `as`, `satisfies`, type assertions, and parentheses to reach the inner expression. */
 function unwrapExpression(expr: ts.Expression): ts.Expression {
-  if (ts.isAsExpression(expr) || ts.isSatisfiesExpression(expr) || ts.isTypeAssertionExpression(expr)) {
+  if (ts.isAsExpression(expr) || ts.isSatisfiesExpression(expr) || ts.isTypeAssertion(expr)) {
     return unwrapExpression(expr.expression);
   }
   if (ts.isParenthesizedExpression(expr)) return unwrapExpression(expr.expression);

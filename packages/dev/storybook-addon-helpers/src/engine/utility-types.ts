@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import * as ts from 'typescript/unstable/ast';
 import type { PropDoc } from '../types.ts';
 
 export function applyUtilityType(
