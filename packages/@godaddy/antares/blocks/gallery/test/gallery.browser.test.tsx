@@ -302,6 +302,39 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('button', { name: 'Show all', exact: true })).not.toBeInTheDocument();
     });
 
+    it.each(['grid', 'list'] as const)(
+      'keeps existing files and the page stationary while adding images in %s view',
+      async function stationaryUploads(view) {
+        const pending: Array<(value: ArrayBuffer) => void> = [];
+        vi.spyOn(SubtleCrypto.prototype, 'digest').mockImplementation(function deferredHash() {
+          return new Promise<ArrayBuffer>((resolve) => pending.push(resolve));
+        });
+        const screen = await render(<Gallery initialImages={browserSamples} defaultView={view} />);
+        const first = screen.getByRole('row', { name: 'Open file_name.png', exact: true });
+        const add = screen.getByRole('button', { name: 'Add files', exact: true });
+        await expect.element(first).toBeVisible();
+        add.element().focus();
+        const position = () => ({
+          top: first.element().getBoundingClientRect().top,
+          left: first.element().getBoundingClientRect().left,
+          scroll: document.scrollingElement?.scrollTop
+        });
+        const before = position();
+
+        for (const [index, name] of ['first.png', 'second.png'].entries()) {
+          selectFiles(screen.container, [png(name)]);
+          await expect.element(screen.getByRole('progressbar', { name: 'Processing images' })).toBeInTheDocument();
+          await expect.poll(() => pending.length).toBe(index + 1);
+          expect(position()).toEqual(before);
+          pending[index](new ArrayBuffer(32));
+          await expect.element(screen.getByRole('button', { name: `Remove ${name}`, exact: true })).toBeInTheDocument();
+          await expect.element(screen.getByRole('progressbar')).not.toBeInTheDocument();
+          expect(position()).toEqual(before);
+          await expect.element(add).toHaveFocus();
+        }
+      }
+    );
+
     it.each(['error', 'loading'] as const)(
       'focuses the revealed row when the first revealed file is %s',
       async function revealFile(status) {
@@ -855,7 +888,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('status')).toHaveTextContent('one.png eliminado.');
     });
 
-    it('uses the theme surface and text colors for the drop overlay', async function themedDropOverlay() {
+    it('matches the inquiry form drop background and preserves the theme text color', async function themedDropOverlay() {
       const screen = await render(<Gallery />);
       screen.container.style.setProperty('--color-surface-background-base', 'rgb(17, 17, 17)');
       screen.container.style.setProperty('--color-surface-text-base', 'rgb(255, 255, 255)');
@@ -865,7 +898,7 @@ describe('@godaddy/antares', function packageTests() {
       const message = screen.getByText('Drop files to upload.').element();
       const overlay = message.parentElement;
       if (!overlay) throw new Error('Expected the drop overlay');
-      await expect.poll(() => getComputedStyle(overlay).backgroundColor).toBe('rgb(17, 17, 17)');
+      await expect.poll(() => getComputedStyle(overlay).backgroundColor).toBe('rgba(216, 239, 239, 0.9)');
       expect(getComputedStyle(overlay).color).toBe('rgb(255, 255, 255)');
     });
 

@@ -85,41 +85,18 @@ function GalleryContent({
   const [view, setView] = useState(defaultView);
   const [showAll, setShowAll] = useState(false);
   const previousImages = useRef(images);
-  const addedImageId = useRef<string | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const addButton = useRef<HTMLButtonElement>(null);
-  const itemElements = useRef(new Map<string, HTMLElement>());
-
-  const registerItem = useCallback(
-    function registerItem(id: string, element: HTMLElement | null) {
-      if (element) itemElements.current.set(id, element);
-      else itemElements.current.delete(id);
-      if (element && addedImageId.current === id && view === 'list' && showAll) {
-        element.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-        addedImageId.current = null;
-      }
-    },
-    [showAll, view]
-  );
 
   useLayoutEffect(
     function revealAddedImages() {
       const previousIds = new Set(previousImages.current.map((image) => image.id));
-      const addedImage = images.find((image) => !previousIds.has(image.id));
+      const hasAddedImages = images.some((image) => !previousIds.has(image.id));
       previousImages.current = images;
-      if (addedImage) {
-        addedImageId.current = addedImage.id;
-        setShowAll(true);
-      }
-      if (view !== 'list' || !showAll || !addedImageId.current) return;
-      const item = itemElements.current.get(addedImageId.current);
-      if (item) {
-        item.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-        addedImageId.current = null;
-      }
+      if (hasAddedImages) setShowAll(true);
     },
-    [images, showAll, view]
+    [images]
   );
 
   const handleShowAll = useCallback(function handleShowAll() {
@@ -227,6 +204,23 @@ function GalleryContent({
             </Flex>
           </Flex>
 
+          <Box role="region" aria-label={view === 'list' ? messages.listView : messages.gridView}>
+            {images.length === 0 ? (
+              <EmptyState />
+            ) : (
+              <FileItems
+                view={view}
+                images={images}
+                showAll={showAll}
+                onShowAll={handleShowAll}
+                onOpen={handleOpenImage}
+                onRemove={handleRemoveImage}
+                onRetry={retryImage}
+                onLoadError={handleImageLoadError}
+                onLoadSuccess={markReady}
+              />
+            )}
+          </Box>
           {processing ? (
             <ProgressBar
               value={processing.completed}
@@ -242,25 +236,6 @@ function GalleryContent({
           <Detail role="status" aria-label={messages.updates} aria-atomic="true" className={styles.notice}>
             {notice}
           </Detail>
-
-          <Box role="region" aria-label={view === 'list' ? messages.listView : messages.gridView}>
-            {images.length === 0 ? (
-              <EmptyState />
-            ) : (
-              <FileItems
-                view={view}
-                images={images}
-                showAll={showAll}
-                onShowAll={handleShowAll}
-                onOpen={handleOpenImage}
-                onRemove={handleRemoveImage}
-                onRetry={retryImage}
-                onLoadError={handleImageLoadError}
-                onLoadSuccess={markReady}
-                onItemRef={registerItem}
-              />
-            )}
-          </Box>
         </Flex>
         {isDropTarget ? (
           <Flex

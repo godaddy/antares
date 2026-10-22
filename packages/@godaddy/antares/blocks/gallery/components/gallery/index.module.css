@@ -13,7 +13,7 @@
   z-index: 1;
   border: 1px dashed var(--ux-f7kpiw, #00a4a6);
   border-radius: var(--ux-2jubes, 16px);
-  background-color: var(--color-surface-background-base, var(--ux-cao06b, Canvas));
+  background-color: rgba(216, 239, 239, 0.9);
   color: var(--color-surface-text-base, var(--ux-1leynsm, CanvasText));
   pointer-events: none;
 }

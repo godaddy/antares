@@ -18,7 +18,7 @@ import type { ImageItem } from '../../data/types';
 import { useGalleryCopy } from '../../data/copy';
 import styles from './index.module.css';
 
-interface FileItemsProps extends Pick<FileItemProps, 'onRemove' | 'onLoadError' | 'onLoadSuccess' | 'onItemRef'> {
+interface FileItemsProps extends Pick<FileItemProps, 'onRemove' | 'onLoadError' | 'onLoadSuccess'> {
   /** Presentation chosen by Gallery. */
   view: 'list' | 'grid';
 
@@ -50,8 +50,7 @@ export function FileItems({
   onRemove,
   onRetry,
   onLoadError,
-  onLoadSuccess,
-  onItemRef
+  onLoadSuccess
 }: FileItemsProps) {
   const { messages } = useGalleryCopy();
   const isList = view === 'list';
@@ -59,16 +58,12 @@ export function FileItems({
   const visibleImages = isList && !showAll ? images.slice(0, MAX_VISIBLE_ITEMS) : images;
   const errorCount = images.filter((image) => image.status === 'error').length;
 
-  const registerItem = useCallback(
-    function registerItem(id: string, element: HTMLElement | null) {
-      onItemRef?.(id, element);
-      if (element && firstRevealedId.current === id) {
-        firstRevealedId.current = null;
-        element.focus();
-      }
-    },
-    [onItemRef]
-  );
+  const registerItem = useCallback(function registerItem(id: string, element: HTMLElement | null) {
+    if (element && firstRevealedId.current === id) {
+      firstRevealedId.current = null;
+      element.focus();
+    }
+  }, []);
 
   function handleShowAll() {
     firstRevealedId.current = images[visibleImages.length]?.id ?? null;
@@ -144,7 +139,7 @@ interface FileItemProps {
   /** Reports a successful image load. */
   onLoadSuccess: (id: string) => void;
 
-  /** Registers the collection row for revealing newly added or expanded files. */
+  /** Registers the collection row for revealing expanded files. */
   onItemRef?: (id: string, element: HTMLElement | null) => void;
 }
 
