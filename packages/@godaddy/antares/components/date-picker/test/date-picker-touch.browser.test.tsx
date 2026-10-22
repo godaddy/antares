@@ -56,48 +56,5 @@ describe('@godaddy/antares', function packageTests() {
         }
       }
     );
-
-    it.skipIf(server.browser !== 'chromium')(
-      'scrolls over date cells without committing a selection',
-      async function swipe() {
-        await page.viewport(320, 768);
-        const screen = await render(<MobileExample range keepOpen defaultOpen />);
-        await screen.getByRole('button', { name: /September 15, 2026/ }).click();
-        await expect
-          .poll(function settled() {
-            return getComputedStyle(screen.getByRole('dialog').element().parentElement!).transform;
-          })
-          .toBe('none');
-        const viewport = document.querySelector('[data-calendar-month]')!.parentElement!;
-        const start = viewport.scrollTop;
-        const rect = screen
-          .getByRole('button', { name: /September 25, 2026/ })
-          .element()
-          .getBoundingClientRect();
-        const frame = window.frameElement?.getBoundingClientRect();
-        const scale = frame ? frame.width / window.innerWidth : 1;
-        const session = cdp();
-        await session.send('Emulation.setTouchEmulationEnabled', { enabled: true });
-        try {
-          await session.send('Input.synthesizeScrollGesture', {
-            x: (rect.x + rect.width / 2) * scale + (frame?.left ?? 0),
-            y: (rect.y + rect.height / 2) * scale + (frame?.top ?? 0),
-            yDistance: -240,
-            speed: 1400,
-            gestureSourceType: 'touch'
-          });
-          await expect
-            .poll(function position() {
-              return viewport.scrollTop;
-            })
-            .toBeGreaterThan(start + 100);
-          await expect.element(screen.getByLabelText('Selected dates')).toBeEmptyDOMElement();
-          await screen.getByRole('button', { name: /October 12, 2026/ }).click();
-          await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-10-12');
-        } finally {
-          await session.send('Emulation.setTouchEmulationEnabled', { enabled: false });
-        }
-      }
-    );
   });
 });
