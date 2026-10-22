@@ -7,7 +7,14 @@ import {
   type Dispatch,
   type SetStateAction
 } from 'react';
-import { endOfMonth, isSameMonth, startOfMonth, type CalendarDate } from '@internationalized/date';
+import {
+  endOfMonth,
+  isSameMonth,
+  startOfMonth,
+  toCalendar,
+  toCalendarDate,
+  type CalendarDate
+} from '@internationalized/date';
 import {
   Calendar as RACCalendar,
   RangeCalendar as RACRangeCalendar,
@@ -145,7 +152,10 @@ function MonthScroller({ type, months, setMonths }: MonthScrollerProps) {
     anchor.current = { month: element.dataset.calendarMonth!, offset: element.getBoundingClientRect().top - top };
   }
 
-  function navigate(date: CalendarDate) {
+  function navigate(next: CalendarDate) {
+    let date = next;
+    if (minValue && date.compare(minValue) < 0) date = toCalendar(toCalendarDate(minValue), date.calendar);
+    if (maxValue && date.compare(maxValue) > 0) date = toCalendar(toCalendarDate(maxValue), date.calendar);
     anchor.current = { month: startOfMonth(date).toString(), offset: 0 };
     setActive(startOfMonth(date));
     state.setFocusedDate(date);
@@ -154,7 +164,7 @@ function MonthScroller({ type, months, setMonths }: MonthScrollerProps) {
   return (
     <>
       <Flex as="header" justifyContent="center" className={styles.scrollHeader}>
-        <MonthControls date={active} minValue={minValue} maxValue={maxValue} onChange={navigate} />
+        <MonthControls date={active} onChange={navigate} />
       </Flex>
       <div ref={viewport} className={styles.monthViewport} onScroll={scroll}>
         {offsets.map(function renderMonth(offset) {

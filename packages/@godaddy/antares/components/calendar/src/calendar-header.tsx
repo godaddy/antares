@@ -7,13 +7,7 @@ import { Content, Group } from '#components/structure';
 import { Popover } from '#components/popover';
 import { ListBox } from '#components/listbox';
 import { Button } from '#components/button';
-import {
-  type CalendarDate,
-  type DateValue,
-  DateFormatter,
-  getLocalTimeZone,
-  toCalendar
-} from '@internationalized/date';
+import { type CalendarDate, DateFormatter, getLocalTimeZone } from '@internationalized/date';
 import { useCallback, useContext, useMemo } from 'react';
 import {
   CalendarStateContext as RACCalendarStateContext,
@@ -55,8 +49,6 @@ export function MonthHeading(props: { offset: number }) {
   return (
     <MonthControls
       date={state.visibleRange.start.add({ months: offset })}
-      minValue={state.minValue?.add({ months: offset })}
-      maxValue={state.maxValue}
       onChange={function changeMonth(date) {
         state.setFocusedDate(date.subtract({ months: offset }));
       }}
@@ -68,20 +60,12 @@ interface MonthControlsProps {
   /** Month displayed by the controls. */
   date: CalendarDate;
 
-  /** Earliest navigable date. */
-  minValue?: DateValue | null;
-
-  /** Latest navigable date. */
-  maxValue?: DateValue | null;
-
   /** Navigate after a month selection or committed year edit. */
   onChange: (date: CalendarDate) => void;
 }
 
-export function MonthControls({ date: displayDate, minValue, maxValue, onChange }: MonthControlsProps) {
+export function MonthControls({ date: displayDate, onChange }: MonthControlsProps) {
   const { locale } = useLocale();
-  const min = minValue && toCalendar(minValue, displayDate.calendar);
-  const max = maxValue && toCalendar(maxValue, displayDate.calendar);
   const monthNames = useMemo(
     function computeMonthNames() {
       const formatter = new DateFormatter(locale, { month: 'long', calendar: displayDate.calendar.identifier });
@@ -135,8 +119,6 @@ export function MonthControls({ date: displayDate, minValue, maxValue, onChange 
         aria-label="Year"
         formatOptions={{ useGrouping: false }}
         value={displayDate.year}
-        minValue={min?.era === displayDate.era ? min.year : 1}
-        maxValue={max?.era === displayDate.era ? max.year : displayDate.calendar.getYearsInEra(displayDate)}
         onChange={handleYearChange}
         className={styles.yearField}
       >
