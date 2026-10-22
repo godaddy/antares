@@ -8,7 +8,7 @@ d:"/antares/pr-380-site/_next/static/chunks/0cq_r7uivgtia.js"
 e:"/antares/pr-380-site/_next/static/chunks/44d0fxytx9jkg.js"
 f:"/antares/pr-380-site/_next/static/chunks/0y43-9m1z7bvl.js"
 10:"/antares/pr-380-site/_next/static/chunks/2f_a87zzluj--.js"
-11:"/antares/pr-380-site/_next/static/chunks/38hh64dz_eugb.js"
+11:"/antares/pr-380-site/_next/static/chunks/3-0fi3pzuk8_u.js"
 12:"/antares/pr-380-site/_next/static/chunks/2znf03_833nl7.js"
 13:"/antares/pr-380-site/_next/static/chunks/428imhwwk-ha_.js"
 14:"/antares/pr-380-site/_next/static/chunks/32o7tmg2i-rss.js"
@@ -658,7 +658,7 @@ export const appointmentsImage =
 b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L15",null,{"toc":[{"depth":2,"url":"#install-a-block","title":"Install a block"},{"depth":2,"url":"#blocks","title":"Blocks"},{"depth":3,"url":"#overview-dashboard","title":"Overview dashboard"},{"depth":3,"url":"#project-inquiry-form","title":"Project inquiry form"},{"depth":3,"url":"#gallery","title":"Gallery"},{"depth":3,"url":"#sign-in-form","title":"Sign-in form"}],"footer":{"enabled":true},"children":[["$","$L16",null,{"children":"Build product experiences with Antares."}],["$","$L17",null,{"className":"mb-0","children":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L18",null,{"markdownUrl":"/docs/blocks.mdx"}],["$","$L19",null,{"markdownUrl":"/docs/blocks.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/README.mdx"}]]}],["$","$L1a",null,{"children":[null,"\n",["$","$L1b",null,{"as":"h2","id":"install-a-block","children":"Install a block"}],"\n",["$","p",null,{"children":"From the root of your application, run the command copied by the block's Install button:"}],"\n",["$","$L1c",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$L1d",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npx"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" shadcn@latest"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" add"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" godaddy/antares/blocks/sign-in-form"}]]}]}]}]}],"\n",["$","$L1b",null,{"as":"h2","id":"blocks","children":"Blocks"}],"\n",["$","$L1b",null,{"as":"h3","id":"overview-dashboard","children":"Overview dashboard"}],"\n",["$","$L1f",null,{"block":{"id":"overview-dashboard","description":"A responsive Antares overview dashboard with users, sales channels, and conversations.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/overview-dashboard","files":[{"path":"components/appointments-promotion-card/index.module.css","language":"css","source":".mediaCard {\n  min-inline-size: 0;\n}\n\n.mediaImage {\n  display: block;\n  max-inline-size: 100%;\n  block-size: auto;\n  border-radius: var(--rounding-sm);\n}\n\n.mediaCardContent,\n.mediaCardCopy,\n.mediaCardImage {\n  min-inline-size: 0;\n}\n"},{"path":"components/appointments-promotion-card/index.tsx","language":"tsx","source":"$20"},{"path":"components/conversations-card/index.module.css","language":"css","source":".conversationsCard {\n  min-inline-size: 0;\n}\n"},{"path":"components/conversations-card/index.tsx","language":"tsx","source":"import { Button, Card, Flex, Heading, Tag, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Demonstrates a secondary conversations card with a connection action. */\nexport function ConversationsCard() {\n  return (\n    <Card elevation=\"card\" className={styles.conversationsCard}>\n      <Flex direction=\"column\" gap=\"md\">\n        <Flex justifyContent=\"space-between\" alignItems=\"center\" gap=\"md\">\n          <Heading level={3}>Conversations</Heading>\n          <Tag emphasis=\"info\" size=\"sm\">\n            Included\n          </Tag>\n        </Flex>\n        <Text>Manage all your emails and messages in one place with a unified inbox.</Text>\n        <Button variant=\"secondary\" size=\"sm\">\n          Connect Email\n        </Button>\n      </Flex>\n    </Card>\n  );\n}\n"},{"path":"components/dashboard-header/index.module.css","language":"css","source":".mobileMenuButton,\n.mobileNavLogo,\n.mobileNavAction {\n  display: none;\n}\n\n.navDivider {\n  block-size: 1.25rem;\n  border-inline-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n}\n\n.navigation {\n  gap: var(--sp-lg);\n}\n\n.navActions {\n  gap: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .mobileMenuButton,\n  .mobileNavLogo,\n  .mobileNavAction {\n    display: inline-flex;\n  }\n\n  .desktopNavAction,\n  .navDivider {\n    display: none;\n  }\n\n  .navigation,\n  .navActions {\n    gap: var(--sp-sm);\n  }\n}\n"},{"path":"components/dashboard-header/index.tsx","language":"tsx","source":"$21"},{"path":"components/dashboard-sidebar-content/index.module.css","language":"css","source":"$22"},{"path":"components/dashboard-sidebar-content/index.tsx","language":"tsx","source":"$23"},{"path":"components/dashboard-sidebar/index.module.css","language":"css","source":".sideNavigationContainer {\n  align-self: stretch;\n  background: var(--ux-9i7okd, #f5f7f8);\n  block-size: auto;\n  min-inline-size: 0;\n  overflow: visible;\n  position: relative;\n}\n\n.sideNavigation {\n  background: var(--ux-9i7okd, #f5f7f8);\n  block-size: 100%;\n  inline-size: 100%;\n  min-inline-size: 0;\n  overflow: hidden;\n  padding-block-start: var(--sp-md, 0.5rem);\n  transition: inline-size 300ms cubic-bezier(0.32, 0.72, 0, 1);\n}\n\n.sideNavigationContainer:where([data-expanded]) {\n  z-index: 1;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .sideNavigation {\n    transition: none;\n  }\n}\n\n@container (max-width: 40rem) {\n  .sideNavigationContainer {\n    display: none;\n  }\n}\n"},{"path":"components/dashboard-sidebar/index.tsx","language":"tsx","source":"$24"},{"path":"components/overview-dashboard/index.module.css","language":"css","source":".dashboardFrame {\n  container-type: inline-size;\n  inline-size: 100%;\n  block-size: 100%;\n}\n\n.dashboardShell {\n  grid-template-columns: 56px minmax(0, 1fr);\n  gap: var(--sp-xl);\n  min-block-size: 100%;\n  min-inline-size: 0;\n  transition: grid-template-columns 300ms cubic-bezier(0.32, 0.72, 0, 1);\n}\n\n.dashboardShell:where([data-navigation-pinned-open]) {\n  grid-template-columns: 224px minmax(0, 1fr);\n}\n\n.dashboardMain {\n  align-items: center;\n  min-block-size: 100%;\n  min-inline-size: 0;\n}\n\n.dashboardContent {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n}\n\n.contentGrid {\n  grid-template-columns: minmax(0, 2.25fr) minmax(17.5rem, 1fr);\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .dashboardShell {\n    transition: none;\n  }\n}\n\n@container (max-width: 56rem) {\n  .contentGrid {\n    grid-template-columns: 1fr;\n  }\n}\n\n@container (max-width: 40rem) {\n  .dashboardShell {\n    grid-template-columns: 1fr;\n  }\n}\n"},{"path":"components/overview-dashboard/index.tsx","language":"tsx","source":"$25"},{"path":"components/sales-channels-card/index.module.css","language":"css","source":".salesCardMeasure {\n  min-inline-size: 0;\n}\n"},{"path":"components/sales-channels-card/index.tsx","language":"tsx","source":"$26"},{"path":"components/users-card/index.module.css","language":"css","source":".usersCard {\n  min-inline-size: 0;\n}\n\n.userRow {\n  align-items: center;\n}\n\n.userDivider {\n  border: 0;\n  border-block-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n  margin-block: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .restoreUsersLabel {\n    display: none;\n  }\n\n  .userRow {\n    align-items: flex-start;\n  }\n\n  .userActions {\n    inline-size: 100%;\n    justify-content: flex-end;\n  }\n}\n"},{"path":"components/users-card/index.tsx","language":"tsx","source":"$27"},{"path":"constants/config.ts","language":"ts","source":"$28"},{"path":"index.tsx","language":"tsx","source":"export { OverviewDashboard } from './components/overview-dashboard';\n"}]},"children":"$L29"}],"\n","$L2a","\n","$L2b","\n","$L2c","\n","$L2d","\n","$L2e","\n","$L2f"]}]]}],["$L30","$L31"],"$L32"]}],"p":"$@33","v":null,"s":"$a"}}]]
 2:[["children",{"s":{"n":"slug","t":"oc","k":"blocks","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
 1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
-0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L35",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L37",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$38",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Build product experiences with Antares."}],["$","meta","1",{"name":"description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","2",{"property":"og:title","content":"Build product experiences with Antares."}],["$","meta","3",{"property":"og:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Build product experiences with Antares."}],["$","meta","7",{"name":"twitter:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@39","v":null,"s":"$a"}},"a":"$@3a","u":"$@3b","b":"FOycwQeOJw_rmbPrTk0-8"}
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L35",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L37",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$38",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Build product experiences with Antares."}],["$","meta","1",{"name":"description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","2",{"property":"og:title","content":"Build product experiences with Antares."}],["$","meta","3",{"property":"og:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Build product experiences with Antares."}],["$","meta","7",{"name":"twitter:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@39","v":null,"s":"$a"}},"a":"$@3a","u":"$@3b","b":"TC7ia21gHY_Oumq-jm8ku"}
 3c:I[260568,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
 4e:I[342785,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
 4f:I[897367,["$4","$5"],"OutletBoundary"]
@@ -1610,14 +1610,13 @@ function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: ViewBan
     </Flex>
   );
 }
-45:T3176,'use client';
+45:T2dbc,'use client';
 
-import { forwardRef, useCallback, useId, useLayoutEffect, useRef, useState } from 'react';
+import { forwardRef, useCallback, useId, useRef, useState } from 'react';
 import {
+  Alert,
   Box,
   Button,
-  CloseButton,
-  Content,
   Detail,
   type DropEvent,
   type DropOptions,
@@ -1626,15 +1625,11 @@ import {
   Heading,
   Icon,
   Label,
-  Popover,
-  PopoverTrigger,
   ProgressBar,
   SegmentedController,
   SegmentedControllerItem,
   Tag,
   Text,
-  Tooltip,
-  TooltipTrigger,
   isFileDropItem,
   useDrop
 } from '@godaddy/antares';
@@ -1698,24 +1693,25 @@ function GalleryContent({
     maxFileSize: limits?.maxFileSize ?? defaultLimits.maxFileSize,
     maxTotalSize: limits?.maxTotalSize ?? defaultLimits.maxTotalSize
   };
-  const { images, errors, notice, processing, addFiles, removeImage, retryImage, markReady, markError, reportError } =
-    useGalleryImages(initialImages, resolvedLimits, onImagesChange);
+  const {
+    images,
+    errors,
+    notice,
+    processing,
+    addFiles,
+    removeImage,
+    retryImage,
+    markReady,
+    markError,
+    reportError,
+    dismissErrors
+  } = useGalleryImages(initialImages, resolvedLimits, onImagesChange);
   const [view, setView] = useState(defaultView);
   const [showAll, setShowAll] = useState(false);
-  const previousImages = useRef(images);
   const [activeId, setActiveId] = useState<string | null>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const addButton = useRef<HTMLButtonElement>(null);
-
-  useLayoutEffect(
-    function revealAddedImages() {
-      const previousIds = new Set(previousImages.current.map((image) => image.id));
-      const hasAddedImages = images.some((image) => !previousIds.has(image.id));
-      previousImages.current = images;
-      if (hasAddedImages) setShowAll(true);
-    },
-    [images]
-  );
+  const uploadErrorId = useId();
 
   const handleShowAll = useCallback(function handleShowAll() {
     setShowAll(true);
@@ -1783,7 +1779,6 @@ function GalleryContent({
   return (
     <>
       <Flex
-        ref={dropZoneRef}
         dir={dir}
         lang={locale}
         role="region"
@@ -1791,7 +1786,6 @@ function GalleryContent({
         padding="0"
         alignItems="stretch"
         justifyContent="start"
-        {...dropProps}
         className={styles.dropZone}
       >
         <Flex direction="column" gap="lg" padding="lg" className={styles.content}>
@@ -1805,7 +1799,7 @@ function GalleryContent({
               <UploadPrompt
                 ref={addButton}
                 isDropTarget={isDropTarget}
-                errors={errors}
+                errorId={errors.length ? uploadErrorId : undefined}
                 acceptedTypes={acceptedTypes}
                 onSelect={addFiles}
               />
@@ -1822,7 +1816,37 @@ function GalleryContent({
             </Flex>
           </Flex>
 
-          <Box role="region" aria-label={view === 'list' ? messages.listView : messages.gridView}>
+          {errors.length ? (
+            <Alert
+              id={uploadErrorId}
+              emphasis="critical"
+              aria-label={messages.uploadIssues}
+              ariaLabels={{ close: messages.dismissUploadIssues }}
+              onClose={function dismissUploadIssues() {
+                addButton.current?.focus({ preventScroll: true });
+                dismissErrors();
+              }}
+            >
+              <Flex direction="column" gap="xs">
+                {errors.map((error) => (
+                  <Text key={error} size="sm">
+                    {error}
+                  </Text>
+                ))}
+              </Flex>
+            </Alert>
+          ) : null}
+          <Detail role="status" aria-label={messages.updates} aria-atomic="true" className={styles.notice}>
+            {notice}
+          </Detail>
+
+          <Box
+            ref={dropZoneRef}
+            role="region"
+            aria-label={view === 'list' ? messages.listView : messages.gridView}
+            {...dropProps}
+            className={styles.dropTarget}
+          >
             {images.length === 0 ? (
               <EmptyState />
             ) : (
@@ -1838,6 +1862,20 @@ function GalleryContent({
                 onLoadSuccess={markReady}
               />
             )}
+            {isDropTarget ? (
+              <Flex
+                role="status"
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                gap="sm"
+                padding="lg"
+                className={styles.dropOverlay}
+              >
+                <Icon icon="upload" aria-hidden="true" />
+                <Text as="strong">{messages.dropFiles}</Text>
+              </Flex>
+            ) : null}
           </Box>
           {processing ? (
             <ProgressBar
@@ -1850,25 +1888,7 @@ function GalleryContent({
               <Box slot="track" />
             </ProgressBar>
           ) : null}
-
-          <Detail role="status" aria-label={messages.updates} aria-atomic="true" className={styles.notice}>
-            {notice}
-          </Detail>
         </Flex>
-        {isDropTarget ? (
-          <Flex
-            role="status"
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-            gap="sm"
-            padding="lg"
-            className={styles.dropOverlay}
-          >
-            <Icon icon="upload" aria-hidden="true" />
-            <Text as="strong">{messages.dropFiles}</Text>
-          </Flex>
-        ) : null}
       </Flex>
       <Viewer
         images={images.filter(function filterViewableImage(image) {
@@ -1910,8 +1930,8 @@ interface UploadPromptProps {
   /** Whether an accepted file is currently over the gallery. */
   isDropTarget: boolean;
 
-  /** Validation issues shared with the picker and drop target. */
-  errors: string[];
+  /** Identifies current upload errors for the picker description. */
+  errorId?: string;
 
   /** MIME types accepted by the gallery picker. */
   acceptedTypes: string[];
@@ -1922,75 +1942,34 @@ interface UploadPromptProps {
 
 /** Compact file-upload action shared by Gallery's list and grid views. */
 const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(function UploadPrompt(
-  { isDropTarget, errors, acceptedTypes, onSelect },
+  { isDropTarget, errorId, acceptedTypes, onSelect },
   ref
 ) {
   const { messages } = useGalleryCopy();
   const helpId = useId();
-  const errorId = useId();
-  const hasErrors = errors.length > 0;
-  const issueButton = (
-    <Button variant="minimal" size="sm" aria-label={messages.reviewUploadIssues} isDisabled={!hasErrors}>
-      <Icon icon="alert" color="var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802))" aria-hidden="true" />
-    </Button>
-  );
-  const describedBy = [isDropTarget ? null : helpId, hasErrors ? errorId : null].filter(Boolean).join(' ') || undefined;
+  const describedBy = [isDropTarget ? null : helpId, errorId].filter(Boolean).join(' ') || undefined;
   return (
     <Flex alignItems="center" gap="sm" wrap="wrap" role="group" aria-label={messages.addFilesRegion}>
-      <Flex alignItems="center" gap="xs">
-        <FileTrigger allowsMultiple acceptedFileTypes={acceptedTypes} onSelect={onSelect}>
-          <Button
-            ref={ref}
-            type="button"
-            size="md"
-            variant="secondary"
-            aria-label={messages.addFiles}
-            aria-describedby={describedBy}
-          >
-            <Icon icon="upload" aria-hidden="true" />
-            {messages.addFiles}
-          </Button>
-        </FileTrigger>
-        <Box className={styles.issueSlot} data-empty={!hasErrors || undefined}>
-          {hasErrors ? (
-            <PopoverTrigger>
-              <TooltipTrigger>
-                {issueButton}
-                <Tooltip>{messages.reviewUploadIssues}</Tooltip>
-              </TooltipTrigger>
-              <Popover placement="bottom end" className={styles.uploadIssues}>
-                <Heading slot="title" level={3}>
-                  {messages.uploadIssues}
-                </Heading>
-                <CloseButton aria-label={messages.closeUploadIssues} />
-                <Content gap="sm">
-                  {errors.map((error) => (
-                    <Text key={error}>{error}</Text>
-                  ))}
-                </Content>
-              </Popover>
-            </PopoverTrigger>
-          ) : (
-            issueButton
-          )}
-        </Box>
-      </Flex>
+      <FileTrigger allowsMultiple acceptedFileTypes={acceptedTypes} onSelect={onSelect}>
+        <Button
+          ref={ref}
+          type="button"
+          size="md"
+          variant="secondary"
+          aria-label={messages.addFiles}
+          aria-describedby={describedBy}
+        >
+          <Icon icon="upload" aria-hidden="true" />
+          {messages.addFiles}
+        </Button>
+      </FileTrigger>
       {isDropTarget ? null : <Text id={helpId}>{messages.dragHint}</Text>}
-      {hasErrors ? (
-        <Text id={errorId} role="alert" className={styles.announcement}>
-          {errors.join(' ')}
-        </Text>
-      ) : null}
     </Flex>
   );
 });
-46:T57a,.surface {
+46:T5bc,.surface {
   max-inline-size: 100%;
   object-fit: cover;
-}
-
-.surface:where(img) {
-  display: block;
 }
 
 .surface:where([data-variant="horizontal"]) {
@@ -2011,10 +1990,6 @@ const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(function U
 
 .image {
   max-inline-size: 100%;
-}
-
-.image:where(img) {
-  display: block;
 }
 
 .image:where([data-variant="viewer"]) {
@@ -2053,15 +2028,34 @@ const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(function U
   color: var(--color-feedback-critical-onsubtle, var(--ux-xaxxaq, #8b0000));
 }
 
-.surface:where([data-loading]),
-.image:where([data-loading]) {
-  background: var(--color-surface-background-subdued, var(--ux-1u2jy43, #d6d6d6));
-  color: transparent;
+.frame {
+  display: block;
+  position: relative;
 }
-47:T271a,'use client';
+
+.frame:where([data-variant="default"]) {
+  inline-size: fit-content;
+}
+
+.resource {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: inherit;
+}
+
+.resource:where([data-loading]) {
+  opacity: 0;
+}
+
+.skeleton {
+  position: absolute;
+  inset: 0;
+}
+47:T27f7,'use client';
 
 import { forwardRef, useCallback, useRef, useState, type ReactEventHandler } from 'react';
-import { Box, Button, Flex, Icon, Image, Text } from '@godaddy/antares';
+import { Box, Button, Flex, Icon, Image, Skeleton, Text } from '@godaddy/antares';
 import type { ImageItem } from '../../data/types';
 import { useGalleryCopy } from '../../data/copy';
 import styles from './index.module.css';
@@ -2211,25 +2205,27 @@ const ImageSurface = forwardRef<HTMLImageElement, ImageSurfaceProps>(function Im
   ref
 ) {
   return (
-    <Box
-      as={Image}
-      ref={ref}
-      src={src}
-      srcSet={srcSet}
-      sizes={sizes}
-      width={width}
-      height={height}
-      alt={alt}
-      className={className}
-      data-variant={variant}
-      data-loading={isLoading || undefined}
-      aria-busy={isLoading || undefined}
-      rounding="md"
-      loading={loading}
-      decoding="async"
-      onLoad={onLoad}
-      onError={onError}
-    />
+    <Box as="span" className={`${styles.frame} ${className ?? ''}`} data-variant={variant}>
+      <Box
+        as={Image}
+        ref={ref}
+        src={src}
+        srcSet={srcSet}
+        sizes={sizes}
+        width={width}
+        height={height}
+        alt={alt}
+        className={styles.resource}
+        data-loading={isLoading || undefined}
+        aria-busy={isLoading || undefined}
+        rounding="md"
+        loading={loading}
+        decoding="async"
+        onLoad={onLoad}
+        onError={onError}
+      />
+      {isLoading ? <Skeleton width="100%" height="100%" className={styles.skeleton} /> : null}
+    </Box>
   );
 });
 
@@ -2664,7 +2660,7 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
     </Modal>
   );
 }
-49:T1196,'use client';
+49:T117e,'use client';
 
 import { createContext, useContext, useMemo, type ReactNode } from 'react';
 
@@ -2678,9 +2674,8 @@ function createGalleryCopy(locale: string) {
     addFilesRegion: 'Add files to gallery',
     addFiles: 'Add files',
     uploadIssues: 'Upload issues',
-    reviewUploadIssues: 'Review upload issues',
-    closeUploadIssues: 'Close upload issues',
-    dragHint: 'or drag them here.',
+    dismissUploadIssues: 'Dismiss upload issues',
+    dragHint: 'or drag images into the gallery below.',
     dropFiles: 'Drop files to upload.',
     layout: 'Layout',
     list: 'List',
@@ -2914,7 +2909,7 @@ export interface GalleryLimits {
   /** Inclusive total byte budget for images with a known size. Defaults to 256 MiB. */
   maxTotalSize?: number;
 }
-4c:T1f92,'use client';
+4c:T21e8,'use client';
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { GalleryLimits, ImageItem } from '../data/types';
@@ -2987,6 +2982,10 @@ export function useGalleryImages(
     setImages(collection.current);
   }, []);
 
+  const dismissErrors = useCallback(function dismissErrors() {
+    setErrors([]);
+  }, []);
+
   const reportError = useCallback(function reportError(message: string) {
     if (mounted.current) setErrors((previous) => (previous.includes(message) ? previous : [...previous, message]));
   }, []);
@@ -3000,6 +2999,7 @@ export function useGalleryImages(
 
       const process = async function processFiles() {
         if (!mounted.current) return;
+        const batchIds = new Set<string>();
         let added = 0;
         let duplicates = 0;
         let invalid = 0;
@@ -3039,7 +3039,16 @@ export function useGalleryImages(
             const url = URL.createObjectURL(file);
             owned.current.set(key, { id, url, name: file.name, size: file.size });
             keys.current.set(id, key);
-            updateImages((previous) => [...previous, { id, name: file.name, size: file.size, src: url }]);
+            updateImages(function prependBatchImage(previous) {
+              const firstExisting = previous.findIndex((image) => !batchIds.has(image.id));
+              const insertionIndex = firstExisting === -1 ? previous.length : firstExisting;
+              return [
+                ...previous.slice(0, insertionIndex),
+                { id, name: file.name, size: file.size, src: url },
+                ...previous.slice(insertionIndex)
+              ];
+            });
+            batchIds.add(id);
             added++;
           } catch {
             unreadable++;
@@ -3122,9 +3131,21 @@ export function useGalleryImages(
     [messages, updateImages]
   );
 
-  return { images, errors, notice, processing, addFiles, removeImage, retryImage, markReady, markError, reportError };
+  return {
+    images,
+    errors,
+    notice,
+    processing,
+    addFiles,
+    removeImage,
+    retryImage,
+    markReady,
+    markError,
+    reportError,
+    dismissErrors
+  };
 }
-2d:["$","$L1f",null,{"block":{"id":"gallery","description":"Browse images in a list or grid, add local files, and open a media viewer.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/file-items/index.module.css","language":"css","source":".card {\n  inline-size: 100%;\n  min-inline-size: 0;\n  --_gallery-file-action-space: calc(var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5)) * 2);\n}\n\n.card:where([data-error]) {\n  border-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));\n}\n\n.cover {\n  box-sizing: border-box;\n  min-inline-size: 0;\n  border: 1px solid transparent;\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--_gallery-file-action-space);\n}\n\n.details:where([data-variant=\"vertical\"]) {\n  padding-inline-end: 0;\n}\n\n.errorDetails {\n  min-inline-size: 0;\n}\n\n.retry {\n  text-decoration: underline;\n}\n\n.collection {\n  inline-size: 100%;\n}\n"},{"path":"components/file-items/index.tsx","language":"tsx","source":"$44"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.notice:where(:empty) {\n  position: absolute;\n}\n\n.dropOverlay {\n  position: absolute;\n  inset: 0;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  color: var(--color-surface-text-base, var(--ux-1leynsm, CanvasText));\n  pointer-events: none;\n}\n\n.dropZone {\n  position: relative;\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.emptyState {\n  min-block-size: 256px;\n  text-align: center;\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n\n.issueSlot:where([data-empty]) {\n  visibility: hidden;\n}\n\n.uploadIssues {\n  max-inline-size: 24rem;\n}\n\n.announcement {\n  position: absolute;\n  inline-size: 1px;\n  block-size: 1px;\n  overflow: hidden;\n  clip-path: inset(50%);\n  white-space: nowrap;\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$45"},{"path":"components/image/index.module.css","language":"css","source":"$46"},{"path":"components/image/index.tsx","language":"tsx","source":"$47"},{"path":"components/viewer/index.module.css","language":"css","source":".modalContainer {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n  min-inline-size: 0;\n}\n\n.modal {\n  inline-size: 100%;\n  max-inline-size: 100%;\n}\n\n.slide {\n  min-inline-size: 0;\n  max-inline-size: 100%;\n  block-size: 55dvh;\n}\n\n.name {\n  flex: 1 1 auto;\n  min-inline-size: 0;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  overflow-x: auto;\n  scroll-padding-inline: var(--sp-sm);\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$48"},{"path":"data/copy.tsx","language":"tsx","source":"$49"},{"path":"data/sample-images.ts","language":"ts","source":"$4a"},{"path":"data/types.ts","language":"ts","source":"$4b"},{"path":"hooks/use-gallery-images.ts","language":"ts","source":"$4c"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery';\nexport type { ImageItem } from './data/types';\n"}]},"children":"$L4d"}]
+2d:["$","$L1f",null,{"block":{"id":"gallery","description":"Browse images in a list or grid, add local files, and open a media viewer.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/file-items/index.module.css","language":"css","source":".card {\n  inline-size: 100%;\n  min-inline-size: 0;\n  --_gallery-file-action-space: calc(var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5)) * 2);\n}\n\n.card:where([data-error]) {\n  border-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));\n}\n\n.cover {\n  box-sizing: border-box;\n  min-inline-size: 0;\n  border: 1px solid transparent;\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--_gallery-file-action-space);\n}\n\n.details:where([data-variant=\"vertical\"]) {\n  padding-inline-end: 0;\n}\n\n.errorDetails {\n  min-inline-size: 0;\n}\n\n.retry {\n  text-decoration: underline;\n}\n\n.collection {\n  inline-size: 100%;\n}\n"},{"path":"components/file-items/index.tsx","language":"tsx","source":"$44"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.notice:where(:empty) {\n  position: absolute;\n}\n\n.dropOverlay {\n  position: absolute;\n  inset: 0;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  color: var(--color-surface-text-base, var(--ux-1leynsm, CanvasText));\n  pointer-events: none;\n}\n\n.dropTarget {\n  position: relative;\n}\n\n.dropZone {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.emptyState {\n  min-block-size: 256px;\n  text-align: center;\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$45"},{"path":"components/image/index.module.css","language":"css","source":"$46"},{"path":"components/image/index.tsx","language":"tsx","source":"$47"},{"path":"components/viewer/index.module.css","language":"css","source":".modalContainer {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n  min-inline-size: 0;\n}\n\n.modal {\n  inline-size: 100%;\n  max-inline-size: 100%;\n}\n\n.slide {\n  min-inline-size: 0;\n  max-inline-size: 100%;\n  block-size: 55dvh;\n}\n\n.name {\n  flex: 1 1 auto;\n  min-inline-size: 0;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  overflow-x: auto;\n  scroll-padding-inline: var(--sp-sm);\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$48"},{"path":"data/copy.tsx","language":"tsx","source":"$49"},{"path":"data/sample-images.ts","language":"ts","source":"$4a"},{"path":"data/types.ts","language":"ts","source":"$4b"},{"path":"hooks/use-gallery-images.ts","language":"ts","source":"$4c"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery';\nexport type { ImageItem } from './data/types';\n"}]},"children":"$L4d"}]
 2e:["$","$L1b",null,{"as":"h3","id":"sign-in-form","children":"Sign-in form"}]
 2f:["$","$L1f",null,{"block":{"id":"sign-in-form","description":"A simple Antares sign-in experience.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/sign-in-form","files":[{"path":"components/sign-in-fields.tsx","language":"tsx","source":"import { Flex, Input, Label, TextField } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\n\n/** Groups the accessible fields used by the sign-in form block. */\nexport function SignInFields() {\n  return (\n    <Flex direction=\"column\" gap=\"md\">\n      <TextField name=\"email\" isRequired>\n        <Label>{signInCopy.emailLabel}</Label>\n        <Input type=\"email\" autoComplete=\"email\" placeholder=\"you@example.com\" />\n      </TextField>\n      <TextField name=\"password\" isRequired>\n        <Label>{signInCopy.passwordLabel}</Label>\n        <Input type=\"password\" autoComplete=\"current-password\" />\n      </TextField>\n    </Flex>\n  );\n}\n"},{"path":"components/sign-in-form.tsx","language":"tsx","source":"'use client';\n\nimport { Box, Button, Flex, Heading, Text } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\nimport { SignInFields } from './sign-in-fields';\n\n/**\n * Provides a sign-in form composition to copy and adapt. Submission is prevented\n * until the consuming application supplies its authentication behavior.\n *\n * @example\n * ```tsx\n * <SignInForm />\n * ```\n */\nexport function SignInForm() {\n  return (\n    <Flex justifyContent=\"center\">\n      <Box flex=\"0 1 28rem\" padding=\"xl\" rounding=\"md\" elevation=\"card\">\n        <Flex\n          as=\"form\"\n          direction=\"column\"\n          gap=\"lg\"\n          onSubmit={function handleSubmit(event) {\n            event.preventDefault();\n          }}\n        >\n          <Heading level={2}>{signInCopy.title}</Heading>\n          <Text>{signInCopy.description}</Text>\n          <SignInFields />\n          <Button type=\"submit\" variant=\"primary\">\n            {signInCopy.submitLabel}\n          </Button>\n        </Flex>\n      </Box>\n    </Flex>\n  );\n}\n"},{"path":"data/copy.ts","language":"ts","source":"export const signInCopy = {\n  title: 'Sign in to your account',\n  description: 'Use your email and password to continue.',\n  emailLabel: 'Email',\n  passwordLabel: 'Password',\n  submitLabel: 'Sign in'\n} as const;\n"},{"path":"index.tsx","language":"tsx","source":"export { SignInForm } from './components/sign-in-form';\n"}]},"children":["$","$L4e",null,{}]}]
 30:["$","script","script-0",{"src":"/antares/pr-380-site/_next/static/chunks/428imhwwk-ha_.js","async":true}]
