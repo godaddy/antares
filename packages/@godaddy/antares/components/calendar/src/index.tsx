@@ -103,7 +103,7 @@ function CalendarBody(props: CalendarBodyProps) {
         const showPrevious = offset === 0;
         const showNext = offset === pageCount - 1;
         const monthCard = (
-          <Flex key={`month-${offset}`} direction="column" gap="var(--_calendar-padding)">
+          <Flex key={`month-${offset}`} direction="column" gap="var(--_calendar-gap)">
             <Flex as="header" direction="row" justifyContent="space-between" alignItems="center" gap="sm">
               <NavButton direction="previous" hidden={!showPrevious} />
               <MonthHeading offset={offset} />

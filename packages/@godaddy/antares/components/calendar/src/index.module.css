@@ -49,7 +49,6 @@
   table-layout: fixed;
   inline-size: calc(var(--_calendar-cell-size) * 7);
   max-inline-size: 100%;
-  margin-block: calc(var(--_calendar-gap) * -1);
   /* A calendar is a two-dimensional table; enlarged dates must remain readable. */
   min-inline-size: calc((2ch + var(--_calendar-gu) * 2 + 2px) * 7);
   font-size: var(--_size-control-font);
@@ -153,7 +152,7 @@
   inline-size: 100%;
   max-inline-size: calc(var(--_calendar-cell-size) * 7 + var(--_calendar-gap) * 2);
   flex: 1 1 auto;
-  margin-inline: auto;
+  align-self: center;
   overflow: hidden;
 }
 
@@ -171,7 +170,7 @@
 }
 
 .monthLabel {
-  margin: 0 0 var(--_calendar-padding);
+  margin: 0;
   padding-block: var(--_calendar-cell-padding);
   font-size: var(--font-body-size-md, var(--ux-oc0naw, 1rem));
   font-weight: normal;
@@ -181,8 +180,10 @@
 }
 
 .month {
-  display: flow-root;
-  padding-block: var(--_calendar-padding);
+  display: flex;
+  flex-direction: column;
+  gap: var(--_calendar-gap);
+  padding-block: var(--_calendar-padding) var(--_calendar-gap);
 }
 
 @container calendar-months (width < 16rem) {
