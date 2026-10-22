@@ -53,7 +53,7 @@ interface MobileExampleProps {
   /** Allow a range to cross unavailable dates. */
   allowsNonContiguousRanges?: boolean;
 
-  /** Number of months per page. */
+  /** Number of months buffered on either side while scrolling. */
   pageCount?: number;
 
   /** Amount to advance using the navigation buttons. */

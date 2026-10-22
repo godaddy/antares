@@ -51,6 +51,8 @@
   table-layout: fixed;
   inline-size: calc(var(--_calendar-cell-width) * 7);
   max-inline-size: 100%;
+  /* A calendar is a two-dimensional table; enlarged dates must remain readable. */
+  min-inline-size: calc((2ch + var(--_calendar-gu) * 2 + 2px) * 7);
   font-size: var(--_calendar-font-size);
 }
 
@@ -93,6 +95,7 @@
   color: var(--color-action-text-tertiary-default, var(--ux-ut3xrx, #111));
   inline-size: 100%;
   aspect-ratio: 1;
+  min-block-size: calc(var(--ux-jw5s9j, 1.375) * 1em + 2px);
   cursor: pointer;
   font-family: var(--ux-gfnupv, sans-serif);
   line-height: var(--ux-jw5s9j, 1.375);
@@ -161,6 +164,7 @@
   min-block-size: 0;
   overflow: auto;
   overscroll-behavior: contain;
+  overflow-anchor: none;
   scrollbar-gutter: stable;
   padding-inline: var(--_calendar-viewport-padding);
 }
@@ -168,7 +172,8 @@
 .monthLabel {
   margin: 0;
   padding-block: var(--_calendar-padding);
-  font-size: var(--font-body-size-md, var(--ux-oc0naw, 1rem));
+  font-size: var(--_calendar-font-size);
+  font-weight: normal;
   font-family: var(--ux-9wtaa3, sans-serif);
   text-align: center;
 }

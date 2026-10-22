@@ -289,7 +289,7 @@ function PickerOverlay({ popoverProps, drawerProps, overlay, children }: PickerO
 }
 
 export interface DatePickerCalendarProps extends CalendarProps, PickerOverlayOptions {
-  /** Months per page. Defaults to one in a popover and three in a drawer. */
+  /** Months per desktop page or mobile scroll buffer. Defaults to one in a popover and three in a drawer. */
   pageCount?: number;
 }
 
@@ -305,7 +305,7 @@ export function DatePickerCalendar({ popoverProps, drawerProps, overlay, ...prop
 }
 
 export interface DateRangePickerCalendarProps extends RangeCalendarProps, PickerOverlayOptions {
-  /** Months per page. Defaults to two in a popover and three in a drawer. */
+  /** Months per desktop page or mobile scroll buffer. Defaults to two in a popover and three in a drawer. */
   pageCount?: number;
 
   /** Pending range behavior on background press or blur. Defaults to reset in a drawer and select in a popover. */
