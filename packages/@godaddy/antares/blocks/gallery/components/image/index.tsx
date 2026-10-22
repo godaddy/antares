@@ -135,6 +135,9 @@ interface ImageSurfaceProps {
   /** Prioritize the active slide; defer offscreen resources. */
   loading?: 'eager' | 'lazy';
 
+  /** Displays a placeholder while this resource is loading. */
+  isLoading?: boolean;
+
   /** Native successful decode notification. */
   onLoad?: ReactEventHandler<HTMLImageElement>;
 
@@ -144,7 +147,7 @@ interface ImageSurfaceProps {
 
 /** Renders the shared image element; its owner supplies any interaction. */
 const ImageSurface = forwardRef<HTMLImageElement, ImageSurfaceProps>(function ImageSurface(
-  { src, srcSet, sizes, width, height, alt, variant, className, loading = 'lazy', onLoad, onError },
+  { src, srcSet, sizes, width, height, alt, variant, className, loading = 'lazy', isLoading, onLoad, onError },
   ref
 ) {
   return (
@@ -159,6 +162,8 @@ const ImageSurface = forwardRef<HTMLImageElement, ImageSurfaceProps>(function Im
       alt={alt}
       className={className}
       data-variant={variant}
+      data-loading={isLoading || undefined}
+      aria-busy={isLoading || undefined}
       rounding="md"
       loading={loading}
       decoding="async"
@@ -233,6 +238,7 @@ export function FileCover({ image, variant, onLoadError, onLoadSuccess }: FileCo
       className={styles.surface}
       variant={variant}
       loading="lazy"
+      isLoading={state === 'loading'}
       onLoad={onLoad}
       onError={onError}
     />
@@ -307,6 +313,7 @@ export function GalleryImage({ image, variant = 'default', loading = 'lazy', onR
         className={styles.image}
         variant={variant}
         loading={loading}
+        isLoading={state === 'loading'}
         onLoad={onLoad}
         onError={onError}
       />

@@ -4,7 +4,7 @@ import { cdp, page, userEvent } from 'vitest/browser';
 import { I18nProvider as RACI18nProvider } from 'react-aria-components';
 import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
 import { Gallery, type ImageItem } from '../index.tsx';
-import { GalleryImage } from '../components/image';
+import { FileCover, GalleryImage } from '../components/image';
 
 const pixel = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZ1EAAAAASUVORK5CYII=';
 const samples: ImageItem[] = [
@@ -332,6 +332,64 @@ describe('@godaddy/antares', function packageTests() {
           expect(position()).toEqual(before);
           await expect.element(add).toHaveFocus();
         }
+      }
+    );
+
+    it.each(['grid', 'list'] as const)(
+      'keeps upload issues compact and keyboard accessible in %s view',
+      async function uploadIssuePopover(view) {
+        const screen = await render(<Gallery initialImages={samples} defaultView={view} limits={{ maxFiles: 2 }} />);
+        const add = screen.getByRole('button', { name: 'Add files', exact: true });
+        const first = screen.getByRole('row', { name: 'Open one.png', exact: true });
+        const review = screen.getByRole('button', { name: 'Review upload issues', exact: true });
+        await expect.element(first).toBeVisible();
+        await expect.element(review).not.toBeInTheDocument();
+        add.element().focus();
+        await userEvent.keyboard('{Tab}');
+        await expect.element(screen.getByRole('radio', { name: 'List', exact: true })).toHaveFocus();
+        const position = () => [
+          add.element().getBoundingClientRect().x,
+          add.element().getBoundingClientRect().y,
+          first.element().getBoundingClientRect().x,
+          first.element().getBoundingClientRect().y,
+          document.scrollingElement?.scrollTop
+        ];
+        const before = position();
+        selectFiles(screen.container, [
+          new File(['text'], 'invalid.txt', { type: 'text/plain' }),
+          png('over-limit.png')
+        ]);
+        await expect.element(review).toBeVisible();
+        await expect.element(screen.getByRole('alert')).toHaveTextContent('smaller than 20 MiB');
+        await expect.element(screen.getByRole('alert')).toHaveTextContent('Gallery limit reached: 2 images');
+        expect(position()).toEqual(before);
+        add.element().focus();
+        await userEvent.keyboard('{Tab}');
+        await expect.element(review).toHaveFocus();
+        await expect.element(screen.getByRole('tooltip')).toHaveTextContent('Review upload issues');
+        await userEvent.keyboard('{Enter}');
+        const dialog = screen.getByRole('dialog', { name: 'Upload issues', exact: true });
+        await expect.element(dialog).toBeVisible();
+        await expect
+          .element(dialog.getByText('Use JPG, PNG, GIF, or WebP images smaller than 20 MiB.', { exact: true }))
+          .toBeVisible();
+        await expect
+          .element(dialog.getByText('Gallery limit reached: 2 images and 256 MiB total.', { exact: true }))
+          .toBeVisible();
+        await userEvent.keyboard('{Escape}');
+        await expect.element(dialog).not.toBeInTheDocument();
+        await expect.element(review).toHaveFocus();
+        await userEvent.keyboard(' ');
+        await expect.element(dialog).toBeVisible();
+        await userEvent.click(dialog.getByRole('button', { name: 'Close upload issues' }));
+        await expect.element(review).toHaveFocus();
+        await userEvent.click(screen.getByRole('button', { name: 'Remove two.png' }));
+        const beforeClear = position();
+        selectFiles(screen.container, [png('valid.png')]);
+        await expect.element(screen.getByRole('row', { name: 'Open valid.png' })).toBeVisible();
+        await expect.element(review).not.toBeInTheDocument();
+        await expect.element(screen.getByRole('alert')).not.toBeInTheDocument();
+        expect(position()).toEqual(beforeClear);
       }
     );
 
@@ -901,6 +959,48 @@ describe('@godaddy/antares', function packageTests() {
       await expect.poll(() => getComputedStyle(overlay).backgroundColor).toBe('rgba(216, 239, 239, 0.9)');
       expect(getComputedStyle(overlay).color).toBe('rgb(255, 255, 255)');
     });
+
+    it.each(['horizontal', 'vertical'] as const)(
+      'preserves %s cover geometry while the placeholder loads, succeeds, or fails',
+      async function coverPlaceholder(variant) {
+        controlImageEvents();
+        vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
+        const screen = await render(<FileCover image={samples[0]} variant={variant} />);
+        const image = screen.getByRole('img', { name: 'one.png', exact: true });
+        const bounds = function coverBounds() {
+          const { width, height } = screen.container.firstElementChild!.getBoundingClientRect();
+          return [width, height];
+        };
+        const before = bounds();
+        await expect.element(image).toHaveAttribute('aria-busy', 'true');
+        expect(getComputedStyle(image.element()).backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+        image.element().dispatchEvent(new Event('load'));
+        await expect.element(image).not.toHaveAttribute('aria-busy');
+        expect(getComputedStyle(image.element()).backgroundColor).toBe('rgba(0, 0, 0, 0)');
+        expect(bounds()).toEqual(before);
+        image.element().dispatchEvent(new Event('error'));
+        await expect.element(screen.getByRole('img', { name: 'one.png: File needs attention.' })).toBeVisible();
+        expect(bounds()).toEqual(before);
+      }
+    );
+
+    it.each(['viewer', 'thumbnail'] as const)(
+      'replaces the %s placeholder with the loaded image without resizing',
+      async function viewerPlaceholder(variant) {
+        controlImageEvents();
+        vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false);
+        const screen = await render(<GalleryImage image={samples[0]} variant={variant} />);
+        const image = screen.container.querySelector('img')!;
+        const before = image.getBoundingClientRect();
+        expect(image.getAttribute('aria-busy')).toBe('true');
+        expect(getComputedStyle(image).backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+        image.dispatchEvent(new Event('load'));
+        await expect.poll(() => image.hasAttribute('aria-busy')).toBe(false);
+        const after = image.getBoundingClientRect();
+        expect([after.width, after.height]).toEqual([before.width, before.height]);
+        expect(getComputedStyle(image).backgroundColor).toBe('rgba(0, 0, 0, 0)');
+      }
+    );
 
     it('shows an already completed image without a loading state', async function cachedImage() {
       controlImageEvents();

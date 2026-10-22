@@ -4,6 +4,8 @@ import { forwardRef, useCallback, useId, useLayoutEffect, useRef, useState } fro
 import {
   Box,
   Button,
+  CloseButton,
+  Content,
   Detail,
   type DropEvent,
   type DropOptions,
@@ -12,11 +14,15 @@ import {
   Heading,
   Icon,
   Label,
+  Popover,
+  PopoverTrigger,
   ProgressBar,
   SegmentedController,
   SegmentedControllerItem,
   Tag,
   Text,
+  Tooltip,
+  TooltipTrigger,
   isFileDropItem,
   useDrop
 } from '@godaddy/antares';
@@ -80,7 +86,7 @@ function GalleryContent({
     maxFileSize: limits?.maxFileSize ?? defaultLimits.maxFileSize,
     maxTotalSize: limits?.maxTotalSize ?? defaultLimits.maxTotalSize
   };
-  const { images, error, notice, processing, addFiles, removeImage, retryImage, markReady, markError, reportError } =
+  const { images, errors, notice, processing, addFiles, removeImage, retryImage, markReady, markError, reportError } =
     useGalleryImages(initialImages, resolvedLimits, onImagesChange);
   const [view, setView] = useState(defaultView);
   const [showAll, setShowAll] = useState(false);
@@ -187,7 +193,7 @@ function GalleryContent({
               <UploadPrompt
                 ref={addButton}
                 isDropTarget={isDropTarget}
-                error={error}
+                errors={errors}
                 acceptedTypes={acceptedTypes}
                 onSelect={addFiles}
               />
@@ -292,8 +298,8 @@ interface UploadPromptProps {
   /** Whether an accepted file is currently over the gallery. */
   isDropTarget: boolean;
 
-  /** Validation message shared with the picker and drop target. */
-  error: string;
+  /** Validation issues shared with the picker and drop target. */
+  errors: string[];
 
   /** MIME types accepted by the gallery picker. */
   acceptedTypes: string[];
@@ -304,32 +310,63 @@ interface UploadPromptProps {
 
 /** Compact file-upload action shared by Gallery's list and grid views. */
 const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(function UploadPrompt(
-  { isDropTarget, error, acceptedTypes, onSelect },
+  { isDropTarget, errors, acceptedTypes, onSelect },
   ref
 ) {
   const { messages } = useGalleryCopy();
   const helpId = useId();
   const errorId = useId();
-  const describedBy = [isDropTarget ? null : helpId, error ? errorId : null].filter(Boolean).join(' ') || undefined;
+  const hasErrors = errors.length > 0;
+  const issueButton = (
+    <Button variant="minimal" size="sm" aria-label={messages.reviewUploadIssues} isDisabled={!hasErrors}>
+      <Icon icon="alert" color="var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802))" aria-hidden="true" />
+    </Button>
+  );
+  const describedBy = [isDropTarget ? null : helpId, hasErrors ? errorId : null].filter(Boolean).join(' ') || undefined;
   return (
     <Flex alignItems="center" gap="sm" wrap="wrap" role="group" aria-label={messages.addFilesRegion}>
-      <FileTrigger allowsMultiple acceptedFileTypes={acceptedTypes} onSelect={onSelect}>
-        <Button
-          ref={ref}
-          type="button"
-          size="md"
-          variant="secondary"
-          aria-label={messages.addFiles}
-          aria-describedby={describedBy}
-        >
-          <Icon icon="upload" aria-hidden="true" />
-          {messages.addFiles}
-        </Button>
-      </FileTrigger>
+      <Flex alignItems="center" gap="xs">
+        <FileTrigger allowsMultiple acceptedFileTypes={acceptedTypes} onSelect={onSelect}>
+          <Button
+            ref={ref}
+            type="button"
+            size="md"
+            variant="secondary"
+            aria-label={messages.addFiles}
+            aria-describedby={describedBy}
+          >
+            <Icon icon="upload" aria-hidden="true" />
+            {messages.addFiles}
+          </Button>
+        </FileTrigger>
+        <Box className={styles.issueSlot} data-empty={!hasErrors || undefined}>
+          {hasErrors ? (
+            <PopoverTrigger>
+              <TooltipTrigger>
+                {issueButton}
+                <Tooltip>{messages.reviewUploadIssues}</Tooltip>
+              </TooltipTrigger>
+              <Popover placement="bottom end" className={styles.uploadIssues}>
+                <Heading slot="title" level={3}>
+                  {messages.uploadIssues}
+                </Heading>
+                <CloseButton aria-label={messages.closeUploadIssues} />
+                <Content gap="sm">
+                  {errors.map((error) => (
+                    <Text key={error}>{error}</Text>
+                  ))}
+                </Content>
+              </Popover>
+            </PopoverTrigger>
+          ) : (
+            issueButton
+          )}
+        </Box>
+      </Flex>
       {isDropTarget ? null : <Text id={helpId}>{messages.dragHint}</Text>}
-      {error ? (
-        <Text id={errorId} role="alert" emphasis="critical">
-          {error}
+      {hasErrors ? (
+        <Text id={errorId} role="alert" className={styles.announcement}>
+          {errors.join(' ')}
         </Text>
       ) : null}
     </Flex>

@@ -30,7 +30,7 @@ export function useGalleryImages(
   const { messages } = useGalleryCopy();
   const [images, setImages] = useState(() => [...initialImages]);
   const collection = useRef(images);
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState<string[]>([]);
   const [notice, setNotice] = useState('');
   const [processing, setProcessing] = useState<{ completed: number; total: number } | null>(null);
   const progress = useRef({ completed: 0, total: 0 });
@@ -72,7 +72,7 @@ export function useGalleryImages(
   }, []);
 
   const reportError = useCallback(function reportError(message: string) {
-    if (mounted.current) setError((previous) => (previous ? `${previous} ${message}` : message));
+    if (mounted.current) setErrors((previous) => (previous.includes(message) ? previous : [...previous, message]));
   }, []);
 
   const addFiles = useCallback(
@@ -137,7 +137,7 @@ export function useGalleryImages(
         if (invalid) errors.push(messages.invalidFiles(limits.maxFileSize / MiB));
         if (overBudget) errors.push(messages.limitReached(limits.maxFiles, limits.maxTotalSize / MiB));
         if (unreadable) errors.push(messages.unreadableImages);
-        setError(errors.join(' '));
+        setErrors(errors);
         const notices = [];
         if (added) notices.push(messages.addedImages(added));
         if (duplicates) notices.push(messages.skippedDuplicates(duplicates));
@@ -206,5 +206,5 @@ export function useGalleryImages(
     [messages, updateImages]
   );
 
-  return { images, error, notice, processing, addFiles, removeImage, retryImage, markReady, markError, reportError };
+  return { images, errors, notice, processing, addFiles, removeImage, retryImage, markReady, markError, reportError };
 }
