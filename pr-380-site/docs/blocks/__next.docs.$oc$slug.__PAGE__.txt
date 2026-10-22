@@ -8,7 +8,7 @@ d:"/antares/pr-380-site/_next/static/chunks/0cq_r7uivgtia.js"
 e:"/antares/pr-380-site/_next/static/chunks/44d0fxytx9jkg.js"
 f:"/antares/pr-380-site/_next/static/chunks/0y43-9m1z7bvl.js"
 10:"/antares/pr-380-site/_next/static/chunks/2f_a87zzluj--.js"
-11:"/antares/pr-380-site/_next/static/chunks/2cujxuzphnqfp.js"
+11:"/antares/pr-380-site/_next/static/chunks/0t9ovw7g1hnwd.js"
 12:"/antares/pr-380-site/_next/static/chunks/2znf03_833nl7.js"
 13:"/antares/pr-380-site/_next/static/chunks/428imhwwk-ha_.js"
 14:"/antares/pr-380-site/_next/static/chunks/32o7tmg2i-rss.js"
@@ -658,7 +658,7 @@ export const appointmentsImage =
 b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L15",null,{"toc":[{"depth":2,"url":"#install-a-block","title":"Install a block"},{"depth":2,"url":"#blocks","title":"Blocks"},{"depth":3,"url":"#overview-dashboard","title":"Overview dashboard"},{"depth":3,"url":"#project-inquiry-form","title":"Project inquiry form"},{"depth":3,"url":"#gallery","title":"Gallery"},{"depth":3,"url":"#sign-in-form","title":"Sign-in form"}],"footer":{"enabled":true},"children":[["$","$L16",null,{"children":"Build product experiences with Antares."}],["$","$L17",null,{"className":"mb-0","children":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L18",null,{"markdownUrl":"/docs/blocks.mdx"}],["$","$L19",null,{"markdownUrl":"/docs/blocks.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/README.mdx"}]]}],["$","$L1a",null,{"children":[null,"\n",["$","$L1b",null,{"as":"h2","id":"install-a-block","children":"Install a block"}],"\n",["$","p",null,{"children":"From the root of your application, run the command copied by the block's Install button:"}],"\n",["$","$L1c",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$L1d",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npx"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" shadcn@latest"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" add"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" godaddy/antares/blocks/sign-in-form"}]]}]}]}]}],"\n",["$","$L1b",null,{"as":"h2","id":"blocks","children":"Blocks"}],"\n",["$","$L1b",null,{"as":"h3","id":"overview-dashboard","children":"Overview dashboard"}],"\n",["$","$L1f",null,{"block":{"id":"overview-dashboard","description":"A responsive Antares overview dashboard with users, sales channels, and conversations.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/overview-dashboard","files":[{"path":"components/appointments-promotion-card/index.module.css","language":"css","source":".mediaCard {\n  min-inline-size: 0;\n}\n\n.mediaImage {\n  display: block;\n  max-inline-size: 100%;\n  block-size: auto;\n  border-radius: var(--rounding-sm);\n}\n\n.mediaCardContent,\n.mediaCardCopy,\n.mediaCardImage {\n  min-inline-size: 0;\n}\n"},{"path":"components/appointments-promotion-card/index.tsx","language":"tsx","source":"$20"},{"path":"components/conversations-card/index.module.css","language":"css","source":".conversationsCard {\n  min-inline-size: 0;\n}\n"},{"path":"components/conversations-card/index.tsx","language":"tsx","source":"import { Button, Card, Flex, Heading, Tag, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Demonstrates a secondary conversations card with a connection action. */\nexport function ConversationsCard() {\n  return (\n    <Card elevation=\"card\" className={styles.conversationsCard}>\n      <Flex direction=\"column\" gap=\"md\">\n        <Flex justifyContent=\"space-between\" alignItems=\"center\" gap=\"md\">\n          <Heading level={3}>Conversations</Heading>\n          <Tag emphasis=\"info\" size=\"sm\">\n            Included\n          </Tag>\n        </Flex>\n        <Text>Manage all your emails and messages in one place with a unified inbox.</Text>\n        <Button variant=\"secondary\" size=\"sm\">\n          Connect Email\n        </Button>\n      </Flex>\n    </Card>\n  );\n}\n"},{"path":"components/dashboard-header/index.module.css","language":"css","source":".mobileMenuButton,\n.mobileNavLogo,\n.mobileNavAction {\n  display: none;\n}\n\n.navDivider {\n  block-size: 1.25rem;\n  border-inline-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n}\n\n.navigation {\n  gap: var(--sp-lg);\n}\n\n.navActions {\n  gap: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .mobileMenuButton,\n  .mobileNavLogo,\n  .mobileNavAction {\n    display: inline-flex;\n  }\n\n  .desktopNavAction,\n  .navDivider {\n    display: none;\n  }\n\n  .navigation,\n  .navActions {\n    gap: var(--sp-sm);\n  }\n}\n"},{"path":"components/dashboard-header/index.tsx","language":"tsx","source":"$21"},{"path":"components/dashboard-sidebar-content/index.module.css","language":"css","source":"$22"},{"path":"components/dashboard-sidebar-content/index.tsx","language":"tsx","source":"$23"},{"path":"components/dashboard-sidebar/index.module.css","language":"css","source":".sideNavigationContainer {\n  align-self: stretch;\n  background: var(--ux-9i7okd, #f5f7f8);\n  block-size: auto;\n  min-inline-size: 0;\n  overflow: visible;\n  position: relative;\n}\n\n.sideNavigation {\n  background: var(--ux-9i7okd, #f5f7f8);\n  block-size: 100%;\n  inline-size: 100%;\n  min-inline-size: 0;\n  overflow: hidden;\n  padding-block-start: var(--sp-md, 0.5rem);\n  transition: inline-size 300ms cubic-bezier(0.32, 0.72, 0, 1);\n}\n\n.sideNavigationContainer:where([data-expanded]) {\n  z-index: 1;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .sideNavigation {\n    transition: none;\n  }\n}\n\n@container (max-width: 40rem) {\n  .sideNavigationContainer {\n    display: none;\n  }\n}\n"},{"path":"components/dashboard-sidebar/index.tsx","language":"tsx","source":"$24"},{"path":"components/overview-dashboard/index.module.css","language":"css","source":".dashboardFrame {\n  container-type: inline-size;\n  inline-size: 100%;\n  block-size: 100%;\n}\n\n.dashboardShell {\n  grid-template-columns: 56px minmax(0, 1fr);\n  gap: var(--sp-xl);\n  min-block-size: 100%;\n  min-inline-size: 0;\n  transition: grid-template-columns 300ms cubic-bezier(0.32, 0.72, 0, 1);\n}\n\n.dashboardShell:where([data-navigation-pinned-open]) {\n  grid-template-columns: 224px minmax(0, 1fr);\n}\n\n.dashboardMain {\n  align-items: center;\n  min-block-size: 100%;\n  min-inline-size: 0;\n}\n\n.dashboardContent {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n}\n\n.contentGrid {\n  grid-template-columns: minmax(0, 2.25fr) minmax(17.5rem, 1fr);\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .dashboardShell {\n    transition: none;\n  }\n}\n\n@container (max-width: 56rem) {\n  .contentGrid {\n    grid-template-columns: 1fr;\n  }\n}\n\n@container (max-width: 40rem) {\n  .dashboardShell {\n    grid-template-columns: 1fr;\n  }\n}\n"},{"path":"components/overview-dashboard/index.tsx","language":"tsx","source":"$25"},{"path":"components/sales-channels-card/index.module.css","language":"css","source":".salesCardMeasure {\n  min-inline-size: 0;\n}\n"},{"path":"components/sales-channels-card/index.tsx","language":"tsx","source":"$26"},{"path":"components/users-card/index.module.css","language":"css","source":".usersCard {\n  min-inline-size: 0;\n}\n\n.userRow {\n  align-items: center;\n}\n\n.userDivider {\n  border: 0;\n  border-block-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n  margin-block: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .restoreUsersLabel {\n    display: none;\n  }\n\n  .userRow {\n    align-items: flex-start;\n  }\n\n  .userActions {\n    inline-size: 100%;\n    justify-content: flex-end;\n  }\n}\n"},{"path":"components/users-card/index.tsx","language":"tsx","source":"$27"},{"path":"constants/config.ts","language":"ts","source":"$28"},{"path":"index.tsx","language":"tsx","source":"export { OverviewDashboard } from './components/overview-dashboard';\n"}]},"children":"$L29"}],"\n","$L2a","\n","$L2b","\n","$L2c","\n","$L2d","\n","$L2e","\n","$L2f"]}]]}],["$L30","$L31"],"$L32"]}],"p":"$@33","v":null,"s":"$a"}}]]
 2:[["children",{"s":{"n":"slug","t":"oc","k":"blocks","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
 1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
-0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L35",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L37",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$38",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Build product experiences with Antares."}],["$","meta","1",{"name":"description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","2",{"property":"og:title","content":"Build product experiences with Antares."}],["$","meta","3",{"property":"og:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Build product experiences with Antares."}],["$","meta","7",{"name":"twitter:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@39","v":null,"s":"$a"}},"a":"$@3a","u":"$@3b","b":"dC7-J3QX9QNDVDoqx33M5"}
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L35",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L37",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$38",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Build product experiences with Antares."}],["$","meta","1",{"name":"description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","2",{"property":"og:title","content":"Build product experiences with Antares."}],["$","meta","3",{"property":"og:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Build product experiences with Antares."}],["$","meta","7",{"name":"twitter:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@39","v":null,"s":"$a"}},"a":"$@3a","u":"$@3b","b":"cSVv7Wps603wdxq9vv-Gp"}
 3c:I[260568,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
 4e:I[342785,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
 4f:I[897367,["$4","$5"],"OutletBoundary"]
@@ -1328,7 +1328,7 @@ export function formatFileSize(file: File) {
 }
 2b:["$","$L1f",null,{"block":{"id":"project-inquiry-form","description":"A responsive project inquiry page with local file previews.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/project-inquiry-form","files":[{"path":"components/attached-files/index.module.css","language":"css","source":".row {\n  inline-size: 100%;\n  max-inline-size: 45.625rem;\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 4));\n}\n\n.fileName {\n  overflow-wrap: anywhere;\n}\n\n.pickerButton {\n  --_attached-files-picker-padding-block: var(--size-space-030, calc(var(--ux-1sbfig8, 0.25rem) * 3));\n  --_attached-files-picker-padding-inline: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 4));\n\n  inline-size: 100%;\n  min-block-size: 5rem;\n  padding: var(--_attached-files-picker-padding-block) var(--_attached-files-picker-padding-inline);\n  border: 1px dashed var(--color-surface-border-card, var(--ux-97h3vl, #d4dbe0));\n  border-radius: var(--ux-2jubes, 6px);\n  background: var(--ux-1mh0ktr, #f5f5f5);\n  white-space: normal;\n}\n"},{"path":"components/attached-files/index.tsx","language":"tsx","source":"$3d"},{"path":"components/benefits/index.module.css","language":"css","source":".list {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/benefits/index.tsx","language":"tsx","source":"$3e"},{"path":"components/drop-overlay/index.module.css","language":"css","source":".overlay {\n  position: absolute;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: inherit;\n  background-color: rgba(216, 239, 239, 0.9);\n  color: var(--color-surface-text-base, var(--ux-1leynsm, #111));\n  pointer-events: none;\n  inset: 0;\n}\n"},{"path":"components/drop-overlay/index.tsx","language":"tsx","source":"import { Flex, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\ninterface DropOverlayProps {\n  /** Whether an accepted file is currently over the inquiry form. */\n  isDropTarget: boolean;\n}\n\n/** Shows the green drop feedback while files are over the inquiry form. */\nexport function DropOverlay({ isDropTarget }: DropOverlayProps) {\n  if (!isDropTarget) return null;\n\n  return (\n    <Flex\n      role=\"status\"\n      aria-live=\"polite\"\n      direction=\"column\"\n      alignItems=\"center\"\n      justifyContent=\"center\"\n      gap=\"sm\"\n      padding=\"xl\"\n      className={styles.overlay}\n    >\n      <Icon icon=\"upload\" aria-hidden=\"true\" />\n      <Text as=\"strong\">Drop files to upload.</Text>\n    </Flex>\n  );\n}\n"},{"path":"components/fields/index.tsx","language":"tsx","source":"$3f"},{"path":"components/file-preview/index.module.css","language":"css","source":".preview {\n  inline-size: 3.5rem;\n  block-size: 3.5rem;\n  flex-shrink: 0;\n  object-fit: cover;\n}\n"},{"path":"components/file-preview/index.tsx","language":"tsx","source":"$40"},{"path":"components/project-inquiry-form/index.module.css","language":"css","source":".root {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.columns {\n  min-inline-size: 0;\n}\n\n.visualColumn {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.heroImage {\n  display: block;\n  inline-size: 100%;\n  block-size: auto;\n  aspect-ratio: 16 / 9;\n  object-fit: cover;\n}\n\n.form {\n  position: relative;\n  box-sizing: border-box;\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.dropZone {\n  inline-size: 100%;\n  max-inline-size: 100%;\n  min-inline-size: 0;\n}\n"},{"path":"components/project-inquiry-form/index.tsx","language":"tsx","source":"$41"},{"path":"data/files.ts","language":"ts","source":"$42"},{"path":"index.tsx","language":"tsx","source":"export { ProjectInquiryForm } from './components/project-inquiry-form';\n"}]},"children":"$L43"}]
 2c:["$","$L1b",null,{"as":"h3","id":"gallery","children":"Gallery"}]
-44:T2265,'use client';
+44:T21fc,'use client';
 
 import { useCallback, useRef, useState } from 'react';
 import {
@@ -1348,7 +1348,7 @@ import type { ImageItem } from '../../data/types';
 import { useGalleryCopy } from '../../data/copy';
 import styles from './index.module.css';
 
-interface FileItemsProps extends Pick<FileItemProps, 'onRemove' | 'onLoadError' | 'onLoadSuccess' | 'onItemRef'> {
+interface FileItemsProps extends Pick<FileItemProps, 'onRemove' | 'onLoadError' | 'onLoadSuccess'> {
   /** Presentation chosen by Gallery. */
   view: 'list' | 'grid';
 
@@ -1380,8 +1380,7 @@ export function FileItems({
   onRemove,
   onRetry,
   onLoadError,
-  onLoadSuccess,
-  onItemRef
+  onLoadSuccess
 }: FileItemsProps) {
   const { messages } = useGalleryCopy();
   const isList = view === 'list';
@@ -1389,16 +1388,12 @@ export function FileItems({
   const visibleImages = isList && !showAll ? images.slice(0, MAX_VISIBLE_ITEMS) : images;
   const errorCount = images.filter((image) => image.status === 'error').length;
 
-  const registerItem = useCallback(
-    function registerItem(id: string, element: HTMLElement | null) {
-      onItemRef?.(id, element);
-      if (element && firstRevealedId.current === id) {
-        firstRevealedId.current = null;
-        element.focus();
-      }
-    },
-    [onItemRef]
-  );
+  const registerItem = useCallback(function registerItem(id: string, element: HTMLElement | null) {
+    if (element && firstRevealedId.current === id) {
+      firstRevealedId.current = null;
+      element.focus();
+    }
+  }, []);
 
   function handleShowAll() {
     firstRevealedId.current = images[visibleImages.length]?.id ?? null;
@@ -1474,7 +1469,7 @@ interface FileItemProps {
   /** Reports a successful image load. */
   onLoadSuccess: (id: string) => void;
 
-  /** Registers the collection row for revealing newly added or expanded files. */
+  /** Registers the collection row for revealing expanded files. */
   onItemRef?: (id: string, element: HTMLElement | null) => void;
 }
 
@@ -1615,7 +1610,7 @@ function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: ViewBan
     </Flex>
   );
 }
-45:T2fc2,'use client';
+45:T2c16,'use client';
 
 import { forwardRef, useCallback, useId, useLayoutEffect, useRef, useState } from 'react';
 import {
@@ -1702,41 +1697,18 @@ function GalleryContent({
   const [view, setView] = useState(defaultView);
   const [showAll, setShowAll] = useState(false);
   const previousImages = useRef(images);
-  const addedImageId = useRef<string | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const addButton = useRef<HTMLButtonElement>(null);
-  const itemElements = useRef(new Map<string, HTMLElement>());
-
-  const registerItem = useCallback(
-    function registerItem(id: string, element: HTMLElement | null) {
-      if (element) itemElements.current.set(id, element);
-      else itemElements.current.delete(id);
-      if (element && addedImageId.current === id && view === 'list' && showAll) {
-        element.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-        addedImageId.current = null;
-      }
-    },
-    [showAll, view]
-  );
 
   useLayoutEffect(
     function revealAddedImages() {
       const previousIds = new Set(previousImages.current.map((image) => image.id));
-      const addedImage = images.find((image) => !previousIds.has(image.id));
+      const hasAddedImages = images.some((image) => !previousIds.has(image.id));
       previousImages.current = images;
-      if (addedImage) {
-        addedImageId.current = addedImage.id;
-        setShowAll(true);
-      }
-      if (view !== 'list' || !showAll || !addedImageId.current) return;
-      const item = itemElements.current.get(addedImageId.current);
-      if (item) {
-        item.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-        addedImageId.current = null;
-      }
+      if (hasAddedImages) setShowAll(true);
     },
-    [images, showAll, view]
+    [images]
   );
 
   const handleShowAll = useCallback(function handleShowAll() {
@@ -1844,6 +1816,23 @@ function GalleryContent({
             </Flex>
           </Flex>
 
+          <Box role="region" aria-label={view === 'list' ? messages.listView : messages.gridView}>
+            {images.length === 0 ? (
+              <EmptyState />
+            ) : (
+              <FileItems
+                view={view}
+                images={images}
+                showAll={showAll}
+                onShowAll={handleShowAll}
+                onOpen={handleOpenImage}
+                onRemove={handleRemoveImage}
+                onRetry={retryImage}
+                onLoadError={handleImageLoadError}
+                onLoadSuccess={markReady}
+              />
+            )}
+          </Box>
           {processing ? (
             <ProgressBar
               value={processing.completed}
@@ -1859,25 +1848,6 @@ function GalleryContent({
           <Detail role="status" aria-label={messages.updates} aria-atomic="true" className={styles.notice}>
             {notice}
           </Detail>
-
-          <Box role="region" aria-label={view === 'list' ? messages.listView : messages.gridView}>
-            {images.length === 0 ? (
-              <EmptyState />
-            ) : (
-              <FileItems
-                view={view}
-                images={images}
-                showAll={showAll}
-                onShowAll={handleShowAll}
-                onOpen={handleOpenImage}
-                onRemove={handleRemoveImage}
-                onRetry={retryImage}
-                onLoadError={handleImageLoadError}
-                onLoadSuccess={markReady}
-                onItemRef={registerItem}
-              />
-            )}
-          </Box>
         </Flex>
         {isDropTarget ? (
           <Flex
@@ -3101,7 +3071,7 @@ export function useGalleryImages(
 
   return { images, error, notice, processing, addFiles, removeImage, retryImage, markReady, markError, reportError };
 }
-2d:["$","$L1f",null,{"block":{"id":"gallery","description":"Browse images in a list or grid, add local files, and open a media viewer.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/file-items/index.module.css","language":"css","source":".card {\n  inline-size: 100%;\n  min-inline-size: 0;\n  --_gallery-file-action-space: calc(var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5)) * 2);\n}\n\n.card:where([data-error]) {\n  border-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));\n}\n\n.cover {\n  box-sizing: border-box;\n  min-inline-size: 0;\n  border: 1px solid transparent;\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--_gallery-file-action-space);\n}\n\n.details:where([data-variant=\"vertical\"]) {\n  padding-inline-end: 0;\n}\n\n.errorDetails {\n  min-inline-size: 0;\n}\n\n.retry {\n  text-decoration: underline;\n}\n\n.collection {\n  inline-size: 100%;\n}\n"},{"path":"components/file-items/index.tsx","language":"tsx","source":"$44"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.notice:where(:empty) {\n  position: absolute;\n}\n\n.dropOverlay {\n  position: absolute;\n  inset: 0;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: var(--color-surface-background-base, var(--ux-cao06b, Canvas));\n  color: var(--color-surface-text-base, var(--ux-1leynsm, CanvasText));\n  pointer-events: none;\n}\n\n.dropZone {\n  position: relative;\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.emptyState {\n  min-block-size: 256px;\n  text-align: center;\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$45"},{"path":"components/image/index.module.css","language":"css","source":"$46"},{"path":"components/image/index.tsx","language":"tsx","source":"$47"},{"path":"components/viewer/index.module.css","language":"css","source":".modalContainer {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n  min-inline-size: 0;\n}\n\n.modal {\n  inline-size: 100%;\n  max-inline-size: 100%;\n}\n\n.slide {\n  min-inline-size: 0;\n  max-inline-size: 100%;\n  block-size: 55dvh;\n}\n\n.name {\n  flex: 1 1 auto;\n  min-inline-size: 0;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  overflow-x: auto;\n  scroll-padding-inline: var(--sp-sm);\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$48"},{"path":"data/copy.tsx","language":"tsx","source":"$49"},{"path":"data/sample-images.ts","language":"ts","source":"$4a"},{"path":"data/types.ts","language":"ts","source":"$4b"},{"path":"hooks/use-gallery-images.ts","language":"ts","source":"$4c"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery';\nexport type { ImageItem } from './data/types';\n"}]},"children":"$L4d"}]
+2d:["$","$L1f",null,{"block":{"id":"gallery","description":"Browse images in a list or grid, add local files, and open a media viewer.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/file-items/index.module.css","language":"css","source":".card {\n  inline-size: 100%;\n  min-inline-size: 0;\n  --_gallery-file-action-space: calc(var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5)) * 2);\n}\n\n.card:where([data-error]) {\n  border-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));\n}\n\n.cover {\n  box-sizing: border-box;\n  min-inline-size: 0;\n  border: 1px solid transparent;\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--_gallery-file-action-space);\n}\n\n.details:where([data-variant=\"vertical\"]) {\n  padding-inline-end: 0;\n}\n\n.errorDetails {\n  min-inline-size: 0;\n}\n\n.retry {\n  text-decoration: underline;\n}\n\n.collection {\n  inline-size: 100%;\n}\n"},{"path":"components/file-items/index.tsx","language":"tsx","source":"$44"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.notice:where(:empty) {\n  position: absolute;\n}\n\n.dropOverlay {\n  position: absolute;\n  inset: 0;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  color: var(--color-surface-text-base, var(--ux-1leynsm, CanvasText));\n  pointer-events: none;\n}\n\n.dropZone {\n  position: relative;\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.emptyState {\n  min-block-size: 256px;\n  text-align: center;\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$45"},{"path":"components/image/index.module.css","language":"css","source":"$46"},{"path":"components/image/index.tsx","language":"tsx","source":"$47"},{"path":"components/viewer/index.module.css","language":"css","source":".modalContainer {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n  min-inline-size: 0;\n}\n\n.modal {\n  inline-size: 100%;\n  max-inline-size: 100%;\n}\n\n.slide {\n  min-inline-size: 0;\n  max-inline-size: 100%;\n  block-size: 55dvh;\n}\n\n.name {\n  flex: 1 1 auto;\n  min-inline-size: 0;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  overflow-x: auto;\n  scroll-padding-inline: var(--sp-sm);\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$48"},{"path":"data/copy.tsx","language":"tsx","source":"$49"},{"path":"data/sample-images.ts","language":"ts","source":"$4a"},{"path":"data/types.ts","language":"ts","source":"$4b"},{"path":"hooks/use-gallery-images.ts","language":"ts","source":"$4c"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery';\nexport type { ImageItem } from './data/types';\n"}]},"children":"$L4d"}]
 2e:["$","$L1b",null,{"as":"h3","id":"sign-in-form","children":"Sign-in form"}]
 2f:["$","$L1f",null,{"block":{"id":"sign-in-form","description":"A simple Antares sign-in experience.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/sign-in-form","files":[{"path":"components/sign-in-fields.tsx","language":"tsx","source":"import { Flex, Input, Label, TextField } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\n\n/** Groups the accessible fields used by the sign-in form block. */\nexport function SignInFields() {\n  return (\n    <Flex direction=\"column\" gap=\"md\">\n      <TextField name=\"email\" isRequired>\n        <Label>{signInCopy.emailLabel}</Label>\n        <Input type=\"email\" autoComplete=\"email\" placeholder=\"you@example.com\" />\n      </TextField>\n      <TextField name=\"password\" isRequired>\n        <Label>{signInCopy.passwordLabel}</Label>\n        <Input type=\"password\" autoComplete=\"current-password\" />\n      </TextField>\n    </Flex>\n  );\n}\n"},{"path":"components/sign-in-form.tsx","language":"tsx","source":"'use client';\n\nimport { Box, Button, Flex, Heading, Text } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\nimport { SignInFields } from './sign-in-fields';\n\n/**\n * Provides a sign-in form composition to copy and adapt. Submission is prevented\n * until the consuming application supplies its authentication behavior.\n *\n * @example\n * ```tsx\n * <SignInForm />\n * ```\n */\nexport function SignInForm() {\n  return (\n    <Flex justifyContent=\"center\">\n      <Box flex=\"0 1 28rem\" padding=\"xl\" rounding=\"md\" elevation=\"card\">\n        <Flex\n          as=\"form\"\n          direction=\"column\"\n          gap=\"lg\"\n          onSubmit={function handleSubmit(event) {\n            event.preventDefault();\n          }}\n        >\n          <Heading level={2}>{signInCopy.title}</Heading>\n          <Text>{signInCopy.description}</Text>\n          <SignInFields />\n          <Button type=\"submit\" variant=\"primary\">\n            {signInCopy.submitLabel}\n          </Button>\n        </Flex>\n      </Box>\n    </Flex>\n  );\n}\n"},{"path":"data/copy.ts","language":"ts","source":"export const signInCopy = {\n  title: 'Sign in to your account',\n  description: 'Use your email and password to continue.',\n  emailLabel: 'Email',\n  passwordLabel: 'Password',\n  submitLabel: 'Sign in'\n} as const;\n"},{"path":"index.tsx","language":"tsx","source":"export { SignInForm } from './components/sign-in-form';\n"}]},"children":["$","$L4e",null,{}]}]
 30:["$","script","script-0",{"src":"/antares/pr-380-site/_next/static/chunks/428imhwwk-ha_.js","async":true}]
