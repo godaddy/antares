@@ -93,7 +93,6 @@
   border-radius: var(--_calendar-radius);
   background: var(--color-action-background-tertiary-default, var(--ux-1owc8nc, transparent));
   color: var(--color-action-text-tertiary-default, var(--ux-ut3xrx, #111));
-  inline-size: 100%;
   block-size: var(--_calendar-cell-size);
   position: relative;
   cursor: pointer;
@@ -144,7 +143,7 @@
     cursor: not-allowed;
   }
 
-  &:where([data-disabled]:not([data-outside-month])) {
+  &:where([data-disabled]) {
     opacity: 0.4;
     cursor: not-allowed;
   }
@@ -155,19 +154,16 @@
   inline-size: 100%;
   max-inline-size: calc(var(--_calendar-cell-size) * 7 + var(--_calendar-gap) * 2);
   flex: 1 1 auto;
-  min-block-size: 0;
   margin-inline: auto;
   overflow: hidden;
 }
 
 .scrollHeader {
-  flex-shrink: 0;
   padding: var(--_calendar-cell-padding) var(--_calendar-gap);
 }
 
 .monthViewport {
   flex: 1;
-  min-block-size: 0;
   overflow: auto;
   overscroll-behavior: contain;
   overflow-anchor: none;
@@ -186,13 +182,8 @@
 }
 
 .month {
-  box-sizing: border-box;
   display: flow-root;
   padding-block: var(--_calendar-padding);
-}
-
-.scrollCalendar :where(.grid) {
-  inline-size: 100%;
 }
 
 @container calendar-months (width < 16rem) {
