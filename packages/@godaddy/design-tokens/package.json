@@ -43,8 +43,7 @@
     "vitest": "^4.1.11",
     "yaml": "^2.9.1",
     "ajv": "^8.20.0",
-    "@upft/schemas": "^0.0.6",
-    "typescript": "7.0.2"
+    "@upft/schemas": "^0.0.6"
   },
   "exports": {
     "./css-in-js": {
