@@ -46,6 +46,7 @@
 - [SegmentedController](/docs/components/segmented-controller): A segmented controller is a linear set of two or more segments, each of which functions as a button. A segmented controller allows users to select options, switch views, or sort elements.
 - [Select](/docs/components/select): Select is a dropdown for picking one or more values from a list of options. It renders a labeled trigger and a popover listbox, supports single and multiple selection, and submits naturally inside a form.
 - [SizeProvider](/docs/components/size-provider): Sizes a section, so the text, controls, and default spacing inside it follow one size.
+- [Skeleton](/docs/components/skeleton): A placeholder that previews the layout of content while it loads.
 - [Structure primitives](/docs/components/structure): Generic structural containers for composing a component's interior.
 - [Switch](/docs/components/switch): A binary toggle control that switches a setting between on and off states, communicated via the WAI-ARIA switch role.
 - [Tabs](/docs/components/tabs): Tabs organize peer sections of content and let users switch between them without leaving the page.
