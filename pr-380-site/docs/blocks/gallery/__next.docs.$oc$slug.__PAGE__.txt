@@ -8,7 +8,7 @@ d:"/antares/pr-380-site/_next/static/chunks/0cq_r7uivgtia.js"
 e:"/antares/pr-380-site/_next/static/chunks/44d0fxytx9jkg.js"
 f:"/antares/pr-380-site/_next/static/chunks/0y43-9m1z7bvl.js"
 10:"/antares/pr-380-site/_next/static/chunks/2f_a87zzluj--.js"
-11:"/antares/pr-380-site/_next/static/chunks/3-0fi3pzuk8_u.js"
+11:"/antares/pr-380-site/_next/static/chunks/2msp43vzmyspa.js"
 12:"/antares/pr-380-site/_next/static/chunks/2znf03_833nl7.js"
 13:"/antares/pr-380-site/_next/static/chunks/428imhwwk-ha_.js"
 14:"/antares/pr-380-site/_next/static/chunks/32o7tmg2i-rss.js"
@@ -20,15 +20,15 @@ f:"/antares/pr-380-site/_next/static/chunks/0y43-9m1z7bvl.js"
 1a:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsBody"]
 1b:"SiteBlockExplorer"
 1c:I[696229,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$1b"]
-2b:"ViewportBoundary"
-2c:I[897367,["$4","$5"],"$2b"]
-2d:"MetadataBoundary"
-2e:I[897367,["$4","$5"],"$2d"]
-2f:"$Sreact.suspense"
+2a:"ViewportBoundary"
+2b:I[897367,["$4","$5"],"$2a"]
+2c:"MetadataBoundary"
+2d:I[897367,["$4","$5"],"$2c"]
+2e:"$Sreact.suspense"
 9:X
 9:C
 a:X
-1d:T21fc,'use client';
+1d:T1fda,'use client';
 
 import { useCallback, useRef, useState } from 'react';
 import {
@@ -45,7 +45,6 @@ import {
 } from '@godaddy/antares';
 import { FileCover, type FileCoverVariant } from '../image';
 import type { ImageItem } from '../../data/types';
-import { useGalleryCopy } from '../../data/copy';
 import styles from './index.module.css';
 
 interface FileItemsProps extends Pick<FileItemProps, 'onRemove' | 'onLoadError' | 'onLoadSuccess'> {
@@ -69,6 +68,7 @@ interface FileItemsProps extends Pick<FileItemProps, 'onRemove' | 'onLoadError' 
 }
 
 const MAX_VISIBLE_ITEMS = 5;
+const fileSizeFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
 /** Renders the same collection with either list or grid geometry. */
 export function FileItems({
@@ -82,7 +82,6 @@ export function FileItems({
   onLoadError,
   onLoadSuccess
 }: FileItemsProps) {
-  const { messages } = useGalleryCopy();
   const isList = view === 'list';
   const firstRevealedId = useRef<string | null>(null);
   const visibleImages = isList && !showAll ? images.slice(0, MAX_VISIBLE_ITEMS) : images;
@@ -115,7 +114,6 @@ export function FileItems({
   return (
     <Flex direction="column" gap="sm" className={styles.collection}>
       <CardGroup
-        key={view}
         selectionMode="single"
         selectionBehavior="toggle"
         shouldSelectOnPressUp
@@ -127,7 +125,7 @@ export function FileItems({
         gap="sm"
         justifyContent="start"
         alignItems="start"
-        aria-label={isList ? messages.files : messages.imageGrid}
+        aria-label={isList ? 'Gallery files' : 'Gallery image grid'}
       >
         {visibleImages.map((image) => (
           <FileItem
@@ -174,7 +172,7 @@ interface FileItemProps {
 }
 
 /** Preserves useful precision for small files instead of rounding their size to zero MiB. */
-function formatFileSize(bytes: number, fileSizeFormatter: Intl.NumberFormat) {
+function formatFileSize(bytes: number) {
   if (bytes < 1024) return fileSizeFormatter.format(bytes) + ' B';
   if (bytes < 1024 * 1024) return fileSizeFormatter.format(bytes / 1024) + ' KiB';
   return fileSizeFormatter.format(bytes / (1024 * 1024)) + ' MiB';
@@ -182,9 +180,8 @@ function formatFileSize(bytes: number, fileSizeFormatter: Intl.NumberFormat) {
 
 /** One file item with the same actions and states across list and grid views. */
 function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItemRef }: FileItemProps) {
-  const { messages, number } = useGalleryCopy();
   const [coverReady, setCoverReady] = useState(false);
-  const size = image.size === undefined ? messages.sizeUnavailable : formatFileSize(image.size, number);
+  const size = image.size === undefined ? 'Size unavailable' : formatFileSize(image.size);
   const isError = image.status === 'error';
   const isLoading = image.status === 'loading';
   const canOpen = !isError && !isLoading && coverReady;
@@ -209,7 +206,7 @@ function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItem
     <Card
       id={image.id}
       textValue={image.name}
-      aria-label={isError ? messages.retryImage(image.name) : canOpen ? messages.openImage(image.name) : image.name}
+      aria-label={isError ? `Retry ${image.name}` : canOpen ? `Open ${image.name}` : image.name}
       ref={(element) => onItemRef?.(image.id, element)}
       isDisabled={!isError && !canOpen}
       direction={variant === 'horizontal' ? 'row' : 'column'}
@@ -236,33 +233,22 @@ function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItem
         </Text>
         {isError ? (
           <Flex
-            direction={variant === 'horizontal' ? 'row' : 'column'}
+            as={Detail}
             gap="xs"
-            alignItems={variant === 'horizontal' ? 'center' : 'start'}
-            wrap={variant === 'horizontal' ? 'nowrap' : undefined}
-            className={styles.errorDetails}
+            alignItems="center"
+            className={styles.retry}
             role={variant === 'vertical' ? 'alert' : undefined}
           >
-            <Detail emphasis="critical" maxLines={1}>
-              {image.errorMessage ?? messages.needsAttention}
-            </Detail>
-            <Flex alignItems="center" gap="xs" className={styles.retry}>
-              <Icon icon="refresh" aria-hidden="true" />
-              <Text size="sm">{messages.retry}</Text>
-            </Flex>
+            <Icon icon="refresh" aria-hidden="true" />
+            Retry
           </Flex>
         ) : (
-          <Detail>{isLoading ? messages.loadingImage : size}</Detail>
+          <Detail>{isLoading ? 'Loading image…' : size}</Detail>
         )}
       </Flex>
 
       <CornerActions>
-        <Button
-          variant="secondary"
-          size="sm"
-          aria-label={messages.removeImage(image.name)}
-          onPress={() => onRemove(image)}
-        >
+        <Button variant="secondary" size="sm" aria-label={`Remove ${image.name}`} onPress={() => onRemove(image)}>
           <Icon icon="x" aria-hidden="true" />
         </Button>
       </CornerActions>
@@ -286,17 +272,18 @@ interface ViewBannerProps {
 
 /** Counter and image-error feedback used below the file list. */
 function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: ViewBannerProps) {
-  const { messages } = useGalleryCopy();
   const hasMore = visibleCount < totalCount;
   if (!hasMore && errorCount === 0) return null;
 
   return (
     <Flex direction="column" gap="sm" blockPadding="sm">
       <Flex justifyContent="space-between" alignItems="center" gap="sm">
-        <Text>{messages.fileCount(visibleCount, totalCount)}</Text>
+        <Text>
+          {visibleCount.toLocaleString('en-US')} of {totalCount.toLocaleString('en-US')} files
+        </Text>
         {hasMore ? (
           <Button variant="inline" onPress={onShowAll}>
-            {messages.showAll}
+            Show all
           </Button>
         ) : null}
       </Flex>
@@ -304,13 +291,15 @@ function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: ViewBan
       {errorCount > 0 ? (
         <Flex justifyContent="center" alignItems="center" gap="xs" role="alert">
           <Icon icon="alert" aria-hidden="true" />
-          <Text emphasis="critical">{messages.filesNeedAttention(errorCount)}</Text>
+          <Text emphasis="critical">
+            {errorCount.toLocaleString('en-US')} file{errorCount === 1 ? ' needs' : 's need'} attention.
+          </Text>
         </Flex>
       ) : null}
     </Flex>
   );
 }
-1e:T2dbc,'use client';
+1e:T2930,'use client';
 
 import { forwardRef, useCallback, useId, useRef, useState } from 'react';
 import {
@@ -334,7 +323,6 @@ import {
   useDrop
 } from '@godaddy/antares';
 import type { GalleryLimits, ImageItem } from '../../data/types';
-import { GalleryCopyProvider, type GalleryMessages, useGalleryCopy } from '../../data/copy';
 import { acceptedTypes, defaultLimits, useGalleryImages } from '../../hooks/use-gallery-images';
 import { FileItems } from '../file-items';
 import { Viewer } from '../viewer';
@@ -350,17 +338,8 @@ export interface GalleryProps {
   /** Local ingestion budgets. Initial images are retained even when they exceed a budget. */
   limits?: GalleryLimits;
 
-  /** Layout and viewer navigation direction. Match the host application's locale direction. Defaults to ltr. */
-  dir?: 'ltr' | 'rtl';
-
   /** Notifies the host after collection or load-state changes. Blob URLs remain owned by this instance. */
   onImagesChange?: (images: ImageItem[]) => void;
-
-  /** Locale used for file sizes and numeric feedback. Defaults to en-US. */
-  locale?: string;
-
-  /** Translated labels and announcements; omitted messages retain their English defaults. */
-  messages?: Partial<GalleryMessages>;
 }
 
 /**
@@ -371,23 +350,7 @@ export interface GalleryProps {
  * @example
  * <Gallery initialImages={[{ id: 'cover', name: 'Cover.jpg', src: '/cover.jpg' }]} />
  */
-export function Gallery({ locale = 'en-US', messages, dir = 'ltr', ...props }: GalleryProps) {
-  return (
-    <GalleryCopyProvider locale={locale} messages={messages}>
-      <GalleryContent {...props} dir={dir} />
-    </GalleryCopyProvider>
-  );
-}
-
-/** Owns collection and presentation state within the gallery's locale scope. */
-function GalleryContent({
-  initialImages = [],
-  defaultView = 'grid',
-  limits,
-  dir = 'ltr',
-  onImagesChange
-}: GalleryProps) {
-  const { locale, messages } = useGalleryCopy();
+export function Gallery({ initialImages = [], defaultView = 'grid', limits, onImagesChange }: GalleryProps) {
   const resolvedLimits = {
     maxFiles: limits?.maxFiles ?? defaultLimits.maxFiles,
     maxFileSize: limits?.maxFileSize ?? defaultLimits.maxFileSize,
@@ -442,18 +405,14 @@ function GalleryContent({
       const files = results.flatMap((result) => (result.status === 'fulfilled' ? [result.value] : []));
       await addFiles(files);
       if (results.some((result) => result.status === 'rejected')) {
-        reportError(messages.unreadableDrop);
+        reportError('Some dropped files couldn’t be read. Please select them again.');
       }
     },
-    [addFiles, messages.unreadableDrop, reportError]
+    [addFiles, reportError]
   );
 
   const handleViewChange = useCallback(function handleViewChange(key: string) {
     if (key === 'list' || key === 'grid') setView(key);
-  }, []);
-
-  const handleOpenImage = useCallback(function handleOpenImage(id: string) {
-    setActiveId(id);
   }, []);
 
   const handleImageLoadError = useCallback(
@@ -479,10 +438,9 @@ function GalleryContent({
   return (
     <>
       <Flex
-        dir={dir}
-        lang={locale}
+        lang="en-US"
         role="region"
-        aria-label={messages.addFilesRegion}
+        aria-label="Add files to gallery"
         padding="0"
         alignItems="stretch"
         justifyContent="start"
@@ -491,8 +449,10 @@ function GalleryContent({
         <Flex direction="column" gap="lg" padding="lg" className={styles.content}>
           <Flex gap="md" wrap="wrap" alignItems="center" justifyContent="space-between">
             <Flex alignItems="center" gap="sm" wrap="wrap">
-              <Heading level={2}>{messages.gallery}</Heading>
-              <Tag size="sm">{messages.imageCount(images.length)}</Tag>
+              <Heading level={2}>Gallery</Heading>
+              <Tag size="sm">
+                {images.length.toLocaleString('en-US')} {images.length === 1 ? 'image' : 'images'}
+              </Tag>
             </Flex>
 
             <Flex alignItems="center" gap="sm" wrap="wrap">
@@ -500,17 +460,16 @@ function GalleryContent({
                 ref={addButton}
                 isDropTarget={isDropTarget}
                 errorId={errors.length ? uploadErrorId : undefined}
-                acceptedTypes={acceptedTypes}
                 onSelect={addFiles}
               />
-              <SegmentedController aria-label={messages.layout} value={view} onSelectionChange={handleViewChange}>
+              <SegmentedController aria-label="Layout" value={view} onSelectionChange={handleViewChange}>
                 <SegmentedControllerItem value="list">
                   <Icon icon="bulleted-list" />
-                  {messages.list}
+                  List
                 </SegmentedControllerItem>
                 <SegmentedControllerItem value="grid">
                   <Icon icon="grid" />
-                  {messages.grid}
+                  Grid
                 </SegmentedControllerItem>
               </SegmentedController>
             </Flex>
@@ -520,8 +479,8 @@ function GalleryContent({
             <Alert
               id={uploadErrorId}
               emphasis="critical"
-              aria-label={messages.uploadIssues}
-              ariaLabels={{ close: messages.dismissUploadIssues }}
+              aria-label="Upload issues"
+              ariaLabels={{ close: 'Dismiss upload issues' }}
               onClose={function dismissUploadIssues() {
                 addButton.current?.focus({ preventScroll: true });
                 dismissErrors();
@@ -536,14 +495,14 @@ function GalleryContent({
               </Flex>
             </Alert>
           ) : null}
-          <Detail role="status" aria-label={messages.updates} aria-atomic="true" className={styles.notice}>
+          <Detail role="status" aria-label="Gallery updates" aria-atomic="true" className={styles.notice}>
             {notice}
           </Detail>
 
           <Box
             ref={dropZoneRef}
             role="region"
-            aria-label={view === 'list' ? messages.listView : messages.gridView}
+            aria-label={view === 'list' ? 'List view' : 'Grid view'}
             {...dropProps}
             className={styles.dropTarget}
           >
@@ -555,7 +514,7 @@ function GalleryContent({
                 images={images}
                 showAll={showAll}
                 onShowAll={handleShowAll}
-                onOpen={handleOpenImage}
+                onOpen={setActiveId}
                 onRemove={handleRemoveImage}
                 onRetry={retryImage}
                 onLoadError={handleImageLoadError}
@@ -573,7 +532,7 @@ function GalleryContent({
                 className={styles.dropOverlay}
               >
                 <Icon icon="upload" aria-hidden="true" />
-                <Text as="strong">{messages.dropFiles}</Text>
+                <Text as="strong">Drop files to upload.</Text>
               </Flex>
             ) : null}
           </Box>
@@ -581,9 +540,9 @@ function GalleryContent({
             <ProgressBar
               value={processing.completed}
               maxValue={processing.total}
-              valueLabel={messages.processedFiles(processing.completed, processing.total)}
+              valueLabel={`${processing.completed.toLocaleString('en-US')} of ${processing.total.toLocaleString('en-US')} files processed`}
             >
-              <Label>{messages.processingImages}</Label>
+              <Label>Processing images</Label>
               <Box slot="value" />
               <Box slot="track" />
             </ProgressBar>
@@ -594,10 +553,9 @@ function GalleryContent({
         images={images.filter(function filterViewableImage(image) {
           return image.status !== 'error' && image.status !== 'loading';
         })}
-        dir={dir}
         activeId={activeId}
         onClose={handleCloseViewer}
-        onSelectImage={handleOpenImage}
+        onSelectImage={setActiveId}
       />
     </>
   );
@@ -605,7 +563,6 @@ function GalleryContent({
 
 /** Welcomes users to an empty gallery and points them to the upload action. */
 function EmptyState() {
-  const { messages } = useGalleryCopy();
   return (
     <Flex
       direction="column"
@@ -614,14 +571,14 @@ function EmptyState() {
       gap="sm"
       padding="2xl"
       role="region"
-      aria-label={messages.emptyGallery}
+      aria-label="Empty gallery"
       className={styles.emptyState}
     >
       <Box padding="md" rounding="full" elevation="card" aria-hidden="true">
         <Icon icon="upload" />
       </Box>
-      <Heading level={3}>{messages.startGallery}</Heading>
-      <Text className={styles.description}>{messages.emptyDescription}</Text>
+      <Heading level={3}>Start your gallery</Heading>
+      <Text className={styles.description}>Drop images here or choose Add files above to upload.</Text>
     </Flex>
   );
 }
@@ -633,37 +590,33 @@ interface UploadPromptProps {
   /** Identifies current upload errors for the picker description. */
   errorId?: string;
 
-  /** MIME types accepted by the gallery picker. */
-  acceptedTypes: string[];
-
   /** Adds files selected from the native picker. */
   onSelect: (files: FileList | null) => void;
 }
 
 /** Compact file-upload action shared by Gallery's list and grid views. */
 const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(function UploadPrompt(
-  { isDropTarget, errorId, acceptedTypes, onSelect },
+  { isDropTarget, errorId, onSelect },
   ref
 ) {
-  const { messages } = useGalleryCopy();
   const helpId = useId();
   const describedBy = [isDropTarget ? null : helpId, errorId].filter(Boolean).join(' ') || undefined;
   return (
-    <Flex alignItems="center" gap="sm" wrap="wrap" role="group" aria-label={messages.addFilesRegion}>
+    <Flex alignItems="center" gap="sm" wrap="wrap" role="group" aria-label="Add files to gallery">
       <FileTrigger allowsMultiple acceptedFileTypes={acceptedTypes} onSelect={onSelect}>
         <Button
           ref={ref}
           type="button"
           size="md"
           variant="secondary"
-          aria-label={messages.addFiles}
+          aria-label="Add files"
           aria-describedby={describedBy}
         >
           <Icon icon="upload" aria-hidden="true" />
-          {messages.addFiles}
+          Add files
         </Button>
       </FileTrigger>
-      {isDropTarget ? null : <Text id={helpId}>{messages.dragHint}</Text>}
+      {isDropTarget ? null : <Text id={helpId}>or drag images into the gallery below.</Text>}
     </Flex>
   );
 });
@@ -752,12 +705,11 @@ const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(function U
   position: absolute;
   inset: 0;
 }
-20:T27f7,'use client';
+20:T274c,'use client';
 
 import { forwardRef, useCallback, useRef, useState, type ReactEventHandler } from 'react';
 import { Box, Button, Flex, Icon, Image, Skeleton, Text } from '@godaddy/antares';
 import type { ImageItem } from '../../data/types';
-import { useGalleryCopy } from '../../data/copy';
 import styles from './index.module.css';
 
 type ImageLoadState = 'loading' | 'ready' | 'error';
@@ -948,7 +900,6 @@ interface FileCoverProps {
 
 /** A small, reusable image/error surface shared by every Gallery presentation. */
 export function FileCover({ image, variant, onLoadError, onLoadSuccess }: FileCoverProps) {
-  const { messages } = useGalleryCopy();
   const [failedThumbnail, setFailedThumbnail] = useState<string | null>(null);
   const thumbnail = image.thumbnailSrc && failedThumbnail !== image.thumbnailSrc ? image.thumbnailSrc : undefined;
   const reportLoadError = useCallback(
@@ -975,7 +926,7 @@ export function FileCover({ image, variant, onLoadError, onLoadSuccess }: FileCo
       alignItems="center"
       justifyContent="center"
       role="img"
-      aria-label={`${image.name}: ${image.errorMessage ?? messages.needsAttention}`}
+      aria-label={`${image.name}: ${image.errorMessage ?? 'File needs attention.'}`}
       rounding="md"
       className={`${styles.surface} ${styles.error}`}
       data-variant={variant}
@@ -1017,7 +968,6 @@ interface GalleryImageProps {
 
 /** Handles image loading failures without simulating an upload. */
 export function GalleryImage({ image, variant = 'default', loading = 'lazy', onRetryStart }: GalleryImageProps) {
-  const { messages } = useGalleryCopy();
   const { attempt, imageRef, onError, onLoad, retry, src, state } = useImageLoadState(
     variant === 'thumbnail' ? (image.thumbnailSrc ?? image.src) : image.src,
     {
@@ -1029,16 +979,16 @@ export function GalleryImage({ image, variant = 'default', loading = 'lazy', onR
     return (
       <Flex direction="column" gap="xs" padding="sm" role="alert">
         <Icon icon="alert" aria-hidden="true" />
-        <Text emphasis="critical">{messages.failedImage(image.name)}</Text>
+        <Text emphasis="critical">Couldn’t load {image.name}.</Text>
         <Button
           variant="inline"
-          aria-label={messages.retryImage(image.name)}
+          aria-label={`Retry ${image.name}`}
           onPress={function handleRetry() {
             onRetryStart?.();
             retry();
           }}
         >
-          {messages.retry}
+          Retry
         </Button>
       </Flex>
     );
@@ -1052,7 +1002,7 @@ export function GalleryImage({ image, variant = 'default', loading = 'lazy', onR
         className={`${styles.image} ${styles.errorSurface}`}
         data-variant={variant}
         role="img"
-        aria-label={messages.failedThumbnail(image.name)}
+        aria-label={`${image.name} failed to load`}
       >
         <Icon icon="alert" aria-hidden="true" />
       </Flex>
@@ -1085,14 +1035,14 @@ export function GalleryImage({ image, variant = 'default', loading = 'lazy', onR
     >
       {picture}
       {state === 'loading' && variant !== 'thumbnail' ? (
-        <Text className={variant === 'viewer' ? styles.loading : undefined}>{messages.loadingImage}</Text>
+        <Text className={variant === 'viewer' ? styles.loading : undefined}>Loading image…</Text>
       ) : null}
     </Flex>
   );
 }
-21:T23cc,'use client';
+21:T173c,'use client';
 
-import { useCallback, useEffect, useRef, type KeyboardEvent } from 'react';
+import { useCallback, useRef } from 'react';
 import {
   Button,
   Carousel,
@@ -1111,17 +1061,9 @@ import {
 } from '@godaddy/antares';
 import { GalleryImage } from '../image';
 import type { ImageItem } from '../../data/types';
-import { useGalleryCopy } from '../../data/copy';
 import styles from './index.module.css';
 
-type PropagatingKeyboardEvent<T extends Element> = KeyboardEvent<T> & {
-  continuePropagation(): void;
-};
-
 interface ViewerProps {
-  /** Shared direction for layout, keyboard navigation, and carousel gestures. */
-  dir: 'ltr' | 'rtl';
-
   /** Current viewable gallery order, shared by the list and grid views. */
   images: ImageItem[];
 
@@ -1136,75 +1078,21 @@ interface ViewerProps {
 }
 
 /** Modal image viewer that reuses Antares Carousel for the main image sequence. */
-export function Viewer({ dir, images, activeId, onClose, onSelectImage }: ViewerProps) {
-  const { locale, messages } = useGalleryCopy();
-  const strip = useRef<HTMLDivElement>(null);
-  const thumbnails = useRef(new Map<string, HTMLElement>());
-  const closeButton = useRef<HTMLButtonElement>(null);
-  const previousButton = useRef<HTMLButtonElement>(null);
-  const nextButton = useRef<HTMLButtonElement>(null);
-  const focusCurrentThumbnail = useRef(false);
+export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps) {
+  const activeThumbnail = useRef<HTMLElement>(null);
   const index = images.findIndex(function findActiveImage(image) {
     return image.id === activeId;
   });
   const image = images[index];
 
-  const focusActiveThumbnail = useCallback(
-    function focusActiveThumbnail() {
-      const thumbnail = activeId ? thumbnails.current.get(activeId) : undefined;
-      (thumbnail ?? closeButton.current)?.focus({ preventScroll: true });
-    },
-    [activeId]
-  );
+  const registerActiveThumbnail = useCallback(function registerActiveThumbnail(element: HTMLElement | null) {
+    activeThumbnail.current = element;
+    element?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }, []);
 
-  useEffect(
-    function revealCurrentThumbnail() {
-      const thumbnail = activeId ? thumbnails.current.get(activeId) : undefined;
-      const rail = strip.current;
-      if (thumbnail && rail) {
-        const target = thumbnail.getBoundingClientRect();
-        const bounds = rail.getBoundingClientRect();
-        // Reveal horizontally without scrolling the modal or the page behind it.
-        if (target.left < bounds.left) rail.scrollBy({ left: target.left - bounds.left });
-        else if (target.right > bounds.right) rail.scrollBy({ left: target.right - bounds.right });
-      }
-      if (focusCurrentThumbnail.current) {
-        (thumbnail ?? closeButton.current)?.focus({ preventScroll: true });
-        focusCurrentThumbnail.current = false;
-      }
-    },
-    [activeId]
-  );
-
-  const move = useCallback(
-    function move(offset: number) {
-      const nextImage = images[index + offset];
-      if (!nextImage) return;
-
-      // Boundary controls become disabled; focus the current thumbnail before continuing by Tab.
-      focusCurrentThumbnail.current =
-        focusCurrentThumbnail.current ||
-        (document.activeElement === previousButton.current && index + offset === 0) ||
-        (document.activeElement === nextButton.current && index + offset === images.length - 1);
-      onSelectImage(nextImage.id);
-    },
-    [images, index, onSelectImage]
-  );
-
-  const navigate = useCallback(
-    function navigate(event: KeyboardEvent<HTMLElement>) {
-      // The CardGroup owns its arrow, Home, End, and typeahead navigation.
-      if (strip.current?.contains(event.target as Node)) return;
-      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
-      if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
-        event.preventDefault();
-        if (event.key === 'Home') move(-index);
-        else if (event.key === 'End') move(images.length - 1 - index);
-        else move((event.key === 'ArrowLeft' ? -1 : 1) * (dir === 'rtl' ? -1 : 1));
-      }
-    },
-    [dir, images.length, index, move]
-  );
+  const focusActiveThumbnail = useCallback(function focusActiveThumbnail() {
+    activeThumbnail.current?.focus({ preventScroll: true });
+  }, []);
 
   const handleOpenChange = useCallback(
     function handleOpenChange(open: boolean) {
@@ -1213,19 +1101,12 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
     [onClose]
   );
 
-  const handleCloseKeyDown = useCallback(
-    function handleCloseKeyDown(event: PropagatingKeyboardEvent<HTMLButtonElement>) {
-      if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) navigate(event);
-      else event.continuePropagation();
-    },
-    [navigate]
-  );
-
   const handlePageChange = useCallback(
     function handlePageChange(page: number) {
-      move(page - 1 - index);
+      const nextImage = images[page - 1];
+      if (nextImage) onSelectImage(nextImage.id);
     },
-    [index, move]
+    [images, onSelectImage]
   );
 
   const handleCarouselChange = useCallback(
@@ -1245,98 +1126,70 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
     [activeId, onSelectImage]
   );
 
-  const renderSlide = useCallback(
-    function renderSlide(slideImage: ImageItem, slideIndex: number) {
-      return (
-        <Flex key={slideImage.id} alignItems="center" justifyContent="center" className={styles.slide}>
-          {Math.abs(slideIndex - index) <= 1 ? (
-            <GalleryImage
-              image={slideImage}
-              variant="viewer"
-              loading={slideImage.id === activeId ? 'eager' : 'lazy'}
-              onRetryStart={focusActiveThumbnail}
-            />
-          ) : (
-            <Box aria-hidden="true" />
-          )}
-        </Flex>
-      );
-    },
-    [activeId, focusActiveThumbnail, index]
-  );
-
-  const renderThumbnail = useCallback(
-    function renderThumbnail(thumbnailImage: ImageItem) {
-      return (
-        <Card
-          id={thumbnailImage.id}
-          textValue={thumbnailImage.name}
-          aria-label={messages.viewImage(thumbnailImage.name)}
-          ref={function registerThumbnail(element) {
-            if (element) thumbnails.current.set(thumbnailImage.id, element);
-            else thumbnails.current.delete(thumbnailImage.id);
-          }}
-          padding="0"
-          gap="0"
-        >
-          <GalleryImage image={thumbnailImage} variant="thumbnail" />
-        </Card>
-      );
-    },
-    [messages]
-  );
-
   if (!image) return null;
 
   return (
     <Modal
       isOpen
-      dir={dir}
-      lang={locale}
-      aria-label={messages.mediaGallery}
+      lang="en-US"
+      aria-label="Media gallery"
       onOpenChange={handleOpenChange}
       containerProps={{ className: styles.modalContainer }}
       className={styles.modal}
     >
       <Heading slot="title" level={2}>
-        {messages.mediaGallery}
+        Media gallery
       </Heading>
-      <CloseButton ref={closeButton} aria-label={messages.closeGallery} onKeyDown={handleCloseKeyDown} />
-      <Content onKeyDownCapture={navigate}>
+      <CloseButton aria-label="Close gallery" />
+      <Content>
         <Carousel
           activeIndex={index}
           onChange={handleCarouselChange}
           hideDots
           hideNavigationControls
           hideMaskEdges
-          emblaOptions={{ direction: dir }}
-          emblaAccessibilityOptions={{ carouselAriaLabel: messages.galleryImages, announceChanges: false }}
+          emblaAccessibilityOptions={{ carouselAriaLabel: 'Gallery images', announceChanges: false }}
         >
-          {images.map(renderSlide)}
+          {images.map(function renderSlide(slideImage, slideIndex) {
+            return (
+              <Flex key={slideImage.id} alignItems="center" justifyContent="center" className={styles.slide}>
+                {Math.abs(slideIndex - index) <= 1 ? (
+                  <GalleryImage
+                    image={slideImage}
+                    variant="viewer"
+                    loading={slideImage.id === activeId ? 'eager' : 'lazy'}
+                    onRetryStart={focusActiveThumbnail}
+                  />
+                ) : (
+                  <Box aria-hidden="true" />
+                )}
+              </Flex>
+            );
+          })}
         </Carousel>
         <Flex justifyContent="space-between" alignItems="center" gap="sm">
           <Text className={styles.name} maxLines={1} wrap="nowrap" role="status" aria-atomic="true">
-            {messages.imagePosition(image.name, index + 1, images.length)}
+            {image.name} · {(index + 1).toLocaleString('en-US')} of {images.length.toLocaleString('en-US')}
           </Text>
           <Pagination
             value={index + 1}
             pageCount={images.length}
             onChange={handlePageChange}
-            aria-label={messages.galleryImages}
+            aria-label="Gallery images"
             gap="xs"
             flexShrink={0}
           >
-            <Button ref={previousButton} slot="previous" variant="secondary" aria-label={messages.previousImage}>
-              <Icon icon={dir === 'rtl' ? 'chevron-right' : 'chevron-left'} aria-hidden="true" />
+            <Button slot="previous" variant="secondary" aria-label="Previous image">
+              <Icon icon="chevron-left" aria-hidden="true" />
             </Button>
-            <Button ref={nextButton} slot="next" variant="secondary" aria-label={messages.nextImage}>
-              <Icon icon={dir === 'rtl' ? 'chevron-left' : 'chevron-right'} aria-hidden="true" />
+            <Button slot="next" variant="secondary" aria-label="Next image">
+              <Icon icon="chevron-right" aria-hidden="true" />
             </Button>
           </Pagination>
         </Flex>
         <CardGroup
-          ref={strip}
           items={images}
+          dependencies={[activeId]}
           columns="none"
           rows="max-content"
           autoFlow="column"
@@ -1344,7 +1197,7 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
           orientation="horizontal"
           gap="md"
           padding="sm"
-          aria-label={messages.thumbnails}
+          aria-label="Image thumbnails"
           className={styles.thumbnails}
           selectionMode="single"
           autoFocus
@@ -1354,115 +1207,26 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
           selectedKeys={activeId ? [activeId] : []}
           onSelectionChange={handleThumbnailSelection}
         >
-          {renderThumbnail}
+          {function renderThumbnail(thumbnailImage) {
+            return (
+              <Card
+                id={thumbnailImage.id}
+                textValue={thumbnailImage.name}
+                aria-label={`View ${thumbnailImage.name}`}
+                ref={thumbnailImage.id === activeId ? registerActiveThumbnail : undefined}
+                padding="0"
+                gap="0"
+              >
+                <GalleryImage image={thumbnailImage} variant="thumbnail" />
+              </Card>
+            );
+          }}
         </CardGroup>
       </Content>
     </Modal>
   );
 }
-22:T117e,'use client';
-
-import { createContext, useContext, useMemo, type ReactNode } from 'react';
-
-/** Copy shared by the collection, file actions, ingestion feedback, and viewer. */
-function createGalleryCopy(locale: string) {
-  const number = new Intl.NumberFormat(locale, { maximumFractionDigits: 2 });
-  const format = (value: number) => number.format(value);
-  return {
-    gallery: 'Gallery',
-    imageCount: (count: number) => `${format(count)} ${count === 1 ? 'image' : 'images'}`,
-    addFilesRegion: 'Add files to gallery',
-    addFiles: 'Add files',
-    uploadIssues: 'Upload issues',
-    dismissUploadIssues: 'Dismiss upload issues',
-    dragHint: 'or drag images into the gallery below.',
-    dropFiles: 'Drop files to upload.',
-    layout: 'Layout',
-    list: 'List',
-    grid: 'Grid',
-    listView: 'List view',
-    gridView: 'Grid view',
-    files: 'Gallery files',
-    imageGrid: 'Gallery image grid',
-    updates: 'Gallery updates',
-    processingImages: 'Processing images',
-    processedFiles: (completed: number, total: number) => `${format(completed)} of ${format(total)} files processed`,
-    emptyGallery: 'Empty gallery',
-    startGallery: 'Start your gallery',
-    emptyDescription: 'Drop images here or choose Add files above to upload.',
-    loadingImage: 'Loading image…',
-    loadingPreview: (name: string) => `Loading ${name}`,
-    openImage: (name: string) => `Open ${name}`,
-    viewImage: (name: string) => `View ${name}`,
-    removeImage: (name: string) => `Remove ${name}`,
-    retryImage: (name: string) => `Retry ${name}`,
-    retryPreview: (name: string) => `Retry image preview for ${name}`,
-    retry: 'Retry',
-    failedImage: (name: string) => `Couldn’t load ${name}.`,
-    failedThumbnail: (name: string) => `${name} failed to load`,
-    needsAttention: 'File needs attention.',
-    sizeUnavailable: 'Size unavailable',
-    mediaGallery: 'Media gallery',
-    closeGallery: 'Close gallery',
-    previousImage: 'Previous image',
-    nextImage: 'Next image',
-    galleryImages: 'Gallery images',
-    thumbnails: 'Image thumbnails',
-    imagePosition: (name: string, current: number, total: number) => `${name} · ${format(current)} of ${format(total)}`,
-    showAll: 'Show all',
-    fileCount: (visible: number, total: number) => `${format(visible)} of ${format(total)} files`,
-    filesNeedAttention: (count: number) => `${format(count)} file${count === 1 ? ' needs' : 's need'} attention.`,
-    invalidFiles: (maxMiB: number) => `Use JPG, PNG, GIF, or WebP images smaller than ${format(maxMiB)} MiB.`,
-    limitReached: (maxFiles: number, maxMiB: number) =>
-      `Gallery limit reached: ${format(maxFiles)} images and ${format(maxMiB)} MiB total.`,
-    unreadableDrop: 'Some dropped files couldn’t be read. Please select them again.',
-    unreadableImages: 'We couldn’t read some images. Please try again.',
-    unreadableBatch: 'We couldn’t read these images. Please try again.',
-    addedImages: (count: number) => `${format(count)} ${count === 1 ? 'image' : 'images'} added.`,
-    skippedDuplicates: (count: number) => `${format(count)} ${count === 1 ? 'duplicate' : 'duplicates'} skipped.`,
-    removedImage: (name: string) => `${name} removed.`,
-    retryingImage: (name: string) => `${name} is retrying.`,
-    imageReady: 'Image is ready to view.',
-    imageFailed: 'Image failed to load.'
-  };
-}
-
-/** Override individual messages, including action names and live announcements. */
-export type GalleryMessages = ReturnType<typeof createGalleryCopy>;
-
-const defaultCopy = {
-  locale: 'en-US',
-  messages: createGalleryCopy('en-US'),
-  number: new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 })
-};
-const GalleryCopyContext = createContext(defaultCopy);
-
-/** Keeps translated copy and regional formatting consistent, including portaled viewer content. */
-export function GalleryCopyProvider({
-  locale = 'en-US',
-  messages,
-  children
-}: {
-  locale?: string;
-  messages?: Partial<GalleryMessages>;
-  children: ReactNode;
-}) {
-  const value = useMemo(
-    () => ({
-      locale,
-      messages: { ...createGalleryCopy(locale), ...messages },
-      number: new Intl.NumberFormat(locale, { maximumFractionDigits: 2 })
-    }),
-    [locale, messages]
-  );
-  return <GalleryCopyContext.Provider value={value}>{children}</GalleryCopyContext.Provider>;
-}
-
-/** Reads the gallery's copy without threading it through every presentation component. */
-export function useGalleryCopy() {
-  return useContext(GalleryCopyContext);
-}
-23:Ta67,import type { ImageItem } from './types';
+22:Ta67,import type { ImageItem } from './types';
 
 /** Fixed IDs keep the sample photographs consistent between visits. */
 const photographs: ImageItem[] = [
@@ -1556,7 +1320,7 @@ export const sampleImages: ImageItem[] = photographs.map((image) => ({
   srcSet: `${image.src.replace('/960/640', '/480/320')} 480w, ${image.src} 960w`,
   sizes: '(max-width: 60rem) 90vw, 960px'
 }));
-24:T665,/** The load state shown by a gallery file item. */
+23:T665,/** The load state shown by a gallery file item. */
 type ImageStatus = 'ready' | 'loading' | 'error';
 
 /** An image shown by the gallery. IDs must be unique and stable. */
@@ -1609,14 +1373,14 @@ export interface GalleryLimits {
   /** Inclusive total byte budget for images with a known size. Defaults to 256 MiB. */
   maxTotalSize?: number;
 }
-25:T21e8,'use client';
+24:T2314,'use client';
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { GalleryLimits, ImageItem } from '../data/types';
-import { useGalleryCopy } from '../data/copy';
 
 export const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 const MiB = 1024 * 1024;
+const numberFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 export const defaultLimits: Required<GalleryLimits> = { maxFiles: 50, maxFileSize: 20 * MiB, maxTotalSize: 256 * MiB };
 
 /** Hashing is optional; an unreadable file still fails independently of the rest of its batch. */
@@ -1638,7 +1402,6 @@ export function useGalleryImages(
   limits: Required<GalleryLimits>,
   onImagesChange?: (images: ImageItem[]) => void
 ) {
-  const { messages } = useGalleryCopy();
   const [images, setImages] = useState(() => [...initialImages]);
   const collection = useRef(images);
   const [errors, setErrors] = useState<string[]>([]);
@@ -1651,18 +1414,16 @@ export function useGalleryImages(
   const owned = useRef(new Map<string, { id: string; url: string; name: string; size: number }>());
   const keys = useRef(new Map<string, string>());
   const queue = useRef(Promise.resolve());
-  const callback = useRef(onImagesChange);
-  callback.current = onImagesChange;
   const previous = useRef(images);
 
   useEffect(
     function notifyCollectionChange() {
       if (previous.current !== images) {
         previous.current = images;
-        callback.current?.([...images]);
+        onImagesChange?.([...images]);
       }
     },
-    [images]
+    [images, onImagesChange]
   );
 
   useEffect(function manageResources() {
@@ -1759,19 +1520,30 @@ export function useGalleryImages(
         }
         if (!mounted.current) return;
         const errors = [];
-        if (invalid) errors.push(messages.invalidFiles(limits.maxFileSize / MiB));
-        if (overBudget) errors.push(messages.limitReached(limits.maxFiles, limits.maxTotalSize / MiB));
-        if (unreadable) errors.push(messages.unreadableImages);
+        if (invalid) {
+          errors.push(
+            `Use JPG, PNG, GIF, or WebP images smaller than ${numberFormatter.format(limits.maxFileSize / MiB)} MiB.`
+          );
+        }
+        if (overBudget) {
+          errors.push(
+            `Gallery limit reached: ${numberFormatter.format(limits.maxFiles)} images and ${numberFormatter.format(limits.maxTotalSize / MiB)} MiB total.`
+          );
+        }
+        if (unreadable) errors.push('We couldn’t read some images. Please try again.');
         setErrors(errors);
         const notices = [];
-        if (added) notices.push(messages.addedImages(added));
-        if (duplicates) notices.push(messages.skippedDuplicates(duplicates));
+        if (added) notices.push(`${numberFormatter.format(added)} ${added === 1 ? 'image' : 'images'} added.`);
+        if (duplicates)
+          notices.push(
+            `${numberFormatter.format(duplicates)} ${duplicates === 1 ? 'duplicate' : 'duplicates'} skipped.`
+          );
         setNotice(notices.join(' '));
       };
       const pending = queue.current.then(process);
       queue.current = pending
         .catch(function failedBatch() {
-          reportError(messages.unreadableBatch);
+          reportError('We couldn’t read these images. Please try again.');
         })
         .finally(function finishBatch() {
           if (progress.current.completed === progress.current.total) {
@@ -1781,7 +1553,7 @@ export function useGalleryImages(
         });
       return queue.current;
     },
-    [instanceId, limits.maxFiles, limits.maxFileSize, limits.maxTotalSize, messages, reportError, updateImages]
+    [instanceId, limits.maxFiles, limits.maxFileSize, limits.maxTotalSize, reportError, updateImages]
   );
 
   const removeImage = useCallback(
@@ -1794,9 +1566,9 @@ export function useGalleryImages(
         keys.current.delete(image.id);
       }
       updateImages((previous) => previous.filter((item) => item.id !== image.id));
-      setNotice(messages.removedImage(image.name));
+      setNotice(`${image.name} removed.`);
     },
-    [messages, updateImages]
+    [updateImages]
   );
 
   const retryImage = useCallback(
@@ -1804,9 +1576,9 @@ export function useGalleryImages(
       updateImages((previous) =>
         previous.map((item) => (item.id === image.id ? { ...item, status: 'loading', errorMessage: undefined } : item))
       );
-      setNotice(messages.retryingImage(image.name));
+      setNotice(`${image.name} is retrying.`);
     },
-    [messages, updateImages]
+    [updateImages]
   );
 
   const markReady = useCallback(
@@ -1814,21 +1586,21 @@ export function useGalleryImages(
       updateImages((previous) =>
         previous.map((item) => (item.id === id ? { ...item, status: 'ready', errorMessage: undefined } : item))
       );
-      setNotice(messages.imageReady);
+      setNotice('Image is ready to view.');
     },
-    [messages, updateImages]
+    [updateImages]
   );
 
   const markError = useCallback(
     function markError(id: string) {
       updateImages((previous) =>
         previous.map((item) =>
-          item.id === id ? { ...item, status: 'error', errorMessage: messages.failedImage(item.name) } : item
+          item.id === id ? { ...item, status: 'error', errorMessage: `Couldn’t load ${item.name}.` } : item
         )
       );
-      setNotice(messages.imageFailed);
+      setNotice('Image failed to load.');
     },
-    [messages, updateImages]
+    [updateImages]
   );
 
   return {
@@ -1845,21 +1617,21 @@ export function useGalleryImages(
     dismissErrors
   };
 }
-b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L15",null,{"toc":[],"footer":{"enabled":true},"children":[["$","$L16",null,{"children":"Gallery"}],["$","$L17",null,{"className":"mb-0","children":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L18",null,{"markdownUrl":"/docs/blocks/gallery.mdx"}],["$","$L19",null,{"markdownUrl":"/docs/blocks/gallery.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/gallery/README.mdx"}]]}],["$","$L1a",null,{"children":[null,"\n",["$","$L1c",null,{"block":{"id":"gallery","description":"Browse images in a list or grid, add local files, and open a media viewer.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/file-items/index.module.css","language":"css","source":".card {\n  inline-size: 100%;\n  min-inline-size: 0;\n  --_gallery-file-action-space: calc(var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5)) * 2);\n}\n\n.card:where([data-error]) {\n  border-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));\n}\n\n.cover {\n  box-sizing: border-box;\n  min-inline-size: 0;\n  border: 1px solid transparent;\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--_gallery-file-action-space);\n}\n\n.details:where([data-variant=\"vertical\"]) {\n  padding-inline-end: 0;\n}\n\n.errorDetails {\n  min-inline-size: 0;\n}\n\n.retry {\n  text-decoration: underline;\n}\n\n.collection {\n  inline-size: 100%;\n}\n"},{"path":"components/file-items/index.tsx","language":"tsx","source":"$1d"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.notice:where(:empty) {\n  position: absolute;\n}\n\n.dropOverlay {\n  position: absolute;\n  inset: 0;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  color: var(--color-surface-text-base, var(--ux-1leynsm, CanvasText));\n  pointer-events: none;\n}\n\n.dropTarget {\n  position: relative;\n}\n\n.dropZone {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.emptyState {\n  min-block-size: 256px;\n  text-align: center;\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$1e"},{"path":"components/image/index.module.css","language":"css","source":"$1f"},{"path":"components/image/index.tsx","language":"tsx","source":"$20"},{"path":"components/viewer/index.module.css","language":"css","source":".modalContainer {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n  min-inline-size: 0;\n}\n\n.modal {\n  inline-size: 100%;\n  max-inline-size: 100%;\n}\n\n.slide {\n  min-inline-size: 0;\n  max-inline-size: 100%;\n  block-size: 55dvh;\n}\n\n.name {\n  flex: 1 1 auto;\n  min-inline-size: 0;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  overflow-x: auto;\n  scroll-padding-inline: var(--sp-sm);\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$21"},{"path":"data/copy.tsx","language":"tsx","source":"$22"},{"path":"data/sample-images.ts","language":"ts","source":"$23"},{"path":"data/types.ts","language":"ts","source":"$24"},{"path":"hooks/use-gallery-images.ts","language":"ts","source":"$25"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery';\nexport type { ImageItem } from './data/types';\n"}]},"children":"$L26"}]]}]]}],["$L27","$L28"],"$L29"]}],"p":"$@2a","v":null,"s":"$a"}}]]
+b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L15",null,{"toc":[],"footer":{"enabled":true},"children":[["$","$L16",null,{"children":"Gallery"}],["$","$L17",null,{"className":"mb-0","children":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L18",null,{"markdownUrl":"/docs/blocks/gallery.mdx"}],["$","$L19",null,{"markdownUrl":"/docs/blocks/gallery.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/gallery/README.mdx"}]]}],["$","$L1a",null,{"children":[null,"\n",["$","$L1c",null,{"block":{"id":"gallery","description":"Browse images in a list or grid, add local files, and open a media viewer.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/file-items/index.module.css","language":"css","source":".card {\n  inline-size: 100%;\n  min-inline-size: 0;\n  --_gallery-file-action-space: calc(var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5)) * 2);\n}\n\n.card:where([data-error]) {\n  border-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));\n}\n\n.cover {\n  box-sizing: border-box;\n  min-inline-size: 0;\n  border: 1px solid transparent;\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--_gallery-file-action-space);\n}\n\n.details:where([data-variant=\"vertical\"]) {\n  padding-inline-end: 0;\n}\n\n.retry {\n  text-decoration: underline;\n}\n\n.collection {\n  inline-size: 100%;\n}\n"},{"path":"components/file-items/index.tsx","language":"tsx","source":"$1d"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.notice:where(:empty) {\n  position: absolute;\n}\n\n.dropOverlay {\n  position: absolute;\n  inset: 0;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  color: var(--color-surface-text-base, var(--ux-1leynsm, CanvasText));\n  pointer-events: none;\n}\n\n.dropTarget {\n  position: relative;\n}\n\n.dropZone {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.emptyState {\n  min-block-size: 256px;\n  text-align: center;\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$1e"},{"path":"components/image/index.module.css","language":"css","source":"$1f"},{"path":"components/image/index.tsx","language":"tsx","source":"$20"},{"path":"components/viewer/index.module.css","language":"css","source":".modalContainer {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n  min-inline-size: 0;\n}\n\n.modal {\n  inline-size: 100%;\n  max-inline-size: 100%;\n}\n\n.slide {\n  min-inline-size: 0;\n  max-inline-size: 100%;\n  block-size: 55dvh;\n}\n\n.name {\n  flex: 1 1 auto;\n  min-inline-size: 0;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  overflow-x: auto;\n  scroll-padding-inline: var(--sp-sm);\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$21"},{"path":"data/sample-images.ts","language":"ts","source":"$22"},{"path":"data/types.ts","language":"ts","source":"$23"},{"path":"hooks/use-gallery-images.ts","language":"ts","source":"$24"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery';\nexport type { ImageItem } from './data/types';\n"}]},"children":"$L25"}]]}]]}],["$L26","$L27"],"$L28"]}],"p":"$@29","v":null,"s":"$a"}}]]
 2:[["children",{"s":{"n":"slug","t":"oc","k":"blocks/gallery","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
 1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
-0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L2c",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L2e",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$2f",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Gallery"}],["$","meta","1",{"name":"description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","2",{"property":"og:title","content":"Gallery"}],["$","meta","3",{"property":"og:description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/gallery/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Gallery"}],["$","meta","7",{"name":"twitter:description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/gallery/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@30","v":null,"s":"$a"}},"a":"$@31","u":"$@32","b":"TC7ia21gHY_Oumq-jm8ku"}
-33:I[128903,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
-34:I[897367,["$4","$5"],"OutletBoundary"]
-26:["$","$L33",null,{}]
-27:["$","script","script-0",{"src":"/antares/pr-380-site/_next/static/chunks/428imhwwk-ha_.js","async":true}]
-28:["$","script","script-1",{"src":"/antares/pr-380-site/_next/static/chunks/32o7tmg2i-rss.js","async":true}]
-29:["$","$L34",null,{"children":["$","$2f",null,{"name":"Next.MetadataOutlet","children":"$@35"}]}]
-32:true
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L2b",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L2d",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$2e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Gallery"}],["$","meta","1",{"name":"description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","2",{"property":"og:title","content":"Gallery"}],["$","meta","3",{"property":"og:description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/gallery/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Gallery"}],["$","meta","7",{"name":"twitter:description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/gallery/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@2f","v":null,"s":"$a"}},"a":"$@30","u":"$@31","b":"N6pbhffk4l6ZHzt4U-fUb"}
+32:I[128903,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
+33:I[897367,["$4","$5"],"OutletBoundary"]
+25:["$","$L32",null,{}]
+26:["$","script","script-0",{"src":"/antares/pr-380-site/_next/static/chunks/428imhwwk-ha_.js","async":true}]
+27:["$","script","script-1",{"src":"/antares/pr-380-site/_next/static/chunks/32o7tmg2i-rss.js","async":true}]
+28:["$","$L33",null,{"children":["$","$2e",null,{"name":"Next.MetadataOutlet","children":"$@34"}]}]
+31:true
 a:300
-35:null
+34:null
 a:C
-31:0
+30:0
 8:"$undefined"
-30:"$undefined"
-2a:"$undefined"
+2f:"$undefined"
+29:"$undefined"

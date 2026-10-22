@@ -8,7 +8,7 @@ d:"/antares/pr-380-site/_next/static/chunks/0cq_r7uivgtia.js"
 e:"/antares/pr-380-site/_next/static/chunks/44d0fxytx9jkg.js"
 f:"/antares/pr-380-site/_next/static/chunks/0y43-9m1z7bvl.js"
 10:"/antares/pr-380-site/_next/static/chunks/2f_a87zzluj--.js"
-11:"/antares/pr-380-site/_next/static/chunks/3-0fi3pzuk8_u.js"
+11:"/antares/pr-380-site/_next/static/chunks/2msp43vzmyspa.js"
 12:"/antares/pr-380-site/_next/static/chunks/2znf03_833nl7.js"
 13:"/antares/pr-380-site/_next/static/chunks/428imhwwk-ha_.js"
 14:"/antares/pr-380-site/_next/static/chunks/32o7tmg2i-rss.js"
@@ -658,10 +658,10 @@ export const appointmentsImage =
 b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L15",null,{"toc":[{"depth":2,"url":"#install-a-block","title":"Install a block"},{"depth":2,"url":"#blocks","title":"Blocks"},{"depth":3,"url":"#overview-dashboard","title":"Overview dashboard"},{"depth":3,"url":"#project-inquiry-form","title":"Project inquiry form"},{"depth":3,"url":"#gallery","title":"Gallery"},{"depth":3,"url":"#sign-in-form","title":"Sign-in form"}],"footer":{"enabled":true},"children":[["$","$L16",null,{"children":"Build product experiences with Antares."}],["$","$L17",null,{"className":"mb-0","children":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L18",null,{"markdownUrl":"/docs/blocks.mdx"}],["$","$L19",null,{"markdownUrl":"/docs/blocks.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/README.mdx"}]]}],["$","$L1a",null,{"children":[null,"\n",["$","$L1b",null,{"as":"h2","id":"install-a-block","children":"Install a block"}],"\n",["$","p",null,{"children":"From the root of your application, run the command copied by the block's Install button:"}],"\n",["$","$L1c",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$L1d",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npx"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" shadcn@latest"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" add"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" godaddy/antares/blocks/sign-in-form"}]]}]}]}]}],"\n",["$","$L1b",null,{"as":"h2","id":"blocks","children":"Blocks"}],"\n",["$","$L1b",null,{"as":"h3","id":"overview-dashboard","children":"Overview dashboard"}],"\n",["$","$L1f",null,{"block":{"id":"overview-dashboard","description":"A responsive Antares overview dashboard with users, sales channels, and conversations.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/overview-dashboard","files":[{"path":"components/appointments-promotion-card/index.module.css","language":"css","source":".mediaCard {\n  min-inline-size: 0;\n}\n\n.mediaImage {\n  display: block;\n  max-inline-size: 100%;\n  block-size: auto;\n  border-radius: var(--rounding-sm);\n}\n\n.mediaCardContent,\n.mediaCardCopy,\n.mediaCardImage {\n  min-inline-size: 0;\n}\n"},{"path":"components/appointments-promotion-card/index.tsx","language":"tsx","source":"$20"},{"path":"components/conversations-card/index.module.css","language":"css","source":".conversationsCard {\n  min-inline-size: 0;\n}\n"},{"path":"components/conversations-card/index.tsx","language":"tsx","source":"import { Button, Card, Flex, Heading, Tag, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Demonstrates a secondary conversations card with a connection action. */\nexport function ConversationsCard() {\n  return (\n    <Card elevation=\"card\" className={styles.conversationsCard}>\n      <Flex direction=\"column\" gap=\"md\">\n        <Flex justifyContent=\"space-between\" alignItems=\"center\" gap=\"md\">\n          <Heading level={3}>Conversations</Heading>\n          <Tag emphasis=\"info\" size=\"sm\">\n            Included\n          </Tag>\n        </Flex>\n        <Text>Manage all your emails and messages in one place with a unified inbox.</Text>\n        <Button variant=\"secondary\" size=\"sm\">\n          Connect Email\n        </Button>\n      </Flex>\n    </Card>\n  );\n}\n"},{"path":"components/dashboard-header/index.module.css","language":"css","source":".mobileMenuButton,\n.mobileNavLogo,\n.mobileNavAction {\n  display: none;\n}\n\n.navDivider {\n  block-size: 1.25rem;\n  border-inline-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n}\n\n.navigation {\n  gap: var(--sp-lg);\n}\n\n.navActions {\n  gap: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .mobileMenuButton,\n  .mobileNavLogo,\n  .mobileNavAction {\n    display: inline-flex;\n  }\n\n  .desktopNavAction,\n  .navDivider {\n    display: none;\n  }\n\n  .navigation,\n  .navActions {\n    gap: var(--sp-sm);\n  }\n}\n"},{"path":"components/dashboard-header/index.tsx","language":"tsx","source":"$21"},{"path":"components/dashboard-sidebar-content/index.module.css","language":"css","source":"$22"},{"path":"components/dashboard-sidebar-content/index.tsx","language":"tsx","source":"$23"},{"path":"components/dashboard-sidebar/index.module.css","language":"css","source":".sideNavigationContainer {\n  align-self: stretch;\n  background: var(--ux-9i7okd, #f5f7f8);\n  block-size: auto;\n  min-inline-size: 0;\n  overflow: visible;\n  position: relative;\n}\n\n.sideNavigation {\n  background: var(--ux-9i7okd, #f5f7f8);\n  block-size: 100%;\n  inline-size: 100%;\n  min-inline-size: 0;\n  overflow: hidden;\n  padding-block-start: var(--sp-md, 0.5rem);\n  transition: inline-size 300ms cubic-bezier(0.32, 0.72, 0, 1);\n}\n\n.sideNavigationContainer:where([data-expanded]) {\n  z-index: 1;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .sideNavigation {\n    transition: none;\n  }\n}\n\n@container (max-width: 40rem) {\n  .sideNavigationContainer {\n    display: none;\n  }\n}\n"},{"path":"components/dashboard-sidebar/index.tsx","language":"tsx","source":"$24"},{"path":"components/overview-dashboard/index.module.css","language":"css","source":".dashboardFrame {\n  container-type: inline-size;\n  inline-size: 100%;\n  block-size: 100%;\n}\n\n.dashboardShell {\n  grid-template-columns: 56px minmax(0, 1fr);\n  gap: var(--sp-xl);\n  min-block-size: 100%;\n  min-inline-size: 0;\n  transition: grid-template-columns 300ms cubic-bezier(0.32, 0.72, 0, 1);\n}\n\n.dashboardShell:where([data-navigation-pinned-open]) {\n  grid-template-columns: 224px minmax(0, 1fr);\n}\n\n.dashboardMain {\n  align-items: center;\n  min-block-size: 100%;\n  min-inline-size: 0;\n}\n\n.dashboardContent {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n}\n\n.contentGrid {\n  grid-template-columns: minmax(0, 2.25fr) minmax(17.5rem, 1fr);\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .dashboardShell {\n    transition: none;\n  }\n}\n\n@container (max-width: 56rem) {\n  .contentGrid {\n    grid-template-columns: 1fr;\n  }\n}\n\n@container (max-width: 40rem) {\n  .dashboardShell {\n    grid-template-columns: 1fr;\n  }\n}\n"},{"path":"components/overview-dashboard/index.tsx","language":"tsx","source":"$25"},{"path":"components/sales-channels-card/index.module.css","language":"css","source":".salesCardMeasure {\n  min-inline-size: 0;\n}\n"},{"path":"components/sales-channels-card/index.tsx","language":"tsx","source":"$26"},{"path":"components/users-card/index.module.css","language":"css","source":".usersCard {\n  min-inline-size: 0;\n}\n\n.userRow {\n  align-items: center;\n}\n\n.userDivider {\n  border: 0;\n  border-block-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n  margin-block: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .restoreUsersLabel {\n    display: none;\n  }\n\n  .userRow {\n    align-items: flex-start;\n  }\n\n  .userActions {\n    inline-size: 100%;\n    justify-content: flex-end;\n  }\n}\n"},{"path":"components/users-card/index.tsx","language":"tsx","source":"$27"},{"path":"constants/config.ts","language":"ts","source":"$28"},{"path":"index.tsx","language":"tsx","source":"export { OverviewDashboard } from './components/overview-dashboard';\n"}]},"children":"$L29"}],"\n","$L2a","\n","$L2b","\n","$L2c","\n","$L2d","\n","$L2e","\n","$L2f"]}]]}],["$L30","$L31"],"$L32"]}],"p":"$@33","v":null,"s":"$a"}}]]
 2:[["children",{"s":{"n":"slug","t":"oc","k":"blocks","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
 1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
-0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L35",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L37",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$38",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Build product experiences with Antares."}],["$","meta","1",{"name":"description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","2",{"property":"og:title","content":"Build product experiences with Antares."}],["$","meta","3",{"property":"og:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Build product experiences with Antares."}],["$","meta","7",{"name":"twitter:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@39","v":null,"s":"$a"}},"a":"$@3a","u":"$@3b","b":"TC7ia21gHY_Oumq-jm8ku"}
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L35",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L37",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$38",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Build product experiences with Antares."}],["$","meta","1",{"name":"description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","2",{"property":"og:title","content":"Build product experiences with Antares."}],["$","meta","3",{"property":"og:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Build product experiences with Antares."}],["$","meta","7",{"name":"twitter:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@39","v":null,"s":"$a"}},"a":"$@3a","u":"$@3b","b":"N6pbhffk4l6ZHzt4U-fUb"}
 3c:I[260568,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
-4e:I[342785,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
-4f:I[897367,["$4","$5"],"OutletBoundary"]
+4d:I[342785,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
+4e:I[897367,["$4","$5"],"OutletBoundary"]
 29:["$","$L3c",null,{}]
 2a:["$","$L1b",null,{"as":"h3","id":"project-inquiry-form","children":"Project inquiry form"}]
 3d:Tf57,'use client';
@@ -1328,7 +1328,7 @@ export function formatFileSize(file: File) {
 }
 2b:["$","$L1f",null,{"block":{"id":"project-inquiry-form","description":"A responsive project inquiry page with local file previews.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/project-inquiry-form","files":[{"path":"components/attached-files/index.module.css","language":"css","source":".row {\n  inline-size: 100%;\n  max-inline-size: 45.625rem;\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 4));\n}\n\n.fileName {\n  overflow-wrap: anywhere;\n}\n\n.pickerButton {\n  --_attached-files-picker-padding-block: var(--size-space-030, calc(var(--ux-1sbfig8, 0.25rem) * 3));\n  --_attached-files-picker-padding-inline: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 4));\n\n  inline-size: 100%;\n  min-block-size: 5rem;\n  padding: var(--_attached-files-picker-padding-block) var(--_attached-files-picker-padding-inline);\n  border: 1px dashed var(--color-surface-border-card, var(--ux-97h3vl, #d4dbe0));\n  border-radius: var(--ux-2jubes, 6px);\n  background: var(--ux-1mh0ktr, #f5f5f5);\n  white-space: normal;\n}\n"},{"path":"components/attached-files/index.tsx","language":"tsx","source":"$3d"},{"path":"components/benefits/index.module.css","language":"css","source":".list {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/benefits/index.tsx","language":"tsx","source":"$3e"},{"path":"components/drop-overlay/index.module.css","language":"css","source":".overlay {\n  position: absolute;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: inherit;\n  background-color: rgba(216, 239, 239, 0.9);\n  color: var(--color-surface-text-base, var(--ux-1leynsm, #111));\n  pointer-events: none;\n  inset: 0;\n}\n"},{"path":"components/drop-overlay/index.tsx","language":"tsx","source":"import { Flex, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\ninterface DropOverlayProps {\n  /** Whether an accepted file is currently over the inquiry form. */\n  isDropTarget: boolean;\n}\n\n/** Shows the green drop feedback while files are over the inquiry form. */\nexport function DropOverlay({ isDropTarget }: DropOverlayProps) {\n  if (!isDropTarget) return null;\n\n  return (\n    <Flex\n      role=\"status\"\n      aria-live=\"polite\"\n      direction=\"column\"\n      alignItems=\"center\"\n      justifyContent=\"center\"\n      gap=\"sm\"\n      padding=\"xl\"\n      className={styles.overlay}\n    >\n      <Icon icon=\"upload\" aria-hidden=\"true\" />\n      <Text as=\"strong\">Drop files to upload.</Text>\n    </Flex>\n  );\n}\n"},{"path":"components/fields/index.tsx","language":"tsx","source":"$3f"},{"path":"components/file-preview/index.module.css","language":"css","source":".preview {\n  inline-size: 3.5rem;\n  block-size: 3.5rem;\n  flex-shrink: 0;\n  object-fit: cover;\n}\n"},{"path":"components/file-preview/index.tsx","language":"tsx","source":"$40"},{"path":"components/project-inquiry-form/index.module.css","language":"css","source":".root {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.columns {\n  min-inline-size: 0;\n}\n\n.visualColumn {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.heroImage {\n  display: block;\n  inline-size: 100%;\n  block-size: auto;\n  aspect-ratio: 16 / 9;\n  object-fit: cover;\n}\n\n.form {\n  position: relative;\n  box-sizing: border-box;\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.dropZone {\n  inline-size: 100%;\n  max-inline-size: 100%;\n  min-inline-size: 0;\n}\n"},{"path":"components/project-inquiry-form/index.tsx","language":"tsx","source":"$41"},{"path":"data/files.ts","language":"ts","source":"$42"},{"path":"index.tsx","language":"tsx","source":"export { ProjectInquiryForm } from './components/project-inquiry-form';\n"}]},"children":"$L43"}]
 2c:["$","$L1b",null,{"as":"h3","id":"gallery","children":"Gallery"}]
-44:T21fc,'use client';
+44:T1fda,'use client';
 
 import { useCallback, useRef, useState } from 'react';
 import {
@@ -1345,7 +1345,6 @@ import {
 } from '@godaddy/antares';
 import { FileCover, type FileCoverVariant } from '../image';
 import type { ImageItem } from '../../data/types';
-import { useGalleryCopy } from '../../data/copy';
 import styles from './index.module.css';
 
 interface FileItemsProps extends Pick<FileItemProps, 'onRemove' | 'onLoadError' | 'onLoadSuccess'> {
@@ -1369,6 +1368,7 @@ interface FileItemsProps extends Pick<FileItemProps, 'onRemove' | 'onLoadError' 
 }
 
 const MAX_VISIBLE_ITEMS = 5;
+const fileSizeFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
 /** Renders the same collection with either list or grid geometry. */
 export function FileItems({
@@ -1382,7 +1382,6 @@ export function FileItems({
   onLoadError,
   onLoadSuccess
 }: FileItemsProps) {
-  const { messages } = useGalleryCopy();
   const isList = view === 'list';
   const firstRevealedId = useRef<string | null>(null);
   const visibleImages = isList && !showAll ? images.slice(0, MAX_VISIBLE_ITEMS) : images;
@@ -1415,7 +1414,6 @@ export function FileItems({
   return (
     <Flex direction="column" gap="sm" className={styles.collection}>
       <CardGroup
-        key={view}
         selectionMode="single"
         selectionBehavior="toggle"
         shouldSelectOnPressUp
@@ -1427,7 +1425,7 @@ export function FileItems({
         gap="sm"
         justifyContent="start"
         alignItems="start"
-        aria-label={isList ? messages.files : messages.imageGrid}
+        aria-label={isList ? 'Gallery files' : 'Gallery image grid'}
       >
         {visibleImages.map((image) => (
           <FileItem
@@ -1474,7 +1472,7 @@ interface FileItemProps {
 }
 
 /** Preserves useful precision for small files instead of rounding their size to zero MiB. */
-function formatFileSize(bytes: number, fileSizeFormatter: Intl.NumberFormat) {
+function formatFileSize(bytes: number) {
   if (bytes < 1024) return fileSizeFormatter.format(bytes) + ' B';
   if (bytes < 1024 * 1024) return fileSizeFormatter.format(bytes / 1024) + ' KiB';
   return fileSizeFormatter.format(bytes / (1024 * 1024)) + ' MiB';
@@ -1482,9 +1480,8 @@ function formatFileSize(bytes: number, fileSizeFormatter: Intl.NumberFormat) {
 
 /** One file item with the same actions and states across list and grid views. */
 function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItemRef }: FileItemProps) {
-  const { messages, number } = useGalleryCopy();
   const [coverReady, setCoverReady] = useState(false);
-  const size = image.size === undefined ? messages.sizeUnavailable : formatFileSize(image.size, number);
+  const size = image.size === undefined ? 'Size unavailable' : formatFileSize(image.size);
   const isError = image.status === 'error';
   const isLoading = image.status === 'loading';
   const canOpen = !isError && !isLoading && coverReady;
@@ -1509,7 +1506,7 @@ function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItem
     <Card
       id={image.id}
       textValue={image.name}
-      aria-label={isError ? messages.retryImage(image.name) : canOpen ? messages.openImage(image.name) : image.name}
+      aria-label={isError ? `Retry ${image.name}` : canOpen ? `Open ${image.name}` : image.name}
       ref={(element) => onItemRef?.(image.id, element)}
       isDisabled={!isError && !canOpen}
       direction={variant === 'horizontal' ? 'row' : 'column'}
@@ -1536,33 +1533,22 @@ function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItem
         </Text>
         {isError ? (
           <Flex
-            direction={variant === 'horizontal' ? 'row' : 'column'}
+            as={Detail}
             gap="xs"
-            alignItems={variant === 'horizontal' ? 'center' : 'start'}
-            wrap={variant === 'horizontal' ? 'nowrap' : undefined}
-            className={styles.errorDetails}
+            alignItems="center"
+            className={styles.retry}
             role={variant === 'vertical' ? 'alert' : undefined}
           >
-            <Detail emphasis="critical" maxLines={1}>
-              {image.errorMessage ?? messages.needsAttention}
-            </Detail>
-            <Flex alignItems="center" gap="xs" className={styles.retry}>
-              <Icon icon="refresh" aria-hidden="true" />
-              <Text size="sm">{messages.retry}</Text>
-            </Flex>
+            <Icon icon="refresh" aria-hidden="true" />
+            Retry
           </Flex>
         ) : (
-          <Detail>{isLoading ? messages.loadingImage : size}</Detail>
+          <Detail>{isLoading ? 'Loading image…' : size}</Detail>
         )}
       </Flex>
 
       <CornerActions>
-        <Button
-          variant="secondary"
-          size="sm"
-          aria-label={messages.removeImage(image.name)}
-          onPress={() => onRemove(image)}
-        >
+        <Button variant="secondary" size="sm" aria-label={`Remove ${image.name}`} onPress={() => onRemove(image)}>
           <Icon icon="x" aria-hidden="true" />
         </Button>
       </CornerActions>
@@ -1586,17 +1572,18 @@ interface ViewBannerProps {
 
 /** Counter and image-error feedback used below the file list. */
 function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: ViewBannerProps) {
-  const { messages } = useGalleryCopy();
   const hasMore = visibleCount < totalCount;
   if (!hasMore && errorCount === 0) return null;
 
   return (
     <Flex direction="column" gap="sm" blockPadding="sm">
       <Flex justifyContent="space-between" alignItems="center" gap="sm">
-        <Text>{messages.fileCount(visibleCount, totalCount)}</Text>
+        <Text>
+          {visibleCount.toLocaleString('en-US')} of {totalCount.toLocaleString('en-US')} files
+        </Text>
         {hasMore ? (
           <Button variant="inline" onPress={onShowAll}>
-            {messages.showAll}
+            Show all
           </Button>
         ) : null}
       </Flex>
@@ -1604,13 +1591,15 @@ function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: ViewBan
       {errorCount > 0 ? (
         <Flex justifyContent="center" alignItems="center" gap="xs" role="alert">
           <Icon icon="alert" aria-hidden="true" />
-          <Text emphasis="critical">{messages.filesNeedAttention(errorCount)}</Text>
+          <Text emphasis="critical">
+            {errorCount.toLocaleString('en-US')} file{errorCount === 1 ? ' needs' : 's need'} attention.
+          </Text>
         </Flex>
       ) : null}
     </Flex>
   );
 }
-45:T2dbc,'use client';
+45:T2930,'use client';
 
 import { forwardRef, useCallback, useId, useRef, useState } from 'react';
 import {
@@ -1634,7 +1623,6 @@ import {
   useDrop
 } from '@godaddy/antares';
 import type { GalleryLimits, ImageItem } from '../../data/types';
-import { GalleryCopyProvider, type GalleryMessages, useGalleryCopy } from '../../data/copy';
 import { acceptedTypes, defaultLimits, useGalleryImages } from '../../hooks/use-gallery-images';
 import { FileItems } from '../file-items';
 import { Viewer } from '../viewer';
@@ -1650,17 +1638,8 @@ export interface GalleryProps {
   /** Local ingestion budgets. Initial images are retained even when they exceed a budget. */
   limits?: GalleryLimits;
 
-  /** Layout and viewer navigation direction. Match the host application's locale direction. Defaults to ltr. */
-  dir?: 'ltr' | 'rtl';
-
   /** Notifies the host after collection or load-state changes. Blob URLs remain owned by this instance. */
   onImagesChange?: (images: ImageItem[]) => void;
-
-  /** Locale used for file sizes and numeric feedback. Defaults to en-US. */
-  locale?: string;
-
-  /** Translated labels and announcements; omitted messages retain their English defaults. */
-  messages?: Partial<GalleryMessages>;
 }
 
 /**
@@ -1671,23 +1650,7 @@ export interface GalleryProps {
  * @example
  * <Gallery initialImages={[{ id: 'cover', name: 'Cover.jpg', src: '/cover.jpg' }]} />
  */
-export function Gallery({ locale = 'en-US', messages, dir = 'ltr', ...props }: GalleryProps) {
-  return (
-    <GalleryCopyProvider locale={locale} messages={messages}>
-      <GalleryContent {...props} dir={dir} />
-    </GalleryCopyProvider>
-  );
-}
-
-/** Owns collection and presentation state within the gallery's locale scope. */
-function GalleryContent({
-  initialImages = [],
-  defaultView = 'grid',
-  limits,
-  dir = 'ltr',
-  onImagesChange
-}: GalleryProps) {
-  const { locale, messages } = useGalleryCopy();
+export function Gallery({ initialImages = [], defaultView = 'grid', limits, onImagesChange }: GalleryProps) {
   const resolvedLimits = {
     maxFiles: limits?.maxFiles ?? defaultLimits.maxFiles,
     maxFileSize: limits?.maxFileSize ?? defaultLimits.maxFileSize,
@@ -1742,18 +1705,14 @@ function GalleryContent({
       const files = results.flatMap((result) => (result.status === 'fulfilled' ? [result.value] : []));
       await addFiles(files);
       if (results.some((result) => result.status === 'rejected')) {
-        reportError(messages.unreadableDrop);
+        reportError('Some dropped files couldn’t be read. Please select them again.');
       }
     },
-    [addFiles, messages.unreadableDrop, reportError]
+    [addFiles, reportError]
   );
 
   const handleViewChange = useCallback(function handleViewChange(key: string) {
     if (key === 'list' || key === 'grid') setView(key);
-  }, []);
-
-  const handleOpenImage = useCallback(function handleOpenImage(id: string) {
-    setActiveId(id);
   }, []);
 
   const handleImageLoadError = useCallback(
@@ -1779,10 +1738,9 @@ function GalleryContent({
   return (
     <>
       <Flex
-        dir={dir}
-        lang={locale}
+        lang="en-US"
         role="region"
-        aria-label={messages.addFilesRegion}
+        aria-label="Add files to gallery"
         padding="0"
         alignItems="stretch"
         justifyContent="start"
@@ -1791,8 +1749,10 @@ function GalleryContent({
         <Flex direction="column" gap="lg" padding="lg" className={styles.content}>
           <Flex gap="md" wrap="wrap" alignItems="center" justifyContent="space-between">
             <Flex alignItems="center" gap="sm" wrap="wrap">
-              <Heading level={2}>{messages.gallery}</Heading>
-              <Tag size="sm">{messages.imageCount(images.length)}</Tag>
+              <Heading level={2}>Gallery</Heading>
+              <Tag size="sm">
+                {images.length.toLocaleString('en-US')} {images.length === 1 ? 'image' : 'images'}
+              </Tag>
             </Flex>
 
             <Flex alignItems="center" gap="sm" wrap="wrap">
@@ -1800,17 +1760,16 @@ function GalleryContent({
                 ref={addButton}
                 isDropTarget={isDropTarget}
                 errorId={errors.length ? uploadErrorId : undefined}
-                acceptedTypes={acceptedTypes}
                 onSelect={addFiles}
               />
-              <SegmentedController aria-label={messages.layout} value={view} onSelectionChange={handleViewChange}>
+              <SegmentedController aria-label="Layout" value={view} onSelectionChange={handleViewChange}>
                 <SegmentedControllerItem value="list">
                   <Icon icon="bulleted-list" />
-                  {messages.list}
+                  List
                 </SegmentedControllerItem>
                 <SegmentedControllerItem value="grid">
                   <Icon icon="grid" />
-                  {messages.grid}
+                  Grid
                 </SegmentedControllerItem>
               </SegmentedController>
             </Flex>
@@ -1820,8 +1779,8 @@ function GalleryContent({
             <Alert
               id={uploadErrorId}
               emphasis="critical"
-              aria-label={messages.uploadIssues}
-              ariaLabels={{ close: messages.dismissUploadIssues }}
+              aria-label="Upload issues"
+              ariaLabels={{ close: 'Dismiss upload issues' }}
               onClose={function dismissUploadIssues() {
                 addButton.current?.focus({ preventScroll: true });
                 dismissErrors();
@@ -1836,14 +1795,14 @@ function GalleryContent({
               </Flex>
             </Alert>
           ) : null}
-          <Detail role="status" aria-label={messages.updates} aria-atomic="true" className={styles.notice}>
+          <Detail role="status" aria-label="Gallery updates" aria-atomic="true" className={styles.notice}>
             {notice}
           </Detail>
 
           <Box
             ref={dropZoneRef}
             role="region"
-            aria-label={view === 'list' ? messages.listView : messages.gridView}
+            aria-label={view === 'list' ? 'List view' : 'Grid view'}
             {...dropProps}
             className={styles.dropTarget}
           >
@@ -1855,7 +1814,7 @@ function GalleryContent({
                 images={images}
                 showAll={showAll}
                 onShowAll={handleShowAll}
-                onOpen={handleOpenImage}
+                onOpen={setActiveId}
                 onRemove={handleRemoveImage}
                 onRetry={retryImage}
                 onLoadError={handleImageLoadError}
@@ -1873,7 +1832,7 @@ function GalleryContent({
                 className={styles.dropOverlay}
               >
                 <Icon icon="upload" aria-hidden="true" />
-                <Text as="strong">{messages.dropFiles}</Text>
+                <Text as="strong">Drop files to upload.</Text>
               </Flex>
             ) : null}
           </Box>
@@ -1881,9 +1840,9 @@ function GalleryContent({
             <ProgressBar
               value={processing.completed}
               maxValue={processing.total}
-              valueLabel={messages.processedFiles(processing.completed, processing.total)}
+              valueLabel={`${processing.completed.toLocaleString('en-US')} of ${processing.total.toLocaleString('en-US')} files processed`}
             >
-              <Label>{messages.processingImages}</Label>
+              <Label>Processing images</Label>
               <Box slot="value" />
               <Box slot="track" />
             </ProgressBar>
@@ -1894,10 +1853,9 @@ function GalleryContent({
         images={images.filter(function filterViewableImage(image) {
           return image.status !== 'error' && image.status !== 'loading';
         })}
-        dir={dir}
         activeId={activeId}
         onClose={handleCloseViewer}
-        onSelectImage={handleOpenImage}
+        onSelectImage={setActiveId}
       />
     </>
   );
@@ -1905,7 +1863,6 @@ function GalleryContent({
 
 /** Welcomes users to an empty gallery and points them to the upload action. */
 function EmptyState() {
-  const { messages } = useGalleryCopy();
   return (
     <Flex
       direction="column"
@@ -1914,14 +1871,14 @@ function EmptyState() {
       gap="sm"
       padding="2xl"
       role="region"
-      aria-label={messages.emptyGallery}
+      aria-label="Empty gallery"
       className={styles.emptyState}
     >
       <Box padding="md" rounding="full" elevation="card" aria-hidden="true">
         <Icon icon="upload" />
       </Box>
-      <Heading level={3}>{messages.startGallery}</Heading>
-      <Text className={styles.description}>{messages.emptyDescription}</Text>
+      <Heading level={3}>Start your gallery</Heading>
+      <Text className={styles.description}>Drop images here or choose Add files above to upload.</Text>
     </Flex>
   );
 }
@@ -1933,37 +1890,33 @@ interface UploadPromptProps {
   /** Identifies current upload errors for the picker description. */
   errorId?: string;
 
-  /** MIME types accepted by the gallery picker. */
-  acceptedTypes: string[];
-
   /** Adds files selected from the native picker. */
   onSelect: (files: FileList | null) => void;
 }
 
 /** Compact file-upload action shared by Gallery's list and grid views. */
 const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(function UploadPrompt(
-  { isDropTarget, errorId, acceptedTypes, onSelect },
+  { isDropTarget, errorId, onSelect },
   ref
 ) {
-  const { messages } = useGalleryCopy();
   const helpId = useId();
   const describedBy = [isDropTarget ? null : helpId, errorId].filter(Boolean).join(' ') || undefined;
   return (
-    <Flex alignItems="center" gap="sm" wrap="wrap" role="group" aria-label={messages.addFilesRegion}>
+    <Flex alignItems="center" gap="sm" wrap="wrap" role="group" aria-label="Add files to gallery">
       <FileTrigger allowsMultiple acceptedFileTypes={acceptedTypes} onSelect={onSelect}>
         <Button
           ref={ref}
           type="button"
           size="md"
           variant="secondary"
-          aria-label={messages.addFiles}
+          aria-label="Add files"
           aria-describedby={describedBy}
         >
           <Icon icon="upload" aria-hidden="true" />
-          {messages.addFiles}
+          Add files
         </Button>
       </FileTrigger>
-      {isDropTarget ? null : <Text id={helpId}>{messages.dragHint}</Text>}
+      {isDropTarget ? null : <Text id={helpId}>or drag images into the gallery below.</Text>}
     </Flex>
   );
 });
@@ -2052,12 +2005,11 @@ const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(function U
   position: absolute;
   inset: 0;
 }
-47:T27f7,'use client';
+47:T274c,'use client';
 
 import { forwardRef, useCallback, useRef, useState, type ReactEventHandler } from 'react';
 import { Box, Button, Flex, Icon, Image, Skeleton, Text } from '@godaddy/antares';
 import type { ImageItem } from '../../data/types';
-import { useGalleryCopy } from '../../data/copy';
 import styles from './index.module.css';
 
 type ImageLoadState = 'loading' | 'ready' | 'error';
@@ -2248,7 +2200,6 @@ interface FileCoverProps {
 
 /** A small, reusable image/error surface shared by every Gallery presentation. */
 export function FileCover({ image, variant, onLoadError, onLoadSuccess }: FileCoverProps) {
-  const { messages } = useGalleryCopy();
   const [failedThumbnail, setFailedThumbnail] = useState<string | null>(null);
   const thumbnail = image.thumbnailSrc && failedThumbnail !== image.thumbnailSrc ? image.thumbnailSrc : undefined;
   const reportLoadError = useCallback(
@@ -2275,7 +2226,7 @@ export function FileCover({ image, variant, onLoadError, onLoadSuccess }: FileCo
       alignItems="center"
       justifyContent="center"
       role="img"
-      aria-label={`${image.name}: ${image.errorMessage ?? messages.needsAttention}`}
+      aria-label={`${image.name}: ${image.errorMessage ?? 'File needs attention.'}`}
       rounding="md"
       className={`${styles.surface} ${styles.error}`}
       data-variant={variant}
@@ -2317,7 +2268,6 @@ interface GalleryImageProps {
 
 /** Handles image loading failures without simulating an upload. */
 export function GalleryImage({ image, variant = 'default', loading = 'lazy', onRetryStart }: GalleryImageProps) {
-  const { messages } = useGalleryCopy();
   const { attempt, imageRef, onError, onLoad, retry, src, state } = useImageLoadState(
     variant === 'thumbnail' ? (image.thumbnailSrc ?? image.src) : image.src,
     {
@@ -2329,16 +2279,16 @@ export function GalleryImage({ image, variant = 'default', loading = 'lazy', onR
     return (
       <Flex direction="column" gap="xs" padding="sm" role="alert">
         <Icon icon="alert" aria-hidden="true" />
-        <Text emphasis="critical">{messages.failedImage(image.name)}</Text>
+        <Text emphasis="critical">Couldn’t load {image.name}.</Text>
         <Button
           variant="inline"
-          aria-label={messages.retryImage(image.name)}
+          aria-label={`Retry ${image.name}`}
           onPress={function handleRetry() {
             onRetryStart?.();
             retry();
           }}
         >
-          {messages.retry}
+          Retry
         </Button>
       </Flex>
     );
@@ -2352,7 +2302,7 @@ export function GalleryImage({ image, variant = 'default', loading = 'lazy', onR
         className={`${styles.image} ${styles.errorSurface}`}
         data-variant={variant}
         role="img"
-        aria-label={messages.failedThumbnail(image.name)}
+        aria-label={`${image.name} failed to load`}
       >
         <Icon icon="alert" aria-hidden="true" />
       </Flex>
@@ -2385,14 +2335,14 @@ export function GalleryImage({ image, variant = 'default', loading = 'lazy', onR
     >
       {picture}
       {state === 'loading' && variant !== 'thumbnail' ? (
-        <Text className={variant === 'viewer' ? styles.loading : undefined}>{messages.loadingImage}</Text>
+        <Text className={variant === 'viewer' ? styles.loading : undefined}>Loading image…</Text>
       ) : null}
     </Flex>
   );
 }
-48:T23cc,'use client';
+48:T173c,'use client';
 
-import { useCallback, useEffect, useRef, type KeyboardEvent } from 'react';
+import { useCallback, useRef } from 'react';
 import {
   Button,
   Carousel,
@@ -2411,17 +2361,9 @@ import {
 } from '@godaddy/antares';
 import { GalleryImage } from '../image';
 import type { ImageItem } from '../../data/types';
-import { useGalleryCopy } from '../../data/copy';
 import styles from './index.module.css';
 
-type PropagatingKeyboardEvent<T extends Element> = KeyboardEvent<T> & {
-  continuePropagation(): void;
-};
-
 interface ViewerProps {
-  /** Shared direction for layout, keyboard navigation, and carousel gestures. */
-  dir: 'ltr' | 'rtl';
-
   /** Current viewable gallery order, shared by the list and grid views. */
   images: ImageItem[];
 
@@ -2436,75 +2378,21 @@ interface ViewerProps {
 }
 
 /** Modal image viewer that reuses Antares Carousel for the main image sequence. */
-export function Viewer({ dir, images, activeId, onClose, onSelectImage }: ViewerProps) {
-  const { locale, messages } = useGalleryCopy();
-  const strip = useRef<HTMLDivElement>(null);
-  const thumbnails = useRef(new Map<string, HTMLElement>());
-  const closeButton = useRef<HTMLButtonElement>(null);
-  const previousButton = useRef<HTMLButtonElement>(null);
-  const nextButton = useRef<HTMLButtonElement>(null);
-  const focusCurrentThumbnail = useRef(false);
+export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps) {
+  const activeThumbnail = useRef<HTMLElement>(null);
   const index = images.findIndex(function findActiveImage(image) {
     return image.id === activeId;
   });
   const image = images[index];
 
-  const focusActiveThumbnail = useCallback(
-    function focusActiveThumbnail() {
-      const thumbnail = activeId ? thumbnails.current.get(activeId) : undefined;
-      (thumbnail ?? closeButton.current)?.focus({ preventScroll: true });
-    },
-    [activeId]
-  );
+  const registerActiveThumbnail = useCallback(function registerActiveThumbnail(element: HTMLElement | null) {
+    activeThumbnail.current = element;
+    element?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }, []);
 
-  useEffect(
-    function revealCurrentThumbnail() {
-      const thumbnail = activeId ? thumbnails.current.get(activeId) : undefined;
-      const rail = strip.current;
-      if (thumbnail && rail) {
-        const target = thumbnail.getBoundingClientRect();
-        const bounds = rail.getBoundingClientRect();
-        // Reveal horizontally without scrolling the modal or the page behind it.
-        if (target.left < bounds.left) rail.scrollBy({ left: target.left - bounds.left });
-        else if (target.right > bounds.right) rail.scrollBy({ left: target.right - bounds.right });
-      }
-      if (focusCurrentThumbnail.current) {
-        (thumbnail ?? closeButton.current)?.focus({ preventScroll: true });
-        focusCurrentThumbnail.current = false;
-      }
-    },
-    [activeId]
-  );
-
-  const move = useCallback(
-    function move(offset: number) {
-      const nextImage = images[index + offset];
-      if (!nextImage) return;
-
-      // Boundary controls become disabled; focus the current thumbnail before continuing by Tab.
-      focusCurrentThumbnail.current =
-        focusCurrentThumbnail.current ||
-        (document.activeElement === previousButton.current && index + offset === 0) ||
-        (document.activeElement === nextButton.current && index + offset === images.length - 1);
-      onSelectImage(nextImage.id);
-    },
-    [images, index, onSelectImage]
-  );
-
-  const navigate = useCallback(
-    function navigate(event: KeyboardEvent<HTMLElement>) {
-      // The CardGroup owns its arrow, Home, End, and typeahead navigation.
-      if (strip.current?.contains(event.target as Node)) return;
-      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
-      if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
-        event.preventDefault();
-        if (event.key === 'Home') move(-index);
-        else if (event.key === 'End') move(images.length - 1 - index);
-        else move((event.key === 'ArrowLeft' ? -1 : 1) * (dir === 'rtl' ? -1 : 1));
-      }
-    },
-    [dir, images.length, index, move]
-  );
+  const focusActiveThumbnail = useCallback(function focusActiveThumbnail() {
+    activeThumbnail.current?.focus({ preventScroll: true });
+  }, []);
 
   const handleOpenChange = useCallback(
     function handleOpenChange(open: boolean) {
@@ -2513,19 +2401,12 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
     [onClose]
   );
 
-  const handleCloseKeyDown = useCallback(
-    function handleCloseKeyDown(event: PropagatingKeyboardEvent<HTMLButtonElement>) {
-      if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) navigate(event);
-      else event.continuePropagation();
-    },
-    [navigate]
-  );
-
   const handlePageChange = useCallback(
     function handlePageChange(page: number) {
-      move(page - 1 - index);
+      const nextImage = images[page - 1];
+      if (nextImage) onSelectImage(nextImage.id);
     },
-    [index, move]
+    [images, onSelectImage]
   );
 
   const handleCarouselChange = useCallback(
@@ -2545,98 +2426,70 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
     [activeId, onSelectImage]
   );
 
-  const renderSlide = useCallback(
-    function renderSlide(slideImage: ImageItem, slideIndex: number) {
-      return (
-        <Flex key={slideImage.id} alignItems="center" justifyContent="center" className={styles.slide}>
-          {Math.abs(slideIndex - index) <= 1 ? (
-            <GalleryImage
-              image={slideImage}
-              variant="viewer"
-              loading={slideImage.id === activeId ? 'eager' : 'lazy'}
-              onRetryStart={focusActiveThumbnail}
-            />
-          ) : (
-            <Box aria-hidden="true" />
-          )}
-        </Flex>
-      );
-    },
-    [activeId, focusActiveThumbnail, index]
-  );
-
-  const renderThumbnail = useCallback(
-    function renderThumbnail(thumbnailImage: ImageItem) {
-      return (
-        <Card
-          id={thumbnailImage.id}
-          textValue={thumbnailImage.name}
-          aria-label={messages.viewImage(thumbnailImage.name)}
-          ref={function registerThumbnail(element) {
-            if (element) thumbnails.current.set(thumbnailImage.id, element);
-            else thumbnails.current.delete(thumbnailImage.id);
-          }}
-          padding="0"
-          gap="0"
-        >
-          <GalleryImage image={thumbnailImage} variant="thumbnail" />
-        </Card>
-      );
-    },
-    [messages]
-  );
-
   if (!image) return null;
 
   return (
     <Modal
       isOpen
-      dir={dir}
-      lang={locale}
-      aria-label={messages.mediaGallery}
+      lang="en-US"
+      aria-label="Media gallery"
       onOpenChange={handleOpenChange}
       containerProps={{ className: styles.modalContainer }}
       className={styles.modal}
     >
       <Heading slot="title" level={2}>
-        {messages.mediaGallery}
+        Media gallery
       </Heading>
-      <CloseButton ref={closeButton} aria-label={messages.closeGallery} onKeyDown={handleCloseKeyDown} />
-      <Content onKeyDownCapture={navigate}>
+      <CloseButton aria-label="Close gallery" />
+      <Content>
         <Carousel
           activeIndex={index}
           onChange={handleCarouselChange}
           hideDots
           hideNavigationControls
           hideMaskEdges
-          emblaOptions={{ direction: dir }}
-          emblaAccessibilityOptions={{ carouselAriaLabel: messages.galleryImages, announceChanges: false }}
+          emblaAccessibilityOptions={{ carouselAriaLabel: 'Gallery images', announceChanges: false }}
         >
-          {images.map(renderSlide)}
+          {images.map(function renderSlide(slideImage, slideIndex) {
+            return (
+              <Flex key={slideImage.id} alignItems="center" justifyContent="center" className={styles.slide}>
+                {Math.abs(slideIndex - index) <= 1 ? (
+                  <GalleryImage
+                    image={slideImage}
+                    variant="viewer"
+                    loading={slideImage.id === activeId ? 'eager' : 'lazy'}
+                    onRetryStart={focusActiveThumbnail}
+                  />
+                ) : (
+                  <Box aria-hidden="true" />
+                )}
+              </Flex>
+            );
+          })}
         </Carousel>
         <Flex justifyContent="space-between" alignItems="center" gap="sm">
           <Text className={styles.name} maxLines={1} wrap="nowrap" role="status" aria-atomic="true">
-            {messages.imagePosition(image.name, index + 1, images.length)}
+            {image.name} · {(index + 1).toLocaleString('en-US')} of {images.length.toLocaleString('en-US')}
           </Text>
           <Pagination
             value={index + 1}
             pageCount={images.length}
             onChange={handlePageChange}
-            aria-label={messages.galleryImages}
+            aria-label="Gallery images"
             gap="xs"
             flexShrink={0}
           >
-            <Button ref={previousButton} slot="previous" variant="secondary" aria-label={messages.previousImage}>
-              <Icon icon={dir === 'rtl' ? 'chevron-right' : 'chevron-left'} aria-hidden="true" />
+            <Button slot="previous" variant="secondary" aria-label="Previous image">
+              <Icon icon="chevron-left" aria-hidden="true" />
             </Button>
-            <Button ref={nextButton} slot="next" variant="secondary" aria-label={messages.nextImage}>
-              <Icon icon={dir === 'rtl' ? 'chevron-left' : 'chevron-right'} aria-hidden="true" />
+            <Button slot="next" variant="secondary" aria-label="Next image">
+              <Icon icon="chevron-right" aria-hidden="true" />
             </Button>
           </Pagination>
         </Flex>
         <CardGroup
-          ref={strip}
           items={images}
+          dependencies={[activeId]}
           columns="none"
           rows="max-content"
           autoFlow="column"
@@ -2644,7 +2497,7 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
           orientation="horizontal"
           gap="md"
           padding="sm"
-          aria-label={messages.thumbnails}
+          aria-label="Image thumbnails"
           className={styles.thumbnails}
           selectionMode="single"
           autoFocus
@@ -2654,115 +2507,26 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
           selectedKeys={activeId ? [activeId] : []}
           onSelectionChange={handleThumbnailSelection}
         >
-          {renderThumbnail}
+          {function renderThumbnail(thumbnailImage) {
+            return (
+              <Card
+                id={thumbnailImage.id}
+                textValue={thumbnailImage.name}
+                aria-label={`View ${thumbnailImage.name}`}
+                ref={thumbnailImage.id === activeId ? registerActiveThumbnail : undefined}
+                padding="0"
+                gap="0"
+              >
+                <GalleryImage image={thumbnailImage} variant="thumbnail" />
+              </Card>
+            );
+          }}
         </CardGroup>
       </Content>
     </Modal>
   );
 }
-49:T117e,'use client';
-
-import { createContext, useContext, useMemo, type ReactNode } from 'react';
-
-/** Copy shared by the collection, file actions, ingestion feedback, and viewer. */
-function createGalleryCopy(locale: string) {
-  const number = new Intl.NumberFormat(locale, { maximumFractionDigits: 2 });
-  const format = (value: number) => number.format(value);
-  return {
-    gallery: 'Gallery',
-    imageCount: (count: number) => `${format(count)} ${count === 1 ? 'image' : 'images'}`,
-    addFilesRegion: 'Add files to gallery',
-    addFiles: 'Add files',
-    uploadIssues: 'Upload issues',
-    dismissUploadIssues: 'Dismiss upload issues',
-    dragHint: 'or drag images into the gallery below.',
-    dropFiles: 'Drop files to upload.',
-    layout: 'Layout',
-    list: 'List',
-    grid: 'Grid',
-    listView: 'List view',
-    gridView: 'Grid view',
-    files: 'Gallery files',
-    imageGrid: 'Gallery image grid',
-    updates: 'Gallery updates',
-    processingImages: 'Processing images',
-    processedFiles: (completed: number, total: number) => `${format(completed)} of ${format(total)} files processed`,
-    emptyGallery: 'Empty gallery',
-    startGallery: 'Start your gallery',
-    emptyDescription: 'Drop images here or choose Add files above to upload.',
-    loadingImage: 'Loading image…',
-    loadingPreview: (name: string) => `Loading ${name}`,
-    openImage: (name: string) => `Open ${name}`,
-    viewImage: (name: string) => `View ${name}`,
-    removeImage: (name: string) => `Remove ${name}`,
-    retryImage: (name: string) => `Retry ${name}`,
-    retryPreview: (name: string) => `Retry image preview for ${name}`,
-    retry: 'Retry',
-    failedImage: (name: string) => `Couldn’t load ${name}.`,
-    failedThumbnail: (name: string) => `${name} failed to load`,
-    needsAttention: 'File needs attention.',
-    sizeUnavailable: 'Size unavailable',
-    mediaGallery: 'Media gallery',
-    closeGallery: 'Close gallery',
-    previousImage: 'Previous image',
-    nextImage: 'Next image',
-    galleryImages: 'Gallery images',
-    thumbnails: 'Image thumbnails',
-    imagePosition: (name: string, current: number, total: number) => `${name} · ${format(current)} of ${format(total)}`,
-    showAll: 'Show all',
-    fileCount: (visible: number, total: number) => `${format(visible)} of ${format(total)} files`,
-    filesNeedAttention: (count: number) => `${format(count)} file${count === 1 ? ' needs' : 's need'} attention.`,
-    invalidFiles: (maxMiB: number) => `Use JPG, PNG, GIF, or WebP images smaller than ${format(maxMiB)} MiB.`,
-    limitReached: (maxFiles: number, maxMiB: number) =>
-      `Gallery limit reached: ${format(maxFiles)} images and ${format(maxMiB)} MiB total.`,
-    unreadableDrop: 'Some dropped files couldn’t be read. Please select them again.',
-    unreadableImages: 'We couldn’t read some images. Please try again.',
-    unreadableBatch: 'We couldn’t read these images. Please try again.',
-    addedImages: (count: number) => `${format(count)} ${count === 1 ? 'image' : 'images'} added.`,
-    skippedDuplicates: (count: number) => `${format(count)} ${count === 1 ? 'duplicate' : 'duplicates'} skipped.`,
-    removedImage: (name: string) => `${name} removed.`,
-    retryingImage: (name: string) => `${name} is retrying.`,
-    imageReady: 'Image is ready to view.',
-    imageFailed: 'Image failed to load.'
-  };
-}
-
-/** Override individual messages, including action names and live announcements. */
-export type GalleryMessages = ReturnType<typeof createGalleryCopy>;
-
-const defaultCopy = {
-  locale: 'en-US',
-  messages: createGalleryCopy('en-US'),
-  number: new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 })
-};
-const GalleryCopyContext = createContext(defaultCopy);
-
-/** Keeps translated copy and regional formatting consistent, including portaled viewer content. */
-export function GalleryCopyProvider({
-  locale = 'en-US',
-  messages,
-  children
-}: {
-  locale?: string;
-  messages?: Partial<GalleryMessages>;
-  children: ReactNode;
-}) {
-  const value = useMemo(
-    () => ({
-      locale,
-      messages: { ...createGalleryCopy(locale), ...messages },
-      number: new Intl.NumberFormat(locale, { maximumFractionDigits: 2 })
-    }),
-    [locale, messages]
-  );
-  return <GalleryCopyContext.Provider value={value}>{children}</GalleryCopyContext.Provider>;
-}
-
-/** Reads the gallery's copy without threading it through every presentation component. */
-export function useGalleryCopy() {
-  return useContext(GalleryCopyContext);
-}
-4a:Ta67,import type { ImageItem } from './types';
+49:Ta67,import type { ImageItem } from './types';
 
 /** Fixed IDs keep the sample photographs consistent between visits. */
 const photographs: ImageItem[] = [
@@ -2856,7 +2620,7 @@ export const sampleImages: ImageItem[] = photographs.map((image) => ({
   srcSet: `${image.src.replace('/960/640', '/480/320')} 480w, ${image.src} 960w`,
   sizes: '(max-width: 60rem) 90vw, 960px'
 }));
-4b:T665,/** The load state shown by a gallery file item. */
+4a:T665,/** The load state shown by a gallery file item. */
 type ImageStatus = 'ready' | 'loading' | 'error';
 
 /** An image shown by the gallery. IDs must be unique and stable. */
@@ -2909,14 +2673,14 @@ export interface GalleryLimits {
   /** Inclusive total byte budget for images with a known size. Defaults to 256 MiB. */
   maxTotalSize?: number;
 }
-4c:T21e8,'use client';
+4b:T2314,'use client';
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { GalleryLimits, ImageItem } from '../data/types';
-import { useGalleryCopy } from '../data/copy';
 
 export const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 const MiB = 1024 * 1024;
+const numberFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 export const defaultLimits: Required<GalleryLimits> = { maxFiles: 50, maxFileSize: 20 * MiB, maxTotalSize: 256 * MiB };
 
 /** Hashing is optional; an unreadable file still fails independently of the rest of its batch. */
@@ -2938,7 +2702,6 @@ export function useGalleryImages(
   limits: Required<GalleryLimits>,
   onImagesChange?: (images: ImageItem[]) => void
 ) {
-  const { messages } = useGalleryCopy();
   const [images, setImages] = useState(() => [...initialImages]);
   const collection = useRef(images);
   const [errors, setErrors] = useState<string[]>([]);
@@ -2951,18 +2714,16 @@ export function useGalleryImages(
   const owned = useRef(new Map<string, { id: string; url: string; name: string; size: number }>());
   const keys = useRef(new Map<string, string>());
   const queue = useRef(Promise.resolve());
-  const callback = useRef(onImagesChange);
-  callback.current = onImagesChange;
   const previous = useRef(images);
 
   useEffect(
     function notifyCollectionChange() {
       if (previous.current !== images) {
         previous.current = images;
-        callback.current?.([...images]);
+        onImagesChange?.([...images]);
       }
     },
-    [images]
+    [images, onImagesChange]
   );
 
   useEffect(function manageResources() {
@@ -3059,19 +2820,30 @@ export function useGalleryImages(
         }
         if (!mounted.current) return;
         const errors = [];
-        if (invalid) errors.push(messages.invalidFiles(limits.maxFileSize / MiB));
-        if (overBudget) errors.push(messages.limitReached(limits.maxFiles, limits.maxTotalSize / MiB));
-        if (unreadable) errors.push(messages.unreadableImages);
+        if (invalid) {
+          errors.push(
+            `Use JPG, PNG, GIF, or WebP images smaller than ${numberFormatter.format(limits.maxFileSize / MiB)} MiB.`
+          );
+        }
+        if (overBudget) {
+          errors.push(
+            `Gallery limit reached: ${numberFormatter.format(limits.maxFiles)} images and ${numberFormatter.format(limits.maxTotalSize / MiB)} MiB total.`
+          );
+        }
+        if (unreadable) errors.push('We couldn’t read some images. Please try again.');
         setErrors(errors);
         const notices = [];
-        if (added) notices.push(messages.addedImages(added));
-        if (duplicates) notices.push(messages.skippedDuplicates(duplicates));
+        if (added) notices.push(`${numberFormatter.format(added)} ${added === 1 ? 'image' : 'images'} added.`);
+        if (duplicates)
+          notices.push(
+            `${numberFormatter.format(duplicates)} ${duplicates === 1 ? 'duplicate' : 'duplicates'} skipped.`
+          );
         setNotice(notices.join(' '));
       };
       const pending = queue.current.then(process);
       queue.current = pending
         .catch(function failedBatch() {
-          reportError(messages.unreadableBatch);
+          reportError('We couldn’t read these images. Please try again.');
         })
         .finally(function finishBatch() {
           if (progress.current.completed === progress.current.total) {
@@ -3081,7 +2853,7 @@ export function useGalleryImages(
         });
       return queue.current;
     },
-    [instanceId, limits.maxFiles, limits.maxFileSize, limits.maxTotalSize, messages, reportError, updateImages]
+    [instanceId, limits.maxFiles, limits.maxFileSize, limits.maxTotalSize, reportError, updateImages]
   );
 
   const removeImage = useCallback(
@@ -3094,9 +2866,9 @@ export function useGalleryImages(
         keys.current.delete(image.id);
       }
       updateImages((previous) => previous.filter((item) => item.id !== image.id));
-      setNotice(messages.removedImage(image.name));
+      setNotice(`${image.name} removed.`);
     },
-    [messages, updateImages]
+    [updateImages]
   );
 
   const retryImage = useCallback(
@@ -3104,9 +2876,9 @@ export function useGalleryImages(
       updateImages((previous) =>
         previous.map((item) => (item.id === image.id ? { ...item, status: 'loading', errorMessage: undefined } : item))
       );
-      setNotice(messages.retryingImage(image.name));
+      setNotice(`${image.name} is retrying.`);
     },
-    [messages, updateImages]
+    [updateImages]
   );
 
   const markReady = useCallback(
@@ -3114,21 +2886,21 @@ export function useGalleryImages(
       updateImages((previous) =>
         previous.map((item) => (item.id === id ? { ...item, status: 'ready', errorMessage: undefined } : item))
       );
-      setNotice(messages.imageReady);
+      setNotice('Image is ready to view.');
     },
-    [messages, updateImages]
+    [updateImages]
   );
 
   const markError = useCallback(
     function markError(id: string) {
       updateImages((previous) =>
         previous.map((item) =>
-          item.id === id ? { ...item, status: 'error', errorMessage: messages.failedImage(item.name) } : item
+          item.id === id ? { ...item, status: 'error', errorMessage: `Couldn’t load ${item.name}.` } : item
         )
       );
-      setNotice(messages.imageFailed);
+      setNotice('Image failed to load.');
     },
-    [messages, updateImages]
+    [updateImages]
   );
 
   return {
@@ -3145,19 +2917,19 @@ export function useGalleryImages(
     dismissErrors
   };
 }
-2d:["$","$L1f",null,{"block":{"id":"gallery","description":"Browse images in a list or grid, add local files, and open a media viewer.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/file-items/index.module.css","language":"css","source":".card {\n  inline-size: 100%;\n  min-inline-size: 0;\n  --_gallery-file-action-space: calc(var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5)) * 2);\n}\n\n.card:where([data-error]) {\n  border-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));\n}\n\n.cover {\n  box-sizing: border-box;\n  min-inline-size: 0;\n  border: 1px solid transparent;\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--_gallery-file-action-space);\n}\n\n.details:where([data-variant=\"vertical\"]) {\n  padding-inline-end: 0;\n}\n\n.errorDetails {\n  min-inline-size: 0;\n}\n\n.retry {\n  text-decoration: underline;\n}\n\n.collection {\n  inline-size: 100%;\n}\n"},{"path":"components/file-items/index.tsx","language":"tsx","source":"$44"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.notice:where(:empty) {\n  position: absolute;\n}\n\n.dropOverlay {\n  position: absolute;\n  inset: 0;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  color: var(--color-surface-text-base, var(--ux-1leynsm, CanvasText));\n  pointer-events: none;\n}\n\n.dropTarget {\n  position: relative;\n}\n\n.dropZone {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.emptyState {\n  min-block-size: 256px;\n  text-align: center;\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$45"},{"path":"components/image/index.module.css","language":"css","source":"$46"},{"path":"components/image/index.tsx","language":"tsx","source":"$47"},{"path":"components/viewer/index.module.css","language":"css","source":".modalContainer {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n  min-inline-size: 0;\n}\n\n.modal {\n  inline-size: 100%;\n  max-inline-size: 100%;\n}\n\n.slide {\n  min-inline-size: 0;\n  max-inline-size: 100%;\n  block-size: 55dvh;\n}\n\n.name {\n  flex: 1 1 auto;\n  min-inline-size: 0;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  overflow-x: auto;\n  scroll-padding-inline: var(--sp-sm);\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$48"},{"path":"data/copy.tsx","language":"tsx","source":"$49"},{"path":"data/sample-images.ts","language":"ts","source":"$4a"},{"path":"data/types.ts","language":"ts","source":"$4b"},{"path":"hooks/use-gallery-images.ts","language":"ts","source":"$4c"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery';\nexport type { ImageItem } from './data/types';\n"}]},"children":"$L4d"}]
+2d:["$","$L1f",null,{"block":{"id":"gallery","description":"Browse images in a list or grid, add local files, and open a media viewer.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/file-items/index.module.css","language":"css","source":".card {\n  inline-size: 100%;\n  min-inline-size: 0;\n  --_gallery-file-action-space: calc(var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5)) * 2);\n}\n\n.card:where([data-error]) {\n  border-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));\n}\n\n.cover {\n  box-sizing: border-box;\n  min-inline-size: 0;\n  border: 1px solid transparent;\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--_gallery-file-action-space);\n}\n\n.details:where([data-variant=\"vertical\"]) {\n  padding-inline-end: 0;\n}\n\n.retry {\n  text-decoration: underline;\n}\n\n.collection {\n  inline-size: 100%;\n}\n"},{"path":"components/file-items/index.tsx","language":"tsx","source":"$44"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.notice:where(:empty) {\n  position: absolute;\n}\n\n.dropOverlay {\n  position: absolute;\n  inset: 0;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  color: var(--color-surface-text-base, var(--ux-1leynsm, CanvasText));\n  pointer-events: none;\n}\n\n.dropTarget {\n  position: relative;\n}\n\n.dropZone {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.emptyState {\n  min-block-size: 256px;\n  text-align: center;\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$45"},{"path":"components/image/index.module.css","language":"css","source":"$46"},{"path":"components/image/index.tsx","language":"tsx","source":"$47"},{"path":"components/viewer/index.module.css","language":"css","source":".modalContainer {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n  min-inline-size: 0;\n}\n\n.modal {\n  inline-size: 100%;\n  max-inline-size: 100%;\n}\n\n.slide {\n  min-inline-size: 0;\n  max-inline-size: 100%;\n  block-size: 55dvh;\n}\n\n.name {\n  flex: 1 1 auto;\n  min-inline-size: 0;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  overflow-x: auto;\n  scroll-padding-inline: var(--sp-sm);\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$48"},{"path":"data/sample-images.ts","language":"ts","source":"$49"},{"path":"data/types.ts","language":"ts","source":"$4a"},{"path":"hooks/use-gallery-images.ts","language":"ts","source":"$4b"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery';\nexport type { ImageItem } from './data/types';\n"}]},"children":"$L4c"}]
 2e:["$","$L1b",null,{"as":"h3","id":"sign-in-form","children":"Sign-in form"}]
-2f:["$","$L1f",null,{"block":{"id":"sign-in-form","description":"A simple Antares sign-in experience.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/sign-in-form","files":[{"path":"components/sign-in-fields.tsx","language":"tsx","source":"import { Flex, Input, Label, TextField } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\n\n/** Groups the accessible fields used by the sign-in form block. */\nexport function SignInFields() {\n  return (\n    <Flex direction=\"column\" gap=\"md\">\n      <TextField name=\"email\" isRequired>\n        <Label>{signInCopy.emailLabel}</Label>\n        <Input type=\"email\" autoComplete=\"email\" placeholder=\"you@example.com\" />\n      </TextField>\n      <TextField name=\"password\" isRequired>\n        <Label>{signInCopy.passwordLabel}</Label>\n        <Input type=\"password\" autoComplete=\"current-password\" />\n      </TextField>\n    </Flex>\n  );\n}\n"},{"path":"components/sign-in-form.tsx","language":"tsx","source":"'use client';\n\nimport { Box, Button, Flex, Heading, Text } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\nimport { SignInFields } from './sign-in-fields';\n\n/**\n * Provides a sign-in form composition to copy and adapt. Submission is prevented\n * until the consuming application supplies its authentication behavior.\n *\n * @example\n * ```tsx\n * <SignInForm />\n * ```\n */\nexport function SignInForm() {\n  return (\n    <Flex justifyContent=\"center\">\n      <Box flex=\"0 1 28rem\" padding=\"xl\" rounding=\"md\" elevation=\"card\">\n        <Flex\n          as=\"form\"\n          direction=\"column\"\n          gap=\"lg\"\n          onSubmit={function handleSubmit(event) {\n            event.preventDefault();\n          }}\n        >\n          <Heading level={2}>{signInCopy.title}</Heading>\n          <Text>{signInCopy.description}</Text>\n          <SignInFields />\n          <Button type=\"submit\" variant=\"primary\">\n            {signInCopy.submitLabel}\n          </Button>\n        </Flex>\n      </Box>\n    </Flex>\n  );\n}\n"},{"path":"data/copy.ts","language":"ts","source":"export const signInCopy = {\n  title: 'Sign in to your account',\n  description: 'Use your email and password to continue.',\n  emailLabel: 'Email',\n  passwordLabel: 'Password',\n  submitLabel: 'Sign in'\n} as const;\n"},{"path":"index.tsx","language":"tsx","source":"export { SignInForm } from './components/sign-in-form';\n"}]},"children":["$","$L4e",null,{}]}]
+2f:["$","$L1f",null,{"block":{"id":"sign-in-form","description":"A simple Antares sign-in experience.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/sign-in-form","files":[{"path":"components/sign-in-fields.tsx","language":"tsx","source":"import { Flex, Input, Label, TextField } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\n\n/** Groups the accessible fields used by the sign-in form block. */\nexport function SignInFields() {\n  return (\n    <Flex direction=\"column\" gap=\"md\">\n      <TextField name=\"email\" isRequired>\n        <Label>{signInCopy.emailLabel}</Label>\n        <Input type=\"email\" autoComplete=\"email\" placeholder=\"you@example.com\" />\n      </TextField>\n      <TextField name=\"password\" isRequired>\n        <Label>{signInCopy.passwordLabel}</Label>\n        <Input type=\"password\" autoComplete=\"current-password\" />\n      </TextField>\n    </Flex>\n  );\n}\n"},{"path":"components/sign-in-form.tsx","language":"tsx","source":"'use client';\n\nimport { Box, Button, Flex, Heading, Text } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\nimport { SignInFields } from './sign-in-fields';\n\n/**\n * Provides a sign-in form composition to copy and adapt. Submission is prevented\n * until the consuming application supplies its authentication behavior.\n *\n * @example\n * ```tsx\n * <SignInForm />\n * ```\n */\nexport function SignInForm() {\n  return (\n    <Flex justifyContent=\"center\">\n      <Box flex=\"0 1 28rem\" padding=\"xl\" rounding=\"md\" elevation=\"card\">\n        <Flex\n          as=\"form\"\n          direction=\"column\"\n          gap=\"lg\"\n          onSubmit={function handleSubmit(event) {\n            event.preventDefault();\n          }}\n        >\n          <Heading level={2}>{signInCopy.title}</Heading>\n          <Text>{signInCopy.description}</Text>\n          <SignInFields />\n          <Button type=\"submit\" variant=\"primary\">\n            {signInCopy.submitLabel}\n          </Button>\n        </Flex>\n      </Box>\n    </Flex>\n  );\n}\n"},{"path":"data/copy.ts","language":"ts","source":"export const signInCopy = {\n  title: 'Sign in to your account',\n  description: 'Use your email and password to continue.',\n  emailLabel: 'Email',\n  passwordLabel: 'Password',\n  submitLabel: 'Sign in'\n} as const;\n"},{"path":"index.tsx","language":"tsx","source":"export { SignInForm } from './components/sign-in-form';\n"}]},"children":["$","$L4d",null,{}]}]
 30:["$","script","script-0",{"src":"/antares/pr-380-site/_next/static/chunks/428imhwwk-ha_.js","async":true}]
 31:["$","script","script-1",{"src":"/antares/pr-380-site/_next/static/chunks/32o7tmg2i-rss.js","async":true}]
-32:["$","$L4f",null,{"children":["$","$38",null,{"name":"Next.MetadataOutlet","children":"$@50"}]}]
+32:["$","$L4e",null,{"children":["$","$38",null,{"name":"Next.MetadataOutlet","children":"$@4f"}]}]
 3b:true
-51:I[828315,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
-52:I[128903,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
+50:I[828315,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
+51:I[128903,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
 a:300
-43:["$","$L51",null,{}]
-4d:["$","$L52",null,{}]
-50:null
+43:["$","$L50",null,{}]
+4c:["$","$L51",null,{}]
+4f:null
 a:C
 3a:0
 8:"$undefined"
