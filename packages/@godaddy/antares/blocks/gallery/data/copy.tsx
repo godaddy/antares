@@ -12,6 +12,7 @@ function createGalleryCopy(locale: string) {
     addFilesRegion: 'Add files to gallery',
     addFiles: 'Add files',
     uploadIssues: 'Upload issues',
+    dismissUploadIssues: 'Dismiss upload issues',
     dragHint: 'or drag images into the gallery below.',
     dropFiles: 'Drop files to upload.',
     layout: 'Layout',

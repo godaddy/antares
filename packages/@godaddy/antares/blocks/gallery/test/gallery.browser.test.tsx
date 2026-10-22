@@ -354,7 +354,7 @@ describe('@godaddy/antares', function packageTests() {
         ]);
         await expect.element(alert).toBeVisible();
         await expect.element(alert).toHaveAttribute('data-emphasis', 'critical');
-        await expect.element(alert).toHaveTextContent('Upload issues');
+        await expect.element(alert).toHaveAccessibleName('Upload issues');
         expect(add.element().getAttribute('aria-describedby')?.split(' ')).toContain(alert.element().id);
         await expect.element(screen.getByRole('alert')).toHaveTextContent('smaller than 20 MiB');
         await expect.element(screen.getByRole('alert')).toHaveTextContent('Gallery limit reached: 2 images');
@@ -367,6 +367,18 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(add).toHaveFocus();
         await userEvent.keyboard('{Tab}');
         await expect.element(screen.getByRole('radio', { name: 'List', exact: true })).toHaveFocus();
+        const close = alert.getByRole('button', { name: 'Dismiss upload issues', exact: true });
+        const dismissedId = alert.element().id;
+        close.element().focus();
+        await userEvent.keyboard('{Enter}');
+        await expect.element(alert).not.toBeInTheDocument();
+        await expect.element(add).toHaveFocus();
+        expect(add.element().getAttribute('aria-describedby')).not.toContain(dismissedId);
+        expect(screen.getByRole('button', { name: /^Remove / }).all()).toHaveLength(2);
+        selectFiles(screen.container, [new File(['text'], 'invalid-again.txt', { type: 'text/plain' })]);
+        await expect.element(alert).toBeVisible();
+        await expect.element(alert).toHaveTextContent('smaller than 20 MiB');
+        await expect.element(alert).not.toHaveTextContent('Gallery limit reached');
         await userEvent.click(screen.getByRole('button', { name: 'Remove two.png' }));
         selectFiles(screen.container, [png('valid.png')]);
         await expect.element(screen.getByRole('row', { name: 'Open valid.png' })).toBeVisible();

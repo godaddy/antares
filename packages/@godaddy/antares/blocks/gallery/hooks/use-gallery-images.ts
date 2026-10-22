@@ -71,6 +71,10 @@ export function useGalleryImages(
     setImages(collection.current);
   }, []);
 
+  const dismissErrors = useCallback(function dismissErrors() {
+    setErrors([]);
+  }, []);
+
   const reportError = useCallback(function reportError(message: string) {
     if (mounted.current) setErrors((previous) => (previous.includes(message) ? previous : [...previous, message]));
   }, []);
@@ -206,5 +210,17 @@ export function useGalleryImages(
     [messages, updateImages]
   );
 
-  return { images, errors, notice, processing, addFiles, removeImage, retryImage, markReady, markError, reportError };
+  return {
+    images,
+    errors,
+    notice,
+    processing,
+    addFiles,
+    removeImage,
+    retryImage,
+    markReady,
+    markError,
+    reportError,
+    dismissErrors
+  };
 }

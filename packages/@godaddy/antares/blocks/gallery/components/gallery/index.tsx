@@ -81,8 +81,19 @@ function GalleryContent({
     maxFileSize: limits?.maxFileSize ?? defaultLimits.maxFileSize,
     maxTotalSize: limits?.maxTotalSize ?? defaultLimits.maxTotalSize
   };
-  const { images, errors, notice, processing, addFiles, removeImage, retryImage, markReady, markError, reportError } =
-    useGalleryImages(initialImages, resolvedLimits, onImagesChange);
+  const {
+    images,
+    errors,
+    notice,
+    processing,
+    addFiles,
+    removeImage,
+    retryImage,
+    markReady,
+    markError,
+    reportError,
+    dismissErrors
+  } = useGalleryImages(initialImages, resolvedLimits, onImagesChange);
   const [view, setView] = useState(defaultView);
   const [showAll, setShowAll] = useState(false);
   const previousImages = useRef(images);
@@ -205,10 +216,21 @@ function GalleryContent({
           </Flex>
 
           {errors.length ? (
-            <Alert id={uploadErrorId} emphasis="critical" title={messages.uploadIssues}>
+            <Alert
+              id={uploadErrorId}
+              emphasis="critical"
+              aria-label={messages.uploadIssues}
+              ariaLabels={{ close: messages.dismissUploadIssues }}
+              onClose={function dismissUploadIssues() {
+                addButton.current?.focus({ preventScroll: true });
+                dismissErrors();
+              }}
+            >
               <Flex direction="column" gap="xs">
                 {errors.map((error) => (
-                  <Text key={error}>{error}</Text>
+                  <Text key={error} size="sm">
+                    {error}
+                  </Text>
                 ))}
               </Flex>
             </Alert>
