@@ -1,4 +1,12 @@
-import { useContext, useLayoutEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react';
+import {
+  useContext,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type Dispatch,
+  type SetStateAction
+} from 'react';
 import { endOfMonth, isSameMonth, startOfMonth, type CalendarDate } from '@internationalized/date';
 import {
   Calendar as RACCalendar,
@@ -20,6 +28,9 @@ import styles from './index.module.css';
 
 /** Months added on each side of the focused month whenever scrolling nears an edge. */
 const BUFFER = 3;
+
+/** Months rendered as grids after the first visible one; others are sized placeholders. */
+const AHEAD = 3;
 
 /** Internal single-date calendar that scrolls through months inside a picker's drawer. */
 export function ScrollCalendar({ className, ...props }: Omit<CalendarProps, 'pageCount'>) {
@@ -62,7 +73,7 @@ export function ScrollRangeCalendar({ className, ...props }: Omit<RangeCalendarP
 }
 
 interface MonthScrollerProps extends Pick<CalendarGridProps, 'type'> {
-  /** Months in React Aria's visible range, all of which are rendered. */
+  /** Months in React Aria's visible range. */
   months: number;
 
   /** Widens the visible range around the focused month. */
@@ -147,11 +158,21 @@ function MonthScroller({ type, months, setMonths }: MonthScrollerProps) {
       </Flex>
       <div ref={viewport} className={styles.monthViewport} onScroll={scroll}>
         {offsets.map(function renderMonth(offset) {
-          const month = start.add({ months: offset }).toString();
+          const month = start.add({ months: offset });
+          const isNear =
+            isSameMonth(month, state.focusedDate) ||
+            (month.compare(active.subtract({ months: 1 })) >= 0 && month.compare(active.add({ months: AHEAD })) <= 0);
           return (
-            <div key={month} data-calendar-month={month} className={styles.month}>
+            <div key={month.toString()} data-calendar-month={month.toString()} className={styles.month}>
               <RACCalendarHeading offset={{ months: offset }} className={styles.monthLabel} />
-              <CalendarGrid type={type} offset={{ months: offset }} />
+              {isNear ? (
+                <CalendarGrid type={type} offset={{ months: offset }} />
+              ) : (
+                <div
+                  className={styles.monthPlaceholder}
+                  style={{ '--weeks': state.getWeeksInMonth(month) } as CSSProperties}
+                />
+              )}
             </div>
           );
         })}

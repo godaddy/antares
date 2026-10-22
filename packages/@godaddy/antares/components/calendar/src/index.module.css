@@ -186,6 +186,20 @@
   padding-block: var(--_calendar-padding) var(--_calendar-gap);
 }
 
+/* A grid's height: the weekday row and `--weeks` date rows, with border spacing around each row. */
+.monthPlaceholder {
+  block-size: calc(
+    var(--_calendar-cell-padding) *
+    2 +
+    var(--_calendar-weekday-font) *
+    var(--_calendar-weekday-line-height) +
+    (var(--_calendar-cell-size) + var(--_calendar-gap)) *
+    var(--weeks) +
+    var(--_calendar-gap) *
+    2
+  );
+}
+
 @container calendar-months (width < 16rem) {
   .weekdayShort {
     display: none;
