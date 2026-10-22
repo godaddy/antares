@@ -1,6 +1,7 @@
 import { readFile, readdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
-import ts from 'typescript';
+import * as ts from 'typescript/unstable/ast';
+import { openTypeScriptSession } from './engine/typescript-session.ts';
 import { normalizeComment } from './engine/jsdoc.ts';
 import { GET_EXAMPLES } from './getter-names.ts';
 
@@ -97,23 +98,28 @@ interface ParsedExample {
  * const) are skipped, so nothing renders for them.
  */
 function parseExample(code: string, filePath: string): ParsedExample | undefined {
-  const sourceFile = ts.createSourceFile(filePath, code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  const session = openTypeScriptSession({ fileName: filePath || 'inline.tsx', code, isolated: true });
+  try {
+    const sourceFile = session.sourceFile;
 
-  let exported: { name: string; node: ts.FunctionDeclaration } | undefined;
-  sourceFile.forEachChild(function collect(node) {
-    if (exported) return;
-    if (ts.isFunctionDeclaration(node) && node.name && hasExportModifier(node)) {
-      exported = { name: node.name.text, node };
-    }
-  });
+    let exported: { name: string; node: ts.FunctionDeclaration } | undefined;
+    sourceFile.forEachChild(function collect(node) {
+      if (exported) return;
+      if (ts.isFunctionDeclaration(node) && node.name && hasExportModifier(node)) {
+        exported = { name: node.name.text, node };
+      }
+    });
 
-  if (!exported) return undefined;
+    if (!exported) return undefined;
 
-  return {
-    componentExportName: exported.name,
-    source: stripExampleJSDoc(code, exported.node, sourceFile),
-    ...readExampleJSDoc(exported.node)
-  };
+    return {
+      componentExportName: exported.name,
+      source: stripExampleJSDoc(code, exported.node, sourceFile),
+      ...readExampleJSDoc(exported.node)
+    };
+  } finally {
+    session.close();
+  }
 }
 
 /**
@@ -122,7 +128,7 @@ function parseExample(code: string, filePath: string): ParsedExample | undefined
  * rendered `<Source>` snippet.
  */
 function stripExampleJSDoc(code: string, node: ts.Node, sourceFile: ts.SourceFile): string {
-  const jsDoc = ts.getJSDocCommentsAndTags(node).find(ts.isJSDoc);
+  const jsDoc = node.jsDoc?.find(ts.isJSDoc);
   if (!jsDoc) return code.trim();
 
   const before = code.slice(0, jsDoc.getStart(sourceFile));
@@ -132,7 +138,7 @@ function stripExampleJSDoc(code: string, node: ts.Node, sourceFile: ts.SourceFil
 
 /** Reads the `description`, `@title`, `@order`, and `@ignore` JSDoc of an example export. */
 function readExampleJSDoc(node: ts.Node): Omit<ParsedExample, 'componentExportName' | 'source'> {
-  const jsDoc = ts.getJSDocCommentsAndTags(node).find(ts.isJSDoc);
+  const jsDoc = node.jsDoc?.find(ts.isJSDoc);
   const description = normalizeComment(jsDoc?.comment);
 
   let title: string | undefined;
@@ -196,27 +202,32 @@ export interface ExamplesGetter {
  * otherwise the first `getExamples` export wins.
  */
 export function findExamplesGetter(code: string, filePath: string, exportName?: string): ExamplesGetter | undefined {
-  const sourceFile = ts.createSourceFile(filePath, code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
-  let found: ExamplesGetter | undefined;
+  const session = openTypeScriptSession({ fileName: filePath || 'inline.tsx', code, isolated: true });
+  try {
+    const sourceFile = session.sourceFile;
+    let found: ExamplesGetter | undefined;
 
-  sourceFile.forEachChild(function scan(node) {
-    if (found || !ts.isVariableStatement(node) || !hasExportModifier(node)) return;
-    for (const decl of node.declarationList.declarations) {
-      if (!ts.isIdentifier(decl.name)) continue;
-      if (exportName && decl.name.text !== exportName) continue;
-      const init = decl.initializer;
-      if (!init || !ts.isCallExpression(init) || !ts.isIdentifier(init.expression)) continue;
-      if (init.expression.text !== GET_EXAMPLES) continue;
-      const arg = init.arguments[0];
-      found = {
-        exportName: decl.name.text,
-        examplesDir: arg && ts.isStringLiteral(arg) ? arg.text : undefined
-      };
-      return;
-    }
-  });
+    sourceFile.forEachChild(function scan(node) {
+      if (found || !ts.isVariableStatement(node) || !hasExportModifier(node)) return;
+      for (const decl of node.declarationList.declarations) {
+        if (!ts.isIdentifier(decl.name)) continue;
+        if (exportName && decl.name.text !== exportName) continue;
+        const init = decl.initializer;
+        if (!init || !ts.isCallExpression(init) || !ts.isIdentifier(init.expression)) continue;
+        if (init.expression.text !== GET_EXAMPLES) continue;
+        const arg = init.arguments[0];
+        found = {
+          exportName: decl.name.text,
+          examplesDir: arg && ts.isStringLiteral(arg) ? arg.text : undefined
+        };
+        return;
+      }
+    });
 
-  return found;
+    return found;
+  } finally {
+    session.close();
+  }
 }
 
 export interface ReadmeExamplesInput {

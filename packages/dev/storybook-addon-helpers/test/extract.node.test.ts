@@ -1,8 +1,8 @@
 import path from 'node:path';
-import ts from 'typescript';
+import * as ts from 'typescript/unstable/ast';
 import { describe, expect, it } from 'vitest';
 import { extractFromTypeNode, extractTypeDocs } from '../src/engine/extract.ts';
-import { createResolver } from '../src/engine/resolve.ts';
+import { testResolver as createResolver } from './typescript.ts';
 
 const fixturePath = path.join(__dirname, 'fixtures/engine/types.ts');
 const importedFixturePath = path.join(__dirname, 'fixtures/engine/imported.ts');
