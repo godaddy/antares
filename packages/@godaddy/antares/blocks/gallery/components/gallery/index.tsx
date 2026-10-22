@@ -2,10 +2,9 @@
 
 import { forwardRef, useCallback, useId, useLayoutEffect, useRef, useState } from 'react';
 import {
+  Alert,
   Box,
   Button,
-  CloseButton,
-  Content,
   Detail,
   type DropEvent,
   type DropOptions,
@@ -14,15 +13,11 @@ import {
   Heading,
   Icon,
   Label,
-  Popover,
-  PopoverTrigger,
   ProgressBar,
   SegmentedController,
   SegmentedControllerItem,
   Tag,
   Text,
-  Tooltip,
-  TooltipTrigger,
   isFileDropItem,
   useDrop
 } from '@godaddy/antares';
@@ -94,6 +89,7 @@ function GalleryContent({
   const [activeId, setActiveId] = useState<string | null>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const addButton = useRef<HTMLButtonElement>(null);
+  const uploadErrorId = useId();
 
   useLayoutEffect(
     function revealAddedImages() {
@@ -171,7 +167,6 @@ function GalleryContent({
   return (
     <>
       <Flex
-        ref={dropZoneRef}
         dir={dir}
         lang={locale}
         role="region"
@@ -179,7 +174,6 @@ function GalleryContent({
         padding="0"
         alignItems="stretch"
         justifyContent="start"
-        {...dropProps}
         className={styles.dropZone}
       >
         <Flex direction="column" gap="lg" padding="lg" className={styles.content}>
@@ -193,7 +187,7 @@ function GalleryContent({
               <UploadPrompt
                 ref={addButton}
                 isDropTarget={isDropTarget}
-                errors={errors}
+                errorId={errors.length ? uploadErrorId : undefined}
                 acceptedTypes={acceptedTypes}
                 onSelect={addFiles}
               />
@@ -210,7 +204,26 @@ function GalleryContent({
             </Flex>
           </Flex>
 
-          <Box role="region" aria-label={view === 'list' ? messages.listView : messages.gridView}>
+          {errors.length ? (
+            <Alert id={uploadErrorId} emphasis="critical" title={messages.uploadIssues}>
+              <Flex direction="column" gap="xs">
+                {errors.map((error) => (
+                  <Text key={error}>{error}</Text>
+                ))}
+              </Flex>
+            </Alert>
+          ) : null}
+          <Detail role="status" aria-label={messages.updates} aria-atomic="true" className={styles.notice}>
+            {notice}
+          </Detail>
+
+          <Box
+            ref={dropZoneRef}
+            role="region"
+            aria-label={view === 'list' ? messages.listView : messages.gridView}
+            {...dropProps}
+            className={styles.dropTarget}
+          >
             {images.length === 0 ? (
               <EmptyState />
             ) : (
@@ -226,6 +239,20 @@ function GalleryContent({
                 onLoadSuccess={markReady}
               />
             )}
+            {isDropTarget ? (
+              <Flex
+                role="status"
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                gap="sm"
+                padding="lg"
+                className={styles.dropOverlay}
+              >
+                <Icon icon="upload" aria-hidden="true" />
+                <Text as="strong">{messages.dropFiles}</Text>
+              </Flex>
+            ) : null}
           </Box>
           {processing ? (
             <ProgressBar
@@ -238,25 +265,7 @@ function GalleryContent({
               <Box slot="track" />
             </ProgressBar>
           ) : null}
-
-          <Detail role="status" aria-label={messages.updates} aria-atomic="true" className={styles.notice}>
-            {notice}
-          </Detail>
         </Flex>
-        {isDropTarget ? (
-          <Flex
-            role="status"
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-            gap="sm"
-            padding="lg"
-            className={styles.dropOverlay}
-          >
-            <Icon icon="upload" aria-hidden="true" />
-            <Text as="strong">{messages.dropFiles}</Text>
-          </Flex>
-        ) : null}
       </Flex>
       <Viewer
         images={images.filter(function filterViewableImage(image) {
@@ -298,8 +307,8 @@ interface UploadPromptProps {
   /** Whether an accepted file is currently over the gallery. */
   isDropTarget: boolean;
 
-  /** Validation issues shared with the picker and drop target. */
-  errors: string[];
+  /** Identifies current upload errors for the picker description. */
+  errorId?: string;
 
   /** MIME types accepted by the gallery picker. */
   acceptedTypes: string[];
@@ -310,65 +319,28 @@ interface UploadPromptProps {
 
 /** Compact file-upload action shared by Gallery's list and grid views. */
 const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(function UploadPrompt(
-  { isDropTarget, errors, acceptedTypes, onSelect },
+  { isDropTarget, errorId, acceptedTypes, onSelect },
   ref
 ) {
   const { messages } = useGalleryCopy();
   const helpId = useId();
-  const errorId = useId();
-  const hasErrors = errors.length > 0;
-  const issueButton = (
-    <Button variant="minimal" size="sm" aria-label={messages.reviewUploadIssues} isDisabled={!hasErrors}>
-      <Icon icon="alert" color="var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802))" aria-hidden="true" />
-    </Button>
-  );
-  const describedBy = [isDropTarget ? null : helpId, hasErrors ? errorId : null].filter(Boolean).join(' ') || undefined;
+  const describedBy = [isDropTarget ? null : helpId, errorId].filter(Boolean).join(' ') || undefined;
   return (
     <Flex alignItems="center" gap="sm" wrap="wrap" role="group" aria-label={messages.addFilesRegion}>
-      <Flex alignItems="center" gap="xs">
-        <FileTrigger allowsMultiple acceptedFileTypes={acceptedTypes} onSelect={onSelect}>
-          <Button
-            ref={ref}
-            type="button"
-            size="md"
-            variant="secondary"
-            aria-label={messages.addFiles}
-            aria-describedby={describedBy}
-          >
-            <Icon icon="upload" aria-hidden="true" />
-            {messages.addFiles}
-          </Button>
-        </FileTrigger>
-        <Box className={styles.issueSlot} data-empty={!hasErrors || undefined}>
-          {hasErrors ? (
-            <PopoverTrigger>
-              <TooltipTrigger>
-                {issueButton}
-                <Tooltip>{messages.reviewUploadIssues}</Tooltip>
-              </TooltipTrigger>
-              <Popover placement="bottom end" className={styles.uploadIssues}>
-                <Heading slot="title" level={3}>
-                  {messages.uploadIssues}
-                </Heading>
-                <CloseButton aria-label={messages.closeUploadIssues} />
-                <Content gap="sm">
-                  {errors.map((error) => (
-                    <Text key={error}>{error}</Text>
-                  ))}
-                </Content>
-              </Popover>
-            </PopoverTrigger>
-          ) : (
-            issueButton
-          )}
-        </Box>
-      </Flex>
+      <FileTrigger allowsMultiple acceptedFileTypes={acceptedTypes} onSelect={onSelect}>
+        <Button
+          ref={ref}
+          type="button"
+          size="md"
+          variant="secondary"
+          aria-label={messages.addFiles}
+          aria-describedby={describedBy}
+        >
+          <Icon icon="upload" aria-hidden="true" />
+          {messages.addFiles}
+        </Button>
+      </FileTrigger>
       {isDropTarget ? null : <Text id={helpId}>{messages.dragHint}</Text>}
-      {hasErrors ? (
-        <Text id={errorId} role="alert" className={styles.announcement}>
-          {errors.join(' ')}
-        </Text>
-      ) : null}
     </Flex>
   );
 });

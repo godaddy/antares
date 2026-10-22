@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, useCallback, useRef, useState, type ReactEventHandler } from 'react';
-import { Box, Button, Flex, Icon, Image, Text } from '@godaddy/antares';
+import { Box, Button, Flex, Icon, Image, Skeleton, Text } from '@godaddy/antares';
 import type { ImageItem } from '../../data/types';
 import { useGalleryCopy } from '../../data/copy';
 import styles from './index.module.css';
@@ -151,25 +151,27 @@ const ImageSurface = forwardRef<HTMLImageElement, ImageSurfaceProps>(function Im
   ref
 ) {
   return (
-    <Box
-      as={Image}
-      ref={ref}
-      src={src}
-      srcSet={srcSet}
-      sizes={sizes}
-      width={width}
-      height={height}
-      alt={alt}
-      className={className}
-      data-variant={variant}
-      data-loading={isLoading || undefined}
-      aria-busy={isLoading || undefined}
-      rounding="md"
-      loading={loading}
-      decoding="async"
-      onLoad={onLoad}
-      onError={onError}
-    />
+    <Box as="span" className={`${styles.frame} ${className ?? ''}`} data-variant={variant}>
+      <Box
+        as={Image}
+        ref={ref}
+        src={src}
+        srcSet={srcSet}
+        sizes={sizes}
+        width={width}
+        height={height}
+        alt={alt}
+        className={styles.resource}
+        data-loading={isLoading || undefined}
+        aria-busy={isLoading || undefined}
+        rounding="md"
+        loading={loading}
+        decoding="async"
+        onLoad={onLoad}
+        onError={onError}
+      />
+      {isLoading ? <Skeleton width="100%" height="100%" className={styles.skeleton} /> : null}
+    </Box>
   );
 });
 

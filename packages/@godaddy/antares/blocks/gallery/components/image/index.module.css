@@ -3,10 +3,6 @@
   object-fit: cover;
 }
 
-.surface:where(img) {
-  display: block;
-}
-
 .surface:where([data-variant="horizontal"]) {
   inline-size: 56px;
   block-size: 56px;
@@ -25,10 +21,6 @@
 
 .image {
   max-inline-size: 100%;
-}
-
-.image:where(img) {
-  display: block;
 }
 
 .image:where([data-variant="viewer"]) {
@@ -67,8 +59,27 @@
   color: var(--color-feedback-critical-onsubtle, var(--ux-xaxxaq, #8b0000));
 }
 
-.surface:where([data-loading]),
-.image:where([data-loading]) {
-  background: var(--color-surface-background-subdued, var(--ux-1u2jy43, #d6d6d6));
-  color: transparent;
+.frame {
+  display: block;
+  position: relative;
+}
+
+.frame:where([data-variant="default"]) {
+  inline-size: fit-content;
+}
+
+.resource {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: inherit;
+}
+
+.resource:where([data-loading]) {
+  opacity: 0;
+}
+
+.skeleton {
+  position: absolute;
+  inset: 0;
 }

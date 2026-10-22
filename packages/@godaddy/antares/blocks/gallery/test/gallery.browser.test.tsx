@@ -303,7 +303,7 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it.each(['grid', 'list'] as const)(
-      'keeps existing files and the page stationary while adding images in %s view',
+      'preserves picker position, focus, and page scroll while adding images in %s view',
       async function stationaryUploads(view) {
         const pending: Array<(value: ArrayBuffer) => void> = [];
         vi.spyOn(SubtleCrypto.prototype, 'digest').mockImplementation(function deferredHash() {
@@ -315,8 +315,8 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(first).toBeVisible();
         add.element().focus();
         const position = () => ({
-          top: first.element().getBoundingClientRect().top,
-          left: first.element().getBoundingClientRect().left,
+          top: add.element().getBoundingClientRect().top,
+          left: add.element().getBoundingClientRect().left,
           scroll: document.scrollingElement?.scrollTop
         });
         const before = position();
@@ -336,60 +336,46 @@ describe('@godaddy/antares', function packageTests() {
     );
 
     it.each(['grid', 'list'] as const)(
-      'keeps upload issues compact and keyboard accessible in %s view',
-      async function uploadIssuePopover(view) {
+      'shows native upload alerts below the toolbar without stealing focus in %s view',
+      async function uploadIssueAlert(view) {
         const screen = await render(<Gallery initialImages={samples} defaultView={view} limits={{ maxFiles: 2 }} />);
         const add = screen.getByRole('button', { name: 'Add files', exact: true });
         const first = screen.getByRole('row', { name: 'Open one.png', exact: true });
-        const review = screen.getByRole('button', { name: 'Review upload issues', exact: true });
+        const alert = screen.getByRole('alert');
         await expect.element(first).toBeVisible();
-        await expect.element(review).not.toBeInTheDocument();
+        await expect.element(alert).not.toBeInTheDocument();
         add.element().focus();
         await userEvent.keyboard('{Tab}');
         await expect.element(screen.getByRole('radio', { name: 'List', exact: true })).toHaveFocus();
-        const position = () => [
-          add.element().getBoundingClientRect().x,
-          add.element().getBoundingClientRect().y,
-          first.element().getBoundingClientRect().x,
-          first.element().getBoundingClientRect().y,
-          document.scrollingElement?.scrollTop
-        ];
-        const before = position();
+        add.element().focus();
         selectFiles(screen.container, [
           new File(['text'], 'invalid.txt', { type: 'text/plain' }),
           png('over-limit.png')
         ]);
-        await expect.element(review).toBeVisible();
+        await expect.element(alert).toBeVisible();
+        await expect.element(alert).toHaveAttribute('data-emphasis', 'critical');
+        await expect.element(alert).toHaveTextContent('Upload issues');
+        expect(add.element().getAttribute('aria-describedby')?.split(' ')).toContain(alert.element().id);
         await expect.element(screen.getByRole('alert')).toHaveTextContent('smaller than 20 MiB');
         await expect.element(screen.getByRole('alert')).toHaveTextContent('Gallery limit reached: 2 images');
-        expect(position()).toEqual(before);
-        add.element().focus();
+        expect(alert.element().getBoundingClientRect().top).toBeGreaterThanOrEqual(
+          add.element().getBoundingClientRect().bottom
+        );
+        expect(alert.element().getBoundingClientRect().bottom).toBeLessThanOrEqual(
+          first.element().getBoundingClientRect().top
+        );
+        await expect.element(add).toHaveFocus();
         await userEvent.keyboard('{Tab}');
-        await expect.element(review).toHaveFocus();
-        await expect.element(screen.getByRole('tooltip')).toHaveTextContent('Review upload issues');
-        await userEvent.keyboard('{Enter}');
-        const dialog = screen.getByRole('dialog', { name: 'Upload issues', exact: true });
-        await expect.element(dialog).toBeVisible();
-        await expect
-          .element(dialog.getByText('Use JPG, PNG, GIF, or WebP images smaller than 20 MiB.', { exact: true }))
-          .toBeVisible();
-        await expect
-          .element(dialog.getByText('Gallery limit reached: 2 images and 256 MiB total.', { exact: true }))
-          .toBeVisible();
-        await userEvent.keyboard('{Escape}');
-        await expect.element(dialog).not.toBeInTheDocument();
-        await expect.element(review).toHaveFocus();
-        await userEvent.keyboard(' ');
-        await expect.element(dialog).toBeVisible();
-        await userEvent.click(dialog.getByRole('button', { name: 'Close upload issues' }));
-        await expect.element(review).toHaveFocus();
+        await expect.element(screen.getByRole('radio', { name: 'List', exact: true })).toHaveFocus();
         await userEvent.click(screen.getByRole('button', { name: 'Remove two.png' }));
-        const beforeClear = position();
         selectFiles(screen.container, [png('valid.png')]);
         await expect.element(screen.getByRole('row', { name: 'Open valid.png' })).toBeVisible();
-        await expect.element(review).not.toBeInTheDocument();
         await expect.element(screen.getByRole('alert')).not.toBeInTheDocument();
-        expect(position()).toEqual(beforeClear);
+        const status = screen.getByRole('status', { name: 'Gallery updates' });
+        await expect.element(status).toHaveTextContent('1 image added.');
+        expect(status.element().getBoundingClientRect().bottom).toBeLessThanOrEqual(
+          first.element().getBoundingClientRect().top
+        );
       }
     );
 
@@ -579,11 +565,11 @@ describe('@godaddy/antares', function packageTests() {
       expect(screen.getByRole('button', { name: /^Remove / }).all()).toHaveLength(1);
     });
 
-    it('accepts drops on the heading, a card, and empty page space into the same collection', async function drops() {
+    it('accepts drops on cards and space within the image collection', async function drops() {
       const screen = await render(<Gallery initialImages={samples} />);
-      const root = screen.getByRole('region', { name: 'Add files to gallery' }).element();
+      const root = screen.getByRole('region', { name: 'Grid view' }).element();
       const targets = [
-        screen.getByRole('heading', { name: 'Gallery', exact: true }).element(),
+        screen.getByRole('img', { name: 'one.png', exact: true }).element(),
         screen.getByRole('row', { name: 'Open one.png' }).element(),
         root
       ];
@@ -601,13 +587,13 @@ describe('@godaddy/antares', function packageTests() {
 
     it('keeps the hint while moving between descendants and clears it on exit', async function hover() {
       const screen = await render(<Gallery initialImages={samples} />);
-      const heading = screen.getByRole('heading', { name: 'Gallery', exact: true }).element();
+      const secondCard = screen.getByRole('row', { name: 'Open two.png' }).element();
       const card = screen.getByRole('row', { name: 'Open one.png' }).element();
       const data = transfer([png()]);
-      drag(heading, 'dragenter', data);
+      drag(secondCard, 'dragenter', data);
       await expect.element(screen.getByText('Drop files to upload.')).toBeVisible();
       drag(card, 'dragenter', data);
-      drag(heading, 'dragleave', data);
+      drag(secondCard, 'dragleave', data);
       await expect.element(screen.getByText('Drop files to upload.')).toBeVisible();
       drag(card, 'dragleave', data);
       await expect.element(screen.getByText('Drop files to upload.')).not.toBeInTheDocument();
@@ -627,13 +613,47 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByText('Start your gallery')).toBeVisible();
     });
 
+    it.each(['grid', 'list'] as const)(
+      'limits the drop feedback and target to the image area in %s view',
+      async function collectionDropTarget(view) {
+        const screen = await render(<Gallery initialImages={samples} defaultView={view} />);
+        const toolbar = screen.getByRole('heading', { name: 'Gallery', exact: true }).element();
+        const picker = screen.getByRole('button', { name: 'Add files', exact: true }).element();
+        const collection = screen.getByRole('region', { name: view === 'list' ? 'List view' : 'Grid view' }).element();
+        const data = transfer([png()]);
+        for (const target of [toolbar, picker]) {
+          drag(target, 'dragenter', data);
+          drag(target, 'dragover', data);
+          await expect.element(screen.getByText('Drop files to upload.')).not.toBeInTheDocument();
+          drag(target, 'drop', data);
+          drag(target, 'dragleave', data);
+        }
+        expect(screen.getByRole('button', { name: /^Remove / }).all()).toHaveLength(2);
+        drag(collection, 'dragenter', data);
+        const overlayText = screen.getByText('Drop files to upload.');
+        await expect.element(overlayText).toBeVisible();
+        const overlay = overlayText.element().parentElement!;
+        const area = collection.getBoundingClientRect();
+        const feedback = overlay.getBoundingClientRect();
+        expect([feedback.x, feedback.y, feedback.width, feedback.height]).toEqual([
+          area.x,
+          area.y,
+          area.width,
+          area.height
+        ]);
+        expect(feedback.top).toBeGreaterThanOrEqual(picker.getBoundingClientRect().bottom);
+        drag(collection, 'dragleave', data);
+        await expect.element(overlayText).not.toBeInTheDocument();
+      }
+    );
+
     it('accepts drops into an empty gallery and restores the upload hint', async function emptyDrop() {
       const screen = await render(<Gallery />);
       const empty = screen.getByRole('region', { name: 'Empty gallery' });
       const data = transfer([png()]);
       drag(empty.element(), 'dragenter', data);
       await expect.element(screen.getByText('Drop files to upload.', { exact: true })).toBeVisible();
-      await expect.element(screen.getByText('or drag them here.')).not.toBeInTheDocument();
+      await expect.element(screen.getByText('or drag images into the gallery below.')).not.toBeInTheDocument();
       drag(empty.element(), 'dragover', data);
       drag(empty.element(), 'drop', data);
 
@@ -641,12 +661,12 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('row', { name: 'Open local.png' })).toBeVisible();
       await expect.element(screen.getByText('1 image', { exact: true })).toBeVisible();
       await expect.element(screen.getByText('Drop files to upload.')).not.toBeInTheDocument();
-      await expect.element(screen.getByText('or drag them here.')).toBeVisible();
+      await expect.element(screen.getByText('or drag images into the gallery below.')).toBeVisible();
     });
 
     it('ignores drops while the media viewer is open and accepts them after closing', async function modalDrop() {
       const screen = await render(<Gallery initialImages={samples} />);
-      const region = screen.getByRole('region', { name: 'Add files to gallery' }).element();
+      const region = screen.getByRole('region', { name: 'Grid view' }).element();
       await userEvent.click(screen.getByRole('row', { name: 'Open one.png' }));
       const data = transfer([png()]);
       drag(region, 'dragenter', data);
@@ -950,7 +970,7 @@ describe('@godaddy/antares', function packageTests() {
       const screen = await render(<Gallery />);
       screen.container.style.setProperty('--color-surface-background-base', 'rgb(17, 17, 17)');
       screen.container.style.setProperty('--color-surface-text-base', 'rgb(255, 255, 255)');
-      const target = screen.getByRole('region', { name: 'Add files to gallery' }).element();
+      const target = screen.getByRole('region', { name: 'Grid view' }).element();
       drag(target, 'dragenter', transfer([png()]));
       await expect.element(screen.getByText('Drop files to upload.')).toBeVisible();
       const message = screen.getByText('Drop files to upload.').element();
@@ -973,10 +993,11 @@ describe('@godaddy/antares', function packageTests() {
         };
         const before = bounds();
         await expect.element(image).toHaveAttribute('aria-busy', 'true');
-        expect(getComputedStyle(image.element()).backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+        const placeholder = image.element().parentElement!.querySelector<HTMLElement>('[aria-hidden="true"]')!;
+        await expect.element(placeholder).toBeVisible();
         image.element().dispatchEvent(new Event('load'));
         await expect.element(image).not.toHaveAttribute('aria-busy');
-        expect(getComputedStyle(image.element()).backgroundColor).toBe('rgba(0, 0, 0, 0)');
+        await expect.element(placeholder).not.toBeInTheDocument();
         expect(bounds()).toEqual(before);
         image.element().dispatchEvent(new Event('error'));
         await expect.element(screen.getByRole('img', { name: 'one.png: File needs attention.' })).toBeVisible();
@@ -993,12 +1014,13 @@ describe('@godaddy/antares', function packageTests() {
         const image = screen.container.querySelector('img')!;
         const before = image.getBoundingClientRect();
         expect(image.getAttribute('aria-busy')).toBe('true');
-        expect(getComputedStyle(image).backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+        const placeholder = image.parentElement!.querySelector<HTMLElement>('[aria-hidden="true"]')!;
+        await expect.element(placeholder).toBeVisible();
         image.dispatchEvent(new Event('load'));
         await expect.poll(() => image.hasAttribute('aria-busy')).toBe(false);
         const after = image.getBoundingClientRect();
         expect([after.width, after.height]).toEqual([before.width, before.height]);
-        expect(getComputedStyle(image).backgroundColor).toBe('rgba(0, 0, 0, 0)');
+        await expect.element(placeholder).not.toBeInTheDocument();
       }
     );
 
