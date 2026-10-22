@@ -8,7 +8,7 @@ d:"/antares/pr-380-site/_next/static/chunks/0cq_r7uivgtia.js"
 e:"/antares/pr-380-site/_next/static/chunks/44d0fxytx9jkg.js"
 f:"/antares/pr-380-site/_next/static/chunks/0y43-9m1z7bvl.js"
 10:"/antares/pr-380-site/_next/static/chunks/2f_a87zzluj--.js"
-11:"/antares/pr-380-site/_next/static/chunks/0t9ovw7g1hnwd.js"
+11:"/antares/pr-380-site/_next/static/chunks/38hh64dz_eugb.js"
 12:"/antares/pr-380-site/_next/static/chunks/2znf03_833nl7.js"
 13:"/antares/pr-380-site/_next/static/chunks/428imhwwk-ha_.js"
 14:"/antares/pr-380-site/_next/static/chunks/32o7tmg2i-rss.js"
@@ -310,12 +310,14 @@ function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: ViewBan
     </Flex>
   );
 }
-1e:T2c16,'use client';
+1e:T3176,'use client';
 
 import { forwardRef, useCallback, useId, useLayoutEffect, useRef, useState } from 'react';
 import {
   Box,
   Button,
+  CloseButton,
+  Content,
   Detail,
   type DropEvent,
   type DropOptions,
@@ -324,11 +326,15 @@ import {
   Heading,
   Icon,
   Label,
+  Popover,
+  PopoverTrigger,
   ProgressBar,
   SegmentedController,
   SegmentedControllerItem,
   Tag,
   Text,
+  Tooltip,
+  TooltipTrigger,
   isFileDropItem,
   useDrop
 } from '@godaddy/antares';
@@ -392,7 +398,7 @@ function GalleryContent({
     maxFileSize: limits?.maxFileSize ?? defaultLimits.maxFileSize,
     maxTotalSize: limits?.maxTotalSize ?? defaultLimits.maxTotalSize
   };
-  const { images, error, notice, processing, addFiles, removeImage, retryImage, markReady, markError, reportError } =
+  const { images, errors, notice, processing, addFiles, removeImage, retryImage, markReady, markError, reportError } =
     useGalleryImages(initialImages, resolvedLimits, onImagesChange);
   const [view, setView] = useState(defaultView);
   const [showAll, setShowAll] = useState(false);
@@ -499,7 +505,7 @@ function GalleryContent({
               <UploadPrompt
                 ref={addButton}
                 isDropTarget={isDropTarget}
-                error={error}
+                errors={errors}
                 acceptedTypes={acceptedTypes}
                 onSelect={addFiles}
               />
@@ -604,8 +610,8 @@ interface UploadPromptProps {
   /** Whether an accepted file is currently over the gallery. */
   isDropTarget: boolean;
 
-  /** Validation message shared with the picker and drop target. */
-  error: string;
+  /** Validation issues shared with the picker and drop target. */
+  errors: string[];
 
   /** MIME types accepted by the gallery picker. */
   acceptedTypes: string[];
@@ -616,38 +622,69 @@ interface UploadPromptProps {
 
 /** Compact file-upload action shared by Gallery's list and grid views. */
 const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(function UploadPrompt(
-  { isDropTarget, error, acceptedTypes, onSelect },
+  { isDropTarget, errors, acceptedTypes, onSelect },
   ref
 ) {
   const { messages } = useGalleryCopy();
   const helpId = useId();
   const errorId = useId();
-  const describedBy = [isDropTarget ? null : helpId, error ? errorId : null].filter(Boolean).join(' ') || undefined;
+  const hasErrors = errors.length > 0;
+  const issueButton = (
+    <Button variant="minimal" size="sm" aria-label={messages.reviewUploadIssues} isDisabled={!hasErrors}>
+      <Icon icon="alert" color="var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802))" aria-hidden="true" />
+    </Button>
+  );
+  const describedBy = [isDropTarget ? null : helpId, hasErrors ? errorId : null].filter(Boolean).join(' ') || undefined;
   return (
     <Flex alignItems="center" gap="sm" wrap="wrap" role="group" aria-label={messages.addFilesRegion}>
-      <FileTrigger allowsMultiple acceptedFileTypes={acceptedTypes} onSelect={onSelect}>
-        <Button
-          ref={ref}
-          type="button"
-          size="md"
-          variant="secondary"
-          aria-label={messages.addFiles}
-          aria-describedby={describedBy}
-        >
-          <Icon icon="upload" aria-hidden="true" />
-          {messages.addFiles}
-        </Button>
-      </FileTrigger>
+      <Flex alignItems="center" gap="xs">
+        <FileTrigger allowsMultiple acceptedFileTypes={acceptedTypes} onSelect={onSelect}>
+          <Button
+            ref={ref}
+            type="button"
+            size="md"
+            variant="secondary"
+            aria-label={messages.addFiles}
+            aria-describedby={describedBy}
+          >
+            <Icon icon="upload" aria-hidden="true" />
+            {messages.addFiles}
+          </Button>
+        </FileTrigger>
+        <Box className={styles.issueSlot} data-empty={!hasErrors || undefined}>
+          {hasErrors ? (
+            <PopoverTrigger>
+              <TooltipTrigger>
+                {issueButton}
+                <Tooltip>{messages.reviewUploadIssues}</Tooltip>
+              </TooltipTrigger>
+              <Popover placement="bottom end" className={styles.uploadIssues}>
+                <Heading slot="title" level={3}>
+                  {messages.uploadIssues}
+                </Heading>
+                <CloseButton aria-label={messages.closeUploadIssues} />
+                <Content gap="sm">
+                  {errors.map((error) => (
+                    <Text key={error}>{error}</Text>
+                  ))}
+                </Content>
+              </Popover>
+            </PopoverTrigger>
+          ) : (
+            issueButton
+          )}
+        </Box>
+      </Flex>
       {isDropTarget ? null : <Text id={helpId}>{messages.dragHint}</Text>}
-      {error ? (
-        <Text id={errorId} role="alert" emphasis="critical">
-          {error}
+      {hasErrors ? (
+        <Text id={errorId} role="alert" className={styles.announcement}>
+          {errors.join(' ')}
         </Text>
       ) : null}
     </Flex>
   );
 });
-1f:T4cf,.surface {
+1f:T57a,.surface {
   max-inline-size: 100%;
   object-fit: cover;
 }
@@ -715,7 +752,13 @@ const UploadPrompt = forwardRef<HTMLButtonElement, UploadPromptProps>(function U
   background: var(--color-feedback-critical-subtle, var(--ux-1iiiqs3, #fde8e7));
   color: var(--color-feedback-critical-onsubtle, var(--ux-xaxxaq, #8b0000));
 }
-20:T2614,'use client';
+
+.surface:where([data-loading]),
+.image:where([data-loading]) {
+  background: var(--color-surface-background-subdued, var(--ux-1u2jy43, #d6d6d6));
+  color: transparent;
+}
+20:T271a,'use client';
 
 import { forwardRef, useCallback, useRef, useState, type ReactEventHandler } from 'react';
 import { Box, Button, Flex, Icon, Image, Text } from '@godaddy/antares';
@@ -852,6 +895,9 @@ interface ImageSurfaceProps {
   /** Prioritize the active slide; defer offscreen resources. */
   loading?: 'eager' | 'lazy';
 
+  /** Displays a placeholder while this resource is loading. */
+  isLoading?: boolean;
+
   /** Native successful decode notification. */
   onLoad?: ReactEventHandler<HTMLImageElement>;
 
@@ -861,7 +907,7 @@ interface ImageSurfaceProps {
 
 /** Renders the shared image element; its owner supplies any interaction. */
 const ImageSurface = forwardRef<HTMLImageElement, ImageSurfaceProps>(function ImageSurface(
-  { src, srcSet, sizes, width, height, alt, variant, className, loading = 'lazy', onLoad, onError },
+  { src, srcSet, sizes, width, height, alt, variant, className, loading = 'lazy', isLoading, onLoad, onError },
   ref
 ) {
   return (
@@ -876,6 +922,8 @@ const ImageSurface = forwardRef<HTMLImageElement, ImageSurfaceProps>(function Im
       alt={alt}
       className={className}
       data-variant={variant}
+      data-loading={isLoading || undefined}
+      aria-busy={isLoading || undefined}
       rounding="md"
       loading={loading}
       decoding="async"
@@ -950,6 +998,7 @@ export function FileCover({ image, variant, onLoadError, onLoadSuccess }: FileCo
       className={styles.surface}
       variant={variant}
       loading="lazy"
+      isLoading={state === 'loading'}
       onLoad={onLoad}
       onError={onError}
     />
@@ -1024,6 +1073,7 @@ export function GalleryImage({ image, variant = 'default', loading = 'lazy', onR
         className={styles.image}
         variant={variant}
         loading={loading}
+        isLoading={state === 'loading'}
         onLoad={onLoad}
         onError={onError}
       />
@@ -1314,7 +1364,7 @@ export function Viewer({ dir, images, activeId, onClose, onSelectImage }: Viewer
     </Modal>
   );
 }
-22:T1115,'use client';
+22:T1196,'use client';
 
 import { createContext, useContext, useMemo, type ReactNode } from 'react';
 
@@ -1327,6 +1377,9 @@ function createGalleryCopy(locale: string) {
     imageCount: (count: number) => `${format(count)} ${count === 1 ? 'image' : 'images'}`,
     addFilesRegion: 'Add files to gallery',
     addFiles: 'Add files',
+    uploadIssues: 'Upload issues',
+    reviewUploadIssues: 'Review upload issues',
+    closeUploadIssues: 'Close upload issues',
     dragHint: 'or drag them here.',
     dropFiles: 'Drop files to upload.',
     layout: 'Layout',
@@ -1561,7 +1614,7 @@ export interface GalleryLimits {
   /** Inclusive total byte budget for images with a known size. Defaults to 256 MiB. */
   maxTotalSize?: number;
 }
-25:T1f7c,'use client';
+25:T1f92,'use client';
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { GalleryLimits, ImageItem } from '../data/types';
@@ -1593,7 +1646,7 @@ export function useGalleryImages(
   const { messages } = useGalleryCopy();
   const [images, setImages] = useState(() => [...initialImages]);
   const collection = useRef(images);
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState<string[]>([]);
   const [notice, setNotice] = useState('');
   const [processing, setProcessing] = useState<{ completed: number; total: number } | null>(null);
   const progress = useRef({ completed: 0, total: 0 });
@@ -1635,7 +1688,7 @@ export function useGalleryImages(
   }, []);
 
   const reportError = useCallback(function reportError(message: string) {
-    if (mounted.current) setError((previous) => (previous ? `${previous} ${message}` : message));
+    if (mounted.current) setErrors((previous) => (previous.includes(message) ? previous : [...previous, message]));
   }, []);
 
   const addFiles = useCallback(
@@ -1700,7 +1753,7 @@ export function useGalleryImages(
         if (invalid) errors.push(messages.invalidFiles(limits.maxFileSize / MiB));
         if (overBudget) errors.push(messages.limitReached(limits.maxFiles, limits.maxTotalSize / MiB));
         if (unreadable) errors.push(messages.unreadableImages);
-        setError(errors.join(' '));
+        setErrors(errors);
         const notices = [];
         if (added) notices.push(messages.addedImages(added));
         if (duplicates) notices.push(messages.skippedDuplicates(duplicates));
@@ -1769,12 +1822,12 @@ export function useGalleryImages(
     [messages, updateImages]
   );
 
-  return { images, error, notice, processing, addFiles, removeImage, retryImage, markReady, markError, reportError };
+  return { images, errors, notice, processing, addFiles, removeImage, retryImage, markReady, markError, reportError };
 }
-b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L15",null,{"toc":[],"footer":{"enabled":true},"children":[["$","$L16",null,{"children":"Gallery"}],["$","$L17",null,{"className":"mb-0","children":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L18",null,{"markdownUrl":"/docs/blocks/gallery.mdx"}],["$","$L19",null,{"markdownUrl":"/docs/blocks/gallery.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/gallery/README.mdx"}]]}],["$","$L1a",null,{"children":[null,"\n",["$","$L1c",null,{"block":{"id":"gallery","description":"Browse images in a list or grid, add local files, and open a media viewer.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/file-items/index.module.css","language":"css","source":".card {\n  inline-size: 100%;\n  min-inline-size: 0;\n  --_gallery-file-action-space: calc(var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5)) * 2);\n}\n\n.card:where([data-error]) {\n  border-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));\n}\n\n.cover {\n  box-sizing: border-box;\n  min-inline-size: 0;\n  border: 1px solid transparent;\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--_gallery-file-action-space);\n}\n\n.details:where([data-variant=\"vertical\"]) {\n  padding-inline-end: 0;\n}\n\n.errorDetails {\n  min-inline-size: 0;\n}\n\n.retry {\n  text-decoration: underline;\n}\n\n.collection {\n  inline-size: 100%;\n}\n"},{"path":"components/file-items/index.tsx","language":"tsx","source":"$1d"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.notice:where(:empty) {\n  position: absolute;\n}\n\n.dropOverlay {\n  position: absolute;\n  inset: 0;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  color: var(--color-surface-text-base, var(--ux-1leynsm, CanvasText));\n  pointer-events: none;\n}\n\n.dropZone {\n  position: relative;\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.emptyState {\n  min-block-size: 256px;\n  text-align: center;\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$1e"},{"path":"components/image/index.module.css","language":"css","source":"$1f"},{"path":"components/image/index.tsx","language":"tsx","source":"$20"},{"path":"components/viewer/index.module.css","language":"css","source":".modalContainer {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n  min-inline-size: 0;\n}\n\n.modal {\n  inline-size: 100%;\n  max-inline-size: 100%;\n}\n\n.slide {\n  min-inline-size: 0;\n  max-inline-size: 100%;\n  block-size: 55dvh;\n}\n\n.name {\n  flex: 1 1 auto;\n  min-inline-size: 0;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  overflow-x: auto;\n  scroll-padding-inline: var(--sp-sm);\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$21"},{"path":"data/copy.tsx","language":"tsx","source":"$22"},{"path":"data/sample-images.ts","language":"ts","source":"$23"},{"path":"data/types.ts","language":"ts","source":"$24"},{"path":"hooks/use-gallery-images.ts","language":"ts","source":"$25"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery';\nexport type { ImageItem } from './data/types';\n"}]},"children":"$L26"}]]}]]}],["$L27","$L28"],"$L29"]}],"p":"$@2a","v":null,"s":"$a"}}]]
+b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L15",null,{"toc":[],"footer":{"enabled":true},"children":[["$","$L16",null,{"children":"Gallery"}],["$","$L17",null,{"className":"mb-0","children":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L18",null,{"markdownUrl":"/docs/blocks/gallery.mdx"}],["$","$L19",null,{"markdownUrl":"/docs/blocks/gallery.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/gallery/README.mdx"}]]}],["$","$L1a",null,{"children":[null,"\n",["$","$L1c",null,{"block":{"id":"gallery","description":"Browse images in a list or grid, add local files, and open a media viewer.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/file-items/index.module.css","language":"css","source":".card {\n  inline-size: 100%;\n  min-inline-size: 0;\n  --_gallery-file-action-space: calc(var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5)) * 2);\n}\n\n.card:where([data-error]) {\n  border-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));\n}\n\n.cover {\n  box-sizing: border-box;\n  min-inline-size: 0;\n  border: 1px solid transparent;\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--_gallery-file-action-space);\n}\n\n.details:where([data-variant=\"vertical\"]) {\n  padding-inline-end: 0;\n}\n\n.errorDetails {\n  min-inline-size: 0;\n}\n\n.retry {\n  text-decoration: underline;\n}\n\n.collection {\n  inline-size: 100%;\n}\n"},{"path":"components/file-items/index.tsx","language":"tsx","source":"$1d"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.notice:where(:empty) {\n  position: absolute;\n}\n\n.dropOverlay {\n  position: absolute;\n  inset: 0;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  color: var(--color-surface-text-base, var(--ux-1leynsm, CanvasText));\n  pointer-events: none;\n}\n\n.dropZone {\n  position: relative;\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.emptyState {\n  min-block-size: 256px;\n  text-align: center;\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n\n.issueSlot:where([data-empty]) {\n  visibility: hidden;\n}\n\n.uploadIssues {\n  max-inline-size: 24rem;\n}\n\n.announcement {\n  position: absolute;\n  inline-size: 1px;\n  block-size: 1px;\n  overflow: hidden;\n  clip-path: inset(50%);\n  white-space: nowrap;\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$1e"},{"path":"components/image/index.module.css","language":"css","source":"$1f"},{"path":"components/image/index.tsx","language":"tsx","source":"$20"},{"path":"components/viewer/index.module.css","language":"css","source":".modalContainer {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n  min-inline-size: 0;\n}\n\n.modal {\n  inline-size: 100%;\n  max-inline-size: 100%;\n}\n\n.slide {\n  min-inline-size: 0;\n  max-inline-size: 100%;\n  block-size: 55dvh;\n}\n\n.name {\n  flex: 1 1 auto;\n  min-inline-size: 0;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  overflow-x: auto;\n  scroll-padding-inline: var(--sp-sm);\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$21"},{"path":"data/copy.tsx","language":"tsx","source":"$22"},{"path":"data/sample-images.ts","language":"ts","source":"$23"},{"path":"data/types.ts","language":"ts","source":"$24"},{"path":"hooks/use-gallery-images.ts","language":"ts","source":"$25"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery';\nexport type { ImageItem } from './data/types';\n"}]},"children":"$L26"}]]}]]}],["$L27","$L28"],"$L29"]}],"p":"$@2a","v":null,"s":"$a"}}]]
 2:[["children",{"s":{"n":"slug","t":"oc","k":"blocks/gallery","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
 1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
-0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L2c",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L2e",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$2f",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Gallery"}],["$","meta","1",{"name":"description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","2",{"property":"og:title","content":"Gallery"}],["$","meta","3",{"property":"og:description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/gallery/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Gallery"}],["$","meta","7",{"name":"twitter:description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/gallery/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@30","v":null,"s":"$a"}},"a":"$@31","u":"$@32","b":"cSVv7Wps603wdxq9vv-Gp"}
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L2c",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L2e",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$2f",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Gallery"}],["$","meta","1",{"name":"description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","2",{"property":"og:title","content":"Gallery"}],["$","meta","3",{"property":"og:description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/gallery/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Gallery"}],["$","meta","7",{"name":"twitter:description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/gallery/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@30","v":null,"s":"$a"}},"a":"$@31","u":"$@32","b":"FOycwQeOJw_rmbPrTk0-8"}
 33:I[128903,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
 34:I[897367,["$4","$5"],"OutletBoundary"]
 26:["$","$L33",null,{}]
