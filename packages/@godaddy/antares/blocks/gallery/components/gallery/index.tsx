@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useCallback, useId, useLayoutEffect, useRef, useState } from 'react';
+import { forwardRef, useCallback, useId, useRef, useState } from 'react';
 import {
   Alert,
   Box,
@@ -96,21 +96,10 @@ function GalleryContent({
   } = useGalleryImages(initialImages, resolvedLimits, onImagesChange);
   const [view, setView] = useState(defaultView);
   const [showAll, setShowAll] = useState(false);
-  const previousImages = useRef(images);
   const [activeId, setActiveId] = useState<string | null>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const addButton = useRef<HTMLButtonElement>(null);
   const uploadErrorId = useId();
-
-  useLayoutEffect(
-    function revealAddedImages() {
-      const previousIds = new Set(previousImages.current.map((image) => image.id));
-      const hasAddedImages = images.some((image) => !previousIds.has(image.id));
-      previousImages.current = images;
-      if (hasAddedImages) setShowAll(true);
-    },
-    [images]
-  );
 
   const handleShowAll = useCallback(function handleShowAll() {
     setShowAll(true);

@@ -292,15 +292,47 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(screen.getByRole('button', { name: 'Show all', exact: true })).not.toBeInTheDocument();
     });
 
-    it('reveals accepted files beyond the collapsed list without moving focus', async function addedFileVisibility() {
-      const screen = await render(<Gallery initialImages={browserSamples.slice(0, 5)} defaultView="list" />);
-      const add = screen.getByRole('button', { name: 'Add files', exact: true });
-      add.element().focus();
-      selectFiles(screen.container, [png('new.png')]);
-      await expect.element(screen.getByRole('row', { name: 'Open new.png' })).toBeVisible();
-      await expect.element(add).toHaveFocus();
-      await expect.element(screen.getByRole('button', { name: 'Show all', exact: true })).not.toBeInTheDocument();
-    });
+    it.each([5, 11])(
+      'keeps five visible list items when adding to a collection of %i images',
+      async function addedFileVisibility(count) {
+        const screen = await render(<Gallery initialImages={browserSamples.slice(0, count)} defaultView="list" />);
+        const add = screen.getByRole('button', { name: 'Add files', exact: true });
+        add.element().focus();
+        selectFiles(screen.container, [png('new.png')]);
+        await expect.element(screen.getByRole('row', { name: 'Open new.png' })).toBeVisible();
+        expect(screen.getByRole('row').all()).toHaveLength(5);
+        await expect.element(screen.getByRole('row').all()[0]).toHaveAccessibleName('Open new.png');
+        await expect.element(screen.getByText(`5 of ${count + 1} files`, { exact: true })).toBeVisible();
+        await expect.element(add).toHaveFocus();
+        await expect.element(screen.getByRole('button', { name: 'Show all', exact: true })).toBeVisible();
+      }
+    );
+
+    it.each(['grid', 'list'] as const)(
+      'adds new batches first while preserving their file order in %s view',
+      async function uploadOrder(view) {
+        const screen = await render(<Gallery initialImages={samples} defaultView={view} />);
+        selectFiles(screen.container, [png('first.png'), png('second.png')]);
+        await expect.element(screen.getByRole('row', { name: 'Open second.png' })).toBeVisible();
+        expect(
+          screen
+            .getByRole('grid')
+            .getByRole('button')
+            .all()
+            .map((button) => button.element().getAttribute('aria-label'))
+        ).toEqual(['Remove first.png', 'Remove second.png', 'Remove one.png', 'Remove two.png']);
+
+        selectFiles(screen.container, [png('first.png'), png('third.png')]);
+        await expect.element(screen.getByRole('row', { name: 'Open third.png' })).toBeVisible();
+        expect(
+          screen
+            .getByRole('grid')
+            .getByRole('button')
+            .all()
+            .map((button) => button.element().getAttribute('aria-label'))
+        ).toEqual(['Remove third.png', 'Remove first.png', 'Remove second.png', 'Remove one.png', 'Remove two.png']);
+      }
+    );
 
     it.each(['grid', 'list'] as const)(
       'preserves picker position, focus, and page scroll while adding images in %s view',

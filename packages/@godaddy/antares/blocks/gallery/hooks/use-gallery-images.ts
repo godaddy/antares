@@ -88,6 +88,7 @@ export function useGalleryImages(
 
       const process = async function processFiles() {
         if (!mounted.current) return;
+        const batchIds = new Set<string>();
         let added = 0;
         let duplicates = 0;
         let invalid = 0;
@@ -127,7 +128,16 @@ export function useGalleryImages(
             const url = URL.createObjectURL(file);
             owned.current.set(key, { id, url, name: file.name, size: file.size });
             keys.current.set(id, key);
-            updateImages((previous) => [...previous, { id, name: file.name, size: file.size, src: url }]);
+            updateImages(function prependBatchImage(previous) {
+              const firstExisting = previous.findIndex((image) => !batchIds.has(image.id));
+              const insertionIndex = firstExisting === -1 ? previous.length : firstExisting;
+              return [
+                ...previous.slice(0, insertionIndex),
+                { id, name: file.name, size: file.size, src: url },
+                ...previous.slice(insertionIndex)
+              ];
+            });
+            batchIds.add(id);
             added++;
           } catch {
             unreadable++;
