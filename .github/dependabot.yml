@@ -9,6 +9,16 @@ updates:
     schedule:
       interval: "daily"
     groups:
+      embla-carousel:
+        patterns:
+          - "embla-carousel*"
+      storybook:
+        patterns:
+          - "storybook"
+          - "@storybook/*"
+      fumadocs:
+        patterns:
+          - "fumadocs-*"
       production-dependencies:
         dependency-type: "production"
         update-types:
