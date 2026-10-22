@@ -74,17 +74,16 @@
 
 .grid :where(td:has([data-type="range"][data-selected]:not([data-outside-month]))) {
   background: var(--_calendar-band);
-  border-radius: var(--_calendar-radius);
 }
 
-.grid :where(td:has([data-type="range"][data-selected]:not([data-outside-month])) + td) {
-  border-start-start-radius: 0;
-  border-end-start-radius: 0;
+.grid :where(td:has([data-selection-start]), td:has([data-unavailable]) + td) {
+  border-start-start-radius: var(--_calendar-radius);
+  border-end-start-radius: var(--_calendar-radius);
 }
 
-.grid :where(td:has(+ td > [data-type="range"][data-selected]:not([data-outside-month]))) {
-  border-start-end-radius: 0;
-  border-end-end-radius: 0;
+.grid :where(td:has([data-selection-end]), td:has(+ td > [data-unavailable])) {
+  border-start-end-radius: var(--_calendar-radius);
+  border-end-end-radius: var(--_calendar-radius);
 }
 
 .cell {
