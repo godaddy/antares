@@ -109,12 +109,7 @@ function surroundingMonths(date: CalendarDate, count: number, min?: DateValue | 
   for (let offset = -count; offset <= count; offset++) {
     const month = startOfMonth(date.add({ months: offset }));
     if ((min && endOfMonth(month).compare(min) < 0) || (max && month.compare(max) > 0)) continue;
-    if (
-      !months.some(function exists(value) {
-        return isSameMonth(value, month);
-      })
-    )
-      months.push(month);
+    if (!months.some((value) => isSameMonth(value, month))) months.push(month);
   }
   return months;
 }
@@ -157,7 +152,7 @@ function MonthScroller({ state, bounds, type, pageCount, setMonths }: MonthScrol
   const viewport = useRef<HTMLDivElement>(null);
   const anchor = useRef<ScrollAnchor | null>(null);
   const visibleAnchor = useRef<ScrollAnchor | null>(null);
-  const jump = useRef<CalendarDate | null>(state.focusedDate);
+  const scrollToFocus = useRef(true);
   const [metrics, setMetrics] = useState({ row: 0, chrome: 0 });
   const [window, setWindow] = useState(function initialMonths() {
     return {
@@ -168,30 +163,15 @@ function MonthScroller({ state, bounds, type, pageCount, setMonths }: MonthScrol
   const [lastFocus, setLastFocus] = useState(state.focusedDate);
   if (lastFocus.compare(state.focusedDate) !== 0) {
     setLastFocus(state.focusedDate);
-    if (
-      jump.current ||
-      !window.months.some(function contains(month) {
-        return isSameMonth(month, state.focusedDate);
-      })
-    ) {
-      jump.current = state.focusedDate;
-      setWindow({
-        months: surroundingMonths(state.focusedDate, count, bounds.minValue, bounds.maxValue),
-        active: startOfMonth(state.focusedDate)
-      });
+    if (!window.months.some((month) => isSameMonth(month, state.focusedDate))) {
+      resetWindow(state.focusedDate);
     }
   }
 
   const first = window.months[0] ?? startOfMonth(state.focusedDate);
   const last = window.months.at(-1) ?? first;
-  const needed =
-    2 *
-      Math.max(
-        count,
-        Math.abs(monthDistance(state.focusedDate, first)),
-        Math.abs(monthDistance(state.focusedDate, last))
-      ) +
-    1;
+  const focusedIndex = window.months.findIndex((month) => isSameMonth(month, state.focusedDate));
+  const needed = 2 * Math.max(count, focusedIndex, window.months.length - 1 - focusedIndex) + 1;
   useLayoutEffect(
     function coverMonths() {
       setMonths(needed);
@@ -203,9 +183,9 @@ function MonthScroller({ state, bounds, type, pageCount, setMonths }: MonthScrol
     const root = viewport.current;
     if (!root) return null;
     const top = root.getBoundingClientRect().top;
-    const element = Array.from(root.children).find(function visible(child) {
-      return child.getBoundingClientRect().bottom > top + 1;
-    }) as HTMLElement | undefined;
+    const element = Array.from(root.children).find((child) => child.getBoundingClientRect().bottom > top + 1) as
+      | HTMLElement
+      | undefined;
     return element
       ? {
           month: element.dataset.calendarMonth!,
@@ -217,30 +197,32 @@ function MonthScroller({ state, bounds, type, pageCount, setMonths }: MonthScrol
   useLayoutEffect(function preservePosition() {
     const root = viewport.current;
     if (!root) return;
-    const target = jump.current ? { month: startOfMonth(state.focusedDate).toString(), offset: 0 } : anchor.current;
+    const target = scrollToFocus.current
+      ? { month: startOfMonth(state.focusedDate).toString(), offset: 0 }
+      : anchor.current;
     if (target) {
-      const element = Array.from(root.children).find(function matches(child) {
-        return (child as HTMLElement).dataset.calendarMonth === target.month;
-      });
+      const element = Array.from(root.children).find(
+        (child) => (child as HTMLElement).dataset.calendarMonth === target.month
+      );
       if (element) {
         root.scrollTop += element.getBoundingClientRect().top - root.getBoundingClientRect().top - target.offset;
         visibleAnchor.current = readAnchor();
       }
     }
-    jump.current = null;
+    scrollToFocus.current = false;
     anchor.current = null;
   });
 
   useLayoutEffect(function measureMonths() {
     const table = viewport.current?.querySelector('table');
-    const label = table?.previousElementSibling;
+    const month = table?.parentElement;
     const rows = table?.tBodies[0]?.rows;
-    if (!table || !label || !rows?.length) return;
+    if (!table || !month || !rows?.length) return;
     function measure() {
-      if (!table || !label || !rows) return;
+      if (!table || !month || !rows) return;
       const gap = Number.parseFloat(getComputedStyle(table).borderSpacing.split(' ').at(-1) ?? '0');
       const row = rows[0].getBoundingClientRect().height + gap;
-      const chrome = label.getBoundingClientRect().height + table.getBoundingClientRect().height - row * rows.length;
+      const chrome = month.getBoundingClientRect().height - row * rows.length;
       if (Math.abs(metrics.row - row) < 0.5 && Math.abs(metrics.chrome - chrome) < 0.5) return;
       anchor.current ??= visibleAnchor.current ?? readAnchor();
       setMetrics({ row, chrome });
@@ -252,7 +234,7 @@ function MonthScroller({ state, bounds, type, pageCount, setMonths }: MonthScrol
       frame = requestAnimationFrame(measure);
     });
     observer.observe(table);
-    observer.observe(label);
+    observer.observe(month);
     return function disconnect() {
       observer.disconnect();
       cancelAnimationFrame(frame);
@@ -276,22 +258,16 @@ function MonthScroller({ state, bounds, type, pageCount, setMonths }: MonthScrol
     const current = readAnchor();
     if (!current) return;
     visibleAnchor.current = current;
-    const index = window.months.findIndex(function matches(month) {
-      return month.toString() === current.month;
-    });
+    const index = window.months.findIndex((month) => month.toString() === current.month);
     const active = window.months[index];
     if (!active) return;
     const before =
       index < count
-        ? surroundingMonths(first, count, bounds.minValue, bounds.maxValue).filter(function earlier(month) {
-            return month.compare(first) < 0;
-          })
+        ? surroundingMonths(first, count, bounds.minValue, bounds.maxValue).filter((month) => month.compare(first) < 0)
         : [];
     const after =
       index >= window.months.length - count - 1
-        ? surroundingMonths(last, count, bounds.minValue, bounds.maxValue).filter(function later(month) {
-            return month.compare(last) > 0;
-          })
+        ? surroundingMonths(last, count, bounds.minValue, bounds.maxValue).filter((month) => month.compare(last) > 0)
         : [];
     if (before.length || after.length || !isSameMonth(active, window.active)) {
       anchor.current = current;
@@ -299,19 +275,21 @@ function MonthScroller({ state, bounds, type, pageCount, setMonths }: MonthScrol
     }
   }
 
-  function navigate(date: CalendarDate) {
-    jump.current = date;
-    state.setFocusedDate(date);
+  function resetWindow(date: CalendarDate) {
+    scrollToFocus.current = true;
     setWindow({
-      months: surroundingMonths(state.focusedDate, count, bounds.minValue, bounds.maxValue),
-      active: startOfMonth(state.focusedDate)
+      months: surroundingMonths(date, count, bounds.minValue, bounds.maxValue),
+      active: startOfMonth(date)
     });
   }
 
+  function navigate(date: CalendarDate) {
+    state.setFocusedDate(date);
+    resetWindow(date);
+  }
+
   const firstOffset = monthDistance(state.visibleRange.start, first);
-  const activeIndex = window.months.findIndex(function active(month) {
-    return isSameMonth(month, window.active);
-  });
+  const activeIndex = window.months.findIndex((month) => isSameMonth(month, window.active));
 
   return (
     <>
@@ -320,14 +298,15 @@ function MonthScroller({ state, bounds, type, pageCount, setMonths }: MonthScrol
       </Flex>
       <div ref={viewport} className={styles.monthViewport} onScroll={scroll}>
         {window.months.map(function renderMonth(month, index) {
-          const mounted = Math.abs(index - activeIndex) < Math.max(2, count) || isSameMonth(month, state.focusedDate);
+          const mounted = Math.abs(index - activeIndex) < Math.max(2, count) || index === focusedIndex;
           const offset = firstOffset + index;
           return (
             <div
               key={month.toString()}
               data-calendar-month={month.toString()}
+              className={styles.month}
               style={
-                metrics.row
+                !mounted && metrics.row
                   ? {
                       blockSize:
                         metrics.chrome +

@@ -1,19 +1,17 @@
 .calendar {
   --_calendar-gu: var(--ux-1sbfig8, 0.25rem);
-  --_calendar-gap: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
-  --_calendar-padding: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
-  --_calendar-viewport-padding: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
-  --_calendar-cell-padding: var(--size-space-070, calc(var(--_calendar-gu) * 4));
-  --_calendar-font-size: var(--_size-control-font);
+  --_calendar-gap: var(--size-space-020, var(--_calendar-gu));
+  --_calendar-padding: var(--size-space-040, calc(var(--_calendar-gu) * 2));
+  --_calendar-cell-padding: var(--_calendar-padding);
   --_calendar-weekday-font: var(--font-heading-size-sm, calc(var(--ux-18ime9a, 1.375rem) / 1.125 / 1.125));
-  --_calendar-cell-max: calc(
+  --_calendar-weekday-line-height: var(--font-heading-line-height, var(--ux-p25s1t, 1.25));
+  --_calendar-cell-size: calc(
     var(--_calendar-cell-padding) *
     2 +
     var(--ux-jw5s9j, 1.375) *
-    var(--_calendar-font-size) +
+    var(--_size-control-font) +
     2px
   );
-  --_calendar-cell-width: clamp(32px, (100vw - 2rem) / 7, var(--_calendar-cell-max));
   --_calendar-radius: var(--ux-1s5tndb, 6px);
   --_calendar-band: var(--color-action-background-tertiary-hovered, var(--ux-1m7qrkf, rgba(17, 17, 17, 0.1)));
 
@@ -22,8 +20,8 @@
 }
 
 .calendar:where([data-size="sm"]) {
-  --_calendar-cell-padding: var(--size-space-040, calc(var(--_calendar-gu) * 2));
-  --_calendar-padding: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
+  --_calendar-cell-padding: var(--_calendar-gap);
+  --_calendar-weekday-line-height: var(--font-detail-line-height, var(--ux-1dje42v, 1.5));
   --_calendar-weekday-font: var(
     --font-heading-size-xs,
     calc(var(--ux-18ime9a, 1.375rem) / 1.125 / 1.125 / 1.125 / 1.125)
@@ -49,18 +47,20 @@
   border-collapse: separate;
   border-spacing: 0 var(--_calendar-gap);
   table-layout: fixed;
-  inline-size: calc(var(--_calendar-cell-width) * 7);
+  inline-size: calc(var(--_calendar-cell-size) * 7);
   max-inline-size: 100%;
+  margin-block: calc(var(--_calendar-gap) * -1);
   /* A calendar is a two-dimensional table; enlarged dates must remain readable. */
   min-inline-size: calc((2ch + var(--_calendar-gu) * 2 + 2px) * 7);
-  font-size: var(--_calendar-font-size);
+  font-size: var(--_size-control-font);
 }
 
 .grid :where(th) {
-  padding: 0;
-  block-size: var(--_calendar-cell-width);
+  padding: var(--_calendar-cell-padding) 0;
+  font-family: var(--font-heading-family, var(--ux-shg991, sans-serif));
   font-size: var(--_calendar-weekday-font);
   font-weight: bolder;
+  line-height: var(--_calendar-weekday-line-height);
   text-align: center;
 }
 
@@ -94,8 +94,7 @@
   background: var(--color-action-background-tertiary-default, var(--ux-1owc8nc, transparent));
   color: var(--color-action-text-tertiary-default, var(--ux-ut3xrx, #111));
   inline-size: 100%;
-  aspect-ratio: 1;
-  min-block-size: calc(var(--ux-jw5s9j, 1.375) * 1em + 2px);
+  block-size: var(--_calendar-cell-size);
   cursor: pointer;
   font-family: var(--ux-gfnupv, sans-serif);
   line-height: var(--ux-jw5s9j, 1.375);
@@ -147,7 +146,7 @@
 .scrollCalendar {
   container: calendar-months / inline-size;
   inline-size: 100%;
-  max-inline-size: calc(var(--_calendar-cell-max) * 7);
+  max-inline-size: calc(var(--_calendar-cell-size) * 7 + var(--_calendar-gap) * 2);
   min-block-size: 0;
   block-size: 100%;
   margin-inline: auto;
@@ -156,7 +155,7 @@
 
 .scrollHeader {
   flex-shrink: 0;
-  padding: var(--_calendar-padding);
+  padding: var(--_calendar-cell-padding) var(--_calendar-gap);
 }
 
 .monthViewport {
@@ -166,19 +165,30 @@
   overscroll-behavior: contain;
   overflow-anchor: none;
   scrollbar-gutter: stable;
-  padding-inline: var(--_calendar-viewport-padding);
+  padding-inline: var(--_calendar-gap);
 }
 
 .monthLabel {
-  margin: 0;
-  padding-block: var(--_calendar-padding);
-  font-size: var(--_calendar-font-size);
+  margin: 0 0 var(--_calendar-padding);
+  padding-block: var(--_calendar-cell-padding);
+  font-size: var(--font-body-size-md, var(--ux-oc0naw, 1rem));
   font-weight: normal;
   font-family: var(--ux-9wtaa3, sans-serif);
+  line-height: var(--ux-jw5s9j, 1.375);
   text-align: center;
 }
 
-@container calendar-months (width < 17rem) {
+.month {
+  box-sizing: border-box;
+  display: flow-root;
+  padding-block: var(--_calendar-padding);
+}
+
+.scrollCalendar :where(.grid) {
+  inline-size: 100%;
+}
+
+@container calendar-months (width < 16rem) {
   .weekdayShort {
     display: none;
   }

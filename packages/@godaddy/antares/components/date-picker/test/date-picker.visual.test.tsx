@@ -45,6 +45,13 @@ describe('@godaddy/antares', function antares() {
       await expect(screen.getByRole('dialog')).toMatchScreenshot('date-picker-mobile-range');
     });
 
+    it.each(['sm', 'lg'] as const)('mobile %s calendar', async function mobileSize(size) {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample size={size} />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      await expect(screen.getByRole('dialog')).toMatchScreenshot(`date-picker-mobile-${size}`);
+    });
+
     it('mobile RTL with enlarged text', async function rtl() {
       await page.viewport(320, 768);
       document.documentElement.style.fontSize = '200%';

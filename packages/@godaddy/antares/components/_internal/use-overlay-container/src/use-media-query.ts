@@ -26,19 +26,13 @@ export function useMediaQuery(query: string, { ssrMatch }: UseMediaQueryOptions)
     [mediaQuery]
   );
 
-  const getSnapshot = useCallback(
+  return useSyncExternalStore(
+    subscribe,
     function getSnapshot() {
       return mediaQuery?.matches ?? ssrMatch;
     },
-    [mediaQuery, ssrMatch]
-  );
-
-  const getServerSnapshot = useCallback(
     function getServerSnapshot() {
       return ssrMatch;
-    },
-    [ssrMatch]
+    }
   );
-
-  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }

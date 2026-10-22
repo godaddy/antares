@@ -193,6 +193,25 @@ describe('@godaddy/antares', function packageTests() {
       expect(screen.getByRole('grid').all()).toHaveLength(1);
     });
 
+    it.each([
+      ['sm', 30],
+      ['md', 40],
+      ['lg', 43]
+    ] as const)('keeps %s row density when the drawer widens', async function density(size, height) {
+      await page.viewport(320, 768);
+      const screen = await render(<MobileExample size={size} />);
+      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      const cell = screen.getByRole('button', { name: /September 15, 2026/ }).element();
+      const before = cell.getBoundingClientRect();
+      expect(Math.abs(before.height - height)).toBeLessThan(1);
+      await page.viewport(639, 768);
+      const after = cell.getBoundingClientRect();
+      expect(Math.abs(after.height - before.height)).toBeLessThan(1);
+      expect(after.width).toBeGreaterThanOrEqual(before.width);
+      await screen.getByRole('button', { name: /September 15, 2026/ }).click();
+      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15');
+    });
+
     it('keeps a partial range while browsing another month', async function browseRange() {
       await page.viewport(320, 768);
       const screen = await render(<MobileExample range />);

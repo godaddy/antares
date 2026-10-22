@@ -24,5 +24,5 @@ export function useOverlayContainer({ isOpen, overlay = 'responsive' }: UseOverl
     setSession({ isOpen, container: isOpen ? preferred : session.container });
   }
 
-  return isOpen && !session.isOpen ? preferred : session.container;
+  return session.container;
 }
