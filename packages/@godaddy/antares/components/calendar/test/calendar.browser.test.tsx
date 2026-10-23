@@ -69,6 +69,14 @@ describe('@godaddy/antares', function antares() {
       await expect.element(monthSelects[1]).toHaveTextContent('April');
     });
 
+    it('treats a press in the gap between rows as a press on the date', async function rowGap() {
+      const screen = await render(<RangeCalendarExample />);
+      await userEvent.click(screen.getByRole('button', { name: /March 18, 2024/ }));
+      const end = screen.getByRole('button', { name: /March 27, 2024/ }).element();
+      await userEvent.click(end, { position: { x: end.clientWidth / 2, y: -1 } });
+      await expect.element(end).toHaveAttribute('data-selection-end', 'true');
+    });
+
     it('does not select an unavailable day on click', async function unavailable() {
       const { getByRole } = await render(<CalendarUnavailableExample />);
       const saturday = getByRole('button', { name: /March 16, 2024/ });
