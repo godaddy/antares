@@ -1,8 +1,11 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import path from 'node:path';
 import fs from 'node:fs';
 import { execSync } from 'node:child_process';
-import ts from 'typescript';
+import { tmpdir } from 'node:os';
+import { runInNewContext } from 'node:vm';
+import * as ts from 'typescript/unstable/ast';
+import { openTypeScriptSession } from '../src/engine/typescript-session.ts';
 import { csfTransformer } from '../src/storybook/csf-transformer.ts';
 
 /**
@@ -10,10 +13,30 @@ import { csfTransformer } from '../src/storybook/csf-transformer.ts';
  * @see https://github.com/biomejs/biome/discussions/2855
  */
 function formatTypeScript(code: string): string {
-  const sourceFile = ts.createSourceFile('file.tsx', code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
-  const parsedCode = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed, removeComments: true }).printFile(sourceFile);
-
-  return execSync('biome format --stdin-file-path=file.tsx', { input: parsedCode }).toString();
+  const session = openTypeScriptSession({ fileName: 'file.tsx', code, isolated: true });
+  try {
+    const ranges = new Map<number, number>();
+    function collect(node: ts.Node): void {
+      for (const range of [
+        ...(ts.getLeadingCommentRanges(code, node.pos) ?? []),
+        ...(ts.getTrailingCommentRanges(code, node.end) ?? [])
+      ]) {
+        ranges.set(range.pos, range.end);
+      }
+      node.forEachChild(collect);
+    }
+    collect(session.sourceFile);
+    let parsedCode = code;
+    for (const [start, end] of [...ranges].sort(([a], [b]) => b - a)) {
+      parsedCode = parsedCode.slice(0, start) + parsedCode.slice(end);
+    }
+    return execSync('biome format --stdin-file-path=file.tsx', { input: parsedCode })
+      .toString()
+      .replace(/\n\s*\n/g, '\n')
+      .trim();
+  } finally {
+    session.close();
+  }
 }
 
 describe('csf-transformer', function csfTransformerTests() {
@@ -125,6 +148,19 @@ describe('csf-transformer', function csfTransformerTests() {
     expect(actual).not.toContain('@bento/storybook-addon-helpers');
   });
 
+  it('preserves statement boundaries when dropping an interleaved import', async function preservesImportBoundary() {
+    const actual = await csfTransformer({
+      code: `setup()
+        import { getMeta } from '@bento/storybook-addon-helpers';
+        (() => 42)();`
+    });
+    const setup = vi.fn();
+
+    expect(actual).not.toContain('@bento/storybook-addon-helpers');
+    expect(runInNewContext(actual, { setup })).toBe(42);
+    expect(setup).toHaveBeenCalledOnce();
+  });
+
   it('does not let a docs import collide with a same-named example story export', async function noDuplicateDeclaration() {
     const actual = await csfTransformer({
       filePath: path.join(fixturesPath, 'collision-fixture/collision.stories.tsx')
@@ -153,6 +189,27 @@ describe('csf-transformer', function csfTransformerTests() {
     expect(actual).not.toContain('@bento/storybook-addon-helpers');
   });
 
+  it('preserves statement boundaries when dropping an empty examples marker', async function preservesMarkerBoundary() {
+    const directory = fs.mkdtempSync(path.join(tmpdir(), 'antares-empty-examples-'));
+    const filePath = path.join(directory, 'widget.stories.tsx');
+    try {
+      fs.writeFileSync(
+        filePath,
+        `setup()
+        export const examples = getExamples('./no-such-examples');
+        (() => 42)();`
+      );
+      const actual = await csfTransformer({ filePath });
+      const setup = vi.fn();
+
+      expect(actual).not.toContain('getExamples');
+      expect(runInNewContext(actual, { setup })).toBe(42);
+      expect(setup).toHaveBeenCalledOnce();
+    } finally {
+      fs.rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
   it('fails when two examples reduce to the same story name', async function reportsDuplicateStoryName() {
     await expect(
       csfTransformer({ filePath: path.join(fixturesPath, 'collision-fixture/duplicate.stories.tsx') })
@@ -168,6 +225,26 @@ describe('csf-transformer', function csfTransformerTests() {
     expect(await csfTransformer({ code })).not.toContain('import { Widget }');
   });
 
+  it.each([
+    ['accessors', 'get primary() { return {}; }'],
+    ['shorthand properties', 'primary'],
+    ['spreads', '...variants']
+  ])(
+    'preserves statement boundaries when variants contain only %s',
+    async function preservesVariantsBoundary(_, properties) {
+      const actual = await csfTransformer({
+        code: `setup()
+        const Variants = getVariants(Button, { ${properties} });
+        (() => 42)();`
+      });
+      const setup = vi.fn();
+
+      expect(actual).not.toContain('getVariants');
+      expect(runInNewContext(actual, { setup })).toBe(42);
+      expect(setup).toHaveBeenCalledOnce();
+    }
+  );
+
   it('should skip non-property-assignment in variants', async function nonPropertyAssignment() {
     const code = `
       import { getVariants } from '@bento/storybook-addon-helpers';
@@ -180,10 +257,7 @@ describe('csf-transformer', function csfTransformerTests() {
 
     const actual = formatTypeScript(await csfTransformer({ code }));
     const expected = formatTypeScript(`
-      export const VariantsSmall = {
-        args: { size: 'small' },
-        render: args => <TestComponent {...args} />
-      };
+      export const VariantsSmall = { args: { size: 'small' }, render: args => <TestComponent {...args} /> };
     `);
 
     expect(actual).toEqual(expected);

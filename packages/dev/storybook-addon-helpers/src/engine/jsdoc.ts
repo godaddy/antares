@@ -1,11 +1,11 @@
-import ts from 'typescript';
+import * as ts from 'typescript/unstable/ast';
 
 export function getPropJSDoc(node: ts.Node): {
   description?: string;
   defaultValue: string | null;
   deprecated: boolean;
 } {
-  const docs = ts.getJSDocCommentsAndTags(node);
+  const docs = node.jsDoc ?? [];
   const jsDoc = docs.find(ts.isJSDoc);
   const description = normalizeComment(jsDoc?.comment);
   const defaultTag = jsDoc?.tags?.find((tag) => tag.tagName.text === 'default');
@@ -19,18 +19,6 @@ export function getPropJSDoc(node: ts.Node): {
 }
 
 export function normalizeComment(comment: string | ts.NodeArray<ts.JSDocComment> | undefined): string | undefined {
-  if (typeof comment === 'string') {
-    const trimmed = comment.trim();
-    return trimmed || undefined;
-  }
-
-  if (comment) {
-    const text = comment
-      .map((part) => part.getText())
-      .join('')
-      .trim();
-    return text || undefined;
-  }
-
-  return undefined;
+  const text = ts.getTextOfJSDocComment(comment)?.trim();
+  return text || undefined;
 }

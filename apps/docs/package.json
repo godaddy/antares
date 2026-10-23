@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "nx build:storybook",
+    "build": "storybook build",
     "preinstall": "node ./scripts/preinstall.ts",
     "preview": "vite preview",
-    "storybook": "nx serve:storybook -p 6006 --no-open",
-    "typecheck": "tsgo --noEmit -p tsconfig.json"
+    "storybook": "storybook dev -p 6006 --no-open",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
     "@bento/block-explorer": "*",
@@ -67,7 +67,6 @@
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.1",
     "storybook": "^10.6.1",
-    "typescript": "^6.0.3",
     "unified": "^11.0.5",
     "vite": "^8.3.4",
     "yaml": "^2.9.1"

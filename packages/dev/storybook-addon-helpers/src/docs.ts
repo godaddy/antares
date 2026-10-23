@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import ts from 'typescript';
+import * as ts from 'typescript/unstable/ast';
 import { extractComponentDocs } from './engine/component-type.ts';
 import { extractTypeDocs } from './engine/extract.ts';
 import { createResolver, type Resolver } from './engine/resolve.ts';
@@ -23,7 +23,7 @@ function getDocsOptions(node: ts.CallExpression, argIndex: number): DocsOptions<
 
 /** Unwraps `satisfies`/`as`/type-assertion wrappers to reach the inner expression. */
 function unwrap(expr: ts.Expression): ts.Expression {
-  if (ts.isSatisfiesExpression(expr) || ts.isAsExpression(expr) || ts.isTypeAssertionExpression(expr)) {
+  if (ts.isSatisfiesExpression(expr) || ts.isAsExpression(expr) || ts.isTypeAssertion(expr)) {
     return unwrap(expr.expression);
   }
   return expr;
@@ -36,20 +36,24 @@ function unwrap(expr: ts.Expression): ts.Expression {
  *
  * @returns the processed doc, or `undefined` if the node is not a docs getter.
  */
-const resolverCache = new WeakMap<ts.SourceFile, Resolver>();
-
-function getCachedResolver(sourceFile: ts.SourceFile): Resolver {
-  const cached = resolverCache.get(sourceFile);
-  if (cached) return cached;
-  const resolver = createResolver(sourceFile.fileName || 'inline.tsx');
-  resolverCache.set(sourceFile, resolver);
-  return resolver;
-}
-
 export function docFromCall(
   node: ts.CallExpression,
   sourceFile: ts.SourceFile,
-  resolver: Resolver = getCachedResolver(sourceFile),
+  resolver?: Resolver,
+  defaults?: DocsDefaults
+): PropsDoc | undefined {
+  const activeResolver = resolver ?? createResolver(sourceFile.fileName || 'inline.tsx', sourceFile.text);
+  try {
+    return extractCallDoc(node, sourceFile, activeResolver, defaults);
+  } finally {
+    if (!resolver) activeResolver.close();
+  }
+}
+
+function extractCallDoc(
+  node: ts.CallExpression,
+  sourceFile: ts.SourceFile,
+  resolver: Resolver,
   defaults?: DocsDefaults
 ): PropsDoc | undefined {
   if (!ts.isIdentifier(node.expression)) return undefined;
@@ -86,21 +90,26 @@ export async function resolvePropsDoc(input: {
 }): Promise<PropsDoc | undefined> {
   const filePath = input.filePath ?? '';
   const code = input.filePath ? await readFile(input.filePath, 'utf8') : (input.code ?? '');
-  const sourceFile = ts.createSourceFile(filePath, code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  const resolver = createResolver(filePath || 'inline.tsx', code);
+  try {
+    const sourceFile = resolver.getSourceFile(filePath || 'inline.tsx');
 
-  let callNode: ts.CallExpression | undefined;
+    let callNode: ts.CallExpression | undefined;
 
-  sourceFile.forEachChild(function findExport(statement) {
-    if (callNode || !ts.isVariableStatement(statement)) return;
-    if (!statement.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword)) return;
+    sourceFile.forEachChild(function findExport(statement) {
+      if (callNode || !ts.isVariableStatement(statement)) return;
+      if (!statement.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword)) return;
 
-    for (const declaration of statement.declarationList.declarations) {
-      if (declaration.name.getText(sourceFile) !== input.exportName || !declaration.initializer) continue;
-      const initializer = unwrap(declaration.initializer);
-      if (ts.isCallExpression(initializer)) callNode = initializer;
-    }
-  });
+      for (const declaration of statement.declarationList.declarations) {
+        if (declaration.name.getText(sourceFile) !== input.exportName || !declaration.initializer) continue;
+        const initializer = unwrap(declaration.initializer);
+        if (ts.isCallExpression(initializer)) callNode = initializer;
+      }
+    });
 
-  if (!callNode) return undefined;
-  return docFromCall(callNode, sourceFile, undefined, input.defaults);
+    if (!callNode) return undefined;
+    return docFromCall(callNode, sourceFile, resolver, input.defaults);
+  } finally {
+    resolver.close();
+  }
 }
