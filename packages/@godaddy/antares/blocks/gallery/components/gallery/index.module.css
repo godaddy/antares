@@ -1,0 +1,40 @@
+.content {
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+
+.notice:where(:empty) {
+  position: absolute;
+}
+
+.dropOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: 1px dashed var(--ux-f7kpiw, #00a4a6);
+  border-radius: var(--ux-2jubes, 16px);
+  background-color: rgba(216, 239, 239, 0.9);
+  color: var(--color-surface-text-base, var(--ux-1leynsm, CanvasText));
+  pointer-events: none;
+}
+
+.dropTarget {
+  position: relative;
+}
+
+.dropZone {
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: 80rem;
+  min-inline-size: 0;
+  margin-inline: auto;
+}
+
+.emptyState {
+  min-block-size: 256px;
+  text-align: center;
+}
+
+.description {
+  max-inline-size: 30rem;
+}
