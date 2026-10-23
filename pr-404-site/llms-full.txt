@@ -40,11 +40,17 @@ This also works with autocomplete in IDEs and LLMs, so you can import from the r
 
 ## AI Agent Skills [#ai-agent-skills]
 
-Install the `antares-builder` skill so AI coding agents can build with Antares:
+Install the `antares-builder` skill from your consuming application's directory so AI coding agents can build with Antares:
 
 ```bash
-npx skills add godaddy/antares --skill antares-builder
+npx skills add godaddy/antares --skill antares-builder --agent claude-code
 ```
+
+Select your coding agent with `--agent` (e.g. `claude-code`, `codex`); omit it to be prompted. The installer places the skill and its references into the consumer app's agent directory. Then ask your agent, for example:
+
+> Build a responsive settings form with Antares, including validation and a confirmation dialog.
+
+See the [repository README](https://github.com/godaddy/antares#antares-builder-skill) for the full reference, including an Agent Package Manager (APM) alternative and version-pinning notes.
 
 ## Framework Setup [#framework-setup]
 
