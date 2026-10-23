@@ -32,7 +32,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.5.15",
     "@changesets/cli": "^2.31.0",
-    "@changesets/get-github-info": "^0.8.0",
+    "@changesets/get-github-info": "^1.0.1",
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.3",
     "@nx/vite": "23.3.0",
