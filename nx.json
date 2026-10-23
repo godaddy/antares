@@ -28,9 +28,6 @@
       "dependsOn": ["build"],
       "cache": true
     },
-    "typecheck": {
-      "dependsOn": ["^build"]
-    },
     "@nx/vitest:test": {
       "cache": true,
       "inputs": ["default", "^default"]
