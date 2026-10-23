@@ -5,9 +5,7 @@
       "id": 1,
       "prompt": "Adapt the supplied contact form to Antares. Keep ExistingContactForm and its save prop. Use Antares field components and no third-party form library. Validate email, preserve its label and help, prevent duplicate saves, and announce success or a retryable error.",
       "expected_output": "An Antares form with inline field validation and async saving.",
-      "files": [
-        "evals/files/contact-form.tsx.txt"
-      ],
+      "files": ["evals/files/contact-form.tsx.txt"],
       "assertions": [
         "Uses TextField, Label, Input and FieldError with associated help.",
         "Invalid email activates the Antares field error state, shows its associated FieldError, receives focus, and does not call save.",
@@ -97,9 +95,7 @@
       "id": 9,
       "prompt": "Build RevenueDashboard with Antares and dashboard-data.json: regional revenue in USD, monthly revenue with February missing, traffic share, and health 3/5. Preserve the data, provide text equivalents, and support 390px and 1024px. Export the component and stylesheet.",
       "expected_output": "A responsive, accessible dashboard with accurate charts.",
-      "files": [
-        "evals/files/dashboard-data.json"
-      ],
+      "files": ["evals/files/dashboard-data.json"],
       "assertions": [
         "Regional revenue and traffic shares match the supplied data, labels and units.",
         "Months stay chronological; February remains missing, not zero or an interpolated line.",
@@ -148,6 +144,39 @@
         "Skeleton composition matches the final layout: a circular avatar (rounding=\"full\", width equal to height) plus two text-line Skeletons of differing widths.",
         "The loading region is marked with role=\"status\", aria-busy=\"true\" and a descriptive aria-label while loading.",
         "Once data resolves, aria-busy is set to false (or removed) and the real content fully replaces the Skeletons — no stale placeholders left visible."
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "The attached file lists our installed Antares version's public type declarations. Build a searchable country selector with autocomplete filtering using Antares. Check the attached declarations before assuming Antares has no combobox.",
+      "expected_output": "An Antares combobox built from the installed version's actual exports.",
+      "files": ["evals/files/installed-types-newer.d.ts.txt"],
+      "assertions": [
+        "Inspects the attached installed declarations rather than relying solely on the skill's API-gaps list, which still says Combobox does not exist.",
+        "Implements the installed Combobox/ComboboxTrigger/ComboboxOptions/ComboboxItem API from the fixture, not a hand-rolled autocomplete or a Select+ListBox substitute.",
+        "Wires selectedKey/onSelectionChange and inputValue/onInputChange per the attached declarations."
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "The attached file lists our installed Antares version's public exports. Build a profile card with a loading placeholder that previews the final avatar-plus-two-lines layout before data arrives.",
+      "expected_output": "A loading placeholder built only from exports that actually exist at the installed version.",
+      "files": ["evals/files/installed-types-older.d.ts.txt"],
+      "assertions": [
+        "Notices Skeleton is absent from the attached installed exports and does not import or render it, despite the skill's guidance recommending Skeleton for loading placeholders.",
+        "Falls back to a capability the installed exports actually support (e.g. existing progress/loading primitives or a semantic ARIA-busy placeholder) rather than inventing a Skeleton export.",
+        "States to the user that Skeleton isn't available at the installed version and explains what it used instead."
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "The attached file is our installed Antares version's ProgressBar type declaration. Build a labeled file-upload progress bar with helper text below it, like 'Uploading... 42%'. Use the installed API, not older examples that may still show label/helperText props.",
+      "expected_output": "A ProgressBar composed per the installed declaration, with no removed props.",
+      "files": ["evals/files/installed-types-progressbar.d.ts.txt"],
+      "assertions": [
+        "Composes Label, the value/track Box slots and a Text description per the attached declaration instead of passing label or helperText props to ProgressBar.",
+        "Does not reference a label or helperText prop on ProgressBar anywhere in the output.",
+        "The progress bar still has a correctly associated accessible name and description in the composed markup."
       ]
     }
   ]

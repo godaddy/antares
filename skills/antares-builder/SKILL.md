@@ -1,6 +1,9 @@
 ---
 name: antares-builder
 description: Build, adapt, fix, or review React interfaces with @godaddy/antares. Use for component selection and composition, forms, accessible interactions, responsive layouts, charts (including chart data and rendering bugs), and consumer setup. Do not use for authoring the Antares library itself.
+metadata:
+  version: "0.1.0"
+  author: GoDaddy LLC
 ---
 
 # Antares Builder
@@ -11,7 +14,7 @@ Follow the steps relevant to the request. Load only the reference sections neede
 
 ## Step 1 — Read the project context
 
-Inspect `package.json`, the lockfile, framework configuration and neighboring UI. Identify the Antares version, package manager, routing, form library, CSS conventions and locale. Preserve those conventions when adapting existing UI.
+Inspect `package.json`, the lockfile, framework configuration and existing components and pages in the consuming application. Identify the Antares version, package manager, routing, form library, CSS conventions and locale. Preserve those conventions when adapting existing UI.
 
 Resolve the Antares version used by the consuming application and verify its public exports and types before using unfamiliar APIs. Use the [Antares repository](https://github.com/godaddy/antares) for documentation matching that version. When sources disagree, prioritize the installed public API over documentation and this skill's examples.
 
@@ -21,7 +24,7 @@ Use public root or subpath imports. Do not derive Antares APIs from another desi
 
 ## Step 2 — Choose the component by behavior
 
-Identify the action, value, navigation or information the user needs. Read the relevant branch of the [component decision tree](references/component-decision-tree.md) when choosing a component or comparing alternatives. If Antares has no matching export, use the application's established solution or semantic HTML and explain the gap.
+Identify the action, value, navigation or information the user needs. Read the relevant branch of the [component decision tree](references/component-decision-tree.md) when choosing a component or comparing alternatives. The decision tree and examples describe one point in Antares's release history. Before using a component the tree recommends, verify it — and the specific props/children an example shows — still exist in the installed version's public exports and types: a newer install may add components the tree doesn't list yet, and an older install may lack a component the tree recommends or expose different props for it. If no matching export exists, use the application's established solution or semantic HTML and explain the gap.
 
 ## Step 3 — Arrange and style the interface
 
