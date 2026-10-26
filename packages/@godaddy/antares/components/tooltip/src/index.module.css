@@ -1,4 +1,7 @@
 .tooltip {
+  --bg-overlay: var(--ux-7wu8i7, color-mix(in oklch, var(--bg-raised), white 8%));
+  --fg-overlay: var(--ux-1o8cusa, var(--fg-base));
+
   --_arrow-width: 10px;
   --_arrow-rotated-width: calc(var(--_arrow-width) / pow(2, 1 / 2));
   --_arrow-height: calc(var(--_arrow-rotated-width) / 2);
