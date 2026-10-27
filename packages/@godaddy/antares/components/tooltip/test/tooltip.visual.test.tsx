@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { userEvent } from 'vitest/browser';
+import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { resetHover } from '#test/utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
@@ -9,19 +9,28 @@ describe('@godaddy/antares', function antares() {
 
   describe('#Tooltip', function tooltipTests() {
     it('open tooltip', async function openTooltip() {
-      const { getByRole } = await render(<DefaultExample />);
+      const originalViewport = { width: window.innerWidth, height: window.innerHeight };
+      await page.viewport(320, 120);
 
-      await userEvent.keyboard('{Tab}');
+      try {
+        const { getByRole, unmount } = await render(
+          <DefaultExample tooltipTriggerProps={{ defaultOpen: true }} tooltipProps={{ placement: 'bottom' }} />
+        );
 
-      await vi.waitFor(async function visible() {
-        await expect.element(getByRole('tooltip')).toBeVisible();
-      });
+        await vi.waitFor(async function visible() {
+          await expect.element(getByRole('tooltip')).toBeVisible();
+        });
 
-      await new Promise(function settleTransition(resolve) {
-        setTimeout(resolve, 200);
-      });
+        await new Promise(function settleTransition(resolve) {
+          setTimeout(resolve, 200);
+        });
 
-      await expect(getByRole('tooltip').element()).toMatchScreenshot('open');
+        // The arrow extends beyond the tooltip's bounds, so capture the page to include both.
+        await expect(document.body).toMatchScreenshot('open');
+        await unmount();
+      } finally {
+        await page.viewport(originalViewport.width, originalViewport.height);
+      }
     });
   });
 });
