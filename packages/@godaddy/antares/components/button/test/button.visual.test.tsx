@@ -12,12 +12,24 @@ import { PrimaryExample } from '../examples/primary.tsx';
 import { SecondaryExample } from '../examples/secondary.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 import { TertiaryExample } from '../examples/tertiary.tsx';
+import { ControlExample } from '../examples/control.tsx';
+import { SelectedExample } from '../examples/selected.tsx';
 
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
   beforeEach(resetHover);
 
   describe('#Button', function buttonVisualTests() {
+    it('standalone and field controls', async function controlRender() {
+      const { container } = await render(<ControlExample />);
+      await expect(container).toMatchScreenshot('control');
+    });
+
+    it('selected control', async function selectedRender() {
+      const { container } = await render(<SelectedExample />);
+      await expect(container).toMatchScreenshot('selected');
+    });
+
     it('default variant', async function defaultRender() {
       const { container } = await render(<DefaultExample />);
       await expect(container).toMatchScreenshot('default');

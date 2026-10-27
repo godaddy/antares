@@ -1,11 +1,22 @@
 import { page, userEvent } from 'vitest/browser';
-import { describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { salesChannelData } from '../constants/config.ts';
 import { OverviewDashboard } from '../index.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#OverviewDashboard', function overviewDashboardTests() {
+    // The default viewport is narrower than the 960px dashboard, so pointer steps would scroll the
+    // page sideways and slide the hover rail out from under the cursor.
+    beforeAll(async function widenViewport() {
+      await page.viewport(1024, 768);
+    });
+
+    // `page.viewport` persists across test files, so restore the default afterwards.
+    afterAll(async function restoreViewport() {
+      await page.viewport(414, 896);
+    });
+
     it('renders the dashboard content and chart', async function rendersDashboard() {
       const { locator } = await render(
         <div style={{ width: '960px' }}>

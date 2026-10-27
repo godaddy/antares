@@ -30,7 +30,7 @@ export function CornerActionsExample({ dir }: { dir?: 'ltr' | 'rtl' } = {}) {
       <TextLockup>
         <Header>
           <CornerActions>
-            <Button aria-label="Favorite" aria-pressed={saved} onPress={() => setSaved(!saved)}>
+            <Button aria-label="Favorite" isSelected={saved} onPress={() => setSaved(!saved)}>
               <Icon icon="star" />
             </Button>
             <MenuTrigger popoverProps={{ placement: 'bottom end' }}>

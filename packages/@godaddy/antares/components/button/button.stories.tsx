@@ -20,6 +20,7 @@ export const Playground = getStory(PlaygroundExample, {
     variant: 'primary',
     size: 'md',
     isDisabled: false,
+    isSelected: false,
     children: 'Button'
   },
   argTypes: {
@@ -36,6 +37,10 @@ export const Playground = getStory(PlaygroundExample, {
     isDisabled: {
       control: 'boolean',
       description: 'Disable the button'
+    },
+    isSelected: {
+      control: 'boolean',
+      description: 'Show the button as selected'
     },
     children: {
       control: 'text',

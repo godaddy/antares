@@ -15,11 +15,15 @@ Use `target="_blank"` to open a link in a new tab without an icon. `isExternal` 
 to `target="_blank"` and `rel="noopener noreferrer"`; explicit `target` and `rel` override those defaults.
 You can also compose an `Icon` as a child independently of navigation behavior.
 
+Use `isSelected` to show a button as selected. It applies the pressed colors and sets `aria-pressed`.
+Update it in `onPress`; the button does not toggle itself. For a set of exclusive options, use ToggleButtonGroup.
+
 Use the `CloseButton` preset to dismiss an overlay (such as a `Modal`). It defaults to `slot="close"`, so it picks up the overlay's close behavior with no wiring, and always renders an `x` icon with `aria-label="Close"`. For a labelled dismiss action (e.g. "Cancel"), use a raw `<Button slot="close">Cancel</Button>`.
 
 Inside a field `Group`, `slot="control"` and `slot="trigger"` pick up the matching look, size, and
 disabled state from context. See TextField for control affixes, and Select or DatePicker for trigger faces.
-The `control` and `trigger` variants are field parts: the field sizes them, so use them only inside a field.
+The `control` variant also works standalone, with its own size and rounded corners; inside a field, the
+field sizes it and joins its corners. The `trigger` variant is a field part, so use it only inside a field.
 
 ## Installation
 

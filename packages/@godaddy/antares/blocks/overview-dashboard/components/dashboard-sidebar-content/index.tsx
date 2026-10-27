@@ -58,7 +58,7 @@ export function DashboardSidebarContent({
               className={styles.sideNavItem}
               variant="minimal"
               size="sm"
-              aria-pressed={isActive}
+              isSelected={isActive}
               aria-label={!isPinnedOpen ? item.label : undefined}
               onPress={() => onSelectItem(item.label)}
             >

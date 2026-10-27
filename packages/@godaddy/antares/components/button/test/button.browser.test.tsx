@@ -2,7 +2,7 @@ import { describe, it, beforeAll, beforeEach, expect } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { preloadTestIcons, resetPointer } from '#test/utils/test-helpers.tsx';
-import { CloseButton } from '@godaddy/antares';
+import { Button, CloseButton } from '@godaddy/antares';
 import { InlineExample } from '../examples/inline.tsx';
 import { IsolatedLabelExample } from '../examples/isolated-label.tsx';
 import { PrimaryExample } from '../examples/primary.tsx';
@@ -10,11 +10,57 @@ import { SizesExample } from '../examples/sizes.tsx';
 import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
 import { IconExample } from '../examples/icon.tsx';
 import { IconsAndAlignmentExample } from '../examples/icons-and-alignment.tsx';
+import { SelectedExample } from '../examples/selected.tsx';
+import { ControlExample } from '../examples/control.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
     beforeAll(preloadTestIcons);
     beforeEach(resetPointer);
+
+    it('keeps the selected look through hover and toggles it on press', async function selection() {
+      const { getByRole } = await render(<SelectedExample />);
+      const button = getByRole('button', { name: 'Available' });
+      const el = button.element();
+      const selectedBg = getComputedStyle(el).backgroundColor;
+
+      await expect.element(button).toHaveAttribute('aria-pressed', 'true');
+      await userEvent.hover(button);
+      expect(getComputedStyle(el).backgroundColor).toBe(selectedBg);
+
+      await userEvent.click(button);
+      await expect.element(button).toHaveAttribute('aria-pressed', 'false');
+      await userEvent.unhover(button);
+      expect(getComputedStyle(el).backgroundColor).not.toBe(selectedBg);
+    });
+
+    it('ignores isSelected on inline buttons', async function inlineSelection() {
+      const { getByRole } = await render(
+        <Button variant="inline" isSelected>
+          Inline
+        </Button>
+      );
+      await expect.element(getByRole('button')).not.toHaveAttribute('aria-pressed');
+    });
+
+    it('rounds standalone controls while fields own their joined corners', async function controlCorners() {
+      const { getByRole } = await render(<ControlExample />);
+      const radius = (name: string) => getComputedStyle(getByRole('button', { name }).element()).borderRadius;
+
+      expect(radius('Standalone')).not.toBe('0px');
+      expect(radius('Middle')).toBe('0px');
+      expect(getComputedStyle(getByRole('button', { name: 'Middle' }).element()).borderTopWidth).toBe('0px');
+      expect(radius('First')).not.toBe('0px');
+      expect(radius('Last')).not.toBe('0px');
+    });
+
+    it('sizes standalone controls like other buttons', async function controlSizes() {
+      const { getByRole } = await render(<ControlExample />);
+      const height = (name: string) => getByRole('button', { name }).element().getBoundingClientRect().height;
+
+      expect(height('Small')).toBeLessThan(height('Standalone'));
+      expect(height('Standalone')).toBeLessThan(height('Large'));
+    });
 
     it('renders the primary button hovered', async function rendersPrimaryHovered() {
       const { getByRole } = await render(<PrimaryExample />);
