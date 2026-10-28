@@ -2,8 +2,10 @@ import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { discoverPublicApi, consumerCases, type PublicEntry } from '../bundle-discovery.ts';
+import { discoverPublicApi, consumerCases, entryKind, type PublicEntry, type Workspace } from '../bundle-discovery.ts';
 import {
+  aggregateReportsFromDisk,
+  checkPackageReportFromDisk,
   category,
   checkBudgets,
   consumerFiles,
@@ -35,7 +37,8 @@ function report(): Report {
         raw: 80,
         gzip: 50,
         brotli: 45,
-        groups: { esm: 60, css: 20 }
+        groups: { esm: 60, css: 20 },
+        files: [{ path: 'consumers/button/index.js', raw: 80 }]
       }
     ],
     publicEntries: [],
@@ -45,7 +48,100 @@ function report(): Report {
 
 const budgets: Budgets = { output: { '@test/package': 100 }, consumer: { button: 50 } };
 
+/** Create a package workspace containing one saved report for disk-check tests. */
+async function savedReportWorkspace(value: Report = report()) {
+  const root = await mkdtemp(join(tmpdir(), 'bundle-saved-report-'));
+  temporaryDirectories.push(root);
+  const packageRoot = join(root, 'packages', 'fixture-package');
+  const output = join(root, '.bundle-analysis', 'packages', 'fixture-package');
+  await mkdir(packageRoot, { recursive: true });
+  await mkdir(output, { recursive: true });
+  await writeFile(join(root, 'package.json'), JSON.stringify({ workspaces: ['packages/*'] }));
+  await writeFile(
+    join(packageRoot, 'package.json'),
+    JSON.stringify({
+      name: '@test/package',
+      version: '1.0.0',
+      peerDependencies: { react: '^19.0.0', 'react-dom': '^19.0.0' }
+    })
+  );
+  await writeFile(
+    join(packageRoot, 'bundle-size.json'),
+    JSON.stringify({ outputBudget: 100, consumerBudgets: { button: 50 } })
+  );
+  await writeFile(join(output, 'metrics.json'), `${JSON.stringify(value)}\n`);
+  const pkg: Workspace = {
+    name: '@test/package',
+    root: packageRoot,
+    version: '1.0.0',
+    peerDependencies: { react: '^19.0.0', 'react-dom': '^19.0.0' }
+  };
+  return { root, output, pkg };
+}
+
 describe('bundle measurement contracts', function bundleMeasurementTests() {
+  it('classifies package metadata paths with Windows separators', function classifiesWindowsMetadata() {
+    expect(entryKind(String.raw`C:\workspace\packages\button\package.json`)).toBe('metadata');
+  });
+
+  it('checks valid saved reports in package and aggregate modes', async function checksSavedReports() {
+    const fixture = await savedReportWorkspace();
+    await expect(checkPackageReportFromDisk(fixture.pkg, fixture.output)).resolves.toBeUndefined();
+    await expect(
+      aggregateReportsFromDisk(fixture.root, join(fixture.root, '.bundle-analysis'), { check: true })
+    ).resolves.toBeUndefined();
+  });
+
+  const invalidSavedReports: {
+    name: string;
+    update: (value: Report) => void;
+    expectedError: RegExp;
+  }[] = [
+    {
+      name: 'a missing consumer measurement',
+      update(value) {
+        value.measurements = value.measurements.filter((item) => item.kind !== 'consumer');
+      },
+      expectedError: /Inconsistent measurements/
+    },
+    {
+      name: 'a duplicate consumer measurement',
+      update(value) {
+        value.measurements.push({ ...value.measurements[1] });
+      },
+      expectedError: /Inconsistent measurements/
+    },
+    {
+      name: 'a stale package version',
+      update(value) {
+        value.packages[0].version = '2.0.0';
+      },
+      expectedError: /Stale package metadata/
+    },
+    {
+      name: 'stale peer dependency metadata',
+      update(value) {
+        value.packages[0].externals = ['react'];
+      },
+      expectedError: /Stale package metadata/
+    }
+  ];
+
+  for (const scenario of invalidSavedReports) {
+    it(`rejects ${scenario.name} before loading budgets in both check modes`, async function rejectsInvalidSavedReports() {
+      const value = report();
+      scenario.update(value);
+      const fixture = await savedReportWorkspace(value);
+      // This invalid config makes a budget-loading regression distinguishable from report validation.
+      await writeFile(join(fixture.pkg.root, 'bundle-size.json'), JSON.stringify({ unexpected: true }));
+
+      await expect(checkPackageReportFromDisk(fixture.pkg, fixture.output)).rejects.toThrow(scenario.expectedError);
+      await expect(
+        aggregateReportsFromDisk(fixture.root, join(fixture.root, '.bundle-analysis'), { check: true })
+      ).rejects.toThrow(scenario.expectedError);
+    });
+  }
+
   it('reads package version and external peers from package metadata', function reportsPackageMetadata() {
     expect(
       packageMetadata({

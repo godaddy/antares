@@ -688,7 +688,11 @@ async function writeAggregateArtifacts(
 }
 
 /** Reads package reports from disk and writes their aggregate without remeasuring. */
-async function aggregateReportsFromDisk(root: string, output: string, options: { check: boolean }): Promise<void> {
+export async function aggregateReportsFromDisk(
+  root: string,
+  output: string,
+  options: { check: boolean }
+): Promise<void> {
   const packages = measuredWorkspaces(root, await workspaces(root));
   const reports: Report[] = [];
   for (const pkg of packages) {
@@ -706,7 +710,7 @@ async function aggregateReportsFromDisk(root: string, output: string, options: {
 }
 
 /** Checks one package's saved report and budgets without rebuilding it. */
-async function checkPackageReportFromDisk(pkg: Workspace, output: string): Promise<void> {
+export async function checkPackageReportFromDisk(pkg: Workspace, output: string): Promise<void> {
   const reportPath = join(output, 'metrics.json');
   let report: Report;
   try {

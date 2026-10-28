@@ -81,14 +81,15 @@ function importTarget(value: ExportTarget): string | undefined {
   return undefined;
 }
 
-/** Classifies an export target by its file extension. */
-function entryKind(path: string): PublicEntry['kind'] {
-  if (/\.d\.(?:ts|mts|cts)$/.test(path)) return 'types';
-  if (/\.(?:mjs|cjs|js)$/.test(path)) return 'javascript';
-  if (path.endsWith('.css')) return 'css';
-  if (path.endsWith('/package.json')) return 'metadata';
-  if (path.endsWith('.json')) return 'json';
-  if (/\.(?:scss|sass|less|ts|tsx|jsx)$/.test(path)) return 'source';
+/** Classifies an export target by its file extension, independent of path separators. */
+export function entryKind(path: string): PublicEntry['kind'] {
+  const normalizedPath = path.replaceAll('\\', '/');
+  if (/\.d\.(?:ts|mts|cts)$/.test(normalizedPath)) return 'types';
+  if (/\.(?:mjs|cjs|js)$/.test(normalizedPath)) return 'javascript';
+  if (normalizedPath.endsWith('.css')) return 'css';
+  if (normalizedPath.endsWith('/package.json')) return 'metadata';
+  if (normalizedPath.endsWith('.json')) return 'json';
+  if (/\.(?:scss|sass|less|ts|tsx|jsx)$/.test(normalizedPath)) return 'source';
   return 'asset';
 }
 

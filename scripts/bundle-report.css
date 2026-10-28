@@ -1,8 +1,8 @@
 :root {
   color-scheme: light;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color: #172b4d;
-  background: #f7f8fa;
+  color: #111;
+  background: #f5f7f8;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -25,12 +25,12 @@ body {
 }
 
 .page-header {
-  padding-block: 2.5rem 1.5rem;
+  padding-block: 3rem 2rem;
 }
 
 .eyebrow {
   margin: 0 0 0.5rem;
-  color: #52647a;
+  color: #626262;
   font-size: 0.75rem;
   font-weight: 650;
   letter-spacing: 0.04em;
@@ -45,19 +45,19 @@ h1 {
 }
 
 .intro {
-  margin: 0.65rem 0 0;
-  color: #52647a;
+  margin: 0.75rem 0 0;
+  color: #626262;
 }
 
 .summary {
-  margin: 0.8rem 0 0;
-  color: #52647a;
+  margin: 1rem 0 0;
+  color: #626262;
   font-size: 0.9rem;
 }
 
 .summary span {
   padding-inline: 0.25rem;
-  color: #8996a7;
+  color: #767676;
 }
 
 .page {
@@ -68,48 +68,49 @@ h1 {
   display: flex;
   align-items: end;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .filter-label {
   display: grid;
-  gap: 0.3rem;
+  gap: 0.5rem;
   width: min(100%, 24rem);
-  color: #52647a;
-  font-size: 0.78rem;
+  color: #626262;
+  font-size: 0.875rem;
   font-weight: 600;
 }
 
 .filter {
   min-height: 2.5rem;
-  padding: 0.5rem 0.7rem;
-  border: 1px solid #cbd3dd;
-  border-radius: 5px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #767676;
+  border-radius: 4px;
   background: white;
-  color: #172b4d;
+  color: #111;
   font: inherit;
   font-weight: 400;
 }
 
 .filter:focus-visible,
 a:focus-visible {
-  outline: 3px solid rgb(9 118 206 / 30%);
+  outline: 2px solid #09757a;
   outline-offset: 2px;
 }
 
 .result-count {
-  padding-bottom: 0.35rem;
-  color: #52647a;
-  font-size: 0.82rem;
+  padding-bottom: 0.5rem;
+  color: #626262;
+  font-size: 0.8125rem;
   white-space: nowrap;
 }
 
 .table-wrap {
   overflow-x: auto;
-  border: 1px solid #dfe3e8;
+  border: 1px solid #d4dbe0;
   border-radius: 6px;
   background: white;
+  box-shadow: 0 2px 8px rgb(17 17 17 / 8%);
 }
 
 table {
@@ -120,23 +121,23 @@ table {
 
 th,
 td {
-  padding: 0.7rem 0.85rem;
-  border-bottom: 1px solid #e8ebef;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e6e9eb;
   text-align: left;
   vertical-align: middle;
 }
 
 th {
-  background: #f7f8fa;
-  color: #52647a;
-  font-size: 0.72rem;
+  background: #f5f7f8;
+  color: #626262;
+  font-size: 0.75rem;
   font-weight: 650;
   letter-spacing: 0.035em;
   text-transform: uppercase;
 }
 
 td {
-  font-size: 0.84rem;
+  font-size: 0.875rem;
 }
 
 tbody tr:last-child td {
@@ -144,7 +145,7 @@ tbody tr:last-child td {
 }
 
 tbody tr.case-row:hover {
-  background: #f8fbfe;
+  background: #f5f5f5;
 }
 
 .package-name,
@@ -153,18 +154,18 @@ tbody tr.case-row:hover {
 }
 
 .package-name {
-  color: #172b4d;
+  color: #111;
   font-weight: 600;
 }
 
 .case-name {
-  margin-top: 0.12rem;
-  color: #64748b;
-  font-size: 0.76rem;
+  margin-top: 0.25rem;
+  color: #626262;
+  font-size: 0.8125rem;
 }
 
 .number {
-  color: #334155;
+  color: #111;
   font-variant-numeric: tabular-nums;
   text-align: right;
   white-space: nowrap;
@@ -179,24 +180,24 @@ th:nth-child(4) {
 .explore-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.65rem;
+  gap: 0.75rem;
 }
 
 .explore-links a {
-  color: #0969a9;
-  font-size: 0.8rem;
+  color: #09757a;
+  font-size: 0.875rem;
   font-weight: 550;
   text-decoration: underline;
   text-underline-offset: 0.15em;
 }
 
 .explore-links a:hover {
-  color: #064d7e;
+  color: #008080;
 }
 
 .empty-row td {
   padding: 2rem;
-  color: #52647a;
+  color: #626262;
   text-align: center;
 }
 
