@@ -1,8 +1,10 @@
 import { describe, it, beforeAll, beforeEach, expect } from 'vitest';
+// Loads field styles before Button's, so field parts are tested against stylesheet order.
+import '#components/radio';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { preloadTestIcons, resetPointer } from '#test/utils/test-helpers.tsx';
-import { Button, CloseButton } from '@godaddy/antares';
+import { CloseButton } from '@godaddy/antares';
 import { InlineExample } from '../examples/inline.tsx';
 import { IsolatedLabelExample } from '../examples/isolated-label.tsx';
 import { PrimaryExample } from '../examples/primary.tsx';
@@ -34,13 +36,16 @@ describe('@godaddy/antares', function antares() {
       expect(getComputedStyle(el).backgroundColor).not.toBe(selectedBg);
     });
 
+    it('keeps the selected look when disabled', async function disabledSelection() {
+      const { getByRole } = await render(<SelectedExample />);
+      const background = (name: string) => getComputedStyle(getByRole('button', { name }).element()).backgroundColor;
+
+      expect(background('Disabled on')).not.toBe(background('Disabled off'));
+    });
+
     it('ignores isSelected on inline buttons', async function inlineSelection() {
-      const { getByRole } = await render(
-        <Button variant="inline" isSelected>
-          Inline
-        </Button>
-      );
-      await expect.element(getByRole('button')).not.toHaveAttribute('aria-pressed');
+      const { getByRole } = await render(<SelectedExample />);
+      await expect.element(getByRole('button', { name: 'Inline' })).not.toHaveAttribute('aria-pressed');
     });
 
     it('rounds standalone controls while fields own their joined corners', async function controlCorners() {
@@ -52,6 +57,7 @@ describe('@godaddy/antares', function antares() {
       expect(getComputedStyle(getByRole('button', { name: 'Middle' }).element()).borderTopWidth).toBe('0px');
       expect(radius('First')).not.toBe('0px');
       expect(radius('Last')).not.toBe('0px');
+      expect(getComputedStyle(getByRole('button', { name: 'Last' }).element()).borderTopWidth).toBe('0px');
     });
 
     it('sizes standalone controls like other buttons', async function controlSizes() {

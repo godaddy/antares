@@ -1,13 +1,24 @@
 import { useState } from 'react';
-import { Button, type ButtonProps } from '@godaddy/antares';
+import { Button, Flex } from '@godaddy/antares';
 
 /** Use `isSelected` to show selection, and update it in `onPress`; the button does not toggle itself. */
-export function SelectedExample({ isDisabled }: Pick<ButtonProps, 'isDisabled'> = {}) {
+export function SelectedExample() {
   const [isSelected, setSelected] = useState(true);
 
   return (
-    <Button variant="control" isSelected={isSelected} isDisabled={isDisabled} onPress={() => setSelected(!isSelected)}>
-      Available
-    </Button>
+    <Flex alignItems="center" gap="sm" wrap="wrap">
+      <Button variant="control" isSelected={isSelected} onPress={() => setSelected(!isSelected)}>
+        Available
+      </Button>
+      <Button variant="secondary" isSelected isDisabled>
+        Disabled on
+      </Button>
+      <Button variant="secondary" isDisabled>
+        Disabled off
+      </Button>
+      <Button variant="inline" isSelected>
+        Inline
+      </Button>
+    </Flex>
   );
 }

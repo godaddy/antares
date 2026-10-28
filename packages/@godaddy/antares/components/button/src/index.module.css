@@ -43,16 +43,19 @@
     font-family: var(--font-action-family, var(--ux-gfnupv, sans-serif));
     font-weight: var(--font-action-weight, var(--ux-j40yyd, 500));
     line-height: var(--font-action-line-height, var(--ux-jw5s9j, 1.375));
-    border-width: 1px;
-    border-radius: var(--_button-radius);
+    border-width: var(--_button-slot-border-width, 1px);
+    border-start-start-radius: var(--_button-slot-radius-start, var(--_button-radius));
+    border-end-start-radius: var(--_button-slot-radius-start, var(--_button-radius));
+    border-start-end-radius: var(--_button-slot-radius-end, var(--_button-radius));
+    border-end-end-radius: var(--_button-slot-radius-end, var(--_button-radius));
     border-style: solid;
-    font-size: var(--_button-font-size);
-    padding: var(--_button-padding-block) var(--_button-padding-inline);
+    font-size: var(--_button-slot-font-size, var(--_button-font-size));
+    padding: var(--_button-slot-padding, var(--_button-padding-block) var(--_button-padding-inline));
     justify-content: center;
 
     /* only-icon buttons */
     &:has(> :where([data-icon]:only-child)) {
-      padding: var(--_button-padding-block);
+      padding: var(--_button-slot-padding, var(--_button-padding-block));
 
       &:where(.minimal) {
         padding: var(--_button-space-xs);
@@ -68,7 +71,7 @@
     color: var(--_button-text-hovered);
   }
 
-  &:where([data-pressed], [aria-pressed="true"]):where(:not([data-disabled])) {
+  &:where([data-pressed]:not([data-disabled]), [aria-pressed="true"]) {
     background: var(--_button-bg-pressed);
     border-color: var(--_button-border-pressed);
     color: var(--_button-text-pressed);

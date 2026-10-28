@@ -6,13 +6,11 @@ import { OverviewDashboard } from '../index.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#OverviewDashboard', function overviewDashboardTests() {
-    // The default viewport is narrower than the 960px dashboard, so pointer steps would scroll the
-    // page sideways and slide the hover rail out from under the cursor.
+    // A viewport narrower than the 960px dashboard scrolls sideways on click, moving the hover rail.
     beforeAll(async function widenViewport() {
       await page.viewport(1024, 768);
     });
 
-    // `page.viewport` persists across test files, so restore the default afterwards.
     afterAll(async function restoreViewport() {
       await page.viewport(414, 896);
     });
