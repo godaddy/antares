@@ -1,0 +1,8 @@
+{
+  "outputBudget": 14592,
+  "consumerBudgets": {
+    "auto-entry-bento-internal-props-e37880a961c5": 640,
+    "auto-export-bento-internal-props-toInternalProps-968d20137f65": 640,
+    "auto-export-bento-internal-props-useInternalProps-965156685b43": 640
+  }
+}

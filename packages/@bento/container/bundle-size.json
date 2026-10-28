@@ -1,0 +1,7 @@
+{
+  "outputBudget": 16384,
+  "consumerBudgets": {
+    "auto-entry-bento-container-496f490f3f2b": 4608,
+    "auto-export-bento-container-Container-57f1015bb9dc": 4608
+  }
+}

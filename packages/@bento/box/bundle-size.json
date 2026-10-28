@@ -1,0 +1,9 @@
+{
+  "outputBudget": 26880,
+  "consumerBudgets": {
+    "auto-entry-bento-box-cf98c01c1db1": 768,
+    "auto-export-bento-box-Box-cb228946e551": 640,
+    "auto-export-bento-box-Slot-52a345e752d5": 768,
+    "auto-export-bento-box-defaults-33ef8c4f6dbe": 640
+  }
+}

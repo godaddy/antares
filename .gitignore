@@ -78,3 +78,6 @@ CLAUDE.local.md
 .zed
 
 .nx/polygraph
+
+# Bundle analysis reports and generated consumer fixtures
+.bundle-analysis/

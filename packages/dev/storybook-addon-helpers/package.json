@@ -8,6 +8,8 @@
   "module": "./dist/index.mjs",
   "scripts": {
     "build": "tsdown",
+    "bundle-size:build": "node ../../../scripts/bundle-analysis.ts --package-from-cwd",
+    "bundle-size:check": "node ../../../scripts/bundle-analysis.ts --package-from-cwd --check",
     "lint": "biome check",
     "lint:fix": "biome check --write",
     "test": "vitest --run",

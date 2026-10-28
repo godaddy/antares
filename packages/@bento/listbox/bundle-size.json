@@ -1,0 +1,12 @@
+{
+  "outputBudget": 215168,
+  "consumerBudgets": {
+    "auto-entry-bento-listbox-b10609dff8a7": 38528,
+    "auto-export-bento-listbox-Collection-94efde35aa33": 38528,
+    "auto-export-bento-listbox-Header-d48a652bd8e6": 38528,
+    "auto-export-bento-listbox-HeaderContext-4e7618e5e083": 38528,
+    "auto-export-bento-listbox-ListBox-7d9af2d8d7d8": 38528,
+    "auto-export-bento-listbox-ListBoxItem-d0cd6883c910": 38528,
+    "auto-export-bento-listbox-ListBoxSection-579061737189": 38528
+  }
+}

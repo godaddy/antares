@@ -1,0 +1,11 @@
+{
+  "outputBudget": 146048,
+  "consumerBudgets": {
+    "auto-entry-godaddy-design-tokens-classnames-module-css-f3d3eadf70f7": 1152,
+    "auto-entry-godaddy-design-tokens-css-data-35d5469a7656": 6784,
+    "auto-entry-godaddy-design-tokens-css-in-js-b4b794cf253a": 2688,
+    "auto-export-godaddy-design-tokens-css-in-js-tokens-f1dbe19b0936": 2688,
+    "auto-entry-godaddy-design-tokens-dtcg-json-08afc4e20608": 7808,
+    "auto-entry-godaddy-design-tokens-schema-b6844efa0dda": 1536
+  }
+}
