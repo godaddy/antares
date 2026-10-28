@@ -1,1 +1,0 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{t}from"./react-DlPsW1c0.js";function n(e){let t=(0,r.useId)();return(0,r.useMemo)(function(){return e.map(function(e,n){return{...e,id:e.id??`${t}-${n}`}})},[e,t])}var r;function i(){return(i=e((()=>{r=t()})))()}export{n,i as t};
