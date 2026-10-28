@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { createResolver } from '../src/engine/resolve.ts';
+import { testResolver as createResolver } from './typescript.ts';
 import { extractComponentDocs } from '../src/engine/component-type.ts';
 
 const fixturePath = path.join(__dirname, 'fixtures/engine/components.tsx');

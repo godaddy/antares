@@ -17,7 +17,7 @@
     "test:visual": "vitest run --project=Visual --passWithNoTests --coverage.enabled=false",
     "test:visual:update": "vitest run --project=Visual --update",
     "test:watch": "vitest",
-    "typecheck": "tsgo --noEmit",
+    "typecheck": "tsc --noEmit",
     "lint": "biome check",
     "lint:fix": "biome check --write",
     "storybook": "storybook dev -p 6006  --no-open",
@@ -75,7 +75,6 @@
     "react-dom": "^19.3.1",
     "rolldown": "^1.2.14",
     "tsdown": "^0.23.1",
-    "typescript": "^6.0.3",
     "vitest": "^4.1.11",
     "vitest-browser-react": "^2.3.0"
   },

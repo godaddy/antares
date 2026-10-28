@@ -15,7 +15,7 @@
     "test:node": "vitest --run --project=SSR --coverage.enabled=false",
     "test:browser": "vitest --run --project=Browser --coverage.enabled=false",
     "test:watch": "vitest",
-    "typecheck": "tsgo --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "files": [
     "dist",
@@ -43,7 +43,6 @@
     "react-dom": "^19.3.1",
     "storybook": "^10.6.1",
     "tsdown": "^0.23.1",
-    "typescript": "^6.0.3",
     "vfile": "^6.0.3",
     "vite": "^8.3.4",
     "vitest": "^4.1.11",

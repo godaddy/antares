@@ -7,7 +7,9 @@
 import { createHash } from 'node:crypto';
 import { glob, readFile } from 'node:fs/promises';
 import { isAbsolute, join, relative, resolve } from 'node:path';
-import ts from 'typescript';
+import * as ts from 'typescript/unstable/ast';
+import { createVirtualFileSystem } from 'typescript/unstable/fs';
+import { API, SymbolFlags, type Snapshot, type Symbol as TsSymbol } from 'typescript/unstable/sync';
 
 /** One public import and the exports its consumer fixture keeps reachable. */
 export interface ConsumerCase {
@@ -169,103 +171,85 @@ export async function discoverPublicApi(root: string, packages: Workspace[]): Pr
     .flat()
     .sort((a, b) => a.from.localeCompare(b.from));
   const paths = entries.filter((entry) => entry.kind === 'javascript').map((entry) => resolve(root, entry.target));
-  const program = ts.createProgram(paths, {
-    allowJs: true,
-    checkJs: false,
-    noEmit: true,
-    noLib: true,
-    types: [],
-    skipLibCheck: true,
-    module: ts.ModuleKind.ESNext,
-    moduleResolution: ts.ModuleResolutionKind.Bundler,
-    jsx: ts.JsxEmit.ReactJSX
+  const configFile = join(root, '.bundle-analysis', 'tsconfig.bundle-discovery.json');
+  const virtualFiles = {
+    [configFile]: JSON.stringify({
+      compilerOptions: {
+        allowJs: true,
+        checkJs: false,
+        noEmit: true,
+        noLib: true,
+        types: [],
+        skipLibCheck: true,
+        module: 'ESNext',
+        moduleResolution: 'bundler',
+        jsx: 'react-jsx'
+      },
+      files: paths,
+      include: []
+    })
+  };
+  const virtual = createVirtualFileSystem(virtualFiles);
+  const api = new API({
+    cwd: root,
+    fs: {
+      readFile: (fileName) => virtualFiles[fileName],
+      fileExists: (fileName) => (fileName in virtualFiles ? true : undefined),
+      directoryExists: (directoryName) => virtual.directoryExists?.(directoryName) || undefined
+    }
   });
-  const checker = program.getTypeChecker();
-  /** Resolves aliases and keeps symbols that produce runtime values. */
-  function isRuntime(symbol: ts.Symbol): boolean {
-    const target = symbol.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol;
-    return Boolean(target.flags & ts.SymbolFlags.Value);
-  }
-  const cache = new Map<string, string[]>();
-  /** Lists runtime exports from a source file, following local re-exports. */
-  function names(source: ts.SourceFile, visiting = new Set<string>()): string[] {
-    const cached = cache.get(source.fileName);
-    if (cached) return cached;
-    if (visiting.has(source.fileName)) throw new Error(`Cyclic public star exports: ${source.fileName}`);
-    const active = new Set(visiting).add(source.fileName);
-    const module = checker.getSymbolAtLocation(source);
-    if (!module) return [];
-    const candidates = new Set<string>();
-    /** Adds identifiers declared by an exported variable or destructuring pattern. */
-    function binding(name: ts.BindingName): void {
-      if (ts.isIdentifier(name)) candidates.add(name.text);
-      else for (const element of name.elements) if (ts.isBindingElement(element)) binding(element.name);
+  let snapshot: Snapshot | undefined;
+  try {
+    snapshot = api.updateSnapshot({ openProjects: [configFile] });
+    const project = snapshot.getProject(configFile);
+    if (!project) throw new Error(`TypeScript could not load ${configFile}`);
+    const checker = project.checker;
+    /** Resolves aliases and keeps symbols that produce runtime values. */
+    function isRuntime(symbol: TsSymbol): boolean {
+      const target = symbol.flags & SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol;
+      return !checker.isUnknownSymbol(target) && Boolean(target.flags & SymbolFlags.Value);
     }
-    for (const statement of source.statements) {
-      if (ts.isExportDeclaration(statement)) {
-        if (statement.isTypeOnly) continue;
-        if (statement.exportClause) {
-          if (ts.isNamedExports(statement.exportClause)) {
-            for (const element of statement.exportClause.elements)
-              if (!element.isTypeOnly) candidates.add(element.name.text);
-          } else candidates.add(statement.exportClause.name.text);
-        } else if (statement.moduleSpecifier) {
-          const target = checker.getSymbolAtLocation(statement.moduleSpecifier);
-          if (!target) throw new Error(`Unresolved public re-export in ${source.fileName}`);
-          const targetSource = target.declarations?.find(ts.isSourceFile);
-          const reexports = targetSource
-            ? names(targetSource, active)
-            : checker
-                .getExportsOfModule(target)
-                .filter(isRuntime)
-                .map((item) => item.name);
-          for (const name of reexports) if (name !== 'default') candidates.add(name);
-        }
-      } else if (ts.isExportAssignment(statement)) candidates.add('default');
-      else if (
-        ts.canHaveModifiers(statement) &&
-        ts.getModifiers(statement)?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword)
-      ) {
-        if (ts.getModifiers(statement)?.some((modifier) => modifier.kind === ts.SyntaxKind.DefaultKeyword))
-          candidates.add('default');
-        else if (ts.isVariableStatement(statement))
-          for (const declaration of statement.declarationList.declarations) binding(declaration.name);
-        else if ('name' in statement && statement.name && ts.isIdentifier(statement.name as ts.Node))
-          candidates.add((statement.name as ts.Identifier).text);
-      }
+    /** Lists runtime exports from a source file, following aliases and star re-exports. */
+    function names(source: ts.SourceFile): string[] {
+      const module = checker.getSymbolAtLocation(source);
+      if (!module) return [];
+      return checker
+        .getExportsOfModule(module)
+        .filter(isRuntime)
+        .map((symbol) => symbol.name)
+        .sort();
     }
-    const result = checker
-      .getExportsOfModule(module)
-      .filter((symbol) => candidates.has(symbol.name) && isRuntime(symbol))
-      .map((symbol) => symbol.name)
-      .sort();
-    cache.set(source.fileName, result);
-    return result;
+    const privateNames = new Set(packages.filter((pkg) => pkg.private).map((pkg) => pkg.name));
+    for (const entry of entries) {
+      if (entry.kind === 'javascript') {
+        const source = project.program.getSourceFile(resolve(root, entry.target));
+        if (!source) throw new Error(`Missing public entry: ${entry.target}`);
+        entry.exports = names(source);
+        const hasSideEffects = source.statements.some(
+          (statement) =>
+            !(ts.isExportDeclaration(statement) && !statement.moduleSpecifier) && !ts.isEmptyStatement(statement)
+        );
+        if (!entry.exports.length && !hasSideEffects)
+          entry.reason = 'Published JavaScript has no runtime exports or statements (types-only package).';
+      } else if (entry.kind === 'css' && entry.target.endsWith('.module.css')) entry.exports = ['default'];
+      else if (entry.kind === 'json') entry.exports = ['default'];
+      if (privateNames.has(entry.package))
+        entry.reason = 'Private development workspace; output and public API inventoried, no public browser consumer.';
+      else if (entry.kind === 'types') entry.reason = 'Type declarations; no browser runtime.';
+      else if (entry.kind === 'metadata') entry.reason = 'Package metadata; not a runtime entrypoint.';
+      else if (entry.kind === 'source')
+        entry.reason = 'Source/preprocessor resource; inventoried as output, requires a consumer-specific compiler.';
+      else if (entry.kind === 'asset')
+        entry.reason = 'Non-module resource; inventoried as output, included in consumers when referenced.';
+    }
+    return entries;
+  } finally {
+    try {
+      snapshot?.dispose();
+    } finally {
+      api.close();
+    }
   }
-  const privateNames = new Set(packages.filter((pkg) => pkg.private).map((pkg) => pkg.name));
-  for (const entry of entries) {
-    if (entry.kind === 'javascript') {
-      const source = program.getSourceFile(resolve(root, entry.target));
-      if (!source) throw new Error(`Missing public entry: ${entry.target}`);
-      entry.exports = names(source);
-      const hasSideEffects = source.statements.some(
-        (statement) =>
-          !(ts.isExportDeclaration(statement) && !statement.moduleSpecifier) && !ts.isEmptyStatement(statement)
-      );
-      if (!entry.exports.length && !hasSideEffects)
-        entry.reason = 'Published JavaScript has no runtime exports or statements (types-only package).';
-    } else if (entry.kind === 'css' && entry.target.endsWith('.module.css')) entry.exports = ['default'];
-    else if (entry.kind === 'json') entry.exports = ['default'];
-    if (privateNames.has(entry.package))
-      entry.reason = 'Private development workspace; output and public API inventoried, no public browser consumer.';
-    else if (entry.kind === 'types') entry.reason = 'Type declarations; no browser runtime.';
-    else if (entry.kind === 'metadata') entry.reason = 'Package metadata; not a runtime entrypoint.';
-    else if (entry.kind === 'source')
-      entry.reason = 'Source/preprocessor resource; inventoried as output, requires a consumer-specific compiler.';
-    else if (entry.kind === 'asset')
-      entry.reason = 'Non-module resource; inventoried as output, included in consumers when referenced.';
-  }
-  return entries;
 }
 
 /** Creates a stable fixture and budget key from the import path, scope, and optional export name. */

@@ -14,7 +14,7 @@
     "prepublishOnly": "node ../../../scripts/compile-readme.ts",
     "test": "vitest --run",
     "test:watch": "vitest",
-    "typecheck": "tsgo --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -46,7 +46,6 @@
   },
   "devDependencies": {
     "tsdown": "^0.23.1",
-    "typescript": "^6.0.3",
     "vitest": "^4.1.11",
     "vitest-browser-react": "^2.3.0"
   },

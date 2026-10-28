@@ -5,6 +5,8 @@ export default mergeConfig(
   sharedConfig,
   defineConfig({
     test: {
+      // Each parsing operation owns a native compiler process.
+      maxWorkers: 2,
       projects: [ssr]
     }
   })

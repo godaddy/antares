@@ -135,18 +135,22 @@ async function extractPropTable(propName: string, storyFilePath: string, sourceD
 
     // Use the shallow AST engine to resolve the component's props.
     const resolver = createResolver(storyFilePath);
-    const storySourceFile = resolver.getSourceFile(storyFilePath);
+    try {
+      const storySourceFile = resolver.getSourceFile(storyFilePath);
 
-    const componentDoc = extractComponentDocs(componentName, storySourceFile, resolver);
-    const tableFromComponent = generatePropTable(componentDoc.props);
+      const componentDoc = extractComponentDocs(componentName, storySourceFile, resolver);
+      const tableFromComponent = generatePropTable(componentDoc.props);
 
-    // If component extraction succeeded, return the table
-    if (tableFromComponent) return tableFromComponent;
+      // If component extraction succeeded, return the table
+      if (tableFromComponent) return tableFromComponent;
 
-    // Fallback to the conventional `${componentName}Props` type when the
-    // component signature can't be resolved (e.g. wrapped components).
-    const typeDoc = extractTypeDocs(`${componentName}Props`, storySourceFile, resolver);
-    return generatePropTable(typeDoc.props);
+      // Fallback to the conventional `${componentName}Props` type when the
+      // component signature can't be resolved (e.g. wrapped components).
+      const typeDoc = extractTypeDocs(`${componentName}Props`, storySourceFile, resolver);
+      return generatePropTable(typeDoc.props);
+    } finally {
+      resolver.close();
+    }
   } catch {
     // Failed to process
   }

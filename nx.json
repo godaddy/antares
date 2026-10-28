@@ -5,6 +5,9 @@
     "autoExit": true
   },
   "targetDefaults": {
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["default", "^default"],
@@ -38,17 +41,6 @@
     }
   },
   "plugins": [
-    {
-      "plugin": "@nx/storybook/plugin",
-      "options": {
-        "serveStorybookTargetName": "serve:storybook",
-        "buildStorybookTargetName": "build:storybook",
-        "testStorybookTargetName": "test-storybook",
-        "staticStorybookTargetName": "static-storybook",
-        "buildDepsTargetName": "build-deps",
-        "watchDepsTargetName": "watch-deps"
-      }
-    },
     {
       "plugin": "@nx/vite/plugin",
       "options": {

@@ -12,7 +12,8 @@
     "lint": "biome lint",
     "lint:fix": "biome lint --write",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "repository": {
     "type": "git",
