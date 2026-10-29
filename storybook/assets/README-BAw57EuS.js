@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{t}from"./jsx-runtime-MKhVqBIO.js";import{N as n,P as r,s as i,u as a}from"./blocks-DQP9tsr3.js";function o(e){let t={a:`a`,code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,p:`p`,pre:`pre`,...r(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(i,{title:`Welcome`}),`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{t}from"./jsx-runtime-MKhVqBIO.js";import{N as n,P as r,s as i,u as a}from"./blocks-DQP9tsr3.js";function o(e){let t={a:`a`,blockquote:`blockquote`,code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,p:`p`,pre:`pre`,...r(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(i,{title:`Welcome`}),`
 `,(0,c.jsx)(t.h1,{id:`antares`,children:`Antares`}),`
 `,(0,c.jsx)(t.p,{children:`A collection of accessible, composable React components built on React Aria.`}),`
 `,(0,c.jsxs)(t.p,{children:[(0,c.jsx)(t.a,{href:`https://godaddy.github.io/antares`,rel:`nofollow`,children:`Documentation`}),` | `,(0,c.jsx)(t.a,{href:`https://godaddy.github.io/antares/storybook`,rel:`nofollow`,children:`Storybook`})]}),`
@@ -20,6 +20,15 @@ import { Flex } from '@godaddy/antares/Layout';
 import { BarChart } from '@godaddy/antares/Chart';
 `})}),`
 `,(0,c.jsx)(t.p,{children:`This also works with autocomplete in IDEs and LLMs, so you can import from the root package and let your editor/agent suggest the available components.`}),`
+`,(0,c.jsx)(t.h2,{id:`ai-agent-skills`,children:`AI Agent Skills`}),`
+`,(0,c.jsxs)(t.p,{children:[`Install the `,(0,c.jsx)(t.code,{children:`antares-builder`}),` skill from your consuming application's directory so AI coding agents can build with Antares:`]}),`
+`,(0,c.jsx)(t.pre,{children:(0,c.jsx)(t.code,{className:`language-bash`,children:`npx skills add godaddy/antares --skill antares-builder --agent claude-code
+`})}),`
+`,(0,c.jsxs)(t.p,{children:[`Select your coding agent with `,(0,c.jsx)(t.code,{children:`--agent`}),` (e.g. `,(0,c.jsx)(t.code,{children:`claude-code`}),`, `,(0,c.jsx)(t.code,{children:`codex`}),`); omit it to be prompted. The installer places the skill and its references into the consumer app's agent directory. Then ask your agent, for example:`]}),`
+`,(0,c.jsxs)(t.blockquote,{children:[`
+`,(0,c.jsx)(t.p,{children:`Build a responsive settings form with Antares, including validation and a confirmation dialog.`}),`
+`]}),`
+`,(0,c.jsxs)(t.p,{children:[`See the `,(0,c.jsx)(t.a,{href:`https://github.com/godaddy/antares#antares-builder-skill`,rel:`nofollow`,children:`repository README`}),` for the full reference, including an Agent Package Manager (APM) alternative and version-pinning notes.`]}),`
 `,(0,c.jsx)(t.h2,{id:`framework-setup`,children:`Framework Setup`}),`
 `,(0,c.jsxs)(t.p,{children:[`Antares ships CSS alongside its JavaScript modules. Each component chunk imports a corresponding `,(0,c.jsx)(t.code,{children:`.css`}),` file (e.g., `,(0,c.jsx)(t.code,{children:`import './src-BZhWcxqJ.css'`}),`). Most bundlers handle this automatically, but some frameworks need extra configuration to process CSS imports from `,(0,c.jsx)(t.code,{children:`node_modules`}),`.`]}),`
 `,(0,c.jsx)(t.h3,{id:`nextjs`,children:`Next.js`}),`
