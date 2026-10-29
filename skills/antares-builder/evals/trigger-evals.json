@@ -1,0 +1,82 @@
+[
+  {
+    "query": "Build an Antares contact form with validation and retryable saving.",
+    "should_trigger": true
+  },
+  {
+    "query": "Our app uses Antares. What fits a compact Grid/List view switch?",
+    "should_trigger": true
+  },
+  {
+    "query": "can u fix our antares filters? removing the last chip crashes",
+    "should_trigger": true
+  },
+  {
+    "query": "Fix missing months in our Antares revenue chart.",
+    "should_trigger": true
+  },
+  {
+    "query": "Review our Antares checkout dialog for focus and async confirmation bugs.",
+    "should_trigger": true
+  },
+  {
+    "query": "Our Antares app is missing styles on one route. Help diagnose the consumer setup.",
+    "should_trigger": true
+  },
+  {
+    "query": "Add a required Antares date-range picker that keeps date-only values.",
+    "should_trigger": true
+  },
+  {
+    "query": "Build an accessible Antares dashboard with regions, traffic share and health.",
+    "should_trigger": true
+  },
+  {
+    "query": "Antares Select or ListBox for a visible multi-select region picker?",
+    "should_trigger": true
+  },
+  {
+    "query": "Build a responsive Antares product grid with named icon-only actions.",
+    "should_trigger": true
+  },
+  {
+    "query": "Change the Antares library Button source and its tests.",
+    "should_trigger": false
+  },
+  {
+    "query": "Add a public Combobox to the Antares library with exports and stories.",
+    "should_trigger": false
+  },
+  {
+    "query": "Refactor focus management inside the Antares Modal source.",
+    "should_trigger": false
+  },
+  {
+    "query": "Fix a chart normalization hook in Antares library internals.",
+    "should_trigger": false
+  },
+  {
+    "query": "Write release notes and publishing config for Antares.",
+    "should_trigger": false
+  },
+  {
+    "query": "Build a React settings form with the app's existing controls; do not use Antares.",
+    "should_trigger": false
+  },
+  {
+    "query": "Add a country picker using the app's existing UI; do not use Antares.",
+    "should_trigger": false
+  },
+  {
+    "query": "Build a plain HTML/CSS landing page without React or a component library.",
+    "should_trigger": false
+  },
+  {
+    "query": "Fix Nx build caching in the Antares repo; no UI changes.",
+    "should_trigger": false
+  },
+  {
+    "query": "Fix the backend endpoint for Antares revenue data; do not change the Antares UI.",
+    "should_trigger": false
+  }
+]
