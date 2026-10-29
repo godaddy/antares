@@ -117,7 +117,7 @@ export function MonthControls({ date: displayDate, onChange }: MonthControlsProp
       </Select>
       <NumberField
         aria-label="Year"
-        formatOptions={{ useGrouping: false }}
+        formatOptions={{ useGrouping: false, maximumFractionDigits: 0 }}
         value={displayDate.year}
         onChange={handleYearChange}
         className={styles.yearField}

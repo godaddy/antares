@@ -31,6 +31,15 @@ describe('@godaddy/antares', function antares() {
       await expect.element(year).toHaveValue('2030');
     });
 
+    it('rejects fractional years in the year input', async function yearInteger() {
+      const { getByRole } = await render(<CalendarWithValueExample />);
+      const year = getByRole('textbox', { name: /Year/ });
+      await userEvent.clear(year);
+      await userEvent.type(year, '2030.5');
+      await userEvent.keyboard('{Enter}');
+      expect((year.element() as HTMLInputElement).value).not.toContain('.');
+    });
+
     it('range calendar shows two months by default', async function twoMonths() {
       const screen = await render(<RangeCalendarExample />);
       const monthSelects = screen.getByRole('button', { name: 'Month' }).all();
