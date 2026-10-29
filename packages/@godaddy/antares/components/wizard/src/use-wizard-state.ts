@@ -1,0 +1,151 @@
+import { createContext, useEffect, useState } from 'react';
+import type { Key } from 'react-aria-components';
+
+export interface WizardStepChangeDetail {
+  /** Previously displayed step. */
+  previousStep: Key;
+
+  /** Navigation action that requested this change. */
+  reason: 'next' | 'previous' | 'menu';
+}
+
+export interface WizardStateOptions {
+  /** Ordered collection of stable step keys. */
+  collection: readonly Key[];
+
+  /** Application-owned active step, when navigation is controlled. */
+  activeStep?: Key | null;
+
+  /** Preferred initial step for uncontrolled navigation. */
+  defaultActiveStep?: Key;
+
+  /** Called when navigation requests a different step. */
+  onStepChange?: (step: Key, detail: WizardStepChangeDetail) => void;
+
+  /** Called when the final action is pressed; the application decides whether to close. */
+  onFinish?: () => void;
+}
+
+export interface WizardState {
+  /** Authoritative active key, or null when no valid item is active. */
+  activeStep: Key | null;
+
+  /** Ordered collection keys. */
+  collection: readonly Key[];
+
+  /** Zero-based position of the active step, or -1 when none is active. */
+  activePosition: number;
+
+  /** Keys displayed so far in this run. */
+  visitedSteps: ReadonlySet<Key>;
+
+  /** Whether a step precedes the active step in collection order. */
+  canPrevious: boolean;
+
+  /** Whether a step follows the active step in collection order. */
+  canNext: boolean;
+
+  /** Whether the active step is the last step and a finish action is available. */
+  canFinish: boolean;
+
+  /** Move to the preceding step, or request it when controlled. No-op at the first step. */
+  previous: () => void;
+
+  /** Move to the following step, or request it when controlled. No-op at the last step. */
+  next: () => void;
+
+  /** Request the application's final action, only from the last step. */
+  finish: () => void;
+
+  /** Return to a previously displayed step. Unvisited and unavailable keys are ignored. */
+  goToStep: (step: Key) => void;
+}
+
+/** Navigation state for an ordered Wizard step collection. */
+export function useWizardState({
+  collection,
+  activeStep: controlledStep,
+  defaultActiveStep,
+  onStepChange,
+  onFinish
+}: WizardStateOptions): WizardState {
+  const initialStep =
+    defaultActiveStep !== undefined && collection.includes(defaultActiveStep)
+      ? defaultActiveStep
+      : (collection[0] ?? null);
+  const [previousCollection, setPreviousCollection] = useState<readonly Key[]>(() => [...collection]);
+  const [selectedStep, setSelectedStep] = useState<Key | null>(() => initialStep);
+  const [visits, setVisits] = useState<ReadonlySet<Key>>(function initialVisits() {
+    const firstStep = controlledStep === undefined ? initialStep : controlledStep;
+    return new Set(firstStep !== null && firstStep !== undefined && collection.includes(firstStep) ? [firstStep] : []);
+  });
+  const collectionChanged =
+    collection.length !== previousCollection.length ||
+    collection.some((key, index) => key !== previousCollection[index]);
+  let reconciledStep = selectedStep;
+  if (collectionChanged) {
+    setPreviousCollection([...collection]);
+    if (controlledStep === undefined && (selectedStep === null || !collection.includes(selectedStep))) {
+      const removedPosition = selectedStep === null ? -1 : previousCollection.indexOf(selectedStep);
+      reconciledStep =
+        removedPosition < 0 ? initialStep : (collection[Math.min(removedPosition, collection.length - 1)] ?? null);
+      setSelectedStep(reconciledStep);
+    }
+    const remainingVisits = new Set([...visits].filter((key) => collection.includes(key)));
+    if (remainingVisits.size !== visits.size) setVisits(remainingVisits);
+  }
+  const activeStep =
+    controlledStep !== undefined
+      ? controlledStep !== null && collection.includes(controlledStep)
+        ? controlledStep
+        : null
+      : reconciledStep !== null && collection.includes(reconciledStep)
+        ? reconciledStep
+        : initialStep;
+  const activePosition = activeStep === null ? -1 : collection.indexOf(activeStep);
+  const canFinish = activePosition === collection.length - 1 && activePosition >= 0 && onFinish !== undefined;
+  const visitedSteps = new Set([...visits].filter((step) => collection.includes(step)));
+  if (activeStep !== null) visitedSteps.add(activeStep);
+
+  useEffect(
+    function recordActiveStep() {
+      if (activeStep !== null) {
+        if (controlledStep === undefined && selectedStep === null) setSelectedStep(activeStep);
+        setVisits((previous) => (previous.has(activeStep) ? previous : new Set([...previous, activeStep])));
+      }
+    },
+    [activeStep, controlledStep, selectedStep]
+  );
+
+  function request(step: Key, reason: WizardStepChangeDetail['reason']) {
+    if (activeStep === null || step === activeStep || !collection.includes(step)) return;
+    if (controlledStep === undefined) setSelectedStep(step);
+    onStepChange?.(step, { previousStep: activeStep, reason });
+  }
+
+  return {
+    activeStep,
+    collection,
+    activePosition,
+    visitedSteps,
+    canPrevious: activePosition > 0,
+    canNext: activePosition >= 0 && activePosition < collection.length - 1,
+    canFinish,
+    previous: function previous() {
+      if (activePosition > 0) request(collection[activePosition - 1], 'previous');
+    },
+    next: function next() {
+      if (activePosition >= 0 && activePosition < collection.length - 1)
+        request(collection[activePosition + 1], 'next');
+    },
+    finish: function finish() {
+      if (canFinish) onFinish?.();
+    },
+    goToStep: function goToStep(step) {
+      if (visitedSteps.has(step)) request(step, 'menu');
+    }
+  };
+}
+
+/** Read the Wizard's existing state from descendant custom controls. */
+export const WizardStateContext = createContext<WizardState | null>(null);
