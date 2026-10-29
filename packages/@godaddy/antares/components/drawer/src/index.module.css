@@ -1,9 +1,4 @@
-/*
- * React Aria's Sheet owns the motion: the panel sits in an oversized scroll container and slides by
- * scrolling, so opening, closing, and swiping share one native gesture. The keyframes below are
- * scroll-driven by that position rather than timed. Under `prefers-reduced-motion` React Aria jumps
- * the scroll instead of smoothing it, so the slide and the keyframes it drives are instant.
- */
+/* Sheet slides the panel by scrolling, so the keyframes below are scroll-driven, not timed. */
 .root {
   outline: none;
 }
@@ -12,16 +7,15 @@
   --_overlay-bg: var(--drawer-overlay-bg, rgba(0, 0, 0, 0.6));
 }
 
-/* Only the bottom drawer of a stack dims the page, so nested drawers don't darken it twice. */
 .overlay:where([data-stack-index="0"]) {
   background: var(--_overlay-bg);
 }
 
 .drawer {
   outline: none;
-  overflow: hidden;
 
-  /* A 3D space so a drawer with a nested drawer on top can recede along the z-axis. */
+  /* Not `hidden`: a scroll container here breaks Sheet's view timeline, stopping swipe animations. */
+  overflow: clip;
   transform: perspective(1000px);
   will-change: transform;
 }
@@ -56,10 +50,6 @@
   transform-origin: -150px center;
 }
 
-/*
- * Makes the dialog fill the drawer panel it sits inside. Sizing only, no layout: the region grid
- * comes from `OverlayDialog`.
- */
 .dialog {
   flex: 1 1 auto;
   min-block-size: 0;
@@ -77,7 +67,6 @@
   }
 }
 
-/* Composed onto the panel's own transform while a nested drawer is open, tracking its swipe. */
 @keyframes drawer-stack {
   to {
     transform: translateZ(-120px);

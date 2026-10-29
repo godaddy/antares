@@ -1,4 +1,4 @@
-import { forwardRef, type ReactNode, type CSSProperties } from 'react';
+import { forwardRef, useRef, type ReactNode, type CSSProperties, type RefObject } from 'react';
 import {
   type DialogProps as RACDialogProps,
   Sheet as RACSheet,
@@ -16,6 +16,7 @@ import { toCssSize } from '#utils/css.ts';
 import { composeClassName } from '#utils/render-props.ts';
 import { Flex } from '#components/layout/flex';
 import { OverlayDialog } from '#components/_internal/overlay-dialog';
+import { useRestWhileOpen } from './use-rest-while-open.tsx';
 import styles from './index.module.css';
 
 /**
@@ -26,7 +27,6 @@ export type DrawerPlacement = 'top' | 'bottom' | 'left' | 'right';
 
 type DrawerFlatKeys = 'isOpen' | 'defaultOpen' | 'onOpenChange' | 'shouldCloseOnInteractOutside' | 'preventDismissal';
 
-/** Animation names are owned by the drawer, so they stay off the layer bags. */
 type DrawerBackdropProps = Omit<RACSheetBackdropProps, 'swipeAnimation' | 'swipeAnimationRange'>;
 
 type DrawerContainerProps = Omit<
@@ -80,6 +80,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     children,
     ...dialogProps
   } = props;
+  const panelRef = useRef<HTMLDivElement>(null);
 
   return (
     <RACSheetOverlay
@@ -101,6 +102,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
         elevation="overlay"
         direction="column"
         {...containerProps}
+        ref={panelRef}
         stackAnimation={styles['drawer-stack']}
         className={composeClassName(containerProps?.className, styles.drawer)}
         style={composeRenderProps(containerProps?.style, function composeDrawerStyle(value) {
@@ -111,6 +113,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
           } as CSSProperties;
         })}
       >
+        <RestWhileOpen panelRef={panelRef} />
         <OverlayDialog
           {...dialogProps}
           as={RACSheetContent}
@@ -124,6 +127,11 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     </RACSheetOverlay>
   );
 });
+
+function RestWhileOpen({ panelRef }: { panelRef: RefObject<HTMLElement | null> }) {
+  useRestWhileOpen(panelRef);
+  return null;
+}
 
 export interface DrawerTriggerProps extends RACSheetTriggerProps {}
 

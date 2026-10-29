@@ -1,5 +1,5 @@
 import { page, userEvent } from 'vitest/browser';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { salesChannelData } from '../constants/config.ts';
 import { OverviewDashboard } from '../index.tsx';
@@ -138,6 +138,10 @@ describe('@godaddy/antares', function packageTests() {
       const mobileNavigation = drawer.getByRole('navigation', { name: 'Product navigation' });
       await expect.element(mobileNavigation).toBeVisible();
 
+      // The drawer only handles interaction once its slide settles and focus moves in.
+      await vi.waitFor(function entered() {
+        expect(drawer.element().contains(document.activeElement)).toBe(true);
+      });
       const closeNavigation = drawer.getByRole('button', { name: 'Close navigation' });
       await expect.element(closeNavigation).not.toHaveAttribute('aria-pressed');
       await user.click(closeNavigation);

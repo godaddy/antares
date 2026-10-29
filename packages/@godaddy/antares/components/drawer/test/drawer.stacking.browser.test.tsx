@@ -35,7 +35,6 @@ describe('@godaddy/antares', function packageTests() {
 
       await userEvent.click(page.getByRole('button', { name: 'Open drawer' }));
       await expect.element(page.getByRole('dialog', { name: 'Drawer' })).toBeVisible();
-      // The drawer is interactive once its slide settles and focus moves into it.
       await vi.waitFor(function entered() {
         expect(document.activeElement?.closest('[role="dialog"]')).not.toBeNull();
       });

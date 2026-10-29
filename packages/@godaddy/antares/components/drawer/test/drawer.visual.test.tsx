@@ -14,11 +14,8 @@ async function settle() {
   });
 }
 
-// Screenshot the full-viewport overlay (backdrop + panel), not the panel alone:
-// in isolation the panel looks identical for left/right (and top/bottom), so the
-// screenshot must include the viewport to show which edge the drawer slid from.
+// Include the viewport so the screenshot shows which edge the drawer slid from.
 function getOverlay(): HTMLElement {
-  // The sheet overlay is the outermost element carrying the position.
   const overlay = document.querySelector('[data-position]');
   if (!overlay) throw new Error('Expected drawer overlay to exist');
   return overlay as HTMLElement;

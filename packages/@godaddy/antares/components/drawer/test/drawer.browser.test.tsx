@@ -12,10 +12,7 @@ import { NestedPopoverExample } from '../examples/nested-popover.tsx';
 import { ScrollableExample } from '../examples/scrollable.tsx';
 import { LayerPropsExample } from '../examples/layer-props.tsx';
 
-/**
- * Sheet slides in by scrolling and moves focus into the drawer once the slide settles, which is
- * also when it starts listening for Escape. Wait for that before interacting.
- */
+/** Sheet only takes focus and handles Escape once its slide settles. */
 async function waitForEntered(name?: string) {
   await vi.waitFor(function entered() {
     const dialog = name ? page.getByRole('dialog', { name }).query() : document.querySelector('[role="dialog"]');
@@ -102,8 +99,6 @@ describe('@godaddy/antares', function antares() {
       await waitForEntered();
 
       await userEvent.keyboard('{Escape}');
-      // Wait past the slide; a non-blocked Escape would have fully closed and unmounted the
-      // dialog by now.
       await new Promise(function settle(r) {
         setTimeout(r, 600);
       });
@@ -130,7 +125,6 @@ describe('@godaddy/antares', function antares() {
       });
       await waitForEntered('Account');
 
-      // The parent panel knows a drawer sits on top of it; the nested one is a level above.
       const parent = getByRole('dialog', { name: 'Settings', includeHidden: true })
         .element()
         .closest('[data-stack-index]');
@@ -155,10 +149,8 @@ describe('@godaddy/antares', function antares() {
       });
       await waitForEntered();
 
-      // Press the page beside the panel (the drawer sits on the right edge).
       await userEvent.click(document.body, { position: { x: 10, y: 10 } });
 
-      // Wait past the slide; the filter returns false so it must stay open.
       await new Promise(function settle(r) {
         setTimeout(r, 600);
       });
@@ -215,12 +207,10 @@ describe('@godaddy/antares', function antares() {
       const container = document.querySelector('.custom-container');
       const overlay = document.querySelector('.custom-overlay');
 
-      // Three distinct elements: the panel holds the dialog, and the backdrop sits beside it.
       assume(dialog?.getAttribute('role')).equals('dialog');
       assume(container?.contains(dialog as Node)).is.true();
       assume(overlay?.contains(container as Node)).is.false();
 
-      // Each layer keeps its own classes alongside the consumer's class.
       assume((container as HTMLElement).className.split(' ').length).is.above(1);
       assume((overlay as HTMLElement).className.split(' ').length).is.above(1);
     });
