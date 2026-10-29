@@ -1,37 +1,36 @@
 3:"$Sreact.fragment"
-4:"/antares/pr-385-site/_next/static/chunks/2lgqceci60h5f.js"
-5:"/antares/pr-385-site/_next/static/chunks/1tn0l3cm_ae6s.js"
+4:"/antares/pr-385-site/_next/static/chunks/1hs9aq4wuzbb-.js"
+5:"/antares/pr-385-site/_next/static/chunks/2u9a5fn37wnxv.js"
 6:I[339756,["$4","$5"],"default"]
 7:I[837457,["$4","$5"],"default"]
-c:"/antares/pr-385-site/_next/static/chunks/119wn2yl07dfn.js"
-d:"/antares/pr-385-site/_next/static/chunks/0cq_r7uivgtia.js"
-e:"/antares/pr-385-site/_next/static/chunks/44d0fxytx9jkg.js"
-f:"/antares/pr-385-site/_next/static/chunks/0y43-9m1z7bvl.js"
-10:"/antares/pr-385-site/_next/static/chunks/2f_a87zzluj--.js"
-11:"/antares/pr-385-site/_next/static/chunks/0f23jwk0acd7n.js"
-12:"/antares/pr-385-site/_next/static/chunks/2znf03_833nl7.js"
-13:"/antares/pr-385-site/_next/static/chunks/428imhwwk-ha_.js"
-14:"/antares/pr-385-site/_next/static/chunks/32o7tmg2i-rss.js"
-15:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsPage"]
-16:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsTitle"]
-17:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsDescription"]
-18:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"LLMCopyButton"]
-19:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"ViewOptions"]
-1a:I[298330,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"DocsBody"]
-1b:I[494157,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Heading"]
-1c:I[144324,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"CodeBlock"]
-1d:I[144324,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Pre"]
-1e:"SiteBlockExplorer"
-1f:I[696229,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"$1e"]
-32:"ViewportBoundary"
-33:I[897367,["$4","$5"],"$32"]
-34:"MetadataBoundary"
-35:I[897367,["$4","$5"],"$34"]
-36:"$Sreact.suspense"
+c:"/antares/pr-385-site/_next/static/chunks/3l2s6pjm2ar27.js"
+d:"/antares/pr-385-site/_next/static/chunks/0dk684suzjxgk.js"
+e:"/antares/pr-385-site/_next/static/chunks/3nf__z0ryfpxg.js"
+f:"/antares/pr-385-site/_next/static/chunks/2cerq0qof5ea8.js"
+10:"/antares/pr-385-site/_next/static/chunks/1c478w_h38dcv.js"
+11:"/antares/pr-385-site/_next/static/chunks/2doqb4oq9w7lp.js"
+12:"/antares/pr-385-site/_next/static/chunks/428imhwwk-ha_.js"
+13:"/antares/pr-385-site/_next/static/chunks/44yf7as88_ufg.js"
+14:I[838538,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsPage"]
+15:I[838538,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsTitle"]
+16:I[838538,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsDescription"]
+17:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"LLMCopyButton"]
+18:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"ViewOptions"]
+19:I[838538,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsBody"]
+1a:I[836838,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"Heading"]
+1b:I[195232,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"CodeBlock"]
+1c:I[195232,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"Pre"]
+1d:"SiteBlockExplorer"
+1e:I[696229,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$1d"]
+31:"ViewportBoundary"
+32:I[897367,["$4","$5"],"$31"]
+33:"MetadataBoundary"
+34:I[897367,["$4","$5"],"$33"]
+35:"$Sreact.suspense"
 9:X
 9:C
 a:X
-20:T625,import { Box, Card, Detail, Flex, Heading, Icon, Image } from '@godaddy/antares';
+1f:T625,import { Box, Card, Detail, Flex, Heading, Icon, Image } from '@godaddy/antares';
 import { appointmentsImage } from '../../constants/config';
 import styles from './index.module.css';
 
@@ -70,7 +69,7 @@ export function AppointmentsPromotionCard() {
     </Flex>
   );
 }
-21:Tacb,import {
+20:Tacb,import {
   Avatar,
   Box,
   Button,
@@ -145,7 +144,7 @@ export function DashboardHeader({ onOpenNavigation }: DashboardHeaderProps) {
     </Flex>
   );
 }
-22:T6c7,.content {
+21:T6c7,.content {
   inline-size: 100%;
   --navigation-rail-size: 56px;
 }
@@ -217,7 +216,7 @@ export function DashboardHeader({ onOpenNavigation }: DashboardHeaderProps) {
   display: inline-flex;
   flex-shrink: 0;
 }
-23:Tb34,import { Button, Flex, Icon, Tag, Text } from '@godaddy/antares';
+22:Tb34,import { Button, Flex, Icon, Tag, Text } from '@godaddy/antares';
 import { dashboardNavigationItems, type DashboardNavigationItemLabel } from '../../constants/config';
 import styles from './index.module.css';
 
@@ -297,7 +296,7 @@ export function DashboardSidebarContent({
     </Flex>
   );
 }
-24:Tad6,import { Content, Drawer, Flex, InlineDrawer } from '@godaddy/antares';
+23:Tad6,import { Content, Drawer, Flex, InlineDrawer } from '@godaddy/antares';
 import type { DashboardNavigationItemLabel } from '../../constants/config';
 import { DashboardSidebarContent } from '../dashboard-sidebar-content';
 import styles from './index.module.css';
@@ -382,7 +381,7 @@ export function DashboardSidebar({
     </>
   );
 }
-25:T11d8,'use client';
+24:T11d8,'use client';
 
 import { Box, Flex, Grid, Heading } from '@godaddy/antares';
 import { useEffect, useRef, useState } from 'react';
@@ -515,7 +514,7 @@ export function OverviewDashboard() {
     </Box>
   );
 }
-26:T5c7,import { Card, DonutChart, Flex, Heading } from '@godaddy/antares';
+25:T5c7,import { Card, DonutChart, Flex, Heading } from '@godaddy/antares';
 import { salesChannelData } from '../../constants/config';
 import styles from './index.module.css';
 
@@ -566,7 +565,7 @@ export function SalesChannelsCard() {
     </Card>
   );
 }
-27:T8ef,import { Box, Button, Card, Detail, Flex, Heading, Icon, Tag, Text } from '@godaddy/antares';
+26:T8ef,import { Box, Button, Card, Detail, Flex, Heading, Icon, Tag, Text } from '@godaddy/antares';
 import { dashboardUsers } from '../../constants/config';
 import styles from './index.module.css';
 
@@ -622,7 +621,7 @@ export function UsersCard() {
     </Card>
   );
 }
-28:T8e2,import type { DonutChartProps } from '@godaddy/antares';
+27:T8e2,import type { DonutChartProps } from '@godaddy/antares';
 
 /** Navigation entries shown by the dashboard shell. */
 export const dashboardNavigationItems = [
@@ -655,16 +654,16 @@ export const salesChannelData = [
 /** Self-contained local image used by the appointments promotion card. */
 export const appointmentsImage =
   'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 176 112%22%3E%3Cdefs%3E%3ClinearGradient id=%22bg%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop stop-color=%22%2302242a%22/%3E%3Cstop offset=%221%22 stop-color=%22%2309757a%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%22176%22 height=%22112%22 rx=%228%22 fill=%22url(%23bg)%22/%3E%3Ccircle cx=%22134%22 cy=%2230%22 r=%2230%22 fill=%22%23d6f5f1%22 opacity=%22.8%22/%3E%3Cpath d=%22M0 86c30-26 54-16 82-34 26-17 41-6 94 26v34H0z%22 fill=%22%23f4b7d7%22 opacity=%22.85%22/%3E%3Cpath d=%22M0 93c27-11 49-5 79-20 24-12 58 3 97 17v22H0z%22 fill=%22%23f7c84b%22 opacity=%22.9%22/%3E%3Ctext x=%2288%22 y=%2262%22 fill=%22white%22 font-family=%22Arial,sans-serif%22 font-size=%2212%22 text-anchor=%22middle%22%3Eappointments%3C/text%3E%3C/svg%3E';
-b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L15",null,{"toc":[{"depth":2,"url":"#install-a-block","title":"Install a block"},{"depth":2,"url":"#blocks","title":"Blocks"},{"depth":3,"url":"#overview-dashboard","title":"Overview dashboard"},{"depth":3,"url":"#project-inquiry-form","title":"Project inquiry form"},{"depth":3,"url":"#sign-in-form","title":"Sign-in form"}],"footer":{"enabled":true},"children":[["$","$L16",null,{"children":"Build product experiences with Antares."}],["$","$L17",null,{"className":"mb-0","children":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L18",null,{"markdownUrl":"/docs/blocks.mdx"}],["$","$L19",null,{"markdownUrl":"/docs/blocks.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/README.mdx"}]]}],["$","$L1a",null,{"children":[null,"\n",["$","$L1b",null,{"as":"h2","id":"install-a-block","children":"Install a block"}],"\n",["$","p",null,{"children":"From the root of your application, run the command copied by the block's Install button:"}],"\n",["$","$L1c",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$L1d",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npx"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" shadcn@latest"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" add"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" godaddy/antares/blocks/sign-in-form"}]]}]}]}]}],"\n",["$","$L1b",null,{"as":"h2","id":"blocks","children":"Blocks"}],"\n",["$","$L1b",null,{"as":"h3","id":"overview-dashboard","children":"Overview dashboard"}],"\n",["$","$L1f",null,{"block":{"id":"overview-dashboard","description":"A responsive Antares overview dashboard with users, sales channels, and conversations.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/overview-dashboard","files":[{"path":"components/appointments-promotion-card/index.module.css","language":"css","source":".mediaCard {\n  min-inline-size: 0;\n}\n\n.mediaImage {\n  display: block;\n  max-inline-size: 100%;\n  block-size: auto;\n  border-radius: var(--rounding-sm);\n}\n\n.mediaCardContent,\n.mediaCardCopy,\n.mediaCardImage {\n  min-inline-size: 0;\n}\n"},{"path":"components/appointments-promotion-card/index.tsx","language":"tsx","source":"$20"},{"path":"components/conversations-card/index.module.css","language":"css","source":".conversationsCard {\n  min-inline-size: 0;\n}\n"},{"path":"components/conversations-card/index.tsx","language":"tsx","source":"import { Button, Card, Flex, Heading, Tag, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Demonstrates a secondary conversations card with a connection action. */\nexport function ConversationsCard() {\n  return (\n    <Card elevation=\"card\" className={styles.conversationsCard}>\n      <Flex direction=\"column\" gap=\"md\">\n        <Flex justifyContent=\"space-between\" alignItems=\"center\" gap=\"md\">\n          <Heading level={3}>Conversations</Heading>\n          <Tag emphasis=\"info\" size=\"sm\">\n            Included\n          </Tag>\n        </Flex>\n        <Text>Manage all your emails and messages in one place with a unified inbox.</Text>\n        <Button variant=\"secondary\" size=\"sm\">\n          Connect Email\n        </Button>\n      </Flex>\n    </Card>\n  );\n}\n"},{"path":"components/dashboard-header/index.module.css","language":"css","source":".mobileMenuButton,\n.mobileNavLogo,\n.mobileNavAction {\n  display: none;\n}\n\n.navDivider {\n  block-size: 1.25rem;\n  border-inline-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n}\n\n.navigation {\n  gap: var(--sp-lg);\n}\n\n.navActions {\n  gap: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .mobileMenuButton,\n  .mobileNavLogo,\n  .mobileNavAction {\n    display: inline-flex;\n  }\n\n  .desktopNavAction,\n  .navDivider {\n    display: none;\n  }\n\n  .navigation,\n  .navActions {\n    gap: var(--sp-sm);\n  }\n}\n"},{"path":"components/dashboard-header/index.tsx","language":"tsx","source":"$21"},{"path":"components/dashboard-sidebar-content/index.module.css","language":"css","source":"$22"},{"path":"components/dashboard-sidebar-content/index.tsx","language":"tsx","source":"$23"},{"path":"components/dashboard-sidebar/index.module.css","language":"css","source":".sideNavigationContainer {\n  align-self: stretch;\n  background: var(--ux-9i7okd, #f5f7f8);\n  block-size: auto;\n  min-inline-size: 0;\n  overflow: visible;\n  position: relative;\n}\n\n.sideNavigation {\n  background: var(--ux-9i7okd, #f5f7f8);\n  block-size: 100%;\n  inline-size: 100%;\n  min-inline-size: 0;\n  overflow: hidden;\n  padding-block-start: var(--sp-md, 0.5rem);\n  transition: inline-size 300ms cubic-bezier(0.32, 0.72, 0, 1);\n}\n\n.sideNavigationContainer:where([data-expanded]) {\n  z-index: 1;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .sideNavigation {\n    transition: none;\n  }\n}\n\n@container (max-width: 40rem) {\n  .sideNavigationContainer {\n    display: none;\n  }\n}\n"},{"path":"components/dashboard-sidebar/index.tsx","language":"tsx","source":"$24"},{"path":"components/overview-dashboard/index.module.css","language":"css","source":".dashboardFrame {\n  container-type: inline-size;\n  inline-size: 100%;\n  block-size: 100%;\n}\n\n.dashboardShell {\n  grid-template-columns: 56px minmax(0, 1fr);\n  gap: var(--sp-xl);\n  min-block-size: 100%;\n  min-inline-size: 0;\n  transition: grid-template-columns 300ms cubic-bezier(0.32, 0.72, 0, 1);\n}\n\n.dashboardShell:where([data-navigation-pinned-open]) {\n  grid-template-columns: 224px minmax(0, 1fr);\n}\n\n.dashboardMain {\n  align-items: center;\n  min-block-size: 100%;\n  min-inline-size: 0;\n}\n\n.dashboardContent {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n}\n\n.contentGrid {\n  grid-template-columns: minmax(0, 2.25fr) minmax(17.5rem, 1fr);\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .dashboardShell {\n    transition: none;\n  }\n}\n\n@container (max-width: 56rem) {\n  .contentGrid {\n    grid-template-columns: 1fr;\n  }\n}\n\n@container (max-width: 40rem) {\n  .dashboardShell {\n    grid-template-columns: 1fr;\n  }\n}\n"},{"path":"components/overview-dashboard/index.tsx","language":"tsx","source":"$25"},{"path":"components/sales-channels-card/index.module.css","language":"css","source":".salesCardMeasure {\n  min-inline-size: 0;\n}\n"},{"path":"components/sales-channels-card/index.tsx","language":"tsx","source":"$26"},{"path":"components/users-card/index.module.css","language":"css","source":".usersCard {\n  min-inline-size: 0;\n}\n\n.userRow {\n  align-items: center;\n}\n\n.userDivider {\n  border: 0;\n  border-block-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n  margin-block: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .restoreUsersLabel {\n    display: none;\n  }\n\n  .userRow {\n    align-items: flex-start;\n  }\n\n  .userActions {\n    inline-size: 100%;\n    justify-content: flex-end;\n  }\n}\n"},{"path":"components/users-card/index.tsx","language":"tsx","source":"$27"},{"path":"constants/config.ts","language":"ts","source":"$28"},{"path":"index.tsx","language":"tsx","source":"export { OverviewDashboard } from './components/overview-dashboard';\n"}]},"children":"$L29"}],"\n","$L2a","\n","$L2b","\n","$L2c","\n","$L2d"]}]]}],["$L2e","$L2f"],"$L30"]}],"p":"$@31","v":null,"s":"$a"}}]]
+b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L14",null,{"toc":[{"depth":2,"url":"#install-a-block","title":"Install a block"},{"depth":2,"url":"#blocks","title":"Blocks"},{"depth":3,"url":"#overview-dashboard","title":"Overview dashboard"},{"depth":3,"url":"#project-inquiry-form","title":"Project inquiry form"},{"depth":3,"url":"#sign-in-form","title":"Sign-in form"}],"footer":{"enabled":true},"children":[["$","$L15",null,{"children":"Build product experiences with Antares."}],["$","$L16",null,{"className":"mb-0","children":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L17",null,{"markdownUrl":"/docs/blocks.mdx"}],["$","$L18",null,{"markdownUrl":"/docs/blocks.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/README.mdx"}]]}],["$","$L19",null,{"children":[null,"\n",["$","$L1a",null,{"as":"h2","id":"install-a-block","children":"Install a block"}],"\n",["$","p",null,{"children":"From the root of your application, run the command copied by the block's Install button:"}],"\n",["$","$L1b",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$L1c",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npx"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" shadcn@latest"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" add"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" godaddy/antares/blocks/sign-in-form"}]]}]}]}]}],"\n",["$","$L1a",null,{"as":"h2","id":"blocks","children":"Blocks"}],"\n",["$","$L1a",null,{"as":"h3","id":"overview-dashboard","children":"Overview dashboard"}],"\n",["$","$L1e",null,{"block":{"id":"overview-dashboard","description":"A responsive Antares overview dashboard with users, sales channels, and conversations.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/overview-dashboard","files":[{"path":"components/appointments-promotion-card/index.module.css","language":"css","source":".mediaCard {\n  min-inline-size: 0;\n}\n\n.mediaImage {\n  display: block;\n  max-inline-size: 100%;\n  block-size: auto;\n  border-radius: var(--rounding-sm);\n}\n\n.mediaCardContent,\n.mediaCardCopy,\n.mediaCardImage {\n  min-inline-size: 0;\n}\n"},{"path":"components/appointments-promotion-card/index.tsx","language":"tsx","source":"$1f"},{"path":"components/conversations-card/index.module.css","language":"css","source":".conversationsCard {\n  min-inline-size: 0;\n}\n"},{"path":"components/conversations-card/index.tsx","language":"tsx","source":"import { Button, Card, Flex, Heading, Tag, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\n/** Demonstrates a secondary conversations card with a connection action. */\nexport function ConversationsCard() {\n  return (\n    <Card elevation=\"card\" className={styles.conversationsCard}>\n      <Flex direction=\"column\" gap=\"md\">\n        <Flex justifyContent=\"space-between\" alignItems=\"center\" gap=\"md\">\n          <Heading level={3}>Conversations</Heading>\n          <Tag emphasis=\"info\" size=\"sm\">\n            Included\n          </Tag>\n        </Flex>\n        <Text>Manage all your emails and messages in one place with a unified inbox.</Text>\n        <Button variant=\"secondary\" size=\"sm\">\n          Connect Email\n        </Button>\n      </Flex>\n    </Card>\n  );\n}\n"},{"path":"components/dashboard-header/index.module.css","language":"css","source":".mobileMenuButton,\n.mobileNavLogo,\n.mobileNavAction {\n  display: none;\n}\n\n.navDivider {\n  block-size: 1.25rem;\n  border-inline-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n}\n\n.navigation {\n  gap: var(--sp-lg);\n}\n\n.navActions {\n  gap: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .mobileMenuButton,\n  .mobileNavLogo,\n  .mobileNavAction {\n    display: inline-flex;\n  }\n\n  .desktopNavAction,\n  .navDivider {\n    display: none;\n  }\n\n  .navigation,\n  .navActions {\n    gap: var(--sp-sm);\n  }\n}\n"},{"path":"components/dashboard-header/index.tsx","language":"tsx","source":"$20"},{"path":"components/dashboard-sidebar-content/index.module.css","language":"css","source":"$21"},{"path":"components/dashboard-sidebar-content/index.tsx","language":"tsx","source":"$22"},{"path":"components/dashboard-sidebar/index.module.css","language":"css","source":".sideNavigationContainer {\n  align-self: stretch;\n  background: var(--ux-9i7okd, #f5f7f8);\n  block-size: auto;\n  min-inline-size: 0;\n  overflow: visible;\n  position: relative;\n}\n\n.sideNavigation {\n  background: var(--ux-9i7okd, #f5f7f8);\n  block-size: 100%;\n  inline-size: 100%;\n  min-inline-size: 0;\n  overflow: hidden;\n  padding-block-start: var(--sp-md, 0.5rem);\n  transition: inline-size 300ms cubic-bezier(0.32, 0.72, 0, 1);\n}\n\n.sideNavigationContainer:where([data-expanded]) {\n  z-index: 1;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .sideNavigation {\n    transition: none;\n  }\n}\n\n@container (max-width: 40rem) {\n  .sideNavigationContainer {\n    display: none;\n  }\n}\n"},{"path":"components/dashboard-sidebar/index.tsx","language":"tsx","source":"$23"},{"path":"components/overview-dashboard/index.module.css","language":"css","source":".dashboardFrame {\n  container-type: inline-size;\n  inline-size: 100%;\n  block-size: 100%;\n}\n\n.dashboardShell {\n  grid-template-columns: 56px minmax(0, 1fr);\n  gap: var(--sp-xl);\n  min-block-size: 100%;\n  min-inline-size: 0;\n  transition: grid-template-columns 300ms cubic-bezier(0.32, 0.72, 0, 1);\n}\n\n.dashboardShell:where([data-navigation-pinned-open]) {\n  grid-template-columns: 224px minmax(0, 1fr);\n}\n\n.dashboardMain {\n  align-items: center;\n  min-block-size: 100%;\n  min-inline-size: 0;\n}\n\n.dashboardContent {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n}\n\n.contentGrid {\n  grid-template-columns: minmax(0, 2.25fr) minmax(17.5rem, 1fr);\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .dashboardShell {\n    transition: none;\n  }\n}\n\n@container (max-width: 56rem) {\n  .contentGrid {\n    grid-template-columns: 1fr;\n  }\n}\n\n@container (max-width: 40rem) {\n  .dashboardShell {\n    grid-template-columns: 1fr;\n  }\n}\n"},{"path":"components/overview-dashboard/index.tsx","language":"tsx","source":"$24"},{"path":"components/sales-channels-card/index.module.css","language":"css","source":".salesCardMeasure {\n  min-inline-size: 0;\n}\n"},{"path":"components/sales-channels-card/index.tsx","language":"tsx","source":"$25"},{"path":"components/users-card/index.module.css","language":"css","source":".usersCard {\n  min-inline-size: 0;\n}\n\n.userRow {\n  align-items: center;\n}\n\n.userDivider {\n  border: 0;\n  border-block-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));\n  margin-block: var(--sp-md);\n}\n\n@container (max-width: 40rem) {\n  .restoreUsersLabel {\n    display: none;\n  }\n\n  .userRow {\n    align-items: flex-start;\n  }\n\n  .userActions {\n    inline-size: 100%;\n    justify-content: flex-end;\n  }\n}\n"},{"path":"components/users-card/index.tsx","language":"tsx","source":"$26"},{"path":"constants/config.ts","language":"ts","source":"$27"},{"path":"index.tsx","language":"tsx","source":"export { OverviewDashboard } from './components/overview-dashboard';\n"}]},"children":"$L28"}],"\n","$L29","\n","$L2a","\n","$L2b","\n","$L2c"]}]]}],["$L2d","$L2e"],"$L2f"]}],"p":"$@30","v":null,"s":"$a"}}]]
 2:[["children",{"s":{"n":"slug","t":"oc","k":"blocks","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
 1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
-0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L33",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L35",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$36",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Build product experiences with Antares."}],["$","meta","1",{"name":"description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","2",{"property":"og:title","content":"Build product experiences with Antares."}],["$","meta","3",{"property":"og:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Build product experiences with Antares."}],["$","meta","7",{"name":"twitter:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@37","v":null,"s":"$a"}},"a":"$@38","u":"$@39","b":"RtA5VHByqVuRW5m4m63Jg"}
-3a:I[260568,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
-42:I[342785,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
-43:I[897367,["$4","$5"],"OutletBoundary"]
-29:["$","$L3a",null,{}]
-2a:["$","$L1b",null,{"as":"h3","id":"project-inquiry-form","children":"Project inquiry form"}]
-3b:Tf57,'use client';
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L32",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L34",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$35",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Build product experiences with Antares."}],["$","meta","1",{"name":"description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","2",{"property":"og:title","content":"Build product experiences with Antares."}],["$","meta","3",{"property":"og:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Build product experiences with Antares."}],["$","meta","7",{"name":"twitter:description","content":"Discover complete UI patterns, inspect how they are built, and use them as a foundation for your product."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@36","v":null,"s":"$a"}},"a":"$@37","u":"$@38","b":"iSNsJQuV0pjP7zRiFWjjO"}
+39:I[260568,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"Preview"]
+41:I[342785,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"Preview"]
+42:I[897367,["$4","$5"],"OutletBoundary"]
+28:["$","$L39",null,{}]
+29:["$","$L1a",null,{"as":"h3","id":"project-inquiry-form","children":"Project inquiry form"}]
+3a:Tf57,'use client';
 
 import { useCallback, useId, useRef } from 'react';
 import { Button, Card, CornerActions, Detail, FileTrigger, Flex, Icon, Text } from '@godaddy/antares';
@@ -780,7 +779,7 @@ export function AttachedFiles({ files, error, onSelect, onRemove }: AttachedFile
     </Flex>
   );
 }
-3c:T4f0,'use client';
+3b:T4f0,'use client';
 
 import { Detail, Flex, Icon, Text } from '@godaddy/antares';
 import styles from './index.module.css';
@@ -818,7 +817,7 @@ export function Benefits() {
     </Flex>
   );
 }
-3d:Tedd,'use client';
+3c:Tedd,'use client';
 
 import { useRef } from 'react';
 import {
@@ -945,7 +944,7 @@ export function Fields({ values, dueDate, onChange, onProjectTypeChange, onDateC
 }
 
 export type { FieldName };
-3e:T60a,'use client';
+3d:T60a,'use client';
 
 import { useCallback, useEffect, useState } from 'react';
 import { Box, Flex, Text } from '@godaddy/antares';
@@ -1012,7 +1011,7 @@ export function FilePreview({ file }: FilePreviewProps) {
     </Flex>
   );
 }
-3f:T1e7d,'use client';
+3e:T1e7d,'use client';
 
 import { useId, useReducer, useRef, useState, type FormEvent } from 'react';
 import {
@@ -1268,7 +1267,7 @@ export function ProjectInquiryForm() {
     </Box>
   );
 }
-40:T9f5,/** MIME types accepted by the project inquiry attachment picker. */
+3f:T9f5,/** MIME types accepted by the project inquiry attachment picker. */
 export const ACCEPTED_FILE_TYPES = ['application/pdf', 'image/jpeg', 'image/gif', 'image/png'];
 
 /** File extensions accepted when the browser does not provide MIME metadata. */
@@ -1326,19 +1325,19 @@ export function formatFileSize(file: File) {
 
   return `${mebibyteFormatter.format(file.size / (1024 * 1024))} MiB`;
 }
-2b:["$","$L1f",null,{"block":{"id":"project-inquiry-form","description":"A responsive project inquiry page with local file previews.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/project-inquiry-form","files":[{"path":"components/attached-files/index.module.css","language":"css","source":".row {\n  inline-size: 100%;\n  max-inline-size: 45.625rem;\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 4));\n}\n\n.fileName {\n  overflow-wrap: anywhere;\n}\n\n.pickerButton {\n  --_attached-files-picker-padding-block: var(--size-space-030, calc(var(--ux-1sbfig8, 0.25rem) * 3));\n  --_attached-files-picker-padding-inline: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 4));\n\n  inline-size: 100%;\n  min-block-size: 5rem;\n  padding: var(--_attached-files-picker-padding-block) var(--_attached-files-picker-padding-inline);\n  border: 1px dashed var(--color-surface-border-card, var(--ux-97h3vl, #d4dbe0));\n  border-radius: var(--ux-2jubes, 6px);\n  background: var(--ux-1mh0ktr, #f5f5f5);\n  white-space: normal;\n}\n"},{"path":"components/attached-files/index.tsx","language":"tsx","source":"$3b"},{"path":"components/benefits/index.module.css","language":"css","source":".list {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/benefits/index.tsx","language":"tsx","source":"$3c"},{"path":"components/drop-overlay/index.module.css","language":"css","source":".overlay {\n  position: absolute;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: inherit;\n  background-color: rgba(216, 239, 239, 0.9);\n  color: var(--color-surface-text-base, var(--ux-1leynsm, #111));\n  pointer-events: none;\n  inset: 0;\n}\n"},{"path":"components/drop-overlay/index.tsx","language":"tsx","source":"import { Flex, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\ninterface DropOverlayProps {\n  /** Whether an accepted file is currently over the inquiry form. */\n  isDropTarget: boolean;\n}\n\n/** Shows the green drop feedback while files are over the inquiry form. */\nexport function DropOverlay({ isDropTarget }: DropOverlayProps) {\n  if (!isDropTarget) return null;\n\n  return (\n    <Flex\n      role=\"status\"\n      aria-live=\"polite\"\n      direction=\"column\"\n      alignItems=\"center\"\n      justifyContent=\"center\"\n      gap=\"sm\"\n      padding=\"xl\"\n      className={styles.overlay}\n    >\n      <Icon icon=\"upload\" aria-hidden=\"true\" />\n      <Text as=\"strong\">Drop files to upload.</Text>\n    </Flex>\n  );\n}\n"},{"path":"components/fields/index.tsx","language":"tsx","source":"$3d"},{"path":"components/file-preview/index.module.css","language":"css","source":".preview {\n  inline-size: 3.5rem;\n  block-size: 3.5rem;\n  flex-shrink: 0;\n  object-fit: cover;\n}\n"},{"path":"components/file-preview/index.tsx","language":"tsx","source":"$3e"},{"path":"components/project-inquiry-form/index.module.css","language":"css","source":".root {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.columns {\n  min-inline-size: 0;\n}\n\n.visualColumn {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.heroImage {\n  display: block;\n  inline-size: 100%;\n  block-size: auto;\n  aspect-ratio: 16 / 9;\n  object-fit: cover;\n}\n\n.form {\n  position: relative;\n  box-sizing: border-box;\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.dropZone {\n  inline-size: 100%;\n  max-inline-size: 100%;\n  min-inline-size: 0;\n}\n"},{"path":"components/project-inquiry-form/index.tsx","language":"tsx","source":"$3f"},{"path":"data/files.ts","language":"ts","source":"$40"},{"path":"index.tsx","language":"tsx","source":"export { ProjectInquiryForm } from './components/project-inquiry-form';\n"}]},"children":"$L41"}]
-2c:["$","$L1b",null,{"as":"h3","id":"sign-in-form","children":"Sign-in form"}]
-2d:["$","$L1f",null,{"block":{"id":"sign-in-form","description":"A simple Antares sign-in experience.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/sign-in-form","files":[{"path":"components/sign-in-fields.tsx","language":"tsx","source":"import { Flex, Input, Label, TextField } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\n\n/** Groups the accessible fields used by the sign-in form block. */\nexport function SignInFields() {\n  return (\n    <Flex direction=\"column\" gap=\"md\">\n      <TextField name=\"email\" isRequired>\n        <Label>{signInCopy.emailLabel}</Label>\n        <Input type=\"email\" autoComplete=\"email\" placeholder=\"you@example.com\" />\n      </TextField>\n      <TextField name=\"password\" isRequired>\n        <Label>{signInCopy.passwordLabel}</Label>\n        <Input type=\"password\" autoComplete=\"current-password\" />\n      </TextField>\n    </Flex>\n  );\n}\n"},{"path":"components/sign-in-form.tsx","language":"tsx","source":"'use client';\n\nimport { Box, Button, Flex, Heading, Text } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\nimport { SignInFields } from './sign-in-fields';\n\n/**\n * Provides a sign-in form composition to copy and adapt. Submission is prevented\n * until the consuming application supplies its authentication behavior.\n *\n * @example\n * ```tsx\n * <SignInForm />\n * ```\n */\nexport function SignInForm() {\n  return (\n    <Flex justifyContent=\"center\">\n      <Box flex=\"0 1 28rem\" padding=\"xl\" rounding=\"md\" elevation=\"card\">\n        <Flex\n          as=\"form\"\n          direction=\"column\"\n          gap=\"lg\"\n          onSubmit={function handleSubmit(event) {\n            event.preventDefault();\n          }}\n        >\n          <Heading level={2}>{signInCopy.title}</Heading>\n          <Text>{signInCopy.description}</Text>\n          <SignInFields />\n          <Button type=\"submit\" variant=\"primary\">\n            {signInCopy.submitLabel}\n          </Button>\n        </Flex>\n      </Box>\n    </Flex>\n  );\n}\n"},{"path":"data/copy.ts","language":"ts","source":"export const signInCopy = {\n  title: 'Sign in to your account',\n  description: 'Use your email and password to continue.',\n  emailLabel: 'Email',\n  passwordLabel: 'Password',\n  submitLabel: 'Sign in'\n} as const;\n"},{"path":"index.tsx","language":"tsx","source":"export { SignInForm } from './components/sign-in-form';\n"}]},"children":["$","$L42",null,{}]}]
-2e:["$","script","script-0",{"src":"/antares/pr-385-site/_next/static/chunks/428imhwwk-ha_.js","async":true}]
-2f:["$","script","script-1",{"src":"/antares/pr-385-site/_next/static/chunks/32o7tmg2i-rss.js","async":true}]
-30:["$","$L43",null,{"children":["$","$36",null,{"name":"Next.MetadataOutlet","children":"$@44"}]}]
-39:true
-45:I[828315,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13","$14"],"Preview"]
+2a:["$","$L1e",null,{"block":{"id":"project-inquiry-form","description":"A responsive project inquiry page with local file previews.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/project-inquiry-form","files":[{"path":"components/attached-files/index.module.css","language":"css","source":".row {\n  inline-size: 100%;\n  max-inline-size: 45.625rem;\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 4));\n}\n\n.fileName {\n  overflow-wrap: anywhere;\n}\n\n.pickerButton {\n  --_attached-files-picker-padding-block: var(--size-space-030, calc(var(--ux-1sbfig8, 0.25rem) * 3));\n  --_attached-files-picker-padding-inline: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 4));\n\n  inline-size: 100%;\n  min-block-size: 5rem;\n  padding: var(--_attached-files-picker-padding-block) var(--_attached-files-picker-padding-inline);\n  border: 1px dashed var(--color-surface-border-card, var(--ux-97h3vl, #d4dbe0));\n  border-radius: var(--ux-2jubes, 6px);\n  background: var(--ux-1mh0ktr, #f5f5f5);\n  white-space: normal;\n}\n"},{"path":"components/attached-files/index.tsx","language":"tsx","source":"$3a"},{"path":"components/benefits/index.module.css","language":"css","source":".list {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n"},{"path":"components/benefits/index.tsx","language":"tsx","source":"$3b"},{"path":"components/drop-overlay/index.module.css","language":"css","source":".overlay {\n  position: absolute;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: inherit;\n  background-color: rgba(216, 239, 239, 0.9);\n  color: var(--color-surface-text-base, var(--ux-1leynsm, #111));\n  pointer-events: none;\n  inset: 0;\n}\n"},{"path":"components/drop-overlay/index.tsx","language":"tsx","source":"import { Flex, Icon, Text } from '@godaddy/antares';\nimport styles from './index.module.css';\n\ninterface DropOverlayProps {\n  /** Whether an accepted file is currently over the inquiry form. */\n  isDropTarget: boolean;\n}\n\n/** Shows the green drop feedback while files are over the inquiry form. */\nexport function DropOverlay({ isDropTarget }: DropOverlayProps) {\n  if (!isDropTarget) return null;\n\n  return (\n    <Flex\n      role=\"status\"\n      aria-live=\"polite\"\n      direction=\"column\"\n      alignItems=\"center\"\n      justifyContent=\"center\"\n      gap=\"sm\"\n      padding=\"xl\"\n      className={styles.overlay}\n    >\n      <Icon icon=\"upload\" aria-hidden=\"true\" />\n      <Text as=\"strong\">Drop files to upload.</Text>\n    </Flex>\n  );\n}\n"},{"path":"components/fields/index.tsx","language":"tsx","source":"$3c"},{"path":"components/file-preview/index.module.css","language":"css","source":".preview {\n  inline-size: 3.5rem;\n  block-size: 3.5rem;\n  flex-shrink: 0;\n  object-fit: cover;\n}\n"},{"path":"components/file-preview/index.tsx","language":"tsx","source":"$3d"},{"path":"components/project-inquiry-form/index.module.css","language":"css","source":".root {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.columns {\n  min-inline-size: 0;\n}\n\n.visualColumn {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.heroImage {\n  display: block;\n  inline-size: 100%;\n  block-size: auto;\n  aspect-ratio: 16 / 9;\n  object-fit: cover;\n}\n\n.form {\n  position: relative;\n  box-sizing: border-box;\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.dropZone {\n  inline-size: 100%;\n  max-inline-size: 100%;\n  min-inline-size: 0;\n}\n"},{"path":"components/project-inquiry-form/index.tsx","language":"tsx","source":"$3e"},{"path":"data/files.ts","language":"ts","source":"$3f"},{"path":"index.tsx","language":"tsx","source":"export { ProjectInquiryForm } from './components/project-inquiry-form';\n"}]},"children":"$L40"}]
+2b:["$","$L1a",null,{"as":"h3","id":"sign-in-form","children":"Sign-in form"}]
+2c:["$","$L1e",null,{"block":{"id":"sign-in-form","description":"A simple Antares sign-in experience.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/sign-in-form","files":[{"path":"components/sign-in-fields.tsx","language":"tsx","source":"import { Flex, Input, Label, TextField } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\n\n/** Groups the accessible fields used by the sign-in form block. */\nexport function SignInFields() {\n  return (\n    <Flex direction=\"column\" gap=\"md\">\n      <TextField name=\"email\" isRequired>\n        <Label>{signInCopy.emailLabel}</Label>\n        <Input type=\"email\" autoComplete=\"email\" placeholder=\"you@example.com\" />\n      </TextField>\n      <TextField name=\"password\" isRequired>\n        <Label>{signInCopy.passwordLabel}</Label>\n        <Input type=\"password\" autoComplete=\"current-password\" />\n      </TextField>\n    </Flex>\n  );\n}\n"},{"path":"components/sign-in-form.tsx","language":"tsx","source":"'use client';\n\nimport { Box, Button, Flex, Heading, Text } from '@godaddy/antares';\nimport { signInCopy } from '../data/copy';\nimport { SignInFields } from './sign-in-fields';\n\n/**\n * Provides a sign-in form composition to copy and adapt. Submission is prevented\n * until the consuming application supplies its authentication behavior.\n *\n * @example\n * ```tsx\n * <SignInForm />\n * ```\n */\nexport function SignInForm() {\n  return (\n    <Flex justifyContent=\"center\">\n      <Box flex=\"0 1 28rem\" padding=\"xl\" rounding=\"md\" elevation=\"card\">\n        <Flex\n          as=\"form\"\n          direction=\"column\"\n          gap=\"lg\"\n          onSubmit={function handleSubmit(event) {\n            event.preventDefault();\n          }}\n        >\n          <Heading level={2}>{signInCopy.title}</Heading>\n          <Text>{signInCopy.description}</Text>\n          <SignInFields />\n          <Button type=\"submit\" variant=\"primary\">\n            {signInCopy.submitLabel}\n          </Button>\n        </Flex>\n      </Box>\n    </Flex>\n  );\n}\n"},{"path":"data/copy.ts","language":"ts","source":"export const signInCopy = {\n  title: 'Sign in to your account',\n  description: 'Use your email and password to continue.',\n  emailLabel: 'Email',\n  passwordLabel: 'Password',\n  submitLabel: 'Sign in'\n} as const;\n"},{"path":"index.tsx","language":"tsx","source":"export { SignInForm } from './components/sign-in-form';\n"}]},"children":["$","$L41",null,{}]}]
+2d:["$","script","script-0",{"src":"/antares/pr-385-site/_next/static/chunks/428imhwwk-ha_.js","async":true}]
+2e:["$","script","script-1",{"src":"/antares/pr-385-site/_next/static/chunks/44yf7as88_ufg.js","async":true}]
+2f:["$","$L42",null,{"children":["$","$35",null,{"name":"Next.MetadataOutlet","children":"$@43"}]}]
+38:true
+44:I[828315,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"Preview"]
 a:300
-41:["$","$L45",null,{}]
-44:null
+40:["$","$L44",null,{}]
+43:null
 a:C
-38:0
+37:0
 8:"$undefined"
-37:"$undefined"
-31:"$undefined"
+36:"$undefined"
+30:"$undefined"
