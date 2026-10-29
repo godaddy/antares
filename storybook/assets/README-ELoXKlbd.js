@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{t}from"./jsx-runtime-MKhVqBIO.js";import{N as n,P as r,c as i,l as a,n as o,s,u as c}from"./blocks-DQP9tsr3.js";import{a as l,c as u,i as d,l as f,n as p,o as m,r as h,s as g,t as _,u as v}from"./calendar.stories-BzgRLxHj.js";function y(e){let t={a:`a`,code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,li:`li`,p:`p`,pre:`pre`,ul:`ul`,...r(),...e.components};return(0,x.jsxs)(x.Fragment,{children:[(0,x.jsx)(s,{of:f,name:`Overview`}),`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{t}from"./jsx-runtime-MKhVqBIO.js";import{N as n,P as r,c as i,l as a,n as o,s,u as c}from"./blocks-DQP9tsr3.js";import{a as l,c as u,i as d,l as f,n as p,o as m,r as h,s as g,t as _,u as v}from"./calendar.stories-Dy_0IjoQ.js";function y(e){let t={a:`a`,code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,li:`li`,p:`p`,pre:`pre`,ul:`ul`,...r(),...e.components};return(0,x.jsxs)(x.Fragment,{children:[(0,x.jsx)(s,{of:f,name:`Overview`}),`
 `,(0,x.jsx)(t.h1,{id:`calendar`,children:`Calendar`}),`
 `,(0,x.jsx)(t.p,{children:`Accessible calendar grids for selecting a single date (Calendar) or a date range (RangeCalendar), built on React Aria.`}),`
 `,(0,x.jsx)(t.h2,{id:`features`,children:`Features`}),`
@@ -98,7 +98,8 @@ export function CalendarDisabledExample() {
 `,(0,x.jsxs)(t.ul,{children:[`
 `,(0,x.jsx)(t.li,{children:`Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges`}),`
 `,(0,x.jsx)(t.li,{children:`Focus-visible outline; disabled days are not focusable`}),`
-`,(0,x.jsx)(t.li,{children:`Out-of-month days render at reduced opacity and are not selectable`}),`
+`,(0,x.jsx)(t.li,{children:`Out-of-month days are hidden and are not selectable`}),`
+`,(0,x.jsx)(t.li,{children:`Unavailable days are struck through; days outside the date bounds render at reduced opacity`}),`
 `]}),`
 `,(0,x.jsx)(t.h2,{id:`best-practices`,children:`Best Practices`}),`
 `,(0,x.jsxs)(t.ul,{children:[`

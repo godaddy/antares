@@ -1,35 +1,25 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{t}from"./jsx-runtime-MKhVqBIO.js";import{N as n,P as r,c as i,l as a,n as o,s,u as c}from"./blocks-DQP9tsr3.js";import{_ as l,a as u,c as d,d as f,f as p,g as m,h,i as g,l as _,m as v,n as y,o as b,p as x,r as S,s as C,t as w,u as T,v as E}from"./date-picker.stories-DUChdDDK.js";function D(e){let t={a:`a`,code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,li:`li`,p:`p`,pre:`pre`,strong:`strong`,ul:`ul`,...r(),...e.components};return(0,k.jsxs)(k.Fragment,{children:[(0,k.jsx)(s,{of:l,name:`Overview`}),`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{t}from"./jsx-runtime-MKhVqBIO.js";import{N as n,P as r,c as i,l as a,n as o,s,u as c}from"./blocks-DQP9tsr3.js";import{_ as l,a as u,c as d,d as f,f as p,g as m,h,i as g,l as _,m as v,n as y,o as b,p as x,r as S,s as C,t as w,u as T,v as E}from"./date-picker.stories-D0p56HN7.js";function D(e){let t={a:`a`,code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,li:`li`,p:`p`,pre:`pre`,ul:`ul`,...r(),...e.components};return(0,k.jsxs)(k.Fragment,{children:[(0,k.jsx)(s,{of:l,name:`Overview`}),`
 `,(0,k.jsx)(t.h1,{id:`datepicker`,children:`DatePicker`}),`
-`,(0,k.jsx)(t.p,{children:`Date fields that display the selected value as a label and open a calendar popover to pick a single date (DatePicker) or a range (DateRangePicker).`}),`
+`,(0,k.jsx)(t.p,{children:`Date fields that display the selected value as a label and open a responsive calendar to pick a single date (DatePicker) or a range (DateRangePicker).`}),`
 `,(0,k.jsx)(t.h2,{id:`features`,children:`Features`}),`
 `,(0,k.jsxs)(t.ul,{children:[`
-`,(0,k.jsxs)(t.li,{children:[(0,k.jsx)(t.strong,{children:`Composable interior`}),`: Compose `,(0,k.jsx)(t.code,{children:`Label`}),`, a `,(0,k.jsx)(t.code,{children:`Button slot="trigger"`}),`, `,(0,k.jsx)(t.code,{children:`DatePickerCalendar`}),`, and optional `,(0,k.jsx)(t.code,{children:`Text`}),` / `,(0,k.jsx)(t.code,{children:`FieldError`}),`. Nothing is added for you, and what you write keeps the order you wrote it in. `,(0,k.jsx)(t.code,{children:`children`}),` also accepts a function for picker state`]}),`
-`,(0,k.jsxs)(t.li,{children:[(0,k.jsx)(t.strong,{children:`Trigger and calendar`}),`: An empty `,(0,k.jsx)(t.code,{children:`Button slot="trigger"`}),` renders a calendar icon and the formatted value from the field. `,(0,k.jsx)(t.code,{children:`DatePickerCalendar`}),` (and `,(0,k.jsx)(t.code,{children:`DateRangePickerCalendar`}),`) is the calendar in the popover it opens: it takes `,(0,k.jsx)(t.code,{children:`Calendar`}),` props plus `,(0,k.jsx)(t.code,{children:`popoverProps`}),` for the overlay. Write `,(0,k.jsx)(t.code,{children:`Popover`}),`, `,(0,k.jsx)(t.code,{children:`Content`}),`, and `,(0,k.jsx)(t.code,{children:`Calendar`}),` yourself to replace the whole overlay`]}),`
-`,(0,k.jsxs)(t.li,{children:[(0,k.jsx)(t.strong,{children:`Sizes`}),`: Each picker is a `,(0,k.jsx)(t.code,{children:`SizeProvider`}),`. `,(0,k.jsx)(t.code,{children:`size`}),` (`,(0,k.jsx)(t.code,{children:`sm`}),`, `,(0,k.jsx)(t.code,{children:`md`}),`, `,(0,k.jsx)(t.code,{children:`lg`}),`) sets its label, trigger, description, error, and the calendar it opens; without it, the picker follows the surrounding scope`]}),`
-`,(0,k.jsxs)(t.li,{children:[(0,k.jsx)(t.code,{children:`DatePicker`}),` (single) and `,(0,k.jsx)(t.code,{children:`DateRangePicker`}),` (range): a read-only formatted date label; the whole field opens a calendar popover`]}),`
-`,(0,k.jsx)(t.li,{children:`Built on React Aria - native form integration, validation, focus management, and screen-reader support`}),`
-`,(0,k.jsxs)(t.li,{children:[`Label formatting via `,(0,k.jsx)(t.code,{children:`formatOptions`}),` / `,(0,k.jsx)(t.code,{children:`placeholder`}),` on the picker itself, or on `,(0,k.jsx)(t.code,{children:`DatePickerValue`}),` / `,(0,k.jsx)(t.code,{children:`DateRangePickerValue`}),` in a trigger you write`]}),`
-`,(0,k.jsxs)(t.li,{children:[(0,k.jsx)(t.code,{children:`minValue`}),` / `,(0,k.jsx)(t.code,{children:`maxValue`}),` bounds and `,(0,k.jsx)(t.code,{children:`isDateUnavailable`}),` per-day disabling`]}),`
+`,(0,k.jsx)(t.li,{children:`Single-date and range selection, with a formatted trigger and responsive calendar`}),`
+`,(0,k.jsxs)(t.li,{children:[`Compose `,(0,k.jsx)(t.code,{children:`Label`}),`, `,(0,k.jsx)(t.code,{children:`Button slot="trigger"`}),`, a calendar, and optional description or error text`]}),`
+`,(0,k.jsxs)(t.li,{children:[(0,k.jsx)(t.code,{children:`size`}),` (`,(0,k.jsx)(t.code,{children:`sm`}),`, `,(0,k.jsx)(t.code,{children:`md`}),`, `,(0,k.jsx)(t.code,{children:`lg`}),`) applies to the field and calendar; omitted sizes follow the surrounding scope`]}),`
+`,(0,k.jsxs)(t.li,{children:[`Customize the trigger with `,(0,k.jsx)(t.code,{children:`formatOptions`}),`, `,(0,k.jsx)(t.code,{children:`placeholder`}),`, or `,(0,k.jsx)(t.code,{children:`DatePickerValue`}),` / `,(0,k.jsx)(t.code,{children:`DateRangePickerValue`})]}),`
+`,(0,k.jsx)(t.li,{children:`Date bounds, unavailable dates, form validation, and keyboard navigation through React Aria`}),`
 `]}),`
 `,(0,k.jsx)(t.h2,{id:`installation`,children:`Installation`}),`
 `,(0,k.jsx)(t.pre,{children:(0,k.jsx)(t.code,{className:`language-bash`,children:`npm install @godaddy/antares
 `})}),`
 `,(0,k.jsx)(t.h2,{id:`working-with-dates`,children:`Working with dates`}),`
-`,(0,k.jsxs)(t.p,{children:[`Values are `,(0,k.jsx)(t.code,{children:`CalendarDate`}),` objects. Import the date primitives you need from the `,(0,k.jsx)(t.code,{children:`@godaddy/antares/date`}),` subpath:`]}),`
+`,(0,k.jsxs)(t.p,{children:[`Values are `,(0,k.jsx)(t.code,{children:`CalendarDate`}),` objects. Import helpers from `,(0,k.jsx)(t.code,{children:`@godaddy/antares/date`}),`, which re-exports
+`,(0,k.jsx)(t.a,{href:`https://react-spectrum.adobe.com/internationalized/date/`,rel:`nofollow`,children:(0,k.jsx)(t.code,{children:`@internationalized/date`})}),`:`]}),`
 `,(0,k.jsx)(t.pre,{children:(0,k.jsx)(t.code,{className:`language-tsx`,children:`import { parseDate } from '@godaddy/antares/date';
-import { DatePicker, Label } from '@godaddy/antares';
 
-function EventDatePicker() {
-  return (
-    <DatePicker defaultValue={parseDate('2024-03-15')}>
-      <Label>Event date</Label>
-    </DatePicker>
-  );
-}
+const date = parseDate('2024-03-15');
 `})}),`
-`,(0,k.jsxs)(t.p,{children:[`Import date helpers from `,(0,k.jsx)(t.code,{children:`@godaddy/antares/date`}),` (a re-export of
-`,(0,k.jsx)(t.a,{href:`https://react-spectrum.adobe.com/internationalized/date/`,rel:`nofollow`,children:(0,k.jsx)(t.code,{children:`@internationalized/date`})}),`).
-Wrap the app in `,(0,k.jsx)(t.code,{children:`<I18nProvider>`}),` so formatting and the calendar follow the user's locale.`]}),`
+`,(0,k.jsxs)(t.p,{children:[`Use `,(0,k.jsx)(t.code,{children:`<I18nProvider>`}),` to set the locale for formatting and calendar navigation.`]}),`
 `,(0,k.jsx)(t.h2,{id:`examples`,children:`Examples`}),`
 `,(0,k.jsx)(t.h3,{id:`default`,children:`Default`}),`
 `,(0,k.jsxs)(t.p,{children:[`A single date picker with a `,(0,k.jsx)(t.code,{children:`Label`}),`.`]}),`
@@ -215,36 +205,43 @@ export function SizesExample() {
     </Flex>
   );
 }`,language:`tsx`}),`
+`,(0,k.jsx)(t.h2,{id:`mobile`,children:`Mobile`}),`
+`,(0,k.jsxs)(t.p,{children:[`Below `,(0,k.jsx)(t.code,{children:`40rem`}),`, calendars open in a bottom drawer with continuous month scrolling. Use the month/year
+controls to jump directly. Resizing changes the presentation on the next opening.`]}),`
+`,(0,k.jsxs)(t.ul,{children:[`
+`,(0,k.jsxs)(t.li,{children:[(0,k.jsx)(t.code,{children:`overlay="popover"`}),` always uses the desktop presentation.`]}),`
+`,(0,k.jsxs)(t.li,{children:[(0,k.jsx)(t.code,{children:`drawerProps`}),` customizes the drawer, which defaults to `,(0,k.jsx)(t.code,{children:`85dvh`}),`; `,(0,k.jsx)(t.code,{children:`popoverProps`}),` customizes the popover.`]}),`
+`,(0,k.jsxs)(t.li,{children:[(0,k.jsx)(t.code,{children:`pageCount`}),` sets months per popover page: one for single dates and two for ranges by default.`]}),`
+`,(0,k.jsxs)(t.li,{children:[(0,k.jsx)(t.code,{children:`commitBehavior`}),` on `,(0,k.jsx)(t.code,{children:`DateRangePickerCalendar`}),` applies to both presentations.`]}),`
+`,(0,k.jsxs)(t.li,{children:[(0,k.jsx)(t.code,{children:`shouldCloseOnSelect={false}`}),` on the picker keeps the calendar open after selection.`]}),`
+`]}),`
+`,(0,k.jsx)(t.pre,{children:(0,k.jsx)(t.code,{className:`language-tsx`,children:`<DatePicker>
+  <Label>Event date</Label>
+  <Button slot="trigger" />
+  <DatePickerCalendar drawerProps={{ maxSize: '90dvh' }} />
+</DatePicker>
+`})}),`
+`,(0,k.jsx)(t.h2,{id:`accessibility`,children:`Accessibility`}),`
+`,(0,k.jsxs)(t.ul,{children:[`
+`,(0,k.jsx)(t.li,{children:`Label the picker; its calendar uses the same accessible name.`}),`
+`,(0,k.jsx)(t.li,{children:`Arrow keys move between dates; Page Up/Down moves between months. Scrolling preserves focus and selection.`}),`
+`,(0,k.jsx)(t.li,{children:`Escape or dismissal returns focus to the trigger. Escape cancels an unfinished range.`}),`
+`,(0,k.jsx)(t.li,{children:`Enlarged text remains readable, with horizontal scrolling inside the drawer when needed.`}),`
+`]}),`
 `,(0,k.jsx)(t.h2,{id:`props`,children:`Props`}),`
 `,(0,k.jsx)(t.pre,{children:(0,k.jsx)(t.code,{className:`language-tsx`,children:`<DatePicker>
   <Label />
-  <Group>
-    <Button slot="trigger">
-      <DatePickerValue />
-    </Button>
-  </Group>
+  <Button slot="trigger" />
+  <DatePickerCalendar />
   <Text slot="description" />
-  <Popover>
-    <Content>
-      <Calendar />
-    </Content>
-  </Popover>
   <FieldError />
 </DatePicker>
 `})}),`
 `,(0,k.jsx)(t.pre,{children:(0,k.jsx)(t.code,{className:`language-tsx`,children:`<DateRangePicker>
   <Label />
-  <Group>
-    <Button slot="trigger">
-      <DateRangePickerValue />
-    </Button>
-  </Group>
+  <Button slot="trigger" />
+  <DateRangePickerCalendar />
   <Text slot="description" />
-  <Popover>
-    <Content>
-      <RangeCalendar />
-    </Content>
-  </Popover>
   <FieldError />
 </DateRangePicker>
 `})}),`
