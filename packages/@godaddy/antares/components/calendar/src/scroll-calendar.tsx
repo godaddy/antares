@@ -169,8 +169,9 @@ function MonthScroller({ type, months, setMonths }: MonthScrollerProps) {
 
   function navigate(next: CalendarDate) {
     let date = next;
-    if (minValue && date.compare(minValue) < 0) date = toCalendar(toCalendarDate(minValue), date.calendar);
-    if (maxValue && date.compare(maxValue) > 0) date = toCalendar(toCalendarDate(maxValue), date.calendar);
+    const { minValue: min, maxValue: max } = state;
+    if (min && date.compare(min) < 0) date = toCalendar(toCalendarDate(min), date.calendar);
+    if (max && date.compare(max) > 0) date = toCalendar(toCalendarDate(max), date.calendar);
     anchor.current = { month: startOfMonth(date).toString(), offset: 0 };
     setActive(startOfMonth(date));
     state.setFocusedDate(date);
