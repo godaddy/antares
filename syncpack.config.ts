@@ -40,6 +40,12 @@ const config: RcFile = {
       range: '',
       packages: ['**'],
       dependencyTypes: ['prod', 'dev'],
+      dependencies: ['typescript']
+    },
+    {
+      range: '',
+      packages: ['**'],
+      dependencyTypes: ['prod', 'dev'],
       dependencies: ['nx', '@nx/**']
     },
     {
@@ -50,6 +56,12 @@ const config: RcFile = {
     }
   ],
   versionGroups: [
+    {
+      label: 'Stable TypeScript compiler',
+      packages: ['**'],
+      dependencies: ['typescript'],
+      policy: 'sameRange'
+    },
     {
       label: 'React peer dependencies',
       packages: ['**'],

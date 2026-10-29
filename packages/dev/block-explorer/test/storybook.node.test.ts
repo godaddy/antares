@@ -1,3 +1,4 @@
+import { EventEmitter } from 'node:events';
 import { resolve } from 'node:path';
 import { compile } from '@mdx-js/mdx';
 import remarkFrontmatter from 'remark-frontmatter';
@@ -10,6 +11,7 @@ const componentReadme = resolve(import.meta.dirname, 'fixtures/package/component
 const importedReadme = resolve(import.meta.dirname, 'fixtures/package/components/imported/README.mdx');
 const invalidBlockReadme = resolve(import.meta.dirname, 'fixtures/invalid-block/README.mdx');
 const invalidLinkReadme = resolve(import.meta.dirname, 'fixtures/invalid-link/README.mdx');
+const packageBlockDirectory = resolve(import.meta.dirname, 'fixtures/package/blocks/fixture-block');
 
 describe('Storybook block explorer plugin', function storybookPluginTests() {
   it('skips non-README files and MDX without a block marker', async function skipsUnrelatedFiles() {
@@ -207,6 +209,56 @@ describe('Storybook block explorer plugin', function storybookPluginTests() {
     );
   });
 
+  it('invalidates only READMEs whose embedded block source changed', async function invalidatesOnSourceEvents() {
+    const { server, invalidated } = createFakeServer([componentReadme, importedReadme]);
+    const plugin = generateBlocksPlugin();
+    (plugin.configureServer as Function)(server);
+
+    await runTransform(plugin, '<Block id="fixture-block" of={Stories.Preview} />', componentReadme);
+    await runTransform(plugin, '<BlockLink id="fixture-block" />', importedReadme);
+    expect(server.watcher.add).toHaveBeenCalledWith(packageBlockDirectory);
+    expect(server.watcher.add).toHaveBeenCalledTimes(1);
+
+    const sourceEvents = [
+      ['add', `${packageBlockDirectory}/new/nested/added.ts`],
+      ['change', `${packageBlockDirectory}/index.tsx`],
+      ['unlink', `${packageBlockDirectory}/new/nested/added.ts`]
+    ];
+    for (const [event, path] of sourceEvents) {
+      server.watcher.emit('all', event, path);
+      expect(invalidated(), `${event} ${path}`).toEqual([`client:${componentReadme}`, `ssr:${componentReadme}`]);
+      expect(server.ws.send).toHaveBeenCalledExactlyOnceWith({ type: 'full-reload' });
+      server.ws.send.mockClear();
+    }
+
+    server.watcher.emit('all', 'change', `${packageBlockDirectory}/README.mdx`);
+    expect(invalidated()).toEqual([
+      `client:${componentReadme}`,
+      `ssr:${componentReadme}`,
+      `client:${importedReadme}`,
+      `ssr:${importedReadme}`
+    ]);
+    expect(server.ws.send).toHaveBeenCalledExactlyOnceWith({ type: 'full-reload' });
+    server.ws.send.mockClear();
+
+    const ignoredEvents = [
+      ['addDir', `${packageBlockDirectory}/new`],
+      ['change', `${packageBlockDirectory}/test/fixture.test.ts`],
+      ['change', `${packageBlockDirectory}/fixture.stories.tsx`],
+      ['change', resolve(packageBlockDirectory, '../sibling-block/index.tsx')]
+    ];
+    for (const [event, path] of ignoredEvents) {
+      server.watcher.emit('all', event, path);
+      expect(invalidated(), `${event} ${path}`).toEqual([]);
+    }
+    expect(server.ws.send).not.toHaveBeenCalled();
+
+    await runTransform(plugin, '# No explorer', componentReadme);
+    server.watcher.emit('all', 'change', `${packageBlockDirectory}/index.tsx`);
+    expect(invalidated()).toEqual([]);
+    expect(server.ws.send).not.toHaveBeenCalled();
+  });
+
   it('registers the block plugin before existing Storybook plugins', async function prependsPlugin() {
     const existingPlugin = { name: 'existing-plugin' };
     const config = { plugins: [existingPlugin] };
@@ -226,4 +278,26 @@ async function runTransform(
   addWatchFile = vi.fn()
 ) {
   return (plugin.transform as Function).call({ addWatchFile }, source, id);
+}
+
+/** Builds the dev-server surface the plugin uses, recording invalidations as `environment:file`. */
+function createFakeServer(readmes: readonly string[]) {
+  const invalidations: string[] = [];
+  const environment = (name: string) => ({
+    moduleGraph: {
+      getModulesByFile: (file: string) => (readmes.includes(file) ? new Set([{ file }]) : undefined),
+      invalidateModule: (module: { file: string }) => invalidations.push(`${name}:${module.file}`)
+    }
+  });
+  const watcher = Object.assign(new EventEmitter(), { add: vi.fn() });
+  const server = {
+    watcher,
+    ws: { send: vi.fn() },
+    environments: { client: environment('client'), ssr: environment('ssr') }
+  };
+
+  return {
+    server,
+    invalidated: () => invalidations.splice(0)
+  };
 }

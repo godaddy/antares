@@ -1,15 +1,10 @@
-import ts from 'typescript';
+import * as ts from 'typescript/unstable/ast';
+import { parseSource } from './typescript.ts';
 import { describe, expect, it } from 'vitest';
 import { toLiteralValue, toTsExpression } from '../src/engine/literal.ts';
 
 function parseExpression(code: string): ts.Expression {
-  const sourceFile = ts.createSourceFile(
-    'expr.ts',
-    `const value = ${code};`,
-    ts.ScriptTarget.Latest,
-    true,
-    ts.ScriptKind.TS
-  );
+  const sourceFile = parseSource(`const value = ${code};`, 'expr.ts');
   const statement = sourceFile.statements[0] as ts.VariableStatement;
   const initializer = statement.declarationList.declarations[0].initializer;
   if (!initializer) throw new Error('Expected an initializer');

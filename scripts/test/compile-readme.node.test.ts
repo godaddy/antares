@@ -1,9 +1,13 @@
-import { describe, it, beforeEach, afterEach } from 'vitest';
+import { describe, it, beforeEach, afterEach, expect, vi } from 'vitest';
 import { writeFile, mkdir, rm } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assume from 'assume';
 import { processContent } from '../compile-readme.ts';
+import { API, Snapshot } from 'typescript/unstable/sync';
+import * as resolverEngine from '../../packages/dev/storybook-addon-helpers/src/engine/resolve.ts';
+import * as componentEngine from '../../packages/dev/storybook-addon-helpers/src/engine/component-type.ts';
+import * as typeEngine from '../../packages/dev/storybook-addon-helpers/src/engine/extract.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const tempDir = join(__dirname, 'temp');
@@ -106,7 +110,69 @@ describe('compile-readme', function compileReadmeTests() {
   });
 
   afterEach(async function cleanup() {
+    vi.restoreAllMocks();
     await rm(tempDir, { recursive: true, force: true });
+  });
+
+  it.each([
+    { context: 'component extraction', failure: undefined, fallback: false },
+    { context: 'fallback extraction', failure: undefined, fallback: true },
+    { context: 'a source loading failure', failure: 'source', fallback: false },
+    { context: 'a component extraction failure', failure: 'component', fallback: false },
+    { context: 'a fallback extraction failure', failure: 'fallback', fallback: true }
+  ])('closes native resources after $context', async function closesNativeResources({ failure, fallback }) {
+    const created: resolverEngine.Resolver[] = [];
+    const createResolver = resolverEngine.createResolver;
+    const open = vi.spyOn(API.prototype, 'updateSnapshot');
+    const close = vi.spyOn(API.prototype, 'close');
+    const dispose = vi.spyOn(Snapshot.prototype, 'dispose');
+    vi.spyOn(resolverEngine, 'createResolver').mockImplementation(function trackResolver(...args) {
+      const resolver = createResolver(...args);
+      created.push(resolver);
+      vi.spyOn(resolver, 'close');
+      if (failure === 'source') {
+        const getSourceFile = resolver.getSourceFile;
+        vi.spyOn(resolver, 'getSourceFile').mockImplementation(function failSource(...sourceArgs) {
+          getSourceFile(...sourceArgs);
+          throw new Error('Source loading failed');
+        });
+      }
+      return resolver;
+    });
+    if (failure === 'component') {
+      vi.spyOn(componentEngine, 'extractComponentDocs').mockImplementation(function failComponent() {
+        throw new Error('Component extraction failed');
+      });
+    }
+    if (failure === 'fallback') {
+      vi.spyOn(typeEngine, 'extractTypeDocs').mockImplementation(function failType() {
+        throw new Error('Fallback extraction failed');
+      });
+    }
+    const stories = fallback
+      ? `import type { TestComponentProps } from './src/index.tsx';
+        export const Props = getComponentDocs(TestComponent);`
+      : STORIES;
+    try {
+      const output = await runProcess(README, {
+        'src/index.tsx': COMPONENT,
+        'test-component.stories.tsx': stories,
+        'test-example.tsx': EXAMPLE
+      });
+
+      expect(created).toHaveLength(1);
+      expect(created[0].close).toHaveBeenCalledOnce();
+      expect(open).toHaveBeenCalled();
+      expect(close).toHaveBeenCalledTimes(open.mock.calls.length);
+      expect(dispose).toHaveBeenCalledTimes(open.mock.calls.length);
+      if (failure) {
+        expect(output).not.toContain('| Prop |');
+      } else {
+        expect(output).toContain('| `title` | `string` | Yes |');
+      }
+    } finally {
+      for (const resolver of created) resolver.close();
+    }
   });
 
   it('should convert MDX with Source and ArgTypes to Markdown', async function testFullConversion() {
