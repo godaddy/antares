@@ -9,9 +9,9 @@ import * as Stories from './drawer.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-An overlay panel that slides in from a screen edge. Built on the same RAC stack as `Modal` (a
-modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar
-navigation and bottom sheets.
+An overlay panel that slides in from a screen edge. Built on React Aria's `Sheet`, it supports
+sidebar navigation and bottom sheets. The drawer can be swiped closed toward its edge, and a drawer
+opened from inside another one stacks on top of it, so a flow can drill deeper on mobile.
 
 `DrawerTrigger` wraps a trigger button and a `<Drawer>`, handling open
 state automatically.
@@ -30,21 +30,22 @@ npm install --save @godaddy/antares
 
 ### Keyboard
 
-| Key      | Action                                                |
-| -------- | ----------------------------------------------------- |
-| `Escape` | Close the drawer (unless `isKeyboardDismissDisabled`) |
-| `Tab`    | Move focus within the drawer (focus is trapped)       |
+| Key      | Action                                            |
+| -------- | ------------------------------------------------- |
+| `Escape` | Close the top drawer (unless `preventDismissal`)  |
+| `Tab`    | Move focus within the drawer (focus is trapped)   |
 
 ### ARIA
 
-- `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
+- `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Sheet)
 - A `Heading slot="title"` labels the dialog via `aria-labelledby`; otherwise pass `aria-label`
 
 ## Best Practices
 
 - Provide a `Heading slot="title"` or an `aria-label` so the dialog has an accessible name.
-- Use `isDismissable` to allow closing via backdrop click.
-- Don't nest drawers.
+- A drawer closes by swipe, Escape, or backdrop press. Use `preventDismissal` only when closing
+  needs an explicit action, and compose a `CloseButton` so there is one.
+- Nest drawers to go deeper into a flow, not to show unrelated content side by side.
 
 ## Props
 

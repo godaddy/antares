@@ -1,65 +1,59 @@
-.overlay {
-  --_overlay-bg: var(--drawer-overlay-bg, rgba(0, 0, 0, 0.6));
-
-  position: fixed;
-  inset: 0;
-  background: var(--_overlay-bg);
-  transition: opacity 250ms cubic-bezier(0.32, 0.72, 0, 1);
+/*
+ * React Aria's Sheet owns the motion: the panel sits in an oversized scroll container and slides by
+ * scrolling, so opening, closing, and swiping share one native gesture. The keyframes below are
+ * scroll-driven by that position rather than timed. Under `prefers-reduced-motion` React Aria jumps
+ * the scroll instead of smoothing it, so the slide and the keyframes it drives are instant.
+ */
+.root {
+  outline: none;
 }
 
-.overlay:where([data-entering], [data-exiting]) {
-  opacity: 0;
+.overlay {
+  --_overlay-bg: var(--drawer-overlay-bg, rgba(0, 0, 0, 0.6));
+}
+
+/* Only the bottom drawer of a stack dims the page, so nested drawers don't darken it twice. */
+.overlay:where([data-stack-index="0"]) {
+  background: var(--_overlay-bg);
 }
 
 .drawer {
-  position: fixed;
   outline: none;
   overflow: hidden;
-  transition: transform 250ms cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* A 3D space so a drawer with a nested drawer on top can recede along the z-axis. */
+  transform: perspective(1000px);
+  will-change: transform;
 }
 
-.drawer:where([data-entering]),
-.drawer:where([data-exiting]) {
-  transform: var(--_slide);
-}
-
-.drawer:where([data-placement="left"], [data-placement="right"]) {
-  inset-block: 0;
-  block-size: 100%;
+.drawer:where([data-position="left"], [data-position="right"]) {
+  block-size: 100dvh;
   max-inline-size: var(--_max-size, min(80vw, 25rem));
   min-inline-size: var(--_min-size, auto);
 }
 
-.drawer:where([data-placement="top"], [data-placement="bottom"]) {
-  inset-inline: 0;
+.drawer:where([data-position="top"], [data-position="bottom"]) {
   inline-size: 100%;
   max-block-size: var(--_max-size, calc(100dvh - 5rem));
   min-block-size: var(--_min-size, auto);
 }
 
-/* Physical edges (not logical inset-inline-*): placement is a physical side that
-   never flips in RTL, so positioning stays physical and matches the slide transform. */
-.drawer:where([data-placement="right"]) {
-  right: 0;
-}
-
-.drawer:where([data-placement="left"]) {
-  left: 0;
-}
-
-.drawer:where([data-placement="bottom"]) {
-  inset-block-end: 0;
+.drawer:where([data-position="bottom"]) {
   border-radius: var(--br-md) var(--br-md) 0 0;
+  transform-origin: center -150px;
 }
 
-.drawer:where([data-placement="top"]) {
-  inset-block-start: 0;
+.drawer:where([data-position="top"]) {
   border-radius: 0 0 var(--br-md) var(--br-md);
+  transform-origin: center 150px;
 }
 
-.overlay:where([data-animate="false"]),
-.overlay:where([data-animate="false"]) :where(.drawer) {
-  transition: none;
+.drawer:where([data-position="left"]) {
+  transform-origin: 150px center;
+}
+
+.drawer:where([data-position="right"]) {
+  transform-origin: -150px center;
 }
 
 /*
@@ -74,12 +68,18 @@
   overflow: hidden;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .drawer {
-    transition: none;
+@keyframes drawer-backdrop {
+  from {
+    opacity: 0;
   }
-  .drawer:where([data-entering]),
-  .drawer:where([data-exiting]) {
-    transform: none;
+  to {
+    opacity: 1;
+  }
+}
+
+/* Composed onto the panel's own transform while a nested drawer is open, tracking its swipe. */
+@keyframes drawer-stack {
+  to {
+    transform: translateZ(-120px);
   }
 }

@@ -7,10 +7,10 @@ import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
 
 const PLACEMENTS = ['left', 'right', 'top', 'bottom'] as const;
 
-// Open the drawer, wait past the 0.2s slide transition, then screenshot.
+// Open the drawer, wait past the scroll-driven slide, then screenshot.
 async function settle() {
   await new Promise(function wait(r) {
-    setTimeout(r, 400);
+    setTimeout(r, 800);
   });
 }
 
@@ -18,7 +18,8 @@ async function settle() {
 // in isolation the panel looks identical for left/right (and top/bottom), so the
 // screenshot must include the viewport to show which edge the drawer slid from.
 function getOverlay(): HTMLElement {
-  const overlay = document.querySelector('[data-placement]')?.parentElement;
+  // The sheet overlay is the outermost element carrying the position.
+  const overlay = document.querySelector('[data-position]');
   if (!overlay) throw new Error('Expected drawer overlay to exist');
   return overlay as HTMLElement;
 }
