@@ -378,7 +378,8 @@ import { Calendar } from '@godaddy/antares';
 
 - Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
 - Focus-visible outline; disabled days are not focusable
-- Out-of-month days render at reduced opacity and are not selectable
+- Out-of-month days are hidden and are not selectable
+- Unavailable days are struck through; days outside the date bounds render at reduced opacity
 
 ## Best Practices [#best-practices]
 
@@ -1329,13 +1330,11 @@ Panel content stays mounted when collapsed. Reset form state explicitly when the
 
 ## Features [#features]
 
-- **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `DatePickerCalendar`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in. `children` also accepts a function for picker state
-- **Trigger and calendar**: An empty `Button slot="trigger"` renders a calendar icon and the formatted value from the field. `DatePickerCalendar` (and `DateRangePickerCalendar`) is the calendar in the popover it opens: it takes `Calendar` props plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `Calendar` yourself to replace the whole overlay
-- **Sizes**: Each picker is a `SizeProvider`. `size` (`sm`, `md`, `lg`) sets its label, trigger, description, error, and the calendar it opens; without it, the picker follows the surrounding scope
-- `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
-- Built on React Aria - native form integration, validation, focus management, and screen-reader support
-- Label formatting via `formatOptions` / `placeholder` on the picker itself, or on `DatePickerValue` / `DateRangePickerValue` in a trigger you write
-- `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+- Single-date and range selection, with a formatted trigger and responsive calendar
+- Compose `Label`, `Button slot="trigger"`, a calendar, and optional description or error text
+- `size` (`sm`, `md`, `lg`) applies to the field and calendar; omitted sizes follow the surrounding scope
+- Customize the trigger with `formatOptions`, `placeholder`, or `DatePickerValue` / `DateRangePickerValue`
+- Date bounds, unavailable dates, form validation, and keyboard navigation through React Aria
 
 ## Installation [#installation]
 
@@ -1345,45 +1344,55 @@ npm install @godaddy/antares
 
 ## Working with dates [#working-with-dates]
 
-Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+Values are `CalendarDate` objects. Import helpers from `@godaddy/antares/date`, which re-exports
+[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/):
 
 ```tsx
 import { parseDate } from '@godaddy/antares/date';
-import { DatePicker, Label } from '@godaddy/antares';
 
-function EventDatePicker() {
-  return (
-    <DatePicker defaultValue={parseDate('2024-03-15')}>
-      <Label>Event date</Label>
-    </DatePicker>
-  );
-}
+const date = parseDate('2024-03-15');
 ```
 
-Import date helpers from `@godaddy/antares/date` (a re-export of
-[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/)).
-Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user's locale.
+Use `<I18nProvider>` to set the locale for formatting and calendar navigation.
 
 ## Examples [#examples]
 
 <Examples of={Stories.Examples} />
+
+## Mobile [#mobile]
+
+Below `40rem`, calendars open in a bottom drawer with continuous month scrolling. Use the month/year
+controls to jump directly. Resizing changes the presentation on the next opening.
+
+- `overlay="popover"` always uses the desktop presentation.
+- `drawerProps` customizes the drawer, which defaults to `85dvh`; `popoverProps` customizes the popover.
+- `pageCount` sets months per popover page: one for single dates and two for ranges by default.
+- `commitBehavior` on `DateRangePickerCalendar` applies to both presentations.
+- `shouldCloseOnSelect={false}` on the picker keeps the calendar open after selection.
+
+```tsx
+<DatePicker>
+  <Label>Event date</Label>
+  <Button slot="trigger" />
+  <DatePickerCalendar drawerProps={{ maxSize: '90dvh' }} />
+</DatePicker>
+```
+
+## Accessibility [#accessibility]
+
+- Label the picker; its calendar uses the same accessible name.
+- Arrow keys move between dates; Page Up/Down moves between months. Scrolling preserves focus and selection.
+- Escape or dismissal returns focus to the trigger. Escape cancels an unfinished range.
+- Enlarged text remains readable, with horizontal scrolling inside the drawer when needed.
 
 ## Props [#props]
 
 ```tsx
 <DatePicker>
   <Label />
-  <Group>
-    <Button slot="trigger">
-      <DatePickerValue />
-    </Button>
-  </Group>
+  <Button slot="trigger" />
+  <DatePickerCalendar />
   <Text slot="description" />
-  <Popover>
-    <Content>
-      <Calendar />
-    </Content>
-  </Popover>
   <FieldError />
 </DatePicker>
 ```
@@ -1391,17 +1400,9 @@ Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user'
 ```tsx
 <DateRangePicker>
   <Label />
-  <Group>
-    <Button slot="trigger">
-      <DateRangePickerValue />
-    </Button>
-  </Group>
+  <Button slot="trigger" />
+  <DateRangePickerCalendar />
   <Text slot="description" />
-  <Popover>
-    <Content>
-      <RangeCalendar />
-    </Content>
-  </Popover>
   <FieldError />
 </DateRangePicker>
 ```
