@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{o as t}from"./keyboard-DpTnma5V.js";function n(e,n){let r=e;for(t(r,n)&&(r=r.parentElement);r&&!t(r,n);)r=r.parentElement;return r||document.scrollingElement||document.documentElement}function r(){return(r=e((()=>{})))()}export{r as n,n as t};
