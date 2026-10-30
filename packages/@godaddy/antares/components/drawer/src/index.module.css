@@ -1,71 +1,55 @@
-.overlay {
-  --_overlay-bg: var(--drawer-overlay-bg, rgba(0, 0, 0, 0.6));
-
-  position: fixed;
-  inset: 0;
-  background: var(--_overlay-bg);
-  transition: opacity 250ms cubic-bezier(0.32, 0.72, 0, 1);
+/* Sheet slides the panel by scrolling, so the keyframes below are scroll-driven, not timed. */
+.root {
+  outline: none;
 }
 
-.overlay:where([data-entering], [data-exiting]) {
-  opacity: 0;
+.overlay {
+  --_overlay-bg: var(--drawer-overlay-bg, rgba(0, 0, 0, 0.6));
+}
+
+.overlay:where([data-stack-index="0"]) {
+  background: var(--_overlay-bg);
 }
 
 .drawer {
-  position: fixed;
   outline: none;
-  overflow: hidden;
-  transition: transform 250ms cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* Not `hidden`: a scroll container here breaks Sheet's view timeline, stopping swipe animations. */
+  overflow: clip;
+  transform: perspective(1000px);
+  will-change: transform;
 }
 
-.drawer:where([data-entering]),
-.drawer:where([data-exiting]) {
-  transform: var(--_slide);
-}
-
-.drawer:where([data-placement="left"], [data-placement="right"]) {
-  inset-block: 0;
-  block-size: 100%;
+.drawer:where([data-position="left"], [data-position="right"]) {
+  block-size: 100dvh;
   max-inline-size: var(--_max-size, min(80vw, 25rem));
   min-inline-size: var(--_min-size, auto);
 }
 
-.drawer:where([data-placement="top"], [data-placement="bottom"]) {
-  inset-inline: 0;
+.drawer:where([data-position="top"], [data-position="bottom"]) {
   inline-size: 100%;
   max-block-size: var(--_max-size, calc(100dvh - 5rem));
   min-block-size: var(--_min-size, auto);
 }
 
-/* Physical edges (not logical inset-inline-*): placement is a physical side that
-   never flips in RTL, so positioning stays physical and matches the slide transform. */
-.drawer:where([data-placement="right"]) {
-  right: 0;
-}
-
-.drawer:where([data-placement="left"]) {
-  left: 0;
-}
-
-.drawer:where([data-placement="bottom"]) {
-  inset-block-end: 0;
+.drawer:where([data-position="bottom"]) {
   border-radius: var(--br-md) var(--br-md) 0 0;
+  transform-origin: center -150px;
 }
 
-.drawer:where([data-placement="top"]) {
-  inset-block-start: 0;
+.drawer:where([data-position="top"]) {
   border-radius: 0 0 var(--br-md) var(--br-md);
+  transform-origin: center 150px;
 }
 
-.overlay:where([data-animate="false"]),
-.overlay:where([data-animate="false"]) :where(.drawer) {
-  transition: none;
+.drawer:where([data-position="left"]) {
+  transform-origin: 150px center;
 }
 
-/*
- * Makes the dialog fill the drawer panel it sits inside. Sizing only, no layout: the region grid
- * comes from `OverlayDialog`.
- */
+.drawer:where([data-position="right"]) {
+  transform-origin: -150px center;
+}
+
 .dialog {
   flex: 1 1 auto;
   min-block-size: 0;
@@ -74,12 +58,17 @@
   overflow: hidden;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .drawer {
-    transition: none;
+@keyframes drawer-backdrop {
+  from {
+    opacity: 0;
   }
-  .drawer:where([data-entering]),
-  .drawer:where([data-exiting]) {
-    transform: none;
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes drawer-stack {
+  to {
+    transform: translateZ(-120px);
   }
 }

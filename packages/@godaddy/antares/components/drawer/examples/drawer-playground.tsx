@@ -13,8 +13,7 @@ import {
 export interface PlaygroundExampleProps {
   placement?: DrawerPlacement;
   showTitle?: boolean;
-  isDismissable?: boolean;
-  animate?: boolean;
+  preventDismissal?: boolean;
   maxSize?: number | string;
   minSize?: number | string;
 }
@@ -22,8 +21,7 @@ export interface PlaygroundExampleProps {
 export function PlaygroundExample({
   placement = 'right',
   showTitle,
-  isDismissable = true,
-  animate,
+  preventDismissal,
   maxSize,
   minSize
 }: PlaygroundExampleProps) {
@@ -33,8 +31,7 @@ export function PlaygroundExample({
         <Button variant="primary">Open drawer</Button>
         <Drawer
           placement={placement}
-          isDismissable={isDismissable}
-          animate={animate}
+          preventDismissal={preventDismissal}
           maxSize={maxSize}
           minSize={minSize}
           aria-label="Drawer"

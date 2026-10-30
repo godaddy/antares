@@ -8,7 +8,7 @@ export function DefaultExample() {
   return (
     <DrawerTrigger>
       <Button variant="primary">Open drawer</Button>
-      <Drawer placement="right" isDismissable aria-label="Drawer">
+      <Drawer placement="right" aria-label="Drawer">
         <Content>Drawer content goes here.</Content>
       </Drawer>
     </DrawerTrigger>
