@@ -4361,9 +4361,24 @@ npx shadcn@latest add godaddy/antares/blocks/sign-in-form
 
 <Block id="project-inquiry-form" description="A responsive project inquiry page with local file previews." of={ProjectInquiryFormStories.Preview} />
 
+### Gallery [#gallery]
+
+<Block id="gallery" description="Browse images in a list or grid, add local files, and open a media viewer." of={GalleryStories.Preview} />
+
 ### Sign-in form [#sign-in-form]
 
 <Block id="sign-in-form" description="A simple Antares sign-in experience." of={SignInFormStories.Preview} />
+
+
+# Gallery
+
+<Meta of={Stories} name="Overview" id="blocks-gallery" />
+
+<Block
+  id="gallery"
+  description="Browse images in a list or grid, add local files, and open a media viewer."
+  of={Stories.Preview}
+/>
 
 
 # Overview dashboard
