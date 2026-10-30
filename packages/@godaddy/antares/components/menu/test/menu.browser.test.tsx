@@ -2,18 +2,22 @@ import { page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
 import assume from 'assume';
+import { Button } from '#components/button';
+import { Menu, MenuItem, MenuTrigger } from '#components/menu';
+import { Popover } from '#components/popover';
 import { DefaultExample } from '../examples/default.tsx';
-import { GroupsExample } from '../examples/groups.tsx';
 import { SubmenuExample } from '../examples/submenu.tsx';
 import { SingleSelectionExample } from '../examples/single-selection.tsx';
 import { MultipleSelectionExample } from '../examples/multiple-selection.tsx';
-import { ControlledExample } from '../examples/controlled.tsx';
-import { PlaygroundExample } from '../examples/menu-playground.tsx';
+import { TitleAndGroupsExample } from '../examples/sections.tsx';
+import { AccountMenuExample } from '../examples/avatar.tsx';
 import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
-import { RichContentExample } from '../examples/rich-content.tsx';
+import { LinksExample } from '../examples/links.tsx';
+import { OpenFromDialogExample } from '../examples/open-from-dialog.tsx';
+import { ComplexExample } from '../examples/complex.tsx';
 
 /** Wait for an element to appear by polling. */
-async function waitForElement(locator: ReturnType<typeof page.getByRole>, timeout = 500): Promise<Element> {
+async function waitForElement(locator: ReturnType<typeof page.getByRole>, timeout = 800): Promise<Element> {
   const start = Date.now();
   while (Date.now() - start < timeout) {
     const el = await locator.query();
@@ -48,110 +52,158 @@ describe('@godaddy/antares', function antares() {
       await user.click(page.getByRole('button', { name: 'Actions' }));
       await waitForElement(page.getByRole('menuitem', { name: 'New file' }));
 
-      await user.keyboard('{ArrowDown}{ArrowDown}');
+      await user.keyboard('{ArrowDown}');
       assume(await page.getByRole('menu').query()).is.not.equal(null);
     });
 
-    it('toggles a checkbox item in a multi-select group', async function toggleCheckbox() {
+    it('opens a submenu without selecting a row', async function submenuHover() {
       const user = userEvent.setup();
-      await render(<GroupsExample />);
+      await render(<SubmenuExample />);
+
+      await user.click(page.getByRole('button', { name: 'Share' }));
+      const shareItem = page.getByRole('menuitem', { name: 'Share' });
+      await waitForElement(shareItem);
+
+      await user.hover(shareItem);
+      await settle(300);
+
+      const email = page.getByRole('menuitem', { name: 'Email' });
+      const el = await waitForElement(email);
+      assume(el.getAttribute('aria-checked')).equals(null);
+      assume(document.querySelectorAll('[role="menu"]').length).equals(2);
+    });
+
+    it('selects a row in the menu and a row in the submenu', async function singleSelection() {
+      const user = userEvent.setup();
+      await render(<SingleSelectionExample />);
 
       await user.click(page.getByRole('button', { name: 'View' }));
+      const selected = page.getByRole('menuitemradio', { name: 'Rulers' });
+      const el = await waitForElement(selected);
+      assume(el.getAttribute('aria-checked')).equals('true');
+      assume(page.getByRole('menuitemradio', { name: 'Comments' }).element().getAttribute('aria-disabled')).equals(
+        'true'
+      );
+
+      const guides = page.getByRole('menuitem', { name: 'Guides' });
+      await user.hover(guides);
+      await settle(300);
+
+      const layout = page.getByRole('menuitemradio', { name: 'Layout' });
+      const layoutEl = await waitForElement(layout);
+      assume(layoutEl.getAttribute('aria-checked')).equals('true');
+
+      await user.click(page.getByRole('menuitemradio', { name: 'Columns' }));
+      await settle();
+      await user.click(page.getByRole('button', { name: 'View' }));
+      await user.hover(page.getByRole('menuitem', { name: 'Guides' }));
+      await settle(300);
+      const next = await waitForElement(page.getByRole('menuitemradio', { name: 'Columns' }));
+      assume(next.getAttribute('aria-checked')).equals('true');
+      assume(page.getByRole('menuitemradio', { name: 'Rulers' }).element().getAttribute('aria-checked')).equals('true');
+    });
+
+    it('renders a label from a render function', async function renderFunctionLabel() {
+      const user = userEvent.setup();
+      await render(
+        <MenuTrigger>
+          <Button>Edit</Button>
+          <Popover aria-label="Menu">
+            <Menu aria-label="Edit" selectionMode="single" defaultSelectedKeys={['cut']}>
+              <MenuItem id="cut" textValue="Cut">
+                {({ isSelected }) => (isSelected ? 'Cut, selected' : 'Cut')}
+              </MenuItem>
+            </Menu>
+          </Popover>
+        </MenuTrigger>
+      );
+
+      await user.click(page.getByRole('button', { name: 'Edit' }));
+      const item = await waitForElement(page.getByRole('menuitemradio', { name: 'Cut, selected' }));
+      assume(item.getAttribute('aria-checked')).equals('true');
+    });
+
+    it('toggles checkboxes on every level', async function toggleCheckbox() {
+      const user = userEvent.setup();
+      await render(<MultipleSelectionExample />);
+
+      await user.click(page.getByRole('button', { name: 'Columns' }));
+      const menu = page.getByRole('menu', { name: 'Columns' });
+      await waitForElement(menu);
+      const columnsLabel = menu.getByText('Columns').element();
+      assume(columnsLabel.textContent).equals('Columns');
+      assume(columnsLabel.getAttribute('role')).equals('presentation');
+
       const sizeItem = page.getByRole('menuitemcheckbox', { name: 'Size' });
       const el = await waitForElement(sizeItem);
       assume(el.getAttribute('aria-checked')).equals('false');
+      assume(el.querySelector('[aria-hidden="true"]:not(svg)')).is.not.equal(null);
+      assume(el.querySelector('svg')).is.not.equal(null);
 
       await user.click(sizeItem);
       assume(page.getByRole('menuitemcheckbox', { name: 'Size' }).element().getAttribute('aria-checked')).equals(
         'true'
       );
+
+      await user.hover(page.getByRole('menuitem', { name: 'Details' }));
+      await settle(300);
+      const detailsItem = page.getByRole('menuitem', { name: 'Details' }).element();
+      assume(detailsItem.getAttribute('role')).equals('menuitem');
+      assume(detailsItem.querySelector('[data-indeterminate]')).is.not.equal(null);
+      const owner = await waitForElement(page.getByRole('menuitemcheckbox', { name: 'Owner' }));
+      assume(owner.getAttribute('aria-checked')).equals('true');
+
+      await user.hover(page.getByRole('menuitem', { name: 'Tags' }));
+      await settle(300);
+      const draft = page.getByRole('menuitemcheckbox', { name: 'Draft' });
+      const draftEl = await waitForElement(draft);
+      assume(draftEl.getAttribute('aria-checked')).equals('false');
+      await user.click(draft);
+      assume(page.getByRole('menuitemcheckbox', { name: 'Draft' }).element().getAttribute('aria-checked')).equals(
+        'true'
+      );
+      assume(document.querySelectorAll('[role="menu"]').length).equals(3);
     });
 
-    it('exposes disabled and link items', async function disabledAndLinks() {
+    it('renders section labels as presentational headings', async function sections() {
       const user = userEvent.setup();
-      await render(<GroupsExample />);
+      await render(<TitleAndGroupsExample />);
 
-      await user.click(page.getByRole('button', { name: 'View' }));
-
-      const archive = page.getByRole('menuitem', { name: 'Archive (unavailable)' });
-      const archiveEl = await waitForElement(archive);
-      assume(archiveEl.getAttribute('aria-disabled')).equals('true');
-
-      const docs = page.getByRole('menuitem', { name: 'Documentation' });
-      const docsEl = await waitForElement(docs);
-      assume(docsEl.getAttribute('href')).equals('https://example.com');
-      assume(docsEl.getAttribute('target')).equals('_blank');
+      await user.click(page.getByRole('button', { name: 'Publish' }));
+      const label = await waitForElement(page.getByText('Export').first());
+      assume(label.tagName).equals('H3');
+      assume(label.getAttribute('role')).equals('presentation');
+      assume(await page.getByRole('heading', { name: 'Export' }).query()).equals(null);
+      assume(await page.getByRole('separator').query()).is.not.equal(null);
+      assume(await page.getByRole('menuitem', { name: 'YouTube…' }).query()).is.not.equal(null);
+      const heading = page.getByRole('heading', { name: 'Menu Title' }).element();
+      assume(heading.getAttribute('role')).equals(null);
     });
 
-    it('opens a submenu on hover', async function submenuHover() {
+    it('opens an account menu from an avatar', async function avatar() {
       const user = userEvent.setup();
-      await render(<SubmenuExample />);
+      await render(<AccountMenuExample />);
 
-      await user.click(page.getByRole('button', { name: 'Share' }));
-      const resourcesItem = page.getByRole('menuitem', { name: 'Resources' });
-      await waitForElement(resourcesItem);
-
-      await user.hover(resourcesItem);
-      await settle(200);
-
-      const file = page.getByRole('menuitem', { name: 'File' });
-      await waitForElement(file);
-      assume(await file.query()).is.not.equal(null);
+      await user.click(page.getByRole('button', { name: 'Account' }));
+      await waitForElement(page.getByRole('menuitem', { name: 'Profile' }));
+      assume(document.body.textContent).contains('John Doe');
+      assume(document.body.textContent).contains('john@example.com');
+      const photo = document.querySelector('img');
+      assume(photo?.getAttribute('src')).contains('placehold.co');
+      assume(photo?.closest('[data-shape]')?.getAttribute('data-shape')).equals('square');
+      assume(document.querySelector('[data-card]')).equals(null);
+      assume(await page.getByRole('switch', { name: 'Dark theme' }).query()).is.not.equal(null);
+      assume(await page.getByRole('menuitem', { name: 'Logout' }).query()).is.not.equal(null);
+      assume(await page.getByRole('separator').query()).is.not.equal(null);
     });
 
-    it('flips the chevron trigger via aria-expanded', async function chevronFlip() {
-      const user = userEvent.setup();
-      await render(<ControlledExample />);
-
-      const button = page.getByRole('button', { name: 'Options' });
-      assume(button.element().getAttribute('aria-expanded')).equals('false');
-
-      await user.click(button);
-      await waitForElement(page.getByRole('menu'));
-      assume(page.getByRole('button', { name: 'Options' }).element().getAttribute('aria-expanded')).equals('true');
-    });
-
-    it('seeds an multi-select group', async function uncontrolledDefaults() {
-      const user = userEvent.setup();
-      await render(<MultipleSelectionExample />);
-
-      await user.click(page.getByRole('button', { name: 'Columns' }));
-      const name = page.getByRole('menuitemcheckbox', { name: 'Name' });
-      const el = await waitForElement(name);
-      assume(el.getAttribute('aria-checked')).equals('true');
-    });
-
-    it('marks the selected item in a single-select group via aria-checked', async function singleSelect() {
-      const user = userEvent.setup();
-      await render(<SingleSelectionExample />);
-
-      await user.click(page.getByRole('button', { name: 'Sort by' }));
-      const recent = page.getByRole('menuitemradio', { name: 'Most recent' });
-      const el = await waitForElement(recent);
-      assume(el.getAttribute('aria-checked')).equals('true');
-
-      const name = page.getByRole('menuitemradio', { name: 'Name' });
-      assume(name.element().getAttribute('aria-checked')).equals('false');
-    });
-
-    it('reflects the sm size via data-size', async function sizeSm() {
-      const user = userEvent.setup();
-      await render(<PlaygroundExample size="sm" />);
-
-      await user.click(page.getByRole('button', { name: 'Format' }));
-      const menu = page.getByRole('menu');
-      const el = await waitForElement(menu);
-      assume(el.getAttribute('data-size')).equals('sm');
-    });
-
-    it('renders a standalone menu inside a bottom sheet and acts on selection', async function bottomSheet() {
+    it('closes the bottom sheet after an item is chosen', async function bottomSheet() {
       const user = userEvent.setup();
       await render(<BottomSheetExample />);
 
       await user.click(page.getByRole('button', { name: 'Open menu' }));
       const profile = page.getByRole('menuitem', { name: 'Profile' });
       await waitForElement(profile);
-      assume(await profile.query()).is.not.equal(null);
 
       await user.click(profile);
       await vi.waitFor(async function drawerClosed() {
@@ -159,28 +211,55 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    it('opens a calendar popover from an item and closes it on selection', async function richContent() {
+    it('renders menu rows as links', async function links() {
       const user = userEvent.setup();
-      await render(<RichContentExample />);
+      await render(<LinksExample />);
 
-      await user.click(page.getByRole('button', { name: 'Schedule' }));
-      const pick = page.getByRole('menuitem', { name: 'Pick a date' });
-      await waitForElement(pick);
+      await user.click(page.getByRole('button', { name: 'Links' }));
+      const docs = await waitForElement(page.getByRole('menuitem', { name: 'Documentation' }));
+      assume(docs.getAttribute('href')).equals('https://example.com/docs');
+      assume(docs.tagName).equals('A');
+    });
 
-      await user.click(pick);
+    it('opens a menu inside a dialog and leaves the dialog open', async function openFromDialog() {
+      const user = userEvent.setup();
+      await render(<OpenFromDialogExample />);
+
+      await user.click(page.getByRole('button', { name: 'Open dialog' }));
+      await waitForElement(page.getByRole('dialog', { name: 'Edit file' }));
+
+      await user.click(page.getByRole('button', { name: 'Open menu' }));
+      const item = await waitForElement(page.getByRole('menuitem', { name: 'Export' }));
+      assume(await page.getByRole('dialog', { name: 'Edit file' }).query()).is.not.equal(null);
+
+      await user.click(item);
       await settle();
+      assume(await page.getByRole('menuitem', { name: 'Export' }).query()).equals(null);
+      assume(await page.getByRole('dialog', { name: 'Edit file' }).query()).is.not.equal(null);
+    });
 
-      // The menu closed and the calendar popover took its place.
-      assume(await page.getByRole('menu').query()).equals(null);
-      const day = page.getByRole('button', { name: /March 20, 2024/ });
-      await waitForElement(day);
+    it('opens a submenu from a grouped menu with icons', async function complex() {
+      const user = userEvent.setup();
+      await render(<ComplexExample />);
 
-      await user.click(day);
-      await settle();
+      await user.click(page.getByRole('button', { name: 'Complex menu' }));
+      const docs = await waitForElement(page.getByRole('menuitem', { name: 'Documentation' }));
+      assume(docs.getAttribute('href')).equals('https://example.com/docs');
+      assume(page.getByRole('menuitem', { name: 'API' }).element().getAttribute('aria-disabled')).equals('true');
 
-      // Picking a day closes the popover and updates the summary text.
-      assume(await page.getByRole('button', { name: /March 20, 2024/ }).query()).equals(null);
-      assume(document.body.textContent).contains('Publishing on 2024-03-20');
+      await user.hover(page.getByRole('menuitem', { name: 'Theme' }));
+      await settle(300);
+      const system = await waitForElement(page.getByRole('menuitemradio', { name: 'System' }));
+      assume(system.getAttribute('aria-checked')).equals('true');
+
+      await user.hover(page.getByRole('menuitem', { name: 'Notifications' }));
+      await settle(300);
+      const push = await waitForElement(page.getByRole('menuitemcheckbox', { name: 'Push' }));
+      assume(push.getAttribute('aria-checked')).equals('false');
+      await user.click(push);
+      assume(page.getByRole('menuitemcheckbox', { name: 'Push' }).element().getAttribute('aria-checked')).equals(
+        'true'
+      );
     });
   });
 });

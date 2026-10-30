@@ -1,1 +1,7 @@
-export { Popover, type PopoverProps, PopoverTrigger, type PopoverTriggerProps } from '#components/popover';
+export {
+  Popover,
+  PopoverContext,
+  type PopoverProps,
+  PopoverTrigger,
+  type PopoverTriggerProps
+} from '#components/popover';

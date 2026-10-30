@@ -1,9 +1,10 @@
-import { Button, CloseButton, Content, Drawer, Menu, MenuGroup, MenuItem } from '@godaddy/antares';
+import { Button, CloseButton, Content, Drawer, Header, Heading, Menu, MenuGroup, MenuItem } from '@godaddy/antares';
 import { useState } from 'react';
 
 /**
- * On small screens a menu often reads better as a bottom sheet than an anchored
- * popover. Since `Menu` works standalone, drop it into a bottom `Drawer`.
+ * On a small screen the same menu can live in a bottom drawer instead of a popover.
+ * @title Bottom Sheet
+ * @order 7
  */
 export function BottomSheetExample() {
   const [open, setOpen] = useState(false);
@@ -17,11 +18,17 @@ export function BottomSheetExample() {
         <CloseButton />
         <Content inlinePadding="0">
           <Menu aria-label="Account actions" onAction={() => setOpen(false)}>
-            <MenuGroup label="Account">
+            <MenuGroup>
+              <Header>
+                <Heading>Account</Heading>
+              </Header>
               <MenuItem id="profile">Profile</MenuItem>
               <MenuItem id="settings">Settings</MenuItem>
             </MenuGroup>
-            <MenuGroup label="Session">
+            <MenuGroup>
+              <Header>
+                <Heading>Session</Heading>
+              </Header>
               <MenuItem id="logout">Log out</MenuItem>
             </MenuGroup>
           </Menu>

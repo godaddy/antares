@@ -1,33 +1,33 @@
-import { Button, Icon, Menu, MenuItem, MenuTrigger, SubmenuTrigger } from '@godaddy/antares';
+import { Button, Icon, Menu, MenuItem, MenuTrigger, Popover, SubmenuTrigger, Text } from '@godaddy/antares';
 
-/** Nested menus via `SubmenuTrigger`. */
+/**
+ * Two levels, and nothing is selected. Hover the submenu row, or press Arrow Right, to open it.
+ * @title Submenu
+ * @order 2
+ */
 export function SubmenuExample() {
   return (
     <MenuTrigger>
       <Button variant="primary">Share</Button>
-      <Menu aria-label="Share">
-        <MenuItem id="copy">Copy link</MenuItem>
-
-        <SubmenuTrigger>
-          <MenuItem id="resources" icon={<Icon icon="ok" />}>
-            Resources
-          </MenuItem>
-          <Menu aria-label="Resources">
-            <MenuItem id="file">File</MenuItem>
-            <MenuItem id="folder">Folder</MenuItem>
-          </Menu>
-        </SubmenuTrigger>
-
-        <SubmenuTrigger>
-          <MenuItem id="dates" icon={<Icon icon="calendar" />}>
-            Dates
-          </MenuItem>
-          <Menu aria-label="Dates">
-            <MenuItem id="monday">Monday</MenuItem>
-            <MenuItem id="friday">Friday</MenuItem>
-          </Menu>
-        </SubmenuTrigger>
-      </Menu>
+      <Popover aria-label="Menu">
+        <Menu aria-label="Share">
+          <MenuItem id="copy">Copy</MenuItem>
+          <MenuItem id="cut">Cut</MenuItem>
+          <SubmenuTrigger>
+            <MenuItem id="share" textValue="Share">
+              <Text slot="label">Share</Text>
+              <Icon icon="chevron-right" />
+            </MenuItem>
+            <Popover aria-label="Menu">
+              <Menu aria-label="Share with">
+                <MenuItem id="email">Email</MenuItem>
+                <MenuItem id="sms">SMS</MenuItem>
+                <MenuItem id="link">Copy link</MenuItem>
+              </Menu>
+            </Popover>
+          </SubmenuTrigger>
+        </Menu>
+      </Popover>
     </MenuTrigger>
   );
 }

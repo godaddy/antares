@@ -1,109 +1,136 @@
-import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
-import assume from 'assume';
-import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
+import type { ReactElement } from 'react';
+import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
-import { GroupsExample } from '../examples/groups.tsx';
+import { SubmenuExample } from '../examples/submenu.tsx';
 import { SingleSelectionExample } from '../examples/single-selection.tsx';
 import { MultipleSelectionExample } from '../examples/multiple-selection.tsx';
-import { SizesExample } from '../examples/sizes.tsx';
-import { SubmenuExample } from '../examples/submenu.tsx';
-import { RichContentExample } from '../examples/rich-content.tsx';
+import { TitleAndGroupsExample } from '../examples/sections.tsx';
+import { AccountMenuExample } from '../examples/avatar.tsx';
+import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
+import { LinksExample } from '../examples/links.tsx';
+import { OpenFromDialogExample } from '../examples/open-from-dialog.tsx';
+import { ComplexExample } from '../examples/complex.tsx';
 
-// Let the popover open/position transitions settle before capturing.
-async function settle(ms = 300) {
-  await new Promise(function wait(r) {
-    setTimeout(r, ms);
+async function shot(example: ReactElement, name: string, keys: string[] = []) {
+  const user = userEvent.setup();
+  const screen = await render(example);
+  await user.tab();
+  await user.keyboard('{Enter}');
+  await vi.waitFor(async function menuOpen() {
+    await expect.element(screen.getByRole('menu')).toBeVisible();
   });
-}
-
-// The menu renders in a Popover portal (hideArrow -> [data-noarrow]); grab the
-// last one so submenu screenshots capture the nested popover.
-function getMenuOverlay(): HTMLElement {
-  const overlays = document.querySelectorAll('[data-noarrow]');
-  const overlay = overlays[overlays.length - 1];
-  if (!overlay) throw new Error('Expected menu popover to exist');
-  return overlay as HTMLElement;
+  for (const key of keys) {
+    await vi.waitFor(function itemFocused() {
+      const role = document.activeElement?.getAttribute('role');
+      if (role !== 'menuitem' && role !== 'menuitemradio' && role !== 'menuitemcheckbox') {
+        throw new Error('waiting for the first item');
+      }
+    });
+    const menus = document.querySelectorAll('[role="menu"]').length;
+    await user.keyboard(key);
+    if (key === '{ArrowRight}') {
+      await vi.waitFor(function submenuOpen() {
+        if (document.querySelectorAll('[role="menu"]').length <= menus) throw new Error('waiting for the submenu');
+      });
+    }
+  }
+  await Promise.all(
+    [...document.images].map(function decodeImage(image) {
+      if (image.complete && image.naturalWidth > 0) return Promise.resolve();
+      return image.decode().catch(function unloaded() {
+        return undefined;
+      });
+    })
+  );
+  await new Promise(function settle(resolve) {
+    setTimeout(resolve, 200);
+  });
+  await expect(document.body).toMatchScreenshot(name);
 }
 
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
-  beforeEach(resetHover);
+  beforeEach(async function viewport() {
+    await page.viewport(800, 700);
+  });
+  afterEach(async function restoreViewport() {
+    await page.viewport(1280, 720);
+  });
 
   describe('#Menu', function menuTests() {
-    it('basic (open)', async function basicOpen() {
-      const { getByRole } = await render(<DefaultExample />);
-      await getByRole('button', { name: 'Actions' }).click();
-      await vi.waitFor(function open() {
-        assume(getByRole('menu').query()).is.not.equal(null);
-      });
-      await settle();
-      await expect(getMenuOverlay()).toMatchScreenshot('basic');
+    it('default', async function actionMenu() {
+      await shot(<DefaultExample />, 'default');
     });
 
-    it('groups (open)', async function groupsOpen() {
-      const { getByRole } = await render(<GroupsExample />);
-      await getByRole('button', { name: 'View' }).click();
-      await vi.waitFor(function open() {
-        assume(getByRole('menu').query()).is.not.equal(null);
-      });
-      await settle();
-      await expect(getMenuOverlay()).toMatchScreenshot('groups');
+    it('submenu', async function submenu() {
+      await shot(<SubmenuExample />, 'submenu', ['{ArrowDown}', '{ArrowDown}', '{ArrowRight}']);
     });
 
-    it('single selection (open)', async function singleSelectionOpen() {
-      const { getByRole } = await render(<SingleSelectionExample />);
-      await getByRole('button', { name: 'Sort by' }).click();
-      await vi.waitFor(function open() {
-        assume(getByRole('menu').query()).is.not.equal(null);
-      });
-      await settle();
-      await expect(getMenuOverlay()).toMatchScreenshot('single-selection');
+    it('single selection', async function singleSelection() {
+      await shot(<SingleSelectionExample />, 'single-selection', ['{ArrowDown}', '{ArrowRight}']);
     });
 
-    it('multiple selection (open)', async function multipleSelectionOpen() {
-      const { getByRole } = await render(<MultipleSelectionExample />);
-      await getByRole('button', { name: 'Columns' }).click();
-      await vi.waitFor(function open() {
-        assume(getByRole('menu').query()).is.not.equal(null);
-      });
-      await settle();
-      await expect(getMenuOverlay()).toMatchScreenshot('multiple-selection');
+    it('multiple selection', async function multipleSelection() {
+      await shot(<MultipleSelectionExample />, 'multiple-selection', [
+        '{ArrowDown}',
+        '{ArrowDown}',
+        '{ArrowDown}',
+        '{ArrowRight}',
+        '{ArrowDown}',
+        '{ArrowDown}',
+        '{ArrowRight}'
+      ]);
     });
 
-    it('submenu (open)', async function submenuOpen() {
+    it('sections', async function sections() {
+      await shot(<TitleAndGroupsExample />, 'sections');
+    });
+
+    it('avatar', async function avatar() {
+      await shot(<AccountMenuExample />, 'avatar');
+    });
+
+    it('bottom sheet', async function bottomSheet() {
+      await page.viewport(420, 760);
+      await shot(<BottomSheetExample />, 'bottom-sheet');
+    });
+
+    it('links', async function links() {
+      await shot(<LinksExample />, 'links');
+    });
+
+    it('open from dialog', async function openFromDialog() {
       const user = userEvent.setup();
-      const { getByRole } = await render(<SubmenuExample />);
-      await getByRole('button', { name: 'Share' }).click();
-      await vi.waitFor(function open() {
-        assume(getByRole('menuitem', { name: 'Resources' }).query()).is.not.equal(null);
+      const screen = await render(<OpenFromDialogExample />);
+      await user.tab();
+      await user.keyboard('{Enter}');
+      await vi.waitFor(async function dialogOpen() {
+        await expect.element(screen.getByRole('dialog', { name: 'Edit file' })).toBeVisible();
       });
-      await user.hover(page.getByRole('menuitem', { name: 'Resources' }));
-      await settle();
-      // Both popovers are open; capture the whole viewport to show the nesting.
-      await expect(document.body).toMatchScreenshot('submenu');
+      await user.keyboard('{Tab}{Tab}{Enter}');
+      await vi.waitFor(async function menuOpen() {
+        await expect.element(screen.getByRole('menu')).toBeVisible();
+      });
+      await new Promise(function settle(resolve) {
+        setTimeout(resolve, 200);
+      });
+      await expect(document.body).toMatchScreenshot('open-from-dialog');
     });
 
-    it('rich content (calendar popover)', async function richContentOpen() {
-      const user = userEvent.setup();
-      const { getByRole } = await render(<RichContentExample />);
-      await getByRole('button', { name: 'Schedule' }).click();
-      await vi.waitFor(function open() {
-        assume(getByRole('menuitem', { name: 'Pick a date' }).query()).is.not.equal(null);
-      });
-      await user.click(page.getByRole('menuitem', { name: 'Pick a date' }));
-      await vi.waitFor(function calendarOpen() {
-        assume(getByRole('button', { name: /March 20, 2024/ }).query()).is.not.equal(null);
-      });
-      await settle();
-      await expect(document.body).toMatchScreenshot('rich-content');
-    });
-
-    it('sizes', async function sizes() {
-      const { container } = await render(<SizesExample />);
-      await settle();
-      await expect(container).toMatchScreenshot('sizes');
+    it('complex', async function complex() {
+      await shot(<ComplexExample />, 'complex', [
+        '{ArrowDown}',
+        '{ArrowDown}',
+        '{ArrowDown}',
+        '{ArrowDown}',
+        '{ArrowDown}',
+        '{ArrowDown}',
+        '{ArrowDown}',
+        '{ArrowRight}'
+      ]);
     });
   });
 });
