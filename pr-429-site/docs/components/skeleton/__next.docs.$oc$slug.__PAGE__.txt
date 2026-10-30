@@ -1,0 +1,112 @@
+3:"$Sreact.fragment"
+4:"/antares/pr-429-site/_next/static/chunks/2kh75yofg3g34.js"
+5:"/antares/pr-429-site/_next/static/chunks/14-i0ymduzrm2.js"
+6:I[339756,["$4","$5"],"default"]
+7:I[837457,["$4","$5"],"default"]
+c:"/antares/pr-429-site/_next/static/chunks/05hze6oym3b4p.js"
+d:"/antares/pr-429-site/_next/static/chunks/0dk684suzjxgk.js"
+e:"/antares/pr-429-site/_next/static/chunks/3nf__z0ryfpxg.js"
+f:"/antares/pr-429-site/_next/static/chunks/2cerq0qof5ea8.js"
+10:"/antares/pr-429-site/_next/static/chunks/24fm2swmphzep.js"
+11:"/antares/pr-429-site/_next/static/chunks/2doqb4oq9w7lp.js"
+12:"/antares/pr-429-site/_next/static/chunks/428imhwwk-ha_.js"
+13:"/antares/pr-429-site/_next/static/chunks/44yf7as88_ufg.js"
+14:I[838538,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsPage"]
+15:I[838538,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsTitle"]
+16:I[838538,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsDescription"]
+17:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"LLMCopyButton"]
+18:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"ViewOptions"]
+19:I[838538,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsBody"]
+1a:I[836838,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"Heading"]
+1b:I[195232,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"CodeBlock"]
+1c:I[195232,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"Pre"]
+1d:I[403113,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"StoryRenderer"]
+1e:I[958092,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DefaultExample"]
+1f:"DynamicCodeBlock"
+20:I[156905,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$1f"]
+21:I[539433,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"SizesExample"]
+53:"ViewportBoundary"
+54:I[897367,["$4","$5"],"$53"]
+55:"MetadataBoundary"
+56:I[897367,["$4","$5"],"$55"]
+57:"$Sreact.suspense"
+9:X
+9:C
+a:X
+b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L14",null,{"toc":[{"depth":2,"url":"#features","title":"Features"},{"depth":2,"url":"#installation","title":"Installation"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#default","title":"Default"},{"depth":3,"url":"#sizes","title":"Sizes"},{"depth":3,"url":"#roundings","title":"Roundings"},{"depth":3,"url":"#custom-size","title":"Custom size"},{"depth":3,"url":"#aspect-ratio","title":"Aspect ratio"},{"depth":3,"url":"#circles-and-squares","title":"Circles and squares"},{"depth":3,"url":"#text-block","title":"Text Block"},{"depth":3,"url":"#media-card","title":"Media card"},{"depth":3,"url":"#in-a-row","title":"In a row"},{"depth":3,"url":"#loading-region","title":"Loading region"},{"depth":3,"url":"#rtl-direction","title":"RTL direction"},{"depth":2,"url":"#accessibility","title":"Accessibility"},{"depth":2,"url":"#best-practices","title":"Best Practices"},{"depth":2,"url":"#troubleshooting","title":"Troubleshooting"},{"depth":2,"url":"#props","title":"Props"}],"footer":{"enabled":true},"children":[["$","$L15",null,{"children":"Skeleton"}],["$","$L16",null,{"className":"mb-0","children":"A placeholder that previews the layout of content while it loads."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L17",null,{"markdownUrl":"/docs/components/skeleton.mdx"}],["$","$L18",null,{"markdownUrl":"/docs/components/skeleton.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/skeleton/README.mdx"}]]}],["$","$L19",null,{"children":[null,"\n",["$","$L1a",null,{"as":"h2","id":"features","children":"Features"}],"\n",["$","ul",null,{"children":["\n",["$","li",null,{"children":["Height presets from ",["$","code",null,{"children":"xs"}]," to ",["$","code",null,{"children":"2xl"}]]}],"\n",["$","li",null,{"children":"Aspect ratios for images and other media"}],"\n",["$","li",null,{"children":"Custom width and height for non-standard shapes"}],"\n",["$","li",null,{"children":[["$","code",null,{"children":"default"}],", ",["$","code",null,{"children":"full"}],", and ",["$","code",null,{"children":"none"}]," rounding"]}],"\n",["$","li",null,{"children":"A subtle shimmer that reverses in right-to-left locales and stops when reduced motion is preferred"}],"\n",["$","li",null,{"children":"Composable into text blocks, avatars, cards, and other loading patterns"}],"\n"]}],"\n",["$","$L1a",null,{"as":"h2","id":"installation","children":"Installation"}],"\n",["$","$L1b",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$L1c",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npm"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" install"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" @godaddy/antares"}]]}]}]}]}],"\n",["$","$L1a",null,{"as":"h2","id":"examples","children":"Examples"}],"\n",["$","$L1a",null,{"as":"h3","id":"default","children":"Default"}],"\n",["$","p",null,{"children":["A Skeleton fills the width of its container at the ",["$","code",null,{"children":"md"}]," height."]}],"\n",["$","$L1d",null,{"component":"$1e"}],"\n",["$","$L20",null,{"lang":"tsx","code":"import { Skeleton, type SkeletonProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: SkeletonProps) {\n  return <Skeleton {...props} />;\n}"}],"\n",["$","$L1a",null,{"as":"h3","id":"sizes","children":"Sizes"}],"\n",["$","p",null,{"children":"Size presets set the height. They suit text and basic controls such as inputs and buttons."}],"\n",["$","$L1d",null,{"component":"$21"}],"\n","$L22","\n","$L23","\n","$L24","\n","$L25","\n","$L26","\n","$L27","\n","$L28","\n","$L29","\n","$L2a","\n","$L2b","\n","$L2c","\n","$L2d","\n","$L2e","\n","$L2f","\n","$L30","\n","$L31","\n","$L32","\n","$L33","\n","$L34","\n","$L35","\n","$L36","\n","$L37","\n","$L38","\n","$L39","\n","$L3a","\n","$L3b","\n","$L3c","\n","$L3d","\n","$L3e","\n","$L3f","\n","$L40","\n","$L41","\n","$L42","\n","$L43","\n","$L44","\n","$L45","\n","$L46","\n","$L47","\n","$L48","\n","$L49","\n","$L4a","\n","$L4b","\n","$L4c","\n","$L4d","\n","$L4e"]}]]}],["$L4f","$L50"],"$L51"]}],"p":"$@52","v":null,"s":"$a"}}]]
+2:[["children",{"s":{"n":"slug","t":"oc","k":"components/skeleton","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
+1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L54",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L56",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$57",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Skeleton"}],["$","meta","1",{"name":"description","content":"A placeholder that previews the layout of content while it loads."}],["$","meta","2",{"property":"og:title","content":"Skeleton"}],["$","meta","3",{"property":"og:description","content":"A placeholder that previews the layout of content while it loads."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/components/skeleton/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Skeleton"}],["$","meta","7",{"name":"twitter:description","content":"A placeholder that previews the layout of content while it loads."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/components/skeleton/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@58","v":null,"s":"$a"}},"a":"$@59","u":"$@5a","b":"H0ayVatO-Bf5bgbeUP8g2"}
+5b:"RoundingsExample"
+5c:I[401968,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$5b"]
+5d:"CustomSizeExample"
+5e:I[721320,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$5d"]
+5f:"AspectRatioExample"
+60:I[903366,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$5f"]
+61:I[387745,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"ShapesExample"]
+62:"TextBlockExample"
+63:I[900628,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$62"]
+64:"MediaCardExample"
+65:I[428864,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$64"]
+66:I[635847,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"RowExample"]
+67:"LoadingRegionExample"
+68:I[377092,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$67"]
+69:I[635148,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"RTLExample"]
+6a:I[403299,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"PropTableClient"]
+6b:I[897367,["$4","$5"],"OutletBoundary"]
+22:["$","$L20",null,{"lang":"tsx","code":"import { Grid, Skeleton, Text } from '@godaddy/antares';\n\nconst sizes = ['xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const;\n\nexport function SizesExample() {\n  return (\n    <Grid columns=\"2.5rem 1fr\" alignItems=\"center\" gap=\"md\">\n      {sizes.map(function renderSize(size) {\n        return [<Text key={`${size}-label`}>{size}</Text>, <Skeleton key={size} size={size} />];\n      })}\n    </Grid>\n  );\n}"}]
+23:["$","$L1a",null,{"as":"h3","id":"roundings","children":"Roundings"}]
+24:["$","p",null,{"children":[["$","code",null,{"children":"default"}]," follows the theme radius, ",["$","code",null,{"children":"full"}]," makes a pill or, with a matching width, a circle,\nand ",["$","code",null,{"children":"none"}]," keeps square corners."]}]
+25:["$","$L1d",null,{"component":"$5c"}]
+26:["$","$L20",null,{"lang":"tsx","code":"import { Flex, Skeleton } from '@godaddy/antares';\n\nexport function RoundingsExample() {\n  return (\n    <Flex direction=\"column\" gap=\"md\">\n      <Skeleton rounding=\"default\" />\n      <Skeleton rounding=\"full\" />\n      <Skeleton rounding=\"full\" width=\"md\" />\n      <Skeleton rounding=\"none\" />\n    </Flex>\n  );\n}"}]
+27:["$","$L1a",null,{"as":"h3","id":"custom-size","children":"Custom size"}]
+28:["$","p",null,{"children":["Set ",["$","code",null,{"children":"width"}]," and ",["$","code",null,{"children":"height"}]," for placeholders with non-standard dimensions. Numbers are pixels, and\nstrings take any CSS length. A custom ",["$","code",null,{"children":"height"}]," overrides ",["$","code",null,{"children":"size"}],"."]}]
+29:["$","$L1d",null,{"component":"$5e"}]
+2a:["$","$L20",null,{"lang":"tsx","code":"import { Flex, Skeleton } from '@godaddy/antares';\n\nexport function CustomSizeExample() {\n  return (\n    <Flex direction=\"column\" gap=\"md\">\n      <Skeleton width={240} height={120} />\n      <Skeleton width=\"50%\" height=\"5rem\" />\n    </Flex>\n  );\n}"}]
+2b:["$","$L1a",null,{"as":"h3","id":"aspect-ratio","children":"Aspect ratio"}]
+2c:["$","p",null,{"children":["Set ",["$","code",null,{"children":"aspectRatio"}]," for images and other media. The height follows the width, so the placeholder\nkeeps its proportions at any size."]}]
+2d:["$","$L1d",null,{"component":"$60"}]
+2e:["$","$L20",null,{"lang":"tsx","code":"import { Grid, Skeleton } from '@godaddy/antares';\n\nconst ratios = ['16 / 9', '4 / 3', '1', '3 / 4', '9 / 16'] as const;\n\nexport function AspectRatioExample() {\n  return (\n    <Grid columns={`repeat(${ratios.length}, 1fr)`} gap=\"md\" alignItems=\"end\">\n      {ratios.map(function renderRatio(ratio) {\n        return <Skeleton key={ratio} aspectRatio={ratio} />;\n      })}\n    </Grid>\n  );\n}"}]
+2f:["$","$L1a",null,{"as":"h3","id":"circles-and-squares","children":"Circles and squares"}]
+30:["$","p",null,{"children":["Match ",["$","code",null,{"children":"width"}]," to ",["$","code",null,{"children":"size"}]," to make a square, and add ",["$","code",null,{"children":"full"}]," rounding to make a circle."]}]
+31:["$","$L1d",null,{"component":"$61"}]
+32:["$","$L20",null,{"lang":"tsx","code":"import { Flex, Skeleton } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg', 'xl', '2xl'] as const;\n\nexport function ShapesExample() {\n  return (\n    <Flex direction=\"column\" gap=\"md\">\n      <Flex alignItems=\"center\" gap=\"md\">\n        {sizes.map(function renderCircle(size) {\n          return <Skeleton key={size} size={size} width={size} rounding=\"full\" />;\n        })}\n      </Flex>\n      <Flex alignItems=\"center\" gap=\"md\">\n        {sizes.map(function renderSquare(size) {\n          return <Skeleton key={size} size={size} width={size} />;\n        })}\n      </Flex>\n    </Flex>\n  );\n}"}]
+33:["$","$L1a",null,{"as":"h3","id":"text-block","children":"Text Block"}]
+34:["$","p",null,{"children":"Stack bars of varying widths so a paragraph reads like real sentences."}]
+35:["$","$L1d",null,{"component":"$63"}]
+36:["$","$L20",null,{"lang":"tsx","code":"import { Flex, Skeleton } from '@godaddy/antares';\n\nexport function TextBlockExample() {\n  return (\n    <Flex direction=\"column\" gap=\"sm\">\n      <Skeleton size=\"xs\" width=\"25%\" />\n      <Skeleton size=\"lg\" width=\"50%\" />\n      <Skeleton size=\"sm\" width=\"95%\" />\n      <Skeleton size=\"sm\" />\n      <Skeleton size=\"sm\" width=\"60%\" />\n    </Flex>\n  );\n}"}]
+37:["$","$L1a",null,{"as":"h3","id":"media-card","children":"Media card"}]
+38:["$","p",null,{"children":"Compose Skeletons inside a Card to preview media and text."}]
+39:["$","$L1d",null,{"component":"$65"}]
+3a:["$","$L20",null,{"lang":"tsx","code":"import { Card, Flex, Grid, Skeleton } from '@godaddy/antares';\n\nexport function MediaCardExample() {\n  return (\n    <Grid columns=\"repeat(auto-fit, minmax(min(100%, 16rem), 1fr))\" gap=\"lg\" alignItems=\"start\">\n      <Card>\n        <Skeleton aspectRatio=\"16 / 9\" />\n        <Flex direction=\"column\" gap=\"sm\">\n          <Skeleton size=\"lg\" width=\"60%\" />\n          <Skeleton size=\"sm\" />\n          <Skeleton size=\"sm\" width=\"80%\" />\n        </Flex>\n      </Card>\n\n      <Card>\n        <Grid columns=\"6rem 1fr\" gap=\"lg\" alignItems=\"center\">\n          <Skeleton aspectRatio={1} />\n          <Flex direction=\"column\" gap=\"sm\">\n            <Skeleton size=\"lg\" width=\"70%\" />\n            <Skeleton size=\"sm\" />\n            <Skeleton size=\"sm\" width=\"50%\" />\n          </Flex>\n        </Grid>\n      </Card>\n    </Grid>\n  );\n}"}]
+3b:["$","$L1a",null,{"as":"h3","id":"in-a-row","children":"In a row"}]
+3c:["$","p",null,{"children":["In a Flex row, a Skeleton with a ",["$","code",null,{"children":"width"}]," keeps its shape, and a default Skeleton fills the\nremaining space."]}]
+3d:["$","$L1d",null,{"component":"$66"}]
+3e:["$","$L20",null,{"lang":"tsx","code":"import { Flex, Skeleton } from '@godaddy/antares';\n\nexport function RowExample() {\n  return (\n    <Flex alignItems=\"center\" gap=\"md\">\n      <Skeleton size=\"xl\" width=\"xl\" rounding=\"full\" />\n      <Skeleton />\n    </Flex>\n  );\n}"}]
+3f:["$","$L1a",null,{"as":"h3","id":"loading-region","children":"Loading region"}]
+40:["$","p",null,{"children":["Skeletons are hidden from assistive technology. Mark the region they fill with ",["$","code",null,{"children":"role=\"status\""}],",\n",["$","code",null,{"children":"aria-busy"}],", and an ",["$","code",null,{"children":"aria-label"}],", then set ",["$","code",null,{"children":"aria-busy"}]," to ",["$","code",null,{"children":"false"}]," when the content arrives."]}]
+41:["$","$L1d",null,{"component":"$68"}]
+42:["$","$L20",null,{"lang":"tsx","code":"import { Flex, Grid, Skeleton } from '@godaddy/antares';\n\nexport function LoadingRegionExample() {\n  return (\n    <Grid role=\"status\" aria-busy=\"true\" aria-label=\"Loading profile\" columns=\"auto 1fr\" gap=\"md\" alignItems=\"center\">\n      <Skeleton size=\"xl\" width=\"xl\" rounding=\"full\" />\n      <Flex direction=\"column\" gap=\"sm\">\n        <Skeleton size=\"sm\" width=\"40%\" />\n        <Skeleton size=\"xs\" width=\"25%\" />\n      </Flex>\n    </Grid>\n  );\n}"}]
+43:["$","$L1a",null,{"as":"h3","id":"rtl-direction","children":"RTL direction"}]
+44:["$","p",null,{"children":["Skeleton follows the ",["$","code",null,{"children":"dir"}]," of the page or a parent element. In right-to-left layouts, bars align\nto the right and the shimmer moves from right to left."]}]
+45:["$","$L1d",null,{"component":"$69"}]
+46:["$","$L20",null,{"lang":"tsx","code":"import { Box } from '@godaddy/antares';\nimport { TextBlockExample } from './text-block.tsx';\n\nexport function RTLExample() {\n  return (\n    <Box dir=\"rtl\">\n      <TextBlockExample />\n    </Box>\n  );\n}"}]
+47:["$","$L1a",null,{"as":"h2","id":"accessibility","children":"Accessibility"}]
+48:["$","ul",null,{"children":["\n",["$","li",null,{"children":"Every Skeleton is hidden from assistive technology, so a page with many placeholders stays quiet."}],"\n",["$","li",null,{"children":["Mark the region the Skeletons fill with ",["$","code",null,{"children":"role=\"status\""}],", ",["$","code",null,{"children":"aria-busy=\"true\""}],", and an ",["$","code",null,{"children":"aria-label"}]," that describes what is loading."]}],"\n",["$","li",null,{"children":["Set ",["$","code",null,{"children":"aria-busy"}]," to ",["$","code",null,{"children":"false"}],", or remove it, once the real content replaces the Skeletons."]}],"\n",["$","li",null,{"children":"The shimmer stops when the user prefers reduced motion, and the shape gets an outline in forced colors mode."}],"\n"]}]
+49:["$","$L1a",null,{"as":"h2","id":"best-practices","children":"Best Practices"}]
+4a:["$","ul",null,{"children":["\n",["$","li",null,{"children":"Approximate the final layout; a skeleton doesn't need to be pixel-perfect."}],"\n",["$","li",null,{"children":["Use size presets for text and basic controls, and ",["$","code",null,{"children":"aspectRatio"}]," for images and media."]}],"\n",["$","li",null,{"children":"Vary the widths of text bars so a paragraph reads like real sentences."}],"\n",["$","li",null,{"children":["Match ",["$","code",null,{"children":"width"}]," to ",["$","code",null,{"children":"size"}]," for squares, and add ",["$","code",null,{"children":"full"}]," rounding for circles."]}],"\n"]}]
+4b:["$","$L1a",null,{"as":"h2","id":"troubleshooting","children":"Troubleshooting"}]
+4c:["$","ul",null,{"children":["\n",["$","li",null,{"children":["If the shimmer doesn't reverse in a right-to-left app, set ",["$","code",null,{"children":"dir=\"rtl\""}]," on ",["$","code",null,{"children":"<html>"}]," or a parent element. Skeleton follows the ",["$","code",null,{"children":"dir"}]," attribute, and a locale set only through ",["$","code",null,{"children":"I18nProvider"}]," doesn't change it."]}],"\n"]}]
+4d:["$","$L1a",null,{"as":"h2","id":"props","children":"Props"}]
+4e:["$","$L6a",null,{"entries":[{"name":"size","type":"SkeletonSize","default":"'md'","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Height preset."}]],"required":false},{"name":"width","type":"SkeletonSize | number | (string & {})","default":"'100%'","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Width as a size preset, a CSS length, or a number of pixels."}]],"required":false},{"name":"height","type":"number | string","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Custom height as a CSS length or a number of pixels. Overrides ",["$","code","code-0",{"className":"font-mono","children":"size"}]," and ",["$","code","code-1",{"className":"font-mono","children":"aspectRatio"}],"."]}]],"required":false},{"name":"aspectRatio","type":"number | string","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Width-to-height ratio, such as ",["$","code","code-0",{"className":"font-mono","children":"'16 / 9'"}]," or ",["$","code","code-1",{"className":"font-mono","children":"1"}],". Derives the height from the width and overrides ",["$","code","code-2",{"className":"font-mono","children":"size"}],"."]}]],"required":false},{"name":"rounding","type":"SkeletonRounding","default":"'default'","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Corner rounding. ",["$","code","code-0",{"className":"font-mono","children":"default"}]," follows the theme radius, ",["$","code","code-1",{"className":"font-mono","children":"full"}]," makes a pill (or a circle when\nwidth matches height), and ",["$","code","code-2",{"className":"font-mono","children":"none"}]," keeps square corners."]}]],"required":false},{"name":"className","type":"string","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Additional class names applied to the skeleton."}]],"required":false}],"categories":{}}]
+4f:["$","script","script-0",{"src":"/antares/pr-429-site/_next/static/chunks/428imhwwk-ha_.js","async":true}]
+50:["$","script","script-1",{"src":"/antares/pr-429-site/_next/static/chunks/44yf7as88_ufg.js","async":true}]
+51:["$","$L6b",null,{"children":["$","$57",null,{"name":"Next.MetadataOutlet","children":"$@6c"}]}]
+5a:true
+a:300
+6c:null
+a:C
+59:0
+8:"$undefined"
+58:"$undefined"
+52:"$undefined"
