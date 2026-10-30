@@ -1,0 +1,7 @@
+{
+  "outputBudget": 18432,
+  "consumerBudgets": {
+    "auto-entry-bento-to-attribute-value-9eb93abaa06c": 1152,
+    "auto-export-bento-to-attribute-value-stringify-13b7c600f909": 1152
+  }
+}

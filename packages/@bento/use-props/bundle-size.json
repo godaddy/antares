@@ -1,0 +1,11 @@
+{
+  "outputBudget": 45184,
+  "consumerBudgets": {
+    "auto-entry-bento-use-props-ba373ccf7f2a": 1408,
+    "auto-export-bento-use-props-execute-0248e83f1879": 768,
+    "auto-export-bento-use-props-isEventListener-2a06bf7c5183": 768,
+    "auto-export-bento-use-props-isRenderProp-c0240cda6ed8": 768,
+    "auto-export-bento-use-props-renderProp-cc6524e24973": 768,
+    "auto-export-bento-use-props-useProps-98d201c5c74f": 1408
+  }
+}

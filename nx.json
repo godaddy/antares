@@ -31,6 +31,13 @@
     "@nx/vitest:test": {
       "cache": true,
       "inputs": ["default", "^default"]
+    },
+    "bundle-size:build": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "bundle-size:check": {
+      "cache": false
     }
   },
   "plugins": [

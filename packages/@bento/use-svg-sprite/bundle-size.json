@@ -1,0 +1,8 @@
+{
+  "outputBudget": 23040,
+  "consumerBudgets": {
+    "auto-entry-bento-use-svg-sprite-b6aa5d442626": 1280,
+    "auto-export-bento-use-svg-sprite-root-c2570fb4ed96": 640,
+    "auto-export-bento-use-svg-sprite-useSVGSprite-017066f8194e": 1280
+  }
+}

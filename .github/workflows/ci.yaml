@@ -50,6 +50,13 @@ jobs:
       - name: Test
         run: npm test
 
+      - name: Build Bundle Reports
+        timeout-minutes: 45
+        run: npm run bundle-size:build
+
+      - name: Check Bundle Budgets
+        run: npm run bundle-size:check
+
       - name: Run Visual Tests
         run: npm run test:visual
 
