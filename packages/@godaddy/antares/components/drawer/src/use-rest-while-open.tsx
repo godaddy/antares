@@ -36,7 +36,6 @@ export function useRestWhileOpen(panelRef: RefObject<HTMLElement | null>) {
       }
 
       overlay.addEventListener('react-aria-sheet-close', restore);
-      restore();
       return function stopWatching() {
         cancelAnimationFrame(frame);
         overlay.removeEventListener('react-aria-sheet-close', restore);

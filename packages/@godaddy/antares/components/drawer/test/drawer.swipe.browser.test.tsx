@@ -155,6 +155,25 @@ describe('@godaddy/antares', function antares() {
       }
     });
 
+    it('finishes entering on touch devices under reduced motion', async function touchReducedEnter() {
+      const session = cdp() as unknown as { send: (method: string, params: unknown) => Promise<void> };
+      // Touch support makes React Aria defer the sheet's entry until after the keyboard check.
+      await session.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 1 });
+      await session.send('Emulation.setEmulatedMedia', {
+        features: [{ name: 'prefers-reduced-motion', value: 'reduce' }]
+      });
+      try {
+        await render(<RejectedDismiss />);
+
+        await page.getByRole('button', { name: 'Open' }).click();
+        await waitForEntered('Guarded');
+        assume(page.getByRole('dialog', { name: 'Guarded' }).element().closest('[data-entering]')).equals(null);
+      } finally {
+        await session.send('Emulation.setEmulatedMedia', { features: [] });
+        await session.send('Emulation.setTouchEmulationEnabled', { enabled: false });
+      }
+    });
+
     it('fades the backdrop as the drawer is swiped', async function backdropTimeline() {
       await render(<NestedExample />);
 
