@@ -44,7 +44,7 @@ export function ActionsExample() {
           </TextLockup>
 
           <ButtonGroup justifyContent="end">
-            <Button variant="primary" isSelected={saved} onPress={() => setSaved(!saved)}>
+            <Button variant="primary" aria-pressed={saved} onPress={() => setSaved(!saved)}>
               {saved ? 'Saved' : 'Save'}
             </Button>
           </ButtonGroup>

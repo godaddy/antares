@@ -76,7 +76,7 @@ export function LayoutExample() {
                 <Tag slot="eyebrow">Recommended</Tag>
                 <Header>
                   <CornerActions>
-                    <Button aria-label={`Save ${title}`} isSelected={saved.has(id)} onPress={() => toggleSaved(id)}>
+                    <Button aria-label={`Save ${title}`} aria-pressed={saved.has(id)} onPress={() => toggleSaved(id)}>
                       <Icon icon="star" />
                     </Button>
                   </CornerActions>

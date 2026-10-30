@@ -12,41 +12,12 @@ import { SizesExample } from '../examples/sizes.tsx';
 import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
 import { IconExample } from '../examples/icon.tsx';
 import { IconsAndAlignmentExample } from '../examples/icons-and-alignment.tsx';
-import { SelectedExample } from '../examples/selected.tsx';
 import { ControlExample } from '../examples/control.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
     beforeAll(preloadTestIcons);
     beforeEach(resetPointer);
-
-    it('keeps the selected look through hover and toggles it on press', async function selection() {
-      const { getByRole } = await render(<SelectedExample />);
-      const button = getByRole('button', { name: 'Available' });
-      const el = button.element();
-      const selectedBg = getComputedStyle(el).backgroundColor;
-
-      await expect.element(button).toHaveAttribute('aria-pressed', 'true');
-      await userEvent.hover(button);
-      expect(getComputedStyle(el).backgroundColor).toBe(selectedBg);
-
-      await userEvent.click(button);
-      await expect.element(button).toHaveAttribute('aria-pressed', 'false');
-      await userEvent.unhover(button);
-      expect(getComputedStyle(el).backgroundColor).not.toBe(selectedBg);
-    });
-
-    it('keeps the selected look when disabled', async function disabledSelection() {
-      const { getByRole } = await render(<SelectedExample />);
-      const background = (name: string) => getComputedStyle(getByRole('button', { name }).element()).backgroundColor;
-
-      expect(background('Disabled on')).not.toBe(background('Disabled off'));
-    });
-
-    it('ignores isSelected on inline buttons', async function inlineSelection() {
-      const { getByRole } = await render(<SelectedExample />);
-      await expect.element(getByRole('button', { name: 'Inline' })).not.toHaveAttribute('aria-pressed');
-    });
 
     it('rounds standalone controls while fields own their joined corners', async function controlCorners() {
       const { getByRole } = await render(<ControlExample />);

@@ -57,7 +57,7 @@ export const MetricsLockup = forwardRef<HTMLDivElement, MetricsLockupProps>(func
                 variant="minimal"
                 size="sm"
                 aria-label="More information"
-                isSelected={pinned}
+                aria-pressed={pinned}
                 className={styles.infoTrigger}
                 onPress={() => setPinned((p) => !p)}
               >

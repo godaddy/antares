@@ -69,10 +69,7 @@ interface BaseButtonProps<V extends ButtonVariant = ButtonVariant> {
   children?: React.ReactNode;
 }
 
-export interface ButtonProps extends BaseButtonProps, Omit<RACButtonProps, 'children' | 'isPending'> {
-  /** Shows the button as selected and sets `aria-pressed`. Ignored by the `inline` and `trigger` variants. */
-  isSelected?: boolean;
-}
+export interface ButtonProps extends BaseButtonProps, Omit<RACButtonProps, 'children' | 'isPending'> {}
 
 export const ButtonContext: Context<ContextValue<RACButtonProps, HTMLButtonElement>> = RACButtonContext;
 
@@ -80,21 +77,19 @@ type ButtonPresentationProps = Pick<ButtonProps, 'variant' | 'size'>;
 
 /** Triggers an action. A parent may publish `variant`/`size` per slot; local props win. */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, ref) {
-  const { variant, size, className, children, slot, isSelected, ...rest } = props;
+  const { variant, size, className, children, slot, ...rest } = props;
   const inherited = useSlottedContext(ButtonContext, slot) as ButtonPresentationProps | null | undefined;
   const declared = useDeclaredSize();
   const resolvedVariant = variant ?? inherited?.variant;
   // A trigger follows its field's scale instead of Button's own sizes.
   const isTrigger = resolvedVariant === 'trigger';
   const resolvedSize = size ?? inherited?.size ?? (isTrigger ? undefined : declared);
-  const canSelect = !isTrigger && resolvedVariant !== 'inline';
 
   return (
     <RACButton
       {...rest}
       ref={ref}
       slot={slot}
-      aria-pressed={canSelect && isSelected !== undefined ? isSelected : rest['aria-pressed']}
       className={composeClassName(className, buttonVariants({ variant: resolvedVariant, size: resolvedSize }))}
     >
       {buttonLabel(children)}

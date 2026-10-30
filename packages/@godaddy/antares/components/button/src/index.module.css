@@ -71,7 +71,7 @@
     color: var(--_button-text-hovered);
   }
 
-  &:where([data-pressed]:not([data-disabled]), [aria-pressed="true"]) {
+  &:where([data-pressed]:not([data-disabled])) {
     background: var(--_button-bg-pressed);
     border-color: var(--_button-border-pressed);
     color: var(--_button-text-pressed);
