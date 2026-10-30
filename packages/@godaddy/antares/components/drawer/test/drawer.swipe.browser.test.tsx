@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { describe, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { page } from 'vitest/browser';
+import { cdp, page } from 'vitest/browser';
 import assume from 'assume';
 import { Button, Content, Drawer, DrawerTrigger, Text } from '@godaddy/antares';
 import { NestedExample } from '../examples/nested.tsx';
@@ -126,6 +126,33 @@ describe('@godaddy/antares', function antares() {
       await vi.waitFor(function closed() {
         assume(page.getByRole('dialog', { name: 'Guarded' }).query()).equals(null);
       });
+    });
+
+    it('restores a rejected swipe instantly under reduced motion', async function swipeRejectedReduced() {
+      const session = cdp() as unknown as { send: (method: string, params: unknown) => Promise<void> };
+      await session.send('Emulation.setEmulatedMedia', {
+        features: [{ name: 'prefers-reduced-motion', value: 'reduce' }]
+      });
+      try {
+        await render(<RejectedDismiss />);
+
+        await page.getByRole('button', { name: 'Open' }).click();
+        await waitForEntered('Guarded');
+
+        const scroller = getScroller('Guarded');
+        const rest = scroller.scrollLeft;
+        const positions: number[] = [];
+        scroller.addEventListener('scroll', () => positions.push(scroller.scrollLeft));
+
+        swipeAway('Guarded');
+        await vi.waitFor(function restored() {
+          assume(scroller.scrollLeft).equals(rest);
+        });
+        // Instant: no scroll frames between the swiped-away position and rest.
+        assume(positions.filter((x) => x !== 0 && x !== rest)).is.length(0);
+      } finally {
+        await session.send('Emulation.setEmulatedMedia', { features: [] });
+      }
     });
 
     it('fades the backdrop as the drawer is swiped', async function backdropTimeline() {

@@ -30,7 +30,7 @@ export function useRestWhileOpen(panelRef: RefObject<HTMLElement | null>) {
           scroller.scrollTo({
             top: scroller.scrollTop + box.top,
             left: scroller.scrollLeft + box.left,
-            behavior: 'smooth'
+            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
           });
         });
       }
