@@ -1,5 +1,18 @@
 # @godaddy/antares
 
+## 0.12.0
+
+### Minor Changes
+
+- Add responsive date picker drawers below 40rem with continuous month scrolling and month/year controls. Update shared calendar spacing, sized rows, and range styling; hide out-of-month days and strike through unavailable dates. ([#385](https://github.com/godaddy/bento/pull/385) by @egaitan-godaddy)
+- Expose React Aria's `useDrop` hook and related types through the public `DropZone` export. ([#366](https://github.com/godaddy/bento/pull/366) by @rmojica-godaddy)
+- Add `Skeleton`, a loading placeholder with size presets, custom dimensions, rounding options, and a shimmer that respects RTL and reduced motion. ([#396](https://github.com/godaddy/bento/pull/396) by @egaitan-godaddy)
+
+### Patch Changes
+
+- chore: build and typecheck Antares with stable TypeScript 7. ([#403](https://github.com/godaddy/bento/pull/403) by @rmojica-godaddy)
+- Update Tooltip to use high-contrast overlay background and foreground tokens. ([#417](https://github.com/godaddy/bento/pull/417) by @rmojica-godaddy)
+
 ## 0.11.0
 
 ### Minor Changes
