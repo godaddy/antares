@@ -1,26 +1,24 @@
 ---
 title: Menu
-description: Accessible dropdown menu with grouping, multi-select checkbox items, leading icons, and submenus.
+description: Menu lists actions or options opened from a trigger or placed in a drawer. Supports composable rows, selection modes, and nested submenus.
 ---
-import { Meta, ArgTypes } from '@storybook/addon-docs/blocks';
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import { Examples } from '@bento/storybook-addon-helpers/runtime';
 import * as Stories from './menu.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-An accessible dropdown menu built on React Aria. It supports grouping with optional
-titles, multi-select checkbox items, leading icons, submenus, and two sizes. It
-reuses Antares' `Popover` for the overlay and `Checkbox` indicator for selection.
+`MenuTrigger` wraps a trigger element and a `Popover` containing `Menu`. The menu is fully keyboard-navigable, supports typeahead search, and handles open/close state automatically. The trigger applies `hideArrow` and card styling to all popovers, including nested submenus.
 
 ## Features
 
-- Grouping with an optional title via `MenuGroup`, plus `MenuSeparator` dividers
-- Multi-select groups: set `selectionMode="multiple"` on a `MenuGroup` to render
-  its items as checkboxes, while other groups stay plain action items
-- Optional leading `icon` per item; links (`href`) and disabled items
-- Submenus via `SubmenuTrigger`
-- Two sizes (`sm`, `md`); set `size` explicitly on each submenu `Menu`
-- Usable anchored to a trigger or standalone (e.g. inside a bottom-sheet `Drawer`)
+- **Trigger and popover**: `MenuTrigger` wraps any trigger and opens a `Popover` with automatic card styling and hidden arrow. Use for desktop; use `Drawer` for mobile.
+- **Menu title and groups**: Place an optional `Heading` as a sibling to `Menu` (not `slot="title"`). Use `MenuGroup` + `Header` + `Heading` for section labels; group headings are presentational.
+- **Composable rows**: Each `MenuItem` renders a string label or composed content (icons, checkboxes). Use render props (`isSelected`, `selectionMode`) and pass `textValue` for typeahead.
+- **Single or multiple selection**: Set `selectionMode="single"` or `"multiple"` on `Menu` or per-`MenuGroup`. Use controlled state or `defaultSelectedKeys` for uncontrolled menus.
+- **Separators and submenus**: `Separator` divides items. `SubmenuTrigger` nests a `Popover` + `Menu` for hierarchies.
+- **Popover or drawer**: Open from `MenuTrigger` for positioned overlays, or place `Menu` in a `Drawer` for full-screen/mobile.
 
 ## Installation
 
@@ -34,39 +32,63 @@ npm install --save @godaddy/antares
 
 ## Accessibility
 
-- **Space/Enter**: activate an item; **Escape**: close
-- **Arrow Up/Down**: move between items; **Home/End**: first/last
-- **Arrow Right/Left**: open/close a submenu
-- **Type to select**: jump to a matching item (string labels are used as `textValue`)
-- Multi-select items use RAC's `menuitemcheckbox` role; the checkbox indicator is
-  decorative (`aria-hidden`) and the item owns interaction
+### Keyboard
+
+| Key                  | Action                                       |
+| -------------------- | -------------------------------------------- |
+| `Enter` / `Space`    | Activates the focused item                   |
+| `Arrow Up` / `Down`  | Moves focus between items                    |
+| `Home` / `End`       | Jumps to the first or last item              |
+| `Arrow Right`        | Opens the submenu (if present)               |
+| `Arrow Left`         | Closes the submenu and returns focus         |
+| `Escape`             | Closes the menu (or submenu)                 |
+| Typeahead (letters)  | Jumps to the item matching the typed letter  |
+
+### ARIA
+
+- **Menu accessible name**: Set `aria-label` on the `<Menu>` to name the list (e.g., "Actions", "Share with"). This is separate from any `Heading` title in the popover.
+- **Roles**: Single-select items use `menuitemradio`; multiple-select use `menuitemcheckbox`. Unselectable items use `menuitem`.
+- **Selection indicators are decorative**: A checkbox, radio check, or chevron-right icon is purely visual. The item owns the `aria-checked` state.
+- **Group headings**: The group `Heading` receives `role="presentation"` automatically and acts as a label for the group, not a real heading level.
 
 ## Best Practices
 
-- Give each selectable `MenuItem` a stable `id`, and provide the `Menu` an
-  `aria-label` when there is no visible label.
-- Use a leading `icon` for recognition, not as the only label - keep a text label.
-- Reserve checkbox groups for multi-select; use plain groups for one-shot actions.
-- A `Menu` is a collection: it only renders `MenuItem`, `MenuGroup`,
-  `MenuSeparator`, and `SubmenuTrigger`. For rich content (a `Calendar`, a form),
-  close the menu from `onAction` and open a separate `Popover` anchored with
-  `triggerRef` instead of putting it in a submenu.
+- **Title placement**: Place an optional `Heading` as a sibling to `Menu`, not wrapped inside (do not use `slot="title"`; see "Title and groups" example).
+- **Menu name**: Set `aria-label` on `<Menu>` to name the list ("Actions", "Share with", "Theme").
+- **Stable IDs**: Give each `MenuItem` a unique `id` for React tracking across re-renders.
+- **Typeahead**: For composed labels (icons, checkboxes), provide `textValue` to `MenuItem` for typeahead search.
+- **Selection modes**: Set `selectionMode` on `Menu` (all items) or per-`MenuGroup` (only group). Use controlled state for tracking.
+- **Submenus**: Use `SubmenuTrigger` with `chevron-right` icon. Keyboard navigation is automatic.
+- **Mobile**: Replace `MenuTrigger` + `Popover` with `Drawer` on narrow viewports; reuse the same `Menu`.
+- **Avoid complex content**: Forms, date pickers, and multi-line content belong in a separate overlay, not in menu items.
 
 ## Props
 
 ```tsx
 <MenuTrigger>
   <Button />
-  <Menu>
-    <MenuGroup>
+  <Popover>
+    <Heading />
+    <Menu>
       <MenuItem />
-      <MenuSeparator />
-    </MenuGroup>
-    <SubmenuTrigger>
-      <MenuItem />
-      <Menu />
-    </SubmenuTrigger>
-  </Menu>
+      <Separator />
+      <MenuGroup>
+        <Header>
+          <Heading />
+        </Header>
+        <MenuItem />
+      </MenuGroup>
+      <SubmenuTrigger>
+        <MenuItem />
+        <Popover>
+          <Menu>
+            <MenuItem />
+          </Menu>
+        </Popover>
+      </SubmenuTrigger>
+      {/* ... */}
+    </Menu>
+  </Popover>
 </MenuTrigger>
 ```
 
@@ -86,9 +108,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.MenuItemProps} />
 
-### MenuSeparator
+### Separator
 
-<ArgTypes of={Stories.MenuSeparatorProps} />
+<ArgTypes of={Stories.SeparatorProps} />
 
 ### SubmenuTrigger
 

@@ -12,6 +12,7 @@ import {
   Menu,
   MenuItem,
   MenuTrigger,
+  Popover,
   Pressable,
   RangeField,
   Text
@@ -75,9 +76,11 @@ export function InteractionsExample({
           </LinkButton>
           <MenuTrigger>
             <Button>Menu One</Button>
-            <Menu aria-label="Menu One" onAction={act}>
-              <MenuItem id="nested">Menu action One</MenuItem>
-            </Menu>
+            <Popover aria-label="Menu">
+              <Menu aria-label="Menu One" onAction={act}>
+                <MenuItem id="nested">Menu action One</MenuItem>
+              </Menu>
+            </Popover>
           </MenuTrigger>
           <CornerActions data-testid="corner-One" padding="sm">
             <CardSelectionIndicator data-testid="indicator-One">{indicatorChildren}</CardSelectionIndicator>

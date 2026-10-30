@@ -8,6 +8,7 @@ import {
   Menu,
   MenuItem,
   MenuTrigger,
+  Popover,
   Tag,
   Text,
   TextLockup
@@ -26,15 +27,17 @@ export function CornerActionsExample() {
       <Tag slot="eyebrow">Business guide</Tag>
       <Header>
         <CornerActions>
-          <MenuTrigger popoverProps={{ placement: 'bottom end' }}>
+          <MenuTrigger>
             <Button aria-label="More options">
               <Icon icon="ellipsis" />
             </Button>
-            <Menu aria-label="Article actions">
-              <MenuItem id="read" onAction={() => setRead(!read)}>
-                {read ? 'Mark as unread' : 'Mark as read'}
-              </MenuItem>
-            </Menu>
+            <Popover aria-label="Menu" placement="bottom end">
+              <Menu aria-label="Article actions">
+                <MenuItem id="read" onAction={() => setRead(!read)}>
+                  {read ? 'Mark as unread' : 'Mark as read'}
+                </MenuItem>
+              </Menu>
+            </Popover>
           </MenuTrigger>
         </CornerActions>
         <Heading slot="title" level={2}>

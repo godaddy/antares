@@ -11,6 +11,7 @@ import {
   Menu,
   MenuItem,
   MenuTrigger,
+  Popover,
   Tag,
   Text,
   TextLockup
@@ -33,15 +34,17 @@ export function CornerActionsExample({ dir }: { dir?: 'ltr' | 'rtl' } = {}) {
             <Button aria-label="Favorite" aria-pressed={saved} onPress={() => setSaved(!saved)}>
               <Icon icon="star" />
             </Button>
-            <MenuTrigger popoverProps={{ placement: 'bottom end' }}>
+            <MenuTrigger>
               <Button aria-label="More options">
                 <Icon icon="ellipsis" />
               </Button>
-              <Menu aria-label="Guide actions">
-                <MenuItem id="read" onAction={() => setRead(!read)}>
-                  {read ? 'Mark as unread' : 'Mark as read'}
-                </MenuItem>
-              </Menu>
+              <Popover aria-label="Menu" placement="bottom end">
+                <Menu aria-label="Guide actions">
+                  <MenuItem id="read" onAction={() => setRead(!read)}>
+                    {read ? 'Mark as unread' : 'Mark as read'}
+                  </MenuItem>
+                </Menu>
+              </Popover>
             </MenuTrigger>
           </CornerActions>
           <Heading slot="title">
