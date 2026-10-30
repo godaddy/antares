@@ -1,0 +1,14 @@
+name: antares-skills
+version: "0.1.0"
+description: Skills for building React interfaces with the public Antares API.
+author: GoDaddy LLC
+license: MIT
+repository: https://github.com/godaddy/antares
+keywords:
+  - godaddy
+  - antares
+  - react
+  - design-system
+  - skills
+type: skill
+includes: auto

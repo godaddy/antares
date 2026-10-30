@@ -1,0 +1,22 @@
+---
+title: useOverlayContainer
+description: Internal container selection for responsive overlays.
+---
+
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './use-overlay-container.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Chooses a drawer below `40rem` and a popover at or above it.
+- Accepts the effective `isOpen` state and an optional `overlay="popover"` override.
+- Holds the choice until the next opening, including while the current overlay exits.
+- Uses a popover during server rendering and initial hydration. An initially open overlay keeps that
+  choice until it closes.
+
+## Examples
+
+<Examples of={Stories.Examples} />

@@ -10,7 +10,8 @@ import {
   type SheetProps as RACSheetProps,
   SheetTrigger as RACSheetTrigger,
   type SheetTriggerProps as RACSheetTriggerProps,
-  composeRenderProps
+  composeRenderProps,
+  useLocale
 } from 'react-aria-components';
 import { toCssSize } from '#utils/css.ts';
 import { composeClassName } from '#utils/render-props.ts';
@@ -81,6 +82,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     ...dialogProps
   } = props;
   const panelRef = useRef<HTMLDivElement>(null);
+  const { direction } = useLocale();
 
   return (
     <RACSheetOverlay
@@ -101,6 +103,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
         as={RACSheet}
         elevation="overlay"
         direction="column"
+        dir={direction}
         {...containerProps}
         ref={panelRef}
         stackAnimation={styles['drawer-stack']}

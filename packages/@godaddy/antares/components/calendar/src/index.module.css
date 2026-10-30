@@ -1,22 +1,37 @@
 .calendar {
-  --_calendar-gu: var(--ux-1sbfig8, 0.5rem);
-  --_calendar-line-height: var(--ux-jw5s9j, 1.375);
-  --_calendar-font-size: var(--_size-control-font);
+  --_calendar-gu: var(--ux-1sbfig8, 0.25rem);
+  --_calendar-gap: var(--size-space-020, var(--_calendar-gu));
+  --_calendar-padding: var(--size-space-040, calc(var(--_calendar-gu) * 2));
+  --_calendar-cell-padding: var(--_calendar-padding);
+  --_calendar-weekday-font: var(--font-heading-size-sm, calc(var(--ux-18ime9a, 1.375rem) / 1.125 / 1.125));
+  --_calendar-weekday-line-height: var(--font-heading-line-height, var(--ux-p25s1t, 1.25));
+  --_calendar-cell-size: calc(
+    var(--_calendar-cell-padding) *
+    2 +
+    var(--ux-jw5s9j, 1.375) *
+    var(--_size-control-font) +
+    2px
+  );
+  --_calendar-radius: var(--ux-1s5tndb, 6px);
+  --_calendar-band: var(--color-action-background-tertiary-hovered, var(--ux-1m7qrkf, rgba(17, 17, 17, 0.1)));
 
-  --_calendar-cell-max: calc(var(--_calendar-gu) * 4 + var(--_calendar-line-height) * var(--_calendar-font-size));
-  /* Reserved from the viewport width: popover padding plus breathing room from screen edges. */
-  --_calendar-viewport-inset: 2rem;
-  /* Fluid, capped square: a fraction of the viewport (7 columns), floored and capped. */
-  --_calendar-cell-width: clamp(2rem, (100vw - var(--_calendar-viewport-inset)) / 7, var(--_calendar-cell-max));
+  inline-size: max-content;
+  max-inline-size: 100%;
+}
 
-  width: max-content;
-  max-width: 100%;
+.calendar:where([data-size="sm"]) {
+  --_calendar-cell-padding: var(--_calendar-gap);
+  --_calendar-weekday-line-height: var(--font-detail-line-height, var(--ux-1dje42v, 1.5));
+  --_calendar-weekday-font: var(
+    --font-heading-size-xs,
+    calc(var(--ux-18ime9a, 1.375rem) / 1.125 / 1.125 / 1.125 / 1.125)
+  );
 }
 
 .yearField {
   font-family: var(--ux-9wtaa3, sans-serif);
   font-size: var(--_size-input-font);
-  max-width: calc(4ch + var(--_calendar-gu) * 4 + 2px);
+  max-inline-size: calc(4ch + var(--_calendar-gu) * 4 + 2px);
 }
 
 .navHidden {
@@ -24,41 +39,84 @@
 }
 
 .monthDivider {
-  width: 1px;
+  inline-size: 1px;
   background: currentColor;
 }
 
 .grid {
-  border-collapse: collapse;
-  font-size: var(--_calendar-font-size);
+  border-collapse: separate;
+  border-spacing: 0 var(--_calendar-gap);
+  table-layout: fixed;
+  inline-size: calc(var(--_calendar-cell-size) * 7);
+  max-inline-size: 100%;
+  /* A calendar is a two-dimensional table; enlarged dates must remain readable. */
+  min-inline-size: calc((2ch + var(--_calendar-gu) * 2 + 2px) * 7);
+  font-size: var(--_size-control-font);
+}
+
+.grid :where(th) {
+  padding: var(--_calendar-cell-padding) 0;
+  font-family: var(--font-heading-family, var(--ux-shg991, sans-serif));
+  font-size: var(--_calendar-weekday-font);
+  font-weight: bolder;
+  line-height: var(--_calendar-weekday-line-height);
+  text-align: center;
+}
+
+.weekdayNarrow {
+  display: none;
+}
+
+.grid :where(td) {
+  padding: 0;
+}
+
+.grid :where(td:has([data-type="range"][data-selected]:not([data-outside-month]))) {
+  background: var(--_calendar-band);
+}
+
+.grid :where(td:has([data-selection-start]), td:has([data-unavailable]) + td) {
+  border-start-start-radius: var(--_calendar-radius);
+  border-end-start-radius: var(--_calendar-radius);
+}
+
+.grid :where(td:has([data-selection-end]), td:has(+ td > [data-unavailable])) {
+  border-start-end-radius: var(--_calendar-radius);
+  border-end-end-radius: var(--_calendar-radius);
 }
 
 .cell {
-  border-width: 1px;
-  border-style: solid;
+  box-sizing: border-box;
+  border: 1px solid var(--color-action-border-tertiary-default, var(--ux-1np4r62, transparent));
+  border-radius: var(--_calendar-radius);
   background: var(--color-action-background-tertiary-default, var(--ux-1owc8nc, transparent));
-  border-color: var(--color-action-border-tertiary-default, var(--ux-1np4r62, transparent));
   color: var(--color-action-text-tertiary-default, var(--ux-ut3xrx, #111));
-  width: var(--_calendar-cell-width);
-  aspect-ratio: 1;
+  block-size: var(--_calendar-cell-size);
+  position: relative;
   cursor: pointer;
+  font-family: var(--ux-gfnupv, sans-serif);
+  line-height: var(--ux-jw5s9j, 1.375);
 
-  &:where([data-focus-visible]) {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
-    background: var(--ux-15qjz45, rgba(17, 17, 17, 0.1));
-    border-color: var(--ux-1ds8u13, transparent);
-    color: var(--ux-1e85ids, #111);
+  /* Row gaps belong to the date, so a press between rows is not a background press. */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: calc(var(--_calendar-gap) / -2 - 1px) -1px;
   }
 
   &:where([data-today]) {
     border-color: currentColor;
   }
 
-  &:where([data-selected]) {
-    background: var(--ux-l7zq7p, #f5f7f8);
-    border-color: var(--ux-l7zq7p, #f5f7f8);
-    color: var(--ux-vuekow, #111);
+  &:where([data-hovered], [data-focus-visible]) {
+    background: var(--_calendar-band);
+    color: var(--color-action-text-tertiary-hovered, var(--ux-unx9i2, #111));
+  }
+
+  &:where([data-selected][data-type="range"]:not([data-selection-start], [data-selection-end])) {
+    background: transparent;
+    border-color: transparent;
+    border-radius: 0;
   }
 
   &:where([data-selected]:not([data-type="range"])),
@@ -69,25 +127,84 @@
     color: var(--color-action-text-tertiary-pressed, var(--ux-h6e7c1, #fff));
   }
 
-  &:where([data-hovered]) {
-    background: var(--color-action-background-tertiary-hovered, var(--ux-1m7qrkf, rgba(17, 17, 17, 0.1)));
-    border-color: var(--color-action-border-tertiary-hovered, var(--ux-1bdtclp, transparent));
-    color: var(--color-action-text-tertiary-hovered, var(--ux-unx9i2, #111));
+  &:where([data-focus-visible]) {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
   }
 
   &:where([data-outside-month]) {
-    opacity: 0.4;
-    pointer-events: none;
+    visibility: hidden;
   }
 
   &:where([data-unavailable]) {
     text-decoration: line-through;
-    opacity: 0.4;
-    pointer-events: none;
+    cursor: not-allowed;
   }
 
   &:where([data-disabled]) {
     opacity: 0.4;
     cursor: not-allowed;
+  }
+}
+
+.scrollCalendar {
+  container: calendar-months / inline-size;
+  inline-size: 100%;
+  max-inline-size: calc(var(--_calendar-cell-size) * 7 + var(--_calendar-gap) * 2);
+  flex: 1 1 auto;
+  align-self: center;
+  overflow: hidden;
+}
+
+.scrollHeader {
+  padding: var(--_calendar-cell-padding) var(--_calendar-gap);
+}
+
+.monthViewport {
+  flex: 1;
+  overflow: auto;
+  overscroll-behavior: contain;
+  overflow-anchor: none;
+  scrollbar-gutter: stable;
+  padding-inline: var(--_calendar-gap);
+}
+
+.monthLabel {
+  margin: 0;
+  padding-block: var(--_calendar-cell-padding);
+  font-size: var(--font-body-size-md, var(--ux-oc0naw, 1rem));
+  font-weight: normal;
+  font-family: var(--ux-9wtaa3, sans-serif);
+  line-height: var(--ux-jw5s9j, 1.375);
+  text-align: center;
+}
+
+.month {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_calendar-gap);
+  padding-block: var(--_calendar-padding) var(--_calendar-gap);
+}
+
+/* A grid's height: the weekday row and `--weeks` date rows, with border spacing around each row. */
+.monthPlaceholder {
+  block-size: calc(
+    var(--_calendar-cell-padding) *
+    2 +
+    var(--_calendar-weekday-font) *
+    var(--_calendar-weekday-line-height) +
+    (var(--_calendar-cell-size) + var(--_calendar-gap)) *
+    var(--weeks) +
+    var(--_calendar-gap) *
+    2
+  );
+}
+
+@container calendar-months (width < 16rem) {
+  .weekdayShort {
+    display: none;
+  }
+  .weekdayNarrow {
+    display: inline;
   }
 }
