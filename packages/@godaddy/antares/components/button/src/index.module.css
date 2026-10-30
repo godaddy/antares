@@ -39,17 +39,23 @@
     height: 1lh;
   }
 
-  &:where(:not(.inline, .control, .trigger)) {
-    border-width: 1px;
-    border-radius: var(--_button-radius);
+  &:where(:not(.inline, .trigger)) {
+    font-family: var(--font-action-family, var(--ux-gfnupv, sans-serif));
+    font-weight: var(--font-action-weight, var(--ux-j40yyd, 500));
+    line-height: var(--font-action-line-height, var(--ux-jw5s9j, 1.375));
+    border-width: var(--_button-slot-border-width, 1px);
+    border-start-start-radius: var(--_button-slot-radius-start, var(--_button-radius));
+    border-end-start-radius: var(--_button-slot-radius-start, var(--_button-radius));
+    border-start-end-radius: var(--_button-slot-radius-end, var(--_button-radius));
+    border-end-end-radius: var(--_button-slot-radius-end, var(--_button-radius));
     border-style: solid;
-    font-size: var(--_button-font-size);
-    padding: var(--_button-padding-block) var(--_button-padding-inline);
+    font-size: var(--_button-slot-font-size, var(--_button-font-size));
+    padding: var(--_button-slot-padding, var(--_button-padding-block) var(--_button-padding-inline));
     justify-content: center;
 
     /* only-icon buttons */
     &:has(> :where([data-icon]:only-child)) {
-      padding: var(--_button-padding-block);
+      padding: var(--_button-slot-padding, var(--_button-padding-block));
 
       &:where(.minimal) {
         padding: var(--_button-space-xs);
@@ -147,11 +153,23 @@
     --_button-text-pressed: var(--color-feedback-critical-onstrong, var(--ux-17znn9m, #ffffff));
   }
 
-  &:where(.control, .trigger) {
+  &:where(.control) {
+    --_button-bg: var(--color-action-background-control-default, var(--ux-1mh0ktr, #f5f5f5));
+    --_button-bg-hovered: var(--color-action-background-control-hovered, var(--ux-11rtwg8, #f5f5f5));
+    --_button-bg-pressed: var(--color-action-background-control-pressed, var(--ux-gdy377, #fff));
+    --_button-border: var(--color-action-border-control-default, var(--ux-1qbn65p, #f5f5f5));
+    --_button-border-hovered: var(--color-action-border-control-hovered, var(--ux-bg7olm, #d3d3d3));
+    --_button-border-pressed: var(--color-action-border-control-pressed, var(--ux-187j9dd, #008b8b));
+    --_button-text: var(--color-action-text-control-default, var(--ux-1utwv7e, #111));
+    --_button-text-hovered: var(--color-action-text-control-hovered, var(--ux-1e4ese5, #111));
+    --_button-text-pressed: var(--color-action-text-control-pressed, var(--ux-k4fkva, #111));
+  }
+
+  &:where(.trigger) {
     --_button-gap: 0.25rem;
     --_button-font-size: var(--_size-input-font);
     --_button-padding-block: var(--_size-control-padding-block);
-    --_button-bg: var(--ux-1mh0ktr, #f5f5f5);
+    --_button-bg: transparent;
     --_button-bg-hovered: var(--ux-11rtwg8, #f5f5f5);
     --_button-bg-pressed: var(--ux-gdy377, #fff);
     --_button-text: var(--ux-1utwv7e, #111);
@@ -162,12 +180,6 @@
     line-height: var(--ux-hm1ty7, 1.375);
     font-size: var(--_button-font-size);
     padding: var(--_button-padding-block);
-    justify-content: center;
-  }
-
-  &:where(.trigger) {
-    --_button-bg: transparent;
-
     flex: 1;
     min-width: 0;
     justify-content: flex-start;

@@ -11,9 +11,14 @@ import { SizesExample } from '../examples/sizes.tsx';
 import { IconExample } from '../examples/icon.tsx';
 import { MinimalExample } from '../examples/minimal.tsx';
 import { IconsAndAlignmentExample } from '../examples/icons-and-alignment.tsx';
+import { ControlExample } from '../examples/control.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
+    it('renders standalone and field controls', function rendersControls() {
+      expect(renderToString(<ControlExample />)).toMatchSnapshot();
+    });
+
     it('renders the default button', function rendersDefault() {
       const result = renderToString(<DefaultExample />);
       expect(result).toMatchSnapshot();

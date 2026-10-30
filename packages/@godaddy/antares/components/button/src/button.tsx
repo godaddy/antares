@@ -81,9 +81,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   const inherited = useSlottedContext(ButtonContext, slot) as ButtonPresentationProps | null | undefined;
   const declared = useDeclaredSize();
   const resolvedVariant = variant ?? inherited?.variant;
-  // Field parts follow their field's scale instead of Button's own sizes.
-  const isFieldPart = resolvedVariant === 'control' || resolvedVariant === 'trigger';
-  const resolvedSize = size ?? inherited?.size ?? (isFieldPart ? undefined : declared);
+  // A trigger follows its field's scale instead of Button's own sizes.
+  const isTrigger = resolvedVariant === 'trigger';
+  const resolvedSize = size ?? inherited?.size ?? (isTrigger ? undefined : declared);
 
   return (
     <RACButton
