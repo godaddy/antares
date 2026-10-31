@@ -200,6 +200,15 @@ export function ScenariosExample() {
               <Button slot="control">Verify</Button>
             </Group>
           </TextField>
+          <TextField size="sm">
+            <Label>Promo code</Label>
+            <Group>
+              <Input />
+              <Button slot="control" size="lg">
+                Apply
+              </Button>
+            </Group>
+          </TextField>
           <TextField size="md">
             <Label>Fax number</Label>
             <Group>

@@ -203,6 +203,11 @@
 
   /* sizes */
 
+  &:is(.sm, .md, .lg) {
+    --_button-slot-font-size: initial;
+    --_button-slot-padding: initial;
+  }
+
   &:where(.sm) {
     --_button-font-size: var(--font-body-size-sm, calc(var(--ux-cxbe8g, 16px) / 1.125));
     --_button-padding-block: var(--_button-space-sm);
