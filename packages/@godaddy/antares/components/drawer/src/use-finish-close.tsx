@@ -4,6 +4,7 @@ import { OverlayTriggerStateContext as RACOverlayTriggerStateContext } from 'rea
 /**
  * Finishes a close that Sheet missed. Sheet unmounts once its observer sees the panel leave, but it
  * reads only the first entry of a batch, so a slow frame can leave the drawer stuck while exiting.
+ * Remove once https://github.com/adobe/react-spectrum/issues/10897 is fixed.
  *
  * @param panelRef - The Sheet panel element.
  */
