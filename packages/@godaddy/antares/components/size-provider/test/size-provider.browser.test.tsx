@@ -190,10 +190,10 @@ describe('@godaddy/antares', function antares() {
 
     it('sets button type from action tokens, then legacy values, then UXCore defaults', async function actionType() {
       const { getByTestId } = await render(<ScenariosExample />);
-      const type = (id: string) => {
+      function type(id: string) {
         const { fontFamily, fontWeight, lineHeight, fontSize } = style(getByTestId(id).element());
         return { fontFamily, fontWeight, lineHeight: parseFloat(lineHeight) / parseFloat(fontSize) };
-      };
+      }
 
       for (const id of ['action-token', 'action-token-link']) {
         expect(type(id)).toEqual({ fontFamily: 'monospace', fontWeight: '700', lineHeight: 2 });
