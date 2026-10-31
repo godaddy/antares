@@ -89,6 +89,31 @@ describe('@godaddy/antares', function antares() {
       await waitForEntered();
     });
 
+    it('closes DefaultExample when the backdrop is pressed', async function backdropClose() {
+      const { getByRole } = await render(<DefaultExample />);
+
+      await getByRole('button', { name: 'Open drawer' }).click();
+      await waitForEntered();
+
+      await userEvent.click(document.body, { position: { x: 10, y: 10 } });
+      await vi.waitFor(async function close() {
+        assume(getByRole('dialog').query()).equals(null);
+      });
+    });
+
+    it('prevents backdrop dismiss with preventDismissal', async function noBackdropClose() {
+      const { getByRole } = await render(<PreventDismissalExample />);
+
+      await getByRole('button', { name: 'Open' }).click();
+      await waitForEntered();
+
+      await userEvent.click(document.body, { position: { x: 10, y: 10 } });
+      await new Promise(function settle(r) {
+        setTimeout(r, 600);
+      });
+      assume(getByRole('dialog').query()).is.not.equal(null);
+    });
+
     it('prevents Escape dismiss with preventDismissal', async function noEscape() {
       const { getByRole } = await render(<PreventDismissalExample />);
 
