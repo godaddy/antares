@@ -245,6 +245,30 @@ export function ScenariosExample() {
           </Button>
         </SizeProvider>
       </div>
+
+      <div
+        style={
+          {
+            '--font-action-family': 'monospace',
+            '--font-action-weight': '700',
+            '--font-action-line-height': '2',
+            '--ux-gfnupv': 'serif',
+            '--ux-j40yyd': '300',
+            '--ux-jw5s9j': '3'
+          } as CSSProperties
+        }
+      >
+        <Button data-testid="action-token">Save</Button>
+        <LinkButton href="#" data-testid="action-token-link">
+          Open
+        </LinkButton>
+      </div>
+      <div style={{ '--ux-gfnupv': 'serif', '--ux-j40yyd': '300', '--ux-jw5s9j': '3' } as CSSProperties}>
+        <Button data-testid="action-legacy">Save</Button>
+      </div>
+      <div style={{ '--ux-gfnupv': 'initial', '--ux-j40yyd': 'initial', '--ux-jw5s9j': 'initial' } as CSSProperties}>
+        <Button data-testid="action-default">Save</Button>
+      </div>
     </Flex>
   );
 }

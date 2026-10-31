@@ -188,6 +188,20 @@ describe('@godaddy/antares', function antares() {
       expect(style(getByTestId('legacy-explicit').element()).fontSize).toEqual('22.5px');
     });
 
+    it('sets button type from action tokens, then legacy values, then UXCore defaults', async function actionType() {
+      const { getByTestId } = await render(<ScenariosExample />);
+      const type = (id: string) => {
+        const { fontFamily, fontWeight, lineHeight, fontSize } = style(getByTestId(id).element());
+        return { fontFamily, fontWeight, lineHeight: parseFloat(lineHeight) / parseFloat(fontSize) };
+      };
+
+      for (const id of ['action-token', 'action-token-link']) {
+        expect(type(id)).toEqual({ fontFamily: 'monospace', fontWeight: '700', lineHeight: 2 });
+      }
+      expect(type('action-legacy')).toEqual({ fontFamily: 'serif', fontWeight: '300', lineHeight: 3 });
+      expect(type('action-default')).toMatchObject({ fontWeight: '500', lineHeight: 1.375 });
+    });
+
     it('keeps a composed Text identical to a bare button label', async function composed() {
       const { getByTestId } = await render(<ScenariosExample />);
       const plain = getByTestId('sm').element();
