@@ -6,6 +6,14 @@
   transform: rotate(180deg);
 }
 
+.select .controlTrigger {
+  --_button-gap: 0.25rem;
+
+  font-family: var(--ux-9wtaa3, sans-serif);
+  font-weight: inherit;
+  line-height: var(--ux-hm1ty7, 1.375);
+}
+
 .value {
   flex: 1;
   min-width: 0;

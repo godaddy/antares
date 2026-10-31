@@ -112,6 +112,16 @@ describe('@godaddy/antares', function antares() {
       expect(apply.borderTopWidth).toEqual('0px');
     });
 
+    it('gives a control Select the same trigger face as a field Select', async function controlSelectFace() {
+      const { getByRole } = await render(<ScenariosExample />);
+      const control = style(getByRole('button', { name: /Country/ }).element());
+      const field = style(getByRole('button', { name: /Theme/ }).element());
+
+      expect(control.columnGap).toEqual('4px');
+      expect(control.fontFamily).toEqual(field.fontFamily);
+      expect(control.fontWeight).toEqual(field.fontWeight);
+    });
+
     it('keeps an explicitly sized control Select aligned with its field', async function explicitControlSelect() {
       const { getByRole } = await render(<ScenariosExample />);
       const input = style(getByRole('textbox', { name: 'Fax number' }).element());

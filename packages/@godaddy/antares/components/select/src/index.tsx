@@ -153,7 +153,10 @@ function ControlSelect<T extends object, M extends SelectionMode>(props: SelectR
       >
         {composeRenderProps(children, function body(node) {
           return (
-            <SelectBody isDisabled={controlDisabled} trigger={{ variant: 'control', className: fieldStyles.control }}>
+            <SelectBody
+              isDisabled={controlDisabled}
+              trigger={{ variant: 'control', className: `${fieldStyles.control} ${styles.controlTrigger}` }}
+            >
               {node}
             </SelectBody>
           );
