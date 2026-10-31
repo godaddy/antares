@@ -39,11 +39,11 @@
 
 .drawer:where([data-position="top"]) {
   border-radius: 0 0 var(--br-md) var(--br-md);
-  transform-origin: center 150px;
+  transform-origin: center calc(100% + 150px);
 }
 
 .drawer:where([data-position="left"]) {
-  transform-origin: 150px center;
+  transform-origin: calc(100% + 150px) center;
 }
 
 .drawer:where([data-position="right"]) {
