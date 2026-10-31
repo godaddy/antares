@@ -17,6 +17,7 @@ import { toCssSize } from '#utils/css.ts';
 import { composeClassName } from '#utils/render-props.ts';
 import { Flex } from '#components/layout/flex';
 import { OverlayDialog } from '#components/_internal/overlay-dialog';
+import { useFinishClose } from './use-finish-close.tsx';
 import { useRestWhileOpen } from './use-rest-while-open.tsx';
 import styles from './index.module.css';
 
@@ -116,7 +117,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
           } as CSSProperties;
         })}
       >
-        <RestWhileOpen panelRef={panelRef} />
+        <SheetRecovery panelRef={panelRef} />
         <OverlayDialog
           {...dialogProps}
           as={RACSheetContent}
@@ -131,8 +132,9 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
   );
 });
 
-function RestWhileOpen({ panelRef }: { panelRef: RefObject<HTMLElement | null> }) {
+function SheetRecovery({ panelRef }: { panelRef: RefObject<HTMLElement | null> }) {
   useRestWhileOpen(panelRef);
+  useFinishClose(panelRef);
   return null;
 }
 
