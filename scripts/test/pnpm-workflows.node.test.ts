@@ -128,6 +128,15 @@ describe('pnpm GitHub workflows', function pnpmWorkflowsSuite() {
     expect(commitMsg).toContain('pnpm run commitlint');
   });
 
+  it('builds generated docs dependencies before dependency checks', function buildsGeneratedDocsDependenciesBeforeKnip() {
+    const steps = stepsFor('ci.yaml', 'ci');
+    const generatedBuildIndex = steps.findIndex((step) => step.run === 'pnpm nx run @godaddy/generate-cdn-url:build');
+    const dependencyCheckIndex = steps.findIndex((step) => step.run === 'pnpm run deps:check');
+
+    expect(generatedBuildIndex).toBeGreaterThan(-1);
+    expect(dependencyCheckIndex).toBeGreaterThan(generatedBuildIndex);
+  });
+
   it('runs docs and Storybook deployments when workspace metadata changes', function watchesWorkspaceMetadata() {
     for (const file of ['docs-site-main.yaml', 'storybook-main.yaml']) {
       const paths = readWorkflow(file).on?.push?.paths ?? [];

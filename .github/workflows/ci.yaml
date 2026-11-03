@@ -43,6 +43,9 @@ jobs:
       - name: Validate shadcn Registry Schema
         run: pnpm run registry:validate
 
+      - name: Build docs dependencies
+        run: pnpm nx run @godaddy/generate-cdn-url:build
+
       - name: Run Dependency Checks
         run: pnpm run deps:check
 
