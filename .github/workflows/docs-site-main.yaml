@@ -10,6 +10,8 @@ on:
       - 'packages/@godaddy/antares/blocks/**'
       - 'packages/@godaddy/antares/components/**/README.mdx'
       - 'package*.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
 
 permissions:
   id-token: write
@@ -26,18 +28,23 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v7
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          version: 12.16.1
+
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: Install Dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build Docs Site
-        run: npx nx build site
+        run: pnpm nx build site
         env:
           GITHUB_PAGES: 'true'
           NEXT_PUBLIC_BASE_PATH: '/${{ github.event.repository.name }}'

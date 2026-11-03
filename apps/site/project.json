@@ -20,7 +20,7 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "cd packages/@godaddy/antares && npm run watch",
+          "cd packages/@godaddy/antares && pnpm run watch",
           "cd apps/site && next dev"
         ],
         "parallel": true

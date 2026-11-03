@@ -41,11 +41,11 @@
     "camelcase": "^10.0.0"
   },
   "devDependencies": {
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "tsdown": "^0.23.1",
-    "vitest": "^4.1.11",
-    "vitest-browser-react": "^2.3.0"
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "tsdown": "catalog:",
+    "vitest": "catalog:",
+    "vitest-browser-react": "catalog:"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

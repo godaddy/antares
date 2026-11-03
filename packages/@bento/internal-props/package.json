@@ -40,9 +40,9 @@
     "package.json"
   ],
   "devDependencies": {
-    "tsdown": "^0.23.1",
-    "vitest": "^4.1.11",
-    "vitest-browser-react": "^2.3.0"
+    "tsdown": "catalog:",
+    "vitest": "catalog:",
+    "vitest-browser-react": "catalog:"
   },
   "exports": {
     ".": {

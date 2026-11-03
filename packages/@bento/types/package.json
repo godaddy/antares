@@ -35,8 +35,8 @@
     "package.json"
   ],
   "devDependencies": {
-    "tsdown": "^0.23.1",
-    "vitest": "^4.1.11"
+    "tsdown": "catalog:",
+    "vitest": "catalog:"
   },
   "exports": {
     ".": {

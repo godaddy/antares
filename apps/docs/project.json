@@ -50,7 +50,7 @@
       "dependsOn": ["build-deps"],
       "executor": "nx:run-commands",
       "options": {
-        "command": "npm exec -- nx watch --projects docs --includeDependencies -- npm exec -- nx build-deps docs"
+        "command": "pnpm nx watch --projects docs --includeDependencies -- pnpm nx build-deps docs"
       }
     },
     "static-storybook": {

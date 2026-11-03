@@ -7,7 +7,7 @@ This application contains our documentation site which is powered by Storybook.
 In order to preview the documentation simply run the following command:
 
 ```sh
-npm run storybook
+pnpm run storybook
 ```
 
 The application is configured to not open a browser window every time you start

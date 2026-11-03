@@ -12,25 +12,26 @@
     "format": "biome format --write"
   },
   "dependencies": {
-    "@bento/block-explorer": "*",
-    "@bento/storybook-addon-helpers": "*",
+    "@bento/block-explorer": "workspace:*",
+    "@bento/storybook-addon-helpers": "workspace:*",
     "estree-util-value-to-estree": "^3.5.0",
     "fumadocs-core": "^16.17.9",
     "fumadocs-mdx": "^15.4.10",
     "fumadocs-ui": "^16.17.9",
     "lucide-react": "^1.66.0",
     "next": "^16.4.3",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.6.4",
     "@tailwindcss/postcss": "^4.3.3",
+    "@types/mdast": "catalog:",
     "@types/mdx": "^2.0.14",
     "@types/node": "^26.6.6",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "assume": "^2.3.0",
     "mdast": "^3.0.0",
     "mdast-util-mdx-jsx": "^3.2.0",
@@ -42,6 +43,6 @@
     "unified": "^11.0.5",
     "unist-util-visit": "^5.2.0",
     "vfile": "^6.0.3",
-    "vitest": "^4.1.11"
+    "vitest": "catalog:"
   }
 }
