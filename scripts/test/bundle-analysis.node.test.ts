@@ -1,10 +1,11 @@
-import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { discoverPublicApi, consumerCases, entryKind, type PublicEntry, type Workspace } from '../bundle-discovery.ts';
 import {
   aggregateReportsFromDisk,
+  buildPackageReport,
   checkPackageReportFromDisk,
   category,
   checkBudgets,
@@ -20,6 +21,7 @@ import {
 
 const temporaryDirectories: string[] = [];
 afterEach(async function cleanFixtures() {
+  vi.unstubAllEnvs();
   await Promise.all(temporaryDirectories.splice(0).map((directory) => rm(directory, { recursive: true, force: true })));
 });
 
@@ -92,6 +94,216 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
     ).resolves.toBeUndefined();
   });
 
+  it('invalidates completed reports before a rebuild fails', async function invalidatesFailedRebuild() {
+    const fixture = await savedReportWorkspace();
+    const dist = join(fixture.pkg.root, 'dist');
+    await mkdir(dist);
+    await writeFile(join(dist, 'index.d.ts'), 'export type Marker = string;');
+    const manifest = {
+      name: fixture.pkg.name,
+      version: fixture.pkg.version,
+      peerDependencies: fixture.pkg.peerDependencies,
+      exports: { '.': './dist/index.d.ts' }
+    };
+    await writeFile(join(fixture.pkg.root, 'package.json'), JSON.stringify(manifest));
+    await writeFile(join(fixture.pkg.root, 'bundle-size.json'), JSON.stringify({ outputBudget: 1024 }));
+
+    await buildPackageReport(fixture.root, fixture.pkg, fixture.output);
+    await expect(checkPackageReportFromDisk(fixture.pkg, fixture.output)).resolves.toBeUndefined();
+    const artifacts = ['metrics.json', 'index.html', 'public-api.json', 'summary.md'];
+    for (const artifact of artifacts) expect((await stat(join(fixture.output, artifact))).size).toBeGreaterThan(0);
+    const directories = ['consumers', 'reports', 'entries'];
+    for (const directory of directories) {
+      await mkdir(join(fixture.output, directory), { recursive: true });
+      await writeFile(join(fixture.output, directory, 'previous-build'), 'obsolete');
+    }
+
+    manifest.exports['.'] = './dist/missing.mjs';
+    await writeFile(join(fixture.pkg.root, 'package.json'), JSON.stringify(manifest));
+    await expect(buildPackageReport(fixture.root, fixture.pkg, fixture.output)).rejects.toMatchObject({
+      code: 'ENOENT'
+    });
+    for (const artifact of [...artifacts, ...directories]) {
+      await expect(stat(join(fixture.output, artifact))).rejects.toMatchObject({ code: 'ENOENT' });
+    }
+    await expect(checkPackageReportFromDisk(fixture.pkg, fixture.output)).rejects.toThrow('Missing analysis');
+    await expect(
+      aggregateReportsFromDisk(fixture.root, join(fixture.root, '.bundle-analysis'), { check: true })
+    ).rejects.toThrow('Missing analysis');
+  });
+
+  it('refreshes package summaries when budgets change after report generation', async function refreshesPackageSummary() {
+    const fixture = await savedReportWorkspace();
+    const summaryPath = join(fixture.output, 'summary.md');
+    await checkPackageReportFromDisk(fixture.pkg, fixture.output);
+    expect(await readFile(summaryPath, 'utf8')).toContain('## Budget check: PASS');
+
+    await writeFile(
+      join(fixture.pkg.root, 'bundle-size.json'),
+      JSON.stringify({ outputBudget: 100, consumerBudgets: { button: 49, obsolete: 50 } })
+    );
+    await expect(checkPackageReportFromDisk(fixture.pkg, fixture.output)).rejects.toThrow('Bundle check failed');
+    const failedSummary = await readFile(summaryPath, 'utf8');
+    expect(failedSummary).toContain('## Budget check: FAIL');
+    expect(failedSummary).toContain('@test/package: button: 50 B gzip > 49 B (+1 B)');
+    expect(failedSummary).toContain('@test/package: obsolete: unused consumer budget (no matching measurement)');
+
+    await writeFile(
+      join(fixture.pkg.root, 'bundle-size.json'),
+      JSON.stringify({ outputBudget: 100, consumerBudgets: { button: 50 } })
+    );
+    await checkPackageReportFromDisk(fixture.pkg, fixture.output);
+    const passingSummary = await readFile(summaryPath, 'utf8');
+    expect(passingSummary).toContain('## Budget check: PASS');
+    expect(passingSummary).not.toContain('obsolete');
+  });
+
+  it('invalidates old metrics and rejects invalid config before inspecting build output', async function validatesConfigFirst() {
+    const fixture = await savedReportWorkspace();
+    await writeFile(join(fixture.pkg.root, 'bundle-size.json'), JSON.stringify({ unexpected: true }));
+    // This fixture has no dist/ output, so discovery or measurement would otherwise fail first.
+    await expect(buildPackageReport(fixture.root, fixture.pkg, fixture.output)).rejects.toThrow(
+      'Unknown bundle-size config key unexpected'
+    );
+    await expect(stat(join(fixture.output, 'metrics.json'))).rejects.toMatchObject({ code: 'ENOENT' });
+  });
+
+  it('publishes aggregate diagnostics to the job summary only during checking', async function publishesJobSummaryOnce() {
+    const fixture = await savedReportWorkspace();
+    const output = join(fixture.root, '.bundle-analysis');
+    const jobSummaryPath = join(fixture.root, 'job-summary.md');
+    await writeFile(jobSummaryPath, '');
+    vi.stubEnv('GITHUB_STEP_SUMMARY', jobSummaryPath);
+    await writeFile(
+      join(fixture.pkg.root, 'bundle-size.json'),
+      JSON.stringify({ outputBudget: 100, consumerBudgets: { button: 50, obsolete: 50 } })
+    );
+
+    await aggregateReportsFromDisk(fixture.root, output, { check: false });
+    expect(await readFile(jobSummaryPath, 'utf8')).toBe('');
+    await expect(aggregateReportsFromDisk(fixture.root, output, { check: true })).rejects.toThrow(
+      '@test/package: obsolete: unused consumer budget (no matching measurement)'
+    );
+    const summary = await readFile(join(output, 'summary.md'), 'utf8');
+    expect(summary).toContain('## Budget check: FAIL');
+    expect(summary).toContain('| consumer: button | gzip | 50 B | 50 B | PASS |');
+    expect(summary).toContain('@test/package: obsolete: unused consumer budget (no matching measurement)');
+    expect(await readFile(jobSummaryPath, 'utf8')).toBe(summary);
+  });
+
+  it('aggregates publishable libraries without requiring private or app reports', async function skipsUnmeasuredWorkspaces() {
+    const fixture = await savedReportWorkspace();
+    await writeFile(join(fixture.root, 'package.json'), JSON.stringify({ workspaces: ['packages/*', 'apps/*'] }));
+    for (const [directory, manifest] of [
+      ['packages/private-package', { name: '@test/private', private: true }],
+      ['apps/docs', { name: 'docs' }]
+    ] as const) {
+      const root = join(fixture.root, directory);
+      await mkdir(root, { recursive: true });
+      await writeFile(join(root, 'package.json'), JSON.stringify(manifest));
+      await writeFile(join(root, 'bundle-size.json'), JSON.stringify({ unexpected: true }));
+    }
+
+    const output = join(fixture.root, '.bundle-analysis');
+    await expect(aggregateReportsFromDisk(fixture.root, output, { check: true })).resolves.toBeUndefined();
+    const aggregate = JSON.parse(await readFile(join(output, 'metrics.json'), 'utf8')) as Report;
+    expect(aggregate.packages).toEqual(report().packages);
+    expect(aggregate.measurements).toEqual(report().measurements);
+  });
+
+  it.each(['removed', 'renamed'] as const)(
+    'rejects obsolete budgets for %s exports in package and aggregate modes',
+    async function rejectsObsoleteBudgets(change) {
+      const value = report();
+      const consumerBudgets: Record<string, number> = { button: 50 };
+      if (change === 'removed') {
+        value.measurements = value.measurements.filter((item) => item.kind !== 'consumer');
+        value.cases = [];
+      } else {
+        value.measurements[1].id = 'renamed-button';
+        value.cases[0] = { ...value.cases[0], id: 'renamed-button', names: ['RenamedButton'] };
+        consumerBudgets['renamed-button'] = 50;
+      }
+      const fixture = await savedReportWorkspace(value);
+      const configPath = join(fixture.pkg.root, 'bundle-size.json');
+      await writeFile(configPath, JSON.stringify({ outputBudget: 100, consumerBudgets }));
+
+      const diagnostic = 'button: unused consumer budget (no matching measurement)';
+      await expect(checkPackageReportFromDisk(fixture.pkg, fixture.output)).rejects.toThrow(diagnostic);
+      await expect(
+        aggregateReportsFromDisk(fixture.root, join(fixture.root, '.bundle-analysis'), { check: true })
+      ).rejects.toThrow(diagnostic);
+
+      delete consumerBudgets.button;
+      await writeFile(configPath, JSON.stringify({ outputBudget: 100, consumerBudgets }));
+      await expect(checkPackageReportFromDisk(fixture.pkg, fixture.output)).resolves.toBeUndefined();
+      await expect(
+        aggregateReportsFromDisk(fixture.root, join(fixture.root, '.bundle-analysis'), { check: true })
+      ).resolves.toBeUndefined();
+    }
+  );
+
+  it.each(['first', 'second'] as const)(
+    'rejects a budget for another package in the %s package config without changing summary limits',
+    async function rejectsMisplacedBudget(configOwner) {
+      const fixture = await savedReportWorkspace();
+      const secondName = '@test/second-package';
+      const secondPackage: Workspace = {
+        ...fixture.pkg,
+        name: secondName,
+        root: join(fixture.root, 'packages', 'second-package')
+      };
+      const secondOutput = join(fixture.root, '.bundle-analysis', 'packages', 'second-package');
+      const secondReport = report();
+      secondReport.packages[0].name = secondName;
+      for (const item of secondReport.measurements) {
+        item.package = secondName;
+        item.id = item.kind === 'output' ? secondName : 'second-button';
+      }
+      secondReport.cases[0] = {
+        ...secondReport.cases[0],
+        id: 'second-button',
+        package: secondName,
+        from: secondName
+      };
+      await mkdir(secondPackage.root, { recursive: true });
+      await mkdir(secondOutput, { recursive: true });
+      await writeFile(
+        join(secondPackage.root, 'package.json'),
+        JSON.stringify({ name: secondName, version: '1.0.0', peerDependencies: secondPackage.peerDependencies })
+      );
+      await writeFile(join(secondOutput, 'metrics.json'), JSON.stringify(secondReport));
+      await writeFile(
+        join(secondPackage.root, 'bundle-size.json'),
+        JSON.stringify({ outputBudget: 100, consumerBudgets: { 'second-button': 50 } })
+      );
+
+      const misplacedId = configOwner === 'first' ? 'second-button' : 'button';
+      const ownId = configOwner === 'first' ? 'button' : 'second-button';
+      const owner = configOwner === 'first' ? fixture.pkg : secondPackage;
+      const ownerOutput = configOwner === 'first' ? fixture.output : secondOutput;
+      const configPath = join(owner.root, 'bundle-size.json');
+      await writeFile(
+        configPath,
+        JSON.stringify({ outputBudget: 100, consumerBudgets: { [ownId]: 50, [misplacedId]: 1 } })
+      );
+      const diagnostic = `${misplacedId}: unused consumer budget (no matching measurement)`;
+      await expect(checkPackageReportFromDisk(owner, ownerOutput)).rejects.toThrow(diagnostic);
+      const aggregateOutput = join(fixture.root, '.bundle-analysis');
+      await expect(aggregateReportsFromDisk(fixture.root, aggregateOutput, { check: true })).rejects.toThrow(
+        diagnostic
+      );
+      const summary = await readFile(join(aggregateOutput, 'summary.md'), 'utf8');
+      expect(summary).toContain('| consumer: button | gzip | 50 B | 50 B | PASS |');
+      expect(summary).toContain('| consumer: second-button | gzip | 50 B | 50 B | PASS |');
+      expect(summary).toContain('## Budget check: FAIL');
+      expect(summary).toContain(`${owner.name}: ${diagnostic}`);
+
+      await writeFile(configPath, JSON.stringify({ outputBudget: 100, consumerBudgets: { [ownId]: 50 } }));
+      await expect(aggregateReportsFromDisk(fixture.root, aggregateOutput, { check: true })).resolves.toBeUndefined();
+    }
+  );
+
   const invalidSavedReports: {
     name: string;
     update: (value: Report) => void;
@@ -108,6 +320,28 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
       name: 'a duplicate consumer measurement',
       update(value) {
         value.measurements.push({ ...value.measurements[1] });
+      },
+      expectedError: /Inconsistent measurements/
+    },
+    {
+      name: 'a consumer measurement with no matching case',
+      update(value) {
+        value.measurements[1].id = 'unexpected-case';
+      },
+      expectedError: /Inconsistent measurements/
+    },
+    {
+      name: 'duplicate cases with distinct measurements',
+      update(value) {
+        value.cases.push({ ...value.cases[0] });
+        value.measurements.push({ ...value.measurements[1], id: 'unexpected-case' });
+      },
+      expectedError: /Inconsistent measurements/
+    },
+    {
+      name: 'a missing package output measurement',
+      update(value) {
+        value.measurements = value.measurements.filter((item) => item.kind !== 'output');
       },
       expectedError: /Inconsistent measurements/
     },
@@ -167,6 +401,18 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
   it('fails closed when a package or case has no valid budget', function requiresBudgets() {
     expect(checkBudgets(report(), { ...budgets, consumer: {} })).toEqual(['button: missing or invalid gzip budget']);
     expect(checkBudgets(report(), { ...budgets, consumer: { button: -1 } })).toHaveLength(1);
+  });
+
+  it('rejects budgets without a measurement of the same kind', function rejectsUnmeasuredBudgets() {
+    expect(
+      checkBudgets(report(), {
+        output: { ...budgets.output, button: 100 },
+        consumer: { ...budgets.consumer, '@test/package': 50 }
+      })
+    ).toEqual([
+      'button: unused output budget (no matching measurement)',
+      '@test/package: unused consumer budget (no matching measurement)'
+    ]);
   });
 
   it('excludes declarations and maps but retains CSS and arbitrary emitted assets', function countsTransferFiles() {
@@ -274,7 +520,7 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
     }
   });
 
-  it('catalogues CSS, data, types and private tooling with explicit policy reasons', async function classifiesResources() {
+  it('catalogues CSS, data and types with explicit policy reasons', async function classifiesResources() {
     const root = await mkdtemp(join(tmpdir(), 'bundle-resource-api-'));
     temporaryDirectories.push(root);
     await writeFile(
@@ -301,9 +547,6 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
       '@fixture/data/data',
       '@fixture/data/style'
     ]);
-    const privateSurface = await discoverPublicApi(root, [{ name: '@fixture/data', root, private: true }]);
-    expect(privateSurface.every((entry) => entry.reason?.includes('Private'))).toBe(true);
-    expect(consumerCases(privateSurface)).toEqual([]);
     expect(fixtureSource({ id: 'css', package: '@fixture/data', from: '@fixture/data/style', names: [] })).toContain(
       'import "@fixture/data/style";'
     );
@@ -375,6 +618,9 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
     const output = join(root, 'report');
     const metadata = packageMetadata({ ...manifest, root: pkg });
     const measurement = await measureConsumer(consumerCase, root, output, metadata.externals);
+    for (const template of ['treemap', 'sunburst', 'network']) {
+      expect((await stat(join(output, 'reports', consumerCase.id, `${template}.html`))).size).toBeGreaterThan(0);
+    }
     const paths = await filesIn(join(output, 'consumers/fixture'));
     const javascript = await readFile(paths.find((path) => path.endsWith('.js'))!, 'utf8');
     expect(javascript).toContain('TRANSITIVE_SENTINEL');

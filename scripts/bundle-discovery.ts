@@ -5,7 +5,7 @@
  * See `docs/pdrs/antares/bundle-size.md` for the design and coverage details.
  */
 import { createHash } from 'node:crypto';
-import { glob, readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { isAbsolute, join, relative, resolve } from 'node:path';
 import * as ts from 'typescript/unstable/ast';
 import { createVirtualFileSystem } from 'typescript/unstable/fs';
@@ -33,7 +33,7 @@ export interface Workspace {
   root: string;
   /** Version read from the package manifest. */
   version?: string;
-  /** Private workspaces are inventoried but not measured as public consumers. */
+  /** Private workspaces are excluded from bundle analysis. */
   private?: boolean;
   /** Peer dependencies excluded from this package's consumer bundles. */
   peerDependencies?: Record<string, string>;
@@ -93,6 +93,34 @@ export function entryKind(path: string): PublicEntry['kind'] {
   return 'asset';
 }
 
+/** Matches the single literal replacement in a package export pattern, including nested paths. */
+function patternCapture(pattern: string, path: string): string | undefined {
+  const wildcard = pattern.indexOf('*');
+  const prefix = pattern.slice(0, wildcard);
+  const suffix = pattern.slice(wildcard + 1);
+  if (path.length <= prefix.length + suffix.length || !path.startsWith(prefix) || !path.endsWith(suffix))
+    return undefined;
+  return path.slice(prefix.length, suffix ? -suffix.length : undefined);
+}
+
+/** Expands a package export target; unlike a filesystem glob, its `*` may contain `/`. */
+async function patternPaths(root: string, target: string): Promise<string[]> {
+  const pattern = target.replace(/^\.\//, '');
+  const prefix = pattern.slice(0, pattern.indexOf('*'));
+  const directory = prefix.slice(0, prefix.lastIndexOf('/') + 1);
+  const paths = await readdir(resolve(root, directory), { recursive: true, withFileTypes: true }).catch(
+    /** A missing build directory is reported by the caller as an unmatched export pattern. */
+    function missingBuildDirectory(error: NodeJS.ErrnoException) {
+      if (error.code === 'ENOENT') return [];
+      throw error;
+    }
+  );
+  return paths
+    .filter((path) => !path.isDirectory())
+    .map((path) => relative(root, join(path.parentPath, path.name)).replaceAll('\\', '/'))
+    .filter((path) => patternCapture(pattern, path) !== undefined);
+}
+
 /** Resolves public imports from a package's `exports` map, expanding wildcard targets against build files. */
 async function packageEntries(root: string, pkg: Workspace): Promise<PublicEntry[]> {
   const manifest = JSON.parse(await readFile(join(pkg.root, 'package.json'), 'utf8')) as {
@@ -110,6 +138,10 @@ async function packageEntries(root: string, pkg: Workspace): Promise<PublicEntry
         ? (declared as Record<string, ExportTarget>)
         : { '.': declared }
       : { '.': manifest.module ?? manifest.main ?? null };
+  // Node prefers the longest prefix before `*`, then the longest complete pattern.
+  const patterns = Object.keys(exports)
+    .filter((key) => key.includes('*'))
+    .sort((a, b) => b.indexOf('*') - a.indexOf('*') || b.length - a.length);
   const found = new Map<string, PublicEntry>();
   for (const [key, value] of Object.entries(exports)) {
     // A types-only export is still catalogued, but is never a browser runtime fixture.
@@ -131,16 +163,14 @@ async function packageEntries(root: string, pkg: Workspace): Promise<PublicEntry
       wildcard !== target.includes('*')
     )
       throw new Error(`Unsupported export pattern: ${pkg.name} ${key} -> ${target}`);
-    const paths = wildcard ? await Array.fromAsync(glob(target, { cwd: pkg.root })) : [target];
+    const paths = wildcard ? await patternPaths(pkg.root, target) : [target];
     if (wildcard && !paths.length) throw new Error(`Public export pattern has no build output: ${pkg.name} ${target}`);
     for (const path of paths.sort()) {
       let subpath = key;
       if (wildcard) {
-        const [prefix, suffix] = target.replace(/^\.\//, '').split('*');
-        const actual = path.replace(/^\.\//, '');
-        const captured = actual.slice(prefix.length, suffix ? -suffix.length : undefined);
-        subpath = key.replace('*', captured);
+        subpath = key.replace('*', patternCapture(target.replace(/^\.\//, ''), path)!);
         if (Object.hasOwn(exports, subpath)) continue; // Explicit overrides, including null, win.
+        if (patterns.find((pattern) => patternCapture(pattern, subpath) !== undefined) !== key) continue;
       }
       const absolute = resolve(pkg.root, path);
       await readFile(absolute); // A stale export must fail before measuring a misleading empty case.
@@ -220,7 +250,6 @@ export async function discoverPublicApi(root: string, packages: Workspace[]): Pr
         .map((symbol) => symbol.name)
         .sort();
     }
-    const privateNames = new Set(packages.filter((pkg) => pkg.private).map((pkg) => pkg.name));
     for (const entry of entries) {
       if (entry.kind === 'javascript') {
         const source = project.program.getSourceFile(resolve(root, entry.target));
@@ -234,9 +263,7 @@ export async function discoverPublicApi(root: string, packages: Workspace[]): Pr
           entry.reason = 'Published JavaScript has no runtime exports or statements (types-only package).';
       } else if (entry.kind === 'css' && entry.target.endsWith('.module.css')) entry.exports = ['default'];
       else if (entry.kind === 'json') entry.exports = ['default'];
-      if (privateNames.has(entry.package))
-        entry.reason = 'Private development workspace; output and public API inventoried, no public browser consumer.';
-      else if (entry.kind === 'types') entry.reason = 'Type declarations; no browser runtime.';
+      if (entry.kind === 'types') entry.reason = 'Type declarations; no browser runtime.';
       else if (entry.kind === 'metadata') entry.reason = 'Package metadata; not a runtime entrypoint.';
       else if (entry.kind === 'source')
         entry.reason = 'Source/preprocessor resource; inventoried as output, requires a consumer-specific compiler.';

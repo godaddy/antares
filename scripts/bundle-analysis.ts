@@ -4,10 +4,10 @@
  * reports against budgets without rebuilding. Use `--package-from-cwd` for one package.
  * Reports connect public entries to consumer cases; consumer measurement IDs match case IDs.
  *
- * See `docs/pdrs/antares/bundle-size.md` for the architecture, structures, and execution flow.
+ * See `docs/pdrs/antares/bundle-size.md` for the measurement scope and contributor workflow.
  */
 import { readFileSync } from 'node:fs';
-import { appendFile, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
+import { appendFile, mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
 import { join, relative, resolve, sep } from 'node:path';
 import { parseArgs } from 'node:util';
 import sizeLimit from 'size-limit';
@@ -125,7 +125,7 @@ async function rawSizes(files: string[]): Promise<{ raw: number; groups: Record<
   let raw = 0;
   const groups: Record<string, number> = {};
   for (const path of files) {
-    const bytes = (await readFile(path)).byteLength;
+    const bytes = (await stat(path)).size;
     raw += bytes;
     const group = category(path);
     groups[group] = (groups[group] ?? 0) + bytes;
@@ -186,9 +186,9 @@ export function packageMetadata(pkg: Workspace): PackageMetadata {
   };
 }
 
-/** Returns library workspaces, excluding applications under `apps/`. */
+/** Returns publishable library workspaces, excluding private packages and applications under `apps/`. */
 function measuredWorkspaces(root: string, packages: Workspace[]): Workspace[] {
-  return packages.filter((pkg) => relative(root, pkg.root).split(sep)[0] !== 'apps');
+  return packages.filter((pkg) => !pkg.private && relative(root, pkg.root).split(sep)[0] !== 'apps');
 }
 
 /** Resolves a package report directory under `.bundle-analysis/`. */
@@ -258,12 +258,16 @@ function packageBudgets(pkg: Workspace, config: BundleSizePackageConfig): Budget
   };
 }
 
-/** Combines package budget maps for an aggregate check. */
-function mergeBudgets(budgets: Budgets[]): Budgets {
-  return {
-    output: Object.assign({}, ...budgets.map((item) => item.output)),
-    consumer: Object.assign({}, ...budgets.map((item) => item.consumer))
-  };
+/** Combines summary limits using only budgets from each measurement's owning package. */
+function mergeBudgets(reports: Report[], budgets: Budgets[]): Budgets {
+  const combined: Budgets = { output: {}, consumer: {} };
+  for (const [index, report] of reports.entries()) {
+    for (const item of report.measurements) {
+      const limit = budgets[index][item.kind][item.id];
+      if (limit !== undefined) combined[item.kind][item.id] = limit;
+    }
+  }
+  return combined;
 }
 
 /** Returns versions for the root analysis tools and the running Node process. */
@@ -375,7 +379,7 @@ export async function measureConsumer(
       files.map(
         /** Store each emitted file's package-relative path and raw byte count. */
         async function fileSize(path) {
-          return { path: relative(directory, path), raw: (await readFile(path)).byteLength };
+          return { path: relative(directory, path), raw: (await stat(path)).size };
         }
       )
     )
@@ -383,13 +387,15 @@ export async function measureConsumer(
 }
 
 /**
- * Returns diagnostics for missing budgets, invalid measurements, or limits that were exceeded.
+ * Returns diagnostics for missing or unused budgets, invalid measurements, or limits that were exceeded.
  * Output uses raw bytes; consumer cases use gzip bytes. This function does not rebuild or remeasure.
  */
 export function checkBudgets(report: Report, budgets: Budgets): string[] {
-  return report.measurements.flatMap(
+  const measuredIds = { output: new Set<string>(), consumer: new Set<string>() };
+  const failures = report.measurements.flatMap(
     /** Check the relevant budget and measurement for one report row. */
     function checkMeasurement(item) {
+      measuredIds[item.kind].add(item.id);
       const metric = item.kind === 'consumer' ? 'gzip' : 'raw';
       const size = item[metric];
       const limit = budgets[item.kind][item.id];
@@ -399,10 +405,25 @@ export function checkBudgets(report: Report, budgets: Budgets): string[] {
       return size > limit ? [`${item.id}: ${size} B ${metric} > ${limit} B (+${size - limit} B)`] : [];
     }
   );
+  for (const kind of ['output', 'consumer'] as const) {
+    for (const id of Object.keys(budgets[kind])) {
+      if (!measuredIds[kind].has(id)) failures.push(`${id}: unused ${kind} budget (no matching measurement)`);
+    }
+  }
+  return failures;
 }
 
-/** Renders package metadata, measurements, and budget outcomes as Markdown. */
-export function markdown(report: Report, budgets: Budgets): string {
+/** Adds the owning package to diagnostics, including budgets with no matching case. */
+function packageBudgetFailures(report: Report, budgets: Budgets): string[] {
+  return checkBudgets(report, budgets).map((failure) => `${report.packages[0].name}: ${failure}`);
+}
+
+/** Renders package metadata, measurements, and budget diagnostics as Markdown. */
+export function markdown(
+  report: Report,
+  budgets: Budgets,
+  failures = report.packages.length === 1 ? packageBudgetFailures(report, budgets) : checkBudgets(report, budgets)
+): string {
   const lines = [
     '# Bundle analysis',
     '',
@@ -427,6 +448,8 @@ export function markdown(report: Report, budgets: Budgets): string {
       `| ${item.kind}: ${item.id} | ${metric} | ${validSize ? `${size} B` : 'invalid'} | ${validLimit ? `${limit} B` : 'missing'} | ${validSize && validLimit && typeof size === 'number' && size <= limit ? 'PASS' : 'FAIL'} |`
     );
   }
+  lines.push('', `## Budget check: ${failures.length ? 'FAIL' : 'PASS'}`);
+  if (failures.length) lines.push('', ...failures.map((failure) => `- ${failure}`));
   lines.push(
     '',
     'Output raw includes both module formats, CSS, declarations, maps and assets in dist. It is not a browser transfer size or an npm tarball size.',
@@ -545,82 +568,40 @@ async function analyzePackage(root: string, pkg: Workspace, output: string): Pro
 }
 
 /**
- * Validates a saved report's structure and package metadata before checking budgets.
+ * Checks a generated report's package metadata and measurement coverage before checking budgets.
  * It does not rediscover exports or verify that measurements match the current source; rebuild to refresh them.
  */
-function validateReport(value: unknown, pkg: Workspace, reportPath: string): Report {
-  if (!isRecord(value) || !Array.isArray(value.measurements))
+function validateReport(report: Report, pkg: Workspace, reportPath: string): Report {
+  if (!Array.isArray(report?.packages) || !Array.isArray(report?.cases) || !Array.isArray(report?.measurements))
     throw new Error(`Invalid bundle report for ${pkg.name}; run its bundle-size:build target first: ${reportPath}`);
-  if (!Array.isArray(value.packages) || !isRecord(value.toolchain))
-    throw new Error(`Invalid bundle report metadata for ${pkg.name}: ${reportPath}`);
   const expectedPackage = packageMetadata(pkg);
-  const reportedPackage = value.packages[0];
+  const reportedPackage = report.packages[0];
   if (
-    value.packages.length !== 1 ||
-    !isRecord(reportedPackage) ||
-    reportedPackage.name !== expectedPackage.name ||
+    report.packages.length !== 1 ||
+    reportedPackage?.name !== expectedPackage.name ||
     reportedPackage.version !== expectedPackage.version ||
-    !Array.isArray(reportedPackage.externals) ||
-    reportedPackage.externals.some((external) => typeof external !== 'string') ||
     JSON.stringify(reportedPackage.externals) !== JSON.stringify(expectedPackage.externals)
   ) {
     throw new Error(`Stale package metadata for ${pkg.name}; run its bundle-size:build target first.`);
   }
-  if (!Array.isArray(value.publicEntries) || !Array.isArray(value.cases) || value.measurements.length === 0)
-    throw new Error(`Incomplete bundle report for ${pkg.name}: ${reportPath}`);
 
-  const measurements: Measurement[] = [];
-  for (const item of value.measurements) {
-    if (
-      !isRecord(item) ||
-      typeof item.id !== 'string' ||
-      item.package !== pkg.name ||
-      !['output', 'consumer'].includes(String(item.kind)) ||
-      !isNonNegativeInteger(item.raw) ||
-      !isRecord(item.groups) ||
-      Object.values(item.groups).some((bytes) => !isNonNegativeInteger(bytes)) ||
-      (item.kind === 'consumer' &&
-        (!isNonNegativeInteger(item.gzip) ||
-          !isNonNegativeInteger(item.brotli) ||
-          !Array.isArray(item.files) ||
-          item.files.some(
-            (file) => !isRecord(file) || typeof file.path !== 'string' || !isNonNegativeInteger(file.raw)
-          )))
-    ) {
-      throw new Error(`Invalid measurement in bundle report for ${pkg.name}: ${reportPath}`);
-    }
-    measurements.push(item as unknown as Measurement);
-  }
-
-  const outputs = measurements.filter((item) => item.kind === 'output');
-  const consumers = measurements.filter((item) => item.kind === 'consumer');
-  const consumerIds = new Set(consumers.map((item) => item.id));
-  const caseIds = value.cases.map((consumerCase) => (isRecord(consumerCase) ? consumerCase.id : undefined));
-  const validCaseIds = caseIds.every((id): id is string => typeof id === 'string');
-  const uniqueCaseIds = new Set(caseIds);
-  const validCases = value.cases.every(
-    (consumerCase) =>
-      isRecord(consumerCase) &&
-      consumerCase.package === pkg.name &&
-      typeof consumerCase.id === 'string' &&
-      /^[A-Za-z0-9][A-Za-z0-9_-]*$/.test(consumerCase.id) &&
-      typeof consumerCase.from === 'string' &&
-      Array.isArray(consumerCase.names) &&
-      consumerCase.names.every((name) => typeof name === 'string')
-  );
+  const expectedIds = new Set([
+    `output:${pkg.name}`,
+    ...report.cases.map((consumerCase) => `consumer:${consumerCase.id}`)
+  ]);
   if (
-    outputs.length !== 1 ||
-    outputs[0].id !== pkg.name ||
-    consumerIds.size !== consumers.length ||
-    !validCaseIds ||
-    !validCases ||
-    uniqueCaseIds.size !== value.cases.length ||
-    consumerIds.size !== value.cases.length ||
-    caseIds.some((id) => typeof id !== 'string' || !consumerIds.has(id))
+    expectedIds.size !== report.cases.length + 1 ||
+    report.measurements.length !== expectedIds.size ||
+    report.cases.some((consumerCase) => consumerCase.package !== pkg.name)
   ) {
     throw new Error(`Inconsistent measurements in bundle report for ${pkg.name}: ${reportPath}`);
   }
-  return value as unknown as Report;
+  for (const item of report.measurements) {
+    // Each expected identity must be matched exactly once, including the package output.
+    if (item.package !== pkg.name || !expectedIds.delete(`${item.kind}:${item.id}`))
+      throw new Error(`Inconsistent measurements in bundle report for ${pkg.name}: ${reportPath}`);
+  }
+  return report;
 }
 
 /** Merges package reports that share a toolchain and have unique measurement IDs. */
@@ -647,30 +628,44 @@ function mergeReports(reports: Report[]): Report {
 }
 
 /** Writes a package's metrics, API catalog, Markdown summary, and HTML index. */
-async function writePackageArtifacts(report: Report, pkg: Workspace, output: string): Promise<void> {
-  const config = await packageConfig(pkg);
-  const budgets = packageBudgets(pkg, config);
+async function writePackageArtifacts(report: Report, pkg: Workspace, output: string, budgets: Budgets): Promise<void> {
   const summary = markdown(report, budgets);
   await mkdir(output, { recursive: true });
-  await writeFile(join(output, 'metrics.json'), `${JSON.stringify(report, null, 2)}\n`);
   await writeFile(join(output, 'index.html'), indexHtml(report));
   await writeFile(join(output, 'public-api.json'), `${JSON.stringify(report.publicEntries, null, 2)}\n`);
   await writeFile(join(output, 'summary.md'), summary);
+  // Publish checkable measurements only after all package artifacts have been written.
+  await writeFile(join(output, 'metrics.json'), `${JSON.stringify(report, null, 2)}\n`);
   console.log(`${report.measurements.length} measurements for ${pkg.name}. Reports: ${output}/index.html`);
 }
 
-/** Writes aggregate reports and, in check mode, fails if a budget is missing or exceeded. */
+/** Rebuilds one package report, invalidating previous artifacts before any analysis can fail. */
+export async function buildPackageReport(root: string, pkg: Workspace, output: string): Promise<void> {
+  await rm(join(output, 'metrics.json'), { force: true });
+  for (const artifact of ['index.html', 'public-api.json', 'summary.md', 'consumers', 'reports', 'entries']) {
+    await rm(join(output, artifact), { recursive: true, force: true });
+  }
+  const budgets = packageBudgets(pkg, await packageConfig(pkg));
+  const report = await analyzePackage(root, pkg, output);
+  await writePackageArtifacts(report, pkg, output, budgets);
+}
+
+/** Writes aggregate reports before failing check mode on package budget diagnostics. */
 async function writeAggregateArtifacts(
   root: string,
   output: string,
   packages: Workspace[],
-  report: Report,
+  reports: Report[],
   options: { check: boolean }
 ): Promise<void> {
+  const report = mergeReports(reports);
   const configs = await Promise.all(packages.map(packageConfig));
-  const budgets = mergeBudgets(configs.map((config, index) => packageBudgets(packages[index], config)));
-  const summary = markdown(report, budgets);
-  const failures = checkBudgets(report, budgets);
+  const packageLimits = configs.map((config, index) => packageBudgets(packages[index], config));
+  const budgets = mergeBudgets(reports, packageLimits);
+  const failures = reports.flatMap((packageReport, index) =>
+    packageBudgetFailures(packageReport, packageLimits[index])
+  );
+  const summary = markdown(report, budgets, failures);
   const reportDirectories = new Map(
     packages.map((pkg) => [pkg.name, relative(output, packageOutput(root, pkg)).replaceAll('\\', '/')])
   );
@@ -680,7 +675,7 @@ async function writeAggregateArtifacts(
   await writeFile(join(output, 'index.html'), indexHtml(report, reportLink));
   await writeFile(join(output, 'public-api.json'), `${JSON.stringify(report.publicEntries, null, 2)}\n`);
   await writeFile(join(output, 'summary.md'), summary);
-  if (process.env.GITHUB_STEP_SUMMARY) await appendFile(process.env.GITHUB_STEP_SUMMARY, summary);
+  if (options.check && process.env.GITHUB_STEP_SUMMARY) await appendFile(process.env.GITHUB_STEP_SUMMARY, summary);
   console.log(
     `${report.measurements.length} measurements across ${packages.length} packages. Reports: ${output}/index.html`
   );
@@ -698,15 +693,14 @@ export async function aggregateReportsFromDisk(
   for (const pkg of packages) {
     const reportPath = join(packageOutput(root, pkg), 'metrics.json');
     try {
-      reports.push(validateReport(await json<unknown>(reportPath), pkg, reportPath));
+      reports.push(validateReport(await json<Report>(reportPath), pkg, reportPath));
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code === 'ENOENT')
         throw new Error(`Missing analysis for ${pkg.name}; run npm run bundle-size:build first.`);
       throw error;
     }
   }
-  const report = mergeReports(reports);
-  await writeAggregateArtifacts(root, output, packages, report, { check: options.check });
+  await writeAggregateArtifacts(root, output, packages, reports, { check: options.check });
 }
 
 /** Checks one package's saved report and budgets without rebuilding it. */
@@ -714,7 +708,7 @@ export async function checkPackageReportFromDisk(pkg: Workspace, output: string)
   const reportPath = join(output, 'metrics.json');
   let report: Report;
   try {
-    report = validateReport(await json<unknown>(reportPath), pkg, reportPath);
+    report = validateReport(await json<Report>(reportPath), pkg, reportPath);
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === 'ENOENT')
       throw new Error(`Missing analysis for ${pkg.name} at ${reportPath}; run its bundle-size:build target first.`);
@@ -722,7 +716,8 @@ export async function checkPackageReportFromDisk(pkg: Workspace, output: string)
   }
 
   const budgets = packageBudgets(pkg, await packageConfig(pkg));
-  const failures = checkBudgets(report, budgets);
+  const failures = packageBudgetFailures(report, budgets);
+  await writeFile(join(output, 'summary.md'), markdown(report, budgets, failures));
   if (failures.length) throw new Error(`Bundle check failed for ${pkg.name}:\n${failures.join('\n')}`);
   console.log(`${report.measurements.length} measurements for ${pkg.name}; all bundle budgets passed.`);
 }
@@ -757,12 +752,7 @@ async function main(): Promise<void> {
     if (!pkg) throw new Error(`Unknown measured workspace: ${manifest.name}`);
     const packageReportDirectory = values.output ? output : packageOutput(root, pkg);
     if (values.check) return checkPackageReportFromDisk(pkg, packageReportDirectory);
-    await rm(join(packageReportDirectory, 'consumers'), { recursive: true, force: true });
-    await rm(join(packageReportDirectory, 'reports'), { recursive: true, force: true });
-    await rm(join(packageReportDirectory, 'entries'), { recursive: true, force: true });
-    const report = await analyzePackage(root, pkg, packageReportDirectory);
-    await writePackageArtifacts(report, pkg, packageReportDirectory);
-    return;
+    return buildPackageReport(root, pkg, packageReportDirectory);
   }
   await aggregateReportsFromDisk(root, output, { check: Boolean(values.check) });
 }
