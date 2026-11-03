@@ -22,29 +22,29 @@ describe('@godaddy/antares', function packageTests() {
         </StrictMode>
       );
       await screen.getByRole('button', { name: 'Open' }).click();
-      await expect.element(screen.getByRole('status')).toHaveTextContent('drawer');
+      await expect.element(screen.getByRole('status')).toMatchTextContent('drawer');
       await page.viewport(640, 768);
-      await expect.element(screen.getByRole('status')).toHaveTextContent('drawer');
+      await expect.element(screen.getByRole('status')).toMatchTextContent('drawer');
       await screen.getByRole('button', { name: 'Close' }).click();
-      await expect.element(screen.getByRole('status')).toHaveTextContent('drawer');
+      await expect.element(screen.getByRole('status')).toMatchTextContent('drawer');
       await screen.getByRole('button', { name: 'Open' }).click();
-      await expect.element(screen.getByRole('status')).toHaveTextContent('popover');
+      await expect.element(screen.getByRole('status')).toMatchTextContent('popover');
       await page.viewport(639, 768);
-      await expect.element(screen.getByRole('status')).toHaveTextContent('popover');
+      await expect.element(screen.getByRole('status')).toMatchTextContent('popover');
       await screen.getByRole('button', { name: 'Close' }).click();
       await screen.getByRole('button', { name: 'Open' }).click();
-      await expect.element(screen.getByRole('status')).toHaveTextContent('drawer');
+      await expect.element(screen.getByRole('status')).toMatchTextContent('drawer');
     });
 
     it('applies an explicit popover preference on the next open', async function optOut() {
       await page.viewport(320, 768);
       const screen = await render(<DefaultExample defaultOpen />);
-      await expect.element(screen.getByRole('status')).toHaveTextContent('drawer');
+      await expect.element(screen.getByRole('status')).toMatchTextContent('drawer');
       await screen.rerender(<DefaultExample defaultOpen overlay="popover" />);
-      await expect.element(screen.getByRole('status')).toHaveTextContent('drawer');
+      await expect.element(screen.getByRole('status')).toMatchTextContent('drawer');
       await screen.getByRole('button', { name: 'Close' }).click();
       await screen.getByRole('button', { name: 'Open' }).click();
-      await expect.element(screen.getByRole('status')).toHaveTextContent('popover');
+      await expect.element(screen.getByRole('status')).toMatchTextContent('popover');
     });
 
     it('preserves an initially open popover during narrow hydration', async function hydrate() {
@@ -59,12 +59,12 @@ describe('@godaddy/antares', function packageTests() {
         await act(async function mount() {
           root = hydrateRoot(container, <DefaultExample defaultOpen />, { onRecoverableError });
         });
-        await expect.element(page.getByRole('status')).toHaveTextContent('popover');
+        await expect.element(page.getByRole('status')).toMatchTextContent('popover');
         await act(async function reopen() {
           await page.getByRole('button', { name: 'Close' }).click();
           await page.getByRole('button', { name: 'Open' }).click();
         });
-        await expect.element(page.getByRole('status')).toHaveTextContent('drawer');
+        await expect.element(page.getByRole('status')).toMatchTextContent('drawer');
         expect(onRecoverableError).not.toHaveBeenCalled();
       } finally {
         await act(async function unmount() {
