@@ -61,21 +61,23 @@ type ExportTarget = string | null | ExportTarget[] | { [condition: string]: Expo
 /** Export conditions considered when selecting a runtime import target. */
 const importConditions = new Set(['import', 'module', 'browser', 'production', 'default']);
 
-/** Selects the first supported runtime target from a package export condition. */
-function importTarget(value: ExportTarget): string | undefined {
-  if (typeof value === 'string') return value;
-  if (value === null) return undefined;
+/** Returns a runtime target, null for an exclusion, or undefined when no condition applies. */
+function importTarget(value: ExportTarget): string | null | undefined {
+  if (typeof value === 'string' || value === null) return value;
   if (Array.isArray(value)) {
+    let blocked = value.length === 0;
     for (const item of value) {
       const target = importTarget(item);
-      if (target) return target;
+      // Arrays may recover from an exclusion by selecting a later alternative.
+      if (typeof target === 'string') return target;
+      if (target === null) blocked = true;
     }
-    return undefined;
+    return blocked ? null : undefined;
   }
   for (const [condition, item] of Object.entries(value)) {
     if (importConditions.has(condition)) {
       const target = importTarget(item);
-      if (target) return target;
+      if (target !== undefined) return target;
     }
   }
   return undefined;
@@ -144,16 +146,15 @@ async function packageEntries(root: string, pkg: Workspace): Promise<PublicEntry
     .sort((a, b) => b.indexOf('*') - a.indexOf('*') || b.length - a.length);
   const found = new Map<string, PublicEntry>();
   for (const [key, value] of Object.entries(exports)) {
+    const runtimeTarget = importTarget(value);
+    if (runtimeTarget === null) continue;
     // A types-only export is still catalogued, but is never a browser runtime fixture.
     const target =
-      importTarget(value) ??
+      runtimeTarget ??
       (value && !Array.isArray(value) && typeof value === 'object' && typeof value.types === 'string'
         ? value.types
         : undefined);
-    if (!target) {
-      if (value !== null) throw new Error(`No supported import target for ${pkg.name}${key.slice(1)}`);
-      continue;
-    }
+    if (!target) throw new Error(`No supported import target for ${pkg.name}${key.slice(1)}`);
     if (isAbsolute(target) || relative(pkg.root, resolve(pkg.root, target)).startsWith('..'))
       throw new Error(`Export outside package: ${pkg.name} ${target}`);
     const wildcard = key.includes('*');

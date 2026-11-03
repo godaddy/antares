@@ -67,17 +67,20 @@ describe('package export patterns', function exportPatternTests() {
     });
   });
 
-  it('excludes nested imports covered by a more specific null pattern', async function honorsNullPatterns() {
-    const entries = await fixture(
-      { './*': './dist/*.mjs', './internal/*': null },
-      {
-        'dist/Public.mjs': 'export const Public = 1;',
-        'dist/internal/Secret.mjs': 'export const Secret = 2;',
-        'dist/internal/nested/Hidden.mjs': 'export const Hidden = 3;'
-      }
-    );
-    expect(entries.map((entry) => entry.from)).toEqual(['@fixture/ui/Public']);
-  });
+  it.each([null, { browser: null, import: './dist/internal/*.mjs' }])(
+    'excludes nested imports covered by a more specific blocked pattern (%j)',
+    async function honorsNullPatterns(target) {
+      const entries = await fixture(
+        { './*': './dist/*.mjs', './internal/*': target },
+        {
+          'dist/Public.mjs': 'export const Public = 1;',
+          'dist/internal/Secret.mjs': 'export const Secret = 2;',
+          'dist/internal/nested/Hidden.mjs': 'export const Hidden = 3;'
+        }
+      );
+      expect(entries.map((entry) => entry.from)).toEqual(['@fixture/ui/Public']);
+    }
+  );
 
   it.each([false, true])(
     'selects the longest pattern prefix and suffix regardless of declaration order (reversed: %s)',
@@ -118,4 +121,65 @@ describe('package export patterns', function exportPatternTests() {
       exports: ['Browser']
     });
   });
+});
+
+describe('package export conditions', function exportConditionTests() {
+  it.each([
+    { name: 'browser null before import', target: { browser: null, import: './dist/Entry.mjs' } },
+    {
+      name: 'nested null before default and sibling import',
+      target: { browser: { production: null, default: './dist/Entry.mjs' }, import: './dist/Entry.mjs' }
+    },
+    { name: 'null with a types fallback', target: { browser: null, types: './dist/Entry.d.ts' } },
+    { name: 'array containing only null', target: [null] },
+    {
+      name: 'array containing a nested null and an inapplicable condition',
+      target: [{ browser: null }, { node: './dist/Entry.mjs' }]
+    },
+    { name: 'empty array with a types fallback', target: { browser: [], types: './dist/Entry.d.ts' } }
+  ])('excludes a blocked export: $name', async function excludesBlockedConditions({ target }) {
+    const entries = await fixture(
+      { './Entry': target },
+      { 'dist/Entry.mjs': 'export const Entry = 1;', 'dist/Entry.d.ts': 'export declare const Entry: number;' }
+    );
+    expect(entries).toEqual([]);
+  });
+
+  it.each([
+    [null, './dist/Entry.mjs'],
+    [{ browser: { production: null, default: './dist/Wrong.mjs' } }, './dist/Entry.mjs']
+  ])('uses a later array alternative after a blocked target (%j)', async function selectsArrayFallback(...target) {
+    const entries = await fixture(
+      { './Entry': target },
+      { 'dist/Entry.mjs': 'export const Entry = 1;', 'dist/Wrong.mjs': 'export const Wrong = 2;' }
+    );
+    expect(entries).toHaveLength(1);
+    expect(entries[0]).toMatchObject({ target: 'dist/Entry.mjs', exports: ['Entry'] });
+  });
+
+  it('tries the next condition when a nested condition does not apply', async function skipsInapplicableConditions() {
+    const entries = await fixture(
+      { './Entry': { browser: { node: './dist/Wrong.mjs' }, import: './dist/Entry.mjs' } },
+      { 'dist/Entry.mjs': 'export const Entry = 1;', 'dist/Wrong.mjs': 'export const Wrong = 2;' }
+    );
+    expect(entries).toHaveLength(1);
+    expect(entries[0]).toMatchObject({ target: 'dist/Entry.mjs', exports: ['Entry'] });
+  });
+
+  it.each([{ types: './dist/Entry.d.ts' }, { browser: [{ node: './dist/Wrong.mjs' }], types: './dist/Entry.d.ts' }])(
+    'catalogues types when no runtime condition applies (%j)',
+    async function catalogsTypes(target) {
+      const entries = await fixture(
+        { './Entry': target },
+        { 'dist/Entry.d.ts': 'export declare const Entry: number;' }
+      );
+      expect(entries).toHaveLength(1);
+      expect(entries[0]).toMatchObject({
+        from: '@fixture/ui/Entry',
+        target: 'dist/Entry.d.ts',
+        kind: 'types',
+        reason: 'Type declarations; no browser runtime.'
+      });
+    }
+  );
 });
