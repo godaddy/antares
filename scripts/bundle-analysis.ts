@@ -542,6 +542,38 @@ function indexHtml(report: Report, reportLink: (item: Measurement) => string = (
 </html>`;
 }
 
+/** Maps work with bounded concurrency, preserving input order and draining started work before rejecting. */
+export async function mapConcurrent<T, U>(items: T[], concurrency: number, run: (item: T) => Promise<U>): Promise<U[]> {
+  if (!Number.isSafeInteger(concurrency) || concurrency < 1)
+    throw new RangeError('Concurrency must be a positive integer.');
+  const results: U[] = [];
+  let next = 0;
+  let failed = false;
+  let failureIndex = Infinity;
+  let failure: unknown;
+
+  /** Stops taking work after a failure while allowing every started operation to settle. */
+  async function worker(): Promise<void> {
+    while (!failed && next < items.length) {
+      const index = next++;
+      try {
+        results[index] = await run(items[index]);
+      } catch (error) {
+        failed = true;
+        // Keep the same diagnostic as sequential execution if more than one started case fails.
+        if (index < failureIndex) {
+          failureIndex = index;
+          failure = error;
+        }
+      }
+    }
+  }
+
+  await Promise.all(Array.from({ length: Math.min(concurrency, items.length) }, worker));
+  if (failed) throw failure;
+  return results;
+}
+
 /** Discovers, measures, and returns one package report after Nx has built its `dist/`. */
 async function analyzePackage(root: string, pkg: Workspace, output: string): Promise<Report> {
   const metadata = packageMetadata(pkg);
@@ -553,11 +585,18 @@ async function analyzePackage(root: string, pkg: Workspace, output: string): Pro
   const files = await filesIn(join(pkg.root, 'dist'));
   if (!files.length) throw new Error(`Missing output for ${pkg.name}; run the Nx build first.`);
   measurements.push({ id: pkg.name, package: pkg.name, kind: 'output', ...(await rawSizes(files)) });
-  for (const consumerCase of consumers) {
-    // Vite resolves bare imports from this checkout and its workspace dependencies.
-    measurements.push(await measureConsumer(consumerCase, root, output, metadata.externals));
-    console.log(`Measured ${consumerCase.id}`);
-  }
+  measurements.push(
+    ...(await mapConcurrent(
+      consumers,
+      2,
+      /** Vite resolves each independent consumer from this checkout and its workspace dependencies. */
+      async function measureCase(consumerCase) {
+        const measurement = await measureConsumer(consumerCase, root, output, metadata.externals);
+        console.log(`Measured ${consumerCase.id}`);
+        return measurement;
+      }
+    ))
+  );
   return {
     packages: [metadata],
     toolchain: toolchain(),

@@ -58,6 +58,8 @@ npm exec -- nx run @bento/button:bundle-size:check
 
 The build target prepares package and dependency output through Nx, validates the budget configuration, then generates measurements and reports. Each analysis invalidates the previous package report before measuring, so a failed analysis cannot leave old measurements available to check. Report generation can succeed with missing or exceeded budgets so contributors can inspect the results. Invalid configuration, broken exports or measurement errors can still fail the build.
 
+Consumer cases remain independent, with at most two running per package to bound memory use. Measurements keep discovery order. If a case fails, analysis stops starting new cases and waits for those already running before returning the first failure in discovery order. Incomplete analyses do not publish `metrics.json`.
+
 The check reads saved reports and compares them with budgets; it does not rebuild or remeasure. Package checks need only that package's report. The root check combines package reports into an aggregate and checks all measured packages. Summaries include diagnostics for missing, exceeded and obsolete budgets.
 
 When adding or changing an export:

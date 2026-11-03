@@ -2,7 +2,14 @@ import { mkdtemp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { discoverPublicApi, consumerCases, entryKind, type PublicEntry, type Workspace } from '../bundle-discovery.ts';
+import {
+  discoverPublicApi,
+  consumerCases,
+  entryKind,
+  type ConsumerCase,
+  type PublicEntry,
+  type Workspace
+} from '../bundle-discovery.ts';
 import {
   aggregateReportsFromDisk,
   buildPackageReport,
@@ -13,9 +20,11 @@ import {
   filesIn,
   fixtureSource,
   markdown,
+  mapConcurrent,
   measureConsumer,
   packageMetadata,
   type Budgets,
+  type Measurement,
   type Report
 } from '../bundle-analysis.ts';
 
@@ -80,6 +89,133 @@ async function savedReportWorkspace(value: Report = report()) {
   };
   return { root, output, pkg };
 }
+
+describe('bounded consumer work', function boundedConsumerTests() {
+  it('runs at most two jobs and retains input order when jobs finish out of order', async function preservesOrder() {
+    const gates = Array.from({ length: 4 }, () => Promise.withResolvers<number>());
+    const starts = Array.from({ length: 4 }, () => Promise.withResolvers<void>());
+    const started: number[] = [];
+    let active = 0;
+    let peak = 0;
+    const pending = mapConcurrent([0, 1, 2, 3], 2, async function controlledJob(item) {
+      started.push(item);
+      active++;
+      peak = Math.max(peak, active);
+      starts[item].resolve();
+      try {
+        return await gates[item].promise;
+      } finally {
+        active--;
+      }
+    });
+    await Promise.all([starts[0].promise, starts[1].promise]);
+    expect(started).toEqual([0, 1]);
+    expect(active).toBe(2);
+    gates[1].resolve(11);
+    await starts[2].promise;
+    expect(started).toEqual([0, 1, 2]);
+    gates[0].resolve(10);
+    await starts[3].promise;
+    gates[3].resolve(13);
+    gates[2].resolve(12);
+    await expect(pending).resolves.toEqual([10, 11, 12, 13]);
+    expect(peak).toBe(2);
+    expect(active).toBe(0);
+  });
+
+  it('drains started work after a failure without starting another case', async function drainsAfterFailure() {
+    const first = Promise.withResolvers<number>();
+    const second = Promise.withResolvers<number>();
+    const started: number[] = [];
+    const error = new Error('Consumer build failed');
+    let settled = false;
+    const pending = mapConcurrent([0, 1, 2], 2, async function controlledFailure(item) {
+      started.push(item);
+      return item === 0 ? first.promise : second.promise;
+    });
+    const outcome = pending.then(
+      function unexpectedSuccess() {
+        settled = true;
+        return { status: 'fulfilled' };
+      },
+      function expectedFailure(reason) {
+        settled = true;
+        return { status: 'rejected', reason };
+      }
+    );
+    expect(started).toEqual([0, 1]);
+    second.reject(new Error('Later consumer failed first'));
+    // Let the failure reach the scheduler before checking that it waits for the other case.
+    await new Promise<void>(function nextTurn(resolve) {
+      setImmediate(resolve);
+    });
+    expect(settled).toBe(false);
+    expect(started).toEqual([0, 1]);
+    first.reject(error);
+    await expect(outcome).resolves.toEqual({ status: 'rejected', reason: error });
+    expect(started).toEqual([0, 1]);
+  });
+
+  it('preserves complete measurements and all artifacts for concurrent consumer builds', async function preservesConsumerBuilds() {
+    const root = await mkdtemp(join(tmpdir(), 'bundle-concurrent-consumers-'));
+    temporaryDirectories.push(root);
+    const pkg = join(root, 'node_modules/concurrent-fixture');
+    await mkdir(pkg, { recursive: true });
+    await writeFile(join(root, 'package.json'), '{"type":"module"}');
+    await writeFile(
+      join(pkg, 'package.json'),
+      JSON.stringify({ name: 'concurrent-fixture', type: 'module', exports: './index.js' })
+    );
+    await writeFile(
+      join(pkg, 'index.js'),
+      'import "./style.css"; import { peer } from "fixture-peer"; export const first = () => peer; export const second = () => "SECOND_SENTINEL";'
+    );
+    await writeFile(join(pkg, 'style.css'), '.fixture { color: red; background: url("./icon.svg") }');
+    await writeFile(join(pkg, 'icon.svg'), '<svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0h10v10z"/></svg>');
+    const cases: ConsumerCase[] = [
+      {
+        id: 'fixture-entry',
+        package: 'concurrent-fixture',
+        from: 'concurrent-fixture',
+        names: ['first', 'second'],
+        scope: 'entry'
+      },
+      {
+        id: 'fixture-first',
+        package: 'concurrent-fixture',
+        from: 'concurrent-fixture',
+        names: ['first'],
+        scope: 'export'
+      },
+      {
+        id: 'fixture-second',
+        package: 'concurrent-fixture',
+        from: 'concurrent-fixture',
+        names: ['second'],
+        scope: 'export'
+      }
+    ];
+    const sequentialOutput = join(root, 'sequential');
+    const concurrentOutput = join(root, 'concurrent');
+    const sequential: Measurement[] = [];
+    for (const consumerCase of cases) {
+      sequential.push(await measureConsumer(consumerCase, root, sequentialOutput, ['fixture-peer']));
+    }
+    const concurrent = await mapConcurrent(cases, 2, async function measureCase(consumerCase) {
+      return measureConsumer(consumerCase, root, concurrentOutput, ['fixture-peer']);
+    });
+    expect(concurrent).toEqual(sequential);
+    for (const output of [sequentialOutput, concurrentOutput]) {
+      for (const consumerCase of cases) {
+        for (const template of ['treemap', 'sunburst', 'network']) {
+          expect((await stat(join(output, 'reports', consumerCase.id, `${template}.html`))).size).toBeGreaterThan(0);
+        }
+        const paths = await filesIn(join(output, 'consumers', consumerCase.id));
+        expect(paths.some((path) => path.endsWith('.map'))).toBe(true);
+      }
+    }
+  }, 20_000);
+});
 
 describe('bundle measurement contracts', function bundleMeasurementTests() {
   it('classifies package metadata paths with Windows separators', function classifiesWindowsMetadata() {
