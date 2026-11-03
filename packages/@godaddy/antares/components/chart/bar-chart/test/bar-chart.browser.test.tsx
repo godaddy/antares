@@ -3,7 +3,7 @@ import { BarChart, type BarChartProps } from '../src';
 import type { BarSeriesConfig, SeriesConfig } from '../../types';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
-import { describe, it } from 'vitest';
+import { describe, it, vi } from 'vitest';
 import assume from 'assume';
 import { RTLProvider } from '#utils/rtl-locale-provider.tsx';
 import { waitForSelector } from '#test/utils/wait-for-selector.ts';
@@ -461,6 +461,41 @@ describe('@godaddy/antares', function antares() {
         // Y-axis should not be rendered when yBaseline is false
         const yAxis = svg?.querySelector('.visx-axis-left');
         assume(yAxis).is.a('null');
+      });
+
+      it('does not cover the first x-axis label with the y-axis background', async function firstLabelVisible() {
+        const series: SeriesConfig[] = [
+          {
+            id: 'series-1',
+            name: 'Test Series',
+            data: Array.from({ length: 40 }, function makeDatum(_, index) {
+              return { x: `Category label ${index + 1}`, y: (index % 5) * 10 };
+            })
+          }
+        ];
+        const { container } = await renderBarChart({ series, xLabelsOrientation: 'horizontal' });
+
+        const svg = container.querySelector('svg')!;
+        await vi.waitFor(
+          function waitForMargins() {
+            const yAxisBackground = container.querySelector('rect[class*="axisBackground"]');
+            const firstLabel = container.querySelector('.visx-axis-bottom .visx-axis-tick text');
+            assume(yAxisBackground).exists();
+            assume(firstLabel).exists();
+            assume(yAxisBackground!.getBoundingClientRect().width).is.above(0);
+            assume(firstLabel!.getBoundingClientRect().left).is.at.least(svg.getBoundingClientRect().left);
+          },
+          { timeout: 3000, interval: 50 }
+        );
+
+        const backgroundRect = container.querySelector('rect[class*="axisBackground"]')!.getBoundingClientRect();
+        const labelRect = container.querySelector('.visx-axis-bottom .visx-axis-tick text')!.getBoundingClientRect();
+        const overlaps =
+          backgroundRect.right > labelRect.left &&
+          backgroundRect.left < labelRect.right &&
+          backgroundRect.bottom > labelRect.top &&
+          backgroundRect.top < labelRect.bottom;
+        assume(overlaps).is.false();
       });
     });
 
