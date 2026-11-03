@@ -1,9 +1,10 @@
 import { page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
+import { createRef } from 'react';
 import assume from 'assume';
 import { Button } from '#components/button';
-import { Menu, MenuItem, MenuTrigger } from '#components/menu';
+import { Menu, MenuItem, MenuTrigger, Separator, SeparatorContext } from '#components/menu';
 import { Popover } from '#components/popover';
 import { DefaultExample } from '../examples/default.tsx';
 import { SubmenuExample } from '../examples/submenu.tsx';
@@ -15,6 +16,8 @@ import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
 import { LinksExample } from '../examples/links.tsx';
 import { OpenFromDialogExample } from '../examples/open-from-dialog.tsx';
 import { ComplexExample } from '../examples/complex.tsx';
+import { PlaygroundExample } from '../examples/menu-playground.tsx';
+import './menu.types.tsx';
 
 /** Wait for an element to appear by polling. */
 async function waitForElement(locator: ReturnType<typeof page.getByRole>, timeout = 800): Promise<Element> {
@@ -165,6 +168,90 @@ describe('@godaddy/antares', function antares() {
       assume(document.querySelectorAll('[role="menu"]').length).equals(3);
     });
 
+    it.each([true, false])(
+      'moves the Playground checkmark with single selection when showGroups=%s',
+      async function playgroundSingleSelection(showGroups) {
+        const user = userEvent.setup();
+        await render(<PlaygroundExample showGroups={showGroups} />);
+
+        await user.click(page.getByRole('button', { name: 'Menu Playground' }));
+        const date = await waitForElement(page.getByRole('menuitemradio', { name: 'Sort by Date' }));
+        const name = page.getByRole('menuitemradio', { name: 'Sort by Name' });
+        assume(date.getAttribute('aria-checked')).equals('true');
+        assume(date.querySelector('svg')).is.not.equal(null);
+        assume(name.element().querySelector('svg')).equals(null);
+
+        await user.click(name);
+        await vi.waitFor(async function menuClosed() {
+          assume(await page.getByRole('menu').query()).equals(null);
+        });
+        await user.click(page.getByRole('button', { name: 'Menu Playground' }));
+
+        const selectedName = await waitForElement(name);
+        const unselectedDate = page.getByRole('menuitemradio', { name: 'Sort by Date' }).element();
+        assume(selectedName.getAttribute('aria-checked')).equals('true');
+        assume(selectedName.querySelector('svg')).is.not.equal(null);
+        assume(unselectedDate.getAttribute('aria-checked')).equals('false');
+        assume(unselectedDate.querySelector('svg')).equals(null);
+      }
+    );
+
+    it.each([
+      { singleSelection: false, showGroups: true },
+      { singleSelection: false, showGroups: false },
+      { singleSelection: true, showGroups: true },
+      { singleSelection: true, showGroups: false }
+    ])(
+      'keeps Playground checkbox state consistent with multiple selection for %j',
+      async function playgroundMultipleSelection({ singleSelection, showGroups }) {
+        const user = userEvent.setup();
+        await render(<PlaygroundExample singleSelection={singleSelection} multipleSelection showGroups={showGroups} />);
+
+        await user.click(page.getByRole('button', { name: 'Menu Playground' }));
+        const name = page.getByRole('menuitemcheckbox', { name: 'Name', exact: true });
+        const nameElement = await waitForElement(name);
+        const date = page.getByRole('menuitemcheckbox', { name: 'Date Modified' }).element();
+        const size = page.getByRole('menuitemcheckbox', { name: 'Size', exact: true });
+        assume(nameElement.getAttribute('aria-checked')).equals('true');
+        assume(nameElement.querySelector('[aria-hidden="true"][data-selected]')).is.not.equal(null);
+        assume(date.getAttribute('aria-checked')).equals('true');
+        assume(date.querySelector('[aria-hidden="true"][data-selected]')).is.not.equal(null);
+        assume(size.element().getAttribute('aria-checked')).equals('false');
+        assume(size.element().querySelector('[aria-hidden="true"]:not(svg)')).is.not.equal(null);
+        assume(size.element().querySelector('[aria-hidden="true"][data-selected]')).equals(null);
+
+        await user.click(size);
+        assume(size.element().getAttribute('aria-checked')).equals('true');
+        assume(size.element().querySelector('[aria-hidden="true"][data-selected]')).is.not.equal(null);
+
+        await user.click(name);
+        assume(name.element().getAttribute('aria-checked')).equals('false');
+        assume(name.element().querySelector('[aria-hidden="true"][data-selected]')).equals(null);
+        assume(size.element().getAttribute('aria-checked')).equals('true');
+        assume(date.getAttribute('aria-checked')).equals('true');
+      }
+    );
+
+    it.each([true, false])(
+      'uses plain Playground actions when selection is disabled and showGroups=%s',
+      async function playgroundNoSelection(showGroups) {
+        const user = userEvent.setup();
+        await render(<PlaygroundExample singleSelection={false} multipleSelection={false} showGroups={showGroups} />);
+
+        await user.click(page.getByRole('button', { name: 'Menu Playground' }));
+        const name = page.getByRole('menuitem', { name: 'Name', exact: true });
+        const nameElement = await waitForElement(name);
+        assume(nameElement.getAttribute('aria-checked')).equals(null);
+        assume(nameElement.querySelector('[aria-hidden="true"]')).equals(null);
+        assume(nameElement.querySelector('svg')).equals(null);
+
+        await user.click(name);
+        await vi.waitFor(async function menuClosed() {
+          assume(await page.getByRole('menu').query()).equals(null);
+        });
+      }
+    );
+
     it('renders section labels as presentational headings', async function sections() {
       const user = userEvent.setup();
       await render(<TitleAndGroupsExample />);
@@ -178,6 +265,57 @@ describe('@godaddy/antares', function antares() {
       assume(await page.getByRole('menuitem', { name: 'YouTube…' }).query()).is.not.equal(null);
       const heading = page.getByRole('heading', { name: 'Menu Title' }).element();
       assume(heading.getAttribute('role')).equals(null);
+    });
+
+    it('keeps a styled separator and consumer class in the menu collection', async function separatorCollection() {
+      await render(
+        <Menu aria-label="Edit">
+          <MenuItem id="copy">Copy</MenuItem>
+          <Separator className="custom-separator" />
+          <MenuItem id="paste">Paste</MenuItem>
+        </Menu>
+      );
+
+      const separator = await waitForElement(page.getByRole('separator'));
+      assume(separator.tagName).equals('DIV');
+      assume(separator.classList.contains('custom-separator')).equals(true);
+      assume(separator.getBoundingClientRect().height).is.above(0);
+      assume(getComputedStyle(separator).borderTopStyle).equals('solid');
+      assume(await page.getByRole('menuitem', { name: 'Paste' }).query()).is.not.equal(null);
+    });
+
+    it('merges separator context defaults with local props and refs', async function separatorContext() {
+      const contextRef = createRef<HTMLHRElement>();
+      const localRef = createRef<HTMLHRElement>();
+      await render(
+        <SeparatorContext.Provider
+          value={{
+            ref: contextRef,
+            id: 'context-separator',
+            className: 'context-separator',
+            orientation: 'vertical',
+            style: { marginTop: 5, opacity: 0.5 }
+          }}
+        >
+          <Separator
+            ref={localRef}
+            id="local-separator"
+            className="local-separator"
+            orientation="horizontal"
+            style={{ opacity: 0.75 }}
+          />
+        </SeparatorContext.Provider>
+      );
+
+      const separator = await waitForElement(page.getByRole('separator'));
+      assume(contextRef.current).equals(separator);
+      assume(localRef.current).equals(separator);
+      assume(separator.id).equals('local-separator');
+      assume(separator.classList.contains('context-separator')).equals(true);
+      assume(separator.classList.contains('local-separator')).equals(true);
+      assume(separator.getAttribute('aria-orientation')).is.not.equal('vertical');
+      assume(getComputedStyle(separator).marginTop).equals('5px');
+      assume(getComputedStyle(separator).opacity).equals('0.75');
     });
 
     it('opens an account menu from an avatar', async function avatar() {

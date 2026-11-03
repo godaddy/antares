@@ -16,6 +16,7 @@
 
 .popover:where([data-noarrow="true"]) {
   --_arrow-width: 0px;
+  --_arrow-rounded-tip: 0px;
 }
 
 .popover:where([data-entering], [data-exiting]) {

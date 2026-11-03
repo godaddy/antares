@@ -3,6 +3,8 @@ import { CustomAnchorExample } from '../examples/custom-anchor.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { PlaygroundExample } from '../examples/popover-playground.tsx';
 import { LayerPropsExample } from '../examples/layer-props.tsx';
+import { ContainerContextExample } from '../examples/container-context.tsx';
+import { createRef } from 'react';
 import { cdp, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
@@ -181,6 +183,132 @@ describe('@godaddy/antares', function antares() {
 
       // The panel keeps its own classes alongside the consumer's.
       assume((container as HTMLElement).className.split(' ').length).is.above(1);
+    });
+
+    it('preserves menu presentation when the consumer supplies containerProps', async function menuContainerProps() {
+      const { getByRole } = await render(
+        <ContainerContextExample
+          popoverProps={{
+            containerProps: {
+              className: 'local-panel',
+              style: { color: 'rgb(128, 0, 0)' }
+            }
+          }}
+        />
+      );
+
+      await getByRole('button', { name: 'Open context panel' }).click();
+
+      await vi.waitFor(function menuPresentation() {
+        const panel = document.querySelector('.local-panel') as HTMLElement;
+        assume(panel).is.not.equal(null);
+        assume(panel.classList.contains('local-panel')).is.true();
+        assume(panel.getAttribute('data-noarrow')).equals('true');
+        assume(getComputedStyle(panel).minInlineSize).equals('186px');
+        assume(getComputedStyle(panel).borderRadius).equals('16px');
+        assume(panel.style.color).equals('rgb(128, 0, 0)');
+      });
+    });
+
+    it('merges slotted panel defaults, styles and handlers while retaining both dialog refs', async function contextProps() {
+      const contextRef = createRef<HTMLElement>();
+      const consumerRef = createRef<HTMLElement>();
+      const onContextMouseDown = vi.fn();
+      const onConsumerMouseDown = vi.fn();
+      const { getByRole } = await render(
+        <ContainerContextExample
+          menu={false}
+          context={{
+            slots: {
+              content: {
+                ref: contextRef,
+                className: 'context-dialog',
+                hideArrow: true,
+                containerProps: {
+                  className: 'context-panel',
+                  lang: 'en',
+                  dir: 'ltr',
+                  style: { backgroundColor: 'rgb(240, 240, 240)', borderRadius: 13, padding: 12 },
+                  onMouseDown: onContextMouseDown
+                }
+              }
+            }
+          }}
+          popoverProps={{
+            slot: 'content',
+            ref: consumerRef,
+            className: 'consumer-dialog',
+            containerProps: {
+              className: 'consumer-panel',
+              lang: 'fr',
+              style: { borderRadius: 9 },
+              onMouseDown: onConsumerMouseDown
+            }
+          }}
+        />
+      );
+
+      await getByRole('button', { name: 'Open context panel' }).click();
+      await vi.waitFor(function composedPanel() {
+        const panel = document.querySelector('.consumer-panel') as HTMLElement;
+        assume(panel).is.not.equal(null);
+        assume(panel.classList.contains('context-panel')).is.true();
+        assume(panel.classList.contains('consumer-panel')).is.true();
+        assume(panel.lang).equals('fr');
+        assume(panel.dir).equals('ltr');
+        assume(panel.style.backgroundColor).equals('rgb(240, 240, 240)');
+        assume(panel.style.padding).equals('12px');
+        assume(panel.style.borderRadius).equals('9px');
+        assume(panel.getAttribute('data-noarrow')).equals('true');
+        assume(contextRef.current).equals(consumerRef.current);
+        assume(contextRef.current?.classList.contains('context-dialog')).is.true();
+        assume(contextRef.current?.classList.contains('consumer-dialog')).is.true();
+        assume(contextRef.current?.getAttribute('role')).equals('dialog');
+      });
+
+      await getByRole('dialog', { name: 'Context panel' }).click();
+      assume(onContextMouseDown.mock.calls.length).equals(1);
+      assume(onConsumerMouseDown.mock.calls.length).equals(1);
+    });
+
+    it('composes contextual and local container render props with local precedence', async function renderProps() {
+      const { getByRole } = await render(
+        <ContainerContextExample
+          menu={false}
+          context={{
+            containerProps: {
+              className: function contextClassName({ placement }) {
+                return `context-${placement}`;
+              },
+              style: function contextStyle() {
+                return { color: 'rgb(0, 0, 128)', borderRadius: 7 };
+              }
+            }
+          }}
+          popoverProps={{
+            containerProps: {
+              className: function localClassName({ defaultClassName, placement }) {
+                return `${defaultClassName} consumer-render-prop consumer-${placement}`;
+              },
+              style: function localStyle() {
+                return { backgroundColor: 'rgb(0, 128, 0)', borderRadius: 17 };
+              }
+            }
+          }}
+        />
+      );
+
+      await getByRole('button', { name: 'Open context panel' }).click();
+      await vi.waitFor(function resolvedRenderProps() {
+        const panel = document.querySelector('.consumer-render-prop') as HTMLElement;
+        assume(panel).is.not.equal(null);
+        assume(panel.classList.contains(`context-${panel.getAttribute('data-placement')}`)).is.true();
+        assume(panel.classList.contains('consumer-render-prop')).is.true();
+        assume(panel.classList.contains(`consumer-${panel.getAttribute('data-placement')}`)).is.true();
+        assume(panel.style.color).equals('rgb(0, 0, 128)');
+        assume(panel.style.backgroundColor).equals('rgb(0, 128, 0)');
+        assume(panel.style.borderRadius).equals('17px');
+      });
     });
   });
 });

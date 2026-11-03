@@ -6,10 +6,11 @@ import {
   MenuSection as RACMenuSection,
   MenuTrigger as RACMenuTrigger,
   Separator as RACSeparator,
-  SeparatorContext as RACSeparatorContext,
   SubmenuTrigger as RACSubmenuTrigger,
   TextContext as RACTextContext,
   composeRenderProps,
+  useContextProps,
+  type ContextValue,
   type MenuItemProps as RACMenuItemProps,
   type MenuProps as RACMenuProps,
   type MenuSectionProps as RACMenuSectionProps,
@@ -19,13 +20,14 @@ import {
   type TextProps as RACTextProps,
   type Selection as RACSelection
 } from 'react-aria-components';
-import { forwardRef, useContext, type ForwardedRef, type ReactNode } from 'react';
+import { createContext, forwardRef, useContext, type ForwardedRef, type ReactNode } from 'react';
 import { cx } from 'cva';
 import { composeClassName } from '#utils/render-props.ts';
 import { Text } from '#components/text';
 import { HeadingContext } from '#components/heading';
 import { HeaderContext } from '#components/structure';
 import { IconContext } from '#components/icon';
+import { CheckboxIndicatorContext } from '#components/checkbox';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { PopoverContext } from '#components/popover';
 import { textTreatmentClassName, useTypographyClassName } from '#components/_internal/typography';
@@ -101,6 +103,7 @@ export const Menu = forwardRef(function Menu<T extends object>(
   return (
     <RACProvider
       values={[
+        [CheckboxIndicatorContext, { className: styles.checkboxIndicator }],
         [
           HeaderContext,
           {
@@ -117,9 +120,8 @@ export const Menu = forwardRef(function Menu<T extends object>(
           {
             slots: {
               [DEFAULT_SLOT]: {
-                className: cx(headerTypography, styles.headerLabel),
-                role: 'presentation',
-                style: { fontVariationSettings: '"DSPL" 0' }
+                className: cx(textTreatmentClassName('inherit'), styles.headerLabel),
+                role: 'presentation'
               }
             }
           }
@@ -132,12 +134,7 @@ export const Menu = forwardRef(function Menu<T extends object>(
             'aria-hidden': true
           }
         ],
-        [
-          RACSeparatorContext,
-          {
-            className: styles.separator
-          }
-        ]
+        [SeparatorContext, { className: styles.separator }]
       ]}
     >
       <Flex
@@ -151,7 +148,7 @@ export const Menu = forwardRef(function Menu<T extends object>(
       </Flex>
     </RACProvider>
   );
-});
+}) as <T extends object>(props: MenuProps<T> & { ref?: React.Ref<HTMLDivElement> }) => React.ReactElement | null;
 
 /**
  * Props for the {@link MenuGroup} component.
@@ -181,7 +178,7 @@ export const MenuGroup = forwardRef(function MenuGroup<T extends object>(
       {children}
     </Flex>
   );
-});
+}) as <T extends object>(props: MenuGroupProps<T> & { ref?: React.Ref<HTMLDivElement> }) => React.ReactElement | null;
 
 /**
  * Props for the {@link MenuItem} component.
@@ -258,8 +255,27 @@ export interface SubmenuTriggerProps extends RACSubmenuTriggerProps {}
  *
  * @param props - {@link SubmenuTriggerProps}
  */
-export function SubmenuTrigger(props: SubmenuTriggerProps) {
-  return <RACSubmenuTrigger {...props} />;
+export function SubmenuTrigger({ children, ...props }: SubmenuTriggerProps) {
+  return (
+    <RACSubmenuTrigger {...props}>
+      {children[0]}
+      <RACProvider
+        values={[
+          [
+            PopoverContext,
+            {
+              hideArrow: true,
+              containerProps: { className: styles.overlay },
+              offset: -12,
+              crossOffset: -8
+            }
+          ]
+        ]}
+      >
+        {children[1]}
+      </RACProvider>
+    </RACSubmenuTrigger>
+  );
 }
 
 /**
@@ -267,12 +283,17 @@ export function SubmenuTrigger(props: SubmenuTriggerProps) {
  */
 export interface SeparatorProps extends RACSeparatorProps {}
 
+/** Presentation supplied by an owning component such as Menu. */
+export const SeparatorContext = createContext<ContextValue<SeparatorProps, HTMLHRElement>>(null);
+
 /**
  * A visual divider between items or groups. Not focusable or selectable.
  *
  * @param props - {@link SeparatorProps}
  */
 export const Separator = forwardRef<HTMLHRElement, SeparatorProps>(function Separator(props, ref) {
+  [props, ref] = useContextProps(props, ref, SeparatorContext);
+
   return <RACSeparator {...props} ref={ref} />;
 });
 

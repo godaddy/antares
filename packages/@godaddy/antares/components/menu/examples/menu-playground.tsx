@@ -41,7 +41,24 @@ export function PlaygroundExample({
   const [selected, setSelected] = useState<Selection>(new Set(['sort-date']));
   const [multiSelected, setMultiSelected] = useState<Selection>(new Set(['name', 'date']));
 
-  const selectionMode = multipleSelection ? 'multiple' : singleSelection ? 'single' : undefined;
+  const selectionMode = multipleSelection ? 'multiple' : singleSelection ? 'single' : 'none';
+  const items =
+    selectionMode === 'single'
+      ? [
+          { id: 'sort-date', label: 'Sort by Date' },
+          { id: 'sort-name', label: 'Sort by Name' },
+          { id: 'sort-size', label: 'Sort by Size' }
+        ]
+      : [
+          { id: 'name', label: 'Name' },
+          { id: 'date', label: 'Date Modified' },
+          { id: 'size', label: 'Size' }
+        ];
+  const rows = items.map(({ id, label }) => (
+    <PlaygroundItem key={id} id={id}>
+      {label}
+    </PlaygroundItem>
+  ));
 
   return (
     <MenuTrigger>
@@ -50,61 +67,26 @@ export function PlaygroundExample({
         <Menu
           aria-label="Example Menu"
           selectionMode={selectionMode}
-          selectedKeys={selectionMode === 'single' ? selected : multiSelected}
-          onSelectionChange={selectionMode === 'single' ? setSelected : setMultiSelected}
+          selectedKeys={
+            selectionMode === 'single' ? selected : selectionMode === 'multiple' ? multiSelected : undefined
+          }
+          onSelectionChange={
+            selectionMode === 'single' ? setSelected : selectionMode === 'multiple' ? setMultiSelected : undefined
+          }
         >
           {/* First Group */}
-          {showGroups && (
+          {showGroups ? (
             <MenuGroup>
               <Header>
                 <Heading>View</Heading>
               </Header>
-              {singleSelection ? (
-                <>
-                  <MenuItem id="sort-date">Sort by Date</MenuItem>
-                  <MenuItem id="sort-name">Sort by Name</MenuItem>
-                  <MenuItem id="sort-size">Sort by Size</MenuItem>
-                </>
-              ) : (
-                <>
-                  <MenuItem id="name" textValue="Name">
-                    {({ isSelected }) => (
-                      <>
-                        <CheckboxIndicator isSelected={isSelected} />
-                        <Text slot="label">Name</Text>
-                      </>
-                    )}
-                  </MenuItem>
-                  <MenuItem id="date" textValue="Date Modified">
-                    {({ isSelected }) => (
-                      <>
-                        <CheckboxIndicator isSelected={isSelected} />
-                        <Text slot="label">Date Modified</Text>
-                      </>
-                    )}
-                  </MenuItem>
-                  <MenuItem id="size" textValue="Size">
-                    {({ isSelected }) => (
-                      <>
-                        <CheckboxIndicator isSelected={isSelected} />
-                        <Text slot="label">Size</Text>
-                      </>
-                    )}
-                  </MenuItem>
-                </>
-              )}
+              {rows}
             </MenuGroup>
+          ) : (
+            rows
           )}
 
-          {!showGroups && (
-            <>
-              <MenuItem id="cut">Cut</MenuItem>
-              <MenuItem id="copy">Copy</MenuItem>
-              <MenuItem id="paste">Paste</MenuItem>
-            </>
-          )}
-
-          {showSeparators && <Separator />}
+          {showGroups && showSeparators && <Separator />}
 
           {/* Second Group with Submenu */}
           {showGroups && (
@@ -120,23 +102,23 @@ export function PlaygroundExample({
                   </MenuItem>
                   <Popover aria-label="Share options">
                     <Menu aria-label="Share options">
-                      <MenuItem id="email">Email</MenuItem>
-                      <MenuItem id="link">Link</MenuItem>
-                      <MenuItem id="social">Social Media</MenuItem>
+                      <PlaygroundItem id="email">Email</PlaygroundItem>
+                      <PlaygroundItem id="link">Link</PlaygroundItem>
+                      <PlaygroundItem id="social">Social Media</PlaygroundItem>
                     </Menu>
                   </Popover>
                 </SubmenuTrigger>
               ) : (
                 <>
-                  <MenuItem id="email">Email</MenuItem>
-                  <MenuItem id="link">Link</MenuItem>
-                  <MenuItem id="social">Social Media</MenuItem>
+                  <PlaygroundItem id="email">Email</PlaygroundItem>
+                  <PlaygroundItem id="link">Link</PlaygroundItem>
+                  <PlaygroundItem id="social">Social Media</PlaygroundItem>
                 </>
               )}
             </MenuGroup>
           )}
 
-          {showSeparators && <Separator />}
+          {showGroups && showSeparators && <Separator />}
 
           {/* Third Group */}
           {showGroups && (
@@ -144,15 +126,27 @@ export function PlaygroundExample({
               <Header>
                 <Heading>More</Heading>
               </Header>
-              <MenuItem id="rename">Rename</MenuItem>
-              <MenuItem id="duplicate">Duplicate</MenuItem>
-              <MenuItem id="delete" textValue="Delete">
-                <Text slot="label">Delete</Text>
-              </MenuItem>
+              <PlaygroundItem id="rename">Rename</PlaygroundItem>
+              <PlaygroundItem id="duplicate">Duplicate</PlaygroundItem>
+              <PlaygroundItem id="delete">Delete</PlaygroundItem>
             </MenuGroup>
           )}
         </Menu>
       </Popover>
     </MenuTrigger>
+  );
+}
+
+function PlaygroundItem({ id, children }: { id: string; children: string }) {
+  return (
+    <MenuItem id={id} textValue={children}>
+      {({ isSelected, selectionMode }) => (
+        <>
+          {selectionMode === 'multiple' ? <CheckboxIndicator isSelected={isSelected} /> : null}
+          <Text slot="label">{children}</Text>
+          {selectionMode === 'single' && isSelected ? <Icon icon="checkmark" /> : null}
+        </>
+      )}
+    </MenuItem>
   );
 }

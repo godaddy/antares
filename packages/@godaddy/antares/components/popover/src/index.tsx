@@ -1,4 +1,5 @@
 import { createContext, forwardRef, type ReactNode } from 'react';
+import { mergeProps } from 'react-aria';
 import {
   Popover as RACPopover,
   type PopoverProps as RACPopoverProps,
@@ -6,12 +7,14 @@ import {
   DialogTrigger as RACDialogTrigger,
   type DialogTriggerProps as RACDialogTriggerProps,
   OverlayArrow as RACOverlayArrow,
+  composeRenderProps,
   useContextProps,
+  useSlottedContext,
   type ContextValue
 } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
 import { OverlayDialog } from '#components/_internal/overlay-dialog';
-import { composeClassName } from '#utils/render-props.ts';
+import { composeClassName, composeStyle } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
 export interface PopoverTriggerProps extends RACDialogTriggerProps {}
@@ -59,7 +62,27 @@ export const PopoverContext = createContext<ContextValue<PopoverProps, HTMLEleme
  * @param props - {@link PopoverProps}
  */
 export const Popover = forwardRef<HTMLElement, PopoverProps>(function Popover(props, ref) {
-  [props, ref] = useContextProps(props, ref, PopoverContext);
+  const contextualContainer = useSlottedContext(PopoverContext, props.slot)?.containerProps;
+  const localContainer = props.containerProps;
+
+  [props, ref] = useContextProps(
+    {
+      ...props,
+      containerProps: {
+        ...mergeProps(contextualContainer, localContainer),
+        className: composeRenderProps(contextualContainer?.className, function mergeClassName(contextClass, values) {
+          const className = composeClassName(localContainer?.className, contextClass);
+          return typeof className === 'function' ? className(values) : className;
+        }),
+        style: composeRenderProps(contextualContainer?.style, function mergeStyle(contextStyle, values) {
+          const style = composeStyle(localContainer?.style, contextStyle ?? {});
+          return typeof style === 'function' ? style(values) : style;
+        })
+      }
+    },
+    ref,
+    PopoverContext
+  );
   const {
     children,
     hideArrow,
