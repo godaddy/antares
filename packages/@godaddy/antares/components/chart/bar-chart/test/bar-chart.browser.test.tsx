@@ -477,25 +477,25 @@ describe('@godaddy/antares', function antares() {
 
         const svg = container.querySelector('svg')!;
         await vi.waitFor(
-          function waitForMargins() {
+          function waitForLayout() {
             const yAxisBackground = container.querySelector('rect[class*="axisBackground"]');
             const firstLabel = container.querySelector('.visx-axis-bottom .visx-axis-tick text');
             assume(yAxisBackground).exists();
             assume(firstLabel).exists();
-            assume(yAxisBackground!.getBoundingClientRect().width).is.above(0);
-            assume(firstLabel!.getBoundingClientRect().left).is.at.least(svg.getBoundingClientRect().left);
+            const backgroundRect = yAxisBackground!.getBoundingClientRect();
+            const labelRect = firstLabel!.getBoundingClientRect();
+            assume(backgroundRect.width).is.above(0);
+            assume(labelRect.left).is.at.least(svg.getBoundingClientRect().left);
+
+            const overlaps =
+              backgroundRect.right > labelRect.left &&
+              backgroundRect.left < labelRect.right &&
+              backgroundRect.bottom > labelRect.top &&
+              backgroundRect.top < labelRect.bottom;
+            assume(overlaps).is.false();
           },
           { timeout: 3000, interval: 50 }
         );
-
-        const backgroundRect = container.querySelector('rect[class*="axisBackground"]')!.getBoundingClientRect();
-        const labelRect = container.querySelector('.visx-axis-bottom .visx-axis-tick text')!.getBoundingClientRect();
-        const overlaps =
-          backgroundRect.right > labelRect.left &&
-          backgroundRect.left < labelRect.right &&
-          backgroundRect.bottom > labelRect.top &&
-          backgroundRect.top < labelRect.bottom;
-        assume(overlaps).is.false();
       });
     });
 
