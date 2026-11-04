@@ -125,10 +125,11 @@ trailing chevron to communicate that the control opens a menu.
 </ChipGroup>
 ```
 
-For a menu trigger, the button and menu are composed inside React Aria
-`MenuTrigger`. The menu itself is `@godaddy/antares` `Menu`, inside `Popover`:
+For a menu trigger, compose `MenuTrigger`, `Popover`, and `Menu`:
 
 ```tsx
+import { ChipButton, Icon, Menu, MenuItem, MenuTrigger, Popover, Text } from '@godaddy/antares';
+
 <MenuTrigger>
   <ChipButton>
     <Text />

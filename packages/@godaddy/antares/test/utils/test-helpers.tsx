@@ -63,7 +63,7 @@ export function resetPointer() {
  * use. Rather than duplicate the SVG markup in every test file, register the
  * shared set here and call `preloadTestIcons()` from a `beforeAll` hook.
  *
- * All glyphs use `fill="currentColor"` so they inherit the `Icon` color prop,
+ * All glyphs use `currentColor` so they inherit the `Icon` color prop,
  * matching how the real CDN icons behave.
  *
  * @example
@@ -243,6 +243,216 @@ export function preloadTestIcons() {
           <path d="M21.567 2.524a.782.782 0 00-.109-.103h-.001a.78.78 0 00-.463-.155H14a.75.75 0 100 1.5h5.19l-7.533 7.532a.757.757 0 00-.221.53c0 .198.08.393.22.532s.333.22.53.22a.757.757 0 00.532-.222l7.532-7.532v5.19a.75.75 0 101.5 0v-7.01a.752.752 0 00-.183-.482z" />
           <path d="M21 13.265a.75.75 0 00-.75.75v4.75a1.502 1.502 0 01-1.5 1.5H5.25a1.502 1.502 0 01-1.5-1.5v-13.5a1.502 1.502 0 011.5-1.5H10a.75.75 0 100-1.5H5.25a3.003 3.003 0 00-3 3v13.5a3.003 3.003 0 003 3h13.5a3.004 3.004 0 003-3v-4.75a.75.75 0 00-.75-.75z" />
         </g>
+      </svg>
+    ),
+    bell: (
+      <svg
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M18 9a6 6 0 0 0-12 0c0 7-2 8-2 8h16s-2-1-2-8M10 21h4" />
+      </svg>
+    ),
+    chat: (
+      <svg
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H8l-4 2v-6.5a7.5 7.5 0 1 1 16-3z" />
+      </svg>
+    ),
+    cloud: (
+      <svg
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M7 18h10a4 4 0 0 0 .4-8A5.5 5.5 0 0 0 6.7 9.6 4.2 4.2 0 0 0 7 18z" />
+      </svg>
+    ),
+    'credit-card': (
+      <svg
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M3 6.5h18v11H3zM3 10h18" />
+      </svg>
+    ),
+    database: (
+      <svg
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M12 3.5c-4.4 0-8 .9-8 2s3.6 2 8 2 8-.9 8-2-3.6-2-8-2zM4 5.5v13c0 1.1 3.6 2 8 2s8-.9 8-2v-13M4 10c0 1.1 3.6 2 8 2s8-.9 8-2M4 14.5c0 1.1 3.6 2 8 2s8-.9 8-2" />
+      </svg>
+    ),
+    help: (
+      <svg
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM9.5 9a2.5 2.5 0 1 1 4.2 1.8c-1 .9-1.7 1.2-1.7 2.7M12 17h.01" />
+      </svg>
+    ),
+    link: (
+      <svg
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="m10 13.5 4-4M8.5 15H7a4 4 0 0 1 0-8h3M15.5 9H17a4 4 0 0 1 0 8h-3" />
+      </svg>
+    ),
+    logout: (
+      <svg
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M10 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h5M14 8l4 4-4 4M18 12H9" />
+      </svg>
+    ),
+    mail: (
+      <svg
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M4 6h16v12H4zM4 7l8 6 8-6" />
+      </svg>
+    ),
+    settings: (
+      <svg
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" />
+      </svg>
+    ),
+    sun: (
+      <svg
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v3M12 19v3M4.9 4.9 7 7M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1" />
+      </svg>
+    ),
+    user: (
+      <svg
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0" />
+      </svg>
+    ),
+    'user-add': (
+      <svg
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M10 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a8 8 0 0 1 14-5M19 14v8M15 18h8" />
+      </svg>
+    ),
+    users2: (
+      <svg
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2 20a7 7 0 0 1 14 0M16 5a3.5 3.5 0 0 1 0 6.8M18 14a6 6 0 0 1 4 6" />
       </svg>
     ),
     x: (

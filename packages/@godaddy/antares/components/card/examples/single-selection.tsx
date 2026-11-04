@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import type { Selection } from 'react-aria-components';
 import {
   Card,
   CardGroup,
@@ -9,6 +8,7 @@ import {
   Header,
   Heading,
   Tag,
+  type Selection,
   Text,
   TextLockup
 } from '@godaddy/antares';
