@@ -12,7 +12,7 @@
     "test": "vitest --run --coverage.enabled=false",
     "test:node": "vitest --run --project=SSR --coverage.enabled=false",
     "test:browser": "vitest --run --project=Browser --coverage.enabled=false",
-    "test:watch": "vitest",
+    "test:watch": "vitest --coverage.enabled=false",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "files": [
@@ -43,7 +43,7 @@
     "tsdown": "^0.23.1",
     "vfile": "^6.0.3",
     "vite": "^8.3.5",
-    "vitest": "^4.1.11",
+    "vitest": "^5.1.0",
     "vitest-browser-react": "^2.3.0"
   },
   "peerDependencies": {

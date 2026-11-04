@@ -28,7 +28,7 @@ describe('@godaddy/antares', function antares() {
       assume(checkboxGroup).is.not.equal(null);
 
       const input = page.getByRole('checkbox', { name: 'Basketball' });
-      await input.click({ force: true });
+      await page.getByText('Basketball', { exact: true }).click();
 
       await vi.waitFor(function checkSelection() {
         assume((input.element() as HTMLInputElement).checked).is.true();
