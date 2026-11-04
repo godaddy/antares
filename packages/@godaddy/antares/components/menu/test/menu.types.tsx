@@ -10,6 +10,7 @@ interface Item {
 const items: Item[] = [{ id: 'one', label: 'One' }];
 const menuRef = createRef<HTMLDivElement>();
 const groupRef = createRef<HTMLElement>();
+const linkRef = createRef<HTMLAnchorElement>();
 const separatorRef = createRef<HTMLElement>();
 const separatorContextRef = createRef<HTMLElement>();
 const incompatibleRef = createRef<HTMLButtonElement>();
@@ -50,6 +51,9 @@ const typeChecks = [
       return <MenuItem id={item.id}>{item.label}</MenuItem>;
     }}
   </MenuGroup>,
+  <MenuItem key="link-ref" id="link" href="https://example.com" ref={linkRef}>
+    Link
+  </MenuItem>,
   // @ts-expect-error - Menu forwards its ref to an HTMLDivElement.
   <Menu key="invalid-menu-ref" ref={incompatibleRef} />,
   <Separator key="separator-ref" ref={separatorRef} />,

@@ -206,18 +206,19 @@ type TextSlots = { slots: Record<string | symbol, RACTextProps> };
  * </MenuItem>
  * ```
  */
-export const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuItem(
+export const MenuItem = forwardRef<HTMLElement, MenuItemProps>(function MenuItem(
   { children, className, ...props },
   ref
 ) {
   const textValue = props.textValue ?? (typeof children === 'string' ? children : undefined);
   const typographyClass = useTypographyClassName('text', { size: 'sm' });
 
+  // Flex's default ref type is a div, while MenuItem can render an anchor when it has an href.
   return (
     <Flex
       alignItems="center"
       {...props}
-      ref={ref}
+      ref={ref as React.Ref<HTMLDivElement>}
       as={RACMenuItem}
       textValue={textValue}
       className={composeClassName(className, typographyClass, styles.item)}
