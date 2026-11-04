@@ -26,10 +26,13 @@ package versions, changelogs, and `pnpm-lock.yaml` changes before merging it.
 
 After the version pull request is merged, the Changesets action runs
 `pnpm run release`. That script builds the workspace and then runs
-`pnpm publish -r`. Pnpm recursively publishes eligible non-private workspace
-packages and rewrites `workspace:` and `catalog:` references in packed
-manifests. Published package manifests specify the public npm registry and
-public access.
+`scripts/publish-workspaces.mjs`. The helper runs `pnpm publish -r
+--report-summary`, reads pnpm's list of published packages, and prints a
+`New tag: <name>@<version>` line for each one. The Changesets action uses those
+lines to create Git tags and GitHub releases. Pnpm recursively publishes
+eligible non-private workspace packages and rewrites `workspace:` and
+`catalog:` references in packed manifests. Published package manifests specify
+the public npm registry and public access.
 
 ## Verify without publishing
 

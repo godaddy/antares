@@ -11,6 +11,7 @@ pnpm run format:package
 
 # Run dependency checks to prevent circular deps and version mismatches
 echo "🔍 Checking dependencies..."
+pnpm nx run @godaddy/generate-cdn-url:build
 pnpm run deps:check
 
 echo "🔍 Typechecking..."

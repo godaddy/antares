@@ -122,7 +122,7 @@ describe('pnpm GitHub workflows', function pnpmWorkflowsSuite() {
       scripts: Record<string, string>;
     };
 
-    expect(manifest.scripts.release).toBe('pnpm run build && pnpm publish -r');
+    expect(manifest.scripts.release).toBe('pnpm run build && node scripts/publish-workspaces.mjs');
     expect(manifest.scripts.version).toBe('changeset version && pnpm install --no-frozen-lockfile');
   });
 
@@ -137,6 +137,12 @@ describe('pnpm GitHub workflows', function pnpmWorkflowsSuite() {
     expect(preCommit).toContain('pnpm nx run-many -t test --output-style=static --skipNxCache');
     expect(preCommit).not.toContain('pnpm run test --');
     expect(commitMsg).toContain('pnpm run commitlint');
+    expect(commitMsg).toContain('pnpm run commitlint "${1}"');
+    const generatedBuildIndex = preCommit.indexOf('pnpm nx run @godaddy/generate-cdn-url:build');
+    const depsCheckIndex = preCommit.indexOf('pnpm run deps:check');
+
+    expect(generatedBuildIndex).toBeGreaterThan(-1);
+    expect(depsCheckIndex).toBeGreaterThan(generatedBuildIndex);
   });
 
   it('builds generated docs dependencies before dependency checks', function buildsGeneratedDocsDependenciesBeforeKnip() {

@@ -15,7 +15,7 @@
     "lint": "nx run-many -t lint --no-tui",
     "prepare": "husky",
     "playwright:install": "playwright install chromium",
-    "release": "pnpm run build && pnpm publish -r",
+    "release": "pnpm run build && node scripts/publish-workspaces.mjs",
     "registry:build": "node scripts/build-registry.ts",
     "registry:validate": "pnpm dlx shadcn@4.21.0 registry validate ./registry.json",
     "scripts:test": "vitest run --config scripts/test/vitest.config.mts",
