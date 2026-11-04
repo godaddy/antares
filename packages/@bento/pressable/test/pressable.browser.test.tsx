@@ -80,7 +80,11 @@ describe('@bento/pressable', function bento() {
       assume(divEl.getAttribute('data-hovered')).equals('true');
 
       await userEvent.unhover(divEl);
-      assume(divEl.getAttribute('data-hovered')).equals(null);
+      await expect
+        .poll(function hoverStateCleared() {
+          return divEl.getAttribute('data-hovered');
+        })
+        .toBe(null);
     });
 
     it('should add and remove correct data attributes on focus', async function test() {
