@@ -21,24 +21,24 @@ See `source.config.ts` for the full MDX pipeline configuration.
 
 ## Project structure
 
-| Route | Description |
-| --- | --- |
-| `app/(home)` | Landing page |
-| `app/docs` | Documentation layout and pages |
-| `app/og/docs` | Open Graph image generation |
+| Route            | Description                    |
+| ---------------- | ------------------------------ |
+| `app/(home)`     | Landing page                   |
+| `app/docs`       | Documentation layout and pages |
+| `app/og/docs`    | Open Graph image generation    |
 | `app/api/search` | Full-text search route handler |
 
 Notable files in `lib/`:
 
-| File | Description |
-| --- | --- |
-| `source.ts` | Content source adapter; merges docs and component collections |
-| `layout.shared.tsx` | Shared layout options reused across route layouts |
-| `remark-strip-leading-heading.ts` | Remark plugin that removes the leading `#` heading from MDX files |
-| `remark-arg-types.ts` | Remark plugin that replaces `<ArgTypes of={Stories.X}>` with a `<PropTable>` generated from the component's `*.stories.tsx` via `@bento/storybook-addon-helpers/docs` (the same type engine Storybook uses) |
-| `remark-raw-loader.ts` | Remark plugin that inlines raw source file content |
-| `github-path.ts` | Resolves GitHub source URLs for component files |
-| `storybook-bridge/` | Helpers for sharing Storybook metadata with the docs site |
+| File                              | Description                                                                                                                                                                                                 |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `source.ts`                       | Content source adapter; merges docs and component collections                                                                                                                                               |
+| `layout.shared.tsx`               | Shared layout options reused across route layouts                                                                                                                                                           |
+| `remark-strip-leading-heading.ts` | Remark plugin that removes the leading `#` heading from MDX files                                                                                                                                           |
+| `remark-arg-types.ts`             | Remark plugin that replaces `<ArgTypes of={Stories.X}>` with a `<PropTable>` generated from the component's `*.stories.tsx` via `@bento/storybook-addon-helpers/docs` (the same type engine Storybook uses) |
+| `remark-raw-loader.ts`            | Remark plugin that inlines raw source file content                                                                                                                                                          |
+| `github-path.ts`                  | Resolves GitHub source URLs for component files                                                                                                                                                             |
+| `storybook-bridge/`               | Helpers for sharing Storybook metadata with the docs site                                                                                                                                                   |
 
 ## Component preview theming
 
@@ -49,13 +49,13 @@ the same theme Storybook uses.
 
 ### How it works
 
-| Piece | Where | Purpose |
-| --- | --- | --- |
-| `gdsherpa-font.ts` import | `app/layout.tsx` | The `@font-face` and preload links for GD Sherpa, matching uxcore2's generated Storybook faces. Shared with Storybook (`apps/docs/.storybook/main.ts`). Without it, text falls back to Helvetica/Arial |
-| `legacy-tokens.css` import | `app/layout.tsx` | The theme, shared verbatim with Storybook (`apps/docs/.storybook/addons/theme-tokens/recipes.ts`) and the browser test projects (`configs/vitest.setup.mts`). Defines the `--ux-*` custom properties every component's CSS reads. Imported **before** `global.css` so its own `body` rule loses the cascade to Fumadocs' and only the custom properties apply site-wide |
-| `.ux-surface` | `apps/docs/.storybook/legacy-tokens.css` | Shares the theme's `body` rule, so any element can become an on-theme surface. Used by the preview element here, since this site's `body` belongs to Fumadocs |
-| `not-prose` | `story-renderer.tsx` | Fumadocs' typography selectors exclude `.not-prose` subtrees. Same mechanism as Storybook's `sb-unstyled`, which is why previews match across both sites |
-| Preflight revert | `app/global.css` | Tailwind's preflight zeroes `margin`/`padding`/`border` on every element; Storybook has no preflight. A zero-specificity `:where()` rule reverts those three properties to user-agent values inside preview surfaces |
+| Piece                      | Where                                    | Purpose                                                                                                                                                                                                                                                                                                                                                                 |
+| -------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `gdsherpa-font.ts` import  | `app/layout.tsx`                         | The `@font-face` and preload links for GD Sherpa, matching uxcore2's generated Storybook faces. Shared with Storybook (`apps/docs/.storybook/main.ts`). Without it, text falls back to Helvetica/Arial                                                                                                                                                                  |
+| `legacy-tokens.css` import | `app/layout.tsx`                         | The theme, shared verbatim with Storybook (`apps/docs/.storybook/addons/theme-tokens/recipes.ts`) and the browser test projects (`configs/vitest.setup.mts`). Defines the `--ux-*` custom properties every component's CSS reads. Imported **before** `global.css` so its own `body` rule loses the cascade to Fumadocs' and only the custom properties apply site-wide |
+| `.ux-surface`              | `apps/docs/.storybook/legacy-tokens.css` | Shares the theme's `body` rule, so any element can become an on-theme surface. Used by the preview element here, since this site's `body` belongs to Fumadocs                                                                                                                                                                                                           |
+| `not-prose`                | `story-renderer.tsx`                     | Fumadocs' typography selectors exclude `.not-prose` subtrees. Same mechanism as Storybook's `sb-unstyled`, which is why previews match across both sites                                                                                                                                                                                                                |
+| Preflight revert           | `app/global.css`                         | Tailwind's preflight zeroes `margin`/`padding`/`border` on every element; Storybook has no preflight. A zero-specificity `:where()` rule reverts those three properties to user-agent values inside preview surfaces                                                                                                                                                    |
 
 ### Deliberate choices
 
