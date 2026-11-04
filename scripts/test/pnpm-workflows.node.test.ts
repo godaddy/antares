@@ -91,6 +91,17 @@ describe('pnpm GitHub workflows', function pnpmWorkflowsSuite() {
     }
   });
 
+  it('installs Chromium before the full CI test command', function installsChromiumBeforeCiTest() {
+    const steps = stepsFor('ci.yaml', 'ci');
+    const browserIndex = steps.findIndex(
+      (step) => step.run?.trim() === 'pnpm exec playwright install --with-deps chromium'
+    );
+    const testIndex = steps.findIndex((step) => step.run?.trim() === 'pnpm run test');
+
+    expect(browserIndex).toBeGreaterThan(-1);
+    expect(testIndex).toBeGreaterThan(browserIndex);
+  });
+
   it('uses pnpm commands in workflows and in the Changesets action', function migratesWorkflowCommands() {
     for (const [file, job] of installJobs) {
       for (const step of stepsFor(file, job)) {
