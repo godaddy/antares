@@ -4,7 +4,7 @@
   "description": "The GoDaddy design tokens library",
   "type": "module",
   "scripts": {
-    "build": "npm run build:sd && npm run build:schema",
+    "build": "pnpm run build:sd && pnpm run build:schema",
     "build:sd": "tsx src/build-tokens.ts",
     "build:schema": "shx cp src/schema.json dist/schema.json && shx cp src/extensions.d.ts dist/extensions.d.ts",
     "lint": "biome lint",
@@ -40,7 +40,7 @@
     "shx": "^0.4.0",
     "style-dictionary": "^5.7.1",
     "tsx": "^4.23.15",
-    "vitest": "^4.1.11",
+    "vitest": "catalog:",
     "yaml": "^2.9.1",
     "ajv": "^8.20.0",
     "@upft/schemas": "^0.0.6"

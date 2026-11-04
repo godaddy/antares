@@ -40,17 +40,17 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/box": "^0.2.0",
-    "@bento/internal-props": "^0.1.1",
-    "@bento/types": "^0.1.1",
-    "@react-aria/utils": "^3.34.0"
+    "@bento/box": "workspace:^0.2.0",
+    "@bento/internal-props": "workspace:^",
+    "@bento/types": "workspace:^",
+    "@react-aria/utils": "catalog:"
   },
   "devDependencies": {
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "tsdown": "^0.23.1",
-    "vitest": "^4.1.11",
-    "vitest-browser-react": "^2.3.0"
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "tsdown": "catalog:",
+    "vitest": "catalog:",
+    "vitest-browser-react": "catalog:"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

@@ -3,7 +3,7 @@
 [![CI](https://github.com/godaddy/antares/actions/workflows/ci.yaml/badge.svg)](https://github.com/godaddy/antares/actions/workflows/ci.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Node](https://img.shields.io/badge/node-%3E%3D24-brightgreen)](https://nodejs.org/)
+[![Node](https://img.shields.io/badge/node-%3E%3D24.12-brightgreen)](https://nodejs.org/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 [![Changesets](https://img.shields.io/badge/maintained%20with-changesets-blue)](https://github.com/changesets/changesets)
 
@@ -120,13 +120,13 @@ Documentation is powered by Storybook and a Next.js docs site.
 **Storybook** — interactive component explorer:
 
 ```sh
-npm run storybook
+pnpm run storybook
 ```
 
 **Docs site** — full documentation site:
 
 ```sh
-npm run site
+pnpm run site
 ```
 
 Storybook is configured to automatically scan `packages/**` for `.mdx` and `.stories.{ts|tsx}` files, so documentation is co-located with the code.
@@ -140,8 +140,8 @@ application. Regenerate it when blocks, their titles, or their implementation fi
 lists change:
 
 ```sh
-npm run registry:build
-npm run registry:validate
+pnpm run registry:build
+pnpm run registry:validate
 ```
 
 Review and commit the generated registry with the source changes. Validation
@@ -152,8 +152,8 @@ responsibility.
 
 ### Prerequisites
 
-- Node.js >= 24
-- npm >= 11
+- Node.js >= 24.12
+- pnpm 12.16.1
 
 ### Setup
 
@@ -163,13 +163,20 @@ git clone https://github.com/godaddy/antares.git
 cd antares
 
 # Install dependencies
-npm install
+pnpm install
 
 # Build all packages
-npm run build
+pnpm run build
 
 # Run tests
-npm run test
+pnpm run test
+```
+
+For browser-based visual tests, install Chromium explicitly before running them:
+
+```sh
+pnpm run playwright:install
+pnpm run test:visual
 ```
 
 ### Vitest in VS Code or Cursor
@@ -186,7 +193,7 @@ This is enforced using `@commitlint`.
 When contributing changes to packages, you must include a changeset:
 
 ```sh
-npm run changeset
+pnpm run changeset
 ```
 
 Select the affected packages, choose the version bump type (patch/minor/major),

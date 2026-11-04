@@ -1,5 +1,5 @@
 import { remarkStripLeadingHeading } from './lib/remark-strip-leading-heading';
-import { applyMdxPreset, defineConfig, defineDocs } from 'fumadocs-mdx/config';
+import { applyMdxPreset, defineConfig, defineDocs, type DocsCollection } from 'fumadocs-mdx/config';
 import { metaSchema, pageSchema } from 'fumadocs-core/source/schema';
 import { remarkRawLoader } from './lib/remark-raw-loader.ts';
 import { docsDefaults } from '../../configs/docs-defaults.mts';
@@ -16,8 +16,9 @@ const resolveBlockHref = (id: string) => `/docs/blocks/${id}`;
 
 const descriptionParser = unified().use(remarkParse).use(remarkGfm);
 const parseMarkdown = (markdown: string) => descriptionParser.parse(markdown).children;
+type SiteDocsCollection = DocsCollection<typeof pageSchema, typeof metaSchema>;
 
-export const docs = defineDocs({
+export const docs: SiteDocsCollection = defineDocs({
   dir: 'content/docs',
   docs: {
     schema: pageSchema,
@@ -34,7 +35,7 @@ export const docs = defineDocs({
   }
 });
 
-export const components = defineDocs({
+export const components: SiteDocsCollection = defineDocs({
   dir: '../../packages/@godaddy/antares/components',
   docs: {
     files: ['**/README.mdx', '!**/_internal/**'],
@@ -60,7 +61,7 @@ export const components = defineDocs({
   }
 });
 
-export const blocks = defineDocs({
+export const blocks: SiteDocsCollection = defineDocs({
   dir: '../../packages/@godaddy/antares/blocks',
   docs: {
     files: ['README.mdx', '*/README.mdx'],
