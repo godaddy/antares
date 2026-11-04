@@ -45,7 +45,14 @@ Defaults apply to both `getComponentDocs` and `getTypeDocs`. Because matchers ca
 ## Authoring API
 
 ```tsx
-import { getMeta, getStory, getVariants, getComponentDocs, getTypeDocs, getExamples } from '@bento/storybook-addon-helpers';
+import {
+  getMeta,
+  getStory,
+  getVariants,
+  getComponentDocs,
+  getTypeDocs,
+  getExamples
+} from '@bento/storybook-addon-helpers';
 import { Button, type ButtonProps } from './button.tsx';
 
 // Story metadata (title, component, shared args).
@@ -84,7 +91,7 @@ Within `primary` or a single category, props appear in the order their entries a
 
 ```ts
 getComponentDocs(Button, {
-  primary: ['onPress'],           // shown first, at the root
+  primary: ['onPress'], // shown first, at the root
   categories: {
     Events: [/^onChange/, /^on/], // onChange first, then the rest of on*
     Styling: ['className', 'style']
@@ -96,7 +103,7 @@ getComponentDocs(Button, {
 getComponentDocs(Button, {
   overrides: [
     { name: 'onPress', description: 'Fired when the button is pressed.' }, // patch existing
-    { name: 'customId', type: 'string', description: 'Custom DOM id.' }                 // add a missing prop
+    { name: 'customId', type: 'string', description: 'Custom DOM id.' } // add a missing prop
   ]
 });
 ```

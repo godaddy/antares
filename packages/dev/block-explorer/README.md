@@ -12,7 +12,7 @@ Use `Block` to display a composition with its preview and source files:
 import { Block } from '@bento/block-explorer/runtime';
 import * as Stories from './sign-in-form.stories.tsx';
 
-<Block id="sign-in-form" description="A simple Antares sign-in experience." of={Stories.Preview} />
+<Block id="sign-in-form" description="A simple Antares sign-in experience." of={Stories.Preview} />;
 ```
 
 `Block` requires a literal string `id` and an `of={Stories.Preview}` expression.
