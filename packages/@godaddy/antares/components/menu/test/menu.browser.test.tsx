@@ -91,8 +91,10 @@ describe('@godaddy/antares', function antares() {
       await render(<SingleSelectionExample />);
       await openMenuWithKeyboard(user, 'View');
 
+      const trigger = page.getByRole('button', { name: 'View' });
       const rulers = page.getByRole('menuitemradio', { name: 'Rulers' });
       const guides = page.getByRole('menuitem', { name: 'Guides' });
+      const menu = page.getByRole('menu');
       await expect.element(rulers).toHaveFocus();
       await user.keyboard('{ArrowDown}');
       await expect.element(guides).toHaveFocus();
@@ -100,12 +102,19 @@ describe('@godaddy/antares', function antares() {
 
       const layout = page.getByRole('menuitemradio', { name: 'Layout' });
       const columns = page.getByRole('menuitemradio', { name: 'Columns' });
+      await expect.element(layout).toHaveFocus();
       await expect.element(layout).toHaveAttribute('aria-checked', 'true');
       await user.keyboard('{ArrowDown}{Enter}');
-      await expect.element(page.getByRole('menu')).not.toBeInTheDocument();
+      await expect.element(menu).not.toBeInTheDocument();
+      await expect.element(trigger).toHaveFocus();
 
       await user.keyboard('{Enter}');
-      await user.keyboard('{ArrowDown}{ArrowRight}');
+      await expect.element(menu).toBeVisible();
+      await expect.element(rulers).toHaveFocus();
+      await user.keyboard('{ArrowDown}');
+      await expect.element(guides).toHaveFocus();
+      await user.keyboard('{ArrowRight}');
+      await expect.element(columns).toHaveFocus();
       await expect.element(columns).toHaveAttribute('aria-checked', 'true');
       await expect.element(layout).toHaveAttribute('aria-checked', 'false');
     });
@@ -249,11 +258,16 @@ describe('@godaddy/antares', function antares() {
         await render(<PlaygroundExample showGroups={showGroups} />);
         await openMenuWithKeyboard(user, 'Menu Playground');
 
+        const trigger = page.getByRole('button', { name: 'Menu Playground' });
         const date = page.getByRole('menuitemradio', { name: 'Sort by Date' });
         const name = page.getByRole('menuitemradio', { name: 'Sort by Name' });
+        const menu = page.getByRole('menu');
+        await expect.element(date).toHaveFocus();
         await user.keyboard('{ArrowDown}{Enter}');
-        await expect.element(page.getByRole('menu')).not.toBeInTheDocument();
+        await expect.element(menu).not.toBeInTheDocument();
+        await expect.element(trigger).toHaveFocus();
         await user.keyboard('{Enter}');
+        await expect.element(menu).toBeVisible();
 
         await expect.element(name).toHaveAttribute('aria-checked', 'true');
         await expect.element(date).toHaveAttribute('aria-checked', 'false');
