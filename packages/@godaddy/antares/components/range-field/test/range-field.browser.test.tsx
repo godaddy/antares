@@ -103,9 +103,9 @@ describe('@godaddy/antares', function antares() {
           step={10}
         />
       );
-      const low = page.getByRole('slider', { name: 'Low threshold' });
-      const target = page.getByRole('slider', { name: 'Target threshold' });
-      const high = page.getByRole('slider', { name: 'High threshold' });
+      const low = page.getByRole('slider', { name: 'Low threshold Thresholds' });
+      const target = page.getByRole('slider', { name: 'Target threshold Thresholds' });
+      const high = page.getByRole('slider', { name: 'High threshold Thresholds' });
 
       target.element().focus();
       await user.keyboard('{ArrowRight}');
@@ -118,8 +118,8 @@ describe('@godaddy/antares', function antares() {
     it('moves focus through multiple thumbs in value order', async function thumbFocusOrder() {
       const user = userEvent.setup();
       await render(<RangeExample />);
-      const minimum = page.getByRole('slider', { name: 'Minimum price' });
-      const maximum = page.getByRole('slider', { name: 'Maximum price' });
+      const minimum = page.getByRole('slider', { name: 'Minimum price Price range' });
+      const maximum = page.getByRole('slider', { name: 'Maximum price Price range' });
 
       minimum.element().focus();
       assume(document.activeElement).equals(minimum.element());
@@ -254,7 +254,7 @@ describe('@godaddy/antares', function antares() {
         />
       );
 
-      page.getByRole('slider', { name: 'Minimum threshold' }).element().focus();
+      page.getByRole('slider', { name: 'Minimum threshold Thresholds' }).element().focus();
       await user.keyboard('{ArrowRight}');
 
       assume(onChangeEnd.mock.calls.length).is.above(0);

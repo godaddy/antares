@@ -43,7 +43,7 @@ describe('@godaddy/antares', function antares() {
         await textbox.fill('test@example.com');
 
         assume(textbox.element().getAttribute('value')).equals('test@example.com');
-        assume(locator.getByText('test@example.com').element()).exists();
+        assume(locator.getByText('Value: test@example.com').element()).exists();
       });
     });
 

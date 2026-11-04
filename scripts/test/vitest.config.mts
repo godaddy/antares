@@ -9,6 +9,7 @@ export default defineConfig({
     tsconfigPaths: true
   },
   test: {
+    clearMocks: true,
     globals: true,
     name: 'Scripts Tests',
     include: [join(import.meta.dirname, '**/*.node.test.{ts,tsx}')],

@@ -25,7 +25,7 @@ describe('@godaddy/antares', function antares() {
     it('renders ControlledExample with interaction', async function controlledRender() {
       await render(<ControlledExample />);
 
-      await page.getByRole('radio', { name: 'Premium' }).click({ force: true });
+      await page.getByText('Premium', { exact: true }).click();
       await vi.waitFor(function checkSelection() {
         assume(document.body.textContent).includes('premium');
       });

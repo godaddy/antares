@@ -24,13 +24,13 @@ describe('@godaddy/antares', function antares() {
 
     it('renders the primary button focused', async function rendersPrimaryFocused() {
       const { getByRole } = await render(<PrimaryExample />);
-      await userEvent.tab();
+      await userEvent.keyboard('{Tab}');
       expect(getByRole('button')).toHaveAttribute('data-focus-visible', 'true');
     });
 
     it('renders the primary button pressed', async function rendersPrimaryPressed() {
       const { getByRole } = await render(<PrimaryExample />);
-      await userEvent.tab();
+      await userEvent.keyboard('{Tab}');
       await userEvent.keyboard('{Space>}');
       expect(getByRole('button')).toHaveAttribute('data-pressed', 'true');
       await userEvent.keyboard('{/Space}');
