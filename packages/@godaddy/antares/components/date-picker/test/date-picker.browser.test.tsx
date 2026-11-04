@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { userEvent } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 import { DefaultExample } from '../examples/default.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { WithErrorExample } from '../examples/with-error.tsx';
@@ -11,6 +11,9 @@ import { ComposedRangeExample } from '../examples/composed-range.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#DatePicker', function datePicker() {
+    beforeEach(async function desktopViewport() {
+      await page.viewport(1024, 768);
+    });
     it('opens the calendar popover when the field is pressed', async function opens() {
       const { getByRole } = await render(<DefaultExample />);
       await userEvent.click(getByRole('button'));

@@ -6,7 +6,8 @@ import {
   Modal as RACModal,
   ModalOverlay as RACModalOverlay,
   type ModalOverlayProps as RACModalOverlayProps,
-  composeRenderProps
+  composeRenderProps,
+  useLocale
 } from 'react-aria-components';
 import { toCssSize } from '#utils/css.ts';
 import { composeClassName } from '#utils/render-props.ts';
@@ -80,6 +81,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     children,
     ...dialogProps
   } = props;
+  const { direction } = useLocale();
 
   return (
     <RACModalOverlay
@@ -98,6 +100,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
         elevation="overlay"
         direction="column"
         data-placement={placement}
+        dir={direction}
         {...containerProps}
         className={composeClassName(containerProps?.className, styles.drawer)}
         style={composeRenderProps(containerProps?.style, function composeDrawerStyle(value) {

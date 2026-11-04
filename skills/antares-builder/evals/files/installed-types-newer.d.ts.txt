@@ -1,0 +1,48 @@
+// Installed @godaddy/antares type declarations (partial root export list).
+// This is a NEWER install than the version the antares-builder skill's
+// decision tree and "API gaps" list were written against.
+
+export declare function Button(props: ButtonProps): JSX.Element;
+export declare function TextField(props: TextFieldProps): JSX.Element;
+export declare function Select(props: SelectProps): JSX.Element;
+export declare function ListBox(props: ListBoxProps): JSX.Element;
+
+// Added since the skill's decision tree was written. Not mentioned anywhere
+// in component-decision-tree.md or composition-patterns.md.
+export declare function Combobox(props: ComboboxProps): JSX.Element;
+export declare function ComboboxTrigger(props: ComboboxTriggerProps): JSX.Element;
+export declare function ComboboxOptions(props: ComboboxOptionsProps): JSX.Element;
+export declare function ComboboxItem(props: ComboboxItemProps): JSX.Element;
+
+export interface ComboboxProps<T = object> {
+  /** Accessible label for the combobox trigger/input. */
+  label?: React.ReactNode;
+  /** Collection items rendered as ComboboxItem children. */
+  items?: Iterable<T>;
+  /** Controlled filter text shown in the input. */
+  inputValue?: string;
+  /** Called when the user edits the filter text. */
+  onInputChange?: (value: string) => void;
+  /** Controlled selected item key. */
+  selectedKey?: React.Key | null;
+  /** Called when the selected item changes. */
+  onSelectionChange?: (key: React.Key | null) => void;
+  /** Disallows free text; selection must match a listed item. */
+  allowsCustomValue?: boolean;
+  children?: React.ReactNode;
+}
+
+export interface ComboboxTriggerProps {
+  children?: React.ReactNode;
+}
+
+export interface ComboboxOptionsProps<T = object> {
+  items?: Iterable<T>;
+  children?: React.ReactNode | ((item: T) => React.ReactNode);
+}
+
+export interface ComboboxItemProps {
+  id: React.Key;
+  textValue?: string;
+  children?: React.ReactNode;
+}

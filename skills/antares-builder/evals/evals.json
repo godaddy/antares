@@ -1,0 +1,183 @@
+{
+  "skill_name": "antares-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Adapt the supplied contact form to Antares. Keep ExistingContactForm and its save prop. Use Antares field components and no third-party form library. Validate email, preserve its label and help, prevent duplicate saves, and announce success or a retryable error.",
+      "expected_output": "An Antares form with inline field validation and async saving.",
+      "files": ["evals/files/contact-form.tsx.txt"],
+      "assertions": [
+        "Uses TextField, Label, Input and FieldError with associated help.",
+        "Invalid email activates the Antares field error state, shows its associated FieldError, receives focus, and does not call save.",
+        "Valid submission calls save({ email }); pending requests prevent duplicate saves.",
+        "Failure retains the value and announces an error; success is announced only after saving resolves."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Build Antares preferences for email/SMS opt-ins, one of three shipping plans, and a notifications toggle. Show current choices and support keyboard use.",
+      "expected_output": "Working independent, exclusive and on/off preferences.",
+      "files": [],
+      "assertions": [
+        "A labeled CheckboxGroup allows independent email and SMS choices.",
+        "A labeled RadioGroup keeps exactly one shipping plan selected.",
+        "A labeled Switch controls notifications; keyboard changes update displayed choices."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Build an Antares form with a required country popup and a visible multi-select region list. Include a country option with an icon and description. Show selections and country errors; changing country must preserve regions.",
+      "expected_output": "A working Select and multi-select ListBox with country validation.",
+      "files": [],
+      "assertions": [
+        "Uses a labeled Select with a trigger, SelectOptions and SelectItem.",
+        "Uses an Antares multi-select ListBox with an accessible name (e.g. aria-label), stable item IDs, and accessible option labels and descriptions.",
+        "Selections update correctly; missing country blocks submission with an associated error, and country changes preserve regions."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Use Antares for a Rename/Duplicate menu, a popover filter form, and help shown on hover or focus. Wire the actions and make all triggers keyboard accessible.",
+      "expected_output": "Menu, Popover and Tooltip used for their matching interactions.",
+      "files": [],
+      "assertions": [
+        "MenuTrigger, Menu and MenuItem invoke working Rename/Duplicate handlers.",
+        "PopoverTrigger opens the filter form; TooltipTrigger shows non-interactive help on hover or focus.",
+        "Triggers have accessible names; menu/popover support keyboard access, dismissal and focus return."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Add an Antares stay date-range picker with a visible label. Make only 2026-12-25 unavailable, preserve selected start and end as date-only values, and support keyboard selection and focus return.",
+      "expected_output": "An accessible Antares date-range picker with one unavailable date and timezone-stable values.",
+      "files": [],
+      "assertions": [
+        "DateRangePicker has a visible label, working trigger and DateRangePickerCalendar.",
+        "Selection updates date-only start/end values without timezone shifts; only 2026-12-25 is unavailable.",
+        "Keyboard users can open, select a range, dismiss the calendar, and return focus to the trigger."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Build an Antares FAQ with at most one answer open, plus Profile/Billing tabs. Support keyboard use and accessible expanded/selected states.",
+      "expected_output": "A working Accordion and Tabs interface.",
+      "files": [],
+      "assertions": [
+        "Accordion coordinates Collapsible sections with at most one answer open.",
+        "Tabs has a named TabList and matching Tab/TabPanel IDs within TabPanels.",
+        "Keyboard interaction updates content and expanded/selected states."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Build ConfirmOrder with Antares and an onConfirm(): Promise<void> prop. Review order opens a titled modal. Allow Back/Escape before submission; block closing and duplicate requests while pending. Keep errors open, close on success, and return focus to the trigger.",
+      "expected_output": "A modal that follows the async confirmation lifecycle.",
+      "files": [],
+      "assertions": [
+        "The titled Modal opens from Review order, traps focus and blocks background interaction.",
+        "Confirm calls onConfirm; failure keeps an error visible, and success closes the modal.",
+        "Pending confirmation blocks duplicate requests and all dismissal paths.",
+        "Back/Escape dismiss before submission; closing restores focus to Review order."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Build an Antares product grid: one column below 48rem, three at or above it. Use a medium gap and the existing stylesheet; long names must not overflow the page.",
+      "expected_output": "A responsive Grid styled through consumer CSS.",
+      "files": [],
+      "assertions": [
+        "Stylesheet rules set one column below 48rem and three at or above it, without conflicting inline columns.",
+        "Uses supported medium spacing.",
+        "Long names and narrow containers cause no horizontal page overflow."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Build RevenueDashboard with Antares and dashboard-data.json: regional revenue in USD, monthly revenue with February missing, traffic share, and health 3/5. Preserve the data, provide text equivalents, and support 390px and 1024px. Export the component and stylesheet.",
+      "expected_output": "A responsive, accessible dashboard with accurate charts.",
+      "files": ["evals/files/dashboard-data.json"],
+      "assertions": [
+        "Regional revenue and traffic shares match the supplied data, labels and units.",
+        "Months stay chronological; February remains missing, not zero or an interpolated line.",
+        "GaugeChart shows value 3 with five segments and a 3/5 label.",
+        "Charts have accessible names and text/table equivalents, and render without page overflow at 390px and 1024px."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Using only the installed public Antares API, advise whether Antares supports a searchable country selector. Work offline. Do not edit files, install dependencies or compile. If no public Antares search control exists, explain the gap and the closest supported Antares components; do not recommend another library.",
+      "expected_output": "An evidence-based recommendation limited to the installed public Antares API.",
+      "files": [],
+      "assertions": [
+        "Component and prop claims cite installed Antares public exports or declarations only.",
+        "Recommends a verified keyboard-accessible Antares search control, or explains that none exists and identifies the closest supported Antares components without inventing exports.",
+        "Respects offline, advice-only scope; does not edit files, install dependencies, compile, or recommend another library."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Build a document library: let users browse or drag-drop files to upload, show the uploaded files in a paginated grid of cards, and let each file be removed.",
+      "expected_output": "A working upload surface with a paginated, removable card grid of uploaded files.",
+      "files": [],
+      "assertions": [
+        "FileTrigger offers a keyboard-accessible browse button and DropZone accepts drag/drop; both add to the same uploaded-files list.",
+        "Uploaded files render as Cards with stable IDs and accessible names; Pagination has named previous/next controls and reflects the current/total pages correctly.",
+        "Removing a file updates the card grid and the pagination count without losing the other uploaded files."
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Build a 3-step onboarding wizard: a ProgressSteps indicator tracks the current step, and the middle step shows a feature carousel users can browse with next/prev controls.",
+      "expected_output": "A working wizard with step progress and a keyboard-accessible feature carousel.",
+      "files": [],
+      "assertions": [
+        "ProgressSteps shows the zero-based currentStep and the middle step's Carousel supports keyboard and button navigation between slides, each with a meaningful label.",
+        "Advancing or returning between wizard steps preserves state correctly without resetting unrelated progress."
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Build a profile card that shows Skeleton placeholders matching the final layout (a circular avatar plus two lines of text) while the profile loads, then swaps to the real content once it arrives.",
+      "expected_output": "An accessible loading state that previews the real layout and hands off cleanly to real content.",
+      "files": [],
+      "assertions": [
+        "Skeleton composition matches the final layout: a circular avatar (rounding=\"full\", width equal to height) plus two text-line Skeletons of differing widths.",
+        "The loading region is marked with role=\"status\", aria-busy=\"true\" and a descriptive aria-label while loading.",
+        "Once data resolves, aria-busy is set to false (or removed) and the real content fully replaces the Skeletons — no stale placeholders left visible."
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "The attached file lists our installed Antares version's public type declarations. Build a searchable country selector with autocomplete filtering using Antares. Check the attached declarations before assuming Antares has no combobox.",
+      "expected_output": "An Antares combobox built from the installed version's actual exports.",
+      "files": ["evals/files/installed-types-newer.d.ts.txt"],
+      "assertions": [
+        "Inspects the attached installed declarations rather than relying solely on the skill's API-gaps list, which still says Combobox does not exist.",
+        "Implements the installed Combobox/ComboboxTrigger/ComboboxOptions/ComboboxItem API from the fixture, not a hand-rolled autocomplete or a Select+ListBox substitute.",
+        "Wires selectedKey/onSelectionChange and inputValue/onInputChange per the attached declarations."
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "The attached file lists our installed Antares version's public exports. Build a profile card with a loading placeholder that previews the final avatar-plus-two-lines layout before data arrives.",
+      "expected_output": "A loading placeholder built only from exports that actually exist at the installed version.",
+      "files": ["evals/files/installed-types-older.d.ts.txt"],
+      "assertions": [
+        "Notices Skeleton is absent from the attached installed exports and does not import or render it, despite the skill's guidance recommending Skeleton for loading placeholders.",
+        "Falls back to a capability the installed exports actually support (e.g. existing progress/loading primitives or a semantic ARIA-busy placeholder) rather than inventing a Skeleton export.",
+        "States to the user that Skeleton isn't available at the installed version and explains what it used instead."
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "The attached file is our installed Antares version's ProgressBar type declaration. Build a labeled file-upload progress bar with helper text below it, like 'Uploading... 42%'. Use the installed API, not older examples that may still show label/helperText props.",
+      "expected_output": "A ProgressBar composed per the installed declaration, with no removed props.",
+      "files": ["evals/files/installed-types-progressbar.d.ts.txt"],
+      "assertions": [
+        "Composes Label, the value/track Box slots and a Text description per the attached declaration instead of passing label or helperText props to ProgressBar.",
+        "Does not reference a label or helperText prop on ProgressBar anywhere in the output.",
+        "The progress bar still has a correctly associated accessible name and description in the composed markup."
+      ]
+    }
+  ]
+}

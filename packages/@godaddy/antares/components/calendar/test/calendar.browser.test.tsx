@@ -31,6 +31,15 @@ describe('@godaddy/antares', function antares() {
       await expect.element(year).toHaveValue('2030');
     });
 
+    it('rejects fractional years in the year input', async function yearInteger() {
+      const { getByRole } = await render(<CalendarWithValueExample />);
+      const year = getByRole('textbox', { name: /Year/ });
+      await userEvent.clear(year);
+      await userEvent.type(year, '2030.5');
+      await userEvent.keyboard('{Enter}');
+      expect((year.element() as HTMLInputElement).value).not.toContain('.');
+    });
+
     it('range calendar shows two months by default', async function twoMonths() {
       const screen = await render(<RangeCalendarExample />);
       const monthSelects = screen.getByRole('button', { name: 'Month' }).all();
@@ -67,6 +76,14 @@ describe('@godaddy/antares', function antares() {
       const monthSelects = screen.getByRole('button', { name: 'Month' }).all();
       await expect.element(monthSelects[0]).toHaveTextContent('March');
       await expect.element(monthSelects[1]).toHaveTextContent('April');
+    });
+
+    it('treats a press in the gap between rows as a press on the date', async function rowGap() {
+      const screen = await render(<RangeCalendarExample />);
+      await userEvent.click(screen.getByRole('button', { name: /March 18, 2024/ }));
+      const end = screen.getByRole('button', { name: /March 27, 2024/ }).element();
+      await userEvent.click(end, { position: { x: end.clientWidth / 2, y: -1 } });
+      await expect.element(end).toHaveAttribute('data-selection-end', 'true');
     });
 
     it('does not select an unavailable day on click', async function unavailable() {

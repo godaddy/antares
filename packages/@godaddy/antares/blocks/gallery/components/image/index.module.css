@@ -1,0 +1,85 @@
+.surface {
+  max-inline-size: 100%;
+  object-fit: cover;
+}
+
+.surface:where([data-variant="horizontal"]) {
+  inline-size: 56px;
+  block-size: 56px;
+}
+
+.surface:where([data-variant="vertical"]) {
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 1;
+}
+
+.error {
+  background: var(--color-feedback-critical-subtle, var(--ux-1iiiqs3, #fde8e7));
+  color: var(--color-feedback-critical-onsubtle, var(--ux-xaxxaq, #8b0000));
+}
+
+.image {
+  max-inline-size: 100%;
+}
+
+.image:where([data-variant="viewer"]) {
+  inline-size: 100%;
+  block-size: 100%;
+  max-block-size: 100%;
+  object-fit: contain;
+}
+
+.image:where([data-variant="thumbnail"]) {
+  inline-size: 80px;
+  block-size: 60px;
+  object-fit: cover;
+}
+
+.container {
+  min-inline-size: 0;
+}
+
+.container:where([data-variant="viewer"]) {
+  position: relative;
+  inline-size: 100%;
+  block-size: 100%;
+  min-block-size: 0;
+}
+
+.loading {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  text-align: center;
+}
+
+.errorSurface {
+  background: var(--color-feedback-critical-subtle, var(--ux-1iiiqs3, #fde8e7));
+  color: var(--color-feedback-critical-onsubtle, var(--ux-xaxxaq, #8b0000));
+}
+
+.frame {
+  display: block;
+  position: relative;
+}
+
+.frame:where([data-variant="default"]) {
+  inline-size: fit-content;
+}
+
+.resource {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: inherit;
+}
+
+.resource:where([data-loading]) {
+  opacity: 0;
+}
+
+.skeleton {
+  position: absolute;
+  inset: 0;
+}

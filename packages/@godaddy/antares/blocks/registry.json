@@ -3,6 +3,74 @@
   "name": "antares-blocks",
   "items": [
     {
+      "name": "blocks/gallery",
+      "type": "registry:block",
+      "title": "Gallery",
+      "dependencies": ["@godaddy/antares"],
+      "files": [
+        {
+          "path": "gallery/components/file-items/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/gallery/components/file-items/index.module.css"
+        },
+        {
+          "path": "gallery/components/file-items/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/file-items/index.tsx"
+        },
+        {
+          "path": "gallery/components/gallery/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/gallery/components/gallery/index.module.css"
+        },
+        {
+          "path": "gallery/components/gallery/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/gallery/index.tsx"
+        },
+        {
+          "path": "gallery/components/image/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/gallery/components/image/index.module.css"
+        },
+        {
+          "path": "gallery/components/image/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/image/index.tsx"
+        },
+        {
+          "path": "gallery/components/viewer/index.module.css",
+          "type": "registry:style",
+          "target": "components/blocks/gallery/components/viewer/index.module.css"
+        },
+        {
+          "path": "gallery/components/viewer/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/components/viewer/index.tsx"
+        },
+        {
+          "path": "gallery/data/sample-images.ts",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/data/sample-images.ts"
+        },
+        {
+          "path": "gallery/data/types.ts",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/data/types.ts"
+        },
+        {
+          "path": "gallery/hooks/use-gallery-images.ts",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/hooks/use-gallery-images.ts"
+        },
+        {
+          "path": "gallery/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/gallery/index.tsx"
+        }
+      ]
+    },
+    {
       "name": "blocks/overview-dashboard",
       "type": "registry:block",
       "title": "Overview dashboard",

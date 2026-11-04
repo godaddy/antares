@@ -1,0 +1,17 @@
+type Values = { email: string };
+
+export function ExistingContactForm({ save }: { save: (values: Values) => Promise<void> }) {
+  return (
+    <form>
+      <label htmlFor="contact-email">Email</label>
+      <p id="contact-email-help">We'll send receipts here.</p>
+      <input
+        id="contact-email"
+        type="text"
+        autoComplete="email"
+        aria-describedby="contact-email-help"
+      />
+      <button type="submit">Save contact</button>
+    </form>
+  );
+}

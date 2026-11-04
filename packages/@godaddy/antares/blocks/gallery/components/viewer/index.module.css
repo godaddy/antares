@@ -1,0 +1,27 @@
+.modalContainer {
+  inline-size: 100%;
+  max-inline-size: 60rem;
+  min-inline-size: 0;
+}
+
+.modal {
+  inline-size: 100%;
+  max-inline-size: 100%;
+}
+
+.slide {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  block-size: 55dvh;
+}
+
+.name {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+.thumbnails {
+  min-inline-size: 0;
+  overflow-x: auto;
+  scroll-padding-inline: var(--sp-sm);
+}

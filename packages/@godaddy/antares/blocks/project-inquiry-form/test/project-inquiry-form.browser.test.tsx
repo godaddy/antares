@@ -236,7 +236,8 @@ describe('@godaddy/antares', function packageTests() {
       const trigger = screen.getByRole('button', { name: /Calendar/ });
 
       await userEvent.click(trigger);
-      await userEvent.click(screen.getByRole('button', { name: /15, \d{4}$/ }));
+      const month = screen.getByRole('grid').all()[0];
+      await userEvent.click(month.getByRole('button', { name: /15, \d{4}$/ }));
       await expect.element(screen.getByRole('button', { name: 'Clear date' })).toBeVisible();
       await expect.element(trigger).not.toHaveTextContent('Select a date');
 

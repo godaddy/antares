@@ -1,0 +1,38 @@
+// Installed @godaddy/antares type declarations for ProgressBar.
+//
+// Breaking change from an older skill example or memory: `label` and
+// `helperText` props were REMOVED. ProgressBar is now composed from
+// Label, Box (value/track slots) and Text as children instead.
+
+export interface ProgressBarProps {
+  /** Composed label, value, track, and description. A function receives progress state. */
+  children?: React.ReactNode | ((state: ProgressBarRenderProps) => React.ReactNode);
+
+  /** Accessible value text and default value-slot content. Does not add visible output. */
+  valueLabel?: string;
+
+  /** Visual size of the track. @default 'md' */
+  size?: 'xs' | 'sm' | 'md';
+
+  /** Color intent of the fill. @default 'default' */
+  status?: 'default' | 'success' | 'warning' | 'critical';
+
+  value?: number;
+  minValue?: number;
+  maxValue?: number;
+  isIndeterminate?: boolean;
+  'aria-label'?: string;
+  'aria-labelledby'?: string;
+  'aria-describedby'?: string;
+
+  // NOTE: no `label` prop.
+  // NOTE: no `helperText` prop.
+  // Compose a visible label, value, and description instead:
+  //   <ProgressBar value={42}>
+  //     <Label>Uploading</Label>
+  //     <Box slot="value">42%</Box>
+  //     <Text slot="description">Uploading... 42%</Text>
+  //   </ProgressBar>
+}
+
+export declare function ProgressBar(props: ProgressBarProps): JSX.Element;

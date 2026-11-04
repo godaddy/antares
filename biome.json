@@ -21,7 +21,7 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "attributePosition": "auto",
-    "includes": ["**", "!.grit/**"]
+    "includes": ["**", "!.grit/**", "!**/CHANGELOG.md"]
   },
   "assist": { "actions": { "source": { "organizeImports": "off" } } },
   "plugins": [

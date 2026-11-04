@@ -1,0 +1,45 @@
+{
+  "currency": "USD",
+  "regions": [
+    {
+      "id": "na",
+      "region": "North America",
+      "revenue": 12000
+    },
+    {
+      "id": "eu",
+      "region": "Europe",
+      "revenue": 9000
+    }
+  ],
+  "monthlyRevenue": [
+    {
+      "month": "2026-01-01",
+      "revenue": 12000
+    },
+    {
+      "month": "2026-02-01",
+      "revenue": null
+    },
+    {
+      "month": "2026-03-01",
+      "revenue": 15000
+    }
+  ],
+  "traffic": [
+    {
+      "id": "organic",
+      "name": "Organic",
+      "value": 70
+    },
+    {
+      "id": "direct",
+      "name": "Direct",
+      "value": 30
+    }
+  ],
+  "health": {
+    "value": 3,
+    "segments": 5
+  }
+}

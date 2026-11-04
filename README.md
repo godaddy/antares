@@ -22,6 +22,7 @@ packages/dev/                     # Dev tooling (storybook-addon-helpers, enviro
 apps/docs/                        # Storybook documentation
 apps/site/                        # Documentation site (Next.js)
 configs/                          # Shared build and test configs
+skills/                           # Consumer-facing agent skills
 ```
 
 ## Packages
@@ -80,6 +81,37 @@ configs/                          # Shared build and test configs
 ## Getting Started
 
 See individual package READMEs for installation and usage instructions.
+
+### Antares Builder skill
+
+[Antares Builder](./skills/antares-builder/SKILL.md) helps coding agents build
+consumer interfaces with the public `@godaddy/antares` API. Run either command
+from your consuming application:
+
+```sh
+npx skills add godaddy/antares --skill antares-builder --agent codex
+```
+
+Or, with [Agent Package Manager (APM)](https://microsoft.github.io/apm/) installed:
+
+```sh
+apm install godaddy/antares --skill antares-builder --target codex
+```
+
+Select your agent with `--agent` for the skills CLI or `--target` for APM; for
+example, use `claude-code` with the skills CLI or `claude` with APM. The installer
+places the skill and its references in the consumer's agent directory.
+
+Then ask your agent, for example:
+
+> Build a responsive settings form with Antares, including validation and a confirmation dialog.
+
+The root [`apm.yml`](./apm.yml) describes the published `skills/` collection.
+Contributor tooling stays in `.agents/skills/`. The collection is versioned
+independently of `@godaddy/antares`; keep its version aligned with the skill's
+`metadata.version` for releases of this single-skill collection. To pin an APM
+release, append `#<git-ref>` to `godaddy/antares` and commit the consumer's
+`apm.yml` and `apm.lock.yaml`.
 
 ## Documentation
 

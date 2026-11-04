@@ -422,8 +422,18 @@ export function BarChart<
 
   const tickLength = 8;
 
-  const { parentRef, chartWidth, chartHeight, margin, scrollLeft, scrollTop, xAxisRef, yAxisRef, xLabelsVertical } =
-    useScrollableXYChart({ xLabelsOrientation });
+  const {
+    parentRef,
+    chartWidth,
+    chartHeight,
+    margin,
+    scrollLeft,
+    scrollTop,
+    xAxisRef,
+    yAxisRef,
+    xLabelsVertical,
+    yAxisRect
+  } = useScrollableXYChart({ xLabelsOrientation });
 
   const series = useNormalizedSeries(seriesProp);
 
@@ -741,7 +751,15 @@ export function BarChart<
 
               {isVertical && (yBaseline || yTickMarks || yLabels) && !rtl && (
                 <>
-                  <rect x={scrollLeft} y={0} width={margin.left} height={svgHeight} className={styles.axisBackground} />
+                  {yAxisRect && (
+                    <rect
+                      x={scrollLeft}
+                      y={margin.top + yAxisRect.y}
+                      width={margin.left}
+                      height={yAxisRect.height}
+                      className={styles.axisBackground}
+                    />
+                  )}
                   <g transform={`translate(${margin.left + scrollLeft}, ${margin.top})`}>
                     <AxisLeft
                       axisClassName={styles.axisY}
@@ -760,13 +778,15 @@ export function BarChart<
 
               {isVertical && (yBaseline || yTickMarks || yLabels) && rtl && (
                 <>
-                  <rect
-                    x={svgWidth - margin.right + scrollLeft}
-                    y={0}
-                    width={margin.right}
-                    height={svgHeight}
-                    className={styles.axisBackground}
-                  />
+                  {yAxisRect && (
+                    <rect
+                      x={svgWidth - margin.right + scrollLeft}
+                      y={margin.top + yAxisRect.y}
+                      width={margin.right}
+                      height={yAxisRect.height}
+                      className={styles.axisBackground}
+                    />
+                  )}
                   <g transform={`translate(${svgWidth - margin.right + scrollLeft}, ${margin.top})`}>
                     <AxisRight
                       axisClassName={styles.axisY}

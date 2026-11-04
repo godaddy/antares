@@ -1,0 +1,37 @@
+// Installed @godaddy/antares type declarations (partial root export list).
+// This is an OLDER install than the version the antares-builder skill's
+// decision tree currently documents.
+//
+// Notably absent: Skeleton. The skill's decision tree recommends Skeleton
+// for "content still loading" placeholders, but this installed version
+// predates that component — it is not part of this export list.
+
+export declare function Button(props: ButtonProps): JSX.Element;
+export declare function Avatar(props: AvatarProps): JSX.Element;
+export declare function Text(props: TextProps): JSX.Element;
+export declare function Flex(props: FlexProps): JSX.Element;
+export declare function Box(props: BoxProps): JSX.Element;
+export declare function CircularProgress(props: CircularProgressProps): JSX.Element;
+export declare function ProgressBar(props: ProgressBarProps): JSX.Element;
+
+export interface AvatarProps {
+  src?: string;
+  alt?: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+export interface CircularProgressProps {
+  'aria-label'?: string;
+  isIndeterminate?: boolean;
+  value?: number;
+}
+
+export interface ProgressBarProps {
+  'aria-label'?: string;
+  label?: React.ReactNode;
+  helperText?: React.ReactNode;
+  value?: number;
+  isIndeterminate?: boolean;
+}
+
+// No Skeleton export exists in this installed version.
