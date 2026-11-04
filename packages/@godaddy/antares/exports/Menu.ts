@@ -6,6 +6,7 @@ export {
   MenuItem,
   type MenuItemProps,
   Separator,
+  SeparatorContext,
   type SeparatorProps,
   MenuTrigger,
   type MenuTriggerProps,

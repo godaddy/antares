@@ -165,7 +165,7 @@ export interface MenuGroupProps<T extends object>
  */
 export const MenuGroup = forwardRef(function MenuGroup<T extends object>(
   { className, children, ...props }: MenuGroupProps<T>,
-  ref: ForwardedRef<HTMLDivElement>
+  ref: ForwardedRef<HTMLElement>
 ) {
   return (
     <Flex
@@ -178,7 +178,7 @@ export const MenuGroup = forwardRef(function MenuGroup<T extends object>(
       {children}
     </Flex>
   );
-}) as <T extends object>(props: MenuGroupProps<T> & { ref?: React.Ref<HTMLDivElement> }) => React.ReactElement | null;
+}) as <T extends object>(props: MenuGroupProps<T> & { ref?: React.Ref<HTMLElement> }) => React.ReactElement | null;
 
 /**
  * Props for the {@link MenuItem} component.
@@ -283,15 +283,15 @@ export function SubmenuTrigger({ children, ...props }: SubmenuTriggerProps) {
  */
 export interface SeparatorProps extends RACSeparatorProps {}
 
-/** Presentation supplied by an owning component such as Menu. */
-const SeparatorContext = createContext<ContextValue<SeparatorProps, HTMLHRElement>>(null);
+/** Context for supplying presentation defaults to composed separators. */
+export const SeparatorContext = createContext<ContextValue<SeparatorProps, HTMLElement>>(null);
 
 /**
  * A visual divider between items or groups. Not focusable or selectable.
  *
  * @param props - {@link SeparatorProps}
  */
-export const Separator = forwardRef<HTMLHRElement, SeparatorProps>(function Separator(props, ref) {
+export const Separator = forwardRef<HTMLElement, SeparatorProps>(function Separator(props, ref) {
   [props, ref] = useContextProps(props, ref, SeparatorContext);
 
   return <RACSeparator {...props} ref={ref} />;

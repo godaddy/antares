@@ -179,6 +179,27 @@ describe('@godaddy/antares', function antares() {
       await expect.element(page.getByRole('button', { name: 'Account' })).toHaveFocus();
     });
 
+    it('tabs to and toggles the account theme switch with the keyboard', async function accountTheme() {
+      const user = userEvent.setup();
+      await render(<AccountMenuExample />);
+
+      const trigger = page.getByRole('button', { name: 'Account' });
+      await user.tab();
+      await expect.element(trigger).toHaveFocus();
+      await user.keyboard('{ArrowDown}');
+      await expect.element(page.getByRole('menu', { name: 'Account' })).toBeVisible();
+      await expect.element(page.getByRole('menuitem', { name: 'Profile' })).toHaveFocus();
+
+      const darkTheme = page.getByRole('switch', { name: 'Dark theme' });
+      await user.keyboard('{Shift>}{Tab}{/Shift}');
+      await expect.element(darkTheme).toHaveFocus();
+      await user.keyboard(' ');
+      await expect.element(darkTheme).toBeChecked();
+      await user.keyboard(' ');
+      await expect.element(darkTheme).not.toBeChecked();
+      await expect.element(page.getByRole('menu', { name: 'Account' })).toBeVisible();
+    });
+
     it('closes the bottom sheet after a menu action', async function bottomSheet() {
       const user = userEvent.setup();
       await render(<BottomSheetExample />);
