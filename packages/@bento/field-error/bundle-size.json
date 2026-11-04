@@ -1,7 +1,7 @@
 {
   "outputBudget": 6272,
   "consumerBudgets": {
-    "auto-entry-bento-field-error-7deb38dba382": 4736,
-    "auto-export-bento-field-error-FieldError-4216e1fbc22b": 4736
+    "entry:@bento/field-error": 4736,
+    "export:@bento/field-error#FieldError": 4736
   }
 }

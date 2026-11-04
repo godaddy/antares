@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { discoverPublicApi } from '../bundle-discovery.ts';
+import { consumerBudgetKey, consumerCases, discoverPublicApi } from '../bundle-discovery.ts';
 
 const temporaryDirectories: string[] = [];
 afterEach(async function cleanFixtures() {
@@ -182,4 +182,30 @@ describe('package export conditions', function exportConditionTests() {
       });
     }
   );
+});
+
+describe('consumer budget keys', function consumerBudgetKeyTests() {
+  it('keeps readable budget keys separate from hashed case IDs', function separatesPublicBudgetKeys() {
+    const cases = consumerCases([
+      {
+        package: '@fixture/ui',
+        from: '@fixture/ui',
+        target: 'dist/index.mjs',
+        kind: 'javascript',
+        exports: ['Button']
+      }
+    ]);
+
+    expect(cases.map(({ budgetKey }) => budgetKey)).toEqual(['entry:@fixture/ui', 'export:@fixture/ui#Button']);
+    expect(cases.map(({ id }) => id)).toEqual([
+      expect.stringMatching(/^auto-entry-fixture-ui-[a-f0-9]{12}$/),
+      expect.stringMatching(/^auto-export-fixture-ui-Button-[a-f0-9]{12}$/)
+    ]);
+  });
+
+  it('escapes budget-key delimiters in import paths and export names', function escapesDelimiters() {
+    expect(consumerBudgetKey({ scope: 'export', from: '@fixture/ui#docs', names: ['Button%#Menu'] })).toBe(
+      'export:@fixture/ui%23docs#Button%25%23Menu'
+    );
+  });
 });

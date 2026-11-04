@@ -1,7 +1,7 @@
 {
   "outputBudget": 8320,
   "consumerBudgets": {
-    "auto-entry-bento-divider-a81aba77187d": 4608,
-    "auto-export-bento-divider-Divider-03733746fe81": 4608
+    "entry:@bento/divider": 4608,
+    "export:@bento/divider#Divider": 4608
   }
 }

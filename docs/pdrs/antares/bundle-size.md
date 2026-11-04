@@ -33,7 +33,7 @@ Generated reports live under `.bundle-analysis/` and are ignored by Git. Open `.
 | --- | --- |
 | `index.html` | Searchable consumer cases, raw/gzip/Brotli sizes and links to visualizations |
 | `summary.md` | Package versions, external peers, sizes, limits and PASS/FAIL results |
-| `metrics.json` | Measurements and their generated case IDs, plus package and tool metadata |
+| `metrics.json` | Measurements and hashed case IDs, plus readable budget keys, package and tool metadata |
 | `public-api.json` | Public imports, runtime exports and reasons for entries without consumer cases |
 | `reports/<case-id>/` within a package report | Treemap, sunburst and dependency-network HTML for the same consumer build |
 
@@ -65,16 +65,18 @@ The check reads saved reports and compares them with budgets; it does not rebuil
 When adding or changing an export:
 
 1. Build the owning package's bundle report.
-2. Inspect its sizes, summary and visualizations. Copy generated case IDs from `metrics.json`; no manual fixture registration is needed.
-3. Add a justified limit to the package's `bundle-size.json`. Review the full-entry case as well: adding an export can increase its size under the same ID.
+2. Inspect its sizes, summary and visualizations. Copy the readable `budgetKey` from `metrics.json`; no manual fixture registration is needed.
+3. Add a justified limit to the package's `bundle-size.json`. Review the full-entry case as well: adding an export can increase its size under the same key.
 4. Run the package check and explain intentional budget increases in the PR.
 5. Regenerate reports and remove obsolete budget keys when deleting or renaming exports. A budget without a matching measurement fails the check.
 
-For changes to the analyzer itself, run `npm run scripts:test` and regenerate the affected reports. The implementation is in [bundle-analysis.ts](../../../scripts/bundle-analysis.ts) and [bundle-discovery.ts](../../../scripts/bundle-discovery.ts).
+For changes to the analyzer itself, run `npm exec -- nx run scripts:test` and regenerate the affected reports. The implementation is in [bundle-analysis.ts](../../../scripts/bundle-analysis.ts) and [bundle-discovery.ts](../../../scripts/bundle-discovery.ts).
 
 ## Budgets
 
-Each package owns a `bundle-size.json` beside its manifest. Limits are non-negative integer bytes: `outputBudget` caps raw package output and `consumerBudgets` caps gzip bytes per generated consumer case ID.
+Each package owns a `bundle-size.json` beside its manifest. Limits are non-negative integer bytes: `outputBudget` caps raw package output and `consumerBudgets` caps gzip bytes per readable entry or export key. Hashed case IDs remain in generated fixtures, measurements and report filenames.
+
+Entry keys use `entry:<public import>`; export keys use `export:<public import>#<export name>`. Literal `%` and `#` characters in either part are escaped as `%25` and `%23`.
 
 For example, [the Button package](../../../packages/@bento/button/bundle-size.json) owns:
 
@@ -82,8 +84,8 @@ For example, [the Button package](../../../packages/@bento/button/bundle-size.js
 {
   "outputBudget": 8832,
   "consumerBudgets": {
-    "auto-entry-bento-button-e3b34e49573a": 14848,
-    "auto-export-bento-button-Button-7b44b5fc8c51": 14848
+    "entry:@bento/button": 14848,
+    "export:@bento/button#Button": 14848
   }
 }
 ```

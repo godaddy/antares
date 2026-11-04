@@ -13,12 +13,14 @@ import { API, SymbolFlags, type Snapshot, type Symbol as TsSymbol } from 'typesc
 
 /** One public import and the exports its consumer fixture keeps reachable. */
 export interface ConsumerCase {
-  /** Stable ID shared by the fixture, measurement, report, and package budget. */
+  /** Stable ID shared by the fixture, measurement, and generated report files. */
   id: string;
+  /** Readable configuration key, alongside `id` in generated reports. */
+  budgetKey?: string;
   /** Package that owns the import and its budget. */
   package: string;
   /** `entry` keeps all runtime exports reachable; `export` keeps one name reachable. */
-  scope?: 'entry' | 'export';
+  scope: 'entry' | 'export';
   /** Consumer import path, such as `@godaddy/antares/Button`. */
   from: string;
   /** Export names to retain; an empty array creates a side-effect import. */
@@ -296,29 +298,54 @@ function automaticId(scope: 'entry' | 'export', from: string, name?: string): st
   return `auto-${scope}-${readable}-${hash}`;
 }
 
+/** Escapes delimiters so readable budget keys remain unambiguous. */
+function escapeBudgetKeyPart(value: string): string {
+  return value.replaceAll('%', '%25').replaceAll('#', '%23');
+}
+
+/** Derives the readable budget key for one discovered consumer case. */
+export function consumerBudgetKey(consumerCase: Pick<ConsumerCase, 'scope' | 'from' | 'names'>): string {
+  const from = escapeBudgetKeyPart(consumerCase.from);
+  if (consumerCase.scope === 'entry') return `entry:${from}`;
+  if (consumerCase.names.length !== 1)
+    throw new Error(`Expected one export name for ${consumerCase.from}; received ${consumerCase.names.length}.`);
+  return `export:${from}#${escapeBudgetKeyPart(consumerCase.names[0])}`;
+}
+
 /** Creates one full-entry case and one case per runtime export for eligible entries. */
 export function consumerCases(entries: PublicEntry[]): ConsumerCase[] {
   const cases: ConsumerCase[] = [];
   for (const entry of entries) {
     if (entry.reason) continue;
-    cases.push({
+    const entryCase = {
       id: automaticId('entry', entry.from),
       package: entry.package,
-      scope: 'entry',
+      scope: 'entry' as const,
       from: entry.from,
       names: entry.exports
+    };
+    cases.push({
+      ...entryCase,
+      budgetKey: consumerBudgetKey(entryCase)
     });
     if (entry.kind === 'javascript') {
-      for (const name of entry.exports)
-        cases.push({
-          id: automaticId('export', entry.from, name),
+      for (const name of entry.exports) {
+        const exportCase = {
           package: entry.package,
-          scope: 'export',
+          scope: 'export' as const,
           from: entry.from,
           names: [name]
+        };
+        cases.push({
+          ...exportCase,
+          id: automaticId('export', entry.from, name),
+          budgetKey: consumerBudgetKey(exportCase)
         });
+      }
     }
   }
   if (new Set(cases.map((item) => item.id)).size !== cases.length) throw new Error('Duplicate consumer IDs');
+  if (new Set(cases.map((item) => item.budgetKey)).size !== cases.length)
+    throw new Error('Duplicate consumer budget keys');
   return cases;
 }

@@ -53,7 +53,16 @@ function report(): Report {
       }
     ],
     publicEntries: [],
-    cases: [{ id: 'button', package: '@test/package', from: '@test/package', names: ['Button'] }]
+    cases: [
+      {
+        id: 'button',
+        budgetKey: 'export:@test/package#Button',
+        package: '@test/package',
+        scope: 'export',
+        from: '@test/package',
+        names: ['Button']
+      }
+    ]
   };
 }
 
@@ -78,7 +87,7 @@ async function savedReportWorkspace(value: Report = report()) {
   );
   await writeFile(
     join(packageRoot, 'bundle-size.json'),
-    JSON.stringify({ outputBudget: 100, consumerBudgets: { button: 50 } })
+    JSON.stringify({ outputBudget: 100, consumerBudgets: { 'export:@test/package#Button': 50 } })
   );
   await writeFile(join(output, 'metrics.json'), `${JSON.stringify(value)}\n`);
   const pkg: Workspace = {
@@ -276,22 +285,47 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
 
     await writeFile(
       join(fixture.pkg.root, 'bundle-size.json'),
-      JSON.stringify({ outputBudget: 100, consumerBudgets: { button: 49, obsolete: 50 } })
+      JSON.stringify({
+        outputBudget: 100,
+        consumerBudgets: { 'export:@test/package#Button': 49, 'export:@test/package#Obsolete': 50 }
+      })
     );
     await expect(checkPackageReportFromDisk(fixture.pkg, fixture.output)).rejects.toThrow('Bundle check failed');
     const failedSummary = await readFile(summaryPath, 'utf8');
     expect(failedSummary).toContain('## Budget check: FAIL');
     expect(failedSummary).toContain('@test/package: button: 50 B gzip > 49 B (+1 B)');
-    expect(failedSummary).toContain('@test/package: obsolete: unused consumer budget (no matching measurement)');
+    expect(failedSummary).toContain(
+      '@test/package: export:@test/package#Obsolete: unused consumer budget (no matching measurement)'
+    );
 
     await writeFile(
       join(fixture.pkg.root, 'bundle-size.json'),
-      JSON.stringify({ outputBudget: 100, consumerBudgets: { button: 50 } })
+      JSON.stringify({ outputBudget: 100, consumerBudgets: { 'export:@test/package#Button': 50 } })
     );
     await checkPackageReportFromDisk(fixture.pkg, fixture.output);
     const passingSummary = await readFile(summaryPath, 'utf8');
     expect(passingSummary).toContain('## Budget check: PASS');
     expect(passingSummary).not.toContain('obsolete');
+  });
+
+  it('maps readable config keys when a saved report predates budgetKey metadata', async function readsLegacyMetrics() {
+    const savedReport = report();
+    delete savedReport.cases[0].budgetKey;
+    const fixture = await savedReportWorkspace(savedReport);
+
+    await expect(checkPackageReportFromDisk(fixture.pkg, fixture.output)).resolves.toBeUndefined();
+  });
+
+  it('rejects hashed IDs in readable consumer budget configs', async function rejectsInternalBudgetIDs() {
+    const fixture = await savedReportWorkspace();
+    await writeFile(
+      join(fixture.pkg.root, 'bundle-size.json'),
+      JSON.stringify({ outputBudget: 100, consumerBudgets: { 'auto-export-test-package-Button-deadbeef0123': 50 } })
+    );
+
+    await expect(checkPackageReportFromDisk(fixture.pkg, fixture.output)).rejects.toThrow(
+      'expected an entry/export key and non-negative integer'
+    );
   });
 
   it('invalidates old metrics and rejects invalid config before inspecting build output', async function validatesConfigFirst() {
@@ -312,18 +346,23 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
     vi.stubEnv('GITHUB_STEP_SUMMARY', jobSummaryPath);
     await writeFile(
       join(fixture.pkg.root, 'bundle-size.json'),
-      JSON.stringify({ outputBudget: 100, consumerBudgets: { button: 50, obsolete: 50 } })
+      JSON.stringify({
+        outputBudget: 100,
+        consumerBudgets: { 'export:@test/package#Button': 50, 'export:@test/package#Obsolete': 50 }
+      })
     );
 
     await aggregateReportsFromDisk(fixture.root, output, { check: false });
     expect(await readFile(jobSummaryPath, 'utf8')).toBe('');
     await expect(aggregateReportsFromDisk(fixture.root, output, { check: true })).rejects.toThrow(
-      '@test/package: obsolete: unused consumer budget (no matching measurement)'
+      '@test/package: export:@test/package#Obsolete: unused consumer budget (no matching measurement)'
     );
     const summary = await readFile(join(output, 'summary.md'), 'utf8');
     expect(summary).toContain('## Budget check: FAIL');
     expect(summary).toContain('| consumer: button | gzip | 50 B | 50 B | PASS |');
-    expect(summary).toContain('@test/package: obsolete: unused consumer budget (no matching measurement)');
+    expect(summary).toContain(
+      '@test/package: export:@test/package#Obsolete: unused consumer budget (no matching measurement)'
+    );
     expect(await readFile(jobSummaryPath, 'utf8')).toBe(summary);
   });
 
@@ -351,26 +390,33 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
     'rejects obsolete budgets for %s exports in package and aggregate modes',
     async function rejectsObsoleteBudgets(change) {
       const value = report();
-      const consumerBudgets: Record<string, number> = { button: 50 };
+      const buttonBudgetKey = 'export:@test/package#Button';
+      const renamedBudgetKey = 'export:@test/package#RenamedButton';
+      const consumerBudgets: Record<string, number> = { [buttonBudgetKey]: 50 };
       if (change === 'removed') {
         value.measurements = value.measurements.filter((item) => item.kind !== 'consumer');
         value.cases = [];
       } else {
         value.measurements[1].id = 'renamed-button';
-        value.cases[0] = { ...value.cases[0], id: 'renamed-button', names: ['RenamedButton'] };
-        consumerBudgets['renamed-button'] = 50;
+        value.cases[0] = {
+          ...value.cases[0],
+          id: 'renamed-button',
+          budgetKey: renamedBudgetKey,
+          names: ['RenamedButton']
+        };
+        consumerBudgets[renamedBudgetKey] = 50;
       }
       const fixture = await savedReportWorkspace(value);
       const configPath = join(fixture.pkg.root, 'bundle-size.json');
       await writeFile(configPath, JSON.stringify({ outputBudget: 100, consumerBudgets }));
 
-      const diagnostic = 'button: unused consumer budget (no matching measurement)';
+      const diagnostic = `${buttonBudgetKey}: unused consumer budget (no matching measurement)`;
       await expect(checkPackageReportFromDisk(fixture.pkg, fixture.output)).rejects.toThrow(diagnostic);
       await expect(
         aggregateReportsFromDisk(fixture.root, join(fixture.root, '.bundle-analysis'), { check: true })
       ).rejects.toThrow(diagnostic);
 
-      delete consumerBudgets.button;
+      delete consumerBudgets[buttonBudgetKey];
       await writeFile(configPath, JSON.stringify({ outputBudget: 100, consumerBudgets }));
       await expect(checkPackageReportFromDisk(fixture.pkg, fixture.output)).resolves.toBeUndefined();
       await expect(
@@ -399,6 +445,7 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
       secondReport.cases[0] = {
         ...secondReport.cases[0],
         id: 'second-button',
+        budgetKey: 'export:@test/second-package#Button',
         package: secondName,
         from: secondName
       };
@@ -411,19 +458,21 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
       await writeFile(join(secondOutput, 'metrics.json'), JSON.stringify(secondReport));
       await writeFile(
         join(secondPackage.root, 'bundle-size.json'),
-        JSON.stringify({ outputBudget: 100, consumerBudgets: { 'second-button': 50 } })
+        JSON.stringify({ outputBudget: 100, consumerBudgets: { 'export:@test/second-package#Button': 50 } })
       );
 
-      const misplacedId = configOwner === 'first' ? 'second-button' : 'button';
-      const ownId = configOwner === 'first' ? 'button' : 'second-button';
+      const firstBudgetKey = 'export:@test/package#Button';
+      const secondBudgetKey = 'export:@test/second-package#Button';
+      const misplacedKey = configOwner === 'first' ? secondBudgetKey : firstBudgetKey;
+      const ownKey = configOwner === 'first' ? firstBudgetKey : secondBudgetKey;
       const owner = configOwner === 'first' ? fixture.pkg : secondPackage;
       const ownerOutput = configOwner === 'first' ? fixture.output : secondOutput;
       const configPath = join(owner.root, 'bundle-size.json');
       await writeFile(
         configPath,
-        JSON.stringify({ outputBudget: 100, consumerBudgets: { [ownId]: 50, [misplacedId]: 1 } })
+        JSON.stringify({ outputBudget: 100, consumerBudgets: { [ownKey]: 50, [misplacedKey]: 1 } })
       );
-      const diagnostic = `${misplacedId}: unused consumer budget (no matching measurement)`;
+      const diagnostic = `${misplacedKey}: unused consumer budget (no matching measurement)`;
       await expect(checkPackageReportFromDisk(owner, ownerOutput)).rejects.toThrow(diagnostic);
       const aggregateOutput = join(fixture.root, '.bundle-analysis');
       await expect(aggregateReportsFromDisk(fixture.root, aggregateOutput, { check: true })).rejects.toThrow(
@@ -435,7 +484,7 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
       expect(summary).toContain('## Budget check: FAIL');
       expect(summary).toContain(`${owner.name}: ${diagnostic}`);
 
-      await writeFile(configPath, JSON.stringify({ outputBudget: 100, consumerBudgets: { [ownId]: 50 } }));
+      await writeFile(configPath, JSON.stringify({ outputBudget: 100, consumerBudgets: { [ownKey]: 50 } }));
       await expect(aggregateReportsFromDisk(fixture.root, aggregateOutput, { check: true })).resolves.toBeUndefined();
     }
   );

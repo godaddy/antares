@@ -15,6 +15,7 @@ import filePlugin from '@size-limit/file';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { build } from 'vite';
 import {
+  consumerBudgetKey,
   consumerCases,
   discoverPublicApi,
   type ConsumerCase,
@@ -26,7 +27,7 @@ import {
 export interface BundleSizePackageConfig {
   /** Maximum raw bytes across the package's `dist/` files. */
   outputBudget?: number;
-  /** Maximum gzip bytes per consumer case ID. */
+  /** Maximum gzip bytes per readable entry/export key. */
   consumerBudgets?: Record<string, number>;
 }
 
@@ -208,6 +209,14 @@ function isNonNegativeInteger(value: unknown): value is number {
   return typeof value === 'number' && Number.isSafeInteger(value) && value >= 0;
 }
 
+/** Checks the readable key format used by consumer budgets. */
+function isConsumerBudgetKey(value: string): boolean {
+  if (value.startsWith('entry:')) return value.length > 'entry:'.length && !value.includes('#');
+  if (!value.startsWith('export:')) return false;
+  const separator = value.indexOf('#', 'export:'.length);
+  return separator > 'export:'.length && separator < value.length - 1 && !value.slice(separator + 1).includes('#');
+}
+
 /** Validates the keys and byte limits in a package's budget config. */
 function validatePackageConfig(value: unknown, pkg: Workspace, configPath: string): BundleSizePackageConfig {
   if (!isRecord(value))
@@ -221,10 +230,12 @@ function validatePackageConfig(value: unknown, pkg: Workspace, configPath: strin
 
   if (value.consumerBudgets !== undefined) {
     if (!isRecord(value.consumerBudgets))
-      throw new Error(`Invalid consumerBudgets in ${configPath}: expected an object of case IDs and byte limits.`);
-    for (const [id, limit] of Object.entries(value.consumerBudgets)) {
-      if (!id || !isNonNegativeInteger(limit))
-        throw new Error(`Invalid consumer budget ${id} in ${configPath}: expected a non-negative integer.`);
+      throw new Error(`Invalid consumerBudgets in ${configPath}: expected readable keys and byte limits.`);
+    for (const [key, limit] of Object.entries(value.consumerBudgets)) {
+      if (!isConsumerBudgetKey(key) || !isNonNegativeInteger(limit))
+        throw new Error(
+          `Invalid consumer budget ${key} in ${configPath}: expected an entry/export key and non-negative integer.`
+        );
     }
   }
 
@@ -250,11 +261,24 @@ async function packageConfig(pkg: Workspace): Promise<BundleSizePackageConfig> {
   return validatePackageConfig(value, pkg, configPath);
 }
 
-/** Converts a package config into output and consumer budget lookup maps. */
-function packageBudgets(pkg: Workspace, config: BundleSizePackageConfig): Budgets {
+/** Converts readable config keys to stable IDs used by measurements and generated artifacts. */
+function packageBudgets(pkg: Workspace, config: BundleSizePackageConfig, cases: ConsumerCase[]): Budgets {
+  const idsByBudgetKey = new Map<string, string>();
+  for (const consumerCase of cases) {
+    if (consumerCase.package !== pkg.name)
+      throw new Error(`Consumer case belongs to the wrong package: ${consumerCase.id}`);
+    const key = consumerBudgetKey(consumerCase);
+    if (consumerCase.budgetKey !== undefined && consumerCase.budgetKey !== key)
+      throw new Error(`Invalid readable budget key for ${consumerCase.id}: expected ${key}.`);
+    if (idsByBudgetKey.has(key)) throw new Error(`Duplicate consumer budget key in ${pkg.name}: ${key}`);
+    idsByBudgetKey.set(key, consumerCase.id);
+  }
+  const consumer = Object.fromEntries(
+    Object.entries(config.consumerBudgets ?? {}).map(([key, limit]) => [idsByBudgetKey.get(key) ?? key, limit])
+  );
   return {
     output: config.outputBudget === undefined ? {} : { [pkg.name]: config.outputBudget },
-    consumer: config.consumerBudgets ?? {}
+    consumer
   };
 }
 
@@ -628,8 +652,13 @@ function validateReport(report: Report, pkg: Workspace, reportPath: string): Rep
     `output:${pkg.name}`,
     ...report.cases.map((consumerCase) => `consumer:${consumerCase.id}`)
   ]);
+  const budgetKeys = report.cases.map(consumerBudgetKey);
   if (
     expectedIds.size !== report.cases.length + 1 ||
+    new Set(budgetKeys).size !== report.cases.length ||
+    report.cases.some(
+      (consumerCase, index) => consumerCase.budgetKey !== undefined && consumerCase.budgetKey !== budgetKeys[index]
+    ) ||
     report.measurements.length !== expectedIds.size ||
     report.cases.some((consumerCase) => consumerCase.package !== pkg.name)
   ) {
@@ -684,8 +713,9 @@ export async function buildPackageReport(root: string, pkg: Workspace, output: s
   for (const artifact of ['index.html', 'public-api.json', 'summary.md', 'consumers', 'reports', 'entries']) {
     await rm(join(output, artifact), { recursive: true, force: true });
   }
-  const budgets = packageBudgets(pkg, await packageConfig(pkg));
+  const config = await packageConfig(pkg);
   const report = await analyzePackage(root, pkg, output);
+  const budgets = packageBudgets(pkg, config, report.cases);
   await writePackageArtifacts(report, pkg, output, budgets);
 }
 
@@ -699,7 +729,7 @@ async function writeAggregateArtifacts(
 ): Promise<void> {
   const report = mergeReports(reports);
   const configs = await Promise.all(packages.map(packageConfig));
-  const packageLimits = configs.map((config, index) => packageBudgets(packages[index], config));
+  const packageLimits = configs.map((config, index) => packageBudgets(packages[index], config, reports[index].cases));
   const budgets = mergeBudgets(reports, packageLimits);
   const failures = reports.flatMap((packageReport, index) =>
     packageBudgetFailures(packageReport, packageLimits[index])
@@ -754,7 +784,7 @@ export async function checkPackageReportFromDisk(pkg: Workspace, output: string)
     throw error;
   }
 
-  const budgets = packageBudgets(pkg, await packageConfig(pkg));
+  const budgets = packageBudgets(pkg, await packageConfig(pkg), report.cases);
   const failures = packageBudgetFailures(report, budgets);
   await writeFile(join(output, 'summary.md'), markdown(report, budgets, failures));
   if (failures.length) throw new Error(`Bundle check failed for ${pkg.name}:\n${failures.join('\n')}`);
