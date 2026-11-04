@@ -45,6 +45,7 @@ jobs:
           version: pnpm run version
           commit: 'chore: version updates'
           publish: pnpm run release
+          commitMode: github-api
         env:
           HUSKY: 0 # Skip husky hooks since this is an automated commit
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

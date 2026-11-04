@@ -115,6 +115,7 @@ describe('pnpm GitHub workflows', function pnpmWorkflowsSuite() {
     );
     expect(changesets.with?.version).toBe('pnpm run version');
     expect(changesets.with?.publish).toBe('pnpm run release');
+    expect(changesets.with?.commitMode).toBe('github-api');
   });
 
   it('builds before recursively publishing workspace packages', function configuresPnpmPublish() {
