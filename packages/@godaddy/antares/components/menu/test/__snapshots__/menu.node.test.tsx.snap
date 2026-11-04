@@ -1,21 +1,23 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`@godaddy/antares > #Menu > renders AccountMenuExample 1`] = `"<span role="button" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" aria-label="Account" data-react-aria-pressable="true" tabindex="0" data-emphasis="primary" data-loading-status="idle" data-shape="circle" data-size="lg" class="avatar pressable"><span class="fallback typeInherit text type typeText scaleMd">JD</span></span>"`;
+exports[`@godaddy/antares > #Menu > renders the account menu example 1`] = `"<span role="button" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" aria-label="Account" data-react-aria-pressable="true" tabindex="0" data-emphasis="primary" data-loading-status="idle" data-shape="circle" data-size="lg" class="avatar pressable"><span class="fallback typeInherit text type typeText scaleMd">JD</span></span>"`;
 
-exports[`@godaddy/antares > #Menu > renders BottomSheetExample 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_">Open menu</button>"`;
+exports[`@godaddy/antares > #Menu > renders the bottom sheet example 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_">Open menu</button>"`;
 
-exports[`@godaddy/antares > #Menu > renders ComplexExample 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" data-react-aria-pressable="true">Complex menu</button>"`;
+exports[`@godaddy/antares > #Menu > renders the complex example 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" data-react-aria-pressable="true">Complex menu</button>"`;
 
-exports[`@godaddy/antares > #Menu > renders DefaultExample 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" data-react-aria-pressable="true">Actions</button>"`;
+exports[`@godaddy/antares > #Menu > renders the default example 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" data-react-aria-pressable="true">Actions</button>"`;
 
-exports[`@godaddy/antares > #Menu > renders LinksExample 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" data-react-aria-pressable="true">Links</button>"`;
+exports[`@godaddy/antares > #Menu > renders the dialog example 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true">Open dialog</button>"`;
 
-exports[`@godaddy/antares > #Menu > renders MultipleSelectionExample 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" data-react-aria-pressable="true">Columns</button>"`;
+exports[`@godaddy/antares > #Menu > renders the links example 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" data-react-aria-pressable="true">Links</button>"`;
 
-exports[`@godaddy/antares > #Menu > renders OpenFromDialogExample 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true">Open dialog</button>"`;
+exports[`@godaddy/antares > #Menu > renders the multiple selection example 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" data-react-aria-pressable="true">Columns</button>"`;
 
-exports[`@godaddy/antares > #Menu > renders SingleSelectionExample 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" data-react-aria-pressable="true">View</button>"`;
+exports[`@godaddy/antares > #Menu > renders the playground example 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" data-react-aria-pressable="true">Menu Playground</button>"`;
 
-exports[`@godaddy/antares > #Menu > renders SubmenuExample 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" data-react-aria-pressable="true">Share</button>"`;
+exports[`@godaddy/antares > #Menu > renders the single selection example 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" data-react-aria-pressable="true">View</button>"`;
 
-exports[`@godaddy/antares > #Menu > renders TitleAndGroupsExample 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" data-react-aria-pressable="true">Publish</button>"`;
+exports[`@godaddy/antares > #Menu > renders the submenu example 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" data-react-aria-pressable="true">Share</button>"`;
+
+exports[`@godaddy/antares > #Menu > renders the title and groups example 1`] = `"<button class="button primary" data-rac="" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false" id="react-aria-_R_0_" data-react-aria-pressable="true">Publish</button>"`;

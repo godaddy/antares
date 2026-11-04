@@ -284,7 +284,7 @@ export function SubmenuTrigger({ children, ...props }: SubmenuTriggerProps) {
 export interface SeparatorProps extends RACSeparatorProps {}
 
 /** Presentation supplied by an owning component such as Menu. */
-export const SeparatorContext = createContext<ContextValue<SeparatorProps, HTMLHRElement>>(null);
+const SeparatorContext = createContext<ContextValue<SeparatorProps, HTMLHRElement>>(null);
 
 /**
  * A visual divider between items or groups. Not focusable or selectable.
