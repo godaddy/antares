@@ -5,25 +5,16 @@ import { useSafeObjectRef } from '../src/utils';
 import * as utilsModule from '../src/utils';
 import assume from 'assume';
 
-vi.mock('@bento/slots', () => ({
-  withSlots: vi.fn()
-}));
-
 describe('Browser Utils', function bento() {
   let consoleWarnSpy: any;
-  let mockWithSlots: any;
 
-  beforeEach(async function beforeEach() {
+  beforeEach(function beforeEach() {
     consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(function mockConsoleWarnImplementation() {
       // Intentionally empty to suppress console warnings during tests
     });
-
-    const slots = await import('@bento/slots');
-    mockWithSlots = slots.withSlots as any;
-    mockWithSlots.mockClear();
   });
 
-  afterEach(async function afterEach() {
+  afterEach(function afterEach() {
     consoleWarnSpy.mockRestore();
   });
 

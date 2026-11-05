@@ -50,7 +50,7 @@ describe('@godaddy/antares', function packageTests() {
           });
           await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
           await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
-          await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-09-15');
+          await expect.element(screen.getByLabelText('Selected dates')).toMatchTextContent('2026-09-15/2026-09-15');
         } finally {
           await session.send('Emulation.setTouchEmulationEnabled', { enabled: false });
         }

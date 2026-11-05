@@ -16,7 +16,6 @@ describe('@bento/pressable examples', function bento() {
 
   afterEach(function afterEach() {
     consoleLogSpy.mockRestore();
-    vi.clearAllMocks();
   });
 
   describe('PressableDiv', function pressableDivExample() {

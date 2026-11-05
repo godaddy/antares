@@ -110,8 +110,9 @@ export const browser: TestProjectConfiguration = {
     include: ['./**/**/*.browser.test.{ts,tsx}'],
     setupFiles: resolve(import.meta.dirname, './vitest.setup.mts'),
     browser: {
+      locators: { exact: true },
       instances: [{ browser: 'chromium' }],
-      provider: playwright(),
+      provider: playwright({ contextOptions: { locale: 'en-US' } }),
       headless: true,
       enabled: true,
       screenshotFailures: false,
@@ -140,6 +141,7 @@ export default defineConfig({
   },
   define: bentoInternalPropsVersionDefine(),
   test: {
+    clearMocks: true,
     exclude: [...defaultExclude],
     coverage: {
       provider: 'v8',
@@ -150,6 +152,7 @@ export default defineConfig({
         autoUpdate: false,
         perFile: true,
         'src/**.{ts,tsx}': {
+          perFile: true,
           statements: 90,
           functions: 90,
           branches: 90,

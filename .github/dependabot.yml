@@ -9,6 +9,10 @@ updates:
     schedule:
       interval: "daily"
     groups:
+      vitest:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
       embla-carousel:
         patterns:
           - "embla-carousel*"

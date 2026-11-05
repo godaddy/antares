@@ -219,10 +219,10 @@ describe('@godaddy/antares', function antares() {
 
         assume(locator.getByText('Bitcoin Price$742.72')).exists();
 
-        // pointer leaves the chart area: clear lastTarget and let visx close its tooltip
-        area
-          .querySelector('svg')
-          ?.lastElementChild?.dispatchEvent(new PointerEvent('pointerout', { bubbles: true, cancelable: true }));
+        // Move the real pointer outside the chart so both visx and the scroll handler receive
+        // their normal leave events. The wider viewport keeps the chart's fixed 400px area intact.
+        await page.viewport(800, 600);
+        await page.elementLocator(document.body).hover({ position: { x: 700, y: 300 } });
 
         await vi.waitUntil(
           function tooltipGone() {

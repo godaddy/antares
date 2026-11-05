@@ -9,10 +9,11 @@ declare module 'vitest/internal/browser' {
 }
 
 /**
- * Move the pointer to the top-left corner of the page to take it off whatever
- * it currently hovers. The pointer stays inside the page, so React Aria keeps
- * treating the following interactions as pointer input - hover behaviour that
- * checks the interaction modality (tooltips) needs that.
+ * Move the pointer near the top-left corner of the page to take it off whatever
+ * it currently hovers. Moving inside the document before returning to (0, 0)
+ * ensures a pointermove event even when that corner lands on the iframe boundary
+ * in the scaled Browser UI. React Aria needs that movement to restore pointer
+ * modality before hover starts, for example when opening a tooltip.
  *
  * The corner is not empty: anything rendered at the top-left ends up hovered
  * instead. Use `resetPointer()` when a test asserts that nothing is hovered.
@@ -24,8 +25,10 @@ declare module 'vitest/internal/browser' {
  * beforeEach(resetHover);
  * ```
  */
-export function resetHover() {
-  return page.getByRole('document').hover({ position: { x: 0, y: 0 } });
+export async function resetHover() {
+  const document = page.getByRole('document');
+  await document.hover({ position: { x: 8, y: 8 } });
+  await document.hover({ position: { x: 0, y: 0 } });
 }
 
 /**
