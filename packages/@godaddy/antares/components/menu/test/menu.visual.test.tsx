@@ -14,6 +14,13 @@ import { LinksExample } from '../examples/links.tsx';
 import { OpenFromDialogExample } from '../examples/open-from-dialog.tsx';
 import { ComplexExample } from '../examples/complex.tsx';
 
+// Popovers animate for 200ms; keep a 100ms buffer before taking a screenshot.
+async function waitForAnimationSettle() {
+  await new Promise<void>(function settle(resolve) {
+    setTimeout(resolve, 300);
+  });
+}
+
 async function shot(example: ReactElement, name: string, keys: string[] = []) {
   const user = userEvent.setup();
   const screen = await render(example);
@@ -45,9 +52,7 @@ async function shot(example: ReactElement, name: string, keys: string[] = []) {
       });
     })
   );
-  await new Promise(function settle(resolve) {
-    setTimeout(resolve, 200);
-  });
+  await waitForAnimationSettle();
   await expect(document.body).toMatchScreenshot(name);
 }
 
@@ -115,9 +120,7 @@ describe('@godaddy/antares', function antares() {
       await vi.waitFor(async function menuOpen() {
         await expect.element(screen.getByRole('menu')).toBeVisible();
       });
-      await new Promise(function settle(resolve) {
-        setTimeout(resolve, 200);
-      });
+      await waitForAnimationSettle();
       await expect(document.body).toMatchScreenshot('open-from-dialog');
     });
 
