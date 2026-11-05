@@ -3,6 +3,7 @@ import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import type { ReactElement } from 'react';
 import { preloadTestIcons, resetPointer } from '#test/utils/test-helpers.tsx';
+import { waitForAnimations } from '#test/utils/wait-for-animations.ts';
 import { DefaultExample } from '../examples/default.tsx';
 import { SubmenuExample } from '../examples/submenu.tsx';
 import { SingleSelectionExample } from '../examples/single-selection.tsx';
@@ -13,33 +14,6 @@ import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
 import { LinksExample } from '../examples/links.tsx';
 import { OpenFromDialogExample } from '../examples/open-from-dialog.tsx';
 import { ComplexExample } from '../examples/complex.tsx';
-
-// Wait for active transitions and animations, then confirm two quiet frames before capture.
-async function waitForAnimations() {
-  let quietFrames = 0;
-  while (quietFrames < 2) {
-    const activeAnimations = document.getAnimations().filter(function active(animation) {
-      return animation.playState === 'running' || animation.pending;
-    });
-    if (activeAnimations.length > 0) {
-      quietFrames = 0;
-      await Promise.all(
-        activeAnimations.map(function animationFinished(animation) {
-          return animation.finished.catch(function animationCancelled() {
-            return undefined;
-          });
-        })
-      );
-      continue;
-    }
-    await new Promise<void>(function nextFrame(resolve) {
-      requestAnimationFrame(function painted() {
-        resolve();
-      });
-    });
-    quietFrames += 1;
-  }
-}
 
 async function shot(example: ReactElement, name: string, keys: string[] = []) {
   const user = userEvent.setup();
@@ -62,6 +36,7 @@ async function shot(example: ReactElement, name: string, keys: string[] = []) {
       await vi.waitFor(function submenuOpen() {
         if (document.querySelectorAll('[role="menu"]').length <= menus) throw new Error('waiting for the submenu');
       });
+      await waitForAnimations();
     }
   }
   await Promise.all(
