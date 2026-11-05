@@ -5,7 +5,6 @@ import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { waitForSelector } from '#test/utils/wait-for-selector.ts';
 import { resetPointer } from '#test/utils/test-helpers.tsx';
-import { waitForAnimations } from '#test/utils/wait-for-animations.ts';
 import { BandPaddingExample } from '../examples/band-padding';
 import { BaselinesExample } from '../examples/baselines';
 import { BitcoinPriceExample } from '../examples/bitcoin-price';
@@ -141,7 +140,6 @@ describe('@godaddy/antares', function antares() {
 
         assume(container.querySelector('svg')).exists();
         await locator.hover({ position: { x: 120, y: 50 } });
-        await waitForAnimations();
         await expect(container).toMatchScreenshot('formatting');
       });
     });
@@ -196,7 +194,6 @@ describe('@godaddy/antares', function antares() {
 
         assume(container.querySelector('svg')).exists();
         await locator.hover({ position: { x: 150, y: 50 } });
-        await waitForAnimations();
         await expect(container).toMatchScreenshot('crosshair-only');
       });
 
@@ -205,7 +202,6 @@ describe('@godaddy/antares', function antares() {
 
         assume(container.querySelector('svg')).exists();
         await locator.hover({ position: { x: 400, y: 200 } });
-        await waitForAnimations();
         await expect(container).toMatchScreenshot('custom-tooltip-formatting');
       });
 
@@ -214,7 +210,6 @@ describe('@godaddy/antares', function antares() {
 
         assume(container.querySelector('svg')).exists();
         await locator.hover({ position: { x: 400, y: 200 } });
-        await waitForAnimations();
         await expect(container).toMatchScreenshot('custom-tooltip');
       });
 
@@ -223,7 +218,6 @@ describe('@godaddy/antares', function antares() {
 
         assume(container.querySelector('svg')).exists();
         await locator.hover({ position: { x: 400, y: 200 } });
-        await waitForAnimations();
         await expect(container).toMatchScreenshot('custom-tooltip-pair-change');
       });
 
@@ -232,7 +226,6 @@ describe('@godaddy/antares', function antares() {
 
         assume(container.querySelector('svg')).exists();
         await locator.hover({ position: { x: 400, y: 200 } });
-        await waitForAnimations();
         await expect(container).toMatchScreenshot('custom-tooltip-period-comparison');
       });
     });
@@ -259,7 +252,6 @@ describe('@godaddy/antares', function antares() {
 
         assume(container.querySelector('svg')).exists();
         await locator.hover({ position: { x: 120, y: 50 } });
-        await waitForAnimations();
         await expect(container).toMatchScreenshot('bitcoin-price');
       });
 
@@ -287,7 +279,6 @@ describe('@godaddy/antares', function antares() {
 
         assume(container.querySelector('svg')).exists();
         await locator.hover({ position: { x: 199, y: 100 } });
-        await waitForAnimations();
         await expect(container).toMatchScreenshot('city-temperature');
       });
 
@@ -296,7 +287,6 @@ describe('@godaddy/antares', function antares() {
 
         assume(container.querySelector('svg')).exists();
         await locator.hover({ position: { x: 120, y: 50 } });
-        await waitForAnimations();
         await expect(container).toMatchScreenshot('browser-usage');
       });
     });

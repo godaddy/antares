@@ -3,7 +3,6 @@ import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import type { ReactElement } from 'react';
 import { preloadTestIcons, resetPointer } from '#test/utils/test-helpers.tsx';
-import { waitForAnimations } from '#test/utils/wait-for-animations.ts';
 import { DefaultExample } from '../examples/default.tsx';
 import { SubmenuExample } from '../examples/submenu.tsx';
 import { SingleSelectionExample } from '../examples/single-selection.tsx';
@@ -36,7 +35,6 @@ async function shot(example: ReactElement, name: string, keys: string[] = []) {
       await vi.waitFor(function submenuOpen() {
         if (document.querySelectorAll('[role="menu"]').length <= menus) throw new Error('waiting for the submenu');
       });
-      await waitForAnimations();
     }
   }
   await Promise.all(
@@ -47,7 +45,6 @@ async function shot(example: ReactElement, name: string, keys: string[] = []) {
       });
     })
   );
-  await waitForAnimations();
   await expect(document.body).toMatchScreenshot(name);
 }
 
@@ -115,7 +112,6 @@ describe('@godaddy/antares', function antares() {
       await vi.waitFor(async function menuOpen() {
         await expect.element(screen.getByRole('menu')).toBeVisible();
       });
-      await waitForAnimations();
       await expect(document.body).toMatchScreenshot('open-from-dialog');
     });
 
