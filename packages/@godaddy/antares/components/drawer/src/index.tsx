@@ -117,7 +117,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
           } as CSSProperties;
         })}
       >
-        <SheetRecovery panelRef={panelRef} />
+        <SheetRecovery panelRef={panelRef} preventDismissal={preventDismissal} />
         <OverlayDialog
           {...dialogProps}
           as={RACSheetContent}
@@ -132,9 +132,15 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
   );
 });
 
-function SheetRecovery({ panelRef }: { panelRef: RefObject<HTMLElement | null> }) {
+function SheetRecovery({
+  panelRef,
+  preventDismissal
+}: {
+  panelRef: RefObject<HTMLElement | null>;
+  preventDismissal?: boolean;
+}) {
   useRestWhileOpen(panelRef);
-  useFinishClose(panelRef);
+  useFinishClose(panelRef, preventDismissal);
   return null;
 }
 

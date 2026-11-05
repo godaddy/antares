@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { describe, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { cdp, page } from 'vitest/browser';
@@ -6,6 +5,7 @@ import assume from 'assume';
 import { Button, Content, Drawer, DrawerTrigger, Text } from '@godaddy/antares';
 import { NestedExample } from '../examples/nested.tsx';
 import { PreventDismissalExample } from '../examples/prevent-dismissal.tsx';
+import { RejectedDismissalExample } from '../examples/rejected-dismissal.tsx';
 
 async function waitForEntered(name: string) {
   await vi.waitFor(function entered() {
@@ -28,32 +28,6 @@ function wait(ms: number) {
   return new Promise(function settle(r) {
     setTimeout(r, ms);
   });
-}
-
-/** A drawer that rejects dismissal, as an unsaved-changes guard would. */
-function RejectedDismiss() {
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      <Button variant="primary" onPress={() => setOpen(true)}>
-        Open
-      </Button>
-      <Drawer
-        placement="right"
-        isOpen={open}
-        onOpenChange={function keepOpen(next) {
-          if (next) setOpen(true);
-        }}
-        aria-label="Guarded"
-      >
-        <Content>
-          <Button variant="secondary" onPress={() => setOpen(false)}>
-            Discard
-          </Button>
-        </Content>
-      </Drawer>
-    </>
-  );
 }
 
 describe('@godaddy/antares', function antares() {
@@ -108,7 +82,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('slides a drawer back when its swipe dismissal is rejected', async function swipeRejected() {
-      await render(<RejectedDismiss />);
+      await render(<RejectedDismissalExample />);
 
       await page.getByRole('button', { name: 'Open' }).click();
       await waitForEntered('Guarded');
@@ -134,7 +108,7 @@ describe('@godaddy/antares', function antares() {
         features: [{ name: 'prefers-reduced-motion', value: 'reduce' }]
       });
       try {
-        await render(<RejectedDismiss />);
+        await render(<RejectedDismissalExample />);
 
         await page.getByRole('button', { name: 'Open' }).click();
         await waitForEntered('Guarded');
@@ -163,7 +137,7 @@ describe('@godaddy/antares', function antares() {
         features: [{ name: 'prefers-reduced-motion', value: 'reduce' }]
       });
       try {
-        await render(<RejectedDismiss />);
+        await render(<RejectedDismissalExample />);
 
         await page.getByRole('button', { name: 'Open' }).click();
         await waitForEntered('Guarded');
