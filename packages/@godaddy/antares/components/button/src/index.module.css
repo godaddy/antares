@@ -15,7 +15,7 @@
   font-weight: inherit;
   font-size: inherit;
   display: inline-flex;
-  gap: var(--_button-gap);
+  gap: var(--_button-slot-gap, var(--_button-gap));
   align-items: center;
   flex-shrink: 0;
   min-width: min-content;
@@ -40,9 +40,9 @@
   }
 
   &:where(:not(.inline, .trigger)) {
-    font-family: var(--font-action-family, var(--ux-gfnupv, sans-serif));
-    font-weight: var(--font-action-weight, var(--ux-j40yyd, 500));
-    line-height: var(--font-action-line-height, var(--ux-jw5s9j, 1.375));
+    font-family: var(--_button-slot-font-family, var(--font-action-family, var(--ux-gfnupv, sans-serif)));
+    font-weight: var(--_button-slot-font-weight, var(--font-action-weight, var(--ux-j40yyd, 500)));
+    line-height: var(--_button-slot-line-height, var(--font-action-line-height, var(--ux-jw5s9j, 1.375)));
     border-width: var(--_button-slot-border-width, 1px);
     border-start-start-radius: var(--_button-slot-radius-start, var(--_button-radius));
     border-end-start-radius: var(--_button-slot-radius-start, var(--_button-radius));
