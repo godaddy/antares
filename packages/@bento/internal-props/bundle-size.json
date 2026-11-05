@@ -1,0 +1,8 @@
+{
+  "outputBudget": 14592,
+  "consumerBudgets": {
+    "entry:@bento/internal-props": 640,
+    "export:@bento/internal-props#toInternalProps": 640,
+    "export:@bento/internal-props#useInternalProps": 640
+  }
+}

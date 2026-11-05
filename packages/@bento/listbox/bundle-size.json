@@ -1,0 +1,12 @@
+{
+  "outputBudget": 215168,
+  "consumerBudgets": {
+    "entry:@bento/listbox": 38528,
+    "export:@bento/listbox#Collection": 38528,
+    "export:@bento/listbox#Header": 38528,
+    "export:@bento/listbox#HeaderContext": 38528,
+    "export:@bento/listbox#ListBox": 38528,
+    "export:@bento/listbox#ListBoxItem": 38528,
+    "export:@bento/listbox#ListBoxSection": 38528
+  }
+}

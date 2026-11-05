@@ -1,0 +1,7 @@
+{
+  "outputBudget": 24576,
+  "consumerBudgets": {
+    "entry:@bento/portal": 4736,
+    "export:@bento/portal#Portal": 4736
+  }
+}

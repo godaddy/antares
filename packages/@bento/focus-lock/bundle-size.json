@@ -1,0 +1,7 @@
+{
+  "outputBudget": 29696,
+  "consumerBudgets": {
+    "entry:@bento/focus-lock": 11904,
+    "export:@bento/focus-lock#FocusLock": 11904
+  }
+}

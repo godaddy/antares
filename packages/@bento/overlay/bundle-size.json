@@ -1,0 +1,7 @@
+{
+  "outputBudget": 34944,
+  "consumerBudgets": {
+    "entry:@bento/overlay": 14720,
+    "export:@bento/overlay#Overlay": 14720
+  }
+}
