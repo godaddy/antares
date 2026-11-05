@@ -12,7 +12,6 @@ import { PlaygroundExample } from '../examples/menu-playground.tsx';
 import { SingleSelectionExample } from '../examples/single-selection.tsx';
 import { SubmenuExample } from '../examples/submenu.tsx';
 import { TitleAndGroupsExample } from '../examples/sections.tsx';
-import './menu.types.tsx';
 
 type User = ReturnType<typeof userEvent.setup>;
 

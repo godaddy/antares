@@ -194,7 +194,7 @@ function IconItem({
       <Icon icon={icon} />
       <Text slot="label">{children}</Text>
       {shortcut ? (
-        <Text slot={null} emphasis="passive">
+        <Text slot="description" emphasis="passive">
           {shortcut}
         </Text>
       ) : null}
