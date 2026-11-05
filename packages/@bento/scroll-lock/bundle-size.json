@@ -1,0 +1,8 @@
+{
+  "outputBudget": 23808,
+  "consumerBudgets": {
+    "entry:@bento/scroll-lock": 8576,
+    "export:@bento/scroll-lock#ScrollLock": 8576,
+    "export:@bento/scroll-lock#useScrollLock": 8576
+  }
+}

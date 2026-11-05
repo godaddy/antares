@@ -1,0 +1,7 @@
+{
+  "outputBudget": 37632,
+  "consumerBudgets": {
+    "entry:@godaddy/generate-cdn-url": 1152,
+    "export:@godaddy/generate-cdn-url#generateCdnUrl": 1280
+  }
+}

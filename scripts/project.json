@@ -2,13 +2,19 @@
   "name": "scripts",
   "implicitDependencies": [
     "@bento/block-explorer",
-    "@bento/storybook-addon-helpers"
+    "@bento/storybook-addon-helpers",
+    "@godaddy/antares"
   ],
   "targets": {
     "test": {
       "executor": "nx:run-commands",
       "cache": true,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "projects": ["@godaddy/antares"],
+          "target": "build"
+        }
+      ],
       "options": {
         "cwd": ".",
         "command": "vitest run --config scripts/test/vitest.config.mts"

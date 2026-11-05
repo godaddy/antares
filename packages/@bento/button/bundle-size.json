@@ -1,0 +1,7 @@
+{
+  "outputBudget": 8832,
+  "consumerBudgets": {
+    "entry:@bento/button": 14848,
+    "export:@bento/button#Button": 14848
+  }
+}

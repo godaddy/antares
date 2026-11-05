@@ -7,6 +7,8 @@
     "build": "npm run build:sd && npm run build:schema",
     "build:sd": "tsx src/build-tokens.ts",
     "build:schema": "shx cp src/schema.json dist/schema.json && shx cp src/extensions.d.ts dist/extensions.d.ts",
+    "bundle-size:build": "node ../../../scripts/bundle-analysis.ts --package-from-cwd",
+    "bundle-size:check": "node ../../../scripts/bundle-analysis.ts --package-from-cwd --check",
     "lint": "biome lint",
     "lint:fix": "biome lint --write",
     "test": "vitest run",
