@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
-import { AccountMenuExample } from '../examples/avatar.tsx';
+import { AccountMenuExample } from '../examples/account-menu.tsx';
 import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
 import { ComplexExample } from '../examples/complex.tsx';
 import { DefaultExample } from '../examples/default.tsx';

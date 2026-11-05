@@ -2,7 +2,6 @@ import { Button, Icon, Menu, MenuItem, MenuTrigger, Popover, SubmenuTrigger, Tex
 
 /**
  * Two levels, and nothing is selected. Hover the submenu row, or press Arrow Right, to open it.
- * @title Submenu
  * @order 2
  */
 export function SubmenuExample() {

@@ -2,13 +2,13 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vite
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import type { ReactElement } from 'react';
-import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
+import { preloadTestIcons, resetPointer } from '#test/utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { SubmenuExample } from '../examples/submenu.tsx';
 import { SingleSelectionExample } from '../examples/single-selection.tsx';
 import { MultipleSelectionExample } from '../examples/multiple-selection.tsx';
 import { TitleAndGroupsExample } from '../examples/sections.tsx';
-import { AccountMenuExample } from '../examples/avatar.tsx';
+import { AccountMenuExample } from '../examples/account-menu.tsx';
 import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
 import { LinksExample } from '../examples/links.tsx';
 import { OpenFromDialogExample } from '../examples/open-from-dialog.tsx';
@@ -55,6 +55,7 @@ describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
   beforeEach(async function viewport() {
     await page.viewport(800, 700);
+    await resetPointer();
   });
   afterEach(async function restoreViewport() {
     await page.viewport(1280, 720);

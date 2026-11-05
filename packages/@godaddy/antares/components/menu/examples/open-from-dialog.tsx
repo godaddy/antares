@@ -13,7 +13,6 @@ import {
 
 /**
  * The menu trigger lives in a dialog. Opening the menu leaves the dialog in place.
- * @title Open from dialog
  * @order 9
  */
 export function OpenFromDialogExample() {

@@ -2,7 +2,6 @@ import { Button, Menu, Popover, MenuItem, MenuTrigger } from '@godaddy/antares';
 
 /**
  * Plain actions. Nothing is selected.
- * @title Default
  * @order 1
  */
 export function DefaultExample() {

@@ -18,7 +18,6 @@ import { useState } from 'react';
 
 /**
  * Groups, icons, shortcuts, a link, and both kinds of selection.
- * @title Complex
  * @order 10
  */
 export function ComplexExample() {

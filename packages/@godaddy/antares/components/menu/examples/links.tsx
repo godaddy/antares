@@ -2,7 +2,6 @@ import { Button, Menu, MenuItem, MenuTrigger, Popover } from '@godaddy/antares';
 
 /**
  * A row with `href` is a link. The menu still closes after it is chosen.
- * @title Links
  * @order 8
  */
 export function LinksExample() {

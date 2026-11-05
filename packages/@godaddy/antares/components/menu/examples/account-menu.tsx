@@ -19,7 +19,6 @@ const accountImage =
 
 /**
  * An avatar opens an account menu. The popover leads with the account details (photo, name, email, settings), then the account actions (profile, settings, logout).
- * @title Account menu
  * @order 6
  */
 export function AccountMenuExample() {

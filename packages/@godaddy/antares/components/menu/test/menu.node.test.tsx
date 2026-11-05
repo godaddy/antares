@@ -1,6 +1,6 @@
 import { renderToString } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import { AccountMenuExample } from '../examples/avatar.tsx';
+import { AccountMenuExample } from '../examples/account-menu.tsx';
 import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
 import { ComplexExample } from '../examples/complex.tsx';
 import { DefaultExample } from '../examples/default.tsx';

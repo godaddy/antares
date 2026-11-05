@@ -13,7 +13,6 @@ import { useState } from 'react';
 
 /**
  * Two levels. One row stays selected in the menu, and one row stays selected in the submenu.
- * @title Single selection
  * @order 3
  */
 export function SingleSelectionExample() {

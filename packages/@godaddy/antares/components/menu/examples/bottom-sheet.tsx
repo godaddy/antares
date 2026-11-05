@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 /**
  * On a small screen the same menu can live in a bottom drawer instead of a popover.
- * @title Bottom Sheet
  * @order 7
  */
 export function BottomSheetExample() {

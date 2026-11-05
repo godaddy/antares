@@ -20,7 +20,6 @@ const detailIds = ['owner', 'type'] as const;
 
 /**
  * Three levels of checkboxes. Groups label the columns and filters, one row pairs an icon with its checkbox, and the details submenu shows a partial selection.
- * @title Multiple selection
  * @order 4
  */
 export function MultipleSelectionExample() {
