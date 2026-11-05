@@ -14,11 +14,31 @@ import { LinksExample } from '../examples/links.tsx';
 import { OpenFromDialogExample } from '../examples/open-from-dialog.tsx';
 import { ComplexExample } from '../examples/complex.tsx';
 
-// Popovers animate for 200ms; keep a 100ms buffer before taking a screenshot.
-async function waitForAnimationSettle() {
-  await new Promise<void>(function settle(resolve) {
-    setTimeout(resolve, 300);
-  });
+// Wait for active transitions and animations, then confirm two quiet frames before capture.
+async function waitForAnimations() {
+  let quietFrames = 0;
+  while (quietFrames < 2) {
+    const activeAnimations = document.getAnimations().filter(function active(animation) {
+      return animation.playState === 'running' || animation.pending;
+    });
+    if (activeAnimations.length > 0) {
+      quietFrames = 0;
+      await Promise.all(
+        activeAnimations.map(function animationFinished(animation) {
+          return animation.finished.catch(function animationCancelled() {
+            return undefined;
+          });
+        })
+      );
+      continue;
+    }
+    await new Promise<void>(function nextFrame(resolve) {
+      requestAnimationFrame(function painted() {
+        resolve();
+      });
+    });
+    quietFrames += 1;
+  }
 }
 
 async function shot(example: ReactElement, name: string, keys: string[] = []) {
@@ -52,7 +72,7 @@ async function shot(example: ReactElement, name: string, keys: string[] = []) {
       });
     })
   );
-  await waitForAnimationSettle();
+  await waitForAnimations();
   await expect(document.body).toMatchScreenshot(name);
 }
 
@@ -120,7 +140,7 @@ describe('@godaddy/antares', function antares() {
       await vi.waitFor(async function menuOpen() {
         await expect.element(screen.getByRole('menu')).toBeVisible();
       });
-      await waitForAnimationSettle();
+      await waitForAnimations();
       await expect(document.body).toMatchScreenshot('open-from-dialog');
     });
 
