@@ -116,6 +116,35 @@ describe('@godaddy/antares', function antares() {
       expect(dots[1]?.getAttribute('data-active')).toBe('true');
     });
 
+    it('should wrap PaginationDots onto multiple rows when there are many pages', async function wrapsDotsOntoRows() {
+      const { container } = await render(
+        <div style={{ width: 200 }}>
+          <PlaygroundExample composition="dots" pageCount={60} />
+        </div>
+      );
+      const rows = new Set(
+        [...container.querySelectorAll('[data-pagination-dot]')].map((dot) =>
+          Math.round(dot.getBoundingClientRect().top)
+        )
+      );
+
+      expect(rows.size).toBeGreaterThan(1);
+    });
+
+    it('should keep PaginationDots within the container when there are many pages', async function keepsDotsInBounds() {
+      const { container } = await render(
+        <div data-testid="bounds" style={{ width: 200 }}>
+          <PlaygroundExample composition="dots" pageCount={60} />
+        </div>
+      );
+      const boundsRight = container.querySelector('[data-testid="bounds"]')?.getBoundingClientRect().right ?? 0;
+      const rightmostDot = Math.max(
+        ...[...container.querySelectorAll('[data-pagination-dot]')].map((dot) => dot.getBoundingClientRect().right)
+      );
+
+      expect(rightmostDot).toBeLessThanOrEqual(boundsRight + 1);
+    });
+
     it('does not render PaginationDots when pageCount is zero', async function omitsPaginationDotsForZeroPages() {
       const { container } = await render(<PlaygroundExample composition="dots" pageCount={0} />);
 
