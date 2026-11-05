@@ -1,0 +1,7 @@
+{
+  "outputBudget": 11392,
+  "consumerBudgets": {
+    "entry:@bento/use-data-attributes": 1664,
+    "export:@bento/use-data-attributes#useDataAttributes": 1664
+  }
+}

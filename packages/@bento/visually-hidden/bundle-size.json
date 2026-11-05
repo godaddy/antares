@@ -1,0 +1,7 @@
+{
+  "outputBudget": 8960,
+  "consumerBudgets": {
+    "entry:@bento/visually-hidden": 6144,
+    "export:@bento/visually-hidden#VisuallyHidden": 6144
+  }
+}

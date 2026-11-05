@@ -1,0 +1,11 @@
+{
+  "outputBudget": 146048,
+  "consumerBudgets": {
+    "entry:@godaddy/design-tokens/classnames.module.css": 1152,
+    "entry:@godaddy/design-tokens/css-data": 6784,
+    "entry:@godaddy/design-tokens/css-in-js": 2688,
+    "export:@godaddy/design-tokens/css-in-js#tokens": 2688,
+    "entry:@godaddy/design-tokens/dtcg.json": 7808,
+    "entry:@godaddy/design-tokens/schema": 1536
+  }
+}
