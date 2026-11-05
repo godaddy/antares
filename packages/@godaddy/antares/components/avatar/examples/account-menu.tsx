@@ -1,4 +1,4 @@
-import { Avatar, Menu, MenuItem, MenuTrigger, Pressable, Text } from '@godaddy/antares';
+import { Avatar, Menu, MenuItem, MenuTrigger, Popover, Pressable, Text } from '@godaddy/antares';
 
 /**
  * Wrap an Avatar in a Pressable inside MenuTrigger for an account or profile menu.
@@ -13,11 +13,13 @@ export function AccountMenuExample() {
           <Text>UT</Text>
         </Avatar>
       </Pressable>
-      <Menu>
-        <MenuItem id="profile">Profile</MenuItem>
-        <MenuItem id="settings">Settings</MenuItem>
-        <MenuItem id="sign-out">Sign out</MenuItem>
-      </Menu>
+      <Popover aria-label="Menu">
+        <Menu aria-label="Account">
+          <MenuItem id="profile">Profile</MenuItem>
+          <MenuItem id="settings">Settings</MenuItem>
+          <MenuItem id="sign-out">Sign out</MenuItem>
+        </Menu>
+      </Popover>
     </MenuTrigger>
   );
 }

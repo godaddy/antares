@@ -7,8 +7,8 @@ import {
   Flex,
   Header,
   Heading,
-  type Selection,
   Tag,
+  type Selection,
   Text,
   TextLockup
 } from '@godaddy/antares';

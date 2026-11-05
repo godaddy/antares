@@ -1,5 +1,5 @@
 import { createContext, forwardRef } from 'react';
-import { useContextProps, type ContextValue } from 'react-aria-components';
+import { Header as RACHeader, useContextProps, type ContextValue } from 'react-aria-components';
 import { Flex, type FlexProps } from '#components/layout/flex';
 
 export interface HeaderProps extends FlexProps {}
@@ -18,7 +18,7 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(function Header(props
 
   return (
     <Flex
-      as="header"
+      as={RACHeader}
       direction="row"
       alignItems="center"
       justifyContent="space-between"

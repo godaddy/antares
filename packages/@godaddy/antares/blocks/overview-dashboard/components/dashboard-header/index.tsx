@@ -6,8 +6,9 @@ import {
   Icon,
   Menu,
   MenuItem,
-  MenuSeparator,
+  Separator,
   MenuTrigger,
+  Popover,
   Pressable,
   Text
 } from '@godaddy/antares';
@@ -52,19 +53,21 @@ export function DashboardHeader({ onOpenNavigation }: DashboardHeaderProps) {
         <Button className={styles.mobileNavAction} variant="minimal" size="sm" aria-label="Apps">
           <Icon icon="apps" aria-hidden="true" />
         </Button>
-        <MenuTrigger popoverProps={{ placement: 'bottom end' }}>
+        <MenuTrigger>
           <Pressable aria-label="Account menu">
             <Avatar size="sm" emphasis="primary" role="button">
               <Text>MT</Text>
             </Avatar>
           </Pressable>
-          <Menu aria-label="Account actions">
-            <MenuItem id="profile">View profile</MenuItem>
-            <MenuItem id="settings">Account settings</MenuItem>
-            <MenuItem id="switch-account">Switch account</MenuItem>
-            <MenuSeparator />
-            <MenuItem id="sign-out">Sign out</MenuItem>
-          </Menu>
+          <Popover aria-label="Menu" placement="bottom end">
+            <Menu aria-label="Account actions">
+              <MenuItem id="profile">View profile</MenuItem>
+              <MenuItem id="settings">Account settings</MenuItem>
+              <MenuItem id="switch-account">Switch account</MenuItem>
+              <Separator />
+              <MenuItem id="sign-out">Sign out</MenuItem>
+            </Menu>
+          </Popover>
         </MenuTrigger>
         <Button variant="minimal" size="sm" aria-label="Shopping cart">
           <Icon icon="cart" aria-hidden="true" />

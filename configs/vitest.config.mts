@@ -129,6 +129,8 @@ export const visual: TestProjectConfiguration = {
     include: ['./**/**/*.visual.test.{ts,tsx}'],
     browser: {
       ...browser.test?.browser,
+      // Apply the motion preference before overlays mount and measure their anchors.
+      provider: playwright({ contextOptions: { locale: 'en-US', reducedMotion: 'reduce' } }),
       instances: [{ browser: 'chromium', name: 'Visual (Chromium)' }]
     }
   }

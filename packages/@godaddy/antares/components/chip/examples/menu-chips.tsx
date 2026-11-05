@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChipButton, Icon, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';
+import { ChipButton, Icon, Menu, MenuItem, MenuTrigger, Popover, Text } from '@godaddy/antares';
 
 /**
  * Use `ChipButton` for Chip presentation without collection semantics.
@@ -16,11 +16,13 @@ export function MenuFilterTriggerExample() {
         <Text>Location</Text>
         <Icon icon="chevron-down" flip={isOpen ? 'vertical' : undefined} />
       </ChipButton>
-      <Menu aria-label="Location">
-        <MenuItem id="austin">Austin</MenuItem>
-        <MenuItem id="chicago">Chicago</MenuItem>
-        <MenuItem id="denver">Denver</MenuItem>
-      </Menu>
+      <Popover aria-label="Menu">
+        <Menu aria-label="Location">
+          <MenuItem id="austin">Austin</MenuItem>
+          <MenuItem id="chicago">Chicago</MenuItem>
+          <MenuItem id="denver">Denver</MenuItem>
+        </Menu>
+      </Popover>
     </MenuTrigger>
   );
 }

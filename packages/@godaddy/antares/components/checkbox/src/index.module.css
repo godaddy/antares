@@ -14,14 +14,14 @@
 }
 
 .indicator {
-  width: 1.25em;
-  height: 1.25em;
+  width: var(--_checkbox-indicator-size, 1.25em);
+  height: var(--_checkbox-indicator-size, 1.25em);
   border-width: 1px;
   border-style: solid;
   background: var(--color-input-background-default, var(--ux-1nu8itt, #fff));
   border-color: var(--color-input-border-default, var(--ux-by6mab, #767676));
   color: var(--color-input-text-selected, var(--ux-1lw8azc, #111));
-  border-radius: 2px;
+  border-radius: var(--_checkbox-indicator-radius, 2px);
   box-sizing: border-box;
   transition:
     background-color 150ms ease,
@@ -31,10 +31,11 @@
 }
 
 .indicator :where(.selectedIcon, .indeterminateIcon) {
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
+  flex-shrink: 0;
+  width: var(--_checkbox-indicator-glyph-size, 100%);
+  height: var(--_checkbox-indicator-glyph-size, 100%);
+  max-width: var(--_checkbox-indicator-glyph-size, 100%);
+  max-height: var(--_checkbox-indicator-glyph-size, 100%);
 }
 
 .indicator:where([data-selected], [data-indeterminate]) {
