@@ -18,6 +18,8 @@ import { Text } from '#components/text';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
+export const buttonFieldTypographyClassName = styles.fieldTypography;
+
 const buttonVariants = cva(styles.button, {
   variants: {
     variant: {

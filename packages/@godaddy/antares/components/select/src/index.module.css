@@ -8,10 +8,6 @@
 
 .controlTrigger {
   --_button-slot-gap: 0.25rem;
-  --_button-slot-font-family: var(--ux-9wtaa3, sans-serif);
-  /* An empty value makes font-weight inherit instead of using the action fallback. */
-  --_button-slot-font-weight: ;
-  --_button-slot-line-height: var(--ux-hm1ty7, 1.375);
 }
 
 .value {

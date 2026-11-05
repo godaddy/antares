@@ -12,7 +12,7 @@ import {
   composeRenderProps,
   useSlottedContext
 } from 'react-aria-components';
-import { ButtonContext, type ButtonProps } from '#components/button';
+import { ButtonContext, buttonFieldTypographyClassName, type ButtonProps } from '#components/button';
 import { Icon } from '#components/icon';
 import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
@@ -155,7 +155,10 @@ function ControlSelect<T extends object, M extends SelectionMode>(props: SelectR
           return (
             <SelectBody
               isDisabled={controlDisabled}
-              trigger={{ variant: 'control', className: `${fieldStyles.control} ${styles.controlTrigger}` }}
+              trigger={{
+                variant: 'control',
+                className: `${fieldStyles.control} ${styles.controlTrigger} ${buttonFieldTypographyClassName}`
+              }}
             >
               {node}
             </SelectBody>
