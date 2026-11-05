@@ -1,7 +1,7 @@
 import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { RegistryWriter } from '../build-registry.ts';
 
 const { loadBlockManifest } = vi.hoisted(() => ({
@@ -17,10 +17,6 @@ import { buildRegistry, createRegistry } from '../build-registry.ts';
 const temporaryDirectories: string[] = [];
 
 describe('build-registry', function registryBuilderTests() {
-  beforeEach(function resetManifestMock() {
-    vi.clearAllMocks();
-  });
-
   afterEach(async function removeTemporaryDirectories() {
     await Promise.all(
       temporaryDirectories.splice(0).map((directory) => rm(directory, { recursive: true, force: true }))
