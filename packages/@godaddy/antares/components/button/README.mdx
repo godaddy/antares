@@ -9,17 +9,13 @@ import * as Stories from './button.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-Use the `LinkButton` component instead when you need navigation functionality with a button-like appearance.
+Buttons trigger actions. To navigate, use `LinkButton`; `isExternal` adds an icon and opens a new tab.
+For selection, use `ChipGroup` for filters or `ToggleButtonGroup` for a set of options.
 
-Use `target="_blank"` to open a link in a new tab without an icon. `isExternal` adds an icon and defaults
-to `target="_blank"` and `rel="noopener noreferrer"`; explicit `target` and `rel` override those defaults.
-You can also compose an `Icon` as a child independently of navigation behavior.
+`CloseButton` dismisses an overlay: it defaults to `slot="close"` and renders an `x` icon labelled "Close".
 
-Use the `CloseButton` preset to dismiss an overlay (such as a `Modal`). It defaults to `slot="close"`, so it picks up the overlay's close behavior with no wiring, and always renders an `x` icon with `aria-label="Close"`. For a labelled dismiss action (e.g. "Cancel"), use a raw `<Button slot="close">Cancel</Button>`.
-
-Inside a field `Group`, `slot="control"` and `slot="trigger"` pick up the matching look, size, and
-disabled state from context. See TextField for control affixes, and Select or DatePicker for trigger faces.
-The `control` and `trigger` variants are field parts: the field sizes them, so use them only inside a field.
+Inside a field `Group`, `slot="control"` and `slot="trigger"` take their look and size from the field.
+The `control` variant also works standalone; `trigger` is a field part only.
 
 ## Installation
 
