@@ -11,13 +11,12 @@ on:
     branches:
       - main
 
-concurrency:
-  group: gh-pages-pr-preview-${{ github.workflow }}-${{ github.event.pull_request.head.repo.id || github.repository_id }}-${{ github.event.pull_request.head.ref }}
-  cancel-in-progress: true
-
 jobs:
   build-preview:
     if: github.event_name == 'pull_request'
+    concurrency:
+      group: gh-pages-pr-build-${{ github.workflow }}-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -59,6 +58,9 @@ jobs:
 
   cleanup-preview:
     if: github.event_name == 'pull_request_target' && github.event.action == 'closed'
+    concurrency:
+      group: gh-pages-pr-deploy-${{ github.workflow }}-${{ github.event.pull_request.number }}
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     permissions:
       contents: write

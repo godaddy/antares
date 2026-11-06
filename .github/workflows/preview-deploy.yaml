@@ -7,19 +7,16 @@ on:
       - Docs Site PR Preview
     types: [completed]
 
-concurrency:
-  group: gh-pages-pr-preview-${{ github.event.workflow_run.name }}-${{ github.event.workflow_run.head_repository.id || github.repository_id }}-${{ github.event.workflow_run.head_branch }}
-  cancel-in-progress: true
+permissions: {}
 
 jobs:
-  deploy-preview:
+  resolve-pr:
     if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request'
     runs-on: ubuntu-latest
     permissions:
-      actions: read
-      contents: write
-      pull-requests: write
-      pages: read
+      pull-requests: read
+    outputs:
+      number: ${{ steps.pr.outputs.number }}
     steps:
       - name: Verify PR is open and build is current
         id: pr
@@ -55,8 +52,55 @@ jobs:
             core.setOutput('deploy', 'true');
             core.setOutput('number', String(pullRequest.number));
 
+  deploy-preview:
+    needs: resolve-pr
+    if: needs.resolve-pr.outputs.number != ''
+    concurrency:
+      group: gh-pages-pr-deploy-${{ github.event.workflow_run.name }}-${{ needs.resolve-pr.outputs.number }}
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
+      pull-requests: write
+      pages: read
+    steps:
+      - name: Checkout trusted default branch
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.repository.default_branch }}
+          persist-credentials: false
+
+      - name: Verify PR is still open and build is current
+        id: current
+        uses: actions/github-script@v9
+        env:
+          PR_NUMBER: ${{ needs.resolve-pr.outputs.number }}
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+            const { data: pullRequest } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: Number(process.env.PR_NUMBER),
+            });
+
+            if (
+              pullRequest.state !== 'open' ||
+              pullRequest.base.ref !== 'main' ||
+              pullRequest.head.sha !== run.head_sha ||
+              pullRequest.head.repo?.full_name !== run.head_repository?.full_name ||
+              pullRequest.head.ref !== run.head_branch
+            ) {
+              core.info('Skipping preview for a closed, non-main, or stale PR build.');
+              core.setOutput('deploy', 'false');
+              return;
+            }
+
+            core.setOutput('deploy', 'true');
+
       - name: Download preview build
-        if: steps.pr.outputs.deploy == 'true'
+        if: steps.current.outputs.deploy == 'true'
         uses: actions/download-artifact@v8
         with:
           name: ${{ github.event.workflow_run.name == 'Storybook PR Preview' && 'storybook-preview' || 'docs-site-preview' }}
@@ -66,11 +110,11 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
 
       - name: Ensure .nojekyll at gh-pages root
-        if: github.event.workflow_run.name == 'Docs Site PR Preview' && steps.pr.outputs.deploy == 'true'
+        if: github.event.workflow_run.name == 'Docs Site PR Preview' && steps.current.outputs.deploy == 'true'
         run: mkdir -p root-nojekyll && touch root-nojekyll/.nojekyll
 
       - name: Deploy .nojekyll to gh-pages root
-        if: github.event.workflow_run.name == 'Docs Site PR Preview' && steps.pr.outputs.deploy == 'true'
+        if: github.event.workflow_run.name == 'Docs Site PR Preview' && steps.current.outputs.deploy == 'true'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -80,21 +124,21 @@ jobs:
           attempt-limit: 5
 
       - name: Deploy preview to GitHub Pages
-        if: steps.pr.outputs.deploy == 'true'
+        if: steps.current.outputs.deploy == 'true'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           folder: ${{ github.event.workflow_run.name == 'Storybook PR Preview' && 'storybook-build' || 'site-build' }}
-          target-folder: pr-${{ steps.pr.outputs.number }}-${{ github.event.workflow_run.name == 'Storybook PR Preview' && 'storybook' || 'site' }}
+          target-folder: pr-${{ needs.resolve-pr.outputs.number }}-${{ github.event.workflow_run.name == 'Storybook PR Preview' && 'storybook' || 'site' }}
           clean: false
           force: false
           attempt-limit: 5
 
       - name: Post Preview URL Comment
-        if: steps.pr.outputs.deploy == 'true'
+        if: steps.current.outputs.deploy == 'true'
         uses: actions/github-script@v9
         env:
-          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          PR_NUMBER: ${{ needs.resolve-pr.outputs.number }}
         with:
           script: |
             const isStorybook = context.payload.workflow_run.name === 'Storybook PR Preview';
