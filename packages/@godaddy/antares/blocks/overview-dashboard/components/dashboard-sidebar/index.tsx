@@ -66,7 +66,6 @@ export function DashboardSidebar({
         placement="left"
         isOpen={isMobileNavigationOpen}
         onOpenChange={onMobileNavigationChange}
-        isDismissable
         maxSize={224}
         aria-label="Product navigation"
       >

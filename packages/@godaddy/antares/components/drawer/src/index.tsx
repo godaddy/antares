@@ -1,11 +1,15 @@
-import { forwardRef, type ReactNode, type CSSProperties } from 'react';
+import { forwardRef, useRef, type ReactNode, type CSSProperties, type RefObject } from 'react';
 import {
   type DialogProps as RACDialogProps,
-  DialogTrigger as RACDialogTrigger,
-  type DialogTriggerProps as RACDialogTriggerProps,
-  Modal as RACModal,
-  ModalOverlay as RACModalOverlay,
-  type ModalOverlayProps as RACModalOverlayProps,
+  Sheet as RACSheet,
+  SheetBackdrop as RACSheetBackdrop,
+  type SheetBackdropProps as RACSheetBackdropProps,
+  SheetContent as RACSheetContent,
+  SheetOverlay as RACSheetOverlay,
+  type SheetOverlayProps as RACSheetOverlayProps,
+  type SheetProps as RACSheetProps,
+  SheetTrigger as RACSheetTrigger,
+  type SheetTriggerProps as RACSheetTriggerProps,
   composeRenderProps,
   useLocale
 } from 'react-aria-components';
@@ -13,6 +17,8 @@ import { toCssSize } from '#utils/css.ts';
 import { composeClassName } from '#utils/render-props.ts';
 import { Flex } from '#components/layout/flex';
 import { OverlayDialog } from '#components/_internal/overlay-dialog';
+import { useFinishClose } from './use-finish-close.tsx';
+import { useRestWhileOpen } from './use-rest-while-open.tsx';
 import styles from './index.module.css';
 
 /**
@@ -21,44 +27,44 @@ import styles from './index.module.css';
  */
 export type DrawerPlacement = 'top' | 'bottom' | 'left' | 'right';
 
-type DrawerFlatKeys =
-  | 'isOpen'
-  | 'defaultOpen'
-  | 'onOpenChange'
-  | 'isDismissable'
-  | 'isKeyboardDismissDisabled'
-  | 'shouldCloseOnInteractOutside';
+type DrawerFlatKeys = 'isOpen' | 'defaultOpen' | 'onOpenChange' | 'shouldCloseOnInteractOutside' | 'preventDismissal';
 
-type DrawerLayerProps = Omit<RACModalOverlayProps, 'children' | DrawerFlatKeys>;
+type DrawerBackdropProps = Omit<RACSheetBackdropProps, 'swipeAnimation' | 'swipeAnimationRange'>;
 
-export interface DrawerProps extends Omit<RACDialogProps, 'children'>, Pick<RACModalOverlayProps, DrawerFlatKeys> {
-  /** Physical edge the drawer slides in from. */
+type DrawerContainerProps = Omit<
+  RACSheetProps,
+  'children' | 'swipeAnimation' | 'swipeAnimationRange' | 'stackAnimation' | 'overscrollPadding'
+>;
+
+export interface DrawerProps extends Omit<RACDialogProps, 'children'>, Pick<RACSheetOverlayProps, DrawerFlatKeys> {
+  /** Physical edge the drawer slides in from. It is also the edge the drawer is swiped toward to close. */
   placement: DrawerPlacement;
 
   /**
-   * Max size of the drawer along its constrained axis. Accepts CSS values.
+   * Max size along the constrained axis. Lengths are capped at the viewport; CSS sizing keywords keep their native behavior.
    * @default 'min(80vw, 25rem)' for left/right, 'calc(100dvh - 5rem)' for top/bottom
    */
   maxSize?: number | string;
 
-  /** Min size of the drawer along its constrained axis. Accepts CSS values. Wins over `maxSize` if the two conflict. */
+  /**
+   * Min size along the constrained axis. Wins over `maxSize`. Lengths are capped at the viewport;
+   * CSS sizing keywords keep their native behavior.
+   */
   minSize?: number | string;
 
-  /** Animate the open/close slide. @default true */
-  animate?: boolean;
-
   /** Props for the drawer's backdrop. */
-  overlayProps?: DrawerLayerProps;
+  overlayProps?: DrawerBackdropProps;
 
-  /** Props for the drawer's positioned container. */
-  containerProps?: DrawerLayerProps;
+  /** Props for the drawer's sliding panel. */
+  containerProps?: DrawerContainerProps;
 
   /** Content to render inside the drawer. */
   children?: ReactNode;
 }
 
 /**
- * An overlay panel that slides in from a screen edge.
+ * An overlay panel that slides in from a screen edge, built on React Aria's `Sheet`. It can be
+ * swiped closed, and a drawer opened from inside another one stacks on top of it.
  *
  * @param props - {@link DrawerProps}
  */
@@ -67,13 +73,11 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     placement,
     maxSize,
     minSize,
-    animate,
     isOpen,
     defaultOpen,
     onOpenChange,
-    isDismissable,
-    isKeyboardDismissDisabled,
     shouldCloseOnInteractOutside,
+    preventDismissal,
     overlayProps,
     containerProps,
     className,
@@ -81,70 +85,82 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     children,
     ...dialogProps
   } = props;
+  const panelRef = useRef<HTMLDivElement>(null);
   const { direction } = useLocale();
 
   return (
-    <RACModalOverlay
+    <RACSheetOverlay
+      position={placement}
       isOpen={isOpen}
       defaultOpen={defaultOpen}
       onOpenChange={onOpenChange}
-      isDismissable={isDismissable}
-      isKeyboardDismissDisabled={isKeyboardDismissDisabled}
       shouldCloseOnInteractOutside={shouldCloseOnInteractOutside}
-      data-animate={animate === false ? 'false' : undefined}
-      {...overlayProps}
-      className={composeClassName(overlayProps?.className, styles.overlay)}
+      preventDismissal={preventDismissal}
+      className={styles.root}
     >
+      <RACSheetBackdrop
+        {...overlayProps}
+        swipeAnimation={styles['drawer-backdrop']}
+        className={composeClassName(overlayProps?.className, styles.overlay)}
+      />
       <Flex
-        as={RACModal}
+        as={RACSheet}
         elevation="overlay"
         direction="column"
-        data-placement={placement}
         dir={direction}
         {...containerProps}
+        ref={panelRef}
+        stackAnimation={styles['drawer-stack']}
         className={composeClassName(containerProps?.className, styles.drawer)}
         style={composeRenderProps(containerProps?.style, function composeDrawerStyle(value) {
           return {
             ...value,
-            '--_slide': getSlideTransform(placement),
-            ...(maxSize !== undefined && { '--_max-size': toCssSize(maxSize) }),
-            ...(minSize !== undefined && { '--_min-size': toCssSize(minSize) })
+            ...(maxSize !== undefined && { '--_max-size': toDrawerSize(maxSize, placement) }),
+            ...(minSize !== undefined && { '--_min-size': toDrawerSize(minSize, placement) })
           } as CSSProperties;
         })}
       >
-        <OverlayDialog {...dialogProps} ref={ref} className={composeClassName(className, styles.dialog)} style={style}>
+        <SheetRecovery panelRef={panelRef} preventDismissal={preventDismissal} />
+        <OverlayDialog
+          {...dialogProps}
+          as={RACSheetContent}
+          ref={ref}
+          className={composeClassName(className, styles.dialog)}
+          style={style}
+        >
           {children}
         </OverlayDialog>
       </Flex>
-    </RACModalOverlay>
+    </RACSheetOverlay>
   );
 });
 
-export interface DrawerTriggerProps extends RACDialogTriggerProps {}
+function toDrawerSize(value: number | string, placement: DrawerPlacement) {
+  const size = toCssSize(value);
+  const viewport = placement === 'left' || placement === 'right' ? '100dvw' : '100dvh';
+  const capped = `min(${size}, ${viewport})`;
+  return typeof CSS !== 'undefined' && CSS.supports('max-width', capped) ? capped : size;
+}
+
+function SheetRecovery({
+  panelRef,
+  preventDismissal
+}: {
+  panelRef: RefObject<HTMLElement | null>;
+  preventDismissal?: boolean;
+}) {
+  useRestWhileOpen(panelRef);
+  useFinishClose(panelRef, preventDismissal);
+  return null;
+}
+
+export interface DrawerTriggerProps extends RACSheetTriggerProps {}
 
 /**
- * Drawer trigger component. Wraps RAC DialogTrigger.
+ * Drawer trigger component. Wraps RAC SheetTrigger.
  *
  * @param props - {@link DrawerTriggerProps}
  */
 export const DrawerTrigger = function DrawerTrigger(props: DrawerTriggerProps) {
-  return <RACDialogTrigger {...props} />;
+  return <RACSheetTrigger {...props} />;
 };
-
-/**
- * Off-screen transform for the entering/exiting state. `placement` is a physical
- * edge and the panel is pinned with physical `left`/`right`, so the slide is purely
- * physical too. Placement never flips in RTL.
- */
-function getSlideTransform(placement: DrawerPlacement): string {
-  switch (placement) {
-    case 'right':
-      return 'translateX(100%)';
-    case 'left':
-      return 'translateX(-100%)';
-    case 'bottom':
-      return 'translateY(100%)';
-    case 'top':
-      return 'translateY(-100%)';
-  }
-}

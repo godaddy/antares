@@ -1,13 +1,10 @@
 import { useState } from 'react';
 import { Button, Content, Drawer } from '@godaddy/antares';
 
-/**
- * Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by the escape key.
- * @title No Escape Dismiss
- * @order 5
- */
-export function NoEscapeDismissExample() {
+/** @ignore */
+export function RejectedDismissalExample() {
   const [open, setOpen] = useState(false);
+
   return (
     <>
       <Button variant="primary" onPress={() => setOpen(true)}>
@@ -16,12 +13,16 @@ export function NoEscapeDismissExample() {
       <Drawer
         placement="right"
         isOpen={open}
-        onOpenChange={setOpen}
-        isDismissable
-        isKeyboardDismissDisabled
-        aria-label="Drawer"
+        onOpenChange={function keepOpen(next) {
+          if (next) setOpen(true);
+        }}
+        aria-label="Guarded"
       >
-        <Content>Cannot escape</Content>
+        <Content>
+          <Button variant="secondary" onPress={() => setOpen(false)}>
+            Discard
+          </Button>
+        </Content>
       </Drawer>
     </>
   );

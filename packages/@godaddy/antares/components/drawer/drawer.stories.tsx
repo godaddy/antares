@@ -16,9 +16,8 @@ export const Examples = getExamples('./examples');
 export const Playground = getStory(PlaygroundExample, {
   args: {
     placement: 'right',
-    isDismissable: true,
-    showTitle: false,
-    animate: true
+    preventDismissal: false,
+    showTitle: false
   },
   argTypes: {
     placement: {
@@ -26,13 +25,9 @@ export const Playground = getStory(PlaygroundExample, {
       options: ['top', 'bottom', 'left', 'right'],
       description: 'Edge the drawer slides in from'
     },
-    isDismissable: {
+    preventDismissal: {
       control: 'boolean',
-      description: 'Close on backdrop click'
-    },
-    animate: {
-      control: 'boolean',
-      description: 'Animate the open/close slide'
+      description: 'Block closing by swipe, Escape, or backdrop press'
     },
     showTitle: {
       control: 'boolean',

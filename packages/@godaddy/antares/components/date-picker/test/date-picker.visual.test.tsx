@@ -12,6 +12,15 @@ import { MinMaxExample } from '../examples/min-max.tsx';
 import { FormatOptionsExample } from '../examples/format-options.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 
+/** Waits for the drawer (or popover) to finish sliding in. */
+async function settle() {
+  await expect
+    .poll(function entered() {
+      return document.querySelector('[role="dialog"]')?.closest('[data-entering]');
+    })
+    .toBeNull();
+}
+
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
   beforeEach(resetHover);
@@ -29,6 +38,7 @@ describe('@godaddy/antares', function antares() {
       await page.viewport(width, 768);
       const screen = await render(<MobileExample />);
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      await settle();
       await expect(screen.getByRole('dialog')).toMatchScreenshot(`date-picker-open-${width}`);
     });
 
@@ -36,11 +46,7 @@ describe('@godaddy/antares', function antares() {
       await page.viewport(320, 768);
       const screen = await render(<MobileExample range keepOpen />);
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
-      await expect
-        .poll(function settled() {
-          return getComputedStyle(screen.getByRole('dialog').element().parentElement!).transform;
-        })
-        .toBe('none');
+      await settle();
       await screen.getByRole('button', { name: /September 15, 2026/ }).click();
       await screen.getByRole('button', { name: /September 25, 2026/ }).click();
       await expect(screen.getByRole('dialog')).toMatchScreenshot('date-picker-mobile-range');
@@ -50,6 +56,7 @@ describe('@godaddy/antares', function antares() {
       await page.viewport(320, 768);
       const screen = await render(<MobileExample size={size} />);
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      await settle();
       await expect(screen.getByRole('dialog')).toMatchScreenshot(`date-picker-mobile-${size}`);
     });
 
@@ -62,6 +69,7 @@ describe('@godaddy/antares', function antares() {
         </I18nProvider>
       );
       await screen.getByRole('button', { name: /Event dates/ }).click();
+      await settle();
       await expect(screen.getByRole('dialog')).toMatchScreenshot('date-picker-mobile-rtl-large-text');
     });
 

@@ -16,7 +16,6 @@ export function FilteredDismissExample() {
         placement="right"
         isOpen={open}
         onOpenChange={setOpen}
-        isDismissable
         aria-label="Drawer"
         shouldCloseOnInteractOutside={function filter() {
           return false;

@@ -20,9 +20,9 @@ describe('@godaddy/antares', function packageTests() {
         await trigger.click();
         await expect
           .poll(function settled() {
-            return getComputedStyle(screen.getByRole('dialog').element().parentElement!).transform;
+            return screen.getByRole('dialog').element().closest('[data-entering]');
           })
-          .toBe('none');
+          .toBeNull();
         const session = cdp();
         await session.send('Emulation.setTouchEmulationEnabled', { enabled: true });
         try {
