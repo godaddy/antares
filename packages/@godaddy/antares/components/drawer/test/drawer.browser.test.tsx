@@ -119,17 +119,40 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    it('opens PlaygroundExample and renders drawer', async function playground() {
-      const { getByRole } = await render(<PlaygroundExample placement="right" />);
+    it.each([
+      ['right', undefined, undefined],
+      ['right', 'min-content', 'min-content'],
+      ['bottom', 'min-content', 'min-content'],
+      ['right', 'max-content', 'max-content'],
+      ['bottom', 'max-content', 'max-content'],
+      ['right', 'fit-content', 'fit-content'],
+      ['bottom', 'fit-content', 'fit-content'],
+      ['right', 'max-content', 40]
+    ] as const)(
+      'opens PlaygroundExample with %s sizing (%s, %s)',
+      async function playground(placement, minSize, maxSize) {
+        const { getByRole } = await render(
+          <PlaygroundExample placement={placement} minSize={minSize} maxSize={maxSize} />
+        );
 
-      await getByRole('button', { name: 'Open drawer' }).click();
-      await vi.waitFor(async function open() {
-        const dialog = getByRole('dialog').query();
-        assume(dialog).is.not.equal(null);
-        assume(dialog?.textContent).includes('Drawer content!');
-      });
-      await waitForEntered();
-    });
+        await getByRole('button', { name: 'Open drawer' }).click();
+        await waitForEntered();
+
+        const dialog = getByRole('dialog');
+        await expect.element(dialog).toHaveTextContent('Drawer content!');
+        const panel = dialog.element().parentElement!;
+        const style = getComputedStyle(panel);
+        const horizontal = placement === 'right';
+        if (minSize) expect(horizontal ? style.minInlineSize : style.minBlockSize).toBe(minSize);
+        if (typeof maxSize === 'string') expect(horizontal ? style.maxInlineSize : style.maxBlockSize).toBe(maxSize);
+        if (maxSize === 40) expect(panel.offsetWidth).toBeGreaterThan(40);
+        if (maxSize === 'min-content' && horizontal) {
+          const range = document.createRange();
+          range.selectNodeContents(dialog.getByText('Drawer content!').element());
+          expect(range.getClientRects().length).toBeGreaterThan(1);
+        }
+      }
+    );
 
     it('closes DefaultExample when the backdrop is pressed', async function backdropClose() {
       const { getByRole } = await render(<DefaultExample />);

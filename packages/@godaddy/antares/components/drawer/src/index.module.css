@@ -22,14 +22,14 @@
 
 .drawer:where([data-position="left"], [data-position="right"]) {
   block-size: 100dvh;
-  max-inline-size: min(var(--_max-size, min(80vw, 25rem)), 100dvw);
-  min-inline-size: min(var(--_min-size, 0px), 100dvw);
+  max-inline-size: var(--_max-size, min(80vw, 25rem, 100dvw));
+  min-inline-size: var(--_min-size, 0px);
 }
 
 .drawer:where([data-position="top"], [data-position="bottom"]) {
   inline-size: 100%;
-  max-block-size: min(var(--_max-size, calc(100dvh - 5rem)), 100dvh);
-  min-block-size: min(var(--_min-size, 0px), 100dvh);
+  max-block-size: var(--_max-size, calc(100dvh - 5rem));
+  min-block-size: var(--_min-size, 0px);
 }
 
 .drawer:where([data-position="bottom"]) {

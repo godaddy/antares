@@ -41,12 +41,15 @@ export interface DrawerProps extends Omit<RACDialogProps, 'children'>, Pick<RACS
   placement: DrawerPlacement;
 
   /**
-   * Max size of the drawer along its constrained axis. Accepts CSS values and is capped at the viewport.
+   * Max size along the constrained axis. Lengths are capped at the viewport; CSS sizing keywords keep their native behavior.
    * @default 'min(80vw, 25rem)' for left/right, 'calc(100dvh - 5rem)' for top/bottom
    */
   maxSize?: number | string;
 
-  /** Min size along the constrained axis. Accepts CSS values. Wins over `maxSize`, but is capped at the viewport. */
+  /**
+   * Min size along the constrained axis. Wins over `maxSize`. Lengths are capped at the viewport;
+   * CSS sizing keywords keep their native behavior.
+   */
   minSize?: number | string;
 
   /** Props for the drawer's backdrop. */
@@ -112,8 +115,8 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
         style={composeRenderProps(containerProps?.style, function composeDrawerStyle(value) {
           return {
             ...value,
-            ...(maxSize !== undefined && { '--_max-size': toCssSize(maxSize) }),
-            ...(minSize !== undefined && { '--_min-size': toCssSize(minSize) })
+            ...(maxSize !== undefined && { '--_max-size': toDrawerSize(maxSize, placement) }),
+            ...(minSize !== undefined && { '--_min-size': toDrawerSize(minSize, placement) })
           } as CSSProperties;
         })}
       >
@@ -131,6 +134,13 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     </RACSheetOverlay>
   );
 });
+
+function toDrawerSize(value: number | string, placement: DrawerPlacement) {
+  const size = toCssSize(value);
+  const viewport = placement === 'left' || placement === 'right' ? '100dvw' : '100dvh';
+  const capped = `min(${size}, ${viewport})`;
+  return typeof CSS !== 'undefined' && CSS.supports('max-width', capped) ? capped : size;
+}
 
 function SheetRecovery({
   panelRef,
