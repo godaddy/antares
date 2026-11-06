@@ -1,4 +1,6 @@
 import { describe, it, beforeAll, beforeEach, expect } from 'vitest';
+// Loads field styles before Button's, so field parts are tested against stylesheet order.
+import '#components/radio';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { preloadTestIcons, resetPointer } from '#test/utils/test-helpers.tsx';
@@ -10,11 +12,32 @@ import { SizesExample } from '../examples/sizes.tsx';
 import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
 import { IconExample } from '../examples/icon.tsx';
 import { IconsAndAlignmentExample } from '../examples/icons-and-alignment.tsx';
+import { ControlExample } from '../examples/control.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
     beforeAll(preloadTestIcons);
     beforeEach(resetPointer);
+
+    it('rounds standalone controls while fields own their joined corners', async function controlCorners() {
+      const { getByRole } = await render(<ControlExample />);
+      const radius = (name: string) => getComputedStyle(getByRole('button', { name }).element()).borderRadius;
+
+      expect(radius('Standalone')).not.toBe('0px');
+      expect(radius('Middle')).toBe('0px');
+      expect(getComputedStyle(getByRole('button', { name: 'Middle' }).element()).borderTopWidth).toBe('0px');
+      expect(radius('First')).not.toBe('0px');
+      expect(radius('Last')).not.toBe('0px');
+      expect(getComputedStyle(getByRole('button', { name: 'Last' }).element()).borderTopWidth).toBe('0px');
+    });
+
+    it('sizes standalone controls like other buttons', async function controlSizes() {
+      const { getByRole } = await render(<ControlExample />);
+      const height = (name: string) => getByRole('button', { name }).element().getBoundingClientRect().height;
+
+      expect(height('Small')).toBeLessThan(height('Standalone'));
+      expect(height('Standalone')).toBeLessThan(height('Large'));
+    });
 
     it('renders the primary button hovered', async function rendersPrimaryHovered() {
       const { getByRole } = await render(<PrimaryExample />);

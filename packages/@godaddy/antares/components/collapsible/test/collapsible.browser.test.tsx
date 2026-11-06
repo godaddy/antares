@@ -11,6 +11,14 @@ describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
   beforeEach(resetPointer);
   describe('#Collapsible', function collapsibleTests() {
+    it('gives the trigger its heading type', async function headingType() {
+      const { container } = await render(<DefaultExample />);
+      const trigger = container.querySelector('[slot="trigger"]') as Element;
+      const heading = trigger.parentElement as Element;
+
+      expect(getComputedStyle(trigger).fontWeight).toBe(getComputedStyle(heading).fontWeight);
+    });
+
     it('preserves entered details when the panel closes and reopens', async function persistentContent() {
       await render(
         <PlaygroundExample
