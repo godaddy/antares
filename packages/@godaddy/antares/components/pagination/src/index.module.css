@@ -59,6 +59,7 @@
   --_pagination-dot-size: var(--size-space-md, calc(var(--ux-1sbfig8, 0.25rem) * 2));
 
   flex: 1 1 auto;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: var(--size-space-sm, var(--ux-1sbfig8, 0.25rem));
