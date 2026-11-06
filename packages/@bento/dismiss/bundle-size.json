@@ -1,0 +1,7 @@
+{
+  "outputBudget": 15232,
+  "consumerBudgets": {
+    "entry:@bento/dismiss": 6400,
+    "export:@bento/dismiss#Dismiss": 6400
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "outputBudget": 45184,
+  "consumerBudgets": {
+    "entry:@bento/use-props": 1408,
+    "export:@bento/use-props#execute": 768,
+    "export:@bento/use-props#isEventListener": 768,
+    "export:@bento/use-props#isRenderProp": 768,
+    "export:@bento/use-props#renderProp": 768,
+    "export:@bento/use-props#useProps": 1408
+  }
+}

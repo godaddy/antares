@@ -1,0 +1,8 @@
+{
+  "outputBudget": 32384,
+  "consumerBudgets": {
+    "entry:@bento/create-external-store": 896,
+    "export:@bento/create-external-store#createStore": 896,
+    "export:@bento/create-external-store#observer": 512
+  }
+}

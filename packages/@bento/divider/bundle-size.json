@@ -1,0 +1,7 @@
+{
+  "outputBudget": 8320,
+  "consumerBudgets": {
+    "entry:@bento/divider": 4608,
+    "export:@bento/divider#Divider": 4608
+  }
+}

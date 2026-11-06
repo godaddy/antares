@@ -1,0 +1,9 @@
+{
+  "outputBudget": 26880,
+  "consumerBudgets": {
+    "entry:@bento/box": 768,
+    "export:@bento/box#Box": 640,
+    "export:@bento/box#Slot": 768,
+    "export:@bento/box#defaults": 640
+  }
+}

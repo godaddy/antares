@@ -1,0 +1,11 @@
+{
+  "outputBudget": 93824,
+  "consumerBudgets": {
+    "entry:@bento/slots": 4096,
+    "export:@bento/slots#contains": 1024,
+    "export:@bento/slots#library": 896,
+    "export:@bento/slots#override": 2048,
+    "export:@bento/slots#replace": 2048,
+    "export:@bento/slots#withSlots": 3968
+  }
+}

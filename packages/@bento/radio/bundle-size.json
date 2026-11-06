@@ -1,0 +1,8 @@
+{
+  "outputBudget": 34688,
+  "consumerBudgets": {
+    "entry:@bento/radio": 22784,
+    "export:@bento/radio#Radio": 22784,
+    "export:@bento/radio#RadioGroup": 22784
+  }
+}

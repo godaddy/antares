@@ -1,0 +1,7 @@
+{
+  "outputBudget": 6272,
+  "consumerBudgets": {
+    "entry:@bento/field-error": 4736,
+    "export:@bento/field-error#FieldError": 4736
+  }
+}

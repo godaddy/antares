@@ -1,0 +1,7 @@
+{
+  "outputBudget": 19584,
+  "consumerBudgets": {
+    "entry:@bento/forward": 640,
+    "export:@bento/forward#withForwardRef": 640
+  }
+}
