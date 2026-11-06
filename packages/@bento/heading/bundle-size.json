@@ -1,0 +1,8 @@
+{
+  "outputBudget": 15616,
+  "consumerBudgets": {
+    "entry:@bento/heading": 4864,
+    "export:@bento/heading#Heading": 4864,
+    "export:@bento/heading#HeadingProvider": 4864
+  }
+}

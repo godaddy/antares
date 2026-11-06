@@ -1,0 +1,8 @@
+{
+  "outputBudget": 41728,
+  "consumerBudgets": {
+    "entry:@bento/checkbox": 21248,
+    "export:@bento/checkbox#Checkbox": 21248,
+    "export:@bento/checkbox#CheckboxGroup": 21248
+  }
+}
