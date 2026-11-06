@@ -38,7 +38,7 @@
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.3",
     "@nx/vite": "23.3.0",
-    "@nx/vitest": "23.3.0",
+    "@nx/vitest": "24.0.3",
     "@rollup/plugin-replace": "^6.0.3",
     "@size-limit/file": "^14.2.0",
     "@storybook/addon-docs": "^10.6.5",
