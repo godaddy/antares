@@ -1,5 +1,12 @@
 # @godaddy/antares
 
+## 0.12.1
+
+### Patch Changes
+
+- Fix BarChart clipping the first x-axis label under the Y-axis when the chart has many categories. ([#432](https://github.com/godaddy/bento/pull/432) by @egaitan-godaddy)
+- Let `Button variant="control"` work standalone with rounded corners and sizes, and use action typography tokens for button labels. ([#421](https://github.com/godaddy/bento/pull/421) by @egaitan-godaddy)
+
 ## 0.12.0
 
 ### Minor Changes
