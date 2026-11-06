@@ -1,4 +1,4 @@
-import { describe, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { cdp, page } from 'vitest/browser';
 import assume from 'assume';
@@ -32,6 +32,46 @@ function wait(ms: number) {
 
 describe('@godaddy/antares', function antares() {
   describe('#Drawer swipe', function swipeTests() {
+    it('keeps the parent stationary during a nested swipe under reduced motion', async function reducedStack() {
+      const session = cdp() as unknown as { send: (method: string, params: unknown) => Promise<void> };
+      await session.send('Emulation.setEmulatedMedia', {
+        features: [{ name: 'prefers-reduced-motion', value: 'reduce' }]
+      });
+      try {
+        const { getByRole } = await render(<NestedExample />);
+        await getByRole('button', { name: 'Open settings' }).click();
+        await waitForEntered('Settings');
+        const parent = getByRole('dialog', { name: 'Settings' }).element().parentElement!;
+        const transform = getComputedStyle(parent).transform;
+
+        await getByRole('button', { name: 'Account' }).click();
+        await waitForEntered('Account');
+        expect(getComputedStyle(parent).transform).toBe(transform);
+
+        await session.send('Emulation.setEmulatedMedia', {
+          features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }]
+        });
+        await expect.poll(() => getComputedStyle(parent).transform).not.toBe(transform);
+        await session.send('Emulation.setEmulatedMedia', {
+          features: [{ name: 'prefers-reduced-motion', value: 'reduce' }]
+        });
+        await expect.poll(() => getComputedStyle(parent).transform).toBe(transform);
+
+        const scroller = getScroller('Account');
+        scroller.style.scrollSnapType = 'none';
+        scroller.scrollTop -= getByRole('dialog', { name: 'Account' }).element().getBoundingClientRect().height / 2;
+        await wait(100);
+        expect(getComputedStyle(parent).transform).toBe(transform);
+
+        swipeAway('Account');
+        await expect.element(getByRole('dialog', { name: 'Account' })).not.toBeInTheDocument();
+        await expect.element(getByRole('button', { name: 'Account' })).toHaveFocus();
+        expect(getComputedStyle(parent).transform).toBe(transform);
+      } finally {
+        await session.send('Emulation.setEmulatedMedia', { features: [] });
+      }
+    });
+
     it('closes a drawer swiped off screen', async function swipeClose() {
       await render(
         <DrawerTrigger>

@@ -41,12 +41,12 @@ export interface DrawerProps extends Omit<RACDialogProps, 'children'>, Pick<RACS
   placement: DrawerPlacement;
 
   /**
-   * Max size of the drawer along its constrained axis. Accepts CSS values.
+   * Max size of the drawer along its constrained axis. Accepts CSS values and is capped at the viewport.
    * @default 'min(80vw, 25rem)' for left/right, 'calc(100dvh - 5rem)' for top/bottom
    */
   maxSize?: number | string;
 
-  /** Min size of the drawer along its constrained axis. Accepts CSS values. Wins over `maxSize` if the two conflict. */
+  /** Min size along the constrained axis. Accepts CSS values. Wins over `maxSize`, but is capped at the viewport. */
   minSize?: number | string;
 
   /** Props for the drawer's backdrop. */

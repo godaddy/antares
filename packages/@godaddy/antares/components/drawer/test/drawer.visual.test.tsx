@@ -4,6 +4,8 @@ import assume from 'assume';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
 import { PlacementsExample } from '../examples/placements.tsx';
 import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
+import { NestedExample } from '../examples/nested.tsx';
+import { NestedPopoverExample } from '../examples/nested-popover.tsx';
 
 const PLACEMENTS = ['left', 'right', 'top', 'bottom'] as const;
 
@@ -26,6 +28,30 @@ describe('@godaddy/antares', function antares() {
   beforeEach(resetHover);
 
   describe('#Drawer', function drawerTests() {
+    it('renders nested drawers with both layers open', async function nestedDrawers() {
+      const { getByRole } = await render(<NestedExample />);
+
+      await getByRole('button', { name: 'Open settings' }).click();
+      await expect.element(getByRole('dialog', { name: 'Settings' })).toHaveFocus();
+      await getByRole('button', { name: 'Account' }).click();
+      await expect.element(getByRole('dialog', { name: 'Account' })).toHaveFocus();
+      await settle();
+
+      await expect(document.body).toMatchScreenshot('nested-drawers');
+    });
+
+    it('renders a nested popover above its drawer', async function nestedPopover() {
+      const { getByRole } = await render(<NestedPopoverExample />);
+
+      await getByRole('button', { name: 'Open drawer' }).click();
+      await expect.element(getByRole('dialog', { name: 'Nested popover' })).toHaveFocus();
+      await getByRole('button', { name: 'Open popover' }).click();
+      await expect.element(getByRole('dialog', { name: 'Popover' })).toBeVisible();
+      await settle();
+
+      await expect(document.body).toMatchScreenshot('nested-popover');
+    });
+
     it.each(PLACEMENTS)('renders %s placement', async function placement(p) {
       const { getByRole } = await render(<PlacementsExample />);
 
