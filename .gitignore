@@ -64,7 +64,7 @@ packages/@godaddy/**/test/__screenshots__/**/*-darwin.png
 # folder dump folder of all the compiled assets.
 .vite-node
 
-.vitest-attachments/
+.vitest/
 
 # Claude
 .claude/settings.local.json
@@ -79,3 +79,6 @@ CLAUDE.local.md
 .zed
 
 .nx/polygraph
+
+# Bundle analysis reports and generated consumer fixtures
+.bundle-analysis/

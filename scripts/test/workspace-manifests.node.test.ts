@@ -101,8 +101,8 @@ describe('workspace manifests', function workspaceManifestTests() {
   });
 
   it('keeps tsdown and its CSS package on matching catalog ranges', function keepsTsdownCatalogCompatible() {
-    expect(pnpmWorkspace.catalog?.tsdown).toBe('^0.23.4');
-    expect(pnpmWorkspace.catalog?.['@tsdown/css']).toBe('^0.23.4');
+    expect(pnpmWorkspace.catalog?.tsdown).toBe('^0.23.7');
+    expect(pnpmWorkspace.catalog?.['@tsdown/css']).toBe('^0.23.7');
   });
 
   it('keeps installs free of build and browser setup lifecycle hooks', function keepsInstallLifecycleLightweight() {

@@ -2,17 +2,21 @@ name: Docs Site PR Preview
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+  # This privileged event only removes files from gh-pages; it never checks out PR code.
+  pull_request_target:
+    types: [closed]
     branches:
       - main
 
-concurrency:
-  group: gh-pages-docs-preview-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
-
 jobs:
   build-preview:
-    if: github.event.action != 'closed'
+    if: github.event_name == 'pull_request'
+    concurrency:
+      group: gh-pages-pr-build-${{ github.workflow }}-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -57,88 +61,11 @@ jobs:
           retention-days: 1
           overwrite: true
 
-  deploy-preview:
-    needs: build-preview
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      pages: read
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v7
-        with:
-          persist-credentials: false
-
-      - name: Download Site Build
-        uses: actions/download-artifact@v8
-        with:
-          name: docs-site-preview
-          path: site-build
-
-      - name: Ensure .nojekyll at gh-pages root
-        run: mkdir -p /tmp/root-nojekyll && touch /tmp/root-nojekyll/.nojekyll
-
-      - name: Deploy .nojekyll to gh-pages root
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          folder: /tmp/root-nojekyll
-          clean: false
-          force: false
-          attempt-limit: 5
-
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          folder: site-build
-          target-folder: pr-${{ github.event.pull_request.number }}-site
-          clean: false
-          force: false
-          attempt-limit: 5
-
-      - name: Post Preview URL Comment
-        uses: actions/github-script@v9
-        with:
-          script: |
-            const prNumber = context.payload.pull_request.number;
-            const repo = context.repo;
-            const pagesResponse = await github.rest.repos.getPages({ owner: repo.owner, repo: repo.repo });
-            const pagesBaseUrl = pagesResponse.data.html_url.replace(/\/$/, '');
-            const previewUrl = `${pagesBaseUrl}/pr-${prNumber}-site/`;
-
-            const commentBody = `## Docs Site Preview\n\nPreview URL: ${previewUrl}\n\nPreview will be automatically deleted when this PR is closed.`;
-
-            const comments = await github.rest.issues.listComments({
-              owner: repo.owner,
-              repo: repo.repo,
-              issue_number: prNumber,
-            });
-
-            const botComment = comments.data.find(comment =>
-              comment.user.type === 'Bot' &&
-              comment.body.includes('Docs Site Preview')
-            );
-
-            if (botComment) {
-              await github.rest.issues.updateComment({
-                owner: repo.owner,
-                repo: repo.repo,
-                comment_id: botComment.id,
-                body: commentBody,
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: repo.owner,
-                repo: repo.repo,
-                issue_number: prNumber,
-                body: commentBody,
-              });
-            }
-
   cleanup-preview:
-    if: github.event.action == 'closed'
+    if: github.event_name == 'pull_request_target' && github.event.action == 'closed'
+    concurrency:
+      group: gh-pages-pr-deploy-${{ github.workflow }}-${{ github.event.pull_request.number }}
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     permissions:
       contents: write

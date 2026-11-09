@@ -7,6 +7,8 @@
   "module": "./dist/index.mjs",
   "scripts": {
     "build": "tsdown",
+    "bundle-size:build": "node ../../../scripts/bundle-analysis.ts --package-from-cwd",
+    "bundle-size:check": "node ../../../scripts/bundle-analysis.ts --package-from-cwd --check",
     "lint": "biome lint",
     "prepublishOnly": "node ../../../scripts/compile-readme.ts",
     "test": "vitest --run",
@@ -51,17 +53,17 @@
   },
   "devDependencies": {
     "@bento/button": "workspace:^",
-    "@bento/container": "workspace:^",
-    "@bento/dismiss": "workspace:^",
-    "@bento/focus-lock": "workspace:^",
-    "@bento/portal": "workspace:^",
-    "@bento/scroll-lock": "workspace:^",
-    "@bento/text": "workspace:^",
-    "@types/react": "catalog:",
-    "@types/react-dom": "catalog:",
     "tsdown": "catalog:",
+    "@bento/text": "workspace:^",
+    "vitest-browser-react": "catalog:",
     "vitest": "catalog:",
-    "vitest-browser-react": "catalog:"
+    "@bento/scroll-lock": "workspace:^",
+    "@bento/portal": "workspace:^",
+    "@types/react-dom": "catalog:",
+    "@bento/dismiss": "workspace:^",
+    "@types/react": "catalog:",
+    "@bento/focus-lock": "workspace:^",
+    "@bento/container": "workspace:^"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

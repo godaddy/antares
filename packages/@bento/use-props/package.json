@@ -7,6 +7,8 @@
   "module": "./dist/index.mjs",
   "scripts": {
     "build": "tsdown",
+    "bundle-size:build": "node ../../../scripts/bundle-analysis.ts --package-from-cwd",
+    "bundle-size:check": "node ../../../scripts/bundle-analysis.ts --package-from-cwd --check",
     "dev": "tsdown --watch",
     "lint": "biome lint",
     "prepublishOnly": "node ../../../scripts/compile-readme.ts",
@@ -46,11 +48,11 @@
     "@react-aria/utils": "catalog:"
   },
   "devDependencies": {
-    "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "tsdown": "catalog:",
-    "vitest": "catalog:",
-    "vitest-browser-react": "catalog:"
+    "vitest-browser-react": "catalog:",
+    "@types/react": "catalog:",
+    "vitest": "catalog:"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

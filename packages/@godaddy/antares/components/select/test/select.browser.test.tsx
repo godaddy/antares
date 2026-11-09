@@ -8,9 +8,51 @@ import { ControlledExample } from '../examples/controlled';
 import { MultipleExample } from '../examples/multiple';
 import { FormExample } from '../examples/form';
 import { InvalidExample } from '../examples/invalid';
+import { InteriorExample } from '../examples/interior';
 
 describe('@godaddy/antares', function antares() {
   describe('#Select', function selectSuite() {
+    it('keeps field typography on both trigger variants without affecting sibling controls', async function triggerTypography() {
+      const { container, getByRole } = await render(<InteriorExample />);
+      container.style.fontWeight = '300';
+      container.style.setProperty('--ux-9wtaa3', 'monospace');
+      container.style.setProperty('--ux-hm1ty7', '1.75');
+      container.style.setProperty('--font-action-family', 'serif');
+      container.style.setProperty('--font-action-weight', '900');
+      container.style.setProperty('--font-action-line-height', '3');
+
+      for (const name of [/Coffee/, /Country code/]) {
+        const style = getComputedStyle(getByRole('button', { name }).element());
+        expect(style.fontFamily).toBe('monospace');
+        expect(style.fontWeight).toBe('300');
+        expect(parseFloat(style.lineHeight) / parseFloat(style.fontSize)).toBe(1.75);
+        expect(style.columnGap).toBe('4px');
+      }
+
+      const sibling = getComputedStyle(getByRole('button', { name: 'Clear' }).element());
+      expect(sibling.fontFamily).toBe('serif');
+      expect(sibling.fontWeight).toBe('900');
+      expect(parseFloat(sibling.lineHeight) / parseFloat(sibling.fontSize)).toBe(3);
+    });
+
+    it('lets a later consumer class override typography on both trigger variants', async function triggerClassName() {
+      const { getByRole } = await render(<InteriorExample triggerClassName="select-trigger-override" />);
+      const stylesheet = document.createElement('style');
+      stylesheet.textContent = '.select-trigger-override { font-family: monospace; font-weight: 900; line-height: 2; }';
+      document.head.append(stylesheet);
+
+      try {
+        for (const name of [/Coffee/, /Country code/]) {
+          const style = getComputedStyle(getByRole('button', { name }).element());
+          expect(style.fontFamily).toBe('monospace');
+          expect(style.fontWeight).toBe('900');
+          expect(parseFloat(style.lineHeight) / parseFloat(style.fontSize)).toBe(2);
+        }
+      } finally {
+        stylesheet.remove();
+      }
+    });
+
     it('renders the basic example', async function basicRender() {
       await render(<DefaultExample />);
 

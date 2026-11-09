@@ -93,7 +93,7 @@ describe('@bento/dismiss', function bento() {
       const { container } = await render(<Dismiss onDismiss={onDismiss}>Close</Dismiss>);
       const button = container.querySelector('button');
 
-      expect(button).toHaveTextContent('Close');
+      expect(button).toMatchTextContent('Close');
     });
 
     it('should not throw when clicked without onDismiss', async function test() {

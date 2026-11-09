@@ -4,14 +4,16 @@
   "description": "The GoDaddy design tokens library",
   "type": "module",
   "scripts": {
-    "build": "pnpm run build:sd && pnpm run build:schema",
-    "build:sd": "tsx src/build-tokens.ts",
+    "test:watch": "vitest",
     "build:schema": "shx cp src/schema.json dist/schema.json && shx cp src/extensions.d.ts dist/extensions.d.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
     "lint": "biome lint",
     "lint:fix": "biome lint --write",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "bundle-size:check": "node ../../../scripts/bundle-analysis.ts --package-from-cwd --check",
+    "build": "pnpm run build:sd && pnpm run build:schema",
+    "build:sd": "tsx src/build-tokens.ts",
+    "bundle-size:build": "node ../../../scripts/bundle-analysis.ts --package-from-cwd"
   },
   "repository": {
     "type": "git",
@@ -37,13 +39,13 @@
     "dist"
   ],
   "devDependencies": {
-    "shx": "^0.4.0",
-    "style-dictionary": "^5.7.1",
-    "tsx": "^4.23.15",
     "vitest": "catalog:",
+    "tsx": "^4.23.15",
     "yaml": "^2.9.1",
     "ajv": "^8.20.0",
-    "@upft/schemas": "^0.0.6"
+    "@upft/schemas": "^0.0.6",
+    "style-dictionary": "^5.7.1",
+    "shx": "^0.4.0"
   },
   "exports": {
     "./css-in-js": {

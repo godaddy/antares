@@ -56,6 +56,18 @@ From a practical perspective, contributions are as simple as:
 1. Push the changes to your fork and submit a pull request to the 'main
    development branch' of the project's repository.
 
+### Pull request previews
+
+Pull requests targeting `main` get automatic Storybook and docs-site previews.
+After each build succeeds, GitHub posts the preview links as comments on the PR;
+the previews are removed when the PR closes.
+
+Fork builds run with read-only permissions and upload artifacts. The trusted
+[preview deploy workflow](./.github/workflows/preview-deploy.yaml) publishes
+those artifacts without checking out contributor code. This workflow must be
+present on the default branch before it can deploy previews. Changes to it take
+effect for subsequent preview deployments only after they are merged.
+
 If you are interested in making a large change and feel unsure about its overall
 effect, start with opening an Issue in the project's [Issue Tracker][issues]
 with a high-level proposal and discuss it with the core contributors through

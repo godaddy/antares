@@ -1,4 +1,4 @@
-import { describe, it, vi, beforeEach } from 'vitest';
+import { describe, it, vi } from 'vitest';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkMdx from 'remark-mdx';
@@ -26,10 +26,6 @@ function esmBody(tree: any): any[] {
 
 describe('site', function siteTests() {
   describe('#remarkRawLoader', function remarkRawLoaderTests() {
-    beforeEach(function reset() {
-      vi.clearAllMocks();
-    });
-
     it('skips mdxjsEsm nodes that have no estree data', async function skipsNoEstree() {
       const tree = {
         type: 'root',

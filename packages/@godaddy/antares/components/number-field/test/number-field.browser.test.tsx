@@ -44,7 +44,7 @@ describe('@godaddy/antares', function antares() {
       it('renders error message and data-invalid on frame and input', async function invalidState() {
         const { locator } = await render(<InvalidExample />);
         const frame = locator.getByRole('group').element();
-        const input = locator.getByRole('textbox', { name: 'Quantity' }).element();
+        const input = locator.getByRole('textbox', { name: 'Quantity *' }).element();
 
         assume(locator.getByText('Please enter a value between 0 and 100').element()).exists();
         assume(frame.getAttribute('data-invalid')).equals('true');

@@ -58,7 +58,7 @@ describe('@godaddy/antares', function packageTests() {
         const favorite = getByRole('button', { name: 'Favorite' });
         await userEvent.click(favorite);
         await expect.element(favorite).toHaveAttribute('aria-pressed', 'true');
-        await expect.element(getByRole('status')).toHaveTextContent('Saved to your templates');
+        await expect.element(getByRole('status')).toMatchTextContent('Saved to your templates');
         await userEvent.click(favorite);
         await expect.element(favorite).toHaveAttribute('aria-pressed', 'false');
       });
@@ -125,7 +125,7 @@ describe('@godaddy/antares', function packageTests() {
       it('forwards refs for the collection, rows, links, and static Cards', async function refs() {
         const { getByRole, getByTestId } = await render(<CustomizationExample />);
         await userEvent.click(getByRole('button', { name: 'Check refs' }));
-        await expect.element(getByTestId('props-ref-status')).toHaveTextContent('Refs ready');
+        await expect.element(getByTestId('props-ref-status')).toMatchTextContent('Refs ready');
       });
     });
 
@@ -137,32 +137,32 @@ describe('@godaddy/antares', function packageTests() {
 
         await expect.element(privacy).toHaveAttribute('aria-selected', 'true');
         await expect.element(getByTestId('privacy-indicator')).toHaveAttribute('data-selected', 'true');
-        await expect.element(getByTestId('email-indicator')).toHaveTextContent('Add');
-        await expect.element(getByRole('status')).toHaveTextContent('Add-ons total: $5/month');
+        await expect.element(getByTestId('email-indicator')).toMatchTextContent('Add');
+        await expect.element(getByRole('status')).toMatchTextContent('Add-ons total: $5/month');
 
         await userEvent.click(email);
         await expect.element(email).toHaveAttribute('aria-selected', 'true');
-        await expect.element(getByTestId('email-indicator')).toHaveTextContent('Added');
+        await expect.element(getByTestId('email-indicator')).toMatchTextContent('Added');
         await expect.element(privacy).toHaveAttribute('aria-selected', 'true');
-        await expect.element(getByRole('status')).toHaveTextContent('Add-ons total: $13/month');
+        await expect.element(getByRole('status')).toMatchTextContent('Add-ons total: $13/month');
 
         await userEvent.click(privacy);
         await expect.element(privacy).toHaveAttribute('aria-selected', 'false');
         expect(getComputedStyle(email.element()).borderColor).not.toBe(getComputedStyle(privacy.element()).borderColor);
-        await expect.element(getByRole('status')).toHaveTextContent('Add-ons total: $8/month');
+        await expect.element(getByRole('status')).toMatchTextContent('Add-ons total: $8/month');
         await userEvent.click(email);
-        await expect.element(getByRole('status')).toHaveTextContent('Add-ons total: $0/month');
+        await expect.element(getByRole('status')).toMatchTextContent('Add-ons total: $0/month');
       });
 
       it('keeps one Card selected in a single selection group', async function single() {
         const { getByRole, getByTestId } = await render(<SingleSelectionExample />);
         const pro = getByRole('row', { name: 'Pro plan' });
-        await expect.element(getByRole('status')).toHaveTextContent('Selected plan: Starter - $10/month');
+        await expect.element(getByRole('status')).toMatchTextContent('Selected plan: Starter - $10/month');
         await userEvent.click(pro);
         await expect.element(pro).toHaveAttribute('aria-selected', 'true');
         await expect.element(getByRole('row', { name: 'Starter plan' })).toHaveAttribute('aria-selected', 'false');
         await expect.element(getByTestId('starter-indicator')).not.toHaveAttribute('data-selected');
-        await expect.element(getByRole('status')).toHaveTextContent('Selected plan: Pro - $25/month');
+        await expect.element(getByRole('status')).toMatchTextContent('Selected plan: Pro - $25/month');
 
         await userEvent.click(pro);
         await expect.element(pro).toHaveAttribute('aria-selected', 'true');
@@ -264,7 +264,7 @@ describe('@godaddy/antares', function packageTests() {
         await userEvent.fill(getByRole('textbox', { name: /Email/ }), 'owner@example.com');
         await userEvent.click(getByRole('button', { name: 'Subscribe', exact: true }));
         await expect.element(dialog).not.toBeInTheDocument();
-        await expect.element(getByRole('status')).toHaveTextContent('Subscribed with owner@example.com');
+        await expect.element(getByRole('status')).toMatchTextContent('Subscribed with owner@example.com');
       });
 
       it('runs a row action from a press or Enter', async function rowAction() {
@@ -293,7 +293,7 @@ describe('@godaddy/antares', function packageTests() {
         await userEvent.fill(getByRole('textbox', { name: /Email/ }), 'owner@example.com');
         await userEvent.keyboard('{Enter}');
         await expect.element(getByRole('dialog')).not.toBeInTheDocument();
-        await expect.element(getByRole('status')).toHaveTextContent('Subscribed with owner@example.com');
+        await expect.element(getByRole('status')).toMatchTextContent('Subscribed with owner@example.com');
       });
     });
 

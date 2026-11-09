@@ -1,0 +1,11 @@
+{
+  "outputBudget": 20608,
+  "consumerBudgets": {
+    "entry:@bento/icon": 6272,
+    "export:@bento/icon#Icon": 6272,
+    "export:@bento/icon#ondemand": 6272,
+    "export:@bento/icon#only": 6272,
+    "export:@bento/icon#pick": 6272,
+    "export:@bento/icon#set": 6272
+  }
+}

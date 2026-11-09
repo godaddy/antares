@@ -89,7 +89,7 @@ describe('@godaddy/antares', function antares() {
 
       const switchInput = page.getByRole('switch', { name: 'Wi-Fi' });
 
-      await switchInput.click({ force: true });
+      await page.getByText('Wi-Fi', { exact: true }).click();
 
       await vi.waitFor(function checkSelection() {
         assume((switchInput.element() as HTMLInputElement).checked).is.true();

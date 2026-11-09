@@ -15,7 +15,6 @@ describe('@bento/button examples', function bento() {
 
   afterEach(function afterEach() {
     consoleLogSpy.mockRestore();
-    vi.clearAllMocks();
   });
 
   describe('Button', function buttonExample() {

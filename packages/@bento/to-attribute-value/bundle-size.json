@@ -1,0 +1,7 @@
+{
+  "outputBudget": 18432,
+  "consumerBudgets": {
+    "entry:@bento/to-attribute-value": 1152,
+    "export:@bento/to-attribute-value#stringify": 1152
+  }
+}

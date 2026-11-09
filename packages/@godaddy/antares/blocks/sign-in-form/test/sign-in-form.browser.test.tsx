@@ -7,7 +7,7 @@ describe('@godaddy/antares', function packageTests() {
   describe('#SignInForm', function signInFormTests() {
     it('exposes labeled required fields and accepts valid form input', async function acceptsFormInput() {
       const { getByLabelText, getByRole } = await render(<SignInForm />);
-      const email = getByRole('textbox', { name: 'Email' });
+      const email = getByRole('textbox', { name: 'Email *' });
       const password = getByLabelText('Password');
       const submit = getByRole('button', { name: 'Sign in' });
 

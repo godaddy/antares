@@ -155,6 +155,10 @@
     "legacyDefault": "white",
     "tokens": [
       {
+        "token": "color-action-background-control-pressed",
+        "dtcgDefault": "whitesmoke"
+      },
+      {
         "token": "color-action-background-selected-default",
         "dtcgDefault": "white"
       },
@@ -173,6 +177,10 @@
     "var": "--ux-187j9dd",
     "legacyDefault": "darkcyan",
     "tokens": [
+      {
+        "token": "color-action-border-control-pressed",
+        "dtcgDefault": "lightgray"
+      },
       {
         "token": "color-action-border-selected-default",
         "dtcgDefault": "teal"
@@ -207,6 +215,10 @@
     "legacyDefault": "black",
     "tokens": [
       {
+        "token": "color-action-text-control-pressed",
+        "dtcgDefault": "black"
+      },
+      {
         "token": "color-action-text-selected-default",
         "dtcgDefault": "black"
       },
@@ -231,31 +243,15 @@
     "hash": "qebq9u",
     "var": "--ux-qebq9u",
     "legacyDefault": "whitesmoke",
-    "tokens": [
-      {
-        "token": "color-action-background-control-pressed",
-        "dtcgDefault": "whitesmoke"
-      },
-      {
-        "token": "color-action-background-overlay-pressed",
-        "dtcgDefault": "whitesmoke"
-      }
-    ]
+    "token": "color-action-background-overlay-pressed",
+    "dtcgDefault": "whitesmoke"
   },
   "ux.actionControlFocused.borderColor": {
     "hash": "18hlgn4",
     "var": "--ux-18hlgn4",
     "legacyDefault": "lightgray",
-    "tokens": [
-      {
-        "token": "color-action-border-control-pressed",
-        "dtcgDefault": "lightgray"
-      },
-      {
-        "token": "color-action-border-overlay-pressed",
-        "dtcgDefault": "lightgray"
-      }
-    ]
+    "token": "color-action-border-overlay-pressed",
+    "dtcgDefault": "lightgray"
   },
   "ux.actionControlFocused.borderRadius": {
     "hash": "kdmzt1",
@@ -275,16 +271,8 @@
     "hash": "6gm31z",
     "var": "--ux-6gm31z",
     "legacyDefault": "black",
-    "tokens": [
-      {
-        "token": "color-action-text-control-pressed",
-        "dtcgDefault": "black"
-      },
-      {
-        "token": "color-action-text-overlay-pressed",
-        "dtcgDefault": "black"
-      }
-    ]
+    "token": "color-action-text-overlay-pressed",
+    "dtcgDefault": "black"
   },
   "ux.actionControlFocused.outlineColor": {
     "hash": "1njwmlo",
@@ -3455,8 +3443,8 @@
     "hash": "gfnupv",
     "var": "--ux-gfnupv",
     "legacyDefault": "\"gdsherpa\", Helvetica, Arial, sans-serif",
-    "token": null,
-    "dtcgDefault": null
+    "token": "font-action-family",
+    "dtcgDefault": "system-ui, sans-serif"
   },
   "ux.textAction.fontSize": {
     "hash": "cxbe8g",
@@ -3476,15 +3464,15 @@
     "hash": "j40yyd",
     "var": "--ux-j40yyd",
     "legacyDefault": "500",
-    "token": null,
-    "dtcgDefault": null
+    "token": "font-action-weight",
+    "dtcgDefault": "bold"
   },
   "ux.textAction.lineHeight": {
     "hash": "jw5s9j",
     "var": "--ux-jw5s9j",
     "legacyDefault": "1.375",
-    "token": null,
-    "dtcgDefault": null
+    "token": "font-action-line-height",
+    "dtcgDefault": "1.375"
   },
   "ux.textCaption.fontFamily": {
     "hash": "1gutwvn",

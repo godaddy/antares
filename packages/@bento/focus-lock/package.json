@@ -7,6 +7,8 @@
   "module": "./dist/index.mjs",
   "scripts": {
     "build": "tsdown",
+    "bundle-size:build": "node ../../../scripts/bundle-analysis.ts --package-from-cwd",
+    "bundle-size:check": "node ../../../scripts/bundle-analysis.ts --package-from-cwd --check",
     "lint": "biome lint",
     "prepublishOnly": "node ../../../scripts/compile-readme.ts",
     "test": "vitest --run",
@@ -49,16 +51,16 @@
   },
   "devDependencies": {
     "@bento/button": "workspace:^",
-    "@bento/container": "workspace:^",
-    "@bento/heading": "workspace:^",
     "@bento/listbox": "workspace:^",
-    "@bento/radio": "workspace:^",
-    "@bento/text": "workspace:^",
     "@types/react": "catalog:",
-    "@types/react-dom": "catalog:",
     "tsdown": "catalog:",
+    "@bento/text": "workspace:^",
+    "vitest-browser-react": "catalog:",
+    "@bento/radio": "workspace:^",
     "vitest": "catalog:",
-    "vitest-browser-react": "catalog:"
+    "@types/react-dom": "catalog:",
+    "@bento/heading": "workspace:^",
+    "@bento/container": "workspace:^"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

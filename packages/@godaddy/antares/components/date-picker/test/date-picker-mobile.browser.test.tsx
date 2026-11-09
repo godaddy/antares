@@ -46,7 +46,7 @@ describe('@godaddy/antares', function packageTests() {
         await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
         await expect
           .element(screen.getByLabelText('Selected dates'))
-          .toHaveTextContent(range ? '2026-09-15/2026-09-18' : '2026-09-15');
+          .toMatchTextContent(range ? '2026-09-15/2026-09-18' : '2026-09-15');
         await expect.element(trigger).toHaveFocus();
       }
     );
@@ -72,7 +72,7 @@ describe('@godaddy/antares', function packageTests() {
       }
       await expect.element(screen.getByLabelText('Selected dates')).toBeEmptyDOMElement();
       await screen.getByRole('button', { name: /March 12, 2026/ }).click();
-      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-03-12/2026-09-15');
+      await expect.element(screen.getByLabelText('Selected dates')).toMatchTextContent('2026-03-12/2026-09-15');
     });
 
     it.each(['sm', 'lg'] as const)(
@@ -116,7 +116,7 @@ describe('@godaddy/antares', function packageTests() {
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
       await screen.getByRole('button', { name: /October 15, 2026/ }).click();
       await screen.getByRole('button', { name: /October 25, 2026/ }).click();
-      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-10-15/2026-10-25');
+      await expect.element(screen.getByLabelText('Selected dates')).toMatchTextContent('2026-10-15/2026-10-25');
       const before = getComputedStyle(
         screen.getByRole('button', { name: /October 19, 2026/ }).element().parentElement!
       );
@@ -161,9 +161,9 @@ describe('@godaddy/antares', function packageTests() {
       await page.viewport(320, 768);
       const screen = await render(<MobileExample />);
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
-      await screen.getByRole('button', { name: 'Month' }).click();
+      await screen.getByRole('button', { name: / Month$/ }).click();
       await screen.getByRole('option', { name: 'February', exact: true }).click();
-      await expect.element(screen.getByRole('button', { name: 'Month' })).toHaveTextContent('February');
+      await expect.element(screen.getByRole('button', { name: / Month$/ })).toMatchTextContent('February');
       const year = screen.getByRole('textbox', { name: 'Year' });
       await year.fill('1980');
       await userEvent.keyboard('{Enter}');
@@ -179,9 +179,9 @@ describe('@godaddy/antares', function packageTests() {
       await year.fill('1980');
       await userEvent.keyboard('{Enter}');
       await expect.element(year).toHaveValue('2026');
-      await screen.getByRole('button', { name: 'Month' }).click();
+      await screen.getByRole('button', { name: / Month$/ }).click();
       await screen.getByRole('option', { name: 'January', exact: true }).click();
-      await expect.element(screen.getByRole('button', { name: 'Month' })).toHaveTextContent('March');
+      await expect.element(screen.getByRole('button', { name: / Month$/ })).toMatchTextContent('March');
       await expect
         .poll(function firstMonth() {
           return document.querySelector<HTMLElement>('[data-calendar-month]')!.dataset.calendarMonth;
@@ -210,7 +210,7 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.keyboard('{Enter}');
       await expect.element(year).toHaveValue('2026');
       await screen.getByRole('button', { name: /September 18, 2026/ }).click();
-      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15/2026-09-18');
+      await expect.element(screen.getByLabelText('Selected dates')).toMatchTextContent('2026-09-15/2026-09-18');
       const months = document.querySelectorAll<HTMLElement>('[data-calendar-month]');
       months[months.length - 1].scrollIntoView();
       await expect
@@ -231,12 +231,12 @@ describe('@godaddy/antares', function packageTests() {
       const year = screen.getByRole('textbox', { name: 'Year' });
       await year.fill('5786');
       await userEvent.keyboard('{Enter}');
-      await screen.getByRole('button', { name: 'Month' }).click();
+      await screen.getByRole('button', { name: / Month$/ }).click();
       expect(screen.getByRole('option').all()).toHaveLength(12);
       await userEvent.keyboard('{Escape}');
       await year.fill('5787');
       await userEvent.keyboard('{Enter}');
-      await screen.getByRole('button', { name: 'Month' }).click();
+      await screen.getByRole('button', { name: / Month$/ }).click();
       expect(screen.getByRole('option').all()).toHaveLength(13);
     });
 
@@ -249,7 +249,7 @@ describe('@godaddy/antares', function packageTests() {
       );
       await screen.getByRole('button', { name: /Event dates/ }).click();
       await userEvent.keyboard('{Enter}');
-      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15');
+      await expect.element(screen.getByLabelText('Selected dates')).toMatchTextContent('2026-09-15');
     });
 
     it('moves keyboard focus into months outside the rendered window', async function keyboard() {
@@ -259,7 +259,7 @@ describe('@godaddy/antares', function packageTests() {
       for (let step = 0; step < 6; step++) await userEvent.keyboard('{PageDown}');
       await expect.element(screen.getByRole('button', { name: /March 15, 2027/ })).toHaveFocus();
       await userEvent.keyboard('{Enter}');
-      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2027-03-15');
+      await expect.element(screen.getByLabelText('Selected dates')).toMatchTextContent('2027-03-15');
     });
 
     it('reveals controlled focus changes without selecting', async function controlledFocus() {
@@ -292,7 +292,7 @@ describe('@godaddy/antares', function packageTests() {
       await screen.getByRole('button', { name: /September 15, 2026/ }).click();
       await screen.getByRole('button', { name: /September 25, 2026/ }).click();
       expect(Math.abs(month.getBoundingClientRect().top - before)).toBeLessThan(2);
-      await expect.element(screen.getByRole('button', { name: 'Month' })).toHaveTextContent('September');
+      await expect.element(screen.getByRole('button', { name: / Month$/ })).toMatchTextContent('September');
     });
 
     it('hydrates at a narrow viewport and opens a drawer', async function hydrate() {
@@ -346,7 +346,7 @@ describe('@godaddy/antares', function packageTests() {
         expect(rect.right).toBeLessThanOrEqual(dialog.getBoundingClientRect().right);
       }
       await screen.getByRole('button', { name: cell.getAttribute('aria-label')!, exact: true }).click();
-      await expect.element(screen.getByLabelText('Selected dates')).toHaveTextContent('2026-09-15');
+      await expect.element(screen.getByLabelText('Selected dates')).toMatchTextContent('2026-09-15');
     });
   });
 });

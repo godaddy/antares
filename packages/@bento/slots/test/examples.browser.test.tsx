@@ -40,7 +40,7 @@ describe('@bento/slots examples', function bento() {
       assume(result).equals(
         '<div data-override="slot" data-slot="example-container" id="_r_0_" class="example"><label for="example" data-slot="label">Hello World</label><button id="_r_1_" data-override="slot" data-slot="button">Click Me</button></div>'
       );
-      await screen.getByRole('button', { name: 'Click me' }).click();
+      await screen.getByRole('button', { name: 'Click Me' }).click();
 
       console.log = logger;
 
@@ -75,7 +75,7 @@ describe('@bento/slots examples', function bento() {
       assume(result).equals(
         '<div data-slot="example-container" class="example"><label for="example" data-slot="label">Hello World</label><button id="_r_3_" data-override="style slot" data-slot="button" style="background: red; border: 2px solid black;">Click Me</button></div>'
       );
-      await screen.getByRole('button', { name: 'Click me' }).click();
+      await screen.getByRole('button', { name: 'Click Me' }).click();
 
       console.log = logger;
 

@@ -3,5 +3,6 @@ import { mergeConfig } from 'tsdown';
 
 export default mergeConfig(config, {
   entry: ['src/index.ts', 'src/docs.ts', 'src/runtime.ts'],
-  inlineOnly: false
+  inlineOnly: false,
+  dts: { emitJs: false }
 });

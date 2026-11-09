@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "tsdown",
+    "bundle-size:build": "node ../../../scripts/bundle-analysis.ts --package-from-cwd",
+    "bundle-size:check": "node ../../../scripts/bundle-analysis.ts --package-from-cwd --check",
     "watch": "tsdown --watch",
     "test": "vitest run --project=SSR --project=Browser --coverage",
     "test:node": "vitest run --project=SSR",
@@ -64,18 +66,18 @@
     "react-aria-components": "^1.22.1"
   },
   "devDependencies": {
-    "@bento/storybook-addon-helpers": "workspace:^",
-    "@godaddy/generate-cdn-url": "workspace:^",
-    "@tsdown/css": "catalog:",
-    "@types/react": "catalog:",
-    "@types/react-dom": "catalog:",
-    "assume": "^2.3.0",
     "react": "catalog:",
-    "react-dom": "catalog:",
-    "rolldown": "^1.2.14",
     "tsdown": "catalog:",
+    "vitest-browser-react": "catalog:",
+    "@tsdown/css": "catalog:",
+    "assume": "^2.3.0",
+    "@godaddy/generate-cdn-url": "workspace:^",
     "vitest": "catalog:",
-    "vitest-browser-react": "catalog:"
+    "@types/react-dom": "catalog:",
+    "@bento/storybook-addon-helpers": "workspace:^",
+    "rolldown": "^1.2.14",
+    "react-dom": "catalog:",
+    "@types/react": "catalog:"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

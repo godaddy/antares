@@ -61,15 +61,32 @@ jobs:
       - name: Test
         run: pnpm run test
 
+      - name: Build Bundle Reports
+        timeout-minutes: 45
+        run: pnpm run bundle-size:build
+
+      - name: Check Bundle Budgets
+        run: pnpm run bundle-size:check
+
       - name: Run Visual Tests
         run: pnpm run test:visual
+
+      - name: Upload Bundle Reports
+        uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: bundle-analysis-${{ github.event.pull_request.number || github.run_id }}
+          path: .bundle-analysis/
+          include-hidden-files: true
+          retention-days: 2
+          if-no-files-found: ignore
 
       - name: Upload Visual Test Artifacts
         uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: visual-test-diffs-${{ github.event.pull_request.number || github.run_id }}
-          path: packages/@godaddy/antares/.vitest-attachments/
+          path: packages/@godaddy/antares/.vitest/attachments/
           include-hidden-files: true
           retention-days: 2
           if-no-files-found: ignore

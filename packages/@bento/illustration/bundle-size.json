@@ -1,0 +1,7 @@
+{
+  "outputBudget": 36352,
+  "consumerBudgets": {
+    "entry:@bento/illustration": 5120,
+    "export:@bento/illustration#Illustration": 5120
+  }
+}

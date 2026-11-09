@@ -6,6 +6,7 @@ export default defineConfig({
     tsconfigPaths: true
   },
   test: {
+    clearMocks: true,
     environment: 'node',
     include: ['test/**/*.node.test.{ts,tsx}'],
     coverage: {
@@ -18,6 +19,7 @@ export default defineConfig({
         autoUpdate: false,
         perFile: true,
         'lib/**.{ts,tsx}': {
+          perFile: true,
           statements: 100,
           functions: 100,
           branches: 100,

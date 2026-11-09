@@ -15,7 +15,7 @@ describe('@bento/error examples', function bento() {
       };
 
       assume(screen.container.innerHTML).includes('Log bento error in console');
-      await screen.getByRole('button', { name: 'error' }).click();
+      await screen.getByRole('button', { name: 'Log bento error in console' }).click();
 
       console.error = consoleError;
       assume(error).is.instanceOf(Error);

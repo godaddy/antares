@@ -35,11 +35,11 @@
     "typescript": "catalog:"
   },
   "devDependencies": {
-    "@types/react": "catalog:",
+    "vitest": "catalog:",
     "react": "catalog:",
     "tsdown": "catalog:",
-    "vite": "catalog:",
-    "vitest": "catalog:"
+    "@types/react": "catalog:",
+    "vite": "catalog:"
   },
   "peerDependencies": {
     "@storybook/react-vite": "^10.6.5",

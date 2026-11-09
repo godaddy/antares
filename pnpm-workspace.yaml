@@ -21,13 +21,13 @@ catalog:
   '@storybook/addon-onboarding': ^10.6.5
   '@storybook/addon-themes': ^10.6.5
   storybook: ^10.6.5
-  tsdown: ^0.23.4
-  '@tsdown/css': ^0.23.4
+  tsdown: ^0.23.7
+  '@tsdown/css': ^0.23.7
   typescript: 7.0.2
   vite: ^8.3.5
-  vitest: ^4.1.11
-  '@vitest/browser': ^4.1.11
-  '@vitest/browser-playwright': ^4.1.11
-  '@vitest/coverage-v8': ^4.1.11
-  '@vitest/ui': ^4.1.11
+  vitest: ^5.1.0
+  '@vitest/browser': ^5.1.0
+  '@vitest/browser-playwright': ^5.1.0
+  '@vitest/coverage-v8': ^5.1.0
+  '@vitest/ui': ^5.1.0
   vitest-browser-react: ^2.3.0

@@ -1,0 +1,7 @@
+{
+  "outputBudget": 22144,
+  "consumerBudgets": {
+    "entry:@bento/error": 896,
+    "export:@bento/error#BentoError": 896
+  }
+}

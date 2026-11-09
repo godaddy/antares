@@ -12,7 +12,7 @@
     "test": "vitest --run --coverage.enabled=false",
     "test:node": "vitest --run --project=SSR --coverage.enabled=false",
     "test:browser": "vitest --run --project=Browser --coverage.enabled=false",
-    "test:watch": "vitest",
+    "test:watch": "vitest --coverage.enabled=false",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "files": [
@@ -30,22 +30,22 @@
   },
   "devDependencies": {
     "@godaddy/antares": "workspace:*",
+    "vfile": "^6.0.3",
+    "@storybook/react-vite": "catalog:",
+    "vitest-browser-react": "catalog:",
     "@mdx-js/mdx": "^3.1.1",
     "@storybook/addon-docs": "catalog:",
-    "@storybook/react-vite": "catalog:",
+    "storybook": "catalog:",
+    "@types/react": "catalog:",
+    "mdast": "^3.0.0",
     "@types/css-modules": "^1.0.5",
     "@types/mdast": "catalog:",
-    "@types/react": "catalog:",
-    "@types/react-dom": "catalog:",
-    "mdast": "^3.0.0",
     "react": "catalog:",
-    "react-dom": "catalog:",
-    "storybook": "catalog:",
     "tsdown": "catalog:",
-    "vfile": "^6.0.3",
-    "vite": "catalog:",
     "vitest": "catalog:",
-    "vitest-browser-react": "catalog:"
+    "@types/react-dom": "catalog:",
+    "react-dom": "catalog:",
+    "vite": "catalog:"
   },
   "peerDependencies": {
     "@godaddy/antares": "*",
