@@ -1,11 +1,20 @@
 import { page, userEvent } from 'vitest/browser';
-import { describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { salesChannelData } from '../constants/config.ts';
 import { OverviewDashboard } from '../index.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#OverviewDashboard', function overviewDashboardTests() {
+    // A viewport narrower than the 960px dashboard scrolls sideways on click, moving the hover rail.
+    beforeAll(async function widenViewport() {
+      await page.viewport(1024, 768);
+    });
+
+    afterAll(async function restoreViewport() {
+      await page.viewport(414, 896);
+    });
+
     it('renders the dashboard content and chart', async function rendersDashboard() {
       const { locator } = await render(
         <div style={{ width: '960px' }}>
