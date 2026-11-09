@@ -1,9 +1,9 @@
 import { DefaultExample } from '../examples/default.tsx';
 import { IconContextExample } from '../examples/icon-context.tsx';
 import { render } from 'vitest-browser-react';
-import { Icon } from '@godaddy/antares';
+import { Icon, set } from '@godaddy/antares';
 import { type ReactElement, createRef } from 'react';
-import { describe, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import assume from 'assume';
 
 describe('@godaddy/antares', function antares() {
@@ -123,22 +123,27 @@ describe('@godaddy/antares', function antares() {
 
   describe('#children', function children() {
     it('renders children', async function children() {
-      const { container } = await render(
-        <Icon icon="home">
+      const icon = 'test-placeholder';
+      set({ [icon]: undefined });
+      const response = Promise.withResolvers<Response>();
+      const request = vi.spyOn(globalThis, 'fetch').mockReturnValueOnce(response.promise);
+      const screen = await render(
+        <Icon icon={icon}>
           <span>Hello the placeholder</span>
         </Icon>
       );
-
-      // Initially should show placeholder content
-      assume(container.innerHTML).includes('Hello the placeholder');
-
-      // Wait for icon to load and replace placeholder
-      await wait(container);
-
-      // After loading, placeholder should be replaced with the icon
-      assume(container.innerHTML).includes('data-icon="home"');
-      assume(container.innerHTML).includes('<svg');
-      assume(container.innerHTML).does.not.include('Hello the placeholder');
+      try {
+        await expect.element(screen.getByText('Hello the placeholder')).toBeVisible();
+        expect(request).toHaveBeenCalledWith(expect.stringContaining(`/${icon}.svg`));
+        response.resolve(new Response('<svg viewBox="0 0 24 24"><path d="M0 0h24v24H0z" /></svg>'));
+        await wait(screen.container);
+        assume(screen.container.innerHTML).includes(`data-icon="${icon}"`);
+        await expect.element(screen.getByText('Hello the placeholder')).not.toBeInTheDocument();
+      } finally {
+        await screen.unmount();
+        request.mockRestore();
+        set({ [icon]: undefined });
+      }
     });
   });
 

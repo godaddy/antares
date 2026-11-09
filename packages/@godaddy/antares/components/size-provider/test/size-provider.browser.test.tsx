@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
+import { resetHover } from '#test/utils/test-helpers.tsx';
 import { ExplicitSizeExample } from '../examples/explicit-size.tsx';
 import { FormExample } from '../examples/form.tsx';
 import { NestedScopesExample } from '../examples/nested-scopes.tsx';
@@ -31,6 +32,7 @@ function expectYearFits(calendar: Element) {
 const typeProperties = ['fontSize', 'fontFamily', 'fontWeight', 'lineHeight'] as const;
 
 describe('@godaddy/antares', function antares() {
+  beforeEach(resetHover);
   describe('#SizeProvider', function sizeProviderTests() {
     it('sizes controls from the nearest scope, with md outside any scope', async function controls() {
       const { getByTestId } = await render(<ScenariosExample />);
@@ -327,6 +329,7 @@ describe('@godaddy/antares', function antares() {
       await expect.element(getByRole('option', { name: 'Basic' })).toBeVisible();
       expect(style(getByRole('option', { name: 'Basic' }).element()).fontSize).toEqual('14px');
       await userEvent.keyboard('{Escape}');
+      await expect.element(getByRole('option', { name: 'Basic' })).not.toBeInTheDocument();
 
       await userEvent.click(getByRole('button', { name: /Region/ }));
       await expect.element(getByRole('option', { name: 'Europe' })).toBeVisible();
