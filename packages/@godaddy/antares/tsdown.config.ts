@@ -1,4 +1,5 @@
 import packageJson from './package.json' with { type: 'json' };
+import type { Plugin } from 'rolldown';
 import { replacePlugin } from 'rolldown/plugins';
 import { mergeConfig } from 'tsdown';
 import { config } from '../../../configs/tsdown.config.mts';
@@ -15,8 +16,27 @@ import { CDN, ICON_PACKAGE, DESIGN_ASSETS_VERSION } from './utils/icon-cdn.ts';
 const versionMatch = packageJson.version.match(/^(\d+)\.(\d+)\.(\d+)/);
 const versionParts = versionMatch ? versionMatch.slice(1) : ['0', '0', '0'];
 
+const cjsCssRequirePlugin: Plugin = {
+  name: 'cjs-css-require',
+  generateBundle: {
+    order: 'post',
+    handler(outputOptions, bundle) {
+      if (outputOptions.format !== 'cjs') return;
+
+      for (const output of Object.values(bundle)) {
+        if (output.type !== 'chunk') continue;
+        output.code = output.code.replace(
+          /^import (['"])([^'"]+\.css)\1;$/gm,
+          (_match, quote: string, cssPath: string) => `require(${quote}${cssPath}${quote});`
+        );
+      }
+    }
+  }
+};
+
 const mergedConfig = mergeConfig(config, {
   plugins: [
+    cjsCssRequirePlugin,
     replacePlugin({
       major: versionParts[0],
       minor: versionParts[1],
