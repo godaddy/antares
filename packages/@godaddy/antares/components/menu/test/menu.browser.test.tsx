@@ -1,7 +1,8 @@
 import { page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
-import { describe, it, vi } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import assume from 'assume';
+import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { GroupsExample } from '../examples/groups.tsx';
 import { SubmenuExample } from '../examples/submenu.tsx';
@@ -12,20 +13,14 @@ import { PlaygroundExample } from '../examples/menu-playground.tsx';
 import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
 import { RichContentExample } from '../examples/rich-content.tsx';
 
-/** Wait for an element to appear by polling. */
-async function waitForElement(locator: ReturnType<typeof page.getByRole>, timeout = 500): Promise<Element> {
-  const start = Date.now();
-  while (Date.now() - start < timeout) {
-    const el = await locator.query();
-    if (el) return el;
-    await new Promise((r) => setTimeout(r, 20));
-  }
+async function waitForElement(locator: ReturnType<typeof page.getByRole>): Promise<Element> {
+  await expect.element(locator).toBeVisible();
   return locator.element();
 }
 
-const settle = (ms = 250) => new Promise((resolve) => setTimeout(resolve, ms));
-
 describe('@godaddy/antares', function antares() {
+  beforeAll(preloadTestIcons);
+  beforeEach(resetHover);
   describe('#Menu', function menuTests() {
     it('opens on trigger click and closes on Escape', async function openClose() {
       const user = userEvent.setup();
@@ -37,8 +32,7 @@ describe('@godaddy/antares', function antares() {
       assume(await menu.query()).is.not.equal(null);
 
       await user.keyboard('{Escape}');
-      await settle();
-      assume(await menu.query()).equals(null);
+      await expect.element(menu).not.toBeInTheDocument();
     });
 
     it('navigates items with the keyboard', async function keyboardNav() {
@@ -92,7 +86,6 @@ describe('@godaddy/antares', function antares() {
       await waitForElement(resourcesItem);
 
       await user.hover(resourcesItem);
-      await settle(200);
 
       const file = page.getByRole('menuitem', { name: 'File' });
       await waitForElement(file);
@@ -168,19 +161,13 @@ describe('@godaddy/antares', function antares() {
       await waitForElement(pick);
 
       await user.click(pick);
-      await settle();
-
-      // The menu closed and the calendar popover took its place.
-      assume(await page.getByRole('menu').query()).equals(null);
+      await expect.element(page.getByRole('menu')).not.toBeInTheDocument();
       const day = page.getByRole('button', { name: /March 20, 2024/ });
       await waitForElement(day);
 
       await user.click(day);
-      await settle();
-
-      // Picking a day closes the popover and updates the summary text.
-      assume(await page.getByRole('button', { name: /March 20, 2024/ }).query()).equals(null);
-      assume(document.body.textContent).contains('Publishing on 2024-03-20');
+      await expect.element(day).not.toBeInTheDocument();
+      await expect.element(page.getByText('Publishing on 2024-03-20')).toBeVisible();
     });
   });
 });
