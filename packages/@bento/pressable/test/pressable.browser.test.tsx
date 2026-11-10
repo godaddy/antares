@@ -1,6 +1,7 @@
 import { Pressable } from '@bento/pressable';
 import { render } from 'vitest-browser-react';
 import { describe, expect, it, vi } from 'vitest';
+import { page } from 'vitest/browser';
 import { userEvent } from '@testing-library/user-event';
 import React, { useRef } from 'react';
 import assume from 'assume';
@@ -64,27 +65,21 @@ describe('@bento/pressable', function bento() {
     });
 
     it('should add and remove correct data attributes on hover', async function test() {
-      const { container } = await render(
+      await page.getByRole('document').hover({ position: { x: -1, y: -1 }, force: true });
+      const { getByText } = await render(
         <Pressable>
           <div>Click me</div>
         </Pressable>
       );
 
-      const divEl = container.querySelector('div');
+      const pressable = getByText('Click me');
+      await expect.element(pressable).not.toHaveAttribute('data-hovered');
 
-      if (!divEl) {
-        throw new Error('divEl is null');
-      }
+      await pressable.hover();
+      await expect.element(pressable).toHaveAttribute('data-hovered', 'true');
 
-      await userEvent.hover(divEl);
-      assume(divEl.getAttribute('data-hovered')).equals('true');
-
-      await userEvent.unhover(divEl);
-      await expect
-        .poll(function hoverStateCleared() {
-          return divEl.getAttribute('data-hovered');
-        })
-        .toBe(null);
+      await pressable.unhover();
+      await expect.element(pressable).not.toHaveAttribute('data-hovered');
     });
 
     it('should add and remove correct data attributes on focus', async function test() {

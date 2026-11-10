@@ -9,6 +9,10 @@ updates:
     schedule:
       interval: "daily"
     groups:
+      nx:
+        patterns:
+          - "nx"
+          - "@nx/*"
       vitest:
         patterns:
           - "vitest"

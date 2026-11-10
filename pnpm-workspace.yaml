@@ -6,8 +6,10 @@ packages:
 strictDepBuilds: true
 allowBuilds:
   esbuild@0.28.2: true
-  nx@23.3.0: false
+  nx@24.0.4: false
 catalog:
+  '@nx/vite': 24.0.4
+  '@nx/vitest': 24.0.4
   '@react-aria/utils': ^3.34.0
   '@types/mdast': ^4.0.4
   '@types/react': ^19.3.0
@@ -15,6 +17,7 @@ catalog:
   react: ^19.3.1
   react-aria: ^3.53.1
   react-dom: ^19.3.1
+  nx: 24.0.4
   '@storybook/addon-docs': ^10.6.5
   '@storybook/react-vite': ^10.6.5
   '@storybook/addon-a11y': ^10.6.5
