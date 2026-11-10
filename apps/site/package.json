@@ -26,9 +26,9 @@
   },
   "devDependencies": {
     "vfile": "^6.0.3",
-    "tailwindcss": "^4.3.3",
+    "tailwindcss": "^4.3.5",
     "remark-parse": "^11.0.0",
-    "@biomejs/biome": "^2.6.4",
+    "@biomejs/biome": "^2.6.6",
     "remark-mdx": "^3.1.1",
     "unified": "^11.0.5",
     "@types/react": "catalog:",
@@ -41,7 +41,7 @@
     "vitest": "catalog:",
     "@types/react-dom": "catalog:",
     "unist-util-visit": "^5.2.0",
-    "@tailwindcss/postcss": "^4.3.3",
+    "@tailwindcss/postcss": "^4.3.5",
     "assume": "^2.3.0",
     "mdast-util-mdxjs-esm": "^2.0.1"
   }
