@@ -23,6 +23,7 @@ import {
   mapConcurrent,
   measureConsumer,
   packageMetadata,
+  workspaces,
   type Budgets,
   type Measurement,
   type Report
@@ -76,7 +77,7 @@ async function savedReportWorkspace(value: Report = report()) {
   const output = join(root, '.bundle-analysis', 'packages', 'fixture-package');
   await mkdir(packageRoot, { recursive: true });
   await mkdir(output, { recursive: true });
-  await writeFile(join(root, 'package.json'), JSON.stringify({ workspaces: ['packages/*'] }));
+  await writeFile(join(root, 'pnpm-workspace.yaml'), 'packages:\n  - packages/*\n');
   await writeFile(
     join(packageRoot, 'package.json'),
     JSON.stringify({
@@ -98,6 +99,20 @@ async function savedReportWorkspace(value: Report = report()) {
   };
   return { root, output, pkg };
 }
+
+describe('pnpm workspace discovery', function pnpmWorkspaceDiscovery() {
+  it('discovers packages from pnpm-workspace.yaml', async function discoversPnpmPackages() {
+    const root = await mkdtemp(join(tmpdir(), 'antares-bundle-workspaces-'));
+    temporaryDirectories.push(root);
+    const packageRoot = join(root, 'packages', 'fixture-package');
+    await mkdir(packageRoot, { recursive: true });
+    await writeFile(join(root, 'package.json'), JSON.stringify({ name: 'fixture-root' }));
+    await writeFile(join(root, 'pnpm-workspace.yaml'), 'packages:\n  - packages/*\n');
+    await writeFile(join(packageRoot, 'package.json'), JSON.stringify({ name: '@fixture/package', version: '1.0.0' }));
+
+    expect((await workspaces(root)).map(({ name }) => name)).toEqual(['@fixture/package']);
+  });
+});
 
 describe('bounded consumer work', function boundedConsumerTests() {
   it('runs at most two jobs and retains input order when jobs finish out of order', async function preservesOrder() {
@@ -186,6 +201,7 @@ describe('bounded consumer work', function boundedConsumerTests() {
         id: 'fixture-entry',
         package: 'concurrent-fixture',
         from: 'concurrent-fixture',
+        target: 'node_modules/concurrent-fixture/index.js',
         names: ['first', 'second'],
         scope: 'entry'
       },
@@ -193,6 +209,7 @@ describe('bounded consumer work', function boundedConsumerTests() {
         id: 'fixture-first',
         package: 'concurrent-fixture',
         from: 'concurrent-fixture',
+        target: 'node_modules/concurrent-fixture/index.js',
         names: ['first'],
         scope: 'export'
       },
@@ -200,6 +217,7 @@ describe('bounded consumer work', function boundedConsumerTests() {
         id: 'fixture-second',
         package: 'concurrent-fixture',
         from: 'concurrent-fixture',
+        target: 'node_modules/concurrent-fixture/index.js',
         names: ['second'],
         scope: 'export'
       }
@@ -368,7 +386,7 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
 
   it('aggregates publishable libraries without requiring private or app reports', async function skipsUnmeasuredWorkspaces() {
     const fixture = await savedReportWorkspace();
-    await writeFile(join(fixture.root, 'package.json'), JSON.stringify({ workspaces: ['packages/*', 'apps/*'] }));
+    await writeFile(join(fixture.root, 'pnpm-workspace.yaml'), 'packages:\n  - packages/*\n  - apps/*\n');
     for (const [directory, manifest] of [
       ['packages/private-package', { name: '@test/private', private: true }],
       ['apps/docs', { name: 'docs' }]
@@ -763,7 +781,7 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
   it('bundles runtime dependencies, externalizes declared peers, tree shakes unused exports, and rejects missing exports', async function verifiesConsumerBuild() {
     const root = await mkdtemp(join(tmpdir(), 'antares-bundle-'));
     temporaryDirectories.push(root);
-    const pkg = join(root, 'node_modules/size-fixture');
+    const pkg = join(root, 'packages/size-fixture');
     const dependency = join(root, 'node_modules/fixture-dependency');
     const peer = join(root, 'node_modules/fixture-peer');
     await mkdir(pkg, { recursive: true });
@@ -798,6 +816,7 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
       id: 'fixture',
       package: 'size-fixture',
       from: 'size-fixture',
+      target: 'packages/size-fixture/index.js',
       names: ['used']
     };
     const output = join(root, 'report');

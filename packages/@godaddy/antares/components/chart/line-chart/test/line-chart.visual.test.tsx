@@ -250,8 +250,9 @@ describe('@godaddy/antares', function antares() {
       it('bitcoin-price screenshot', async function bitcoinPrice() {
         const { container, locator } = await renderExampleAndWait(<BitcoinPriceExample />, 800, 600);
 
-        assume(container.querySelector('svg')).exists();
+        await waitForSelector(container, '#line-series-bitcoin-price[d]:not([d=""])');
         await locator.hover({ position: { x: 120, y: 50 } });
+        await expect.element(page.getByRole('list', { name: 'Tooltip data' })).toBeVisible();
         await expect(container).toMatchScreenshot('bitcoin-price');
       });
 

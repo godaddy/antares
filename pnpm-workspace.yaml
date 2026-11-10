@@ -1,0 +1,36 @@
+packages:
+  - 'apps/*'
+  - 'packages/@bento/*'
+  - 'packages/@godaddy/*'
+  - 'packages/dev/*'
+strictDepBuilds: true
+allowBuilds:
+  esbuild@0.28.2: true
+  nx@24.0.4: false
+catalog:
+  '@nx/vite': 24.0.4
+  '@nx/vitest': 24.0.4
+  '@react-aria/utils': ^3.34.0
+  '@types/mdast': ^4.0.4
+  '@types/react': ^19.3.0
+  '@types/react-dom': ^19.3.0
+  react: ^19.3.1
+  react-aria: ^3.53.1
+  react-dom: ^19.3.1
+  nx: 24.0.4
+  '@storybook/addon-docs': ^10.6.5
+  '@storybook/react-vite': ^10.6.5
+  '@storybook/addon-a11y': ^10.6.5
+  '@storybook/addon-onboarding': ^10.6.5
+  '@storybook/addon-themes': ^10.6.5
+  storybook: ^10.6.5
+  tsdown: ^0.23.7
+  '@tsdown/css': ^0.23.7
+  typescript: 7.0.2
+  vite: ^8.3.5
+  vitest: ^5.1.0
+  '@vitest/browser': ^5.1.0
+  '@vitest/browser-playwright': ^5.1.0
+  '@vitest/coverage-v8': ^5.1.0
+  '@vitest/ui': ^5.1.0
+  vitest-browser-react: ^2.3.0

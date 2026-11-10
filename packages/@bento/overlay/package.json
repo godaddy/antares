@@ -44,26 +44,26 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/box": "^0.2.0",
-    "@bento/error": "^0.1.1",
-    "@bento/slots": "^0.3.0",
-    "@bento/use-props": "^0.2.1",
+    "@bento/box": "workspace:^0.2.0",
+    "@bento/error": "workspace:^",
+    "@bento/slots": "workspace:^",
+    "@bento/use-props": "workspace:^0.2.1",
     "@react-aria/overlays": "^3.32.0",
     "@react-stately/overlays": "^3.7.0"
   },
   "devDependencies": {
-    "@bento/button": "*",
-    "@bento/container": "^0.2.1",
-    "@bento/dismiss": "*",
-    "@bento/focus-lock": "*",
-    "@bento/portal": "*",
-    "@bento/scroll-lock": "*",
-    "@bento/text": "*",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "tsdown": "^0.23.7",
-    "vitest": "^5.1.0",
-    "vitest-browser-react": "^2.3.0"
+    "@bento/button": "workspace:^",
+    "tsdown": "catalog:",
+    "@bento/text": "workspace:^",
+    "vitest-browser-react": "catalog:",
+    "vitest": "catalog:",
+    "@bento/scroll-lock": "workspace:^",
+    "@bento/portal": "workspace:^",
+    "@types/react-dom": "catalog:",
+    "@bento/dismiss": "workspace:^",
+    "@types/react": "catalog:",
+    "@bento/focus-lock": "workspace:^",
+    "@bento/container": "workspace:^"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

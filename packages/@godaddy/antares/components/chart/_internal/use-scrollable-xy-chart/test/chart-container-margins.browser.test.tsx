@@ -1,7 +1,7 @@
 /**
  * Browser (Playwright) unit tests for `use-scrollable-xy-chart/src/chart-container-margins.ts`.
- * Run with: `npm run test:browser -- chart-container-margins` or `use-scrollable-xy-chart` from `packages/@godaddy/antares`
- * (requires Chromium for Vitest browser mode, e.g. `npx playwright install`).
+ * Run with: `pnpm run test:browser -- chart-container-margins` or `use-scrollable-xy-chart` from `packages/@godaddy/antares`
+ * (requires Chromium for Vitest browser mode, e.g. `pnpm exec playwright install chromium`).
  */
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {

@@ -57,6 +57,12 @@ jobs:
           ref: ${{ needs.notify.outputs.head_sha }}
           persist-credentials: false
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          version: 12.16.1
+          cache: false
+
       - name: Snapshot tracked screenshot paths
         run: git ls-files -z -- ':(glob)**/__screenshots__/**/*.png' > "$RUNNER_TEMP/tracked-screenshots.nul"
 
@@ -67,10 +73,13 @@ jobs:
           package-manager-cache: false
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Update screenshots
-        run: npm run test:visual:update
+        run: pnpm run test:visual:update
 
       - name: Prepare screenshot artifact
         id: prepare

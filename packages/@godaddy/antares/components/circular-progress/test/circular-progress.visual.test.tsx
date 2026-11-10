@@ -8,6 +8,7 @@ import { EmphasisExample } from '../examples/emphasis.tsx';
 describe('@godaddy/antares', function antares() {
   describe('#CircularProgress', function circularProgressVisualTests() {
     it('default example', async function defaultRender() {
+      await page.viewport(414, 896);
       const { container } = await render(<DefaultExample />);
       await expect(container).toMatchScreenshot('default');
     });
@@ -19,6 +20,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('emphasis variants', async function emphasisRender() {
+      await page.viewport(600, 200);
       const { container } = await render(<EmphasisExample />);
       await expect(container).toMatchScreenshot('emphasis');
     });

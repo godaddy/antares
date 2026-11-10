@@ -1,26 +1,28 @@
 #!/bin/sh
 set -e
 
-npx lint-staged
+pnpm exec lint-staged
 
 echo "🔍 Validating Antares registry schema..."
-npm run registry:validate
+pnpm run registry:validate
 
 echo "🔍 Checking package.json formatting..."
-npm run format:package
+pnpm run format:package
 
 # Run dependency checks to prevent circular deps and version mismatches
 echo "🔍 Checking dependencies..."
-npm run deps:check
+pnpm nx run @godaddy/generate-cdn-url:build
+pnpm run deps:check
 
 echo "🔍 Typechecking..."
-npm run typecheck
+pnpm run typecheck
 
 echo "🔍 Linting..."
-npm run lint
+pnpm run lint
 
 echo "🧪 Running tests (no cache)..."
-npm test -- --skip-nx-cache
+pnpm run scripts:test
+pnpm nx run-many -t test --output-style=static --skipNxCache
 
 
 echo "✅ All pre-commit checks passed!"

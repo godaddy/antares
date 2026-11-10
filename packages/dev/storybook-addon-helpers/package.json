@@ -32,14 +32,14 @@
   ],
   "dependencies": {
     "camelcase": "^10.0.0",
-    "typescript": "7.0.2"
+    "typescript": "catalog:"
   },
   "devDependencies": {
-    "@types/react": "^19.3.0",
-    "react": "^19.3.1",
-    "tsdown": "^0.23.7",
-    "vite": "^8.3.5",
-    "vitest": "^5.1.0"
+    "vitest": "catalog:",
+    "react": "catalog:",
+    "tsdown": "catalog:",
+    "@types/react": "catalog:",
+    "vite": "catalog:"
   },
   "peerDependencies": {
     "@storybook/react-vite": "^10.6.5",

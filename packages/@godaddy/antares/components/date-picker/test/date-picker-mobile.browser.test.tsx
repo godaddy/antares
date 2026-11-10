@@ -22,11 +22,16 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     async function settle(dialog: Element) {
+      const panel = dialog.closest('[data-placement="bottom"]')!;
       await expect
         .poll(function entered() {
-          return getComputedStyle(dialog.parentElement!).transform;
+          const { x, y, width, height } = dialog.getBoundingClientRect();
+          return (
+            dialog.contains(document.elementFromPoint(x + width / 2, y + height / 2)) &&
+            panel.getAnimations().length === 0
+          );
         })
-        .toBe('none');
+        .toBe(true);
     }
 
     it.each([false, true])(
@@ -133,13 +138,14 @@ describe('@godaddy/antares', function packageTests() {
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
       const dialog = screen.getByRole('dialog').element();
       await settle(dialog);
-      const focused = document.activeElement;
+      const focused = screen.getByRole('button', { name: /September 15, 2026/ });
+      await expect.element(focused).toHaveFocus();
       const month = document.querySelector('[data-calendar-month="2026-11-01"]') as HTMLElement;
       const viewport = month.parentElement!;
       month.scrollIntoView();
       await page.viewport(640, 768);
       expect(screen.getByRole('dialog').element()).toBe(dialog);
-      expect(document.activeElement).toBe(focused);
+      await expect.element(focused).toHaveFocus();
       expect(month.getBoundingClientRect().top).toBeLessThan(viewport.getBoundingClientRect().bottom);
       expect(month.getBoundingClientRect().bottom).toBeGreaterThan(viewport.getBoundingClientRect().top);
       await userEvent.keyboard('{Escape}');
@@ -287,10 +293,15 @@ describe('@godaddy/antares', function packageTests() {
       const screen = await render(<MobileExample range keepOpen />);
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
       await settle(screen.getByRole('dialog').element());
+      await expect.element(screen.getByRole('button', { name: /September 15, 2026/ })).toHaveFocus();
+      const start = screen.getByRole('button', { name: /September 15, 2026/ });
+      await start.hover();
+      await expect.element(start).toHaveAttribute('data-hovered');
       const month = document.querySelector('[data-calendar-month="2026-09-01"]') as HTMLElement;
       const before = month.getBoundingClientRect().top;
       await screen.getByRole('button', { name: /September 15, 2026/ }).click();
       await screen.getByRole('button', { name: /September 25, 2026/ }).click();
+      await expect.element(screen.getByLabelText('Selected dates')).toMatchTextContent('2026-09-15/2026-09-25');
       expect(Math.abs(month.getBoundingClientRect().top - before)).toBeLessThan(2);
       await expect.element(screen.getByRole('button', { name: / Month$/ })).toMatchTextContent('September');
     });
