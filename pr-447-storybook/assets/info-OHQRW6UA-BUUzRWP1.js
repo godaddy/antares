@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{w as t}from"./chunk-NGNAAXSQ-DzTRjlqq.js";import{F as n,I as r}from"./mermaid-parser.core-BWiXGr62.js";function i(){return(i=e((()=>{r(),t()})))()}i();export{n as createInfoServices};
