@@ -40,13 +40,13 @@
     "package.json"
   ],
   "devDependencies": {
-    "@bento/slots": "^0.3.0",
-    "@bento/use-props": "^0.2.1",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "tsdown": "^0.23.7",
-    "vitest": "^5.1.0",
-    "vitest-browser-react": "^2.3.0"
+    "@types/react-dom": "catalog:",
+    "tsdown": "catalog:",
+    "vitest-browser-react": "catalog:",
+    "@bento/use-props": "workspace:^",
+    "@bento/slots": "workspace:^",
+    "@types/react": "catalog:",
+    "vitest": "catalog:"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

@@ -1,64 +1,58 @@
 # Publishing Guide
 
-## Workflow
+## Contributor workflow
 
-### 1. Create Changesets
+### 1. Add a Changeset
 
-As you work, create changesets for your changes:
+When a change affects a published package, add a Changeset:
 
-```bash
-npm run changeset
+```sh
+pnpm run changeset
 ```
 
-### 2. Release Workflow Creates PR
+For dependency changes made only in the workspace catalog, include a Changeset
+for each published package whose resolved dependencies change. A catalog-only
+edit may not be detected as a package change automatically.
 
-When a PR is merged to main:
+### 2. Review the version pull request
 
-- The Release workflow runs automatically
-- It creates/updates a "Version Packages" PR
-- Review the version bumps and changelogs
+The Release workflow in `.github/workflows/release.yaml` runs on pushes to
+`main` and can also be started manually. The Changesets action opens or updates
+a `Version Packages` pull request. Its version command runs
+`changeset version` and then `pnpm install --no-frozen-lockfile`, so review the
+package versions, changelogs, and `pnpm-lock.yaml` changes before merging it.
 
-### 3. Merge the PR
+### 3. Publish from the release workflow
 
-When ready to release:
+After the version pull request is merged, the Changesets action runs
+`pnpm run release`. That script builds the workspace and then runs
+`scripts/publish-workspaces.mjs`. The helper runs `pnpm publish -r
+--report-summary`, reads pnpm's list of published packages, and prints a
+`New tag: <name>@<version>` line for each one. The Changesets action uses those
+lines to create Git tags and GitHub releases. Pnpm recursively publishes
+eligible non-private workspace packages and rewrites `workspace:` and
+`catalog:` references in packed manifests. Published package manifests specify
+the public npm registry and public access.
 
-- Merge the "Version Packages" PR
-- This triggers the Publish workflow automatically
-- Packages are published to npm
-- GitHub releases are created automatically
+## Verify without publishing
 
-You can also manually trigger publish: [Actions → Publish](https://github.com/godaddy/antares/actions/workflows/publish.yaml)
+To inspect what a recursive publish would do without uploading packages, run
+this from a clean Git worktree; pnpm rejects publish commands from a dirty tree:
 
-## Authentication
+```sh
+pnpm publish -r --dry-run
+```
 
-The workflow uses **OIDC trusted publishing** for existing packages and **token fallback** for new packages.
+Recursive publishing skips package versions that are already published. If no
+new versions are eligible, the dry run reports that and skips package
+`prepublishOnly` scripts. When a package is eligible, a dry run can still run
+`prepublishOnly`; the button package's script compiles `README.md` from
+`README.mdx`. Review generated README changes afterward. `pnpm pack` can also be
+used to inspect an individual package tarball.
 
-### For New Packages
+## Authentication and release gates
 
-1. First publish uses `NPM_TOKEN` secret automatically
-2. After publishing, configure trusted publishing:
-   - Go to `https://www.npmjs.com/package/@bento/<package-name>/access`
-   - Add trusted publisher:
-     - **Repository**: `godaddy/bento`
-     - **Workflow filename**: `publish.yaml`
-     - **Environment**: (leave empty)
-3. Future publishes use OIDC automatically
-
-### For Existing Packages
-
-Already configured with OIDC. No action needed.
-
-## Troubleshooting
-
-### NPM_TOKEN Issues
-
-- Ensure it's an "Automation" token
-- Verify publish access for `@bento` scope
-
-### Version Already Exists
-
-- Check: `npm view @bento/button versions`
-
-### Build Failures
-
-- Run locally: `npm run build && npm run test`
+The release workflow grants `id-token: write` and does not reference
+`NPM_TOKEN`. This migration does not validate npm-side trusted-publisher
+configuration. Confirm the production release path after merge before relying
+on OIDC publishing.

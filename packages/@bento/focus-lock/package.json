@@ -43,24 +43,24 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/slots": "^0.3.0",
-    "@bento/use-data-attributes": "^0.1.1",
-    "@bento/use-props": "^0.2.3",
+    "@bento/slots": "workspace:^",
+    "@bento/use-data-attributes": "workspace:^",
+    "@bento/use-props": "workspace:^",
     "@react-aria/focus": "^3.22.0",
     "@react-aria/interactions": "^3.28.0"
   },
   "devDependencies": {
-    "@bento/button": "*",
-    "@bento/container": "*",
-    "@bento/heading": "*",
-    "@bento/listbox": "*",
-    "@bento/radio": "*",
-    "@bento/text": "*",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "tsdown": "^0.23.7",
-    "vitest": "^5.1.0",
-    "vitest-browser-react": "^2.3.0"
+    "@bento/button": "workspace:^",
+    "@bento/listbox": "workspace:^",
+    "@types/react": "catalog:",
+    "tsdown": "catalog:",
+    "@bento/text": "workspace:^",
+    "vitest-browser-react": "catalog:",
+    "@bento/radio": "workspace:^",
+    "vitest": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@bento/heading": "workspace:^",
+    "@bento/container": "workspace:^"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

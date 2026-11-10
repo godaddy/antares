@@ -3,7 +3,7 @@
   "mcp": {
     "nx-mcp": {
       "type": "local",
-      "command": ["npx", "nx", "mcp"],
+      "command": ["pnpm", "nx", "mcp"],
       "enabled": true
     }
   }
