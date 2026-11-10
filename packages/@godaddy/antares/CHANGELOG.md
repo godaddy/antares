@@ -1,5 +1,12 @@
 # @godaddy/antares
 
+## 0.12.2
+
+### Patch Changes
+
+- Fix PaginationDots (and Carousel dots) overflowing the container and stretching the page when there are many pages, by letting the dots wrap onto multiple rows. ([#440](https://github.com/godaddy/bento/pull/440) by @jmanso-godaddy)
+- Declare the d3-scale type dependency for reliable declaration builds. ([#439](https://github.com/godaddy/bento/pull/439) by @rmarkins-godaddy)
+
 ## 0.12.1
 
 ### Patch Changes
@@ -47,6 +54,7 @@
 <summary>Updated dependencies</summary>
 
 - @bento/icon@0.2.1
+
 </details>
 
 ## 0.10.1
@@ -375,4 +383,5 @@
 <summary>Updated dependencies</summary>
 
 - @bento/icon@0.2.0
+
 </details>
