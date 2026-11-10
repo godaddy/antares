@@ -14,20 +14,26 @@ describe('@godaddy/antares', function packageTests() {
     it.skipIf(server.browser !== 'chromium')(
       'keeps a tapped date focused and commits the pending range when dismissed',
       async function dismiss() {
-        await page.viewport(320, 768);
-        const screen = await render(<MobileExample range />);
-        const trigger = screen.getByRole('button', { name: /Calendar Event dates/ });
-        await trigger.click();
-        await expect
-          .poll(function settled() {
-            return screen.getByRole('dialog').element().closest('[data-entering]');
-          })
-          .toBeNull();
         const session = cdp();
         await session.send('Emulation.setTouchEmulationEnabled', { enabled: true });
         try {
+          await page.viewport(320, 768);
+          const screen = await render(<MobileExample range />);
+          const trigger = screen.getByRole('button', { name: /Calendar Event dates/ });
+          await trigger.click();
           const day = screen.getByRole('button', { name: /September 15, 2026/ });
           await expect.element(day).toHaveFocus();
+          const stage = day.element().closest('[data-position="bottom"]')!.parentElement!;
+          // CDP input bypasses the actionability checks used by locator interactions.
+          await expect
+            .poll(function readyToTap() {
+              const { x, y, width, height } = day.element().getBoundingClientRect();
+              return (
+                Math.abs(stage.getBoundingClientRect().top) < 1 &&
+                document.elementFromPoint(x + width / 2, y + height / 2) === day.element()
+              );
+            })
+            .toBe(true);
           const rect = day.element().getBoundingClientRect();
           const frame = window.frameElement?.getBoundingClientRect();
           // CDP targets the outer page; Vitest scales the test iframe to fit.
@@ -42,7 +48,8 @@ describe('@godaddy/antares', function packageTests() {
             ]
           });
           await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-          expect(document.activeElement).toBe(day.element());
+          await expect.element(day).toHaveAttribute('data-selection-start');
+          await expect.element(day).toHaveFocus();
           await expect.element(screen.getByRole('dialog')).toBeVisible();
           await session.send('Input.dispatchTouchEvent', {
             type: 'touchStart',

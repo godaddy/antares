@@ -28,10 +28,6 @@
       "dependsOn": ["build"],
       "cache": true
     },
-    "@nx/vitest:test": {
-      "cache": true,
-      "inputs": ["default", "^default"]
-    },
     "bundle-size:build": {
       "dependsOn": ["build"],
       "cache": false
@@ -45,7 +41,6 @@
       "plugin": "@nx/vite/plugin",
       "options": {
         "buildTargetName": "build",
-        "testTargetName": "vite:test",
         "serveTargetName": "serve",
         "devTargetName": "dev",
         "previewTargetName": "preview",
@@ -53,6 +48,12 @@
         "typecheckTargetName": "typecheck",
         "buildDepsTargetName": "build-deps",
         "watchDepsTargetName": "watch-deps"
+      }
+    },
+    {
+      "plugin": "@nx/vitest",
+      "options": {
+        "testTargetName": "vite:test"
       }
     }
   ],
