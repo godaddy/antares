@@ -1,0 +1,180 @@
+---
+title: Heatmap Chart
+description: A two-dimensional categorical chart that fills cells with discrete threshold colors, with closed-cell support and hover cross-highlighting.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './heatmap.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- **Discrete color buckets**: Define threshold ranges with explicit colors — no continuous gradient
+- **Closed cells**: Set `value: null` to render a dashed-border empty rectangle for unavailable slots
+- **Hover cross-highlight**: Hovering or focusing a cell bolds the matching row and column axis labels
+- **Keyboard accessible**: Focusing a cell shows its tooltip, the same as hovering
+- **Adjustable gap**: `cellPadding` sets the gap between cells in px
+- **Sized from its rows**: Without a `height`, the chart is as tall as its rows (`minCellHeight`, default 32px, plus the `cellPadding` gap), so it needs no sized container
+- **Fills its container**: Give the chart (or its parent) a height and the rows stretch to fill it, up to `maxCellHeight`; a smaller height makes it scroll
+- **Touch-friendly**: Default `minCellSize: 44` keeps each column at 44px or more (the cell plus its `cellPadding` gap); the SVG expands and the container scrolls
+- **Sticky axes**: Row and column labels remain visible while scrolling a large grid
+- **RTL support**: Right-to-left layout with the row labels on the right (`AxisRight`)
+- **Custom tooltips**: Replace the built-in tooltip with any React node via `renderTooltip`, for example a period-over-period comparison; it is wrapped in the shared chart tooltip container
+- **TypeScript**: Generic `HeatmapChart<T>` — bring your own data shape with typed accessors
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Quick start
+
+```tsx
+import { HeatmapChart, type ColorBucket } from '@godaddy/antares';
+
+const data = [
+  { x: '8am', y: 'Monday', value: 180 },
+  { x: '12pm', y: 'Monday', value: null },   // renders as closed cell
+  // …
+];
+
+const buckets: ColorBucket[] = [
+  { min: 0, max: 100, color: '#dbeafe', label: '0–100' },
+  { min: 100, max: 300, color: '#3b82f6', label: '100–300' },
+  { min: 300, max: null, color: '#1e3a8a', label: '300+' },
+];
+
+<HeatmapChart
+  data={data}
+  colorBuckets={buckets}
+  colorLegendLabel="Visitors"
+  closedLabel="No activity"
+  aria-label="Heatmap of visitor counts"
+/>
+```
+
+## Custom data shape
+
+When your data type is not `HeatmapCell`, provide typed accessors:
+
+```tsx
+interface MyDatum {
+  hour: string;
+  day: string;
+  count: number | null;
+  prevCount: number | null; // extra fields are available in `renderTooltip`
+}
+
+<HeatmapChart<MyDatum>
+  data={myData}
+  xAccessor={(d) => d.hour}
+  yAccessor={(d) => d.day}
+  valueAccessor={(d) => d.count}
+  colorBuckets={buckets}
+/>
+```
+
+## Sizing
+
+Cell width fills the available width. Row height has two modes, depending on whether the chart is given a height.
+
+**Wrap content** (no `height`, and the parent has none): the chart is as tall as its rows. Each row is `minCellHeight` (default `32`) plus the `cellPadding` gap, with the axis and legend below. It needs no sized container, and it grows or shrinks as rows are added or removed.
+
+**Fixed height** (the `height` prop, or a parent with a height): `height` is the total, including the axis and legend.
+
+- Rows stretch equally to fill the height.
+- Rows never go below `minCellHeight`. When they do not fit, the chart scrolls vertically and the axis labels stay pinned.
+- Set `maxCellHeight` to stop rows stretching past a size, for example a single row in a tall chart. The chart then ends after the last row, and the leftover space sits below it.
+
+| Setup | Result |
+| --- | --- |
+| No height | Rows at `minCellHeight`; chart is as tall as its rows |
+| Height larger than the rows need | Rows grow to fill it, up to `maxCellHeight` |
+| Height smaller than the rows need | Rows stay at `minCellHeight`; the chart scrolls |
+
+When `maxCellHeight` leaves the chart shorter than its box, `align` chooses where it sits: `start` (default) keeps it at the top, `end` moves it to the bottom, and `center` splits the space. It has no effect when the rows fill the height.
+
+```tsx
+// Wrap content: 32px rows, as tall as needed
+<HeatmapChart data={data} colorBuckets={buckets} />
+
+// Fixed height: rows fill 420px, or scroll if they do not fit
+<HeatmapChart data={data} colorBuckets={buckets} height={420} />
+
+// Rows grow to fill the height but never past 48px
+<HeatmapChart data={data} colorBuckets={buckets} height={420} maxCellHeight={48} />
+```
+
+## Color buckets
+
+`colorBuckets` is an ordered array of `ColorBucket` values. Each cell's fill is resolved by scanning the list and returning the first bucket where `value < bucket.max`. The last bucket should have `max: null` (open-ended); a value above every `max` also uses the last bucket. `min` is informational and is not used for matching, so list the buckets in ascending order:
+
+```ts
+interface ColorBucket {
+  min: number;        // lower bound (informational, not used for matching)
+  max: number | null; // upper bound (exclusive); null = open-ended top bucket
+  color: string;      // any CSS color string
+  label: string;      // shown in the legend, e.g. "100–300" or "300+"
+}
+```
+
+## Closed cells
+
+A cell with no value renders as a dashed-border rectangle with no fill. That covers `null`, `undefined` and `NaN` values, a row and column with no datum, and an empty `colorBuckets` list. Its aria role is `presentation` and it is removed from pointer and keyboard events. Use `closedLabel` to customize its legend entry (default: `"No data"`).
+
+## Titles and descriptions
+
+The chart renders only the grid, axes and legend. Render titles, subtitles and date ranges in your own layout around it.
+
+## Legend
+
+The legend is centered below the chart, like the other chart types. Override its text per use case:
+
+- `colorLegendLabel`: leading label (omitted when not set)
+- `closedLabel`: entry for null cells (default `"No data"`)
+- `label` on each `ColorBucket`: one entry per bucket
+
+## Tooltip
+
+The built-in tooltip is the same one the bar chart uses, with its arrow. It shows one row for the hovered cell: a swatch in the cell's bucket color, `{row} · {column}`, and the value (for example `● Monday · 12pm   380`).
+
+Use `tooltipValueFormatter` to format the value, such as adding a unit:
+
+```tsx
+<HeatmapChart tooltipValueFormatter={(d) => `${d.value} visitors`} /* … */ />
+```
+
+For anything else, such as a title or a period-over-period comparison, use `renderTooltip`. It receives the hovered `datum`, so any extra field on your data (like a previous value) is available. Custom content is wrapped in the shared tooltip container and, like the other charts, has no arrow:
+
+```tsx
+<HeatmapChart<MyDatum>
+  renderTooltip={({ datum, x, y, bucket }) => (
+    <div>
+      <strong>{String(y)} · {String(x)}</strong>
+      <p>{datum?.count ?? 'No data'} (was {datum?.prevCount})</p>
+    </div>
+  )}
+  // …
+/>
+```
+
+See the *Custom tooltip* example for a full comparison card.
+
+## Accessibility
+
+- The `<svg>` element gets `role="img"` and the `aria-label` prop
+- Add `desc` for a longer screen-reader description: a `<desc>` element with a unique id is injected and `aria-describedby` points to it
+- Each colored cell has `role="img"` and an `aria-label` of `"{row}, {column}: {value}"`
+- The legend is a `role="list"` labelled by `colorLegendLabel`, falling back to `"Heatmap legend"`
+- Focusing a cell with the keyboard shows its tooltip
+
+## Props
+
+<ArgTypes of={Stories.Props} />
