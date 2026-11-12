@@ -1,0 +1,709 @@
+3:"$Sreact.fragment"
+4:"/antares/pr-449-site/_next/static/chunks/1q04cos635na6.js"
+5:"/antares/pr-449-site/_next/static/chunks/3f4s_sel9wu6v.js"
+6:I[267,["$4","$5"],"default"]
+7:I[879633,["$4","$5"],"default"]
+c:"/antares/pr-449-site/_next/static/chunks/3pl0776m7a36-.js"
+d:"/antares/pr-449-site/_next/static/chunks/1mdo9ci5q89_a.js"
+e:"/antares/pr-449-site/_next/static/chunks/00v9c8ep9m9hd.js"
+f:"/antares/pr-449-site/_next/static/chunks/2r6gibieypo8p.js"
+10:"/antares/pr-449-site/_next/static/chunks/1vru_fa9bg_51.js"
+11:"/antares/pr-449-site/_next/static/chunks/40der432t-vdv.js"
+12:"/antares/pr-449-site/_next/static/chunks/39uhuu0i3o09-.js"
+13:"/antares/pr-449-site/_next/static/chunks/0og20jl_f6h_6.js"
+14:I[611473,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsPage"]
+15:I[611473,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsTitle"]
+16:I[611473,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsDescription"]
+17:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"LLMCopyButton"]
+18:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"ViewOptions"]
+19:I[611473,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsBody"]
+1a:I[366517,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"Heading"]
+66:"ViewportBoundary"
+67:I[800268,["$4","$5"],"$66"]
+68:"MetadataBoundary"
+69:I[800268,["$4","$5"],"$68"]
+6a:"$Sreact.suspense"
+9:X
+9:C
+a:X
+b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L14",null,{"toc":[{"depth":2,"url":"#features","title":"Features"},{"depth":2,"url":"#installation","title":"Installation"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#default","title":"Default"},{"depth":3,"url":"#wrap-content","title":"Wrap content"},{"depth":3,"url":"#fixed-height","title":"Fixed height"},{"depth":3,"url":"#scrolling","title":"Scrolling"},{"depth":3,"url":"#maximum-cell-height","title":"Maximum cell height"},{"depth":3,"url":"#single-row","title":"Single row"},{"depth":3,"url":"#custom-tooltip","title":"Custom tooltip"},{"depth":3,"url":"#custom-buckets","title":"Custom Buckets"},{"depth":2,"url":"#quick-start","title":"Quick start"},{"depth":2,"url":"#custom-data-shape","title":"Custom data shape"},{"depth":2,"url":"#sizing","title":"Sizing"},{"depth":2,"url":"#color-buckets","title":"Color buckets"},{"depth":2,"url":"#closed-cells","title":"Closed cells"},{"depth":2,"url":"#titles-and-descriptions","title":"Titles and descriptions"},{"depth":2,"url":"#legend","title":"Legend"},{"depth":2,"url":"#tooltip","title":"Tooltip"},{"depth":2,"url":"#accessibility","title":"Accessibility"},{"depth":2,"url":"#props","title":"Props"}],"footer":{"enabled":true},"children":[["$","$L15",null,{"children":"Heatmap Chart"}],["$","$L16",null,{"className":"mb-0","children":"A two-dimensional categorical chart that fills cells with discrete threshold colors, with closed-cell support and hover cross-highlighting."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L17",null,{"markdownUrl":"/docs/components/chart/heatmap.mdx"}],["$","$L18",null,{"markdownUrl":"/docs/components/chart/heatmap.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/chart/heatmap/README.mdx"}]]}],["$","$L19",null,{"children":[null,"\n",["$","$L1a",null,{"as":"h2","id":"features","children":"Features"}],"\n",["$","ul",null,{"children":["\n",["$","li",null,{"children":[["$","strong",null,{"children":"Discrete color buckets"}],": Define threshold ranges with explicit colors — no continuous gradient"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Closed cells"}],": Set ",["$","code",null,{"children":"value: null"}]," to render a dashed-border empty rectangle for unavailable slots"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Hover cross-highlight"}],": Hovering or focusing a cell bolds the matching row and column axis labels"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Keyboard accessible"}],": Focusing a cell shows its tooltip, the same as hovering"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Adjustable gap"}],": ",["$","code",null,{"children":"cellPadding"}]," sets the gap between cells in px"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Sized from its rows"}],": Without a ",["$","code",null,{"children":"height"}],", the chart is as tall as its rows (",["$","code",null,{"children":"minCellHeight"}],", default 32px, plus the ",["$","code",null,{"children":"cellPadding"}]," gap), so it needs no sized container"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Fills its container"}],": Give the chart (or its parent) a height and the rows stretch to fill it, up to ",["$","code",null,{"children":"maxCellHeight"}],"; a smaller height makes it scroll"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Touch-friendly"}],": Default ",["$","code",null,{"children":"minCellSize: 44"}]," keeps each column at 44px or more (the cell plus its ",["$","code",null,{"children":"cellPadding"}]," gap); the SVG expands and the container scrolls"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Sticky axes"}],": Row and column labels remain visible while scrolling a large grid"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"RTL support"}],": Right-to-left layout with the row labels on the right (",["$","code",null,{"children":"AxisRight"}],")"]}],"\n",["$","li",null,{"children":[["$","strong",null,{"children":"Custom tooltips"}],": Replace the built-in tooltip with any React node via ","$L1b",", for example a period-over-period comparison; it is wrapped in the shared chart tooltip container"]}],"\n","$L1c","\n"]}],"\n","$L1d","\n","$L1e","\n","$L1f","\n","$L20","\n","$L21","\n","$L22","\n","$L23","\n","$L24","\n","$L25","\n","$L26","\n","$L27","\n","$L28","\n","$L29","\n","$L2a","\n","$L2b","\n","$L2c","\n","$L2d","\n","$L2e","\n","$L2f","\n","$L30","\n","$L31","\n","$L32","\n","$L33","\n","$L34","\n","$L35","\n","$L36","\n","$L37","\n","$L38","\n","$L39","\n","$L3a","\n","$L3b","\n","$L3c","\n","$L3d","\n","$L3e","\n","$L3f","\n","$L40","\n","$L41","\n","$L42","\n","$L43","\n","$L44","\n","$L45","\n","$L46","\n","$L47","\n","$L48","\n","$L49","\n","$L4a","\n","$L4b","\n","$L4c","\n","$L4d","\n","$L4e","\n","$L4f","\n","$L50","\n","$L51","\n","$L52","\n","$L53","\n","$L54","\n","$L55","\n","$L56","\n","$L57","\n","$L58","\n","$L59","\n","$L5a","\n","$L5b","\n","$L5c","\n","$L5d","\n","$L5e","\n","$L5f","\n","$L60","\n","$L61"]}]]}],["$L62","$L63"],"$L64"]}],"p":"$@65","v":null,"s":"$a"}}]]
+2:[["children",{"s":{"n":"slug","t":"oc","k":"components/chart/heatmap","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
+1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L67",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L69",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$6a",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Heatmap Chart"}],["$","meta","1",{"name":"description","content":"A two-dimensional categorical chart that fills cells with discrete threshold colors, with closed-cell support and hover cross-highlighting."}],["$","meta","2",{"property":"og:title","content":"Heatmap Chart"}],["$","meta","3",{"property":"og:description","content":"A two-dimensional categorical chart that fills cells with discrete threshold colors, with closed-cell support and hover cross-highlighting."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/components/chart/heatmap/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Heatmap Chart"}],["$","meta","7",{"name":"twitter:description","content":"A two-dimensional categorical chart that fills cells with discrete threshold colors, with closed-cell support and hover cross-highlighting."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/components/chart/heatmap/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@6b","v":null,"s":"$a"}},"a":"$@6c","u":"$@6d","b":"TWs4drUxiyzaboBSlJq5C"}
+6e:I[736510,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"CodeBlock"]
+6f:I[736510,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"Pre"]
+70:I[403113,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"StoryRenderer"]
+71:I[884208,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DefaultExample"]
+72:"DynamicCodeBlock"
+73:I[654400,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$72"]
+75:"WrapContentExample"
+76:I[676757,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$75"]
+78:"FixedHeightExample"
+79:I[735992,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$78"]
+7b:"ScrollingExample"
+7c:I[617528,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$7b"]
+7e:"MaxCellHeightExample"
+7f:I[510191,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$7e"]
+81:"SingleRowExample"
+82:I[789683,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$81"]
+84:"CustomTooltipPeriodComparisonExample"
+85:I[407802,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$84"]
+87:"CustomBucketsExample"
+88:I[739433,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$87"]
+da:I[403299,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"PropTableClient"]
+e6:I[800268,["$4","$5"],"OutletBoundary"]
+1b:["$","code",null,{"children":"renderTooltip"}]
+1c:["$","li",null,{"children":[["$","strong",null,{"children":"TypeScript"}],": Generic ",["$","code",null,{"children":"HeatmapChart<T>"}]," — bring your own data shape with typed accessors"]}]
+1d:["$","$L1a",null,{"as":"h2","id":"installation","children":"Installation"}]
+1e:["$","$L6e",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$L6f",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npm"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" install"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" --save"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" @godaddy/antares"}]]}]}]}]}]
+1f:["$","$L1a",null,{"as":"h2","id":"examples","children":"Examples"}]
+20:["$","$L1a",null,{"as":"h3","id":"default","children":"Default"}]
+21:["$","p",null,{"children":"Displays a metric by row and column category. Null values render as dashed-border \"No data\" cells."}]
+22:["$","$L70",null,{"component":"$71"}]
+74:T983,import { HeatmapChart, type ColorBucket } from '@godaddy/antares';
+
+const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const HOURS = ['6am', '8am', '10am', '12pm', '2pm', '4pm', '6pm', '8pm', '10pm'];
+
+const SEED_VALUES: Record<string, number> = {
+  'Monday-6am': 12,
+  'Monday-8am': 180,
+  'Monday-10am': 340,
+  'Monday-12pm': 290,
+  'Monday-2pm': 310,
+  'Monday-4pm': 270,
+  'Monday-6pm': 220,
+  'Monday-8pm': 90,
+  'Monday-10pm': 30,
+  'Tuesday-6am': 18,
+  'Tuesday-8am': 200,
+  'Tuesday-10am': 380,
+  'Tuesday-12pm': 310,
+  'Tuesday-2pm': 360,
+  'Tuesday-4pm': 290,
+  'Tuesday-6pm': 240,
+  'Tuesday-8pm': 100,
+  'Tuesday-10pm': 35,
+  'Wednesday-6am': 22,
+  'Wednesday-8am': 190,
+  'Wednesday-10am': 370,
+  'Wednesday-12pm': 320,
+  'Wednesday-2pm': 350,
+  'Wednesday-4pm': 300,
+  'Wednesday-6pm': 230,
+  'Wednesday-8pm': 80,
+  'Wednesday-10pm': 28,
+  'Thursday-6am': 15,
+  'Thursday-8am': 210,
+  'Thursday-10am': 400,
+  'Thursday-12pm': 350,
+  'Thursday-2pm': 380,
+  'Thursday-4pm': 310,
+  'Thursday-6pm': 250,
+  'Thursday-8pm': 120,
+  'Thursday-10pm': 40,
+  'Friday-6am': 20,
+  'Friday-8am': 230,
+  'Friday-10am': 420,
+  'Friday-12pm': 370,
+  'Friday-2pm': 410,
+  'Friday-4pm': 330,
+  'Friday-6pm': 300,
+  'Friday-8pm': 160,
+  'Friday-10pm': 60,
+  'Saturday-6am': 5,
+  'Saturday-8am': 80,
+  'Saturday-10am': 200,
+  'Saturday-12pm': 260,
+  'Saturday-2pm': 280,
+  'Saturday-4pm': 240,
+  'Saturday-6pm': 220,
+  'Saturday-8pm': 180,
+  'Saturday-10pm': 90,
+  'Sunday-6am': 4,
+  'Sunday-8am': 60,
+  'Sunday-10am': 150,
+  'Sunday-12pm': 210,
+  'Sunday-2pm': 230,
+  'Sunday-4pm': 200,
+  'Sunday-6pm': 180,
+  'Sunday-8pm': 140,
+  'Sunday-10pm': 70
+};
+
+const data = DAYS.flatMap((day) =>
+  HOURS.map((hour) => ({
+    x: hour,
+    y: day,
+    value: SEED_VALUES[`${day}-${hour}`] ?? null
+  }))
+);
+
+const COLOR_BUCKETS: ColorBucket[] = [
+  { min: 0, max: 50, color: '#dbeafe', label: '0–50' },
+  { min: 50, max: 150, color: '#93c5fd', label: '50–150' },
+  { min: 150, max: 300, color: '#3b82f6', label: '150–300' },
+  { min: 300, max: 400, color: '#1d4ed8', label: '300–400' },
+  { min: 400, max: null, color: '#1e3a8a', label: '400+' }
+];
+
+export function DefaultExample(props: any) {
+  return (
+    <HeatmapChart
+      data={data}
+      colorBuckets={COLOR_BUCKETS}
+      colorLegendLabel="Visitors"
+      aria-label="Heatmap of visitor counts by day and hour"
+      {...props}
+    />
+  );
+}23:["$","$L73",null,{"lang":"tsx","code":"$74"}]
+24:["$","$L1a",null,{"as":"h3","id":"wrap-content","children":"Wrap content"}]
+25:["$","p",null,{"children":["With no ",["$","code",null,{"children":"height"}],", the chart is as tall as its rows: each row is ",["$","code",null,{"children":"minCellHeight"}]," (32px by default) plus\nthe gap, with the axis and legend below. No sized container is needed, and the chart grows or shrinks\nas rows are added or removed."]}]
+26:["$","$L70",null,{"component":"$76"}]
+77:T4bd,import { HeatmapChart, type ColorBucket } from '@godaddy/antares';
+
+const DAYS = [
+  'Mon, Oct 19',
+  'Tues, Oct 20',
+  'Wed, Oct 21',
+  'Thurs, Oct 22',
+  'Fri, Oct 23',
+  'Sat, Oct 24',
+  'Sun, Oct 25'
+];
+const HOURS = ['8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
+
+const COLOR_BUCKETS: ColorBucket[] = [
+  { min: 0, max: 50, color: '#d8efef', label: '1–50' },
+  { min: 50, max: 100, color: '#94d7da', label: '50–100' },
+  { min: 100, max: 150, color: '#15a4ab', label: '100–150' },
+  { min: 150, max: 200, color: '#0e7078', label: '150–200' },
+  { min: 200, max: null, color: '#063b43', label: '200+' }
+];
+
+function buildData(days: string[]) {
+  return days.flatMap(function mapDay(day, dayIndex) {
+    return HOURS.map(function mapHour(hour, hourIndex) {
+      return { x: hour, y: day, value: (dayIndex * 37 + hourIndex * 29) % 240 };
+    });
+  });
+}
+
+export function WrapContentExample(props: any) {
+  return (
+    <HeatmapChart
+      data={buildData(DAYS)}
+      colorBuckets={COLOR_BUCKETS}
+      colorLegendLabel="Avg. Transactions"
+      closedLabel="No Activity (0)"
+      aria-label="Heatmap sized from its rows"
+      {...props}
+    />
+  );
+}27:["$","$L73",null,{"lang":"tsx","code":"$77"}]
+28:["$","$L1a",null,{"as":"h3","id":"fixed-height","children":"Fixed height"}]
+29:["$","p",null,{"children":["With a ",["$","code",null,{"children":"height"}],", the rows stretch to fill it (here 460px for 7 rows). ",["$","code",null,{"children":"height"}]," is the total, including\nthe axis and legend. When it is smaller than the rows need at ",["$","code",null,{"children":"minCellHeight"}],", the chart scrolls\nvertically instead of squashing the rows; see the ",["$","em",null,{"children":"Scrolling"}]," example."]}]
+2a:["$","$L70",null,{"component":"$79"}]
+7a:T4af,import { HeatmapChart, type ColorBucket } from '@godaddy/antares';
+
+const DAYS = [
+  'Mon, Oct 19',
+  'Tues, Oct 20',
+  'Wed, Oct 21',
+  'Thurs, Oct 22',
+  'Fri, Oct 23',
+  'Sat, Oct 24',
+  'Sun, Oct 25'
+];
+const HOURS = ['8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
+
+const COLOR_BUCKETS: ColorBucket[] = [
+  { min: 0, max: 50, color: '#d8efef', label: '1–50' },
+  { min: 50, max: 100, color: '#94d7da', label: '50–100' },
+  { min: 100, max: 150, color: '#15a4ab', label: '100–150' },
+  { min: 150, max: 200, color: '#0e7078', label: '150–200' },
+  { min: 200, max: null, color: '#063b43', label: '200+' }
+];
+
+function buildData(days: string[]) {
+  return days.flatMap(function mapDay(day, dayIndex) {
+    return HOURS.map(function mapHour(hour, hourIndex) {
+      return { x: hour, y: day, value: (dayIndex * 37 + hourIndex * 29) % 240 };
+    });
+  });
+}
+
+export function FixedHeightExample(props: any) {
+  return (
+    <HeatmapChart
+      data={buildData(DAYS)}
+      colorBuckets={COLOR_BUCKETS}
+      colorLegendLabel="Avg. Transactions"
+      height={460}
+      aria-label="Heatmap filling a fixed height"
+      {...props}
+    />
+  );
+}2b:["$","$L73",null,{"lang":"tsx","code":"$7a"}]
+2c:["$","$L1a",null,{"as":"h3","id":"scrolling","children":"Scrolling"}]
+2d:["$","p",null,{"children":["When the ",["$","code",null,{"children":"height"}]," is too small for every row at ",["$","code",null,{"children":"minCellHeight"}],", rows stop shrinking at that size and\nthe chart scrolls vertically. The axis labels stay pinned while the rows scroll under them."]}]
+2e:["$","$L70",null,{"component":"$7c"}]
+7d:T4d1,import { HeatmapChart, type ColorBucket } from '@godaddy/antares';
+
+const DAYS = [
+  'Mon, Oct 19',
+  'Tues, Oct 20',
+  'Wed, Oct 21',
+  'Thurs, Oct 22',
+  'Fri, Oct 23',
+  'Sat, Oct 24',
+  'Sun, Oct 25'
+];
+const HOURS = ['8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
+
+const COLOR_BUCKETS: ColorBucket[] = [
+  { min: 0, max: 50, color: '#d8efef', label: '1–50' },
+  { min: 50, max: 100, color: '#94d7da', label: '50–100' },
+  { min: 100, max: 150, color: '#15a4ab', label: '100–150' },
+  { min: 150, max: 200, color: '#0e7078', label: '150–200' },
+  { min: 200, max: null, color: '#063b43', label: '200+' }
+];
+
+function buildData(days: string[]) {
+  return days.flatMap(function mapDay(day, dayIndex) {
+    return HOURS.map(function mapHour(hour, hourIndex) {
+      return { x: hour, y: day, value: (dayIndex * 37 + hourIndex * 29) % 240 };
+    });
+  });
+}
+
+export function ScrollingExample(props: any) {
+  return (
+    <HeatmapChart
+      data={buildData(DAYS)}
+      colorBuckets={COLOR_BUCKETS}
+      colorLegendLabel="Avg. Transactions"
+      height={220}
+      aria-label="Heatmap that scrolls because the height is too small for every row"
+      {...props}
+    />
+  );
+}2f:["$","$L73",null,{"lang":"tsx","code":"$7d"}]
+30:["$","$L1a",null,{"as":"h3","id":"maximum-cell-height","children":"Maximum cell height"}]
+31:["$","p",null,{"children":[["$","code",null,{"children":"maxCellHeight"}]," stops rows stretching when the chart has more height than it needs. Here a single row\nin a 420px chart stays 48px tall instead of filling the space, and the axis and legend follow it.\n",["$","code",null,{"children":"align"}]," decides where the chart sits in the leftover space; the default ",["$","code",null,{"children":"start"}]," keeps it at the top."]}]
+32:["$","$L70",null,{"component":"$7f"}]
+80:T4e5,import { HeatmapChart, type ColorBucket } from '@godaddy/antares';
+
+const DAYS = [
+  'Mon, Oct 19',
+  'Tues, Oct 20',
+  'Wed, Oct 21',
+  'Thurs, Oct 22',
+  'Fri, Oct 23',
+  'Sat, Oct 24',
+  'Sun, Oct 25'
+];
+const HOURS = ['8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
+
+const COLOR_BUCKETS: ColorBucket[] = [
+  { min: 0, max: 50, color: '#d8efef', label: '1–50' },
+  { min: 50, max: 100, color: '#94d7da', label: '50–100' },
+  { min: 100, max: 150, color: '#15a4ab', label: '100–150' },
+  { min: 150, max: 200, color: '#0e7078', label: '150–200' },
+  { min: 200, max: null, color: '#063b43', label: '200+' }
+];
+
+function buildData(days: string[]) {
+  return days.flatMap(function mapDay(day, dayIndex) {
+    return HOURS.map(function mapHour(hour, hourIndex) {
+      return { x: hour, y: day, value: (dayIndex * 37 + hourIndex * 29) % 240 };
+    });
+  });
+}
+
+export function MaxCellHeightExample(props: any) {
+  return (
+    <HeatmapChart
+      data={buildData(DAYS.slice(0, 1))}
+      colorBuckets={COLOR_BUCKETS}
+      colorLegendLabel="Avg. Transactions"
+      height={420}
+      maxCellHeight={48}
+      aria-label="Single-row heatmap with a maximum cell height"
+      {...props}
+    />
+  );
+}33:["$","$L73",null,{"lang":"tsx","code":"$80"}]
+34:["$","$L1a",null,{"as":"h3","id":"single-row","children":"Single row"}]
+35:["$","p",null,{"children":["A single row with no ",["$","code",null,{"children":"height"}]," is exactly one row tall. Add ",["$","code",null,{"children":"height"}]," without ",["$","code",null,{"children":"maxCellHeight"}]," and the\nrow would stretch to fill it; see the ",["$","em",null,{"children":"Maximum cell height"}]," example to stop that."]}]
+36:["$","$L70",null,{"component":"$82"}]
+83:T4ad,import { HeatmapChart, type ColorBucket } from '@godaddy/antares';
+
+const DAYS = [
+  'Mon, Oct 19',
+  'Tues, Oct 20',
+  'Wed, Oct 21',
+  'Thurs, Oct 22',
+  'Fri, Oct 23',
+  'Sat, Oct 24',
+  'Sun, Oct 25'
+];
+const HOURS = ['8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
+
+const COLOR_BUCKETS: ColorBucket[] = [
+  { min: 0, max: 50, color: '#d8efef', label: '1–50' },
+  { min: 50, max: 100, color: '#94d7da', label: '50–100' },
+  { min: 100, max: 150, color: '#15a4ab', label: '100–150' },
+  { min: 150, max: 200, color: '#0e7078', label: '150–200' },
+  { min: 200, max: null, color: '#063b43', label: '200+' }
+];
+
+function buildData(days: string[]) {
+  return days.flatMap(function mapDay(day, dayIndex) {
+    return HOURS.map(function mapHour(hour, hourIndex) {
+      return { x: hour, y: day, value: (dayIndex * 37 + hourIndex * 29) % 240 };
+    });
+  });
+}
+
+export function SingleRowExample(props: any) {
+  return (
+    <HeatmapChart
+      data={buildData(DAYS.slice(0, 1))}
+      colorBuckets={COLOR_BUCKETS}
+      colorLegendLabel="Avg. Transactions"
+      aria-label="Single-row heatmap sized from its row"
+      {...props}
+    />
+  );
+}37:["$","$L73",null,{"lang":"tsx","code":"$83"}]
+38:["$","$L1a",null,{"as":"h3","id":"custom-tooltip","children":"Custom tooltip"}]
+39:["$","p",null,{"children":["A ",["$","code",null,{"children":"renderTooltip"}]," example styled as a period-over-period comparison card. The previous value is\ncarried on the datum and read back in the tooltip, so the chart itself needs no comparison props."]}]
+3a:["$","$L70",null,{"component":"$85"}]
+86:T10b1,import {
+  Box,
+  Flex,
+  HeatmapChart,
+  type HeatmapChartProps,
+  type HeatmapTooltipRenderProps,
+  type ColorBucket,
+  Text
+} from '@godaddy/antares';
+
+interface VisitorDatum {
+  day: string;
+  hour: string;
+  visitors: number | null;
+  prevVisitors: number | null;
+}
+
+const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+const HOURS = ['8am', '10am', '12pm', '2pm', '4pm', '6pm'];
+
+const BASE: Record<string, [number, number]> = {
+  'Monday-8am': [180, 155],
+  'Monday-10am': [340, 300],
+  'Monday-12pm': [290, 280],
+  'Monday-2pm': [310, 270],
+  'Monday-4pm': [270, 290],
+  'Monday-6pm': [220, 200],
+  'Tuesday-8am': [200, 170],
+  'Tuesday-10am': [380, 340],
+  'Tuesday-12pm': [310, 295],
+  'Tuesday-2pm': [360, 320],
+  'Tuesday-4pm': [290, 310],
+  'Tuesday-6pm': [240, 215],
+  'Wednesday-8am': [190, 160],
+  'Wednesday-10am': [370, 330],
+  'Wednesday-12pm': [320, 305],
+  'Wednesday-2pm': [350, 310],
+  'Wednesday-4pm': [300, 280],
+  'Wednesday-6pm': [230, 210],
+  'Thursday-8am': [210, 185],
+  'Thursday-10am': [400, 360],
+  'Thursday-12pm': [350, 330],
+  'Thursday-2pm': [380, 350],
+  'Thursday-4pm': [310, 295],
+  'Thursday-6pm': [250, 230],
+  'Friday-8am': [230, 200],
+  'Friday-10am': [420, 380],
+  'Friday-12pm': [370, 345],
+  'Friday-2pm': [410, 380],
+  'Friday-4pm': [330, 300],
+  'Friday-6pm': [300, 265]
+};
+
+const data: VisitorDatum[] = DAYS.flatMap(function mapDay(day) {
+  return HOURS.map(function mapHour(hour) {
+    const vals = BASE[`${day}-${hour}`];
+    return {
+      day,
+      hour,
+      visitors: vals ? vals[0] : null,
+      prevVisitors: vals ? vals[1] : null
+    };
+  });
+});
+
+const COLOR_BUCKETS: ColorBucket[] = [
+  { min: 0, max: 100, color: '#dcfce7', label: '0–100' },
+  { min: 100, max: 200, color: '#86efac', label: '100–200' },
+  { min: 200, max: 300, color: '#22c55e', label: '200–300' },
+  { min: 300, max: 400, color: '#15803d', label: '300–400' },
+  { min: 400, max: null, color: '#14532d', label: '400+' }
+];
+
+/**
+ * Period-over-period tooltip built from `renderTooltip`. The previous period's value rides along on
+ * each datum, so the tooltip can show both values and the percent change for the hovered cell.
+ */
+function renderComparisonTooltip({ datum, bucket, x, y }: HeatmapTooltipRenderProps<VisitorDatum>) {
+  if (!datum || datum.visitors === null || datum.prevVisitors === null) {
+    return null;
+  }
+
+  const change = datum.prevVisitors === 0 ? 0 : ((datum.visitors - datum.prevVisitors) / datum.prevVisitors) * 100;
+  const isUp = change >= 0;
+
+  return (
+    <Flex direction="column" gap="lg" style={{ minWidth: 260 }}>
+      <Flex justifyContent="space-between" alignItems="center" gap="2xl">
+        <Flex alignItems="center" gap="md">
+          <Box rounding="full" style={{ width: 12, height: 12, backgroundColor: bucket?.color }} />
+          <Text>{`${String(y)} · ${String(x)}`}</Text>
+        </Flex>
+        <Text>{datum.visitors.toLocaleString()}</Text>
+      </Flex>
+
+      <Flex justifyContent="space-between" alignItems="center" gap="2xl">
+        <Flex alignItems="center" gap="md">
+          <Box
+            rounding="full"
+            style={{
+              width: 12,
+              height: 12,
+              border: `2px solid ${bucket?.color}`,
+              boxSizing: 'border-box'
+            }}
+          />
+          <Text>Previous period</Text>
+        </Flex>
+        <Text>{datum.prevVisitors.toLocaleString()}</Text>
+      </Flex>
+
+      <Flex alignItems="center" gap="sm">
+        <Text style={{ color: isUp ? '#2f9e44' : '#e03131' }}>{isUp ? '↑' : '↓'}</Text>
+        <Text style={{ fontWeight: 'bolder' }}>{`${Math.abs(change).toFixed(0)}%`}</Text>
+        <Text style={{ color: '#868e96' }}>compared to previous period</Text>
+      </Flex>
+    </Flex>
+  );
+}
+
+export function CustomTooltipPeriodComparisonExample(props: Partial<HeatmapChartProps<VisitorDatum>>) {
+  return (
+    <HeatmapChart<VisitorDatum>
+      data={data}
+      xAccessor={(d) => d.hour}
+      yAccessor={(d) => d.day}
+      valueAccessor={(d) => d.visitors}
+      colorBuckets={COLOR_BUCKETS}
+      colorLegendLabel="Visitors"
+      renderTooltip={renderComparisonTooltip}
+      aria-label="Heatmap comparing current and previous period visitor counts"
+      {...props}
+    />
+  );
+}3b:["$","$L73",null,{"lang":"tsx","code":"$86"}]
+3c:["$","$L1a",null,{"as":"h3","id":"custom-buckets","children":"Custom Buckets"}]
+3d:["$","p",null,{"children":"Custom color buckets for a satisfaction-score theme: red for low scores, yellow for medium,\ngreens for high. Null cells represent regions where data was unavailable."}]
+3e:["$","$L70",null,{"component":"$88"}]
+89:T633,import { HeatmapChart, type ColorBucket } from '@godaddy/antares';
+
+const PRODUCTS = ['Widget A', 'Widget B', 'Widget C', 'Widget D'];
+const REGIONS = ['North', 'South', 'East', 'West', 'Central'];
+
+const RAW: Record<string, number | null> = {
+  'Widget A-North': 92,
+  'Widget A-South': 74,
+  'Widget A-East': 88,
+  'Widget A-West': 61,
+  'Widget A-Central': 95,
+  'Widget B-North': 45,
+  'Widget B-South': 38,
+  'Widget B-East': 51,
+  'Widget B-West': null,
+  'Widget B-Central': 42,
+  'Widget C-North': 78,
+  'Widget C-South': 85,
+  'Widget C-East': 66,
+  'Widget C-West': 79,
+  'Widget C-Central': 82,
+  'Widget D-North': null,
+  'Widget D-South': 55,
+  'Widget D-East': 62,
+  'Widget D-West': 48,
+  'Widget D-Central': null
+};
+
+const data = PRODUCTS.flatMap((product) =>
+  REGIONS.map((region) => ({
+    x: region,
+    y: product,
+    value: RAW[`${product}-${region}`] ?? null
+  }))
+);
+
+const SCORE_BUCKETS: ColorBucket[] = [
+  { min: 0, max: 40, color: '#fca5a5', label: '< 40' },
+  { min: 40, max: 60, color: '#fcd34d', label: '40–60' },
+  { min: 60, max: 80, color: '#86efac', label: '60–80' },
+  { min: 80, max: null, color: '#16a34a', label: '80+' }
+];
+
+export function CustomBucketsExample(props: any) {
+  return (
+    <HeatmapChart
+      data={data}
+      colorBuckets={SCORE_BUCKETS}
+      colorLegendLabel="Score"
+      closedLabel="N/A"
+      tooltipValueFormatter={(d: { x: string; y: string; value: number | null }) =>
+        d.value !== null ? `${d.value}/100` : ''
+      }
+      aria-label="Heatmap of customer satisfaction scores"
+      {...props}
+    />
+  );
+}3f:["$","$L73",null,{"lang":"tsx","code":"$89"}]
+40:["$","$L1a",null,{"as":"h2","id":"quick-start","children":"Quick start"}]
+8a:Tb41,<svg viewBox="0 0 24 24"><path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z" fill="currentColor" /></svg>41:["$","$L6e",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"$8a","children":["$","$L6f",null,{"children":["$","code",null,{"children":[["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"import"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" { HeatmapChart, "}],"$L8b","$L8c","$L8d","$L8e","$L8f"]}],"\n","$L90","\n","$L91","\n","$L92","\n","$L93","\n","$L94","\n","$L95","\n","$L96","\n","$L97","\n","$L98","\n","$L99","\n","$L9a","\n","$L9b","\n","$L9c","\n","$L9d","\n","$L9e","\n","$L9f","\n","$La0","\n","$La1","\n","$La2","\n","$La3"]}]}]}]
+42:["$","$L1a",null,{"as":"h2","id":"custom-data-shape","children":"Custom data shape"}]
+43:["$","p",null,{"children":["When your data type is not ",["$","code",null,{"children":"HeatmapCell"}],", provide typed accessors:"]}]
+a4:Tb41,<svg viewBox="0 0 24 24"><path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z" fill="currentColor" /></svg>44:["$","$L6e",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"$a4","children":["$","$L6f",null,{"children":["$","code",null,{"children":[["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"interface"}],["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":" MyDatum"}],"$La5"]}],"\n","$La6","\n","$La7","\n","$La8","\n","$La9","\n","$Laa","\n","$Lab","\n","$Lac","\n","$Lad","\n","$Lae","\n","$Laf","\n","$Lb0","\n","$Lb1","\n","$Lb2"]}]}]}]
+45:["$","$L1a",null,{"as":"h2","id":"sizing","children":"Sizing"}]
+46:["$","p",null,{"children":"Cell width fills the available width. Row height has two modes, depending on whether the chart is given a height."}]
+47:["$","p",null,{"children":[["$","strong",null,{"children":"Wrap content"}]," (no ",["$","code",null,{"children":"height"}],", and the parent has none): the chart is as tall as its rows. Each row is ",["$","code",null,{"children":"minCellHeight"}]," (default ",["$","code",null,{"children":"32"}],") plus the ",["$","code",null,{"children":"cellPadding"}]," gap, with the axis and legend below. It needs no sized container, and it grows or shrinks as rows are added or removed."]}]
+48:["$","p",null,{"children":[["$","strong",null,{"children":"Fixed height"}]," (the ",["$","code",null,{"children":"height"}]," prop, or a parent with a height): ",["$","code",null,{"children":"height"}]," is the total, including the axis and legend."]}]
+49:["$","ul",null,{"children":["\n",["$","li",null,{"children":"Rows stretch equally to fill the height."}],"\n",["$","li",null,{"children":["Rows never go below ",["$","code",null,{"children":"minCellHeight"}],". When they do not fit, the chart scrolls vertically and the axis labels stay pinned."]}],"\n",["$","li",null,{"children":["Set ",["$","code",null,{"children":"maxCellHeight"}]," to stop rows stretching past a size, for example a single row in a tall chart. The chart then ends after the last row, and the leftover space sits below it."]}],"\n"]}]
+4a:["$","div",null,{"className":"relative overflow-auto prose-no-margin my-6","tabIndex":0,"children":["$","table",null,{"children":[["$","thead",null,{"children":["$","tr",null,{"children":[["$","th",null,{"children":"Setup"}],["$","th",null,{"children":"Result"}]]}]}],["$","tbody",null,{"children":[["$","tr",null,{"children":[["$","td",null,{"children":"No height"}],["$","td",null,{"children":["Rows at ",["$","code",null,{"children":"minCellHeight"}],"; chart is as tall as its rows"]}]]}],["$","tr",null,{"children":[["$","td",null,{"children":"Height larger than the rows need"}],["$","td",null,{"children":["Rows grow to fill it, up to ",["$","code",null,{"children":"maxCellHeight"}]]}]]}],["$","tr",null,{"children":[["$","td",null,{"children":"Height smaller than the rows need"}],["$","td",null,{"children":["Rows stay at ",["$","code",null,{"children":"minCellHeight"}],"; the chart scrolls"]}]]}]]}]]}]}]
+4b:["$","p",null,{"children":["When ",["$","code",null,{"children":"maxCellHeight"}]," leaves the chart shorter than its box, ",["$","code",null,{"children":"align"}]," chooses where it sits: ",["$","code",null,{"children":"start"}]," (default) keeps it at the top, ",["$","code",null,{"children":"end"}]," moves it to the bottom, and ",["$","code",null,{"children":"center"}]," splits the space. It has no effect when the rows fill the height."]}]
+b3:Tb41,<svg viewBox="0 0 24 24"><path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z" fill="currentColor" /></svg>4c:["$","$L6e",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"$b3","children":["$","$L6f",null,{"children":["$","code",null,{"children":[["$","span",null,{"className":"line","children":["$","span",null,{"style":{"--shiki-light":"#6A737D","--shiki-dark":"#6A737D"},"children":"// Wrap content: 32px rows, as tall as needed"}]}],"\n","$Lb4","\n","$Lb5","\n","$Lb6","\n","$Lb7","\n","$Lb8","\n","$Lb9","\n","$Lba"]}]}]}]
+4d:["$","$L1a",null,{"as":"h2","id":"color-buckets","children":"Color buckets"}]
+4e:["$","p",null,{"children":[["$","code",null,{"children":"colorBuckets"}]," is an ordered array of ",["$","code",null,{"children":"ColorBucket"}]," values. Each cell's fill is resolved by scanning the list and returning the first bucket where ",["$","code",null,{"children":"value < bucket.max"}],". The last bucket should have ",["$","code",null,{"children":"max: null"}]," (open-ended); a value above every ",["$","code",null,{"children":"max"}]," also uses the last bucket. ",["$","code",null,{"children":"min"}]," is informational and is not used for matching, so list the buckets in ascending order:"]}]
+bb:T4dc,<svg viewBox="0 0 24 24"><path d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z" fill="currentColor" /></svg>4f:["$","$L6e",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"$bb","children":["$","$L6f",null,{"children":["$","code",null,{"children":[["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"interface"}],["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":" ColorBucket"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" {"}]]}],"\n",["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#E36209","--shiki-dark":"#FFAB70"},"children":"  min"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":":"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" number"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":";        "}],["$","span",null,{"style":{"--shiki-light":"#6A737D","--shiki-dark":"#6A737D"},"children":"// lower bound (informational, not used for matching)"}]]}],"\n",["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#E36209","--shiki-dark":"#FFAB70"},"children":"  max"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":":"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" number"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":" |"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" null"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"; "}],["$","span",null,{"style":{"--shiki-light":"#6A737D","--shiki-dark":"#6A737D"},"children":"// upper bound (exclusive); null = open-ended top bucket"}]]}],"\n",["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#E36209","--shiki-dark":"#FFAB70"},"children":"  color"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":":"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" string"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":";      "}],["$","span",null,{"style":{"--shiki-light":"#6A737D","--shiki-dark":"#6A737D"},"children":"// any CSS color string"}]]}],"\n",["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#E36209","--shiki-dark":"#FFAB70"},"children":"  label"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":":"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" string"}],"$Lbc","$Lbd"]}],"\n","$Lbe"]}]}]}]
+50:["$","$L1a",null,{"as":"h2","id":"closed-cells","children":"Closed cells"}]
+51:["$","p",null,{"children":["A cell with no value renders as a dashed-border rectangle with no fill. That covers ",["$","code",null,{"children":"null"}],", ",["$","code",null,{"children":"undefined"}]," and ",["$","code",null,{"children":"NaN"}]," values, a row and column with no datum, and an empty ",["$","code",null,{"children":"colorBuckets"}]," list. Its aria role is ",["$","code",null,{"children":"presentation"}]," and it is removed from pointer and keyboard events. Use ",["$","code",null,{"children":"closedLabel"}]," to customize its legend entry (default: ",["$","code",null,{"children":"\"No data\""}],")."]}]
+52:["$","$L1a",null,{"as":"h2","id":"titles-and-descriptions","children":"Titles and descriptions"}]
+53:["$","p",null,{"children":"The chart renders only the grid, axes and legend. Render titles, subtitles and date ranges in your own layout around it."}]
+54:["$","$L1a",null,{"as":"h2","id":"legend","children":"Legend"}]
+55:["$","p",null,{"children":"The legend is centered below the chart, like the other chart types. Override its text per use case:"}]
+56:["$","ul",null,{"children":["\n",["$","li",null,{"children":[["$","code",null,{"children":"colorLegendLabel"}],": leading label (omitted when not set)"]}],"\n",["$","li",null,{"children":[["$","code",null,{"children":"closedLabel"}],": entry for null cells (default ",["$","code",null,{"children":"\"No data\""}],")"]}],"\n",["$","li",null,{"children":[["$","code",null,{"children":"label"}]," on each ",["$","code",null,{"children":"ColorBucket"}],": one entry per bucket"]}],"\n"]}]
+57:["$","$L1a",null,{"as":"h2","id":"tooltip","children":"Tooltip"}]
+58:["$","p",null,{"children":["The built-in tooltip is the same one the bar chart uses, with its arrow. It shows one row for the hovered cell: a swatch in the cell's bucket color, ",["$","code",null,{"children":"{row} · {column}"}],", and the value (for example ",["$","code",null,{"children":"● Monday · 12pm   380"}],")."]}]
+59:["$","p",null,{"children":["Use ",["$","code",null,{"children":"tooltipValueFormatter"}]," to format the value, such as adding a unit:"]}]
+bf:Tb41,<svg viewBox="0 0 24 24"><path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z" fill="currentColor" /></svg>5a:["$","$L6e",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"$bf","children":["$","$L6f",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"<"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"HeatmapChart"}],"$Lc0","$Lc1","$Lc2","$Lc3","$Lc4","$Lc5","$Lc6","$Lc7","$Lc8","$Lc9","$Lca","$Lcb","$Lcc","$Lcd"]}]}]}]}]
+5b:["$","p",null,{"children":["For anything else, such as a title or a period-over-period comparison, use ",["$","code",null,{"children":"renderTooltip"}],". It receives the hovered ",["$","code",null,{"children":"datum"}],", so any extra field on your data (like a previous value) is available. Custom content is wrapped in the shared tooltip container and, like the other charts, has no arrow:"]}]
+ce:Tb41,<svg viewBox="0 0 24 24"><path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z" fill="currentColor" /></svg>5c:["$","$L6e",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"$ce","children":["$","$L6f",null,{"children":["$","code",null,{"children":[["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"<"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"HeatmapChart"}],"$Lcf","$Ld0","$Ld1"]}],"\n","$Ld2","\n","$Ld3","\n","$Ld4","\n","$Ld5","\n","$Ld6","\n","$Ld7","\n","$Ld8","\n","$Ld9"]}]}]}]
+5d:["$","p",null,{"children":["See the ",["$","em",null,{"children":"Custom tooltip"}]," example for a full comparison card."]}]
+5e:["$","$L1a",null,{"as":"h2","id":"accessibility","children":"Accessibility"}]
+5f:["$","ul",null,{"children":["\n",["$","li",null,{"children":["The ",["$","code",null,{"children":"<svg>"}]," element gets ",["$","code",null,{"children":"role=\"img\""}]," and the ",["$","code",null,{"children":"aria-label"}]," prop"]}],"\n",["$","li",null,{"children":["Add ",["$","code",null,{"children":"desc"}]," for a longer screen-reader description: a ",["$","code",null,{"children":"<desc>"}]," element with a unique id is injected and ",["$","code",null,{"children":"aria-describedby"}]," points to it"]}],"\n",["$","li",null,{"children":["Each colored cell has ",["$","code",null,{"children":"role=\"img\""}]," and an ",["$","code",null,{"children":"aria-label"}]," of ",["$","code",null,{"children":"\"{row}, {column}: {value}\""}]]}],"\n",["$","li",null,{"children":["The legend is a ",["$","code",null,{"children":"role=\"list\""}]," labelled by ",["$","code",null,{"children":"colorLegendLabel"}],", falling back to ",["$","code",null,{"children":"\"Heatmap legend\""}]]}],"\n",["$","li",null,{"children":"Focusing a cell with the keyboard shows its tooltip"}],"\n"]}]
+60:["$","$L1a",null,{"as":"h2","id":"props","children":"Props"}]
+61:["$","$Lda",null,{"entries":[{"name":"aria-label","type":"string","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Accessible label for the SVG element."}]],"required":false},{"name":"data","type":"T[]","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Flat array of cells to display."}]],"required":true},{"name":"xAccessor","type":"(d: T) => string | Date","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Extract the column category (x) from a datum. Required when T ≠ HeatmapCell."}]],"required":false},{"name":"yAccessor","type":"(d: T) => string | Date","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Extract the row category (y) from a datum. Required when T ≠ HeatmapCell."}]],"required":false},{"name":"valueAccessor","type":"(d: T) => number | null","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Extract the numeric value from a datum. null renders a closed cell."}]],"required":false},{"name":"xDomain","type":"(string | Date)[]","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Explicit ordered list of X categories (columns). Derived from data when omitted."}]],"required":false},{"name":"yDomain","type":"(string | Date)[]","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Explicit ordered list of Y categories (rows). Derived from data when omitted."}]],"required":false},{"name":"xTickFormat","type":"(v: string | Date) => string","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Format X-axis tick labels."}]],"required":false},{"name":"yTickFormat","type":"(v: string | Date) => string","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Format Y-axis tick labels."}]],"required":false},{"name":"xLabels","type":"boolean","default":"true","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Show X-axis tick labels."}]],"required":false},{"name":"yLabels","type":"boolean","default":"true","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Show Y-axis tick labels."}]],"required":false},{"name":"colorBuckets","type":"ColorBucket[]","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Ordered array of discrete color buckets. Each cell's color is determined by the first bucket\nwhere value < bucket.max. The last bucket is used when its max is null, or when the value is\nabove every max. ",["$","code","code-0",{"className":"font-mono","children":"min"}]," is informational and not used for matching."]}]],"required":true},{"name":"colorLegend","type":"boolean","default":"true","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Show the discrete swatch legend below the chart."}]],"required":false},{"name":"colorLegendLabel","type":"string","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Label shown before the legend swatches (e.g. \"Visitors\"). Omitted when not provided."}]],"required":false},{"name":"closedLabel","type":"string","default":"\"No data\"","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Label for null/closed cells in the legend."}]],"required":false},{"name":"minCellSize","type":"number","default":"44","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Minimum column width in px (the cell plus its ",["$","code","code-0",{"className":"font-mono","children":"cellPadding"}]," gap) before the chart scrolls horizontally."]}]],"required":false},{"name":"minCellHeight","type":"number","default":"32","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Minimum row height in px (the cell, not counting the ",["$","code","code-0",{"className":"font-mono","children":"cellPadding"}]," gap). With no height, the chart\nis as tall as its rows (rows × (minCellHeight + cellPadding), plus the axis and legend). When the\nchart is given a height the rows stretch to fill it, and when the rows cannot fit at this height\nthe chart scrolls vertically instead of shrinking them further. Rows are never shorter than the\ny-axis labels need, so very small values are raised to fit."]}]],"required":false},{"name":"maxCellHeight","type":"number","description":"$Ldb","required":false},{"name":"align","type":"'start' | 'center' | 'end'","default":"'start'","description":"$Ldc","required":false},{"name":"cellPadding","type":"number","default":"4","description":"$Ldd","required":false},{"name":"cellRounding","type":"number","default":"6","description":"$Lde","required":false},{"name":"tooltip","type":"boolean","default":"true","description":"$Ldf","required":false},{"name":"tooltipValueFormatter","type":"(d: T) => string","description":"$Le0","required":false},{"name":"renderTooltip","type":"(props: HeatmapTooltipRenderProps<T>) => ReactNode","description":"$Le1","required":false},{"name":"width","type":"number","description":"$Le2","required":false},{"name":"height","type":"number","description":"$Le3","required":false},{"name":"desc","type":"string","description":"$Le4","required":false},{"name":"className","type":"string","description":"$Le5","required":false}],"categories":{"Aria":["aria-label"]}}]
+62:["$","script","script-0",{"src":"/antares/pr-449-site/_next/static/chunks/39uhuu0i3o09-.js","async":true}]
+63:["$","script","script-1",{"src":"/antares/pr-449-site/_next/static/chunks/0og20jl_f6h_6.js","async":true}]
+64:["$","$Le6",null,{"children":["$","$6a",null,{"name":"Next.MetadataOutlet","children":"$@e7"}]}]
+6d:true
+a:300
+8b:["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"type"}]
+8c:["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" ColorBucket } "}]
+8d:["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"from"}]
+8e:["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" '@godaddy/antares'"}]
+8f:["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":";"}]
+90:["$","span",null,{"className":"line"}]
+91:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"const"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" data"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":" ="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" ["}]]}]
+92:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"  { x: "}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":"'8am'"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":", y: "}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":"'Monday'"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":", value: "}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"180"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" },"}]]}]
+93:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"  { x: "}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":"'12pm'"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":", y: "}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":"'Monday'"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":", value: "}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"null"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" },   "}],["$","span",null,{"style":{"--shiki-light":"#6A737D","--shiki-dark":"#6A737D"},"children":"// renders as closed cell"}]]}]
+94:["$","span",null,{"className":"line","children":["$","span",null,{"style":{"--shiki-light":"#6A737D","--shiki-dark":"#6A737D"},"children":"  // …"}]}]
+95:["$","span",null,{"className":"line","children":["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"];"}]}]
+96:["$","span",null,{"className":"line"}]
+97:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"const"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" buckets"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":":"}],["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":" ColorBucket"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"[] "}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" ["}]]}]
+98:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"  { min: "}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"0"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":", max: "}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"100"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":", color: "}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":"'#dbeafe'"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":", label: "}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":"'0–100'"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" },"}]]}]
+99:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"  { min: "}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"100"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":", max: "}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"300"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":", color: "}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":"'#3b82f6'"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":", label: "}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":"'100–300'"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" },"}]]}]
+9a:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"  { min: "}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"300"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":", max: "}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"null"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":", color: "}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":"'#1e3a8a'"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":", label: "}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":"'300+'"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" },"}]]}]
+9b:["$","span",null,{"className":"line","children":["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"];"}]}]
+9c:["$","span",null,{"className":"line"}]
+9d:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"<"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"HeatmapChart"}]]}]
+9e:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"  data"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{data}"}]]}]
+9f:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"  colorBuckets"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{buckets}"}]]}]
+a0:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"  colorLegendLabel"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":"\"Visitors\""}]]}]
+a1:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"  closedLabel"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":"\"No activity\""}]]}]
+a2:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"  aria-label"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":"\"Heatmap of visitor counts\""}]]}]
+a3:["$","span",null,{"className":"line","children":["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"/>"}]}]
+a5:["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" {"}]
+a6:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#E36209","--shiki-dark":"#FFAB70"},"children":"  hour"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":":"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" string"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":";"}]]}]
+a7:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#E36209","--shiki-dark":"#FFAB70"},"children":"  day"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":":"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" string"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":";"}]]}]
+a8:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#E36209","--shiki-dark":"#FFAB70"},"children":"  count"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":":"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" number"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":" |"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" null"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":";"}]]}]
+a9:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#E36209","--shiki-dark":"#FFAB70"},"children":"  prevCount"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":":"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" number"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":" |"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" null"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"; "}],["$","span",null,{"style":{"--shiki-light":"#6A737D","--shiki-dark":"#6A737D"},"children":"// extra fields are available in `renderTooltip`"}]]}]
+aa:["$","span",null,{"className":"line","children":["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"}"}]}]
+ab:["$","span",null,{"className":"line"}]
+ac:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"<"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"HeatmapChart"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"<"}],["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"MyDatum"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":">"}]]}]
+ad:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"  data"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{myData}"}]]}]
+ae:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"  xAccessor"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{("}],["$","span",null,{"style":{"--shiki-light":"#E36209","--shiki-dark":"#FFAB70"},"children":"d"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":") "}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"=>"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" d.hour}"}]]}]
+af:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"  yAccessor"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{("}],["$","span",null,{"style":{"--shiki-light":"#E36209","--shiki-dark":"#FFAB70"},"children":"d"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":") "}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"=>"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" d.day}"}]]}]
+b0:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"  valueAccessor"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{("}],["$","span",null,{"style":{"--shiki-light":"#E36209","--shiki-dark":"#FFAB70"},"children":"d"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":") "}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"=>"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" d.count}"}]]}]
+b1:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"  colorBuckets"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{buckets}"}]]}]
+b2:["$","span",null,{"className":"line","children":["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"/>"}]}]
+b4:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"<"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"HeatmapChart"}],["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":" data"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{data} "}],["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"colorBuckets"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{buckets} />"}]]}]
+b5:["$","span",null,{"className":"line"}]
+b6:["$","span",null,{"className":"line","children":["$","span",null,{"style":{"--shiki-light":"#6A737D","--shiki-dark":"#6A737D"},"children":"// Fixed height: rows fill 420px, or scroll if they do not fit"}]}]
+b7:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"<"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"HeatmapChart"}],["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":" data"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{data} "}],["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"colorBuckets"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{buckets} "}],["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"height"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"420"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"} />"}]]}]
+b8:["$","span",null,{"className":"line"}]
+b9:["$","span",null,{"className":"line","children":["$","span",null,{"style":{"--shiki-light":"#6A737D","--shiki-dark":"#6A737D"},"children":"// Rows grow to fill the height but never past 48px"}]}]
+ba:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"<"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"HeatmapChart"}],["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":" data"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{data} "}],["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"colorBuckets"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{buckets} "}],["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"height"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"420"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"} "}],["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"maxCellHeight"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"48"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"} />"}]]}]
+bc:["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":";      "}]
+bd:["$","span",null,{"style":{"--shiki-light":"#6A737D","--shiki-dark":"#6A737D"},"children":"// shown in the legend, e.g. \"100–300\" or \"300+\""}]
+be:["$","span",null,{"className":"line","children":["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"}"}]}]
+c0:["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":" tooltipValueFormatter"}]
+c1:["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}]
+c2:["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{("}]
+c3:["$","span",null,{"style":{"--shiki-light":"#E36209","--shiki-dark":"#FFAB70"},"children":"d"}]
+c4:["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":") "}]
+c5:["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"=>"}]
+c6:["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" `${"}]
+c7:["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"d"}]
+c8:["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":"."}]
+c9:["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"value"}]
+ca:["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":"} visitors`"}]
+cb:["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"} "}]
+cc:["$","span",null,{"style":{"--shiki-light":"#6A737D","--shiki-dark":"#6A737D"},"children":"/* … */"}]
+cd:["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" />"}]
+cf:["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"<"}]
+d0:["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"MyDatum"}]
+d1:["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":">"}]
+d2:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"  renderTooltip"}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"="}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"{({ "}],["$","span",null,{"style":{"--shiki-light":"#E36209","--shiki-dark":"#FFAB70"},"children":"datum"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":", "}],["$","span",null,{"style":{"--shiki-light":"#E36209","--shiki-dark":"#FFAB70"},"children":"x"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":", "}],["$","span",null,{"style":{"--shiki-light":"#E36209","--shiki-dark":"#FFAB70"},"children":"y"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":", "}],["$","span",null,{"style":{"--shiki-light":"#E36209","--shiki-dark":"#FFAB70"},"children":"bucket"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" }) "}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"=>"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":" ("}]]}]
+d3:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"    <"}],["$","span",null,{"style":{"--shiki-light":"#22863A","--shiki-dark":"#85E89D"},"children":"div"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":">"}]]}]
+d4:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"      <"}],["$","span",null,{"style":{"--shiki-light":"#22863A","--shiki-dark":"#85E89D"},"children":"strong"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":">{"}],["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"String"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"(y)} · {"}],["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"String"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"(x)}</"}],["$","span",null,{"style":{"--shiki-light":"#22863A","--shiki-dark":"#85E89D"},"children":"strong"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":">"}]]}]
+d5:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"      <"}],["$","span",null,{"style":{"--shiki-light":"#22863A","--shiki-dark":"#85E89D"},"children":"p"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":">{datum?.count "}],["$","span",null,{"style":{"--shiki-light":"#D73A49","--shiki-dark":"#F97583"},"children":"??"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" 'No data'"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"} (was {datum?.prevCount})</"}],["$","span",null,{"style":{"--shiki-light":"#22863A","--shiki-dark":"#85E89D"},"children":"p"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":">"}]]}]
+d6:["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"    </"}],["$","span",null,{"style":{"--shiki-light":"#22863A","--shiki-dark":"#85E89D"},"children":"div"}],["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":">"}]]}]
+d7:["$","span",null,{"className":"line","children":["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"  )}"}]}]
+d8:["$","span",null,{"className":"line","children":["$","span",null,{"style":{"--shiki-light":"#6A737D","--shiki-dark":"#6A737D"},"children":"  // …"}]}]
+d9:["$","span",null,{"className":"line","children":["$","span",null,{"style":{"--shiki-light":"#24292E","--shiki-dark":"#E1E4E8"},"children":"/>"}]}]
+db:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Maximum row height in px (the cell, not counting the ",["$","code","code-0",{"className":"font-mono","children":"cellPadding"}]," gap). Stops the rows stretching\nwhen the chart has more height than it needs, for example one row in a tall chart. The chart then\nends after the last row and the axis and legend follow it. Omit to let rows fill the height."]}]]
+dc:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Where the chart sits when its box is taller than the grid, axis and legend need (for example with\n",["$","code","code-0",{"className":"font-mono","children":"maxCellHeight"}],", or a single row in a tall chart). ",["$","code","code-1",{"className":"font-mono","children":"start"}]," keeps it at the top, ",["$","code","code-2",{"className":"font-mono","children":"end"}]," moves it to\nthe bottom, and ",["$","code","code-3",{"className":"font-mono","children":"center"}]," splits the leftover space. Has no effect when the rows fill the height."]}]]
+dd:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Gap between cells in px."}]]
+de:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Border radius on each cell."}]]
+df:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Show tooltip on hover/tap."}]]
+e0:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Format the value shown in the built-in tooltip, e.g. to append a unit."}]]
+e1:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Custom tooltip content. Rendered inside the shared chart tooltip container, so it gets the\nsame elevation, rounding and padding as the built-in tooltip. Read extra fields (for example a\nprevious-period value) from ",["$","code","code-0",{"className":"font-mono","children":"datum"}],"."]}]]
+e2:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Outer container width in px (omit = 100%)."}]]
+e3:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Total chart height in px, including the axis and legend. Omit to size the chart from its rows\n(see ",["$","code","code-0",{"className":"font-mono","children":"minCellHeight"}],"); a parent with its own height is filled instead."]}]]
+e4:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["Screen-reader description rendered inside the SVG "," element."]}]]
+e5:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Additional CSS class name applied to the root element."}]]
+e7:null
+a:C
+6c:0
+8:"$undefined"
+6b:"$undefined"
+65:"$undefined"
