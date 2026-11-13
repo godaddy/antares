@@ -23,7 +23,7 @@ catalog:
   '@storybook/addon-a11y': ^10.6.5
   '@storybook/addon-onboarding': ^10.6.5
   '@storybook/addon-themes': ^10.6.5
-  storybook: ^10.6.5
+  storybook: ^10.6.7
   tsdown: ^0.23.7
   '@tsdown/css': ^0.23.7
   typescript: 7.0.2
