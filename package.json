@@ -38,7 +38,7 @@
     "@vitest/coverage-v8": "catalog:",
     "@vitest/ui": "catalog:",
     "@commitlint/config-conventional": "^21.2.3",
-    "@changesets/get-github-info": "^0.8.0",
+    "@changesets/get-github-info": "^1.0.1",
     "@storybook/addon-docs": "catalog:",
     "playwright": "^1.65.0",
     "@types/node": "^26.6.6",
