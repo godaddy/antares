@@ -1,0 +1,121 @@
+.chart {
+  --chart-font-family: var(--ux-1067ph9);
+  --chart-font-size: 0.794rem;
+  --chart-font-color: var(--ux-145pjib);
+  --chart-gridline-color: var(--ux-97h3vl);
+  --chart-baseline-color: var(--ux-by6mab);
+  --chart-canvas-background: var(--ux-cao06b);
+  --chart-content-gap: var(--ux-a2dzk8);
+
+  gap: var(--chart-content-gap);
+  width: var(--chart-width, 100%);
+  height: var(--chart-height, 100%);
+}
+
+.wrapper {
+  gap: var(--chart-content-gap);
+  overflow: hidden;
+}
+
+/*
+ * The area's flex-basis is the height of its rows at `minCellHeight`, and `maxCellHeight` caps its
+ * growth. With no height from the parent the chart is exactly that tall; with a taller parent it grows
+ * to fill it, and with a shorter one it stays at the basis and scrolls.
+ */
+.area {
+  flex: 1 1 var(--heatmap-natural-height, auto);
+  max-height: var(--heatmap-max-height, none);
+  overflow: auto;
+}
+
+.area svg {
+  display: block;
+}
+
+/* Heatmap cells */
+.cell {
+  cursor: pointer;
+  outline: none;
+}
+
+/* Row/column emphasis while a cell is hovered or focused */
+.cellHighlighted {
+  stroke: color-mix(in oklch, transparent, var(--chart-font-color) 25%);
+  stroke-width: 1;
+}
+
+.cell:where(:focus-visible) {
+  outline: 2px solid var(--chart-baseline-color);
+  outline-offset: -2px;
+}
+
+/* Closed / null cell: dashed border, no fill */
+.cellClosed {
+  stroke: var(--chart-gridline-color);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  fill: none;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Axis labels */
+.chart .axisX text,
+.chart .axisY text {
+  font-family: var(--chart-font-family);
+  font-size: var(--chart-font-size);
+  fill: var(--chart-font-color);
+}
+
+/* Hovered/focused row and column labels */
+.chart .tickLabelHovered {
+  font-weight: 700;
+}
+
+/* Tick marks are transparent so no stray dot renders beside labels (axis lines use `hideAxisLine`) */
+.chart .axisX .tickMark line,
+.chart .axisY .tickMark line {
+  stroke: transparent;
+}
+
+/* Legend (centered below the chart, like the other chart types) */
+.legend {
+  font-family: var(--chart-font-family);
+  font-size: var(--chart-font-size);
+  color: var(--chart-font-color);
+}
+
+.legendLabel {
+  font-weight: 600;
+}
+
+.legendSwatch {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.legendSwatchClosed {
+  background: var(--ux-1mh0ktr);
+  border: 1px dashed var(--chart-gridline-color);
+}
+
+.legendDivider {
+  width: 1px;
+  height: 1em;
+  background: var(--chart-gridline-color);
+  flex-shrink: 0;
+}
+
+/* Tooltip portal container */
+.tooltipContainer {
+  pointer-events: none !important;
+  position: fixed;
+  transform: translate(-50%, -100%);
+  margin-top: -8px;
+}
+
+.axisBackground {
+  pointer-events: none;
+  fill: var(--chart-canvas-background);
+}

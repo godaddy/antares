@@ -14,3 +14,9 @@ export {
 export { DonutChart, type DonutChartProps } from '#components/chart/donut-chart';
 export { LineChart, type LineChartProps, type LineChartTooltipRenderProps } from '#components/chart/line-chart';
 export { GaugeChart, type GaugeChartProps } from '#components/chart/gauge-chart';
+export {
+  HeatmapChart,
+  type HeatmapChartProps,
+  type HeatmapTooltipRenderProps
+} from '#components/chart/heatmap';
+export type { HeatmapCell, ColorBucket } from '#components/chart/types';

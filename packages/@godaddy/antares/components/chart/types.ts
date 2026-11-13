@@ -117,3 +117,36 @@ export type XLabelsOrientation = 'auto' | 'horizontal' | 'vertical';
 
 /** Legend position for chart legend placement (top or bottom). */
 export type LegendPosition = 'top' | 'bottom';
+
+/**
+ * A single cell in a heatmap grid.
+ *
+ * `x` is the column category (e.g. time slot) and `y` is the row category (e.g. day of week).
+ * Set `value` to `null` to mark the cell as closed — it renders as a dashed-border empty rect.
+ */
+export interface HeatmapCell {
+  /** Column category (e.g. time slot label). */
+  x: string | Date;
+  /** Row category (e.g. day of week label). */
+  y: string | Date;
+  /** Numeric value, or null for a closed/unavailable cell. */
+  value: number | null;
+}
+
+/**
+ * One discrete color bucket in a heatmap threshold scale.
+ *
+ * Buckets are matched in order: a cell takes the first bucket whose `max` is above its value, or the
+ * last bucket when there is none. `min` is informational and is not used for matching.
+ * The last bucket should use `max: null` (open-ended, e.g. "200+").
+ */
+export interface ColorBucket {
+  /** Lower bound (inclusive). Informational only; matching uses `max`. */
+  min: number;
+  /** Upper bound (exclusive). Use null for an open-ended top bucket (e.g. "200+"). */
+  max: number | null;
+  /** Concrete CSS color string (hex or rgb). */
+  color: string;
+  /** Display label shown in the legend, e.g. "5–55" or "200+". */
+  label: string;
+}
