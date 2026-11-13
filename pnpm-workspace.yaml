@@ -17,7 +17,7 @@ catalog:
   react: ^19.3.1
   react-aria: ^3.53.1
   react-dom: ^19.3.1
-  nx: 24.0.4
+  nx: 24.0.5
   '@storybook/addon-docs': ^10.6.5
   '@storybook/react-vite': ^10.6.5
   '@storybook/addon-a11y': ^10.6.5
