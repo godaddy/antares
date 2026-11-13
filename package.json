@@ -50,7 +50,7 @@
     "@types/mdx": "^2.0.14",
     "vitest": "catalog:",
     "@nx/vitest": "catalog:",
-    "@changesets/cli": "^2.31.0",
+    "@changesets/cli": "^3.0.3",
     "@vitest/browser": "catalog:",
     "yaml": "^2.9.1",
     "assume": "^2.3.0",
