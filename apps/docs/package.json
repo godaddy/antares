@@ -46,7 +46,7 @@
     "@bento/visually-hidden": "workspace:*",
     "@godaddy/antares": "workspace:*",
     "@welldone-software/why-did-you-render": "^10.0.1",
-    "mermaid": "^12.2.0",
+    "mermaid": "^12.3.0",
     "react": "catalog:",
     "react-diff-viewer-continued": "^4.4.0",
     "react-dom": "catalog:"
