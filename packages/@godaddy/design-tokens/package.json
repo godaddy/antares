@@ -44,7 +44,7 @@
     "yaml": "^2.9.1",
     "ajv": "^8.20.0",
     "@upft/schemas": "^0.0.6",
-    "style-dictionary": "^5.7.1",
+    "style-dictionary": "^5.8.0",
     "shx": "^0.4.0"
   },
   "exports": {
