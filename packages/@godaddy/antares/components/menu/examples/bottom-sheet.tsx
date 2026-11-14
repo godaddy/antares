@@ -13,7 +13,7 @@ export function BottomSheetExample() {
       <Button variant="primary" onPress={() => setOpen(true)}>
         Open menu
       </Button>
-      <Drawer placement="bottom" isOpen={open} onOpenChange={setOpen} isDismissable aria-label="Menu">
+      <Drawer placement="bottom" isOpen={open} onOpenChange={setOpen} aria-label="Menu">
         <CloseButton />
         <Content inlinePadding="0">
           <Menu aria-label="Account actions" onAction={() => setOpen(false)}>

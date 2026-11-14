@@ -236,6 +236,8 @@ describe('@godaddy/antares', function packageTests() {
       const trigger = screen.getByRole('button', { name: /Calendar/ });
 
       await userEvent.click(trigger);
+      // On narrow viewports the calendar opens in a drawer, which ignores presses until it has slid in.
+      await expect.poll(() => document.querySelector('[data-entering]')).toBeNull();
       const month = screen.getByRole('grid').all()[0];
       await userEvent.click(month.getByRole('button', { name: /15, \d{4}$/ }));
       await expect.element(screen.getByRole('button', { name: 'Clear date' })).toBeVisible();

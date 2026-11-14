@@ -263,7 +263,7 @@ function PickerOverlay({ popoverProps, drawerProps, overlay, children }: PickerO
 
   if (container === 'drawer') {
     return (
-      <Drawer placement="bottom" maxSize="85dvh" isDismissable {...drawerProps}>
+      <Drawer placement="bottom" maxSize="85dvh" {...drawerProps}>
         <Content>{children(container)}</Content>
       </Drawer>
     );

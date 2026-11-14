@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import { Button, Content, Drawer, DrawerTrigger, Modal, ModalTrigger, Text } from '@godaddy/antares';
@@ -35,6 +35,9 @@ describe('@godaddy/antares', function packageTests() {
 
       await userEvent.click(page.getByRole('button', { name: 'Open drawer' }));
       await expect.element(page.getByRole('dialog', { name: 'Drawer' })).toBeVisible();
+      await vi.waitFor(function entered() {
+        expect(document.activeElement?.closest('[role="dialog"]')).not.toBeNull();
+      });
 
       await userEvent.click(page.getByRole('button', { name: 'Open modal' }));
       const modal = await page.getByRole('dialog', { name: 'Nested modal' }).element();

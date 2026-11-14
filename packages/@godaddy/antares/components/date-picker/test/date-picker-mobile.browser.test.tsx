@@ -9,7 +9,7 @@ import { preloadTestIcons, resetPointer } from '#test/utils/test-helpers.tsx';
 import { MobileExample } from '../examples/mobile.tsx';
 import { parseDate } from '@godaddy/antares/date';
 
-const drawer = '[data-placement="bottom"]:not([data-trigger])';
+const drawer = '[data-position="bottom"]:has(> [role="dialog"])';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#DatePicker mobile', function mobileTests() {
@@ -22,13 +22,14 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     async function settle(dialog: Element) {
-      const panel = dialog.closest('[data-placement="bottom"]')!;
+      const stage = dialog.closest('[data-position="bottom"]')!.parentElement!;
       await expect
         .poll(function entered() {
           const { x, y, width, height } = dialog.getBoundingClientRect();
           return (
-            dialog.contains(document.elementFromPoint(x + width / 2, y + height / 2)) &&
-            panel.getAnimations().length === 0
+            Math.abs(stage.getBoundingClientRect().top) < 1 &&
+            dialog.contains(document.activeElement) &&
+            dialog.contains(document.elementFromPoint(x + width / 2, y + height / 2))
           );
         })
         .toBe(true);
@@ -43,6 +44,7 @@ describe('@godaddy/antares', function packageTests() {
         await trigger.click();
         await expect.element(screen.getByRole('dialog', { name: /Event dates/ })).toBeVisible();
         expect(document.querySelector(drawer)).not.toBeNull();
+        await settle(screen.getByRole('dialog').element());
         await screen.getByRole('button', { name: /September 15, 2026/ }).click();
         if (range) {
           await expect.element(screen.getByRole('dialog')).toBeVisible();
@@ -86,6 +88,7 @@ describe('@godaddy/antares', function packageTests() {
         await page.viewport(320, 768);
         const screen = await render(<MobileExample size={size} keepOpen />);
         await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+        await settle(screen.getByRole('dialog').element());
         const heights = new Map<string, number[]>();
         for (const month of document.querySelectorAll('[data-calendar-month]')) {
           const body = month.lastElementChild as HTMLElement;
@@ -105,6 +108,7 @@ describe('@godaddy/antares', function packageTests() {
       await page.viewport(320, 768);
       const screen = await render(<MobileExample keepOpen />);
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      await settle(screen.getByRole('dialog').element());
       const calendar = document.querySelector<HTMLElement>('[role="dialog"] [role="application"]')!;
       const months = document.querySelectorAll('[data-calendar-month]');
       const [first, last] = [months[0], months[months.length - 1]].map(function month(element) {
@@ -119,8 +123,13 @@ describe('@godaddy/antares', function packageTests() {
       await page.viewport(320, 768);
       const screen = await render(<MobileExample range keepOpen unavailable allowsNonContiguousRanges />);
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      await settle(screen.getByRole('dialog').element());
       await screen.getByRole('button', { name: /October 15, 2026/ }).click();
-      await screen.getByRole('button', { name: /October 25, 2026/ }).click();
+      // Scroll only the month list: Playwright's own scroll-into-view can also move the drawer's swipe
+      // container, sliding the drawer off screen.
+      const end = screen.getByRole('button', { name: /October 25, 2026/ });
+      end.element().scrollIntoView({ block: 'nearest' });
+      await end.click();
       await expect.element(screen.getByLabelText('Selected dates')).toMatchTextContent('2026-10-15/2026-10-25');
       const before = getComputedStyle(
         screen.getByRole('button', { name: /October 19, 2026/ }).element().parentElement!
@@ -167,6 +176,7 @@ describe('@godaddy/antares', function packageTests() {
       await page.viewport(320, 768);
       const screen = await render(<MobileExample />);
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      await settle(screen.getByRole('dialog').element());
       await screen.getByRole('button', { name: / Month$/ }).click();
       await screen.getByRole('option', { name: 'February', exact: true }).click();
       await expect.element(screen.getByRole('button', { name: / Month$/ })).toMatchTextContent('February');
@@ -181,6 +191,7 @@ describe('@godaddy/antares', function packageTests() {
       await page.viewport(320, 768);
       const screen = await render(<MobileExample min="2026-03-01" max="2027-12-31" />);
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      await settle(screen.getByRole('dialog').element());
       const year = screen.getByRole('textbox', { name: 'Year' });
       await year.fill('1980');
       await userEvent.keyboard('{Enter}');
@@ -234,6 +245,7 @@ describe('@godaddy/antares', function packageTests() {
         </I18nProvider>
       );
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      await settle(screen.getByRole('dialog').element());
       const year = screen.getByRole('textbox', { name: 'Year' });
       await year.fill('5786');
       await userEvent.keyboard('{Enter}');
@@ -254,6 +266,7 @@ describe('@godaddy/antares', function packageTests() {
         </I18nProvider>
       );
       await screen.getByRole('button', { name: /Event dates/ }).click();
+      await settle(screen.getByRole('dialog').element());
       await userEvent.keyboard('{Enter}');
       await expect.element(screen.getByLabelText('Selected dates')).toMatchTextContent('2026-09-15');
     });
@@ -262,6 +275,7 @@ describe('@godaddy/antares', function packageTests() {
       await page.viewport(320, 768);
       const screen = await render(<MobileExample />);
       await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+      await settle(screen.getByRole('dialog').element());
       for (let step = 0; step < 6; step++) await userEvent.keyboard('{PageDown}');
       await expect.element(screen.getByRole('button', { name: /March 15, 2027/ })).toHaveFocus();
       await userEvent.keyboard('{Enter}');
@@ -342,6 +356,7 @@ describe('@godaddy/antares', function packageTests() {
       );
       await screen.getByRole('button', { name: /Event dates/ }).click();
       const dialog = screen.getByRole('dialog').element();
+      await settle(dialog);
       expect(getComputedStyle(dialog).direction).toBe('rtl');
       const cell = document.querySelector<HTMLElement>('[data-calendar-month="2026-09-01"] [tabindex="0"]')!;
       const text = document.createRange();
