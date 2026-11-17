@@ -15,7 +15,7 @@ import {
 } from '@godaddy/antares';
 
 const accountImage =
-  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22%3E%3Crect width=%22128%22 height=%22128%22 fill=%22%2302242a%22/%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2251%22 fill=%22%2309757a%22/%3E%3Cpath d=%22M13 72c18-18 34-26 51-26s33 8 51 26v43H13z%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%2264%22 cy=%2253%22 r=%2220%22 fill=%22%23f5f7f8%22/%3E%3Cpath d=%22M35 106c4-17 15-26 29-26s25 9 29 26%22 fill=%22%23f5f7f8%22/%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2251%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-opacity=%22.35%22 stroke-width=%224%22/%3E%3C/svg%3E';
+  'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20128%20128%22%3E%3Crect%20width%3D%22128%22%20height%3D%22128%22%20fill%3D%22%23111%22%2F%3E%3Ccircle%20cx%3D%2264%22%20cy%3D%2243%22%20r%3D%2220%22%20fill%3D%22%23fff%22%2F%3E%3Cpath%20d%3D%22M28%20108a36%2036%200%200%201%2072%200Z%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E';
 
 /**
  * An avatar opens an account menu. The popover leads with the account details (photo, name, email, settings), then the account actions (profile, settings, logout).
