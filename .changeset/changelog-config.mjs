@@ -1,6 +1,6 @@
-const { getInfo } = require('@changesets/get-github-info');
+import { getCommitInfo } from '@changesets/get-github-info';
 
-const repo = 'godaddy/bento';
+const repo = 'godaddy/antares';
 
 async function getReleaseLine(changeset, type, options) {
   const [firstLine, ...futureLines] = changeset.summary.split('\n').map((l) => l.trimEnd());
@@ -15,7 +15,7 @@ async function getReleaseLine(changeset, type, options) {
   if (changeset.commit) {
     let prInfo = null;
     try {
-      prInfo = await getInfo({
+      prInfo = await getCommitInfo({
         repo,
         commit: changeset.commit
       });
@@ -23,10 +23,10 @@ async function getReleaseLine(changeset, type, options) {
       // If we can't get GitHub info, fall back to commit hash
     }
 
-    if (prInfo?.pull) {
-      returnVal += ` ([#${prInfo.pull}](https://github.com/${repo}/pull/${prInfo.pull})`;
-      if (prInfo.user) {
-        returnVal += ` by @${prInfo.user}`;
+    if (prInfo?.pull?.number) {
+      returnVal += ` ([#${prInfo.pull.number}](https://github.com/${repo}/pull/${prInfo.pull.number})`;
+      if (prInfo.author?.login) {
+        returnVal += ` by @${prInfo.author.login}`;
       }
       returnVal += `)`;
     } else {
@@ -49,7 +49,4 @@ async function getDependencyReleaseLine(changesets, dependenciesUpdated) {
   return `\n<details>\n<summary>Updated dependencies</summary>\n\n${updatedDependenciesList.join('\n')}\n</details>`;
 }
 
-module.exports = {
-  getReleaseLine,
-  getDependencyReleaseLine
-};
+export { getReleaseLine, getDependencyReleaseLine };
