@@ -41,14 +41,14 @@ export interface DrawerProps extends Omit<RACDialogProps, 'children'>, Pick<RACS
   placement: DrawerPlacement;
 
   /**
-   * Max size along the constrained axis. Lengths are capped at the viewport; CSS sizing keywords keep their native behavior.
+   * Max size along the constrained axis, bounded by the viewport. Supports CSS sizing keywords.
    * @default 'min(80vw, 25rem)' for left/right, 'calc(100dvh - 5rem)' for top/bottom
    */
   maxSize?: number | string;
 
   /**
-   * Min size along the constrained axis. Wins over `maxSize`. Lengths are capped at the viewport;
-   * CSS sizing keywords keep their native behavior.
+   * Min size along the constrained axis. Wins over `maxSize`, up to the viewport size.
+   * Supports CSS sizing keywords.
    */
   minSize?: number | string;
 

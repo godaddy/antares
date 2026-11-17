@@ -11,6 +11,7 @@ import { FilteredDismissExample } from '../examples/filtered-dismiss.tsx';
 import { NestedPopoverExample } from '../examples/nested-popover.tsx';
 import { ScrollableExample } from '../examples/scrollable.tsx';
 import { LayerPropsExample } from '../examples/layer-props.tsx';
+import { IntrinsicSizingExample } from '../examples/intrinsic-sizing.tsx';
 
 /** Sheet only takes focus and handles Escape once its slide settles. */
 async function waitForEntered(name?: string) {
@@ -23,43 +24,74 @@ async function waitForEntered(name?: string) {
 describe('@godaddy/antares', function antares() {
   describe('#Drawer', function drawerTests() {
     describe.each(['left', 'right', 'top', 'bottom'] as const)('%s sizing', function oversizedTests(placement) {
-      it.each(['Escape', 'close button', 'swipe'])(
-        'closes an oversized drawer with %s and restores focus',
-        async function oversizedClose(method) {
-          const viewport = { width: innerWidth, height: innerHeight };
-          await page.viewport(800, 600);
-          try {
-            const { getByRole } = await render(<PlaygroundExample placement={placement} minSize={1000} />);
-            const trigger = getByRole('button', { name: 'Open drawer' });
-            await trigger.click();
-            await waitForEntered();
+      describe.each([1000, 'min-content', 'max-content', 'fit-content'])('%s minimum', function minimumTests(minSize) {
+        it.each(['Escape', 'close button', 'swipe'])(
+          'closes an oversized drawer with %s and restores focus',
+          async function oversizedClose(method) {
+            const viewport = { width: innerWidth, height: innerHeight };
+            await page.viewport(800, 600);
+            try {
+              const { getByRole } = await render(<IntrinsicSizingExample placement={placement} minSize={minSize} />);
+              const trigger = getByRole('button', { name: 'Open drawer' });
+              await trigger.click();
+              await waitForEntered();
 
-            const dialog = getByRole('dialog');
-            const panel = dialog.element().parentElement!;
-            const horizontal = placement === 'left' || placement === 'right';
-            expect(horizontal ? panel.offsetWidth : panel.offsetHeight).toBe(horizontal ? innerWidth : innerHeight);
-            await expect
-              .poll(function entered() {
-                const box = panel.getBoundingClientRect();
-                return box.left >= 0 && box.top >= 0 && box.right <= innerWidth && box.bottom <= innerHeight;
-              })
-              .toBe(true);
+              const dialog = getByRole('dialog');
+              const panel = dialog.element().parentElement!;
+              const horizontal = placement === 'left' || placement === 'right';
+              expect(horizontal ? panel.offsetWidth : panel.offsetHeight).toBeLessThanOrEqual(
+                horizontal ? innerWidth : innerHeight
+              );
+              if (typeof minSize === 'number') {
+                expect(horizontal ? panel.offsetWidth : panel.offsetHeight).toBe(horizontal ? innerWidth : innerHeight);
+              }
+              await expect
+                .poll(function entered() {
+                  const box = panel.getBoundingClientRect();
+                  return box.left >= 0 && box.top >= 0 && box.right <= innerWidth && box.bottom <= innerHeight;
+                })
+                .toBe(true);
 
-            if (method === 'Escape') {
-              await userEvent.keyboard('{Escape}');
-            } else if (method === 'close button') {
-              await getByRole('button', { name: 'Close' }).click();
-            } else {
-              const scroller = panel.closest<HTMLElement>('[data-sheet-scroll]')!;
-              const end = placement === 'left' || placement === 'top';
-              scroller.scrollTo({ top: end ? scroller.scrollHeight : 0, left: end ? scroller.scrollWidth : 0 });
+              if (method === 'Escape') {
+                await userEvent.keyboard('{Escape}');
+              } else if (method === 'close button') {
+                await getByRole('button', { name: 'Close' }).click();
+              } else {
+                const scroller = panel.closest<HTMLElement>('[data-sheet-scroll]')!;
+                const end = placement === 'left' || placement === 'top';
+                scroller.scrollTo({ top: end ? scroller.scrollHeight : 0, left: end ? scroller.scrollWidth : 0 });
+              }
+
+              await expect.element(dialog).not.toBeInTheDocument();
+              await expect.element(trigger).toHaveFocus();
+            } finally {
+              await page.viewport(viewport.width, viewport.height);
             }
-
-            await expect.element(dialog).not.toBeInTheDocument();
-            await expect.element(trigger).toHaveFocus();
-          } finally {
-            await page.viewport(viewport.width, viewport.height);
           }
+        );
+      });
+
+      it.each(['max-content', 'fit-content'])(
+        'preserves %s minimum sizing below the viewport',
+        async function intrinsicMinimum(minSize) {
+          const { getByRole } = await render(
+            <IntrinsicSizingExample placement={placement} minSize={minSize} maxSize={40} contentSize={200} />
+          );
+          await getByRole('button', { name: 'Open drawer' }).click();
+          await waitForEntered();
+
+          const dialog = getByRole('dialog');
+          const panel = dialog.element().parentElement!;
+          const horizontal = placement === 'left' || placement === 'right';
+          const size = horizontal ? panel.offsetWidth : panel.offsetHeight;
+          expect(size).toBeGreaterThanOrEqual(200);
+          expect(size).toBeLessThan(400);
+          expect(horizontal ? getComputedStyle(panel).minInlineSize : getComputedStyle(panel).minBlockSize).toBe(
+            minSize
+          );
+
+          await userEvent.keyboard('{Escape}');
+          await expect.element(dialog).not.toBeInTheDocument();
         }
       );
     });
