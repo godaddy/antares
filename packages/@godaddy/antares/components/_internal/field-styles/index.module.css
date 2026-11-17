@@ -55,6 +55,14 @@
   }
 }
 
+.control {
+  --_button-slot-font-size: var(--_size-input-font);
+  --_button-slot-padding: var(--_size-control-padding-block);
+  --_button-slot-border-width: 0;
+  --_button-slot-radius-start: 0;
+  --_button-slot-radius-end: 0;
+}
+
 .textarea {
   field-sizing: content;
   min-height: min-content;
@@ -105,6 +113,7 @@
   & > :where(:nth-child(1 of :not(template))) {
     &,
     > :where(.control, .trigger) {
+      --_button-slot-radius-start: var(--_field-br);
       border-start-start-radius: var(--_field-br);
       border-end-start-radius: var(--_field-br);
     }
@@ -113,6 +122,7 @@
   & > :where(:nth-last-child(1 of :not(template))) {
     &,
     > :where(.control, .trigger) {
+      --_button-slot-radius-end: var(--_field-br);
       border-start-end-radius: var(--_field-br);
       border-end-end-radius: var(--_field-br);
     }

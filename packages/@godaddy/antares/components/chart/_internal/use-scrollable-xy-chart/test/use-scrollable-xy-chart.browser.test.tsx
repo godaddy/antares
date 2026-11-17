@@ -1,6 +1,6 @@
 /**
  * Browser (Playwright) tests for `useScrollableXYChart`.
- * Run: `npm run test:browser -- use-scrollable-xy-chart.browser` from `packages/@godaddy/antares`.
+ * Run: `pnpm run test:browser -- use-scrollable-xy-chart.browser` from `packages/@godaddy/antares`.
  */
 import { describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';

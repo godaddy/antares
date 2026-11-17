@@ -18,6 +18,8 @@ import { Text } from '#components/text';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
+export const buttonFieldTypographyClassName = styles.fieldTypography;
+
 const buttonVariants = cva(styles.button, {
   variants: {
     variant: {
@@ -81,8 +83,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   const inherited = useSlottedContext(ButtonContext, slot) as ButtonPresentationProps | null | undefined;
   const declared = useDeclaredSize();
   const resolvedVariant = variant ?? inherited?.variant;
-  // Field parts follow their field's scale instead of Button's own sizes.
-  const isFieldPart = resolvedVariant === 'control' || resolvedVariant === 'trigger';
+  // Field parts (a trigger, or a control a field publishes) follow the field's scale.
+  const isFieldPart = resolvedVariant === 'trigger' || inherited?.variant === 'control';
   const resolvedSize = size ?? inherited?.size ?? (isFieldPart ? undefined : declared);
 
   return (

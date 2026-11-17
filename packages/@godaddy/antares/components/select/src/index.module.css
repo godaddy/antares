@@ -6,6 +6,10 @@
   transform: rotate(180deg);
 }
 
+.controlTrigger {
+  --_button-slot-gap: 0.25rem;
+}
+
 .value {
   flex: 1;
   min-width: 0;

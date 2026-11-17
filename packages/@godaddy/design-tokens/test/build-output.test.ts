@@ -17,7 +17,7 @@ const validateDtcg = ajv.compile(schemas.tokens.base);
 describe('build output', function buildOutputSuite() {
   beforeAll(async function runBuild() {
     const { execSync } = await import('child_process');
-    execSync('npm run build', { cwd: root, stdio: 'pipe' });
+    execSync('pnpm run build', { cwd: root, stdio: 'pipe' });
   }, 30_000);
 
   it('emits all expected dist files', function emitsDistFiles() {

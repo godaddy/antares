@@ -47,7 +47,7 @@ size-space-md:
 - **$description** – Optional description.
 - **$extensions.com.godaddy.classname.property** – Required for classnames: the CSS property or list of properties to apply (e.g. `"font-family"` or `["padding", "gap"]`). The token value is applied to each property in the same class. Tokens without this are not included in the classnames output.
 
-Run **`npm run build`** to regenerate all outputs in `/dist`.
+Run **`pnpm run build`** to regenerate all outputs in `/dist`.
 
 ## Exports
 

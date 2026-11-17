@@ -5,7 +5,7 @@ The Antares design library documentation site — a Next.js app built with [Fuma
 Run the development server:
 
 ```bash
-npx nx run site:dev
+pnpm nx run site:dev
 ```
 
 Open <http://localhost:3000> with your browser to see the result.

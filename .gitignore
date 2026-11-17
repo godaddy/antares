@@ -29,6 +29,7 @@ build
 dist
 configs/*.d.mts
 configs/*.d.mts.map
+pnpm-publish-summary.json
 
 # Compiled README files
 packages/@bento/**/README.md

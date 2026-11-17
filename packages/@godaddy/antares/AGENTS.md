@@ -10,12 +10,12 @@ Invoke the `antares-components` skill. It is the source of truth for file layout
 
 ## Build/Test
 
-Run tasks through Nx, scoped to `@godaddy/antares` (prefix with the package manager, e.g. `npm exec nx`; don't run these on other workspaces):
+Run tasks through Nx, scoped to `@godaddy/antares` (prefix with the package manager, e.g. `pnpm nx`; don't run these on other workspaces):
 
 ```sh
-npm exec nx run @godaddy/antares:typecheck
-npm exec nx run @godaddy/antares:lint
-npm exec nx run @godaddy/antares:build
-npm exec nx run @godaddy/antares:test
-npm exec nx run @godaddy/antares:test:node
+pnpm nx run @godaddy/antares:typecheck
+pnpm nx run @godaddy/antares:lint
+pnpm nx run @godaddy/antares:build
+pnpm nx run @godaddy/antares:test
+pnpm nx run @godaddy/antares:test:node
 ```

@@ -1,6 +1,7 @@
 {
   "extends": "../../configs/tsconfig.json",
   "include": [".storybook/**/*"],
+  "exclude": [".storybook/addons/why-did-you-render/**/*"],
   "compilerOptions": {
     "noEmit": true
   }

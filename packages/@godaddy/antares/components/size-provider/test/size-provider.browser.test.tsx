@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
+import { resetHover } from '#test/utils/test-helpers.tsx';
 import { ExplicitSizeExample } from '../examples/explicit-size.tsx';
 import { FormExample } from '../examples/form.tsx';
 import { NestedScopesExample } from '../examples/nested-scopes.tsx';
@@ -31,6 +32,7 @@ function expectYearFits(calendar: Element) {
 const typeProperties = ['fontSize', 'fontFamily', 'fontWeight', 'lineHeight'] as const;
 
 describe('@godaddy/antares', function antares() {
+  beforeEach(resetHover);
   describe('#SizeProvider', function sizeProviderTests() {
     it('sizes controls from the nearest scope, with md outside any scope', async function controls() {
       const { getByTestId } = await render(<ScenariosExample />);
@@ -102,6 +104,26 @@ describe('@godaddy/antares', function antares() {
       }
     });
 
+    it("lets a field control's explicit size win over the field's", async function explicitControl() {
+      const { getByRole } = await render(<ScenariosExample />);
+      const input = style(getByRole('textbox', { name: 'Promo code' }).element());
+      const apply = style(getByRole('button', { name: 'Apply' }).element());
+
+      expect(apply.fontSize).toEqual('18px');
+      expect(apply.paddingBlockStart).not.toEqual(input.paddingBlockStart);
+      expect(apply.borderTopWidth).toEqual('0px');
+    });
+
+    it('gives a control Select the same trigger face as a field Select', async function controlSelectFace() {
+      const { getByRole } = await render(<ScenariosExample />);
+      const control = style(getByRole('button', { name: /Country/ }).element());
+      const field = style(getByRole('button', { name: /Theme/ }).element());
+
+      expect(control.columnGap).toEqual('4px');
+      expect(control.fontFamily).toEqual(field.fontFamily);
+      expect(control.fontWeight).toEqual(field.fontWeight);
+    });
+
     it('keeps an explicitly sized control Select aligned with its field', async function explicitControlSelect() {
       const { getByRole } = await render(<ScenariosExample />);
       const input = style(getByRole('textbox', { name: 'Fax number' }).element());
@@ -166,6 +188,20 @@ describe('@godaddy/antares', function antares() {
 
       expect(style(getByTestId('legacy-scoped').element()).fontSize).toEqual('22.5px');
       expect(style(getByTestId('legacy-explicit').element()).fontSize).toEqual('22.5px');
+    });
+
+    it('sets button type from action tokens, then legacy values, then UXCore defaults', async function actionType() {
+      const { getByTestId } = await render(<ScenariosExample />);
+      function type(id: string) {
+        const { fontFamily, fontWeight, lineHeight, fontSize } = style(getByTestId(id).element());
+        return { fontFamily, fontWeight, lineHeight: parseFloat(lineHeight) / parseFloat(fontSize) };
+      }
+
+      for (const id of ['action-token', 'action-token-link']) {
+        expect(type(id)).toEqual({ fontFamily: 'monospace', fontWeight: '700', lineHeight: 2 });
+      }
+      expect(type('action-legacy')).toEqual({ fontFamily: 'serif', fontWeight: '300', lineHeight: 3 });
+      expect(type('action-default')).toMatchObject({ fontWeight: '500', lineHeight: 1.375 });
     });
 
     it('keeps a composed Text identical to a bare button label', async function composed() {
@@ -293,6 +329,7 @@ describe('@godaddy/antares', function antares() {
       await expect.element(getByRole('option', { name: 'Basic' })).toBeVisible();
       expect(style(getByRole('option', { name: 'Basic' }).element()).fontSize).toEqual('14px');
       await userEvent.keyboard('{Escape}');
+      await expect.element(getByRole('option', { name: 'Basic' })).not.toBeInTheDocument();
 
       await userEvent.click(getByRole('button', { name: /Region/ }));
       await expect.element(getByRole('option', { name: 'Europe' })).toBeVisible();

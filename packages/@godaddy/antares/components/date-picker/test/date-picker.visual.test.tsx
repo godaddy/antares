@@ -15,13 +15,13 @@ import { SizesExample } from '../examples/sizes.tsx';
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
   beforeEach(resetHover);
-  beforeEach(function fixedToday() {
+  beforeEach(async function fixedToday() {
+    await page.viewport(1024, 768);
     vi.setSystemTime(new Date('2026-09-30T12:00:00Z'));
   });
-  afterEach(async function reset() {
+  afterEach(function reset() {
     vi.useRealTimers();
     document.documentElement.style.fontSize = '';
-    await page.viewport(1024, 768);
   });
 
   describe('#DatePicker', function datePicker() {
@@ -43,6 +43,9 @@ describe('@godaddy/antares', function antares() {
         .toBe('none');
       await screen.getByRole('button', { name: /September 15, 2026/ }).click();
       await screen.getByRole('button', { name: /September 25, 2026/ }).click();
+      await expect.element(screen.getByLabelText('Selected dates')).toMatchTextContent('2026-09-15/2026-09-25');
+      const month = screen.getByRole('grid', { name: 'September 2026' }).element().parentElement!;
+      month.scrollIntoView({ block: 'start' });
       await expect(screen.getByRole('dialog')).toMatchScreenshot('date-picker-mobile-range');
     });
 

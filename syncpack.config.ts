@@ -57,6 +57,29 @@ const config: RcFile = {
   ],
   versionGroups: [
     {
+      label: 'Shared dependency catalog',
+      packages: ['**'],
+      dependencies: [
+        '@react-aria/utils',
+        '@storybook/addon-docs',
+        '@storybook/react-vite',
+        '@types/mdast',
+        '@types/react',
+        '@types/react-dom',
+        'react',
+        'react-aria',
+        'react-dom',
+        'storybook',
+        'tsdown',
+        'typescript',
+        'vite',
+        'vitest',
+        'vitest-browser-react'
+      ],
+      dependencyTypes: ['prod', 'dev'],
+      policy: 'catalog'
+    },
+    {
       label: 'Stable TypeScript compiler',
       packages: ['**'],
       dependencies: ['typescript'],

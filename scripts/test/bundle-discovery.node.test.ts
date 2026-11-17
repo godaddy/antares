@@ -197,6 +197,7 @@ describe('consumer budget keys', function consumerBudgetKeyTests() {
     ]);
 
     expect(cases.map(({ budgetKey }) => budgetKey)).toEqual(['entry:@fixture/ui', 'export:@fixture/ui#Button']);
+    expect(cases.map(({ target }) => target)).toEqual(['dist/index.mjs', 'dist/index.mjs']);
     expect(cases.map(({ id }) => id)).toEqual([
       expect.stringMatching(/^auto-entry-fixture-ui-[a-f0-9]{12}$/),
       expect.stringMatching(/^auto-export-fixture-ui-Button-[a-f0-9]{12}$/)

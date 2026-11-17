@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
+import { preloadTestIcons, resetPointer } from '#test/utils/test-helpers.tsx';
 import { AccountMenuExample } from '../examples/account-menu.tsx';
 import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
 import { ComplexExample } from '../examples/complex.tsx';
@@ -24,6 +25,8 @@ async function openMenuWithKeyboard(user: User, triggerName: string) {
 }
 
 describe('@godaddy/antares', function antares() {
+  beforeAll(preloadTestIcons);
+  beforeEach(resetPointer);
   describe('#Menu', function menuTests() {
     it('opens from the keyboard and restores focus after Escape', async function openAndDismiss() {
       const user = userEvent.setup();

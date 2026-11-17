@@ -1,11 +1,13 @@
 import { render } from 'vitest-browser-react';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { userEvent } from 'vitest/browser';
+import { resetPointer } from '#test/utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { WithTrendExample } from '../examples/with-trend.tsx';
 import { CompactExample } from '../examples/compact.tsx';
 
 describe('@godaddy/antares', function antares() {
+  beforeEach(resetPointer);
   describe('#MetricsLockup', function metricsLockupTests() {
     it('renders title, data, and description', async function rendersBasic() {
       const { getByText } = await render(<DefaultExample />);
@@ -16,15 +18,16 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('shows tooltip on focus of info trigger', async function showsTooltip() {
-      const { getByRole } = await render(<DefaultExample />);
+      const { container, getByRole } = await render(<DefaultExample />);
+      container.tabIndex = -1;
+      container.focus();
+      await expect.element(container).toHaveFocus();
 
       await userEvent.keyboard('{Tab}');
-
-      await vi.waitFor(async function open() {
-        const tooltip = getByRole('tooltip').query();
-        expect(tooltip).not.toEqual(null);
-        expect(tooltip?.textContent).toContain('The total revenue across all products for the selected period.');
-      });
+      await expect.element(getByRole('button', { name: 'More information' })).toHaveFocus();
+      await expect
+        .element(getByRole('tooltip'))
+        .toHaveTextContent('The total revenue across all products for the selected period.');
     });
 
     it('pins tooltip open on click and unpins on second click', async function pinsTooltip() {
@@ -33,36 +36,32 @@ describe('@godaddy/antares', function antares() {
 
       await userEvent.click(button);
 
-      await vi.waitFor(async function open() {
-        expect(getByRole('tooltip').query()).not.toEqual(null);
-      });
+      await expect.element(getByRole('tooltip')).toBeVisible();
 
       // tooltip stays visible even without focus/hover
       await userEvent.tab();
-      expect(getByRole('tooltip').query()).not.toEqual(null);
+      await expect.element(getByRole('tooltip')).toBeVisible();
 
       // second click unpins
       await userEvent.click(button);
 
-      await vi.waitFor(async function unpinned() {
-        expect(getByRole('tooltip').query()).toEqual(null);
-      });
+      await expect.element(getByRole('tooltip')).not.toBeInTheDocument();
     });
 
     it('hides tooltip on Escape', async function hidesOnEscape() {
-      const { getByRole } = await render(<DefaultExample />);
+      const { container, getByRole } = await render(<DefaultExample />);
+      container.tabIndex = -1;
+      container.focus();
+      await expect.element(container).toHaveFocus();
 
       await userEvent.keyboard('{Tab}');
 
-      await vi.waitFor(async function open() {
-        expect(getByRole('tooltip').query()).not.toEqual(null);
-      });
+      await expect.element(getByRole('button', { name: 'More information' })).toHaveFocus();
+      await expect.element(getByRole('tooltip')).toBeVisible();
 
       await userEvent.keyboard('{Escape}');
 
-      await vi.waitFor(async function close() {
-        expect(getByRole('tooltip').query()).toEqual(null);
-      });
+      await expect.element(getByRole('tooltip')).not.toBeInTheDocument();
     });
 
     it('renders trend icon for positive trend', async function rendersTrendPositive() {

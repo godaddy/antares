@@ -8,8 +8,10 @@
  */
 import { readFileSync } from 'node:fs';
 import { appendFile, mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import { join, relative, resolve, sep } from 'node:path';
 import { parseArgs } from 'node:util';
+import { parse } from 'yaml';
 import sizeLimit from 'size-limit';
 import filePlugin from '@size-limit/file';
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -154,11 +156,11 @@ export function fixtureSource(consumerCase: ConsumerCase): string {
   return `${statement}\nglobalThis.__bundle_fixture__ = [${references.join(', ')}];\n`;
 }
 
-/** Loads package metadata for the root npm workspace patterns. */
+/** Loads package metadata for the root pnpm workspace patterns. */
 export async function workspaces(root: string): Promise<Workspace[]> {
-  const manifest = await json<{ workspaces: string[] }>(join(root, 'package.json'));
+  const manifest = parse(await readFile(join(root, 'pnpm-workspace.yaml'), 'utf8')) as { packages: string[] };
   const result: Workspace[] = [];
-  for (const pattern of manifest.workspaces) {
+  for (const pattern of manifest.packages) {
     if (!pattern.endsWith('/*')) throw new Error(`Unsupported workspace pattern: ${pattern}`);
     const parent = join(root, pattern.slice(0, -2));
     for (const entry of await readdir(parent, { withFileTypes: true })) {
@@ -296,13 +298,19 @@ function mergeBudgets(reports: Report[], budgets: Budgets[]): Budgets {
 
 /** Returns versions for the root analysis tools and the running Node process. */
 function toolchain(): Record<string, string> {
+  const rootRequire = createRequire(resolve(repositoryRoot, 'package.json'));
+  const viteRequire = createRequire(rootRequire.resolve('vite'));
   return Object.fromEntries(
     ['vite', 'rolldown', 'tsdown', 'typescript', 'size-limit', '@size-limit/file', 'rollup-plugin-visualizer']
       .map(
         /** Read a tool's installed package version from this checkout. */
         function toolVersion(name) {
           // The measurement harness and its tools always come from the current checkout.
-          const manifest = JSON.parse(readFileSync(join(repositoryRoot, 'node_modules', name, 'package.json'), 'utf8'));
+          const manifestPath =
+            name === 'rolldown'
+              ? viteRequire.resolve('rolldown/package.json')
+              : join(repositoryRoot, 'node_modules', name, 'package.json');
+          const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
           return [name, manifest.version as string];
         }
       )
@@ -363,6 +371,14 @@ export async function measureConsumer(
         projectRoot: root
       })
     ],
+    resolve: {
+      alias: [
+        {
+          find: new RegExp(`^${consumerCase.from.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`),
+          replacement: resolve(root, consumerCase.target)
+        }
+      ]
+    },
     build: {
       outDir: directory,
       emptyOutDir: true,

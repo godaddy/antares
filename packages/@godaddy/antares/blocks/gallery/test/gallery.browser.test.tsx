@@ -93,6 +93,10 @@ function scrollPositionsAbove(element: Element) {
 }
 
 beforeAll(preloadTestIcons);
+beforeEach(async function resetViewport() {
+  await page.viewport(1280, 800);
+  window.scrollTo(0, 0);
+});
 beforeEach(function syntheticFileEntries() {
   vi.spyOn(DataTransferItem.prototype, 'webkitGetAsEntry').mockImplementation(function fileEntry() {
     return { isFile: true, isDirectory: false } as FileSystemEntry;
@@ -481,16 +485,31 @@ describe('@godaddy/antares', function packageTests() {
     it.each(['grid', 'list'] as const)(
       'preserves picker focus and page scroll while adding images in %s view',
       async function stationaryUploads(view) {
+        // Chromium can adjust scroll during resize, after Vitest reports the new viewport size.
+        const resized = new Promise<void>(function waitForResize(resolve) {
+          window.addEventListener('resize', () => resolve(), { once: true });
+        });
+        await page.viewport(800, 400);
+        await resized;
         const pending: Array<(value: ArrayBuffer) => void> = [];
         vi.spyOn(SubtleCrypto.prototype, 'digest').mockImplementation(function deferredHash() {
           return new Promise<ArrayBuffer>((resolve) => pending.push(resolve));
         });
-        const screen = await render(<Gallery initialImages={browserSamples} defaultView={view} />);
+        const screen = await render(
+          <div style={{ paddingBlockStart: 200 }}>
+            <Gallery initialImages={browserSamples} defaultView={view} />
+          </div>
+        );
         const first = screen.getByRole('row', { name: 'Open file_name.png', exact: true });
         const add = screen.getByRole('button', { name: 'Add files', exact: true });
         await expect.element(first).toBeVisible();
+        await document.fonts.ready;
         add.element().focus();
-        const initialScroll = document.scrollingElement?.scrollTop;
+        // Keep the picker visible while exercising a nonzero page scroll.
+        const initialScroll = 100;
+        window.scrollTo(0, initialScroll);
+        await expect.poll(() => document.scrollingElement?.scrollTop).toBe(initialScroll);
+        expect(add.element().getBoundingClientRect().top).toBeGreaterThanOrEqual(0);
 
         for (const [index, name] of ['first.png', 'second.png'].entries()) {
           selectFiles(screen.container, [png(name)]);
@@ -865,6 +884,7 @@ describe('@godaddy/antares', function packageTests() {
     it('opens an image, navigates by buttons, keys and thumbnails, then restores focus', async function viewer() {
       const screen = await render(<Gallery initialImages={samples} />);
       const opener = screen.getByRole('row', { name: 'Open one.png' });
+      await expect.element(opener).toBeVisible();
       opener.element().focus();
       await userEvent.keyboard('{Enter}');
       const dialog = screen.getByRole('dialog', { name: 'Media gallery' });

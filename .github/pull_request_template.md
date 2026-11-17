@@ -42,5 +42,5 @@ Demonstrate the code is solid. Include:
 - [ ] I have added/updated tests that prove my fix is effective or that my feature works
 - [ ] I have added/updated documentation (README, Storybook stories, etc.)
 - [ ] All new and existing tests pass locally
-- [ ] I have added a changeset (run `npm run changeset` if this affects packages)
+- [ ] I have added a changeset (run `pnpm run changeset` if this affects packages)
 - [ ] I have reviewed my own code and commented any complex areas

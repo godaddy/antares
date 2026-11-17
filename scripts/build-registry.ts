@@ -11,7 +11,7 @@
  * Run it from the repository root with:
  *
  * ```sh
- * npm run registry:build
+ * pnpm run registry:build
  * ```
  */
 

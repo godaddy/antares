@@ -1,12 +1,5 @@
-import { commands, page } from 'vitest/browser';
+import { page } from 'vitest/browser';
 import { set } from '#components/icon';
-
-declare module 'vitest/internal/browser' {
-  interface BrowserCommands {
-    /** Declared in `configs/vitest.config.mts`. */
-    resetPointer: () => Promise<void>;
-  }
-}
 
 /**
  * Move the pointer near the top-left corner of the page to take it off whatever
@@ -32,7 +25,8 @@ export async function resetHover() {
 }
 
 /**
- * Move the pointer outside the viewport, where no element can be under it. Use
+ * Move the pointer outside the test document, where no element can be under it.
+ * `force` allows targeting a point outside the document's bounds. Use
  * from a `beforeEach` hook in tests that assert an un-hovered state, because
  * Vitest runs every test file of a session in the same page: the pointer is
  * left wherever the previous file dropped it, and Chromium re-runs its hit test
@@ -52,7 +46,7 @@ export async function resetHover() {
  * ```
  */
 export function resetPointer() {
-  return commands.resetPointer();
+  return page.getByRole('document').hover({ position: { x: -1, y: -1 }, force: true });
 }
 
 /**

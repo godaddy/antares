@@ -1,5 +1,19 @@
 # @godaddy/antares
 
+## 0.12.2
+
+### Patch Changes
+
+- Fix PaginationDots (and Carousel dots) overflowing the container and stretching the page when there are many pages, by letting the dots wrap onto multiple rows. ([#440](https://github.com/godaddy/bento/pull/440) by @jmanso-godaddy)
+- Declare the d3-scale type dependency for reliable declaration builds. ([#439](https://github.com/godaddy/bento/pull/439) by @rmarkins-godaddy)
+
+## 0.12.1
+
+### Patch Changes
+
+- Fix BarChart clipping the first x-axis label under the Y-axis when the chart has many categories. ([#432](https://github.com/godaddy/bento/pull/432) by @egaitan-godaddy)
+- Let `Button variant="control"` work standalone with rounded corners and sizes, and use action typography tokens for button labels. ([#421](https://github.com/godaddy/bento/pull/421) by @egaitan-godaddy)
+
 ## 0.12.0
 
 ### Minor Changes
@@ -40,6 +54,7 @@
 <summary>Updated dependencies</summary>
 
 - @bento/icon@0.2.1
+
 </details>
 
 ## 0.10.1
@@ -368,4 +383,5 @@
 <summary>Updated dependencies</summary>
 
 - @bento/icon@0.2.0
+
 </details>

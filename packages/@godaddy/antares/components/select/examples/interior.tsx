@@ -1,17 +1,22 @@
 import { Button, Flex, Group, Input, Label, Select, SelectItem, SelectOptions, TextField } from '@godaddy/antares';
 
+interface InteriorExampleProps {
+  /** Class applied to each Select trigger. */
+  triggerClassName?: string;
+}
+
 /**
  * A Select as a field of its own, whose trigger takes the box chrome, beside one composed as a
  * control inside another field's `Group`, whose trigger takes the control chrome instead, beside a
  * disabled Select whose control affix is disabled with it.
  * @ignore
  */
-export function InteriorExample() {
+export function InteriorExample({ triggerClassName }: InteriorExampleProps = {}) {
   return (
     <Flex direction="column" gap="md">
       <Select placeholder="Pick a drink">
         <Label>Coffee</Label>
-        <Button slot="trigger" />
+        <Button slot="trigger" className={triggerClassName} />
         <SelectOptions>
           <SelectItem id="espresso">Espresso</SelectItem>
         </SelectOptions>
@@ -21,7 +26,7 @@ export function InteriorExample() {
         <Label>Phone number</Label>
         <Group>
           <Select aria-label="Country code" defaultValue="us" variant="control">
-            <Button slot="trigger" />
+            <Button slot="trigger" className={triggerClassName} />
             <SelectOptions>
               <SelectItem id="us">US +1</SelectItem>
             </SelectOptions>
@@ -33,7 +38,7 @@ export function InteriorExample() {
       <Select isDisabled placeholder="Pick a drink">
         <Label>Tea</Label>
         <Group>
-          <Button slot="trigger" />
+          <Button slot="trigger" className={triggerClassName} />
           <Button slot="control">Clear</Button>
         </Group>
         <SelectOptions>

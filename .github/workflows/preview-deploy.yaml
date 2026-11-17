@@ -1,0 +1,179 @@
+name: PR Preview Deploy
+
+on:
+  workflow_run:
+    workflows:
+      - Storybook PR Preview
+      - Docs Site PR Preview
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  resolve-pr:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      number: ${{ steps.pr.outputs.number }}
+    steps:
+      - name: Verify PR is open and build is current
+        id: pr
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+            if (!run.head_repository) {
+              core.info('Workflow run has no source repository; skipping preview.');
+              core.setOutput('deploy', 'false');
+              return;
+            }
+
+            const { data: pullRequests } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              base: 'main',
+              head: `${run.head_repository.owner.login}:${run.head_branch}`,
+            });
+            const pullRequest = pullRequests.find(pullRequest =>
+              pullRequest.head.sha === run.head_sha &&
+              pullRequest.head.repo?.full_name === run.head_repository?.full_name &&
+              pullRequest.head.ref === run.head_branch
+            );
+
+            if (!pullRequest) {
+              core.info('No matching open main-branch PR found for this build; skipping preview.');
+              core.setOutput('deploy', 'false');
+              return;
+            }
+
+            core.setOutput('deploy', 'true');
+            core.setOutput('number', String(pullRequest.number));
+
+  deploy-preview:
+    needs: resolve-pr
+    if: needs.resolve-pr.outputs.number != ''
+    concurrency:
+      group: gh-pages-pr-deploy-${{ github.event.workflow_run.name }}-${{ needs.resolve-pr.outputs.number }}
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
+      pull-requests: write
+      pages: read
+    steps:
+      - name: Checkout trusted default branch
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.repository.default_branch }}
+          persist-credentials: false
+
+      - name: Verify PR is still open and build is current
+        id: current
+        uses: actions/github-script@v9
+        env:
+          PR_NUMBER: ${{ needs.resolve-pr.outputs.number }}
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+            const { data: pullRequest } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: Number(process.env.PR_NUMBER),
+            });
+
+            if (
+              pullRequest.state !== 'open' ||
+              pullRequest.base.ref !== 'main' ||
+              pullRequest.head.sha !== run.head_sha ||
+              pullRequest.head.repo?.full_name !== run.head_repository?.full_name ||
+              pullRequest.head.ref !== run.head_branch
+            ) {
+              core.info('Skipping preview for a closed, non-main, or stale PR build.');
+              core.setOutput('deploy', 'false');
+              return;
+            }
+
+            core.setOutput('deploy', 'true');
+
+      - name: Download preview build
+        if: steps.current.outputs.deploy == 'true'
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ github.event.workflow_run.name == 'Storybook PR Preview' && 'storybook-preview' || 'docs-site-preview' }}
+          path: ${{ github.event.workflow_run.name == 'Storybook PR Preview' && 'storybook-build' || 'site-build' }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Ensure .nojekyll at gh-pages root
+        if: github.event.workflow_run.name == 'Docs Site PR Preview' && steps.current.outputs.deploy == 'true'
+        run: mkdir -p root-nojekyll && touch root-nojekyll/.nojekyll
+
+      - name: Deploy .nojekyll to gh-pages root
+        if: github.event.workflow_run.name == 'Docs Site PR Preview' && steps.current.outputs.deploy == 'true'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          folder: root-nojekyll
+          clean: false
+          force: false
+          attempt-limit: 5
+
+      - name: Deploy preview to GitHub Pages
+        if: steps.current.outputs.deploy == 'true'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          folder: ${{ github.event.workflow_run.name == 'Storybook PR Preview' && 'storybook-build' || 'site-build' }}
+          target-folder: pr-${{ needs.resolve-pr.outputs.number }}-${{ github.event.workflow_run.name == 'Storybook PR Preview' && 'storybook' || 'site' }}
+          clean: false
+          force: false
+          attempt-limit: 5
+
+      - name: Post Preview URL Comment
+        if: steps.current.outputs.deploy == 'true'
+        uses: actions/github-script@v9
+        env:
+          PR_NUMBER: ${{ needs.resolve-pr.outputs.number }}
+        with:
+          script: |
+            const isStorybook = context.payload.workflow_run.name === 'Storybook PR Preview';
+            const prNumber = Number(process.env.PR_NUMBER);
+            const repo = context.repo;
+            const pagesResponse = await github.rest.repos.getPages({ owner: repo.owner, repo: repo.repo });
+            const pagesBaseUrl = pagesResponse.data.html_url.replace(/\/$/, '');
+            const previewUrl = `${pagesBaseUrl}/pr-${prNumber}-${isStorybook ? 'storybook' : 'site'}/`;
+            const title = isStorybook ? 'Storybook Preview' : 'Docs Site Preview';
+            const heading = isStorybook ? '📚 Storybook Preview' : 'Docs Site Preview';
+            const commentBody = `## ${heading}\n\nPreview URL: ${previewUrl}\n\nPreview will be automatically deleted when this PR is closed.`;
+
+            const comments = await github.rest.issues.listComments({
+              owner: repo.owner,
+              repo: repo.repo,
+              issue_number: prNumber,
+            });
+
+            const botComment = comments.data.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes(title)
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: repo.owner,
+                repo: repo.repo,
+                comment_id: botComment.id,
+                body: commentBody,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: repo.owner,
+                repo: repo.repo,
+                issue_number: prNumber,
+                body: commentBody,
+              });
+            }

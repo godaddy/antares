@@ -23,6 +23,8 @@ export interface ConsumerCase {
   scope: 'entry' | 'export';
   /** Consumer import path, such as `@godaddy/antares/Button`. */
   from: string;
+  /** Built export target relative to the monorepo root. */
+  target: string;
   /** Export names to retain; an empty array creates a side-effect import. */
   names: string[];
 }
@@ -322,6 +324,7 @@ export function consumerCases(entries: PublicEntry[]): ConsumerCase[] {
       package: entry.package,
       scope: 'entry' as const,
       from: entry.from,
+      target: entry.target,
       names: entry.exports
     };
     cases.push({
@@ -334,6 +337,7 @@ export function consumerCases(entries: PublicEntry[]): ConsumerCase[] {
           package: entry.package,
           scope: 'export' as const,
           from: entry.from,
+          target: entry.target,
           names: [name]
         };
         cases.push({

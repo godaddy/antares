@@ -51,10 +51,22 @@ From a practical perspective, contributions are as simple as:
 1. Make changes on the branch of your forked repository.
 1. When committing, reference your issue (if present) and include a note about
   the fix.
-1. If you've changed package code, add a changeset with `npm run changeset` (the [Changeset Bot](https://github.com/apps/changeset-bot) will remind you if needed)
+1. If you've changed package code, add a changeset with `pnpm run changeset` (the [Changeset Bot](https://github.com/apps/changeset-bot) will remind you if needed)
 1. Please also add/update unit tests for your changes.
 1. Push the changes to your fork and submit a pull request to the 'main
    development branch' of the project's repository.
+
+### Pull request previews
+
+Pull requests targeting `main` get automatic Storybook and docs-site previews.
+After each build succeeds, GitHub posts the preview links as comments on the PR;
+the previews are removed when the PR closes.
+
+Fork builds run with read-only permissions and upload artifacts. The trusted
+[preview deploy workflow](./.github/workflows/preview-deploy.yaml) publishes
+those artifacts without checking out contributor code. This workflow must be
+present on the default branch before it can deploy previews. Changes to it take
+effect for subsequent preview deployments only after they are merged.
 
 If you are interested in making a large change and feel unsure about its overall
 effect, start with opening an Issue in the project's [Issue Tracker][issues]

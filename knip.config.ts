@@ -26,6 +26,10 @@ const config: KnipConfig = {
     'packages/@godaddy/*': {
       ignore: ['src/*.d.ts']
     },
+    'packages/@godaddy/antares': {
+      // tsdown needs this dependency to resolve chart types, but bundles those types in its output.
+      ignoreDependencies: ['@types/d3-scale']
+    },
     'packages/dev/*': {
       ignore: ['test/**/*']
     },
