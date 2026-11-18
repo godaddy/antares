@@ -1,0 +1,40 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './toast-growl.stories.tsx';
+
+<Meta of={Stories} name="Read me first" />
+
+# Toast × Growl
+
+Antares is adding a **Toast** (UXCore calls it **Growl**). Pages already mix Growl 2400, Growl 2500, and soon
+Antares, often from different teams' bundles. We need two decisions.
+
+**The react-intl bug.** Today one Growl on the page is elected "leader" and draws every team's messages.
+If a message uses `<FormattedMessage />`, it renders in the leader's React tree, which lacks the sending
+team's `IntlProvider`, so it shows up empty or broken. In every story, each message checks which provider
+it rendered under: **✅ en-US** when it's the sender's, **❌ expected en-US, got es-MX** when it isn't.
+
+> Growl here is **simulated**: a copy of Growl's real election protocol (same event, same rules), with a
+> simplified look. Real `@ux/growl` isn't on public npm. Checked locally against real 2400.20.0 and
+> 2500.15.0: they elect the same leader as the simulator, and both run on React 19.
+
+## Decision A: who owns Growl messages?
+
+| Story | Stacks | Look | Antares messages keep context | Couples Antares to Growl |
+| --- | --- | --- | --- | --- |
+| A1 Coexist | Two, overlapping | Each its own | ✅ | No |
+| A2 Avoid | Two, stacked | Each its own | ✅ | Barely (watches Growl's DOM) |
+| A3 Forward | One (Growl's) | Growl's | ❌ (rendered by the Growl leader) | Yes (speaks Growl's protocol) |
+| A4 Lead | One (Antares') | Antares' | ✅, but every Growl team's ❌ | Yes, forever |
+
+In A1–A3, Growl 2400 messages still show ❌: the 2500 leader draws them. That's today's bug, and only Growl
+can fix it. A4 is the same bug with Antares as the leader.
+
+## Decision B: several Antares copies on one page
+
+| Story | What it shows |
+| --- | --- |
+| B1 Two Antares copies | Each copy renders its own toasts into one shared host. No leader, no version contract beyond the host. |
+| B2 Growl API shim | Teams keep `addGrowlMessage()` calls, backed by Antares, to migrate gradually. |
+
+**Questions for you:** Is A1/A2 (independent) enough, or do we need A3/A4? Is the B1 model right for
+mixing Antares versions?
