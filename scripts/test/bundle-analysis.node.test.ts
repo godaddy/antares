@@ -707,6 +707,9 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
       'DonutChart',
       'GaugeChart',
       'HeatmapChart',
+      'HeatmapLegend',
+      'HeatmapPlot',
+      'HeatmapTooltip',
       'LineChart'
     ]);
     expect(surface.find((entry) => entry.from === '@godaddy/antares/date')?.exports).toContain('parseDate');

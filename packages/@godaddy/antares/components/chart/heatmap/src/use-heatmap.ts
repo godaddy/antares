@@ -27,7 +27,7 @@ export function resolveColor(value: number | null | undefined, buckets: ColorBuc
 }
 
 export interface HeatmapTooltipData<T extends object> {
-  datum: T | undefined;
+  datum: T;
   x: string | Date;
   y: string | Date;
   value: number | null;
@@ -53,6 +53,8 @@ interface UseHeatmapOptions<T extends object> {
   chartWidth: number;
   chartHeight: number;
   margin: { top: number; right: number; bottom: number; left: number };
+  /** Right-to-left layout: the first column sits on the right, beside the row labels. */
+  rtl?: boolean;
 }
 
 export function useHeatmap<T extends object>({
@@ -70,7 +72,8 @@ export function useHeatmap<T extends object>({
   minChartHeight,
   chartWidth,
   chartHeight,
-  margin
+  margin,
+  rtl = false
 }: UseHeatmapOptions<T>) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [hoveredX, setHoveredX] = useState<string | Date | null>(null);
@@ -167,11 +170,12 @@ export function useHeatmap<T extends object>({
     function buildXScale() {
       return scaleBand({
         domain: xValues.map(String),
-        range: [0, effectiveInnerWidth],
+        // Reversed in RTL, like the line chart, so the first column is next to the row labels.
+        range: rtl ? [effectiveInnerWidth, 0] : [0, effectiveInnerWidth],
         padding: 0
       });
     },
-    [xValues, effectiveInnerWidth]
+    [xValues, effectiveInnerWidth, rtl]
   );
 
   const yScale = useMemo(
@@ -186,10 +190,10 @@ export function useHeatmap<T extends object>({
   );
 
   const handleCellEnter = useCallback(
-    function enter(datum: T | undefined, xVal: string | Date, yVal: string | Date, cellX: number, cellY: number) {
+    function enter(datum: T, xVal: string | Date, yVal: string | Date, cellX: number, cellY: number) {
       setHoveredX(xVal);
       setHoveredY(yVal);
-      const value = datum ? valueAccessor(datum) : null;
+      const value = valueAccessor(datum);
       const bucket = resolveBucket(value, colorBuckets);
       showTooltip({
         tooltipLeft: cellX,

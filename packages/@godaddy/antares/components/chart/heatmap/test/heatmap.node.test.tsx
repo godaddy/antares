@@ -13,6 +13,9 @@ import { FixedHeightExample } from '../examples/fixed-height.tsx';
 import { MaxCellHeightExample } from '../examples/max-cell-height.tsx';
 import { ScrollingExample } from '../examples/scrolling.tsx';
 import { SingleRowExample } from '../examples/single-row.tsx';
+import { ComposedTitleFooterExample } from '../examples/composed-title-footer.tsx';
+import { ComposedLegendHeaderExample } from '../examples/composed-legend-header.tsx';
+import { Hourly24Example } from '../examples/hourly-24.tsx';
 import { WrapContentExample } from '../examples/wrap-content.tsx';
 
 const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
@@ -23,7 +26,10 @@ const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
   ['fixed-height', FixedHeightExample],
   ['scrolling', ScrollingExample],
   ['max-cell-height', MaxCellHeightExample],
-  ['single-row', SingleRowExample]
+  ['single-row', SingleRowExample],
+  ['hourly-24', Hourly24Example],
+  ['composed-title-footer', ComposedTitleFooterExample],
+  ['composed-legend-header', ComposedLegendHeaderExample]
 ];
 
 describe('@godaddy/antares', function antares() {

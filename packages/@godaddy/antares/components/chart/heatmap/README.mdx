@@ -16,9 +16,9 @@ import * as Stories from './heatmap.stories.tsx';
 - **Hover cross-highlight**: Hovering or focusing a cell bolds the matching row and column axis labels
 - **Keyboard accessible**: Focusing a cell shows its tooltip, the same as hovering
 - **Adjustable gap**: `cellPadding` sets the gap between cells in px
-- **Sized from its rows**: Without a `height`, the chart is as tall as its rows (`minCellHeight`, default 32px, plus the `cellPadding` gap), so it needs no sized container
+- **Sized from its rows**: Without a `height`, the chart is as tall as its rows (`minCellHeight`, default 40px, plus the `cellPadding` gap), so it needs no sized container
 - **Fills its container**: Give the chart (or its parent) a height and the rows stretch to fill it, up to `maxCellHeight`; a smaller height makes it scroll
-- **Touch-friendly**: Default `minCellSize: 44` keeps each column at 44px or more (the cell plus its `cellPadding` gap); the SVG expands and the container scrolls
+- **Touch-friendly**: A cell is never smaller than 40px wide or tall, the minimum tap target. `minCellSize` (default 44, the cell plus its `cellPadding` gap) and `minCellHeight` (default 40) are raised to that floor if set lower; the SVG expands and the container scrolls
 - **Sticky axes**: Row and column labels remain visible while scrolling a large grid
 - **RTL support**: Right-to-left layout with the row labels on the right (`AxisRight`)
 - **Custom tooltips**: Replace the built-in tooltip with any React node via `renderTooltip`, for example a period-over-period comparison; it is wrapped in the shared chart tooltip container
@@ -85,7 +85,7 @@ interface MyDatum {
 
 Cell width fills the available width. Row height has two modes, depending on whether the chart is given a height.
 
-**Wrap content** (no `height`, and the parent has none): the chart is as tall as its rows. Each row is `minCellHeight` (default `32`) plus the `cellPadding` gap, with the axis and legend below. It needs no sized container, and it grows or shrinks as rows are added or removed.
+**Wrap content** (no `height`, and the parent has none): the chart is as tall as its rows. Each row is `minCellHeight` (default `40`, and never less) plus the `cellPadding` gap, with the axis and legend below. It needs no sized container, and it grows or shrinks as rows are added or removed.
 
 **Fixed height** (the `height` prop, or a parent with a height): `height` is the total, including the axis and legend.
 
@@ -102,7 +102,7 @@ Cell width fills the available width. Row height has two modes, depending on whe
 When `maxCellHeight` leaves the chart shorter than its box, `align` chooses where it sits: `start` (default) keeps it at the top, `end` moves it to the bottom, and `center` splits the space. It has no effect when the rows fill the height.
 
 ```tsx
-// Wrap content: 32px rows, as tall as needed
+// Wrap content: 40px rows, as tall as needed
 <HeatmapChart data={data} colorBuckets={buckets} />
 
 // Fixed height: rows fill 420px, or scroll if they do not fit
@@ -131,7 +131,32 @@ A cell with no value renders as a dashed-border rectangle with no fill. That cov
 
 ## Titles and descriptions
 
-The chart renders only the grid, axes and legend. Render titles, subtitles and date ranges in your own layout around it.
+By default the chart renders only the grid, axes, legend and tooltip. For a title or supporting text, use the composition below, or render them in your own layout around the chart.
+
+## Composition
+
+`HeatmapChart` works on its own, and also exposes its parts so you can arrange them:
+
+- `HeatmapPlot`: the cells and the row and column labels
+- `HeatmapLegend`: the color legend. It reads the buckets from the chart, so moving it never duplicates color logic. `label` and `closedLabel` override the chart's `colorLegendLabel` and `closedLabel`.
+- `HeatmapTooltip`: the hover and focus tooltip. A render function as `children` replaces its content, the same as `renderTooltip`.
+
+With no children the chart renders `HeatmapPlot`, then `HeatmapLegend` (unless `colorLegend` is `false`), then `HeatmapTooltip`. Children replace that default entirely, so include `HeatmapPlot`, and `HeatmapTooltip` when you want tooltips. The `colorLegend` and `renderTooltip` props only configure the default; with children, place `HeatmapLegend` yourself and pass a render function to `HeatmapTooltip`. `tooltip={false}` still turns every tooltip off. The parts must be rendered inside a `HeatmapChart`. Use `aria-labelledby` on the chart to label it with a visible heading.
+
+```tsx
+<HeatmapChart data={data} colorBuckets={buckets} aria-labelledby="activity-title">
+  <Header>
+    <Heading id="activity-title" level={2}>Weekly activity</Heading>
+    <HeatmapLegend />
+  </Header>
+  <Content>
+    <HeatmapPlot />
+  </Content>
+  <HeatmapTooltip />
+</HeatmapChart>
+```
+
+See the *Title above, legend in the footer* and *Legend beside the title* examples.
 
 ## Legend
 
@@ -177,4 +202,29 @@ See the *Custom tooltip* example for a full comparison card.
 
 ## Props
 
+`HeatmapChart` composes the three parts below. With no children it renders them in order; with children you place them yourself.
+
+```tsx
+<HeatmapChart>
+  <HeatmapPlot />
+  <HeatmapLegend />
+  <HeatmapTooltip />
+  {/* ... */}
+</HeatmapChart>
+```
+
+### HeatmapChart
+
 <ArgTypes of={Stories.Props} />
+
+### HeatmapPlot
+
+<ArgTypes of={Stories.HeatmapPlotProps} />
+
+### HeatmapLegend
+
+<ArgTypes of={Stories.HeatmapLegendProps} />
+
+### HeatmapTooltip
+
+<ArgTypes of={Stories.HeatmapTooltipProps} />

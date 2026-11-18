@@ -91,7 +91,7 @@ export function PlaygroundExample({
   yLabels = true,
   tooltip = true,
   minCellSize = 44,
-  minCellHeight = 32,
+  minCellHeight = 40,
   maxCellHeight,
   align = 'start',
   cellRounding = 6,

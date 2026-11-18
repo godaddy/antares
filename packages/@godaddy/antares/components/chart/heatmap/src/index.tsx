@@ -1,45 +1,20 @@
-import { type ReactNode, useEffect, useId, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { type ReactNode, useMemo } from 'react';
 import { useLocale } from 'react-aria-components';
-import { AxisBottom, AxisLeft, AxisRight } from '@visx/axis';
-import { Group } from '@visx/group';
-import type { TooltipData } from '@visx/xychart';
 import { cx } from 'cva';
 import { Flex } from '#components/layout/flex';
-import { Box } from '#components/layout/box';
-import { Text } from '#components/text';
-import { textTreatmentClassName } from '#components/_internal/typography';
-import { Tooltip, TooltipContainer } from '#components/chart/_internal/tooltip';
 import { useScrollableXYChart } from '#components/chart/_internal/use-scrollable-xy-chart';
-import type { ColorBucket, DataPoint, HeatmapCell, InternalSeriesConfig } from '../../types.ts';
-import {
-  useHeatmap,
-  resolveColor,
-  defaultXAccessor,
-  defaultYAccessor,
-  defaultValueAccessor,
-  type HeatmapTooltipData
-} from './use-heatmap.ts';
+import type { ColorBucket, HeatmapCell } from '../../types.ts';
+import { HeatmapContext, type HeatmapContextValue } from './context.ts';
+import { HeatmapLegend } from './heatmap-legend.tsx';
+import { HeatmapPlot } from './heatmap-plot.tsx';
+import { HeatmapTooltip, type HeatmapTooltipRenderProps } from './heatmap-tooltip.tsx';
+import { useHeatmap, defaultXAccessor, defaultYAccessor, defaultValueAccessor } from './use-heatmap.ts';
 import styles from './index.module.css';
 
-export type { ColorBucket };
-
-/**
- * Data passed to a custom {@link HeatmapChartProps.renderTooltip} function.
- * @public
- */
-export interface HeatmapTooltipRenderProps<T extends object = HeatmapCell> {
-  /** The raw datum at this cell. Tooltips only open for cells that have a value. */
-  datum: T | undefined;
-  /** The color bucket the cell falls in. */
-  bucket: ColorBucket | undefined;
-  /** Cell value. */
-  value: number | null;
-  /** Column category from xAccessor. */
-  x: string | Date;
-  /** Row category from yAccessor. */
-  y: string | Date;
-}
+export type { ColorBucket, HeatmapTooltipRenderProps };
+export { HeatmapPlot, type HeatmapPlotProps } from './heatmap-plot.tsx';
+export { HeatmapLegend, type HeatmapLegendProps } from './heatmap-legend.tsx';
+export { HeatmapTooltip, type HeatmapTooltipProps } from './heatmap-tooltip.tsx';
 
 /**
  * Props for HeatmapChart.
@@ -77,22 +52,32 @@ export interface HeatmapChartProps<T extends object = HeatmapCell> {
    * above every max. `min` is informational and not used for matching.
    */
   colorBuckets: ColorBucket[];
-  /** Show the discrete swatch legend below the chart. @default true */
+  /**
+   * Show the discrete swatch legend below the chart. Only applies to the default composition: when you
+   * pass `children`, place a `HeatmapLegend` yourself.
+   * @default true
+   */
   colorLegend?: boolean;
   /** Label shown before the legend swatches (e.g. "Visitors"). Omitted when not provided. */
   colorLegendLabel?: string;
   /** Label for null/closed cells in the legend. @default "No data" */
   closedLabel?: string;
 
-  /** Minimum column width in px (the cell plus its `cellPadding` gap) before the chart scrolls horizontally. @default 44 */
+  /**
+   * Minimum column width in px (the cell plus its `cellPadding` gap) before the chart scrolls
+   * horizontally. A cell is never narrower than 40px, the minimum tap target, so values below
+   * `40 + cellPadding` are raised to it.
+   * @default 44
+   */
   minCellSize?: number;
   /**
    * Minimum row height in px (the cell, not counting the `cellPadding` gap). With no height, the chart
    * is as tall as its rows (rows × (minCellHeight + cellPadding), plus the axis and legend). When the
    * chart is given a height the rows stretch to fill it, and when the rows cannot fit at this height
    * the chart scrolls vertically instead of shrinking them further. Rows are never shorter than the
-   * y-axis labels need, so very small values are raised to fit.
-   * @default 32
+   * y-axis labels need, so very small values are raised to fit. A cell is never shorter than 40px, the
+   * minimum tap target, so smaller values are raised to 40.
+   * @default 40
    */
   minCellHeight?: number;
   /**
@@ -113,14 +98,15 @@ export interface HeatmapChartProps<T extends object = HeatmapCell> {
   /** Border radius on each cell. @default 6 */
   cellRounding?: number;
 
-  /** Show tooltip on hover/tap. @default true */
+  /** Show tooltip on hover/tap. Turns off every `HeatmapTooltip`, including ones you place yourself. @default true */
   tooltip?: boolean;
   /** Format the value shown in the built-in tooltip, e.g. to append a unit. */
   tooltipValueFormatter?: (d: T) => string;
   /**
    * Custom tooltip content. Rendered inside the shared chart tooltip container, so it gets the
    * same elevation, rounding and padding as the built-in tooltip. Read extra fields (for example a
-   * previous-period value) from `datum`.
+   * previous-period value) from `datum`. Only applies to the default composition: when you pass
+   * `children`, give `HeatmapTooltip` a render function instead.
    */
   renderTooltip?: (props: HeatmapTooltipRenderProps<T>) => ReactNode;
 
@@ -132,8 +118,18 @@ export interface HeatmapChartProps<T extends object = HeatmapCell> {
    */
   height?: number;
 
+  /**
+   * Content of the chart. Omit it for the default composition, `HeatmapPlot` followed by `HeatmapLegend`
+   * (when `colorLegend` is on) and `HeatmapTooltip`. Pass children to arrange those parts yourself, for
+   * example a title above the plot and the legend in a footer. Children replace the default entirely, so
+   * include `HeatmapPlot`, and `HeatmapTooltip` if you want tooltips.
+   */
+  children?: ReactNode;
+
   /** Accessible label for the SVG element. */
   'aria-label'?: string;
+  /** Id of the element that labels the SVG, such as a visible heading. */
+  'aria-labelledby'?: string;
   /** Screen-reader description rendered inside the SVG <desc> element. */
   desc?: string;
 
@@ -141,114 +137,11 @@ export interface HeatmapChartProps<T extends object = HeatmapCell> {
   className?: string;
 }
 
-/** Space between an axis label and its cells in px, the same 8px tick length the bar and line charts use. */
-const LABEL_GAP = 8;
+/** Smallest cell width and height in px: the minimum tap target size. */
+const MIN_CELL_TAP_SIZE = 40;
 
 /** Maps the `align` prop to the flex alignment of the chart's content. */
 const ALIGN_TO_JUSTIFY = { start: 'flex-start', center: 'center', end: 'flex-end' } as const;
-
-// ─── Legend sub-component ────────────────────────────────────────────────────
-
-interface HeatmapLegendProps {
-  buckets: ColorBucket[];
-  label?: string;
-  closedLabel: string;
-}
-
-function HeatmapLegend({ buckets, label, closedLabel }: HeatmapLegendProps) {
-  return (
-    <Flex
-      role="list"
-      aria-label={label ?? 'Heatmap legend'}
-      alignItems="center"
-      justifyContent="center"
-      alignSelf="center"
-      wrap="wrap"
-      gap="lg"
-      className={styles.legend}
-    >
-      {label && <Text className={cx(styles.legendLabel, textTreatmentClassName('inherit'))}>{label}</Text>}
-      {buckets.map(function renderBucket(b) {
-        return (
-          <Flex key={b.label} role="listitem" alignItems="center" gap="sm">
-            <Box
-              rounding="lg"
-              className={styles.legendSwatch}
-              style={{ backgroundColor: b.color }}
-              aria-hidden="true"
-            />
-            <Text className={textTreatmentClassName('inherit')}>{b.label}</Text>
-          </Flex>
-        );
-      })}
-      {/* One list item so the divider can never wrap onto a line by itself. */}
-      <Flex role="listitem" alignItems="center" gap="lg">
-        <Box className={styles.legendDivider} aria-hidden="true" />
-        <Flex alignItems="center" gap="sm">
-          <Box rounding="lg" className={cx(styles.legendSwatch, styles.legendSwatchClosed)} aria-hidden="true" />
-          <Text className={textTreatmentClassName('inherit')}>{closedLabel}</Text>
-        </Flex>
-      </Flex>
-    </Flex>
-  );
-}
-
-// ─── Built-in tooltip ─────────────────────────────────────────────────────────
-
-/** Id of the single synthetic series the shared Tooltip renders for the hovered cell. */
-const HOVERED_CELL_SERIES_ID = 'heatmap-cell';
-
-function HeatmapTooltip<T extends object>({
-  data,
-  tooltipValueFormatter,
-  valueAccessor
-}: {
-  data: HeatmapTooltipData<T>;
-  tooltipValueFormatter?: (d: T) => string;
-  valueAccessor: (d: T) => number | null;
-}) {
-  const { datum, x, y, bucket } = data;
-  if (!datum) return null;
-
-  // The shared Tooltip renders one row per series. A heatmap has no series, so the hovered cell is
-  // presented as a single one: its swatch is the bucket color and its name is the "row · column" label.
-  const series = [
-    {
-      id: HOVERED_CELL_SERIES_ID,
-      name: `${String(y)} · ${String(x)}`,
-      data: [datum],
-      _resolvedColor: bucket?.color
-    }
-  ];
-
-  return (
-    <Tooltip
-      // Same structural narrowing the bar chart uses: the payload is a subset of visx's TooltipData.
-      tooltipData={{ datumByKey: { [HOVERED_CELL_SERIES_ID]: { datum } } } as unknown as TooltipData<DataPoint>}
-      showArrow={true}
-      formatValue={
-        (tooltipValueFormatter ??
-          function format(d: T) {
-            return String(valueAccessor(d) ?? '');
-          }) as (datum: DataPoint) => string
-      }
-      series={series as unknown as InternalSeriesConfig[]}
-    />
-  );
-}
-
-// ─── Axis tick label props ────────────────────────────────────────────────────
-
-/** Font, size and color come from the stylesheet; only anchoring and the hover emphasis are set here. */
-function getTickLabelProps(isHovered: boolean, textAnchor: 'start' | 'middle' | 'end') {
-  return {
-    textAnchor,
-    dy: '0.35em',
-    className: isHovered ? styles.tickLabelHovered : undefined
-  };
-}
-
-// ─── Main component ───────────────────────────────────────────────────────────
 
 /**
  * Heatmap chart for two-dimensional categorical data.
@@ -256,7 +149,9 @@ function getTickLabelProps(isHovered: boolean, textAnchor: 'start' | 'middle' | 
  * Displays a grid of colored cells where each cell's fill is determined by a discrete set of
  * threshold color buckets. Cells with no value render as dashed-border empty rectangles. Hovering
  * or focusing a cell shows its tooltip and highlights the matching row and column axis labels.
- * Titles and descriptions are intentionally not part of the chart; render them alongside it.
+ *
+ * By default it renders the plot, the legend and the tooltip. Pass children to compose
+ * `HeatmapPlot`, `HeatmapLegend` and `HeatmapTooltip` with your own content instead.
  *
  * @template T - The data point type. Defaults to HeatmapCell.
  * @param props - {@link HeatmapChartProps}
@@ -277,59 +172,36 @@ export function HeatmapChart<T extends object = HeatmapCell>(props: HeatmapChart
     colorLegend = true,
     colorLegendLabel,
     closedLabel = 'No data',
-    minCellSize = 44,
-    minCellHeight = 32,
+    minCellSize: requestedMinCellSize = 44,
+    minCellHeight: requestedMinCellHeight = 40,
     maxCellHeight = Number.POSITIVE_INFINITY,
     align = 'start',
     cellPadding = 4,
     cellRounding = 6,
     tooltip = true,
     tooltipValueFormatter,
-    renderTooltip: renderTooltipContent,
+    renderTooltip,
     width,
     height,
+    children,
     'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledBy,
     desc,
     className
   } = props;
 
   const { direction } = useLocale();
   const rtl = direction === 'rtl';
-  const descId = useId();
 
-  const {
-    parentRef,
-    chartWidth,
-    chartHeight,
-    minHeight: minChartHeight,
-    margin,
-    scrollLeft,
-    scrollTop,
-    xAxisRef,
-    yAxisRef
-  } = useScrollableXYChart();
+  // A cell is a tap target, so it is never smaller than 40px either way. The column size includes the gap
+  // between cells, the row height does not.
+  const minCellSize = Math.max(requestedMinCellSize, MIN_CELL_TAP_SIZE + cellPadding);
+  const minCellHeight = Math.max(requestedMinCellHeight, MIN_CELL_TAP_SIZE);
 
-  const {
-    svgRef,
-    xValues,
-    yValues,
-    xByKey,
-    yByKey,
-    datumIndex,
-    xScale,
-    yScale,
-    svgWidth,
-    svgHeight,
-    naturalHeight,
-    maxHeight,
-    effectiveInnerWidth,
-    effectiveInnerHeight,
-    hoveredX,
-    hoveredY,
-    handleCellEnter,
-    handleCellLeave,
-    tooltip: { tooltipData, tooltipLeft, tooltipTop, tooltipOpen }
-  } = useHeatmap({
+  const layout = useScrollableXYChart();
+  const { chartWidth, chartHeight, minHeight: minChartHeight, margin } = layout;
+
+  const heatmap = useHeatmap({
     data,
     xAccessor,
     yAccessor,
@@ -344,292 +216,60 @@ export function HeatmapChart<T extends object = HeatmapCell>(props: HeatmapChart
     minChartHeight,
     chartWidth,
     chartHeight,
-    margin
+    margin,
+    rtl
   });
 
-  // Tooltip node
-  let tooltipNode: ReactNode = null;
-  if (tooltip && tooltipOpen && tooltipData) {
-    let content: ReactNode;
-    if (renderTooltipContent) {
-      content = renderTooltipContent({
-        datum: tooltipData.datum,
-        bucket: tooltipData.bucket,
-        value: tooltipData.value,
-        x: tooltipData.x,
-        y: tooltipData.y
-      });
-    } else {
-      content = (
-        <HeatmapTooltip
-          data={tooltipData}
-          tooltipValueFormatter={tooltipValueFormatter}
-          valueAccessor={valueAccessor}
-        />
+  const context: HeatmapContextValue<T> = {
+    heatmap,
+    layout,
+    rtl,
+    direction,
+    valueAccessor,
+    colorBuckets,
+    colorLegendLabel,
+    closedLabel,
+    xLabels,
+    yLabels,
+    xTickFormat,
+    yTickFormat,
+    cellPadding,
+    cellRounding,
+    tooltip,
+    tooltipValueFormatter,
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledBy,
+    desc
+  };
+
+  const content = useMemo(
+    function resolveContent() {
+      if (children !== undefined) return children;
+      return (
+        <>
+          <HeatmapPlot />
+          {colorLegend && <HeatmapLegend />}
+          <HeatmapTooltip<T>>{renderTooltip}</HeatmapTooltip>
+        </>
       );
-    }
-    if (content !== null && content !== undefined && typeof content !== 'boolean') {
-      // The built-in tooltip is already a container (with arrow); custom content gets a plain one.
-      tooltipNode = renderTooltipContent ? <TooltipContainer>{content}</TooltipContainer> : content;
-    }
-  }
-
-  // The height of the scrolling area as it is actually shown. The shared hook's `chartHeight` is raised to
-  // a minimum that can exceed this, which would put the sticky x-axis below the visible area, so the axis
-  // is anchored to the measured height instead. Before the first measurement the SVG height is used.
-  const [visibleHeight, setVisibleHeight] = useState(0);
-  useEffect(
-    function observeVisibleHeight() {
-      const el = parentRef.current;
-      if (!el) return;
-      const update = () => setVisibleHeight(el.clientHeight);
-      update();
-      const observer = new ResizeObserver(update);
-      observer.observe(el);
-      return function stopObserving() {
-        observer.disconnect();
-      };
     },
-    [parentRef]
+    [children, colorLegend, renderTooltip]
   );
-  const viewHeight = visibleHeight > 0 ? Math.min(visibleHeight, svgHeight) : svgHeight;
-
-  // Band scales key on strings, so recover the original category (e.g. a Date) before formatting.
-  function formatXTick(v: unknown) {
-    const original = xByKey.get(String(v)) ?? String(v);
-    return xTickFormat ? xTickFormat(original) : String(original);
-  }
-  function formatYTick(v: unknown) {
-    const original = yByKey.get(String(v)) ?? String(v);
-    return yTickFormat ? yTickFormat(original) : String(original);
-  }
-
-  // Tick marks are hidden through CSS (transparent stroke via `tickClassName`), not `hideTicks`: with
-  // zero-length ticks visx would otherwise paint a dot beside each label in its default stroke.
-  // `hideTicks` is deliberately not used because it removes the tick elements the scrollable chart
-  // hook measures to size the margins, which clips the x-axis labels.
-  // The tick length is the space between the labels and the cells: visx moves each label out by it and
-  // the hook sizes the margins from the axis box, which includes the tick. The cells are already inset
-  // by half of `cellPadding`, so that inset is taken off the 8px gap, which keeps the distance between a
-  // label and its cells at 8px whatever `cellPadding` is.
-  const tickLength = Math.max(LABEL_GAP - cellPadding / 2, 0);
-  const tickProps = { tickLength, hideAxisLine: true, tickClassName: styles.tickMark } as const;
 
   return (
-    <Flex
-      direction="column"
-      dir={direction}
-      className={cx(styles.chart, className)}
-      style={{
-        ['--chart-width' as string]: width !== undefined ? `${width}px` : undefined,
-        ['--chart-height' as string]: height !== undefined ? `${height}px` : undefined
-      }}
-    >
-      <Flex direction="column" flex={1} justifyContent={ALIGN_TO_JUSTIFY[align]} className={styles.wrapper}>
-        <Box
-          ref={parentRef}
-          dir={direction}
-          className={styles.area}
-          style={{
-            ['--heatmap-natural-height' as string]: `${naturalHeight}px`,
-            ['--heatmap-max-height' as string]: Number.isFinite(maxHeight) ? `${maxHeight}px` : 'none'
-          }}
-        >
-          {chartWidth > 0 && yValues.length > 0 && (
-            <svg
-              ref={svgRef}
-              width={svgWidth}
-              height={svgHeight}
-              aria-label={ariaLabel}
-              role="img"
-              {...(desc ? { 'aria-describedby': descId } : {})}
-            >
-              {desc && <desc id={descId}>{desc}</desc>}
-
-              <Group top={margin.top} left={margin.left}>
-                {/* Cells */}
-                {xValues.map(function renderColumn(xVal, xi) {
-                  return yValues.map(function renderCell(yVal, yi) {
-                    const xKey = String(xVal);
-                    const yKey = String(yVal);
-                    const datum = datumIndex.get(xKey)?.get(yKey);
-                    const value = datum ? valueAccessor(datum) : null;
-                    const color = resolveColor(value, colorBuckets);
-                    const closed = color === null;
-
-                    // Band scales are unpadded; the gap between cells is `cellPadding` px, split across both sides.
-                    const cellX = (xScale(xKey) ?? 0) + cellPadding / 2;
-                    const cellY = (yScale(yKey) ?? 0) + cellPadding / 2;
-                    const cellW = Math.max(xScale.bandwidth() - cellPadding, 0);
-                    const cellH = Math.max(yScale.bandwidth() - cellPadding, 0);
-
-                    const highlighted = !closed && (String(hoveredX) === xKey || String(hoveredY) === yKey);
-
-                    function showCell() {
-                      const svgEl = svgRef.current;
-                      if (!svgEl) return;
-                      const rect = svgEl.getBoundingClientRect();
-                      handleCellEnter(
-                        datum,
-                        xVal,
-                        yVal,
-                        rect.left + margin.left + cellX + cellW / 2,
-                        rect.top + margin.top + cellY
-                      );
-                    }
-
-                    return (
-                      <rect
-                        // Index-based: category labels can contain '-' (e.g. "2024-01"), which would collide.
-                        key={`cell-${xi}-${yi}`}
-                        x={cellX}
-                        y={cellY}
-                        width={cellW}
-                        height={cellH}
-                        rx={cellRounding}
-                        fill={closed ? 'none' : (color ?? 'none')}
-                        className={cx(styles.cell, closed && styles.cellClosed, highlighted && styles.cellHighlighted)}
-                        tabIndex={closed ? -1 : 0}
-                        role={closed ? 'presentation' : 'img'}
-                        aria-label={
-                          !closed
-                            ? `${String(yVal)}, ${String(xVal)}: ${value !== null ? String(value) : ''}`
-                            : undefined
-                        }
-                        onPointerEnter={!closed ? showCell : undefined}
-                        onPointerLeave={!closed ? handleCellLeave : undefined}
-                        onFocus={!closed ? showCell : undefined}
-                        onBlur={!closed ? handleCellLeave : undefined}
-                      />
-                    );
-                  });
-                })}
-
-                {/* X-axis (bottom) */}
-                {xLabels && (
-                  <AxisBottom
-                    {...tickProps}
-                    axisClassName={styles.axisX}
-                    innerRef={xAxisRef}
-                    top={effectiveInnerHeight}
-                    scale={xScale}
-                    tickFormat={formatXTick}
-                    tickLabelProps={function getXTickProps(v) {
-                      return getTickLabelProps(String(v) === String(hoveredX), 'middle');
-                    }}
-                  />
-                )}
-
-                {/* Y-axis */}
-                {yLabels && !rtl && (
-                  <AxisLeft
-                    {...tickProps}
-                    axisClassName={styles.axisY}
-                    innerRef={yAxisRef}
-                    scale={yScale}
-                    tickFormat={formatYTick}
-                    tickLabelProps={function getYTickProps(v) {
-                      return getTickLabelProps(String(v) === String(hoveredY), 'end');
-                    }}
-                  />
-                )}
-
-                {yLabels && rtl && (
-                  <AxisRight
-                    {...tickProps}
-                    axisClassName={styles.axisY}
-                    innerRef={yAxisRef}
-                    left={effectiveInnerWidth}
-                    scale={yScale}
-                    tickFormat={formatYTick}
-                    tickLabelProps={function getYTickPropsRtl(v) {
-                      return getTickLabelProps(String(v) === String(hoveredY), 'start');
-                    }}
-                  />
-                )}
-              </Group>
-
-              {/* Sticky Y-axis background (LTR) */}
-              {yLabels && !rtl && (
-                <>
-                  <rect x={scrollLeft} y={0} width={margin.left} height={svgHeight} className={styles.axisBackground} />
-                  <g transform={`translate(${margin.left + scrollLeft}, ${margin.top})`}>
-                    <AxisLeft
-                      {...tickProps}
-                      axisClassName={styles.axisY}
-                      scale={yScale}
-                      tickFormat={formatYTick}
-                      tickLabelProps={function getYStickyProps(v) {
-                        return getTickLabelProps(String(v) === String(hoveredY), 'end');
-                      }}
-                    />
-                  </g>
-                </>
-              )}
-
-              {/* Sticky Y-axis background (RTL) */}
-              {yLabels && rtl && (
-                <>
-                  <rect
-                    x={svgWidth - margin.right + scrollLeft}
-                    y={0}
-                    width={margin.right}
-                    height={svgHeight}
-                    className={styles.axisBackground}
-                  />
-                  <g transform={`translate(${svgWidth - margin.right + scrollLeft}, ${margin.top})`}>
-                    <AxisRight
-                      {...tickProps}
-                      axisClassName={styles.axisY}
-                      scale={yScale}
-                      tickFormat={formatYTick}
-                      tickLabelProps={function getYStickyRtlProps(v) {
-                        return getTickLabelProps(String(v) === String(hoveredY), 'start');
-                      }}
-                    />
-                  </g>
-                </>
-              )}
-
-              {/* Sticky X-axis background */}
-              {xLabels && (
-                <>
-                  <rect
-                    x={0}
-                    y={scrollTop + viewHeight - margin.bottom}
-                    width={svgWidth}
-                    height={margin.bottom}
-                    className={styles.axisBackground}
-                  />
-                  <g transform={`translate(${margin.left}, ${scrollTop + viewHeight - margin.bottom})`}>
-                    <AxisBottom
-                      {...tickProps}
-                      axisClassName={styles.axisX}
-                      scale={xScale}
-                      tickFormat={formatXTick}
-                      tickLabelProps={function getXStickyProps(v) {
-                        return getTickLabelProps(String(v) === String(hoveredX), 'middle');
-                      }}
-                    />
-                  </g>
-                </>
-              )}
-            </svg>
-          )}
-        </Box>
-
-        {colorLegend && <HeatmapLegend buckets={colorBuckets} label={colorLegendLabel} closedLabel={closedLabel} />}
+    <HeatmapContext.Provider value={context as unknown as HeatmapContextValue<object>}>
+      <Flex
+        direction="column"
+        dir={direction}
+        justifyContent={ALIGN_TO_JUSTIFY[align]}
+        className={cx(styles.chart, className)}
+        style={{
+          ['--chart-width' as string]: width !== undefined ? `${width}px` : undefined,
+          ['--chart-height' as string]: height !== undefined ? `${height}px` : undefined
+        }}
+      >
+        {content}
       </Flex>
-
-      {tooltipNode != null &&
-        typeof tooltipTop === 'number' &&
-        typeof tooltipLeft === 'number' &&
-        createPortal(
-          <div className={styles.tooltipContainer} style={{ top: tooltipTop, left: tooltipLeft }}>
-            {tooltipNode}
-          </div>,
-          document.body
-        )}
-    </Flex>
+    </HeatmapContext.Provider>
   );
 }

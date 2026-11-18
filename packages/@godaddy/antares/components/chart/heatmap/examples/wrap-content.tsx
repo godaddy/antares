@@ -28,7 +28,7 @@ function buildData(days: string[]) {
 }
 
 /**
- * With no `height`, the chart is as tall as its rows: each row is `minCellHeight` (32px by default) plus
+ * With no `height`, the chart is as tall as its rows: each row is `minCellHeight` (40px by default) plus
  * the gap, with the axis and legend below. No sized container is needed, and the chart grows or shrinks
  * as rows are added or removed.
  * @title Wrap content

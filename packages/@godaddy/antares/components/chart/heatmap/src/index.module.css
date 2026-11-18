@@ -10,10 +10,6 @@
   gap: var(--chart-content-gap);
   width: var(--chart-width, 100%);
   height: var(--chart-height, 100%);
-}
-
-.wrapper {
-  gap: var(--chart-content-gap);
   overflow: hidden;
 }
 
@@ -28,7 +24,7 @@
   overflow: auto;
 }
 
-.area svg {
+.area :where(svg) {
   display: block;
 }
 
@@ -60,21 +56,28 @@
 }
 
 /* Axis labels */
-.chart .axisX text,
-.chart .axisY text {
+.axisX :where(text),
+.axisY :where(text) {
   font-family: var(--chart-font-family);
   font-size: var(--chart-font-size);
   fill: var(--chart-font-color);
 }
 
-/* Hovered/focused row and column labels */
-.chart .tickLabelHovered {
-  font-weight: 700;
+/*
+ * Hovered/focused row and column labels.
+ *
+ * Emphasis must not change the label's width: the scrollable chart hook sizes the margins from the axis
+ * box, so a bolder font would widen the row labels and shift the whole grid on every hover. A stroke in the
+ * text color thickens the glyphs without changing their advance width.
+ */
+.tickLabelHovered {
+  stroke: var(--chart-font-color);
+  stroke-width: 0.6px;
+  paint-order: stroke fill;
 }
 
 /* Tick marks are transparent so no stray dot renders beside labels (axis lines use `hideAxisLine`) */
-.chart .axisX .tickMark line,
-.chart .axisY .tickMark line {
+.tickMark :where(line) {
   stroke: transparent;
 }
 
@@ -115,7 +118,53 @@
   margin-top: -8px;
 }
 
-.axisBackground {
-  pointer-events: none;
-  fill: var(--chart-canvas-background);
+/*
+ * The plot is a one-cell grid so the cells and both pinned axis layers share the same box. `position:
+ * sticky` keeps the row labels at the inline start edge and the column labels at the bottom edge of the
+ * scrolling area while the cells move, with no scroll handler involved. The row labels sit above the
+ * column labels strip is above the row labels, so a row that is only partly in view never shows its label
+ * in the strip; the corner block above both keeps the strip's labels out of the row-label column. Each
+ * layer has the chart background so the cells that scroll beneath are hidden, and it catches the pointer
+ * so a hidden cell is never hovered.
+ */
+.plot {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 100%;
+}
+
+.cells,
+.xAxisLayer,
+.yAxisLayer,
+.corner {
+  grid-area: 1 / 1;
+}
+
+.xAxisLayer {
+  position: sticky;
+  bottom: 0;
+  align-self: end;
+  z-index: 3;
+  overflow: hidden;
+  background: var(--chart-canvas-background);
+}
+
+.yAxisLayer {
+  position: sticky;
+  inset-inline-start: 0;
+  align-self: start;
+  justify-self: start;
+  z-index: 2;
+  overflow: hidden;
+  background: var(--chart-canvas-background);
+}
+
+.corner {
+  position: sticky;
+  inset-inline-start: 0;
+  bottom: 0;
+  align-self: end;
+  justify-self: start;
+  z-index: 4;
+  background: var(--chart-canvas-background);
 }

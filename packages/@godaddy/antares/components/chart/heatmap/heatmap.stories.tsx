@@ -1,5 +1,5 @@
 'use client';
-import { HeatmapChart } from '#components/chart/heatmap';
+import { HeatmapChart, HeatmapLegend, HeatmapPlot, HeatmapTooltip } from '#components/chart/heatmap';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { PlaygroundExample } from './examples/heatmap-playground.tsx';
 
@@ -16,6 +16,12 @@ export default getMeta({
 
 export const Props = getComponentDocs(HeatmapChart);
 
+export const HeatmapPlotProps = getComponentDocs(HeatmapPlot);
+
+export const HeatmapLegendProps = getComponentDocs(HeatmapLegend);
+
+export const HeatmapTooltipProps = getComponentDocs(HeatmapTooltip);
+
 export const Examples = getExamples('./examples');
 
 export const Playground = getStory(PlaygroundExample, {
@@ -27,7 +33,7 @@ export const Playground = getStory(PlaygroundExample, {
     yLabels: true,
     tooltip: true,
     minCellSize: 44,
-    minCellHeight: 32,
+    minCellHeight: 40,
     maxCellHeight: undefined,
     align: 'start',
     cellRounding: 6,
@@ -44,12 +50,14 @@ export const Playground = getStory(PlaygroundExample, {
     yLabels: { control: 'boolean', description: 'Show row (Y-axis) tick labels' },
     tooltip: { control: 'boolean', description: 'Show the tooltip on hover or keyboard focus' },
     minCellSize: {
-      control: { type: 'range', min: 16, max: 80, step: 4 },
-      description: 'Minimum column width in px (cell plus gap) before the chart scrolls horizontally'
+      control: { type: 'range', min: 44, max: 100, step: 4 },
+      description:
+        'Minimum column width in px (cell plus gap) before the chart scrolls horizontally. Never below 40px per cell'
     },
     minCellHeight: {
-      control: { type: 'range', min: 16, max: 80, step: 4 },
-      description: 'Minimum row height in px. Without a height the chart is as tall as its rows at this size'
+      control: { type: 'range', min: 40, max: 100, step: 4 },
+      description:
+        'Minimum row height in px (never below 40). Without a height the chart is as tall as its rows at this size'
     },
     align: {
       control: 'inline-radio',

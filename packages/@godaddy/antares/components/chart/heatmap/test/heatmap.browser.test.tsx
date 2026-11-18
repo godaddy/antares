@@ -1,9 +1,16 @@
 import type React from 'react';
 import { useState } from 'react';
-import { HeatmapChart, type HeatmapChartProps, type ColorBucket } from '../src';
+import {
+  HeatmapChart,
+  HeatmapLegend,
+  HeatmapPlot,
+  HeatmapTooltip,
+  type HeatmapChartProps,
+  type ColorBucket
+} from '../src';
 import { render } from 'vitest-browser-react';
-import { userEvent } from 'vitest/browser';
-import { describe, it } from 'vitest';
+import { page, userEvent } from 'vitest/browser';
+import { describe, it, vi } from 'vitest';
 import assume from 'assume';
 import { RTLProvider } from '#utils/rtl-locale-provider.tsx';
 import { waitForSelector } from '#test/utils/wait-for-selector.ts';
@@ -27,6 +34,42 @@ async function renderAndWait(component: React.ReactElement) {
   const result = await render(component);
   await waitForSelector(result.container, 'svg');
   return result;
+}
+
+/**
+ * Waits until the chart's layout has settled: the first margin measurement happens after mount (resize
+ * debounce plus a frame), so the plot is only stable once its size has stopped changing for a few frames.
+ */
+async function layoutSettled(container: Element) {
+  function readSize() {
+    const svg = container.querySelector('svg');
+    if (!svg) return '';
+    return `${svg.getAttribute('width')}x${svg.getAttribute('height')}:${container.querySelector('g')?.getAttribute('transform')}`;
+  }
+  let last = '';
+  let stable = 0;
+  await vi.waitFor(
+    async function sizeStopsChanging() {
+      await nextFrame();
+      const now = readSize();
+      stable = now === last ? stable + 1 : 0;
+      last = now;
+      // The shared scroll hook debounces its parent measurement by 150ms (about 9 frames), so the size has to
+      // hold for longer than that before it can be trusted.
+      if (stable < 20) throw new Error(`layout still changing: ${now}`);
+    },
+    { timeout: 4000, interval: 16 }
+  );
+}
+
+/** Waits for several frames, for checks that something does NOT happen and so have no condition to await. */
+async function frames(count: number) {
+  for (let i = 0; i < count; i++) await nextFrame();
+}
+
+/** Waits for a frame, so a layout or scroll change that was just made has been applied. */
+function nextFrame() {
+  return new Promise((r) => requestAnimationFrame(() => r(null)));
 }
 
 async function renderHeatmap(args: Partial<HeatmapChartProps> = {}, options?: { useRtlI18n?: boolean }) {
@@ -70,7 +113,7 @@ describe('@godaddy/antares', function antares() {
       const svg = container.querySelector('svg');
       assume(svg).exists();
 
-      const xAxis = svg?.querySelector('.visx-axis-bottom');
+      const xAxis = container.querySelector('.visx-axis-bottom');
       assume(xAxis).exists();
     });
 
@@ -79,7 +122,7 @@ describe('@godaddy/antares', function antares() {
       const svg = container.querySelector('svg');
       assume(svg).exists();
 
-      const xAxis = svg?.querySelector('.visx-axis-bottom');
+      const xAxis = container.querySelector('.visx-axis-bottom');
       assume(xAxis).is.a('null');
     });
 
@@ -88,7 +131,7 @@ describe('@godaddy/antares', function antares() {
       const svg = container.querySelector('svg');
       assume(svg).exists();
 
-      const yAxis = svg?.querySelector('.visx-axis-left');
+      const yAxis = container.querySelector('.visx-axis-left');
       assume(yAxis).exists();
     });
 
@@ -97,8 +140,667 @@ describe('@godaddy/antares', function antares() {
       const svg = container.querySelector('svg');
       assume(svg).exists();
 
-      const yAxis = svg?.querySelector('.visx-axis-right');
+      const yAxis = container.querySelector('.visx-axis-right');
       assume(yAxis).exists();
+    });
+
+    describe('#tap target size', function tapTargetTests() {
+      function cellBox(container: Element) {
+        return container.querySelector('rect[role="img"]')!.getBoundingClientRect();
+      }
+
+      async function renderWide(args: Partial<HeatmapChartProps> = {}, width = 800) {
+        const columns = Array.from({ length: 30 }, (_, i) => `c${i}`);
+        const data = ['Mon', 'Tue', 'Wed'].flatMap((y) => columns.map((x, j) => ({ x, y, value: j * 10 })));
+        const result = await renderAndWait(
+          <div style={{ width: `${width}px` }}>
+            <HeatmapChart data={data} colorBuckets={COLOR_BUCKETS} {...args} />
+          </div>
+        );
+        await layoutSettled(result.container);
+        return result;
+      }
+
+      it('gives every cell at least 40px of width and height by default', async function defaultTapTarget() {
+        const { container } = await renderWide();
+        const box = cellBox(container);
+        assume(Math.round(box.width)).is.at.least(40);
+        assume(Math.round(box.height)).is.at.least(40);
+      });
+
+      it('raises a minCellSize below 44 so the cell stays 40px wide', async function floorWidth() {
+        const { container } = await renderWide({ minCellSize: 20 });
+        assume(Math.round(cellBox(container).width)).is.at.least(40);
+      });
+
+      it('keeps the 40px floor when cellPadding changes', async function floorWithPadding() {
+        const { container } = await renderWide({ cellPadding: 8, minCellSize: 10 });
+        assume(Math.round(cellBox(container).width)).is.at.least(40);
+      });
+
+      for (const [name, width] of [
+        ['mobile', 375],
+        ['tablet', 768],
+        ['desktop', 1280]
+      ] as const) {
+        it(`keeps cells at 40px or more at ${name} width`, async function tapTargetByWidth() {
+          await page.viewport(width, 900);
+          const { container } = await renderWide({}, width - 32);
+          const box = cellBox(container);
+          assume(Math.round(box.width)).is.at.least(40);
+          assume(Math.round(box.height)).is.at.least(40);
+        });
+      }
+    });
+
+    describe('#optional parts and formatters', function optionalPartsTests() {
+      it('opens the tooltip with both axes hidden', async function tooltipWithoutAxes() {
+        const { container } = await renderHeatmap({ xLabels: false, yLabels: false });
+        const cell = container.querySelector('rect[role="img"]') as SVGElement;
+        cell.focus({ preventScroll: true });
+        await waitForSelector(document.body, '[class*="tooltipContainer"]');
+        assume(document.body.querySelector('[class*="tooltipContainer"]')).exists();
+        assume(container.querySelector('.visx-axis-bottom')).is.a('null');
+        assume(container.querySelector('.visx-axis-left')).is.a('null');
+      });
+
+      it('formats column labels with xTickFormat', async function xFormat() {
+        const { container } = await renderHeatmap({ xTickFormat: (v) => `col-${String(v)}` });
+        await layoutSettled(container);
+        assume(container.querySelector('.visx-axis-bottom')?.textContent).contains('col-Mon');
+      });
+
+      it('shows no tooltip when the render function returns null', async function nullTooltip() {
+        const { container } = await renderHeatmap({ renderTooltip: () => null });
+        (container.querySelector('rect[role="img"]') as SVGElement).focus({ preventScroll: true });
+        await frames(6);
+        assume(document.body.querySelector('[class*="tooltipContainer"]')).is.a('null');
+      });
+
+      it('shows no tooltip when the render function returns false', async function falseTooltip() {
+        const { container } = await renderHeatmap({ renderTooltip: () => false });
+        (container.querySelector('rect[role="img"]') as SVGElement).focus({ preventScroll: true });
+        await frames(6);
+        assume(document.body.querySelector('[class*="tooltipContainer"]')).is.a('null');
+      });
+    });
+
+    describe('#axis label styles', function axisStyleTests() {
+      it('styles tick labels and keeps tick marks invisible', async function labelStyles() {
+        const { container } = await renderHeatmap();
+        await layoutSettled(container);
+        const label = container.querySelector('.visx-axis-bottom text') as SVGTextElement;
+        const style = getComputedStyle(label);
+        assume(style.fontSize).does.not.equal('');
+        assume(style.fill).does.not.equal('none');
+        const tick = container.querySelector('.visx-axis-bottom .visx-axis-tick line') as SVGLineElement;
+        assume(getComputedStyle(tick).stroke).matches(/transparent|rgba\(0, 0, 0, 0\)/);
+      });
+
+      it('thickens a hovered label with a stroke instead of a bolder weight', async function hoveredLabel() {
+        const { container } = await renderHeatmap();
+        await layoutSettled(container);
+        const label = container.querySelector('.visx-axis-bottom text') as SVGTextElement;
+        const before = getComputedStyle(label);
+        assume(before.strokeWidth === '0px' || before.stroke === 'none').is.true();
+        await userEvent.hover(container.querySelector('rect[role="img"]') as Element);
+        await nextFrame();
+        const hovered = [...container.querySelectorAll('.visx-axis-bottom text')].find(
+          (t) => getComputedStyle(t).strokeWidth !== '0px' && getComputedStyle(t).stroke !== 'none'
+        );
+        assume(hovered).exists();
+        assume(getComputedStyle(hovered as Element).fontWeight).equals(before.fontWeight);
+      });
+    });
+
+    describe('#hover layout', function hoverLayoutTests() {
+      it('does not move or resize the grid when a cell is hovered', async function noHoverShift() {
+        const data = ['Mon', 'Tuesday long label', 'Wed'].flatMap((y, i) =>
+          ['8am', '9am', '10am'].map((x, j) => ({ x, y, value: i * 100 + j * 10 }))
+        );
+        const { container } = await renderHeatmap({ data });
+        await layoutSettled(container);
+        const svg = container.querySelector('svg') as SVGSVGElement;
+        const cells = [...container.querySelectorAll('rect[role="img"]')] as SVGElement[];
+        // Measured in the SVG's own coordinates: hovering can scroll the page in a small viewport, which
+        // moves everything on screen without the grid itself changing.
+        function layout() {
+          return {
+            plotOffset: svg.querySelector('g')!.getAttribute('transform'),
+            svgWidth: svg.getAttribute('width'),
+            cells: cells.map((c) => [c.getAttribute('x'), c.getAttribute('y'), c.getAttribute('width')])
+          };
+        }
+        const before = layout();
+        for (const index of [0, 4, 8]) {
+          await userEvent.hover(cells[index]);
+          await frames(8);
+          assume(layout()).eql(before);
+        }
+      });
+    });
+
+    describe('#tooltip while scrolling', function tooltipScrollTests() {
+      it('keeps the tooltip on its cell when the plot scrolls', async function tooltipFollowsCell() {
+        const hours = Array.from({ length: 24 }, (_, h) => `${h}h`);
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const data = days.flatMap((y, i) => hours.map((x, j) => ({ x, y, value: (i * 7 + j * 13) % 400 })));
+        const { container } = await renderAndWait(
+          <div style={{ width: '500px', height: '260px' }}>
+            <HeatmapChart data={data} colorBuckets={COLOR_BUCKETS} colorLegend={false} />
+          </div>
+        );
+        await layoutSettled(container);
+        const cell = [...container.querySelectorAll('rect[role="img"]')][30] as SVGElement;
+        const area = container.querySelector('svg')!.closest('[class*="area"]') as HTMLElement;
+        // Keyboard focus has no pointer to re-target after a scroll, so only the tooltip's own anchoring can
+        // keep it on the cell (a hovered cell is re-targeted by the browser's own pointer events).
+        cell.focus({ preventScroll: true });
+        await waitForSelector(document.body, '[class*="tooltipContainer"]');
+        const tip = () => document.body.querySelector('[class*="tooltipContainer"]') as HTMLElement | null;
+
+        function gap() {
+          const c = cell.getBoundingClientRect();
+          const t = tip()!.getBoundingClientRect();
+          return { dx: t.left + t.width / 2 - (c.left + c.width / 2), dy: t.bottom - c.top };
+        }
+        const before = gap();
+        area.scrollLeft += 40;
+        await vi.waitFor(function followsCell() {
+          assume(tip()).exists();
+          const after = gap();
+          assume(Math.abs(after.dx - before.dx)).is.below(2);
+          assume(Math.abs(after.dy - before.dy)).is.below(2);
+        });
+      });
+
+      it('closes the tooltip when its cell scrolls out of view', async function tooltipClosesOutOfView() {
+        const hours = Array.from({ length: 24 }, (_, h) => `${h}h`);
+        const data = ['Mon', 'Tue'].flatMap((y, i) => hours.map((x, j) => ({ x, y, value: i * 50 + j })));
+        const { container } = await renderAndWait(
+          <div style={{ width: '400px', height: '200px' }}>
+            <HeatmapChart data={data} colorBuckets={COLOR_BUCKETS} colorLegend={false} />
+          </div>
+        );
+        await layoutSettled(container);
+        const cells = [...container.querySelectorAll('rect[role="img"]')] as SVGElement[];
+        const area = container.querySelector('svg')!.closest('[class*="area"]') as HTMLElement;
+        cells[0].focus({ preventScroll: true });
+        await waitForSelector(document.body, '[class*="tooltipContainer"]');
+        area.scrollLeft = area.scrollWidth;
+        await vi.waitFor(function closes() {
+          assume(document.body.querySelector('[class*="tooltipContainer"]')).is.a('null');
+        });
+      });
+    });
+
+    describe('#tooltip input modes', function inputModeTests() {
+      const tipSelector = '[class*="tooltipContainer"]';
+      const tapData = [
+        { x: 'Mon', y: 'AM', value: 50 },
+        { x: 'Tue', y: 'AM', value: 150 }
+      ];
+
+      function tapChart(content?: (props: { value: number | null }) => React.ReactNode) {
+        return (
+          <div style={{ width: '600px', height: '300px' }}>
+            <HeatmapChart data={tapData} colorBuckets={COLOR_BUCKETS}>
+              <HeatmapPlot />
+              <HeatmapTooltip>{content}</HeatmapTooltip>
+            </HeatmapChart>
+          </div>
+        );
+      }
+
+      // The order a phone sends for one tap, recorded from real touch input in Chrome: pointerover,
+      // pointerenter, pointerdown, pointerup, pointerout, pointerleave, then focus and click.
+      // The pointer leaves before the cell gets focus, so the tooltip is hidden and then shown again.
+      function tap(el: Element) {
+        const r = el.getBoundingClientRect();
+        const init = {
+          bubbles: true,
+          pointerType: 'touch',
+          isPrimary: true,
+          clientX: r.x + r.width / 2,
+          clientY: r.y + r.height / 2
+        };
+        el.dispatchEvent(new PointerEvent('pointerover', init));
+        el.dispatchEvent(new PointerEvent('pointerenter', { ...init, bubbles: false }));
+        el.dispatchEvent(new PointerEvent('pointerdown', init));
+        el.dispatchEvent(new PointerEvent('pointerup', init));
+        el.dispatchEvent(new PointerEvent('pointerout', init));
+        el.dispatchEvent(new PointerEvent('pointerleave', { ...init, bubbles: false }));
+        (el as SVGElement).focus({ preventScroll: true });
+        el.dispatchEvent(new MouseEvent('click', init));
+      }
+
+      it('keeps the built-in tooltip open after a tap, once the finger lifts', async function builtInTap() {
+        const { container } = await renderAndWait(tapChart());
+        tap(container.querySelector('rect[role="img"]') as Element);
+        await frames(8);
+        assume(document.body.querySelector(tipSelector)).exists();
+      });
+
+      it('keeps a custom tooltip open after a tap', async function customTap() {
+        const { container } = await renderAndWait(
+          tapChart(({ value }) => <span data-testid="tap-tip">{value} visitors</span>)
+        );
+        tap(container.querySelector('rect[role="img"]') as Element);
+        await frames(8);
+        assume(document.body.querySelector('[data-testid="tap-tip"]')?.textContent).contains('visitors');
+      });
+
+      it('moves the tooltip to the next tapped cell', async function tapNext() {
+        const { container } = await renderAndWait(tapChart(({ value }) => <span data-testid="tap-tip">{value}</span>));
+        const cells = container.querySelectorAll('rect[role="img"]');
+        tap(cells[0]);
+        await frames(6);
+        tap(cells[1]);
+        await vi.waitFor(function moved() {
+          assume(document.body.querySelector('[data-testid="tap-tip"]')?.textContent).equals('150');
+        });
+        assume(document.body.querySelector('[data-testid="tap-tip"]')?.textContent).equals('150');
+      });
+
+      it('dismisses the tooltip when the tap lands outside the chart', async function tapOutside() {
+        const { container } = await renderAndWait(tapChart());
+        tap(container.querySelector('rect[role="img"]') as Element);
+        await frames(6);
+        (document.activeElement as HTMLElement).blur();
+        await vi.waitFor(function dismissed() {
+          assume(document.body.querySelector(tipSelector)).is.a('null');
+        });
+        assume(document.body.querySelector(tipSelector)).is.a('null');
+      });
+
+      it('shows the custom tooltip on keyboard focus, and hides it on blur', async function customFocus() {
+        const { container } = await renderAndWait(
+          tapChart(({ value }) => <span data-testid="focus-tip">{value}</span>)
+        );
+        const cell = container.querySelector('rect[role="img"]') as SVGElement;
+        cell.focus({ preventScroll: true });
+        await waitForSelector(document.body, '[data-testid="focus-tip"]');
+        assume(document.body.querySelector('[data-testid="focus-tip"]')?.textContent).equals('50');
+        cell.blur();
+        await vi.waitFor(function hidden() {
+          assume(document.body.querySelector('[data-testid="focus-tip"]')).is.a('null');
+        });
+      });
+
+      it('moves the custom tooltip with Tab between cells', async function tabBetweenCells() {
+        await renderAndWait(tapChart(({ value }) => <span data-testid="focus-tip">{value}</span>));
+        await userEvent.tab();
+        await waitForSelector(document.body, '[data-testid="focus-tip"]');
+        const first = document.body.querySelector('[data-testid="focus-tip"]')?.textContent;
+        await userEvent.tab();
+        await vi.waitFor(function moved() {
+          assume(document.body.querySelector('[data-testid="focus-tip"]')?.textContent).does.not.equal(first);
+        });
+      });
+    });
+
+    describe('#composition legend and RTL', function compositionLegendTests() {
+      const wide = ['0–10', '10–20', '20–30', '30–40', '40–50', '50–60', '60–70'].map((label, i) => ({
+        min: i * 10,
+        max: i === 6 ? null : (i + 1) * 10,
+        color: `hsl(${180 + i * 8} 60% ${85 - i * 8}%)`,
+        label
+      }));
+      const data = [
+        { x: 'Mon', y: 'AM', value: 5 },
+        { x: 'Tue', y: 'AM', value: 35 }
+      ];
+
+      function composedLegend(width: number, rtl = false) {
+        const chart = (
+          <div style={{ width: `${width}px`, height: '300px' }}>
+            <HeatmapChart data={data} colorBuckets={wide} colorLegendLabel="Visitors per two-hour window">
+              <HeatmapPlot />
+              <HeatmapLegend />
+              <HeatmapTooltip>{({ value }) => <span data-testid="rtl-tip">{value} visitors</span>}</HeatmapTooltip>
+            </HeatmapChart>
+          </div>
+        );
+        return rtl ? <RTLProvider>{chart}</RTLProvider> : chart;
+      }
+
+      it('wraps the legend entries onto several lines on a narrow screen', async function wrapsNarrow() {
+        await page.viewport(375, 800);
+        const { container } = await renderAndWait(composedLegend(343));
+        const legend = container.querySelector('[role="list"]') as HTMLElement;
+        const entries = [...legend.querySelectorAll('[role="listitem"]')] as HTMLElement[];
+        const rows = new Set(entries.map((el) => Math.round(el.getBoundingClientRect().top)));
+        assume(rows.size).is.above(1);
+        // Wrapping keeps every entry inside the legend instead of running off its edge.
+        const box = legend.getBoundingClientRect();
+        for (const el of entries) {
+          assume(el.getBoundingClientRect().right).is.at.most(box.right + 1);
+          assume(el.getBoundingClientRect().left).is.at.least(box.left - 1);
+        }
+        assume(getComputedStyle(legend).flexWrap).equals('wrap');
+      });
+
+      it('keeps the legend entries on one line when there is room', async function oneLineWide() {
+        await page.viewport(1280, 800);
+        const { container } = await renderAndWait(composedLegend(1200));
+        const entries = [...container.querySelectorAll('[role="list"] [role="listitem"]')] as HTMLElement[];
+        assume(new Set(entries.map((el) => Math.round(el.getBoundingClientRect().top))).size).equals(1);
+      });
+
+      it('never wraps the divider onto a line of its own', async function dividerNotAlone() {
+        await page.viewport(375, 800);
+        const { container } = await renderAndWait(composedLegend(343));
+        const divider = container.querySelector('[class*="legendDivider"]') as HTMLElement;
+        const closedEntry = divider.parentElement as HTMLElement;
+        const label = closedEntry.querySelector('[class*="legendSwatchClosed"]') as HTMLElement;
+        assume(Math.abs(divider.getBoundingClientRect().top - label.getBoundingClientRect().top)).is.below(8);
+      });
+
+      it('mirrors the legend and the tooltip in RTL', async function legendRtl() {
+        await page.viewport(800, 800);
+        const { container } = await renderAndWait(composedLegend(700, true));
+        const legend = container.querySelector('[role="list"]') as HTMLElement;
+        const chart = container.querySelector('[class*="chart"]') as HTMLElement;
+        assume(chart.getAttribute('dir')).equals('rtl');
+        // The first bucket sits to the right of the last one: entries read right to left.
+        const swatches = [...legend.querySelectorAll('[class*="legendSwatch"]')] as HTMLElement[];
+        assume(swatches[0].getBoundingClientRect().left).is.above(swatches[3].getBoundingClientRect().left);
+        // The legend stays inside the chart.
+        assume(legend.getBoundingClientRect().left).is.at.least(chart.getBoundingClientRect().left - 1);
+        assume(legend.getBoundingClientRect().right).is.at.most(chart.getBoundingClientRect().right + 1);
+        const cell = container.querySelector('rect[role="img"]') as SVGElement;
+        cell.focus({ preventScroll: true });
+        await waitForSelector(document.body, '[data-testid="rtl-tip"]');
+        const tip = document.body.querySelector('[data-testid="rtl-tip"]')!.getBoundingClientRect();
+        const target = cell.getBoundingClientRect();
+        assume(Math.abs(tip.left + tip.width / 2 - (target.left + target.width / 2))).is.below(40);
+      });
+    });
+
+    describe('#pinned axes while scrolling', function pinnedAxesTests() {
+      function renderScrolling(rtl = false) {
+        const hours = Array.from({ length: 24 }, (_, h) => `${h}h`);
+        const days = Array.from({ length: 14 }, (_, i) => `Day ${i + 1}`);
+        const data = days.flatMap((y, i) => hours.map((x, j) => ({ x, y, value: (i * 7 + j * 13) % 400 })));
+        const chart = (
+          <div style={{ width: '500px', height: '260px' }}>
+            <HeatmapChart data={data} colorBuckets={COLOR_BUCKETS} colorLegend={false} />
+          </div>
+        );
+        return renderAndWait(rtl ? <RTLProvider>{chart}</RTLProvider> : chart);
+      }
+
+      async function settle(container: Element) {
+        await layoutSettled(container);
+      }
+
+      it('keeps both axis layers at the viewport edges while scrolling', async function layersStayPinned() {
+        const { container } = await renderScrolling();
+        await settle(container);
+        const area = container.querySelector('svg')!.closest('[class*="area"]') as HTMLElement;
+        const xLayer = container.querySelector('[class*="xAxisLayer"]') as HTMLElement;
+        const yLayer = container.querySelector('[class*="yAxisLayer"]') as HTMLElement;
+        function edges() {
+          const a = area.getBoundingClientRect();
+          return {
+            yLeft: Math.round(yLayer.getBoundingClientRect().left - a.left),
+            xBottom: Math.round(xLayer.getBoundingClientRect().bottom - (a.top + area.clientHeight))
+          };
+        }
+        const rest = edges();
+        for (const [left, top] of [
+          [60, 40],
+          [200, 120]
+        ]) {
+          area.scrollLeft = left;
+          area.scrollTop = top;
+          // Sticky positioning needs no scroll handler, so the very next frame already has it in place.
+          await new Promise((r) => requestAnimationFrame(() => r(null)));
+          assume(edges()).eql(rest);
+        }
+      });
+
+      it('never draws a cell over the row labels or the column labels', async function noCellUnderAxes() {
+        const { container } = await renderScrolling();
+        await settle(container);
+        const area = container.querySelector('svg')!.closest('[class*="area"]') as HTMLElement;
+        area.scrollLeft = 150;
+        area.scrollTop = 80;
+        await new Promise((r) => requestAnimationFrame(() => r(null)));
+        const yRect = container.querySelector('[class*="yAxisLayer"]')!.getBoundingClientRect();
+        const xRect = container.querySelector('[class*="xAxisLayer"]')!.getBoundingClientRect();
+        // Whatever is on top at a point just past the label column is a cell, never the axis layer.
+        const probeY = area.getBoundingClientRect().top + 40;
+        const pointBesideLabels = document.elementFromPoint(yRect.right + 4, probeY);
+        assume(pointBesideLabels?.getAttribute('role')).equals('img');
+        const pointInLabels = document.elementFromPoint(yRect.left + 4, probeY);
+        assume(pointInLabels?.closest('[class*="yAxisLayer"]')).exists();
+        const pointBelowCells = document.elementFromPoint(area.getBoundingClientRect().left + 200, xRect.top + 4);
+        assume(pointBelowCells?.closest('[class*="xAxisLayer"]')).exists();
+      });
+
+      it('hides the label of a partly visible row under the column labels', async function noLabelInStrip() {
+        const { container } = await renderScrolling();
+        await settle(container);
+        const area = container.querySelector('svg')!.closest('[class*="area"]') as HTMLElement;
+        const xRect = container.querySelector('[class*="xAxisLayer"]')!.getBoundingClientRect();
+        const yRect = container.querySelector('[class*="yAxisLayer"]')!.getBoundingClientRect();
+        // Scroll so a row is cut by the strip, then probe inside the strip beside the row labels.
+        for (const top of [0, 25, 47, 90]) {
+          area.scrollTop = top;
+          await new Promise((r) => requestAnimationFrame(() => r(null)));
+          const a = area.getBoundingClientRect();
+          const stripTop = container.querySelector('[class*="xAxisLayer"]')!.getBoundingClientRect().top;
+          for (const dx of [4, yRect.width / 2, yRect.width - 4]) {
+            const hit = document.elementFromPoint(a.left + dx, stripTop + 6);
+            assume(hit?.closest('[class*="yAxisLayer"]')).is.a('null');
+          }
+        }
+        assume(xRect.height).is.above(0);
+      });
+
+      it('fits every row label inside the pinned layer in RTL', async function rtlLabelsFit() {
+        const { container } = await renderScrolling(true);
+        await settle(container);
+        const layer = container.querySelector('[class*="yAxisLayer"]') as HTMLElement;
+        const box = layer.getBoundingClientRect();
+        const labels = [...layer.querySelectorAll('text')];
+        assume(labels.length).is.above(0);
+        for (const label of labels) {
+          const r = label.getBoundingClientRect();
+          assume(r.left).is.at.least(box.left - 0.5);
+          assume(r.right).is.at.most(box.right + 0.5);
+        }
+      });
+
+      it('fits every row label inside the pinned layer in LTR', async function ltrLabelsFit() {
+        const { container } = await renderScrolling();
+        await settle(container);
+        const layer = container.querySelector('[class*="yAxisLayer"]') as HTMLElement;
+        const box = layer.getBoundingClientRect();
+        for (const label of layer.querySelectorAll('text')) {
+          const r = label.getBoundingClientRect();
+          assume(r.left).is.at.least(box.left - 0.5);
+          assume(r.right).is.at.most(box.right + 0.5);
+        }
+      });
+
+      it('pins the row labels to the right edge in RTL', async function rtlPinned() {
+        const { container } = await renderScrolling(true);
+        await settle(container);
+        const area = container.querySelector('svg')!.closest('[class*="area"]') as HTMLElement;
+        const yLayer = container.querySelector('[class*="yAxisLayer"]') as HTMLElement;
+        area.scrollLeft = -150;
+        await new Promise((r) => requestAnimationFrame(() => r(null)));
+        const a = area.getBoundingClientRect();
+        assume(Math.round(a.right - yLayer.getBoundingClientRect().right)).equals(0);
+      });
+    });
+
+    describe('#rtl column order', function rtlOrderTests() {
+      it('runs columns right to left, starting beside the row labels', async function rtlColumns() {
+        const { container } = await renderHeatmap({}, { useRtlI18n: true });
+        const first = container.querySelector('rect[role="img"]') as SVGElement;
+        const ticks = [...container.querySelector('.visx-axis-bottom')!.querySelectorAll('.visx-axis-tick text')];
+        const monX = ticks.find((t) => t.textContent === 'Mon')!.getBoundingClientRect().x;
+        const tueX = ticks.find((t) => t.textContent === 'Tue')!.getBoundingClientRect().x;
+        assume(monX).is.above(tueX);
+        const yAxisX = container.querySelector('.visx-axis-right')!.getBoundingClientRect().x;
+        assume(first.getBoundingClientRect().x).is.below(yAxisX);
+        assume(first.getBoundingClientRect().right).is.above(tueX);
+      });
+
+      it('keeps columns left to right in LTR', async function ltrColumns() {
+        const { container } = await renderHeatmap();
+        const ticks = [...container.querySelector('.visx-axis-bottom')!.querySelectorAll('.visx-axis-tick text')];
+        const monX = ticks.find((t) => t.textContent === 'Mon')!.getBoundingClientRect().x;
+        const tueX = ticks.find((t) => t.textContent === 'Tue')!.getBoundingClientRect().x;
+        assume(monX).is.below(tueX);
+      });
+    });
+
+    describe('#axis labels', function axisLabelTests() {
+      it('labels every column and row of a large grid', async function allLabels() {
+        const hours = Array.from({ length: 24 }, (_, h) => `${h}h`);
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const data = days.flatMap((y, i) => hours.map((x, j) => ({ x, y, value: (i * 7 + j) % 400 })));
+        const { container } = await renderHeatmap({ data });
+        const xTicks = container.querySelector('.visx-axis-bottom')?.querySelectorAll('.visx-axis-tick');
+        const yTicks = container.querySelector('.visx-axis-left')?.querySelectorAll('.visx-axis-tick');
+        assume(xTicks!.length).equals(24);
+        assume(yTicks!.length).equals(7);
+      });
+    });
+
+    describe('#composition', function compositionTests() {
+      function composed(args: Partial<HeatmapChartProps> = {}) {
+        return (
+          <div style={{ width: '100%', height: '400px' }}>
+            <HeatmapChart data={DEFAULT_DATA} colorBuckets={COLOR_BUCKETS} {...args}>
+              <header data-testid="title">
+                <h2 id="composed-title">Weekly activity</h2>
+                <HeatmapLegend label="Visitors" />
+              </header>
+              <HeatmapPlot />
+              <footer data-testid="footer">Visitors per window</footer>
+              <HeatmapTooltip>{({ value }) => <span data-testid="composed-tip">{value} visitors</span>}</HeatmapTooltip>
+            </HeatmapChart>
+          </div>
+        );
+      }
+
+      it('renders only the given children instead of the default layout', async function onlyChildren() {
+        const { container } = await renderAndWait(composed());
+        assume(container.querySelectorAll('[role="list"]').length).equals(1);
+        assume(container.querySelector('[data-testid="footer"]')).exists();
+        assume(container.querySelector('svg')).exists();
+      });
+
+      it('places the legend where it is rendered', async function legendPlacement() {
+        const { container } = await renderAndWait(composed());
+        const title = container.querySelector('[data-testid="title"]') as HTMLElement;
+        assume(title.querySelector('[role="list"]')).exists();
+      });
+
+      it('uses the legend label prop over the chart label', async function legendLabel() {
+        const { container } = await renderAndWait(composed({ colorLegendLabel: 'Chart label' }));
+        assume(container.querySelector('[role="list"]')?.getAttribute('aria-label')).equals('Visitors');
+      });
+
+      it('falls back to the chart color legend label and closed label', async function legendFallback() {
+        const { container } = await renderAndWait(
+          <div style={{ width: '800px', height: '400px' }}>
+            <HeatmapChart
+              data={DEFAULT_DATA}
+              colorBuckets={COLOR_BUCKETS}
+              colorLegendLabel="From chart"
+              closedLabel="Nothing"
+            >
+              <HeatmapPlot />
+              <HeatmapLegend />
+            </HeatmapChart>
+          </div>
+        );
+        const legend = container.querySelector('[role="list"]') as HTMLElement;
+        assume(legend.getAttribute('aria-label')).equals('From chart');
+        assume(legend.textContent).contains('Nothing');
+      });
+
+      it('shows the tooltip render function content on hover', async function composedTooltip() {
+        const { container } = await renderAndWait(composed());
+        const cells = container.querySelectorAll('rect[role="img"]');
+        await userEvent.hover(cells[0] as Element);
+        await waitForSelector(document.body, '[data-testid="composed-tip"]');
+        assume(document.body.querySelector('[data-testid="composed-tip"]')?.textContent).contains('visitors');
+      });
+
+      it('shows the built-in tooltip on keyboard focus when no render function is given', async function builtInOnFocus() {
+        const { container } = await renderAndWait(
+          <div style={{ width: '800px', height: '400px' }}>
+            <HeatmapChart data={DEFAULT_DATA} colorBuckets={COLOR_BUCKETS}>
+              <HeatmapPlot />
+              <HeatmapTooltip />
+            </HeatmapChart>
+          </div>
+        );
+        (container.querySelector('rect[role="img"]') as SVGElement).focus();
+        await waitForSelector(document.body, '[class*="tooltipContainer"]');
+        assume(document.body.querySelector('[class*="tooltipContainer"]')).exists();
+      });
+
+      it('shows no tooltip without a HeatmapTooltip part', async function noTooltipPart() {
+        const { container } = await renderAndWait(
+          <div style={{ width: '800px', height: '400px' }}>
+            <HeatmapChart data={DEFAULT_DATA} colorBuckets={COLOR_BUCKETS}>
+              <HeatmapPlot />
+            </HeatmapChart>
+          </div>
+        );
+        await userEvent.hover(container.querySelector('rect[role="img"]') as Element);
+        assume(document.body.querySelector('[class*="tooltipContainer"]')).is.a('null');
+      });
+
+      it('passes aria-labelledby to the svg', async function labelledBy() {
+        const { container } = await renderAndWait(composed({ 'aria-labelledby': 'composed-title' }));
+        assume(container.querySelector('svg')?.getAttribute('aria-labelledby')).equals('composed-title');
+      });
+
+      it('throws when a part is used outside a HeatmapChart', async function outsideChart() {
+        const original = console.error;
+        console.error = function silence() {
+          // The thrown error is the expected outcome; React also logs it.
+        };
+        let message = '';
+        try {
+          await render(<HeatmapPlot />);
+        } catch (error) {
+          message = (error as Error).message;
+        } finally {
+          console.error = original;
+        }
+        assume(message).contains('HeatmapPlot must be rendered inside a HeatmapChart');
+      });
+
+      for (const [name, width] of [
+        ['mobile', 375],
+        ['tablet', 768],
+        ['desktop', 1280]
+      ] as const) {
+        it(`keeps the composed legend inside the chart at ${name} width`, async function composedWidths() {
+          await page.viewport(width, 800);
+          const { container } = await renderAndWait(composed());
+          const chart = container.firstElementChild as HTMLElement;
+          const legend = container.querySelector('[role="list"]') as HTMLElement;
+          assume(legend.getBoundingClientRect().right).is.at.most(chart.getBoundingClientRect().right + 1);
+          assume(container.scrollWidth).is.at.most(width + 1);
+        });
+      }
+
+      it('mirrors the composed chart in RTL', async function composedRtl() {
+        const { container } = await renderAndWait(<RTLProvider>{composed()}</RTLProvider>);
+        assume(container.querySelector('.visx-axis-right')).exists();
+        assume(container.querySelector('[role="list"]')).exists();
+      });
     });
 
     describe('#legend', function legendTests() {
@@ -140,9 +842,9 @@ describe('@godaddy/antares', function antares() {
     describe('#axis layout', function axisLayoutTests() {
       it('does not clip the x-axis labels at the bottom of the chart area', async function noClippedLabels() {
         const { container } = await renderHeatmap();
-        await new Promise((r) => setTimeout(r, 400));
+        await layoutSettled(container);
 
-        const area = container.querySelector('svg')!.parentElement!;
+        const area = container.querySelector('svg')!.closest('[class*="area"]') as HTMLElement;
         const visibleBottom = area.getBoundingClientRect().top + area.clientHeight;
         const labels = Array.from(container.querySelectorAll('svg .visx-axis-bottom text'));
         assume(labels.length).is.above(0);
@@ -155,7 +857,7 @@ describe('@godaddy/antares', function antares() {
     describe('#cell padding', function cellPaddingTests() {
       it('uses cellPadding as the gap between cells in px', async function cellPaddingGap() {
         const { container } = await renderHeatmap({ cellPadding: 10 });
-        await new Promise((r) => setTimeout(r, 300));
+        await layoutSettled(container);
         const rects = Array.from(
           container.querySelectorAll('svg rect[role="img"], svg rect[role="presentation"]')
         ).filter((rect) => rect.getAttribute('rx') !== null);
@@ -176,8 +878,8 @@ describe('@godaddy/antares', function antares() {
           yDomain: days,
           yTickFormat: (v) => (v instanceof Date ? `D${v.getDate()}` : 'NOT-A-DATE')
         });
-        await new Promise((r) => setTimeout(r, 300));
-        const text = container.querySelector('svg')!.textContent ?? '';
+        await layoutSettled(container);
+        const text = container.textContent ?? '';
         assume(text).contains('D5');
         assume(text).contains('D6');
         assume(text).does.not.contain('NOT-A-DATE');
@@ -193,7 +895,7 @@ describe('@godaddy/antares', function antares() {
             { x: 'c', y: 'r', value: 500 }
           ]
         });
-        await new Promise((r) => setTimeout(r, 300));
+        await layoutSettled(container);
         assume(container.querySelectorAll('svg rect[role="presentation"]').length).equals(2);
         assume(container.querySelectorAll('svg rect[role="img"]').length).equals(1);
       });
@@ -230,8 +932,9 @@ describe('@godaddy/antares', function antares() {
         await waitForSelector(document.body, '[aria-label="Tooltip data"]');
         assume(document.body.querySelector('[aria-label="Tooltip data"]')).exists();
         cell.blur();
-        await new Promise((r) => setTimeout(r, 400));
-        assume(document.body.querySelector('[aria-label="Tooltip data"]')).is.a('null');
+        await vi.waitFor(function hidden() {
+          assume(document.body.querySelector('[aria-label="Tooltip data"]')).is.a('null');
+        });
       });
     });
 
@@ -245,7 +948,7 @@ describe('@godaddy/antares', function antares() {
           xDomain: ['a-b', 'a'],
           yDomain: ['c', 'b-c']
         });
-        await new Promise((r) => setTimeout(r, 300));
+        await layoutSettled(container);
         const cells = container.querySelectorAll('svg rect[rx]');
         assume(cells.length).equals(4);
       });
@@ -290,7 +993,7 @@ describe('@godaddy/antares', function antares() {
             <HeatmapChart data={gridData(rows)} colorBuckets={COLOR_BUCKETS} {...args} />
           </div>
         );
-        await new Promise((r) => setTimeout(r, 500));
+        await layoutSettled(result.container);
         return result;
       }
 
@@ -299,19 +1002,19 @@ describe('@godaddy/antares', function antares() {
       }
 
       function area(container: Element) {
-        return container.querySelector('svg')!.parentElement!;
+        return container.querySelector('svg')!.closest('[class*="area"]') as HTMLElement;
       }
 
       function lowestXLabelBottom(container: Element) {
-        const axes = Array.from(container.querySelectorAll('svg .visx-axis-bottom'));
+        const axes = Array.from(container.querySelectorAll('.visx-axis-bottom'));
         const labels = Array.from(axes[axes.length - 1].querySelectorAll('text'));
         return Math.max(...labels.map((label) => label.getBoundingClientRect().bottom));
       }
 
       describe('wrap content (no height)', function wrapContentTests() {
-        it('renders without any height and uses minCellHeight 32 by default', async function naturalHeight() {
+        it('renders without any height and uses minCellHeight 40 by default', async function naturalHeight() {
           const { container } = await renderSized();
-          assume(Math.round(cellHeight(container))).equals(32);
+          assume(Math.round(cellHeight(container))).equals(40);
         });
 
         it('uses a custom minCellHeight', async function customMinCellHeight() {
@@ -328,12 +1031,17 @@ describe('@godaddy/antares', function antares() {
 
         it('is exactly one row tall for a single row', async function singleRowWrap() {
           const { container } = await renderSized({}, 1);
-          assume(Math.round(cellHeight(container))).equals(32);
+          assume(Math.round(cellHeight(container))).equals(40);
+        });
+
+        it('raises a minCellHeight below 40 to the tap target size', async function floorHeight() {
+          const { container } = await renderSized({ minCellHeight: 24 });
+          assume(Math.round(cellHeight(container))).equals(40);
         });
 
         it('ignores maxCellHeight below minCellHeight', async function maxBelowMin() {
           const { container } = await renderSized({ maxCellHeight: 20 });
-          assume(Math.round(cellHeight(container))).equals(32);
+          assume(Math.round(cellHeight(container))).equals(40);
         });
 
         it('shrinks and grows as rows are removed and added', async function resizeWithRows() {
@@ -352,16 +1060,18 @@ describe('@godaddy/antares', function antares() {
             );
           }
           const { container } = await renderAndWait(<Harness />);
-          await new Promise((r) => setTimeout(r, 500));
+          await layoutSettled(container);
           const svgHeight = () => container.querySelector('svg')!.getBoundingClientRect().height;
           const before = svgHeight();
           (container.querySelector('[data-testid="fewer"]') as HTMLElement).click();
-          await new Promise((r) => setTimeout(r, 600));
+          await vi.waitFor(function shrinks() {
+            assume(svgHeight()).is.below(before - 80);
+          });
           const fewer = svgHeight();
-          assume(fewer).is.below(before - 80);
           (container.querySelector('[data-testid="more"]') as HTMLElement).click();
-          await new Promise((r) => setTimeout(r, 600));
-          assume(svgHeight()).is.above(fewer + 100);
+          await vi.waitFor(function grows() {
+            assume(svgHeight()).is.above(fewer + 100);
+          });
         });
       });
 
@@ -380,7 +1090,7 @@ describe('@godaddy/antares', function antares() {
         it('keeps minCellHeight and scrolls when the height is too small', async function scrollWhenSmall() {
           const { container } = await renderSized({ height: 120 });
           const el = area(container);
-          assume(Math.round(cellHeight(container))).equals(32);
+          assume(Math.round(cellHeight(container))).equals(40);
           assume(el.scrollHeight > el.clientHeight + 1).is.true();
         });
 
@@ -388,7 +1098,7 @@ describe('@godaddy/antares', function antares() {
           const { container } = await renderSized({ height: 160 });
           const el = area(container);
           el.scrollTop = el.scrollHeight;
-          await new Promise((r) => setTimeout(r, 300));
+          await nextFrame();
           assume(lowestXLabelBottom(container) <= el.getBoundingClientRect().top + el.clientHeight + 0.5).is.true();
         });
 
@@ -416,33 +1126,35 @@ describe('@godaddy/antares', function antares() {
             );
           }
           const { container } = await renderAndWait(<Harness />);
-          await new Promise((r) => setTimeout(r, 500));
+          await layoutSettled(container);
           const before = cellHeight(container);
           (container.querySelector('[data-testid="shorter"]') as HTMLElement).click();
-          await new Promise((r) => setTimeout(r, 700));
-          assume(cellHeight(container)).is.below(before - 10);
+          await vi.waitFor(function shorter() {
+            assume(cellHeight(container)).is.below(before - 10);
+          });
         });
       });
 
       describe('maxCellHeight', function maxCellHeightTests() {
         it('stops rows stretching past the maximum', async function capsRows() {
-          const { container } = await renderSized({ height: 500, maxCellHeight: 40 });
-          assume(Math.round(cellHeight(container))).equals(40);
+          const { container } = await renderSized({ height: 500, maxCellHeight: 56 });
+          assume(Math.round(cellHeight(container))).equals(56);
         });
 
         it('ends the chart after the last row, with the legend following', async function endsAfterRows() {
-          const { container } = await renderSized({ height: 500, maxCellHeight: 40 });
+          const { container } = await renderSized({ height: 500, maxCellHeight: 56 });
           // The root keeps the `height` it was given; the grid, axis and legend end early inside it.
           const svgHeight = container.querySelector('svg')!.getBoundingClientRect().height;
           const legend = container.querySelector('[role="list"]')!.getBoundingClientRect();
           const gridBottom = area(container).getBoundingClientRect().bottom;
-          assume(svgHeight).is.below(400);
+          // 7 rows at the 56px cap, plus the 4px gaps and the axis: well short of the 500px the root was given.
+          assume(svgHeight).is.below(480);
           assume(legend.top - gridBottom).is.below(24);
         });
 
         it('caps a single row in a tall chart', async function capsSingleRow() {
-          const { container } = await renderSized({ height: 400, maxCellHeight: 48 }, 1);
-          assume(Math.round(cellHeight(container))).equals(48);
+          const { container } = await renderSized({ height: 400, maxCellHeight: 64 }, 1);
+          assume(Math.round(cellHeight(container))).equals(64);
         });
 
         it('does not affect rows that are below the maximum', async function belowMaxUnaffected() {
@@ -498,7 +1210,7 @@ describe('@godaddy/antares', function antares() {
       describe('with labels and legend toggled', function togglesTests() {
         it('sizes from its rows with the legend hidden', async function noLegendWrap() {
           const { container } = await renderSized({ colorLegend: false });
-          assume(Math.round(cellHeight(container))).equals(32);
+          assume(Math.round(cellHeight(container))).equals(40);
           assume(container.querySelector('[role="list"]')).is.a('null');
         });
 
@@ -515,8 +1227,9 @@ describe('@godaddy/antares', function antares() {
               </div>
             </RTLProvider>
           );
-          await new Promise((r) => setTimeout(r, 500));
-          assume(Math.round(cellHeight(container))).equals(32);
+          await vi.waitFor(function rtlHeight() {
+            assume(Math.round(cellHeight(container))).equals(40);
+          });
         });
 
         it('still scrolls horizontally with many columns in wrap-content mode', async function manyColumns() {
@@ -526,10 +1239,10 @@ describe('@godaddy/antares', function antares() {
               <HeatmapChart data={gridData(2, columns)} colorBuckets={COLOR_BUCKETS} />
             </div>
           );
-          await new Promise((r) => setTimeout(r, 500));
+          await layoutSettled(container);
           const el = area(container);
           assume(el.scrollWidth > el.clientWidth + 1).is.true();
-          assume(Math.round(cellHeight(container))).equals(32);
+          assume(Math.round(cellHeight(container))).equals(40);
         });
       });
     });
@@ -541,7 +1254,7 @@ describe('@godaddy/antares', function antares() {
             <HeatmapChart data={DEFAULT_DATA} colorBuckets={COLOR_BUCKETS} {...args} />
           </div>
         );
-        await new Promise((r) => setTimeout(r, 500));
+        await layoutSettled(container);
         const cells = Array.from(container.querySelectorAll('svg rect[rx]')).map((rect) =>
           rect.getBoundingClientRect()
         );
@@ -600,7 +1313,7 @@ describe('@godaddy/antares', function antares() {
         assume(cells.length).is.above(0);
 
         await userEvent.hover(cells[0] as Element);
-        await new Promise((r) => setTimeout(r, 20));
+        await waitForSelector(document.body, '[aria-label="Tooltip data"]');
 
         const tip = document.body.querySelector('[aria-label="Tooltip data"]');
         assume(tip).exists();
@@ -613,7 +1326,7 @@ describe('@godaddy/antares', function antares() {
         assume(cells.length).is.above(0);
 
         await userEvent.hover(cells[0] as Element);
-        await new Promise((r) => setTimeout(r, 20));
+        await frames(6);
 
         const tip = document.body.querySelector('[aria-label="Tooltip data"]');
         assume(tip).is.a('null');
