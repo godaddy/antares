@@ -1,6 +1,6 @@
 .title {
-  font-size: var(--fs-detail-lg);
-  color: var(--passive);
+  font-size: var(--font-detail-size-lg, 0.875rem);
+  color: var(--color-feedback-passive-text, var(--ux-1m9ys0v, #767676));
 }
 
 .infoTrigger {
@@ -22,14 +22,14 @@
 }
 
 .data {
-  font-size: var(--fs-2xl);
+  font-size: var(--font-heading-size-lg, 1.5rem);
   font-weight: bolder;
-  line-height: var(--lh-heading);
+  line-height: var(--font-heading-line-height, var(--ux-p25s1t, 1.25));
 }
 
 .description {
-  font-size: var(--fs-detail-lg);
-  color: var(--passive);
+  font-size: var(--font-detail-size-lg, 0.875rem);
+  color: var(--color-feedback-passive-text, var(--ux-1m9ys0v, #767676));
 }
 
 .trendIcon {
@@ -47,9 +47,9 @@
 }
 
 .trendIcon[data-trend="neutral"] {
-  color: var(--passive);
+  color: var(--color-feedback-passive-text, var(--ux-1m9ys0v, #767676));
 }
 
 .trendIcon[data-trend="negative"] {
-  color: var(--critical);
+  color: var(--color-feedback-critical-text, var(--ux-1fhc073, #db1802));
 }

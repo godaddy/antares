@@ -8,6 +8,7 @@
 
   --_title-size: calc(var(--ux-18ime9a, 1.375rem) / (var(--ux-1fnjqac, 1.125) * var(--ux-1fnjqac, 1.125)));
   --_title-line: var(--ux-18ime9a, 1.375rem);
+  --_progress-steps-control-space: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
 
   &:where([data-orientation="horizontal"]) {
     .step {
@@ -16,7 +17,7 @@
 
     .control {
       border-block-start: 2px solid var(--_border-future);
-      padding-block-start: var(--sp-md);
+      padding-block-start: var(--_progress-steps-control-space);
     }
   }
 
@@ -27,7 +28,7 @@
 
     .control {
       border-inline-start: 2px solid var(--_border-future);
-      padding-inline-start: var(--sp-md);
+      padding-inline-start: var(--_progress-steps-control-space);
     }
   }
 }
@@ -58,7 +59,7 @@
 .control {
   box-sizing: border-box;
   width: 100%;
-  padding: var(--sp-md);
+  padding: var(--_progress-steps-control-space);
   border: 0;
   background: none;
   color: var(--_fg-default);

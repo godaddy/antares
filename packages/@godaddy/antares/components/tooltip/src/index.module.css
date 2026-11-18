@@ -1,11 +1,15 @@
 .tooltip {
-  --bg-overlay: var(--ux-7wu8i7, color-mix(in oklch, var(--bg-raised), white 8%));
-  --fg-overlay: var(--ux-1o8cusa, var(--fg-base));
+  /* High-contrast surface: overrides the overlay elevation `Box` paints this element with. */
+  --_box-bg-overlay: var(
+    --color-surface-background-raised,
+    var(--ux-7wu8i7, color-mix(in oklch, var(--_box-bg-raised), white 8%))
+  );
+  --_box-fg-overlay: var(--color-surface-text-raised, var(--ux-1o8cusa, var(--_box-fg-base)));
 
   --_arrow-width: 10px;
   --_arrow-rotated-width: calc(var(--_arrow-width) / pow(2, 1 / 2));
   --_arrow-height: calc(var(--_arrow-rotated-width) / 2);
-  --_content-offset: calc(var(--_arrow-height) + var(--sp-sm));
+  --_content-offset: calc(var(--_arrow-height) + var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 1)));
   --_arrow-offset: calc(var(--_arrow-height) * -1 + 1px);
 
   transition:

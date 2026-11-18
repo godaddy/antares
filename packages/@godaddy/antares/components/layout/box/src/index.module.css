@@ -1,76 +1,85 @@
 .box {
-  --sp-density: var(--ux-1sbfig8, 0.25rem);
-  --sp-xs: calc(var(--sp-density) * 0.5);
-  --sp-sm: calc(var(--sp-density) * 1);
-  --sp-md: calc(var(--sp-density) * 2);
-  --sp-lg: calc(var(--sp-density) * 3);
-  --sp-xl: calc(var(--sp-density) * 5);
-  --sp-2xl: calc(var(--sp-density) * 8);
+  /* Spacing and rounding scales behind the layout props. See `layout/tokens.ts`. */
+  --_box-space-xs: var(--size-space-xs, calc(var(--ux-1sbfig8, 0.25rem) * 0.5));
+  --_box-space-sm: var(--size-space-sm, calc(var(--ux-1sbfig8, 0.25rem) * 1));
+  --_box-space-md: var(--size-space-md, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  --_box-space-lg: var(--size-space-lg, calc(var(--ux-1sbfig8, 0.25rem) * 3));
+  --_box-space-xl: var(--size-space-xl, calc(var(--ux-1sbfig8, 0.25rem) * 5));
+  --_box-space-2xl: var(--size-space-2xl, calc(var(--ux-1sbfig8, 0.25rem) * 8));
 
-  --rounding-xs: 1px;
-  --rounding-sm: 2px;
-  --rounding-md: 3px;
-  --rounding-lg: 6px;
-  --rounding-xl: 10px;
-  --rounding-2xl: 20px;
-  --rounding-full: 9999px;
+  --_box-rounding-xs: var(--size-radius-xs, 1px);
+  --_box-rounding-sm: var(--size-radius-sm, 2px);
+  --_box-rounding-md: var(--size-radius-md, 3px);
+  --_box-rounding-lg: var(--size-radius-lg, 6px);
+  --_box-rounding-xl: var(--size-radius-xl, 10px);
+  --_box-rounding-2xl: var(--size-radius-2xl, 20px);
+  --_box-rounding-full: 9999px;
 
-  --bg-base: var(--ux-cao06b, Canvas);
-  --bg-card: color-mix(in oklch, var(--bg-base), white 8%);
-  --bg-raised: color-mix(in oklch, var(--bg-card), white 8%);
-  --bg-overlay: color-mix(in oklch, var(--bg-raised), white 8%);
-  --fg-base: color(
-    from var(--bg-base) xyz clamp(0, (0.36 / y - 1) * infinity, 1) clamp(0, (0.36 / y - 1) * infinity, 1)
-      clamp(0, (0.36 / y - 1) * infinity, 1) /
-    1
+  --_box-bg-base: var(--color-surface-background-base, var(--ux-cao06b, Canvas));
+  --_box-bg-card: var(--color-surface-background-card, color-mix(in oklch, var(--_box-bg-base), white 8%));
+  --_box-bg-raised: var(--color-surface-background-raised, color-mix(in oklch, var(--_box-bg-card), white 8%));
+  --_box-bg-overlay: var(--color-surface-background-overlay, color-mix(in oklch, var(--_box-bg-raised), white 8%));
+  --_box-fg-base: var(
+    --color-surface-text-base,
+    color(
+      from var(--_box-bg-base) xyz clamp(0, (0.36 / y - 1) * infinity, 1) clamp(0, (0.36 / y - 1) * infinity, 1)
+        clamp(0, (0.36 / y - 1) * infinity, 1) /
+      1
+    )
   );
-  --fg-card: var(--fg-base);
-  --fg-raised: var(--fg-base);
-  --fg-overlay: var(--fg-base);
-  --bd-base: transparent;
-  --bd-card: color-mix(in oklch, transparent, var(--fg-card) 15%);
-  --bd-raised: transparent;
-  --bd-overlay: transparent;
-  --sh-base: none;
-  --sh-card: none;
-  --sh-raised: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.07))
+  --_box-fg-card: var(--color-surface-text-card, var(--_box-fg-base));
+  --_box-fg-raised: var(--color-surface-text-raised, var(--_box-fg-base));
+  --_box-fg-overlay: var(--color-surface-text-overlay, var(--_box-fg-base));
+  --_box-bd-base: var(--color-surface-border-base, transparent);
+  --_box-bd-card: var(--color-surface-border-card, color-mix(in oklch, transparent, var(--_box-fg-card) 15%));
+  --_box-bd-raised: var(--color-surface-border-raised, transparent);
+  --_box-bd-overlay: var(--color-surface-border-overlay, transparent);
+
+  /*
+    Elevation is drawn with `filter: drop-shadow()` so it follows non-rectangular shapes, such as
+    the Popover and Tooltip arrows. The `shadow-surface-*` tokens are `box-shadow` values and can't
+    feed `drop-shadow()`, so these stay literal until the token set has a filter-compatible shadow.
+  */
+  --_box-sh-base: none;
+  --_box-sh-card: none;
+  --_box-sh-raised: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.07))
     drop-shadow(0 0 0.5px rgba(0, 0, 0, 0.2));
-  --sh-overlay: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.15)) drop-shadow(0 4px 4px rgba(0, 0, 0, 0.1))
+  --_box-sh-overlay: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.15)) drop-shadow(0 4px 4px rgba(0, 0, 0, 0.1))
     drop-shadow(0 0 0.5px rgba(0, 0, 0, 0.2));
 
   &:where([data-elevation="base"]) {
     border-width: 1px;
     border-style: solid;
-    background: var(--bg-base);
-    border-color: var(--bd-base);
-    color: var(--fg-base);
-    filter: var(--sh-base);
+    background: var(--_box-bg-base);
+    border-color: var(--_box-bd-base);
+    color: var(--_box-fg-base);
+    filter: var(--_box-sh-base);
   }
 
   &:where([data-elevation="card"]) {
     border-width: 1px;
     border-style: solid;
-    background: var(--bg-card);
-    border-color: var(--bd-card);
-    color: var(--fg-card);
-    filter: var(--sh-card);
+    background: var(--_box-bg-card);
+    border-color: var(--_box-bd-card);
+    color: var(--_box-fg-card);
+    filter: var(--_box-sh-card);
   }
 
   &:where([data-elevation="raised"]) {
     border-width: 1px;
     border-style: solid;
-    background: var(--bg-raised);
-    border-color: var(--bd-raised);
-    color: var(--fg-raised);
-    filter: var(--sh-raised);
+    background: var(--_box-bg-raised);
+    border-color: var(--_box-bd-raised);
+    color: var(--_box-fg-raised);
+    filter: var(--_box-sh-raised);
   }
 
   &:where([data-elevation="overlay"]) {
     border-width: 1px;
     border-style: solid;
-    background: var(--bg-overlay);
-    border-color: var(--bd-overlay);
-    color: var(--fg-overlay);
-    filter: var(--sh-overlay);
+    background: var(--_box-bg-overlay);
+    border-color: var(--_box-bd-overlay);
+    color: var(--_box-fg-overlay);
+    filter: var(--_box-sh-overlay);
   }
 }

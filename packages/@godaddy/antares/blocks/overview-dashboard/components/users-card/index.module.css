@@ -9,7 +9,7 @@
 .userDivider {
   border: 0;
   border-block-start: 1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));
-  margin-block: var(--sp-md);
+  margin-block: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
 }
 
 @container (max-width: 40rem) {

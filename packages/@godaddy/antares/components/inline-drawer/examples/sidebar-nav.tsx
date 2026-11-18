@@ -37,7 +37,7 @@ export function SidebarNavExample() {
           })}
         </Flex>
       </InlineDrawer>
-      <Flex padding="md" style={{ flex: 1, borderInlineStart: '1px solid var(--bd-base)' }}>
+      <Flex padding="md" style={{ flex: 1, borderInlineStart: '1px solid var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0))' }}>
         <Text>Main content area</Text>
       </Flex>
     </Flex>

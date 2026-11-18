@@ -1,8 +1,10 @@
 .tabs {
-  --_tabs-item-block-space: calc(var(--sp-density) * 1.375);
-  --_tabs-item-inline-space: var(--sp-md);
-  --_tabs-list-gap: calc(var(--sp-density) * 5);
-  --_tabs-manilla-space: calc(var(--sp-density) * 3);
+  /* 1.375 GU has no numeric tier, so it reads the density intent directly. */
+  --_tabs-item-block-space: calc(var(--ux-1sbfig8, 0.25rem) * 1.375);
+  --_tabs-item-inline-space: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  --_tabs-list-gap: var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5));
+  --_tabs-manilla-space: var(--size-space-060, calc(var(--ux-1sbfig8, 0.25rem) * 3));
+  --_tabs-control-inline-space: var(--size-space-010, calc(var(--ux-1sbfig8, 0.25rem) * 0.5));
   --_tabs-border-width: 1px;
   --_tabs-underline-width: 4px;
   --_tabs-item-fg: var(--color-action-text-secondary-default, var(--ux-1xeg43i, #767676));
@@ -174,7 +176,7 @@
   height: auto;
   min-height: 0;
   box-sizing: border-box;
-  padding: 0 calc(var(--sp-density) * 0.5);
+  padding: 0 var(--_tabs-control-inline-space);
   border-radius: 0;
   border-bottom: 0;
 }

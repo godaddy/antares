@@ -30,7 +30,7 @@ Two token scales, split by what the space sits between:
 Three rules for that chain:
 
 - **Write all three links.** They cover a consumer who ships design tokens, legacy intents, or neither. A `var()` that points at nothing and has no literal fallback is invalid, so the property silently drops to its initial value. That is how `Menu` shipped with `padding: 0`.
-- **Declare it on your own root selector**, never on an ancestor. In particular, don't use `--sp-*` in component CSS: it only exists on `.box`, so it resolves by luck of composition, and not at all inside a portal.
+- **Declare it on your own root selector**, never on an ancestor. A variable defined on an ancestor resolves by luck of composition, and not at all inside a portal. The `--_box-*` scales are `Box`'s own and are not for component CSS.
 - **Keep the component name in the variable.** Custom properties inherit and CSS Modules does not scope them, so a bare `--_padding` collides with any nested component that picked the same name. `--_menu-padding` cannot.
 
 GU count per tier, and the literal that goes with it: `docs/pdrs/antares/gu-spacing.md`.
