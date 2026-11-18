@@ -2,6 +2,7 @@ import * as ts from 'typescript/unstable/ast';
 import * as factory from 'typescript/unstable/ast/factory';
 import { getPropJSDoc } from './jsdoc.ts';
 import type { Resolver } from './resolve.ts';
+import { getTypeDisplay } from './type-display.ts';
 import { applyUtilityType, getUtilityInnerType } from './utility-types.ts';
 import type { PropDoc, PropsDoc } from '../types.ts';
 
@@ -36,13 +37,15 @@ export function extractFromTypeNode(
   sourceFile: ts.SourceFile,
   resolver: Resolver,
   active = new Set<string>(),
-  env: TypeParamEnv = EMPTY_ENV
+  env: TypeParamEnv = EMPTY_ENV,
+  typeParameters: ReadonlySet<string> = new Set()
 ): PropDoc[] {
-  if (ts.isTypeLiteralNode(typeNode)) return extractMembers(typeNode.members, sourceFile, 'anonymous');
+  if (ts.isTypeLiteralNode(typeNode))
+    return extractMembers(typeNode.members, sourceFile, 'anonymous', resolver, typeParameters);
 
   if (ts.isIntersectionTypeNode(typeNode)) {
     return normalizeProps(
-      typeNode.types.flatMap((node) => extractFromTypeNode(node, sourceFile, resolver, active, env))
+      typeNode.types.flatMap((node) => extractFromTypeNode(node, sourceFile, resolver, active, env, typeParameters))
     );
   }
 
@@ -98,7 +101,13 @@ function extractFromDeclaration(
         ) ?? []
       );
 
-      const own = extractMembers(declaration.members, sourceFile, declaration.name.text);
+      const own = extractMembers(
+        declaration.members,
+        sourceFile,
+        declaration.name.text,
+        resolver,
+        new Set(declaration.typeParameters?.map((parameter) => parameter.name.text))
+      );
 
       // Own members lead, then inherited; own declarations win on a name clash.
       return normalizeProps([...own, ...inherited]);
@@ -113,7 +122,8 @@ function extractFromDeclaration(
     active.add(key);
 
     try {
-      return extractFromTypeNode(declaration.type, sourceFile, resolver, active, env).map((prop) => ({
+      const typeParameters = new Set(declaration.typeParameters?.map((parameter) => parameter.name.text));
+      return extractFromTypeNode(declaration.type, sourceFile, resolver, active, env, typeParameters).map((prop) => ({
         ...prop,
         declaringType: prop.declaringType === 'anonymous' ? declaration.name.text : prop.declaringType
       }));
@@ -185,7 +195,9 @@ function extractFromHeritageType(
 function extractMembers(
   members: ts.NodeArray<ts.TypeElement>,
   sourceFile: ts.SourceFile,
-  declaringType: string
+  declaringType: string,
+  resolver: Resolver,
+  typeParameters: ReadonlySet<string>
 ): PropDoc[] {
   const props: PropDoc[] = [];
 
@@ -197,7 +209,7 @@ function extractMembers(
     const jsDoc = getPropJSDoc(member);
     props.push({
       name,
-      type: member.type?.getText(sourceFile) ?? 'any',
+      type: getTypeDisplay(member.type, sourceFile, resolver, typeParameters),
       required: member.postfixToken?.kind !== ts.SyntaxKind.QuestionToken,
       description: jsDoc.description,
       defaultValue: jsDoc.defaultValue,
