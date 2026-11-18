@@ -79,6 +79,8 @@ export const examples = getExamples('./examples');
 
 ## Docs options
 
+Prop types automatically expand aliases that resolve entirely to string or number literals, including imported aliases and alias chains. Expansions preserve declaration order and are limited to 10 distinct values and 200 characters. Complex, generic, unresolved, cyclic, or larger types keep their authored expression. Use a `type` override when a different display is needed.
+
 `getComponentDocs` and `getTypeDocs` accept an options object that filters, orders, and categorizes the documented props. Keys are autocompleted against the target type, and arbitrary strings are also accepted (so you can reference props the extractor can't see, such as an added override).
 
 - **`include` / `exclude`** - allowlist or blocklist props. Mutually exclusive.
