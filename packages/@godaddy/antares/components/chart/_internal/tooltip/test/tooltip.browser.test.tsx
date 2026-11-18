@@ -1,5 +1,6 @@
 import type { TooltipData } from '@visx/xychart';
 import assume from 'assume';
+import type { CSSProperties } from 'react';
 import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import type { DataPoint } from '../../../types.ts';
@@ -96,6 +97,28 @@ describe('@godaddy/antares', function antares() {
         (el) => el.className && el.className.toString().includes('tooltipArrow')
       );
       assume(arrow).exists();
+    });
+
+    it('matches the arrow and text to the raised surface tokens', async function raisedTokens() {
+      const { container } = await render(
+        <div
+          style={
+            {
+              '--color-surface-background-raised': 'rgb(10, 20, 30)',
+              '--color-surface-text-raised': 'rgb(240, 241, 242)'
+            } as CSSProperties
+          }
+        >
+          <ArrowExample />
+        </div>
+      );
+      const arrow = Array.from(container.querySelectorAll('[class]')).find(
+        (el) => el.className && el.className.toString().includes('tooltipArrow')
+      ) as HTMLElement;
+      const panel = arrow.parentElement as HTMLElement;
+
+      assume(getComputedStyle(arrow).borderTopColor).equals(getComputedStyle(panel).backgroundColor);
+      assume(getComputedStyle(panel).color).equals('rgb(240, 241, 242)');
     });
 
     it('does not render arrow when showArrow is false', async function noArrow() {

@@ -3,7 +3,7 @@
   --_field-critical-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));
   --_field-bd: var(--_box-bd-card);
   --_field-fg: var(--_box-fg-card);
-  --_field-input-fg: var(--ux-1glcx6s, #2b2b2b);
+  --_field-input-fg: var(--color-surface-text-card, var(--ux-1glcx6s, #2b2b2b));
   --_field-input-inline-space: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
 }
 
@@ -93,7 +93,7 @@
 .field:where([data-interior="box"]) :where(.group, .input, .textarea):where([data-disabled]) {
   --_field-bd: color-mix(in oklch, transparent, var(--_box-bd-card) 40%);
   --_field-fg: color-mix(in oklch, transparent, var(--_box-fg-card) 40%);
-  --_field-input-fg: color-mix(in oklch, transparent, var(--ux-1glcx6s, #2b2b2b) 40%);
+  --_field-input-fg: color-mix(in oklch, transparent, var(--color-surface-text-card, var(--ux-1glcx6s, #2b2b2b)) 40%);
   cursor: not-allowed;
 }
 

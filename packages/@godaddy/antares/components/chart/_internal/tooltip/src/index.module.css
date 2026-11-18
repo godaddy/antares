@@ -1,9 +1,9 @@
 .tooltip {
-  --chart-tooltip-color: var(--ux-1leynsm);
+  --chart-tooltip-color: var(--color-surface-text-raised, var(--ux-1leynsm));
   --chart-tooltip-font-size: var(--ux-2lqd62);
   --chart-tooltip-line-height: 1.5;
   --chart-tooltip-value-font-size: var(--ux-1s0t9v0);
-  --chart-tooltip-arrow-fill: var(--ux-1mh0ktr);
+  --chart-tooltip-arrow-fill: var(--color-surface-background-raised, var(--ux-1mh0ktr));
   --chart-tooltip-arrow-shadow: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
   --chart-tooltip-arrow-offset: -8px;
   --chart-tooltip-arrow-border-x: 8px;
