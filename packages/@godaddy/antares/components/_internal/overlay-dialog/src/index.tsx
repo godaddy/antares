@@ -1,4 +1,4 @@
-import { forwardRef, useContext, type ReactNode } from 'react';
+import { forwardRef, useContext, type ElementType, type ReactNode } from 'react';
 import { cx } from 'cva';
 import {
   Dialog as RACDialog,
@@ -18,6 +18,9 @@ export interface OverlayDialogProps
     Omit<RACDialogProps, 'children'> {
   /** Size of the overlay's interior. Follows the size around the overlay when omitted. */
   size?: ScaleSize;
+
+  /** The dialog primitive to render, for overlays whose dialog is a RAC `Dialog` variant. @default RACDialog */
+  as?: ElementType;
 
   /** The regions of the overlay, in any order. */
   children?: ReactNode;
@@ -61,13 +64,13 @@ function OverlayRegions({ children }: { children?: ReactNode }) {
  * @param props - {@link OverlayDialogProps}
  */
 export const OverlayDialog = forwardRef<HTMLElement, OverlayDialogProps>(function OverlayDialog(props, ref) {
-  const { className, children, size: sizeProp, ...rest } = props;
+  const { className, children, size: sizeProp, as = RACDialog, ...rest } = props;
   const size = useDeclaredSize(sizeProp);
 
   return (
     <SizeProvider size={size}>
       <Grid
-        as={RACDialog}
+        as={as}
         {...rest}
         ref={ref}
         className={composeClassName(className, styles.dialog, sizeScaleClassName(size))}
