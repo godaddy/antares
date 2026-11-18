@@ -14,6 +14,9 @@ import { SharedQueueExample } from '../examples/shared-queue.tsx';
 import { RichContentExample } from '../examples/rich-content.tsx';
 import { FromModalExample } from '../examples/from-modal.tsx';
 import { ZeroTitleExample } from '../examples/zero-title.tsx';
+import { BooleanTitleExample } from '../examples/boolean-title.tsx';
+import { CloseCallbackExample } from '../examples/close-callback.tsx';
+import { IndependentContextsExample } from '../examples/independent-contexts.tsx';
 
 const HOST = '[data-antares-toast-host="1"]';
 
@@ -89,6 +92,22 @@ describe('@godaddy/antares', function antares() {
       await showToast();
 
       await expect.element(page.getByRole('alertdialog', { name: '0' })).toHaveAccessibleDescription('Items left');
+    });
+
+    it('uses the message as the accessible name for a true title', async function trueTitle() {
+      await render(<BooleanTitleExample />);
+      await showToast();
+
+      await expect.element(page.getByRole('alertdialog', { name: 'Saved' })).toBeVisible();
+      await expect.element(page.getByRole('alertdialog')).not.toHaveAccessibleDescription();
+    });
+
+    it('uses the message as the accessible name for a false title', async function falseTitle() {
+      await render(<BooleanTitleExample title={false} />);
+      await showToast();
+
+      await expect.element(page.getByRole('alertdialog', { name: 'Saved' })).toBeVisible();
+      await expect.element(page.getByRole('alertdialog')).not.toHaveAccessibleDescription();
     });
 
     it('renders no icon for the none emphasis', async function noIcon() {
@@ -208,6 +227,26 @@ describe('@godaddy/antares', function antares() {
       await userEvent.keyboard('{Escape}');
     });
 
+    it('shows a toast above a Modal opened in the same event', async function simultaneousModal() {
+      await render(<FromModalExample simultaneous />);
+      await userEvent.click(page.getByRole('button', { name: 'Toast before modal' }));
+      await expect.element(page.getByRole('alertdialog', { name: 'Before the modal' })).toBeVisible();
+      await userEvent.click(page.getByRole('button', { name: 'Open modal' }));
+
+      try {
+        await expect.element(page.getByRole('dialog', { name: 'Settings' })).toBeVisible();
+        const toast = page.getByRole('alertdialog', { name: 'Opened with modal' });
+        await expect.element(toast).toBeVisible();
+        await vi.waitFor(function above() {
+          const box = toast.element().getBoundingClientRect();
+          const top = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);
+          assume(top?.closest('[role="alertdialog"]')).equals(toast.element());
+        });
+      } finally {
+        await userEvent.keyboard('{Escape}');
+      }
+    });
+
     it('closes when the close button is pressed', async function closeButton() {
       await render(<DefaultExample />);
       await showToast();
@@ -284,17 +323,49 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('caps visible toasts at 5 and shows the next one when a toast closes', async function cap() {
-      await render(<PlaygroundExample timeout={0} />);
-      for (let i = 0; i < 6; i++) await showToast();
+      const { toast } = await import('@godaddy/antares');
+      await render(<DefaultExample />);
+      for (let i = 0; i < 6; i++) toast.add({ message: `Toast ${i}`, timeout: null });
 
       await vi.waitFor(function five() {
         assume(toasts().length).equals(5);
       });
 
-      await userEvent.click(page.getByRole('button', { name: 'Close' }).first());
+      assume(page.getByRole('alertdialog', { name: 'Toast 0' }).query()).equals(null);
+      const closing = page.getByRole('alertdialog', { name: 'Toast 5' }).element();
+      await userEvent.click(page.getByRole('alertdialog', { name: 'Toast 5' }).getByRole('button', { name: 'Close' }));
       await vi.waitFor(function stillFive() {
+        assume(closing.isConnected).equals(false);
         assume(toasts().length).equals(5);
       });
+      await expect.element(page.getByRole('alertdialog', { name: 'Toast 0' })).toBeVisible();
+    });
+
+    it('can add a replacement from onClose after the exit animation', async function replacementAfterExit() {
+      await render(<CloseCallbackExample />);
+      await userEvent.click(page.getByRole('button', { name: 'Start upload' }));
+      await expect.element(page.getByRole('alertdialog', { name: 'Uploading' })).toBeVisible();
+      await userEvent.click(page.getByRole('alertdialog').getByRole('button', { name: 'Close' }));
+
+      await expect.element(page.getByRole('alertdialog', { name: 'Upload finished' })).toBeVisible();
+      assume(page.getByRole('alertdialog', { name: 'Uploading' }).query()).equals(null);
+      await expect.element(page.getByRole('status', { name: 'Close count' })).toHaveTextContent('1');
+      await userEvent.click(page.getByRole('button', { name: 'Finish upload' }));
+      await expect.element(page.getByRole('status', { name: 'Close count' })).toHaveTextContent('1');
+      assume(toasts().length).equals(1);
+    });
+
+    it('can add a replacement from onClose before a region mounts', async function replacementWithoutRegion() {
+      await render(<CloseCallbackExample mounted={false} />);
+      await userEvent.click(page.getByRole('button', { name: 'Start upload' }));
+      await userEvent.click(page.getByRole('button', { name: 'Finish upload' }));
+      await expect.element(page.getByRole('status', { name: 'Close count' })).toHaveTextContent('1');
+      await userEvent.click(page.getByRole('button', { name: 'Mount region' }));
+
+      await expect.element(page.getByRole('alertdialog', { name: 'Upload finished' })).toBeVisible();
+      assume(page.getByRole('alertdialog', { name: 'Uploading' }).query()).equals(null);
+      await userEvent.click(page.getByRole('button', { name: 'Finish upload' }));
+      await expect.element(page.getByRole('status', { name: 'Close count' })).toHaveTextContent('1');
     });
 
     it('shows one button per emphasis', async function emphases() {
@@ -343,6 +414,23 @@ describe('@godaddy/antares', function antares() {
 
       await expect.element(page.getByRole('region', { name: 'Header notifications' })).toBeVisible();
       await expect.element(page.getByRole('region', { name: 'App notifications' })).toBeVisible();
+      assume(document.querySelectorAll(HOST).length).equals(1);
+      assume(document.querySelectorAll(`${HOST} > [role="region"]`).length).equals(2);
+    });
+
+    it('preserves independent region contexts for title and message content', async function independentContexts() {
+      await render(<IndependentContextsExample />);
+      await userEvent.click(page.getByRole('button', { name: 'Header toast' }));
+      await userEvent.click(page.getByRole('button', { name: 'App toast' }));
+
+      const header = page.getByRole('region', { name: 'Header notifications' });
+      const app = page.getByRole('region', { name: 'App notifications' });
+      await expect
+        .element(header.getByRole('alertdialog', { name: 'Header title' }))
+        .toHaveAccessibleDescription('Header message');
+      await expect
+        .element(app.getByRole('alertdialog', { name: 'App title' }))
+        .toHaveAccessibleDescription('App message');
       assume(document.querySelectorAll(HOST).length).equals(1);
       assume(document.querySelectorAll(`${HOST} > [role="region"]`).length).equals(2);
     });

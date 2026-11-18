@@ -1,4 +1,5 @@
-import { Button, CloseButton, Content, Heading, Modal, ModalTrigger, ToastQueue, ToastRegion } from '@godaddy/antares';
+import { useState } from 'react';
+import { Button, CloseButton, Content, Heading, Modal, ToastQueue, ToastRegion } from '@godaddy/antares';
 
 const queue = new ToastQueue();
 
@@ -7,7 +8,9 @@ const queue = new ToastQueue();
  * Modal's backdrop.
  * @ignore
  */
-export function FromModalExample() {
+export function FromModalExample({ simultaneous = false }: { simultaneous?: boolean }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
       <ToastRegion queue={queue} />
@@ -18,22 +21,27 @@ export function FromModalExample() {
       >
         Toast before modal
       </Button>
-      <ModalTrigger>
-        <Button>Open modal</Button>
-        <Modal>
-          <Heading slot="title">Settings</Heading>
-          <CloseButton />
-          <Content>
-            <Button
-              onPress={function showToast() {
-                queue.add({ message: 'From the modal', timeout: null });
-              }}
-            >
-              Toast from modal
-            </Button>
-          </Content>
-        </Modal>
-      </ModalTrigger>
+      <Button
+        onPress={function openModal() {
+          setIsOpen(true);
+          if (simultaneous) queue.add({ message: 'Opened with modal', timeout: null });
+        }}
+      >
+        Open modal
+      </Button>
+      <Modal isOpen={isOpen} onOpenChange={setIsOpen}>
+        <Heading slot="title">Settings</Heading>
+        <CloseButton />
+        <Content>
+          <Button
+            onPress={function showToast() {
+              queue.add({ message: 'From the modal', timeout: null });
+            }}
+          >
+            Toast from modal
+          </Button>
+        </Content>
+      </Modal>
     </>
   );
 }

@@ -10,6 +10,7 @@ import { textTreatmentClassName } from '#components/_internal/typography';
 import { Button } from '#components/button';
 import { Icon } from '#components/icon';
 import { Text } from '#components/text';
+import { raiseToastHost } from './host.ts';
 import type { InternalToastQueue, ToastContent, ToastEmphasis } from './queue.ts';
 import styles from './index.module.css';
 
@@ -42,6 +43,10 @@ export function Toast({ toast, queue, closeLabel }: ToastProps) {
   const icon = emphasisIcons[emphasis];
   const ref = useRef<HTMLDivElement>(null);
 
+  useEffect(function raiseHost() {
+    raiseToastHost();
+  }, []);
+
   // Toasts never render on the server, so the server snapshot can be the same function.
   const getIsExiting = () => queue.isExiting(key);
   const isExiting = useSyncExternalStore(queue.subscribeExiting, getIsExiting, getIsExiting);
@@ -60,7 +65,7 @@ export function Toast({ toast, queue, closeLabel }: ToastProps) {
   );
 
   // `0` is a valid title, so only empty values count as "no title".
-  const hasTitle = title != null && title !== false && title !== '';
+  const hasTitle = title != null && typeof title !== 'boolean' && title !== '';
 
   // Without a title, the message labels the toast so it isn't announced twice.
   const messageSlot = hasTitle ? 'description' : 'title';

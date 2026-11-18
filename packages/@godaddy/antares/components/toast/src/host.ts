@@ -46,9 +46,8 @@ export function getToastHost(): HTMLElement {
 }
 
 /**
- * Moves the host to the end of `<body>`, so a new toast paints above overlays opened since the host
- * was created (Antares overlays use `z-index: auto` and stack in DOM order). Moving keeps the host's
- * children; it's skipped while focus is inside, because moving a focused element blurs it.
+ * Raises the host after a toast mounts. Antares overlays use `z-index: auto` and stack in DOM order.
+ * Moving a focused element blurs it, so keep the host in place while it contains focus.
  */
 export function raiseToastHost() {
   const host = getToastHost();

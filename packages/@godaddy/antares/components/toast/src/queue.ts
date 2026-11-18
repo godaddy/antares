@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
-import { UNSTABLE_ToastQueue as RACToastQueue } from 'react-aria-components';
-import { raiseToastHost } from './host.ts';
+import { UNSTABLE_ToastQueue as RACToastQueue, type ToastOptions as RACToastOptions } from 'react-aria-components';
 
 /**
  * Controls the status icon and its color.
@@ -75,6 +74,13 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
   private regionListeners = new Set<() => void>();
   private exiting = new Set<string>();
   private exitListeners = new Set<() => void>();
+  private closeCallbacks = new Map<string, () => void>();
+
+  add(content: ToastContent, { onClose, ...options }: RACToastOptions = {}): string {
+    const key = super.add(content, options);
+    if (onClose) this.closeCallbacks.set(key, onClose);
+    return key;
+  }
 
   /**
    * Registers a mounted region.
@@ -130,7 +136,7 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
 
     // Nothing on screen to animate: a queued toast, or no region mounted.
     if (!this.isAttached || !this.visibleToasts.some((queued) => queued.key === key)) {
-      super.close(key);
+      this.remove(key);
       return;
     }
 
@@ -141,8 +147,15 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
   finishClose(key: string): void {
     if (!this.exiting.delete(key)) return;
 
-    super.close(key);
+    this.remove(key);
     this.notify(this.exitListeners);
+  }
+
+  private remove(key: string): void {
+    const onClose = this.closeCallbacks.get(key);
+    this.closeCallbacks.delete(key);
+    super.close(key);
+    onClose?.();
   }
 
   private notify(listeners: Set<() => void>) {
@@ -184,9 +197,6 @@ export class ToastQueue {
     if (isDev && persistent && !dismissible) {
       console.warn('[Antares] Toast: a toast without a timeout must be dismissible, so the close button stays.');
     }
-
-    // Stay above any overlay opened since the host was created.
-    if (queue.isAttached) raiseToastHost();
 
     const key = queue.add(
       { title, message, emphasis, dismissible: dismissible || persistent },
