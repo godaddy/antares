@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";var t,n,r,i,a,o,s,c;function l(){return(l=e((()=>{t=`_field_fr963_1`,n=`_label_fr963_8`,r=`_input_fr963_40`,i=`_textarea_fr963_41`,a=`_control_fr963_58`,o=`_group_fr963_71`,s=`_trigger_fr963_72`,c={field:t,label:n,input:r,textarea:i,control:a,group:o,trigger:s}})))()}export{l as n,c as t};
