@@ -1,0 +1,132 @@
+/* One copy's lane inside the shared toast host. */
+.region {
+  --_toast-region-gap: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--_toast-region-gap);
+  inline-size: 20rem;
+  max-inline-size: 100%;
+  /* The host lets clicks through to the page; the region takes them back. */
+  pointer-events: auto;
+  outline: none;
+
+  &:where([data-focus-visible]) {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}
+
+.toast {
+  --_toast-bg: var(--ux-7wu8i7, black);
+  --_toast-fg: var(--ux-1o8cusa, white);
+  --_toast-border: var(--ux-17fhz5j, black);
+  --_toast-radius: var(--ux-1x8ztma, 4px);
+  --_toast-padding: var(--size-space-060, calc(var(--ux-1sbfig8, 0.25rem) * 3));
+  --_toast-gap: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  --_toast-icon-color: currentColor;
+  --_toast-icon-size: 1.5rem;
+  --_toast-title-font-size: calc(var(--ux-18ime9a, 1.375rem) / var(--ux-7s4p3v, 1.125) / var(--ux-7s4p3v, 1.125));
+  --_toast-title-font-weight: var(--ux-1a9e4a3, 700);
+  --_toast-message-font-size: var(--ux-1klxlj4, 1rem);
+
+  display: flex;
+  align-items: flex-start;
+  gap: var(--_toast-gap);
+  padding: var(--_toast-padding);
+  background: var(--_toast-bg);
+  color: var(--_toast-fg);
+  border: 1px solid var(--_toast-border);
+  border-radius: var(--_toast-radius);
+  outline: none;
+  animation: toast-enter 200ms cubic-bezier(0.23, 1, 0.32, 1);
+
+  &:where([data-focus-visible]) {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  &:where([data-emphasis="success"]) {
+    --_toast-icon-color: var(--ux-em0gr, palegreen);
+  }
+
+  &:where([data-emphasis="critical"]) {
+    --_toast-icon-color: var(--ux-1iiiqs3, mistyrose);
+  }
+
+  &:where([data-emphasis="warning"]) {
+    --_toast-icon-color: var(--ux-1tgn1ki, palegoldenrod);
+  }
+
+  /* Held at the end state until the queue removes the toast. */
+  &:where([data-exiting]) {
+    animation: toast-exit 150ms ease forwards;
+  }
+}
+
+.icon {
+  flex-shrink: 0;
+  inline-size: var(--_toast-icon-size);
+  block-size: var(--_toast-icon-size);
+  color: var(--_toast-icon-color);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.title {
+  font-size: var(--_toast-title-font-size);
+  font-weight: var(--_toast-title-font-weight);
+  line-height: 1.25;
+}
+
+.message {
+  font-size: var(--_toast-message-font-size);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* Keep the minimal button legible on the inverted surface. */
+.close {
+  --_button-text: currentColor;
+  --_button-text-hovered: currentColor;
+  --_button-text-pressed: currentColor;
+  --_button-bg: transparent;
+  --_button-bg-hovered: color-mix(in srgb, currentColor 15%, transparent);
+  --_button-bg-pressed: color-mix(in srgb, currentColor 25%, transparent);
+  --_button-border: transparent;
+  --_button-border-hovered: transparent;
+  --_button-border-pressed: transparent;
+
+  flex-shrink: 0;
+}
+
+@keyframes toast-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes toast-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes toast-exit {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Drop the slide, keep the fade. */
+  .toast:where(:not([data-exiting])) {
+    animation-name: toast-fade-in;
+  }
+}

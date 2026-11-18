@@ -116,6 +116,7 @@ const config: StorybookConfig = {
       plugins: [
         replace({
           preventAssignment: true,
+          __ANTARES_VERSION__: packageJson.version,
           __ICON_CDN_URL__: generateCdnUrl({
             cdn: CDN,
             packageName: ICON_PACKAGE,

@@ -1,0 +1,358 @@
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { render } from 'vitest-browser-react';
+import { page, userEvent } from 'vitest/browser';
+import assume from 'assume';
+import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
+import { DefaultExample } from '../examples/default.tsx';
+import { PlaygroundExample } from '../examples/toast-playground.tsx';
+import { EmphasesExample } from '../examples/emphases.tsx';
+import { PersistentExample } from '../examples/persistent.tsx';
+import { AriaLabelsExample } from '../examples/aria-labels.tsx';
+import { MultipleRegionsExample } from '../examples/multiple-regions.tsx';
+import { ToggleRegionExample } from '../examples/toggle-region.tsx';
+
+const HOST = '[data-antares-toast-host="1"]';
+
+function toasts() {
+  return Array.from(document.querySelectorAll(`${HOST} [role="alertdialog"]`));
+}
+
+async function showToast() {
+  await userEvent.click(page.getByRole('button', { name: 'Show toast' }));
+}
+
+describe('@godaddy/antares', function antares() {
+  describe('#Toast', function toastTests() {
+    beforeAll(preloadTestIcons);
+
+    // Wide enough that the top-right host doesn't cover the example's buttons.
+    beforeAll(async function viewport() {
+      await page.viewport(1024, 768);
+    });
+
+    afterEach(async function closeAll() {
+      // Toasts live in a page-wide host, outside the rendered container. Closing one can reveal a
+      // queued one, so keep closing until none are left.
+      await vi.waitFor(function empty() {
+        for (const close of document.querySelectorAll<HTMLButtonElement>(`${HOST} [slot="close"]`)) close.click();
+        assume(toasts().length).equals(0);
+      });
+    });
+
+    it('renders nothing until a toast is added', async function emptyRegion() {
+      await render(<DefaultExample />);
+
+      assume(page.getByRole('region').query()).equals(null);
+    });
+
+    it('shows a toast in the shared host', async function showsToast() {
+      await render(<DefaultExample />);
+      await showToast();
+
+      await expect.element(page.getByRole('alertdialog', { name: 'Domain connected' })).toBeVisible();
+      const region = document.querySelector(`${HOST} [role="region"]`) as HTMLElement;
+      assume(region).is.not.equal(null);
+      assume(region.getAttribute('data-antares-version')).matches(/^\d+\.\d+\.\d+$/);
+    });
+
+    it('renders the title, message and status icon', async function content() {
+      await render(<DefaultExample />);
+      await showToast();
+
+      const toast = page.getByRole('alertdialog', { name: 'Domain connected' });
+      await expect.element(toast).toHaveAccessibleDescription('Your site is now live.');
+      assume(document.querySelector(`${HOST} [data-emphasis="success"] [data-icon="checkmark"]`)).is.not.equal(null);
+    });
+
+    it('labels the toast with its message when there is no title', async function messageOnly() {
+      await render(<PlaygroundExample title="" message="Copied to clipboard" />);
+      await showToast();
+
+      await expect.element(page.getByRole('alertdialog', { name: 'Copied to clipboard' })).toBeVisible();
+    });
+
+    it('renders no icon for the none emphasis', async function noIcon() {
+      await render(<PlaygroundExample emphasis="none" />);
+      await showToast();
+
+      await expect.element(page.getByRole('alertdialog')).toBeVisible();
+      assume(document.querySelector(`${HOST} [data-emphasis="none"] [data-icon]:not([data-icon="x"])`)).equals(null);
+    });
+
+    it('maps each emphasis to its icon', async function emphasisIcons() {
+      const icons = [
+        ['success', 'checkmark'],
+        ['critical', 'alert'],
+        ['warning', 'alert']
+      ] as const;
+
+      for (const [emphasis, icon] of icons) {
+        const { unmount } = await render(<PlaygroundExample emphasis={emphasis} />);
+        await showToast();
+
+        await expect.element(page.getByRole('alertdialog')).toBeVisible();
+        assume(document.querySelector(`${HOST} [data-emphasis="${emphasis}"] [data-icon="${icon}"]`)).is.not.equal(
+          null
+        );
+        await userEvent.click(page.getByRole('button', { name: 'Close' }));
+        await vi.waitFor(function closed() {
+          assume(toasts().length).equals(0);
+        });
+        await unmount();
+      }
+    });
+
+    it('closes when the close button is pressed', async function closeButton() {
+      await render(<DefaultExample />);
+      await showToast();
+
+      await userEvent.click(page.getByRole('button', { name: 'Close' }));
+
+      await vi.waitFor(function closed() {
+        assume(toasts().length).equals(0);
+      });
+    });
+
+    it('closes on its own after the timeout', async function timeout() {
+      await render(<PlaygroundExample timeout={300} />);
+      await showToast();
+      await expect.element(page.getByRole('alertdialog')).toBeVisible();
+
+      // Move the pointer off the region, which pauses the timer while hovered.
+      await userEvent.hover(page.getByRole('button', { name: 'Show toast' }));
+
+      await vi.waitFor(
+        function closed() {
+          assume(toasts().length).equals(0);
+        },
+        { timeout: 3000 }
+      );
+    });
+
+    it('keeps a persistent toast open', async function persistent() {
+      await render(<PlaygroundExample timeout={0} />);
+      await showToast();
+
+      await new Promise((resolve) => setTimeout(resolve, 600));
+      assume(toasts().length).equals(1);
+    });
+
+    it('hides the close button only when the toast has a timeout', async function dismissible() {
+      await render(<PlaygroundExample dismissible={false} timeout={500} />);
+      await showToast();
+
+      await expect.element(page.getByRole('alertdialog')).toBeVisible();
+      assume(page.getByRole('button', { name: 'Close' }).query()).equals(null);
+
+      // It can't be closed by hand, so let the timeout clear it for the next test.
+      await userEvent.hover(page.getByRole('button', { name: 'Show toast' }));
+      await vi.waitFor(
+        function closed() {
+          assume(toasts().length).equals(0);
+        },
+        { timeout: 3000 }
+      );
+    });
+
+    it('forces the close button on a persistent toast', async function forcedClose() {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(function silence() {
+        // Asserted below.
+      });
+      await render(<PlaygroundExample dismissible={false} timeout={0} />);
+      await showToast();
+
+      await expect.element(page.getByRole('button', { name: 'Close' })).toBeVisible();
+      assume(warn.mock.calls.some(([message]) => String(message).includes('must be dismissible'))).equals(true);
+      warn.mockRestore();
+    });
+
+    it('stacks several toasts, newest first', async function stacks() {
+      await render(<PlaygroundExample timeout={0} />);
+      await showToast();
+      await showToast();
+      await showToast();
+
+      await vi.waitFor(function three() {
+        assume(toasts().length).equals(3);
+      });
+    });
+
+    it('caps visible toasts at 5 and shows the next one when a toast closes', async function cap() {
+      await render(<PlaygroundExample timeout={0} />);
+      for (let i = 0; i < 6; i++) await showToast();
+
+      await vi.waitFor(function five() {
+        assume(toasts().length).equals(5);
+      });
+
+      await userEvent.click(page.getByRole('button', { name: 'Close' }).first());
+      await vi.waitFor(function stillFive() {
+        assume(toasts().length).equals(5);
+      });
+    });
+
+    it('shows one button per emphasis', async function emphases() {
+      await render(<EmphasesExample />);
+
+      for (const emphasis of ['none', 'success', 'critical', 'warning']) {
+        await userEvent.click(page.getByRole('button', { name: `Show ${emphasis}` }));
+      }
+
+      await vi.waitFor(function four() {
+        assume(toasts().length).equals(4);
+      });
+    });
+
+    it('closes a persistent toast from code', async function closeFromCode() {
+      await render(<PersistentExample />);
+
+      await userEvent.click(page.getByRole('button', { name: 'Start upload' }));
+      await expect.element(page.getByRole('alertdialog', { name: 'Uploading 3 files…' })).toBeVisible();
+
+      await userEvent.click(page.getByRole('button', { name: 'Finish upload' }));
+      await vi.waitFor(function closed() {
+        assume(toasts().length).equals(0);
+      });
+
+      // onClose ran, so the example re-enabled its button.
+      await expect.element(page.getByRole('button', { name: 'Start upload' })).toBeEnabled();
+    });
+
+    it('uses translated labels', async function translated() {
+      await render(<AriaLabelsExample />);
+      await userEvent.click(page.getByRole('button', { name: 'Mostrar aviso' }));
+
+      await expect.element(page.getByRole('region', { name: 'Notificaciones' })).toBeVisible();
+      await userEvent.click(page.getByRole('button', { name: 'Cerrar' }));
+      await vi.waitFor(function closed() {
+        assume(toasts().length).equals(0);
+      });
+    });
+
+    it('renders several regions into one shared host', async function sharedHost() {
+      await render(<MultipleRegionsExample />);
+
+      await userEvent.click(page.getByRole('button', { name: 'Header toast' }));
+      await userEvent.click(page.getByRole('button', { name: 'App toast' }));
+
+      await expect.element(page.getByRole('region', { name: 'Header notifications' })).toBeVisible();
+      await expect.element(page.getByRole('region', { name: 'App notifications' })).toBeVisible();
+      assume(document.querySelectorAll(HOST).length).equals(1);
+      assume(document.querySelectorAll(`${HOST} > [role="region"]`).length).equals(2);
+    });
+
+    it('warns when two regions render the same queue', async function duplicateRegion() {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(function silence() {
+        // Asserted below.
+      });
+
+      const { unmount } = await render(
+        <>
+          <DefaultExample />
+          <DefaultExample />
+        </>
+      );
+
+      assume(warn.mock.calls.some(([message]) => String(message).includes('more than one <ToastRegion />'))).equals(
+        true
+      );
+      warn.mockRestore();
+      await unmount();
+    });
+
+    it('holds toasts until a region mounts, and warns', async function unmounted() {
+      vi.useFakeTimers({ toFake: ['setTimeout'] });
+      const warn = vi.spyOn(console, 'warn').mockImplementation(function silence() {
+        // Asserted below.
+      });
+
+      try {
+        await render(<ToggleRegionExample />);
+        await userEvent.click(page.getByRole('button', { name: 'Show toast' }));
+        vi.advanceTimersByTime(1000);
+        assume(warn.mock.calls.some(([message]) => String(message).includes('no <ToastRegion /> is mounted'))).equals(
+          true
+        );
+        assume(toasts().length).equals(0);
+      } finally {
+        vi.useRealTimers();
+        warn.mockRestore();
+      }
+
+      await userEvent.click(page.getByRole('button', { name: 'Mount region' }));
+      await vi.waitFor(function shown() {
+        assume(toasts().length).equals(1);
+      });
+    });
+
+    it('does not warn when a region mounts in time', async function mountedInTime() {
+      vi.useFakeTimers({ toFake: ['setTimeout'] });
+      const warn = vi.spyOn(console, 'warn').mockImplementation(function silence() {
+        // Asserted below.
+      });
+
+      try {
+        await render(<ToggleRegionExample />);
+        await userEvent.click(page.getByRole('button', { name: 'Show toast' }));
+        await userEvent.click(page.getByRole('button', { name: 'Mount region' }));
+        vi.advanceTimersByTime(1000);
+        assume(warn.mock.calls.some(([message]) => String(message).includes('no <ToastRegion /> is mounted'))).equals(
+          false
+        );
+      } finally {
+        vi.useRealTimers();
+        warn.mockRestore();
+      }
+    });
+
+    it('finishes closing toasts when the region unmounts mid-exit', async function unmountMidExit() {
+      await render(<ToggleRegionExample />);
+      await userEvent.click(page.getByRole('button', { name: 'Mount region' }));
+      await userEvent.click(page.getByRole('button', { name: 'Show toast' }));
+      await expect.element(page.getByRole('alertdialog')).toBeVisible();
+
+      // Close, then unmount before the exit animation ends.
+      const close = document.querySelector<HTMLButtonElement>(`${HOST} [slot="close"]`) as HTMLButtonElement;
+      close.click();
+      await userEvent.click(page.getByRole('button', { name: 'Unmount region' }));
+      await userEvent.click(page.getByRole('button', { name: 'Mount region' }));
+
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      assume(toasts().length).equals(0);
+    });
+
+    it('closes a toast that never showed', async function closeUnshown() {
+      vi.useFakeTimers({ toFake: ['setTimeout'] });
+      const warn = vi.spyOn(console, 'warn').mockImplementation(function silence() {
+        // Expected: no region is mounted.
+      });
+
+      try {
+        const { toast } = await import('@godaddy/antares');
+        toast.close(toast.add({ message: 'Never shown', timeout: null }));
+        vi.advanceTimersByTime(1000);
+      } finally {
+        vi.useRealTimers();
+        warn.mockRestore();
+      }
+
+      await render(<DefaultExample />);
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      assume(toasts().length).equals(0);
+    });
+
+    it('closes from the default toast API', async function defaultApi() {
+      const { toast } = await import('@godaddy/antares');
+      await render(<DefaultExample />);
+
+      const key = toast.add({ message: 'From code', timeout: null });
+      await expect.element(page.getByRole('alertdialog', { name: 'From code' })).toBeVisible();
+
+      toast.close(key);
+      toast.close(key);
+      await vi.waitFor(function closed() {
+        assume(toasts().length).equals(0);
+      });
+    });
+  });
+});
