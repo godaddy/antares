@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ToggleButtonGroup, ToggleButton, Icon, Menu, MenuItem, MenuTrigger } from '@godaddy/antares';
+import { Icon, Menu, MenuItem, MenuTrigger, Popover, Text, ToggleButton, ToggleButtonGroup } from '@godaddy/antares';
 
 type Alignment = 'left' | 'center' | 'right';
 
@@ -43,15 +43,25 @@ export function WithDropdownExample() {
           <Icon icon={ALIGNMENT_ICONS[alignment]} />
           <Icon icon="chevron-down" />
         </ToggleButton>
-        <Menu
-          selectionMode="single"
-          selectedKeys={[alignment]}
-          onSelectionChange={(keys) => setAlignment(new Set([...(keys as Set<Alignment>)]))}
-        >
-          <MenuItem id="left">{ALIGNMENT_LABELS.left}</MenuItem>
-          <MenuItem id="center">{ALIGNMENT_LABELS.center}</MenuItem>
-          <MenuItem id="right">{ALIGNMENT_LABELS.right}</MenuItem>
-        </Menu>
+        <Popover aria-label="Menu">
+          <Menu
+            aria-label="Alignment"
+            selectionMode="single"
+            selectedKeys={[alignment]}
+            onSelectionChange={(keys) => setAlignment(new Set([...(keys as Set<Alignment>)]))}
+          >
+            {(['left', 'center', 'right'] as const).map((id) => (
+              <MenuItem key={id} id={id} textValue={ALIGNMENT_LABELS[id]}>
+                {({ isSelected }) => (
+                  <>
+                    <Text slot="label">{ALIGNMENT_LABELS[id]}</Text>
+                    {isSelected ? <Icon icon="checkmark" /> : null}
+                  </>
+                )}
+              </MenuItem>
+            ))}
+          </Menu>
+        </Popover>
       </MenuTrigger>
     </ToggleButtonGroup>
   );

@@ -11,6 +11,7 @@ import * as Stories from './popover.stories.tsx';
 
 `PopoverTrigger` wraps a trigger button and a `<Popover>`, handling open state and positioning automatically.
 Based on RAC `DialogTrigger`. To anchor a popover to an element it doesn't wrap, pass `triggerRef` instead.
+A parent can set `hideArrow` and `containerProps` through `PopoverContext`. Props on `Popover` still win.
 
 ## Installation
 

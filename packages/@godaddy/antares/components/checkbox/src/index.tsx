@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { createContext, useContext, type ReactNode } from 'react';
 import {
   CheckboxButton as RACCheckboxButton,
   type CheckboxButtonProps as RACCheckboxButtonProps,
@@ -32,11 +32,16 @@ export interface CheckboxIndicatorProps {
   className?: string;
 }
 
+/** Internal presentation supplied by an owning component such as Menu. */
+export const CheckboxIndicatorContext = createContext<{ className?: string }>({});
+
 /**
  * Presentational checkbox indicator (box + check/minus glyph).
  * Decorative (`aria-hidden`); carries its own selected/indeterminate data attrs for use outside Checkbox.
  */
 export function CheckboxIndicator({ isSelected, isIndeterminate, className }: CheckboxIndicatorProps) {
+  const presentation = useContext(CheckboxIndicatorContext);
+
   return (
     <Flex
       aria-hidden="true"
@@ -44,7 +49,7 @@ export function CheckboxIndicator({ isSelected, isIndeterminate, className }: Ch
       justifyContent="center"
       data-selected={isSelected || undefined}
       data-indeterminate={isIndeterminate || undefined}
-      className={cx(styles.indicator, className)}
+      className={cx(styles.indicator, presentation.className, className)}
     >
       {isIndeterminate ? (
         <Icon icon="minus" className={styles.indeterminateIcon} aria-hidden="true" />

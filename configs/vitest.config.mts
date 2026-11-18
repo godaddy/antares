@@ -113,7 +113,8 @@ export const visual: TestProjectConfiguration = {
     include: ['./**/**/*.visual.test.{ts,tsx}'],
     browser: {
       ...browser.test?.browser,
-      provider: playwright({ contextOptions: { locale: 'en-US', timezoneId: 'UTC' } }),
+      // Apply the motion preference before overlays mount and measure their anchors.
+      provider: playwright({ contextOptions: { locale: 'en-US', timezoneId: 'UTC', reducedMotion: 'reduce' } }),
       instances: [{ browser: 'chromium', name: 'Visual (Chromium)' }]
     }
   }
