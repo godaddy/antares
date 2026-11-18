@@ -10,7 +10,7 @@ export function ScrollableExample() {
   return (
     <DrawerTrigger>
       <Button variant="primary">Open drawer</Button>
-      <Drawer placement="right" isDismissable aria-label="Terms">
+      <Drawer placement="right" aria-label="Terms">
         <Heading slot="title">Terms</Heading>
         <CloseButton />
         <Content>

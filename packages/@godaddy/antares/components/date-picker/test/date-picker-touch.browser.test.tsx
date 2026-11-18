@@ -23,14 +23,14 @@ describe('@godaddy/antares', function packageTests() {
           await trigger.click();
           const day = screen.getByRole('button', { name: /September 15, 2026/ });
           await expect.element(day).toHaveFocus();
-          const panel = day.element().closest('[data-placement="bottom"]')!;
+          const stage = day.element().closest('[data-position="bottom"]')!.parentElement!;
           // CDP input bypasses the actionability checks used by locator interactions.
           await expect
             .poll(function readyToTap() {
               const { x, y, width, height } = day.element().getBoundingClientRect();
               return (
-                document.elementFromPoint(x + width / 2, y + height / 2) === day.element() &&
-                panel.getAnimations().length === 0
+                Math.abs(stage.getBoundingClientRect().top) < 1 &&
+                document.elementFromPoint(x + width / 2, y + height / 2) === day.element()
               );
             })
             .toBe(true);

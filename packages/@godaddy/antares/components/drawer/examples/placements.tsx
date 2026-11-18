@@ -28,13 +28,7 @@ export function PlacementsExample() {
           </Button>
         );
       })}
-      <Drawer
-        placement={placement}
-        isOpen={open}
-        onOpenChange={setOpen}
-        isDismissable
-        aria-label={`${placement} drawer`}
-      >
+      <Drawer placement={placement} isOpen={open} onOpenChange={setOpen} aria-label={`${placement} drawer`}>
         <Content>Placement: {placement}</Content>
       </Drawer>
     </Flex>
