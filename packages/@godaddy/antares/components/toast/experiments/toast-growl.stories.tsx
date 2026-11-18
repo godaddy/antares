@@ -6,7 +6,8 @@ import {
   ForwardScenario,
   LeadScenario,
   MigrationShimScenario,
-  MultipleCopiesScenario
+  MultipleCopiesScenario,
+  SharedCopyScenario
 } from './scenarios.tsx';
 
 // Spike only, never merged: compares ways Antares Toast could live next to UXCore Growl.
@@ -23,3 +24,5 @@ export const A4Lead = getStory(LeadScenario);
 export const B1MultipleCopies = getStory(MultipleCopiesScenario);
 
 export const B2MigrationShim = getStory(MigrationShimScenario);
+
+export const B3SharedCopy = getStory(SharedCopyScenario);

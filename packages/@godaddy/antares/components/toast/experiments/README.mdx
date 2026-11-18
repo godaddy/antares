@@ -35,6 +35,7 @@ can fix it. A4 is the same bug with Antares as the leader.
 | --- | --- |
 | B1 Two Antares copies | Each copy renders its own toasts into one shared host. No leader, no version contract beyond the host. |
 | B2 Growl API shim | Teams keep `addGrowlMessage()` calls, backed by Antares, to migrate gradually. |
+| B3 Shared Antares copy | Two micro front-ends share one copy, so both regions render one queue. Each toast shows once; unmount the first region and the second takes over. Toasts get the active region's context, so use your own `ToastQueue` if you need yours. |
 
 **Questions for you:** Is A1/A2 (independent) enough, or do we need A3/A4? Is the B1 model right for
 mixing Antares versions?

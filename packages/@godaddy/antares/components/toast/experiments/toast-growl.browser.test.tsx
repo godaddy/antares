@@ -8,7 +8,8 @@ import {
   ForwardScenario,
   LeadScenario,
   MigrationShimScenario,
-  MultipleCopiesScenario
+  MultipleCopiesScenario,
+  SharedCopyScenario
 } from './scenarios.tsx';
 
 const HOST = '[data-antares-toast-host="1"]';
@@ -115,6 +116,28 @@ describe('@godaddy/antares', function antares() {
       });
       expect(document.querySelectorAll(HOST)).toHaveLength(1);
       expect(badges(antaresHost()).every((b) => b?.includes('✅'))).toBe(true);
+      await unmount();
+    });
+
+    it('B3 shared copy shows each toast once and hands over', async function sharedCopy() {
+      const { unmount } = await render(<SharedCopyScenario />);
+      await press('Header toast');
+      await press('App toast');
+
+      await vi.waitFor(function shown() {
+        expect(badges(antaresHost())).toHaveLength(2);
+      });
+      // The header's region is active, so the app's toast gets the header's context.
+      expect(badges(antaresHost())).toEqual([
+        'Your changes are live. ❌ expected es-MX, got en-US',
+        'Your changes are live. ✅ en-US'
+      ]);
+
+      await press('Unmount header region');
+      await vi.waitFor(function handedOver() {
+        expect(page.getByRole('region', { name: 'App notifications' }).query()).not.toBe(null);
+        expect(badges(antaresHost())).toHaveLength(2);
+      });
       await unmount();
     });
 

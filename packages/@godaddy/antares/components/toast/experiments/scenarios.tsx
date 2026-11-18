@@ -180,3 +180,26 @@ export function MigrationShimScenario() {
     </Scenario>
   );
 }
+
+/** 7. Two micro front-ends sharing one copy of Antares, so both regions render the default queue. */
+export function SharedCopyScenario() {
+  const [queue] = useState(() => new ToastQueue());
+  const [headerMounted, setHeaderMounted] = useState(true);
+
+  return (
+    <Scenario summary="Both micro front-ends share one copy of Antares, so both mount a region for the same queue. Only the first region shows toasts, so nothing appears twice; unmount it and the second takes over. Toasts render in the active region's app, so the app's toast gets the header's context: use your own ToastQueue if you need yours.">
+      <Team name="Header (shared Antares)" locale="en-US">
+        {headerMounted ? <ToastRegion queue={queue} ariaLabels={{ region: 'Header notifications' }} /> : null}
+        <Trigger label="Header toast" onPress={() => queue.add(sample('the header', 'en-US'))} />
+        <Trigger
+          label={headerMounted ? 'Unmount header region' : 'Mount header region'}
+          onPress={() => setHeaderMounted(!headerMounted)}
+        />
+      </Team>
+      <Team name="App (shared Antares)" locale="es-MX">
+        <ToastRegion queue={queue} ariaLabels={{ region: 'App notifications' }} />
+        <Trigger label="App toast" onPress={() => queue.add(sample('the app', 'es-MX'))} />
+      </Team>
+    </Scenario>
+  );
+}
