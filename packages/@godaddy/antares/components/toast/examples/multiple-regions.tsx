@@ -7,7 +7,7 @@ const app = new ToastQueue();
  * Each queue stands in for a separate copy of Antares, such as a shared header and the app it wraps.
  * Both regions render into one page-wide host, so their toasts stack instead of overlapping.
  * @title Multiple Regions
- * @order 5
+ * @order 6
  */
 export function MultipleRegionsExample() {
   return (

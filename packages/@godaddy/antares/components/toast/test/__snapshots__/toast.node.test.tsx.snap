@@ -10,4 +10,6 @@ exports[`@godaddy/antares > #Toast > renders the persistent example 1`] = `"<div
 
 exports[`@godaddy/antares > #Toast > renders the playground defaults 1`] = `"<button class="button secondary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_2_">Show toast</button>"`;
 
+exports[`@godaddy/antares > #Toast > renders the rich content example 1`] = `"<button class="button secondary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_2_">Show rich toast</button>"`;
+
 exports[`@godaddy/antares > #Toast > renders the translated labels example 1`] = `"<button class="button secondary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_2_">Mostrar aviso</button>"`;

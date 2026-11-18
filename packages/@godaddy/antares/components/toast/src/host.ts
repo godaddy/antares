@@ -19,8 +19,8 @@ const HOST_STYLE = [
   'display: flex',
   'flex-direction: column',
   'align-items: flex-end',
-  'gap: 0.5rem',
-  'padding: 1rem',
+  'gap: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2))',
+  'padding: var(--size-space-070, calc(var(--ux-1sbfig8, 0.25rem) * 4))',
   'max-block-size: 100dvh',
   'box-sizing: border-box',
   'pointer-events: none'

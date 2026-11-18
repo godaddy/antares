@@ -6,6 +6,7 @@ import { EmphasesExample } from '../examples/emphases.tsx';
 import { PersistentExample } from '../examples/persistent.tsx';
 import { AriaLabelsExample } from '../examples/aria-labels.tsx';
 import { MultipleRegionsExample } from '../examples/multiple-regions.tsx';
+import { RichContentExample } from '../examples/rich-content.tsx';
 
 // Regions render nothing on the server, so these snapshots lock in the triggers only.
 describe('@godaddy/antares', function antares() {
@@ -28,6 +29,10 @@ describe('@godaddy/antares', function antares() {
 
     it('renders the translated labels example', function ariaLabelsExample() {
       expect(renderToString(<AriaLabelsExample />)).toMatchSnapshot();
+    });
+
+    it('renders the rich content example', function richContentExample() {
+      expect(renderToString(<RichContentExample />)).toMatchSnapshot();
     });
 
     it('renders the multiple regions example', function multipleRegionsExample() {

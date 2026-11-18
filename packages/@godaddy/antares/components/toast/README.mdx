@@ -104,8 +104,8 @@ on adjustable timing; avoid shorter timeouts.
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `message` | `ReactNode` | | The notification text |
-| `title` | `ReactNode` | | Bold heading above the message |
+| `message` | `ReactNode` | | The notification text; any React node, such as `<FormattedMessage />` |
+| `title` | `ReactNode` | | Bold heading above the message; any React node |
 | `emphasis` | `'none' \| 'success' \| 'critical' \| 'warning'` | `'none'` | The status icon |
 | `timeout` | `number \| null` | `5000` | Milliseconds before it closes; `null` keeps it open |
 | `dismissible` | `boolean` | `true` | Shows the close button; ignored when there is no timeout |

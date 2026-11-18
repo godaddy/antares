@@ -11,6 +11,7 @@ import { AriaLabelsExample } from '../examples/aria-labels.tsx';
 import { MultipleRegionsExample } from '../examples/multiple-regions.tsx';
 import { ToggleRegionExample } from '../examples/toggle-region.tsx';
 import { SharedQueueExample } from '../examples/shared-queue.tsx';
+import { RichContentExample } from '../examples/rich-content.tsx';
 
 const HOST = '[data-antares-toast-host="1"]';
 
@@ -70,6 +71,17 @@ describe('@godaddy/antares', function antares() {
       await expect.element(page.getByRole('alertdialog', { name: 'Copied to clipboard' })).toBeVisible();
     });
 
+    it('renders React nodes in the title and message', async function richContent() {
+      await render(<RichContentExample />);
+      await userEvent.click(page.getByRole('button', { name: 'Show rich toast' }));
+
+      const toast = page.getByRole('alertdialog', { name: 'example.com' });
+      await expect.element(toast).toBeVisible();
+      assume(document.querySelector(`${HOST} [data-rich-title]`)).is.not.equal(null);
+      assume(document.querySelector(`${HOST} strong`)?.textContent).equals('1 year');
+      assume(document.querySelector(`${HOST} time`)?.getAttribute('datetime')).equals('2027-11-17');
+    });
+
     it('renders no icon for the none emphasis', async function noIcon() {
       await render(<PlaygroundExample emphasis="none" />);
       await showToast();
@@ -99,6 +111,19 @@ describe('@godaddy/antares', function antares() {
         });
         await unmount();
       }
+    });
+
+    it('dims the close button on hover instead of filling it', async function closeHover() {
+      await render(<DefaultExample />);
+      await showToast();
+
+      const close = page.getByRole('button', { name: 'Close' });
+      await userEvent.hover(close);
+      await vi.waitFor(function dimmed() {
+        const style = getComputedStyle(close.element());
+        assume(style.opacity).equals('0.8');
+        assume(style.backgroundColor).equals('rgba(0, 0, 0, 0)');
+      });
     });
 
     it('closes when the close button is pressed', async function closeButton() {
