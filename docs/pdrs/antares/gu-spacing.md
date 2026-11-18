@@ -46,10 +46,10 @@ t-shirt scale exists "to describe _regions_ of space, such as cards, sections, a
 wording is the basis for the split in [Proposal](#proposal).
 
 The `tokens.yml` shipped today does not encode that split. Its `$description`s put both scales on
-both sides of the line: `size-space-020` is "padding inside chips" and `040` "standard card padding",
+both sides of the line: `size-space-020` is "padding inside chips" and `050` "standard card padding",
 while `size-space-sm` is "padding and gaps inside dense components". The t-shirt tiers are also filed
 under a "t-shirt aliases" heading with values that coincide with numeric ones (`xs`=`010`,
-`sm`=`020`, `md`=`040`, `lg`=`060`, `xl`=`070`, `2xl`=`090`), reading as shorthands rather than a
+`sm`=`020`, `md`=`050`, `lg`=`070`, `xl`=`100`, `2xl`=`160`), reading as shorthands rather than a
 scale with a distinct purpose.
 
 So the split below is this document's proposal, taken from the PR wording - not a description of the
@@ -123,21 +123,25 @@ rather than against it.
 | `size-space-010` | 0.5       | `calc(var(--ux-1sbfig8) * 0.5)`   |
 | `size-space-020` | 1         | `calc(var(--ux-1sbfig8) * 1)`     |
 | `size-space-030` | 1.5       | `calc(var(--ux-1sbfig8) * 1.5)`   |
-| `size-space-040` | 2         | `calc(var(--ux-1sbfig8) * 2)`     |
-| `size-space-050` | 2.5       | `calc(var(--ux-1sbfig8) * 2.5)`   |
-| `size-space-060` | 3         | `calc(var(--ux-1sbfig8) * 3)`     |
-| `size-space-070` | 4         | `calc(var(--ux-1sbfig8) * 4)`     |
-| `size-space-080` | 5         | `calc(var(--ux-1sbfig8) * 5)`     |
-| `090` and above  | free-form | per design; no arithmetic implied |
+| `size-space-040` | 1.75      | `calc(var(--ux-1sbfig8) * 1.75)`  |
+| `size-space-050` | 2         | `calc(var(--ux-1sbfig8) * 2)`     |
+| `size-space-060` | 2.5       | `calc(var(--ux-1sbfig8) * 2.5)`   |
+| `size-space-070` | 3         | `calc(var(--ux-1sbfig8) * 3)`     |
+| `size-space-080` | 3.5       | `calc(var(--ux-1sbfig8) * 3.5)`   |
+| `size-space-090` | 4         | `calc(var(--ux-1sbfig8) * 4)`     |
+| `size-space-100` | 5         | `calc(var(--ux-1sbfig8) * 5)`     |
+| `120` and above  | free-form | per design; no arithmetic implied |
 
-**Regular through `080`, free-form above.** Components need regularity; page-level structure needs
-freedom, which is the useful half of the spec's "bucket of values" position. Nothing above `080` is
+**Regular through `100`, free-form above.** Components need regularity; page-level structure needs
+freedom, which is the useful half of the spec's "bucket of values" position. Nothing above `100` is
 claimed to be a GU multiple, and components have no use for those tiers anyway.
 
 The regular range is not an arithmetic imposed on the package: at 1 GU = 8px it reproduces the
-`tokens.yml` development defaults exactly, `005` through `080` (2, 4, 8, 12, 16, 20, 24, 32, 40px). So
-adopting it requires no tier to change value. Note the range is not a uniform half-GU walk - it steps
-0.5 at a time to `060`, then whole GU at `070` and `080`, which is what the package's own values do.
+`tokens.yml` development defaults exactly, `005` through `100` (2, 4, 8, 12, 14, 16, 20, 24, 28, 32,
+40px). So adopting it requires no tier to change value. The range is not a uniform walk - it steps a
+quarter GU to `030`, then a quarter or half at a time to `090`, then a whole GU to `100` - which is
+what the package's own values do. The common component values sit at whole GU: 2 GU is `050`, 3 GU is
+`070`, 5 GU is `100`.
 
 Placing 1 GU at `020` rather than at the bottom of the scale leaves two sub-GU steps beneath it -
 `010` at a half and `005` at a quarter - which covers small optical values without an exception.
@@ -205,7 +209,7 @@ component-local names in the component's own namespace, and neither is constrain
 vocabulary.
 
 So a t-shirt-named local variable holding a numeric-tier value is correct, not a mismatch:
-`--_button-space-md` denotes a button size and resolves to `size-space-040`. The two `md`s are unrelated
+`--_button-space-md` denotes a button size and resolves to `size-space-050`. The two `md`s are unrelated
 by design, which is what [§4](#4-components-with-sized-controls) already says.
 
 **5. Prefix the variable with `--_`, and keep the component name inside the prefix.** Spacing variables
@@ -240,8 +244,8 @@ Worked example, `button` today against the same four declarations under this pro
 /* proposed: numeric token scale, GU-correct literal, private prefix */
 --_button-space-xs: var(--size-space-010, calc(var(--ux-1sbfig8, 0.5rem) * 0.5));
 --_button-space-sm: var(--size-space-020, calc(var(--ux-1sbfig8, 0.5rem) * 1));
---_button-space-md: var(--size-space-040, calc(var(--ux-1sbfig8, 0.5rem) * 2));
---_button-space-lg: var(--size-space-060, calc(var(--ux-1sbfig8, 0.5rem) * 3));
+--_button-space-md: var(--size-space-050, calc(var(--ux-1sbfig8, 0.5rem) * 2));
+--_button-space-lg: var(--size-space-070, calc(var(--ux-1sbfig8, 0.5rem) * 3));
 ```
 
 The `xs`/`sm`/`md`/`lg` part of each name stays - those are `Button`'s size steps and remain accurate.
@@ -256,7 +260,7 @@ occurrences. A component appears in more than one row where it mixes approaches.
 
 | Group                       | Components                                                                                                                                                                                                                                                 | Issue                                                                                                                                                                                                    |
 | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Wrong scale                 | `button` (5 refs)                                                                                                                                                                                                                                          | Uses the t-shirt (region) scale for control internals. Its multipliers are correct against `godaddy-antares`, so there is no value change - only a move to the numeric tiers: `010`, `020`, `040`, `060` |
+| Wrong scale                 | `button` (5 refs)                                                                                                                                                                                                                                          | Uses the t-shirt (region) scale for control internals. Its multipliers are correct against `godaddy-antares`, so there is no value change - only a move to the numeric tiers: `010`, `020`, `050`, `070` |
 | Wrong prefix, wrong tiers   | `segmented-controller` (20 refs)                                                                                                                                                                                                                           | References `--space-005`; tokens emit `--size-space-005`, so it never resolves. Its multipliers assume 1 GU at `010`, so every reference doubles under this proposal - see [Tasks](#tasks)               |
 | Already derives from the GU | `toggle-button` (`--button-group-density`, padding and gap), `alert` (padding, gap), `tag` (4), `gauge-chart` (2 of 3), `calendar` (cell sizing), `switch` (thumb inset), `pagination` (dot size), `progress-bar` (content gap)                            | Spacing is `N x ux.box.density` already, so the multiplier is reviewable against Figma directly. These need the tier _naming_ from this proposal, not a value rethink                                    |
 | Inconsistent GU literal     | `0.25rem`: `button`, `segmented-controller`, `layout/box`, `pagination`, `switch`, `tag`. `0.5rem`: `alert`, `calendar`, `gauge-chart`, `toggle-button`. `8px`: `progress-bar`                                                                             | The same intent is written with three different literals. The `0.25rem` group is half a GU, so anything rendered with no theme at all comes out at half size                                             |

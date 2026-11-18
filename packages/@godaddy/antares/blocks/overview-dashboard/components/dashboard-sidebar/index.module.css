@@ -13,7 +13,7 @@
   inline-size: 100%;
   min-inline-size: 0;
   overflow: hidden;
-  padding-block-start: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  padding-block-start: var(--size-space-050, calc(var(--ux-1sbfig8, 0.25rem) * 2));
   transition: inline-size 300ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 

@@ -40,7 +40,7 @@ Edit `recipes.ts`:
 export const RECIPES = {
   Legacy: [legacy],
   None: [],
-  LegacyDense: [legacy, dense] // dense wins collisions
+  LegacyDense: [legacy, dense] // hypothetical `dense` sheet; later sheets win collisions
 } as const satisfies Record<string, readonly CSSStyleSheet[]>;
 ```
 

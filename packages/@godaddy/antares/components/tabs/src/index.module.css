@@ -1,9 +1,9 @@
 .tabs {
   /* 1.375 GU has no numeric tier, so it reads the density intent directly. */
   --_tabs-item-block-space: calc(var(--ux-1sbfig8, 0.25rem) * 1.375);
-  --_tabs-item-inline-space: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
-  --_tabs-list-gap: var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5));
-  --_tabs-manilla-space: var(--size-space-060, calc(var(--ux-1sbfig8, 0.25rem) * 3));
+  --_tabs-item-inline-space: var(--size-space-050, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  --_tabs-list-gap: var(--size-space-100, calc(var(--ux-1sbfig8, 0.25rem) * 5));
+  --_tabs-manilla-space: var(--size-space-070, calc(var(--ux-1sbfig8, 0.25rem) * 3));
   --_tabs-control-inline-space: var(--size-space-010, calc(var(--ux-1sbfig8, 0.25rem) * 0.5));
   --_tabs-border-width: 1px;
   --_tabs-underline-width: 4px;

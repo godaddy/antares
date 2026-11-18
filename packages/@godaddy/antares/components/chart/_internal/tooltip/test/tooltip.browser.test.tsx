@@ -121,6 +121,20 @@ describe('@godaddy/antares', function antares() {
       assume(getComputedStyle(panel).color).equals('rgb(240, 241, 242)');
     });
 
+    it('matches the arrow to the panel without surface tokens', async function legacyArrow() {
+      const { container } = await render(
+        <div style={{ '--ux-cao06b': 'rgb(50, 60, 70)', '--ux-1mh0ktr': 'rgb(1, 2, 3)' } as CSSProperties}>
+          <ArrowExample />
+        </div>
+      );
+      const arrow = Array.from(container.querySelectorAll('[class]')).find(
+        (el) => el.className && el.className.toString().includes('tooltipArrow')
+      ) as HTMLElement;
+      const panel = arrow.parentElement as HTMLElement;
+
+      assume(getComputedStyle(arrow).borderTopColor).equals(getComputedStyle(panel).backgroundColor);
+    });
+
     it('does not render arrow when showArrow is false', async function noArrow() {
       const { container } = await render(<SingleSeriesExample showArrow={false} />);
       const arrow = Array.from(container.querySelectorAll('[class]')).find(

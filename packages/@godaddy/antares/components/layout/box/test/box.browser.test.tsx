@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
@@ -8,6 +9,7 @@ import { HostCompositionExample } from '../examples/host-composition.tsx';
 import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
 import { StyleRenderPropExample } from '../examples/style-render-prop.tsx';
 import { ContextExample } from '../examples/context.tsx';
+import { Box } from '@godaddy/antares';
 
 describe('@godaddy/antares', function antares() {
   describe('#Box', function boxTests() {
@@ -52,6 +54,35 @@ describe('@godaddy/antares', function antares() {
       expect(getByText('Padding: md')).toBeInTheDocument();
       expect(getByText('Block Padding: lg')).toBeInTheDocument();
       expect(getByText('Inline Padding: xl')).toBeInTheDocument();
+    });
+
+    it('reads spacing, rounding, and surfaces from the design tokens first', async function readsTokens() {
+      const { getByText } = await render(
+        <div
+          style={
+            {
+              '--ux-1sbfig8': '100px',
+              '--size-space-md': '7px',
+              '--size-radius-lg': '9px',
+              '--color-surface-background-card': 'rgb(10, 20, 30)',
+              '--color-surface-text-card': 'rgb(240, 241, 242)',
+              '--color-surface-border-card': 'rgb(1, 2, 3)'
+            } as CSSProperties
+          }
+        >
+          <Box padding="md" rounding="lg" elevation="card">
+            Tokens
+          </Box>
+        </div>
+      );
+
+      expect(getByText('Tokens')).toHaveStyle({
+        padding: '7px',
+        borderRadius: '9px',
+        backgroundColor: 'rgb(10, 20, 30)',
+        color: 'rgb(240, 241, 242)',
+        borderColor: 'rgb(1, 2, 3)'
+      });
     });
 
     it('renders boxes with alignment in the browser', async function rendersAlignment() {

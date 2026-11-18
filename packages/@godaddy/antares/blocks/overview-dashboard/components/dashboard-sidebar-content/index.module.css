@@ -21,7 +21,7 @@
 .sideNavItem {
   justify-content: flex-start;
   inline-size: 100%;
-  padding-inline-end: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  padding-inline-end: var(--size-space-050, calc(var(--ux-1sbfig8, 0.25rem) * 2));
   padding-inline-start: calc((var(--navigation-rail-size) - 1lh) / 2 - 1px);
   position: relative;
   text-align: start;

@@ -1,6 +1,6 @@
 .container {
   --_carousel-space-sm: var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 1));
-  --_carousel-space-lg: var(--size-space-060, calc(var(--ux-1sbfig8, 0.25rem) * 3));
+  --_carousel-space-lg: var(--size-space-070, calc(var(--ux-1sbfig8, 0.25rem) * 3));
   --_carousel-edge-fade-width: var(--_carousel-space-lg);
   --_carousel-edge-clear-width: calc(var(--_carousel-space-lg) + var(--_carousel-space-sm));
   --_carousel-edge-bg: var(--color-surface-background-base, var(--ux-cao06b, Canvas));
