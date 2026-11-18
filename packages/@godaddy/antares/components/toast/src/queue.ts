@@ -60,26 +60,35 @@ const UNMOUNTED_WARNING_DELAY = 1000;
 const isDev = process.env.NODE_ENV !== 'production';
 
 /**
- * RAC's queue, plus an exit phase: `close()` marks a toast as exiting so it can animate out, and
- * the rendered toast calls `finishClose()` once its exit animation ends. RAC's own timers and close
- * button call `close()` too, so every path animates.
+ * RAC's queue, plus two things:
+ *
+ * - Only one region renders it. Micro front-ends sharing one copy of Antares each mount a
+ *   `ToastRegion` for the same default queue; the first one mounted renders the toasts, the others
+ *   render nothing, and the next one takes over if it unmounts. So no toast shows twice.
+ * - An exit phase: `close()` marks a toast as exiting so it can animate out, and the rendered toast
+ *   calls `finishClose()` once its exit animation ends. RAC's own timers and close button call
+ *   `close()` too, so every path animates.
  */
 export class InternalToastQueue extends RACToastQueue<ToastContent> {
-  private regions = 0;
+  private regions: symbol[] = [];
+  private regionListeners = new Set<() => void>();
   private exiting = new Set<string>();
   private exitListeners = new Set<() => void>();
 
-  /** Registers a mounted region and returns its cleanup. */
-  attach(): () => void {
-    this.regions++;
-
-    if (isDev && this.regions > 1) {
-      console.warn('[Antares] Toast: more than one <ToastRegion /> renders this queue, so its toasts show twice.');
-    }
+  /**
+   * Registers a mounted region.
+   *
+   * @param region - A token unique to the region.
+   * @returns Its cleanup.
+   */
+  attach(region: symbol): () => void {
+    this.regions.push(region);
+    this.notify(this.regionListeners);
 
     return () => {
-      this.regions--;
-      if (this.regions > 0) return;
+      this.regions = this.regions.filter((other) => other !== region);
+      this.notify(this.regionListeners);
+      if (this.isAttached) return;
       // No region is left to play the exit animations, so finish them now.
       for (const key of [...this.exiting]) this.finishClose(key);
     };
@@ -87,7 +96,20 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
 
   /** Whether any `ToastRegion` currently renders this queue. */
   get isAttached(): boolean {
-    return this.regions > 0;
+    return this.regions.length > 0;
+  }
+
+  subscribeRegions = (listener: () => void): (() => void) => {
+    this.regionListeners.add(listener);
+
+    return () => {
+      this.regionListeners.delete(listener);
+    };
+  };
+
+  /** Whether this region is the one that renders the queue. */
+  isActiveRegion(region: symbol): boolean {
+    return this.regions[0] === region;
   }
 
   subscribeExiting = (listener: () => void): (() => void) => {
@@ -112,18 +134,18 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
     }
 
     this.exiting.add(key);
-    this.notifyExit();
+    this.notify(this.exitListeners);
   }
 
   finishClose(key: string): void {
     if (!this.exiting.delete(key)) return;
 
     super.close(key);
-    this.notifyExit();
+    this.notify(this.exitListeners);
   }
 
-  private notifyExit() {
-    for (const listener of this.exitListeners) listener();
+  private notify(listeners: Set<() => void>) {
+    for (const listener of listeners) listener();
   }
 }
 

@@ -42,9 +42,6 @@ const mergedConfig = mergeConfig(config, {
       minor: versionParts[1],
       patch: versionParts[2],
 
-      // The package version, so each copy on a page can tell the others which version it is.
-      __ANTARES_VERSION__: packageJson.version,
-
       // The CDN URL our icons are deployed to, introduced as a build-time constant.
       __ICON_CDN_URL__: generateCdnUrl({
         cdn: CDN,

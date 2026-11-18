@@ -10,6 +10,7 @@ import { PersistentExample } from '../examples/persistent.tsx';
 import { AriaLabelsExample } from '../examples/aria-labels.tsx';
 import { MultipleRegionsExample } from '../examples/multiple-regions.tsx';
 import { ToggleRegionExample } from '../examples/toggle-region.tsx';
+import { SharedQueueExample } from '../examples/shared-queue.tsx';
 
 const HOST = '[data-antares-toast-host="1"]';
 
@@ -50,9 +51,7 @@ describe('@godaddy/antares', function antares() {
       await showToast();
 
       await expect.element(page.getByRole('alertdialog', { name: 'Domain connected' })).toBeVisible();
-      const region = document.querySelector(`${HOST} [role="region"]`) as HTMLElement;
-      assume(region).is.not.equal(null);
-      assume(region.getAttribute('data-antares-version')).matches(/^\d+\.\d+\.\d+$/);
+      assume(document.querySelector(`${HOST} [role="region"]`)).is.not.equal(null);
     });
 
     it('renders the title, message and status icon', async function content() {
@@ -241,23 +240,24 @@ describe('@godaddy/antares', function antares() {
       assume(document.querySelectorAll(`${HOST} > [role="region"]`).length).equals(2);
     });
 
-    it('warns when two regions render the same queue', async function duplicateRegion() {
-      const warn = vi.spyOn(console, 'warn').mockImplementation(function silence() {
-        // Asserted below.
-      });
+    it('shows each toast once when two regions render the same queue', async function sharedQueue() {
+      await render(<SharedQueueExample />);
+      await showToast();
 
-      const { unmount } = await render(
-        <>
-          <DefaultExample />
-          <DefaultExample />
-        </>
-      );
+      await expect.element(page.getByRole('region', { name: 'First notifications' })).toBeVisible();
+      assume(page.getByRole('region', { name: 'Second notifications' }).query()).equals(null);
+      assume(toasts().length).equals(1);
+    });
 
-      assume(warn.mock.calls.some(([message]) => String(message).includes('more than one <ToastRegion />'))).equals(
-        true
-      );
-      warn.mockRestore();
-      await unmount();
+    it('hands the queue to the next region when the first unmounts', async function handOver() {
+      await render(<SharedQueueExample />);
+      await showToast();
+      await expect.element(page.getByRole('region', { name: 'First notifications' })).toBeVisible();
+
+      await userEvent.click(page.getByRole('button', { name: 'Unmount first region' }));
+
+      await expect.element(page.getByRole('region', { name: 'Second notifications' })).toBeVisible();
+      assume(toasts().length).equals(1);
     });
 
     it('holds toasts until a region mounts, and warns', async function unmounted() {

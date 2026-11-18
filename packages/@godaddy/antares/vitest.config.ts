@@ -3,7 +3,6 @@ import { defineConfig, mergeConfig } from 'vitest/config';
 import replace from '@rollup/plugin-replace';
 import { generateCdnUrl } from '../generate-cdn-url/src/index.ts';
 import { CDN, ICON_PACKAGE, DESIGN_ASSETS_VERSION } from './utils/icon-cdn.ts';
-import packageJson from './package.json' with { type: 'json' };
 
 export default mergeConfig(
   sharedConfig,
@@ -11,7 +10,6 @@ export default mergeConfig(
     plugins: [
       replace({
         preventAssignment: true,
-        __ANTARES_VERSION__: packageJson.version,
         __ICON_CDN_URL__: generateCdnUrl({
           cdn: CDN,
           packageName: ICON_PACKAGE,
