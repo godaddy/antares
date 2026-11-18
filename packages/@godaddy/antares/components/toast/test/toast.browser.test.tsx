@@ -1,6 +1,8 @@
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { flushSync } from 'react-dom';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
+import { toast, ToastQueue } from '@godaddy/antares';
 import assume from 'assume';
 import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
@@ -9,14 +11,9 @@ import { EmphasesExample } from '../examples/emphases.tsx';
 import { PersistentExample } from '../examples/persistent.tsx';
 import { AriaLabelsExample } from '../examples/aria-labels.tsx';
 import { MultipleRegionsExample } from '../examples/multiple-regions.tsx';
-import { ToggleRegionExample } from '../examples/toggle-region.tsx';
 import { SharedQueueExample } from '../examples/shared-queue.tsx';
 import { RichContentExample } from '../examples/rich-content.tsx';
 import { FromModalExample } from '../examples/from-modal.tsx';
-import { ZeroTitleExample } from '../examples/zero-title.tsx';
-import { BooleanTitleExample } from '../examples/boolean-title.tsx';
-import { CloseCallbackExample } from '../examples/close-callback.tsx';
-import { IndependentContextsExample } from '../examples/independent-contexts.tsx';
 
 const HOST = '[data-antares-toast-host="1"]';
 
@@ -88,14 +85,14 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('renders a title of 0', async function zeroTitle() {
-      await render(<ZeroTitleExample />);
+      await render(<PlaygroundExample title={0} message="Items left" timeout={0} />);
       await showToast();
 
       await expect.element(page.getByRole('alertdialog', { name: '0' })).toHaveAccessibleDescription('Items left');
     });
 
     it('uses the message as the accessible name for a true title', async function trueTitle() {
-      await render(<BooleanTitleExample />);
+      await render(<PlaygroundExample title={true} message="Saved" timeout={0} />);
       await showToast();
 
       await expect.element(page.getByRole('alertdialog', { name: 'Saved' })).toBeVisible();
@@ -103,7 +100,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('uses the message as the accessible name for a false title', async function falseTitle() {
-      await render(<BooleanTitleExample title={false} />);
+      await render(<PlaygroundExample title={false} message="Saved" timeout={0} />);
       await showToast();
 
       await expect.element(page.getByRole('alertdialog', { name: 'Saved' })).toBeVisible();
@@ -192,7 +189,6 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('keeps focus on a toast when another is added', async function keepsFocus() {
-      const { toast } = await import('@godaddy/antares');
       await render(<DefaultExample />);
       toast.add({ message: 'First', timeout: null });
 
@@ -323,7 +319,6 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('caps visible toasts at 5 and shows the next one when a toast closes', async function cap() {
-      const { toast } = await import('@godaddy/antares');
       await render(<DefaultExample />);
       for (let i = 0; i < 6; i++) toast.add({ message: `Toast ${i}`, timeout: null });
 
@@ -341,31 +336,97 @@ describe('@godaddy/antares', function antares() {
       await expect.element(page.getByRole('alertdialog', { name: 'Toast 0' })).toBeVisible();
     });
 
+    it('finishes a closing toast replaced at capacity before its exit effect', async function closeThenReplace() {
+      const queue = new ToastQueue({ maxVisibleToasts: 1 });
+      const onClose = vi.fn();
+      await render(<PlaygroundExample queue={queue} />);
+      const key = queue.add({ message: 'Original toast', timeout: null, onClose });
+      await expect.element(page.getByRole('alertdialog', { name: 'Original toast' })).toBeVisible();
+      flushSync(function replace() {
+        queue.close(key);
+        queue.add({ message: 'Replacement toast', timeout: null });
+      });
+
+      await expect.element(page.getByRole('alertdialog', { name: 'Replacement toast' })).toBeVisible();
+      expect(onClose).toHaveBeenCalledTimes(1);
+      assume(page.getByRole('alertdialog', { name: 'Original toast' }).query()).equals(null);
+      queue.close(key);
+      expect(onClose).toHaveBeenCalledTimes(1);
+
+      await userEvent.click(page.getByRole('alertdialog').getByRole('button', { name: 'Close' }));
+      await vi.waitFor(function empty() {
+        assume(toasts().length).equals(0);
+      });
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+
+    it('keeps a visible toast in its exit phase when there is spare capacity', async function visibleExit() {
+      const queue = new ToastQueue({ maxVisibleToasts: 2 });
+      const onClose = vi.fn();
+      await render(<PlaygroundExample queue={queue} />);
+      const key = queue.add({ message: 'Original toast', timeout: null, onClose });
+      const original = page.getByRole('alertdialog', { name: 'Original toast' });
+      await expect.element(original).toBeVisible();
+      const element = original.element();
+      const exitBlocker = element.animate([{}, {}], { duration: 1000 });
+      exitBlocker.pause();
+
+      try {
+        flushSync(function replace() {
+          queue.close(key);
+          queue.add({ message: 'Replacement toast', timeout: null });
+        });
+        await expect.element(page.getByRole('alertdialog', { name: 'Replacement toast' })).toBeVisible();
+        expect(onClose).not.toHaveBeenCalled();
+        assume(element.isConnected).equals(true);
+
+        exitBlocker.cancel();
+        await vi.waitFor(function removed() {
+          assume(element.isConnected).equals(false);
+        });
+        expect(onClose).toHaveBeenCalledTimes(1);
+      } finally {
+        exitBlocker.cancel();
+      }
+    });
+
     it('can add a replacement from onClose after the exit animation', async function replacementAfterExit() {
-      await render(<CloseCallbackExample />);
-      await userEvent.click(page.getByRole('button', { name: 'Start upload' }));
+      await render(<DefaultExample />);
+      const onClose = vi.fn(function complete() {
+        toast.add({ message: 'Upload finished', timeout: null });
+      });
+      const key = toast.add({ message: 'Uploading', timeout: null, onClose });
       await expect.element(page.getByRole('alertdialog', { name: 'Uploading' })).toBeVisible();
       await userEvent.click(page.getByRole('alertdialog').getByRole('button', { name: 'Close' }));
 
       await expect.element(page.getByRole('alertdialog', { name: 'Upload finished' })).toBeVisible();
       assume(page.getByRole('alertdialog', { name: 'Uploading' }).query()).equals(null);
-      await expect.element(page.getByRole('status', { name: 'Close count' })).toHaveTextContent('1');
-      await userEvent.click(page.getByRole('button', { name: 'Finish upload' }));
-      await expect.element(page.getByRole('status', { name: 'Close count' })).toHaveTextContent('1');
+      expect(onClose).toHaveBeenCalledTimes(1);
+      toast.close(key);
+      expect(onClose).toHaveBeenCalledTimes(1);
       assume(toasts().length).equals(1);
     });
 
     it('can add a replacement from onClose before a region mounts', async function replacementWithoutRegion() {
-      await render(<CloseCallbackExample mounted={false} />);
-      await userEvent.click(page.getByRole('button', { name: 'Start upload' }));
-      await userEvent.click(page.getByRole('button', { name: 'Finish upload' }));
-      await expect.element(page.getByRole('status', { name: 'Close count' })).toHaveTextContent('1');
-      await userEvent.click(page.getByRole('button', { name: 'Mount region' }));
+      vi.useFakeTimers({ toFake: ['setTimeout'] });
+      const onClose = vi.fn(function complete() {
+        toast.add({ message: 'Upload finished', timeout: null });
+      });
 
-      await expect.element(page.getByRole('alertdialog', { name: 'Upload finished' })).toBeVisible();
-      assume(page.getByRole('alertdialog', { name: 'Uploading' }).query()).equals(null);
-      await userEvent.click(page.getByRole('button', { name: 'Finish upload' }));
-      await expect.element(page.getByRole('status', { name: 'Close count' })).toHaveTextContent('1');
+      try {
+        const key = toast.add({ message: 'Uploading', timeout: null, onClose });
+        toast.close(key);
+        expect(onClose).toHaveBeenCalledTimes(1);
+        await render(<DefaultExample />);
+        vi.advanceTimersByTime(1000);
+
+        await expect.element(page.getByRole('alertdialog', { name: 'Upload finished' })).toBeVisible();
+        assume(page.getByRole('alertdialog', { name: 'Uploading' }).query()).equals(null);
+        toast.close(key);
+        expect(onClose).toHaveBeenCalledTimes(1);
+      } finally {
+        vi.useRealTimers();
+      }
     });
 
     it('shows one button per emphasis', async function emphases() {
@@ -419,18 +480,18 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('preserves independent region contexts for title and message content', async function independentContexts() {
-      await render(<IndependentContextsExample />);
+      await render(<MultipleRegionsExample />);
       await userEvent.click(page.getByRole('button', { name: 'Header toast' }));
       await userEvent.click(page.getByRole('button', { name: 'App toast' }));
 
       const header = page.getByRole('region', { name: 'Header notifications' });
       const app = page.getByRole('region', { name: 'App notifications' });
       await expect
-        .element(header.getByRole('alertdialog', { name: 'Header title' }))
-        .toHaveAccessibleDescription('Header message');
+        .element(header.getByRole('alertdialog', { name: 'Header' }))
+        .toHaveAccessibleDescription('Header: You have 2 new messages.');
       await expect
-        .element(app.getByRole('alertdialog', { name: 'App title' }))
-        .toHaveAccessibleDescription('App message');
+        .element(app.getByRole('alertdialog', { name: 'App' }))
+        .toHaveAccessibleDescription('App: Settings saved.');
       assume(document.querySelectorAll(HOST).length).equals(1);
       assume(document.querySelectorAll(`${HOST} > [role="region"]`).length).equals(2);
     });
@@ -462,8 +523,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       try {
-        await render(<ToggleRegionExample />);
-        await userEvent.click(page.getByRole('button', { name: 'Show toast' }));
+        toast.add({ message: 'Queued toast', timeout: null });
         vi.advanceTimersByTime(1000);
         assume(warn.mock.calls.some(([message]) => String(message).includes('no <ToastRegion /> is mounted'))).equals(
           true
@@ -474,7 +534,7 @@ describe('@godaddy/antares', function antares() {
         warn.mockRestore();
       }
 
-      await userEvent.click(page.getByRole('button', { name: 'Mount region' }));
+      await render(<DefaultExample />);
       await vi.waitFor(function shown() {
         assume(toasts().length).equals(1);
       });
@@ -487,9 +547,8 @@ describe('@godaddy/antares', function antares() {
       });
 
       try {
-        await render(<ToggleRegionExample />);
-        await userEvent.click(page.getByRole('button', { name: 'Show toast' }));
-        await userEvent.click(page.getByRole('button', { name: 'Mount region' }));
+        toast.add({ message: 'Queued toast', timeout: null });
+        await render(<DefaultExample />);
         vi.advanceTimersByTime(1000);
         assume(warn.mock.calls.some(([message]) => String(message).includes('no <ToastRegion /> is mounted'))).equals(
           false
@@ -501,19 +560,20 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('finishes closing toasts when the region unmounts mid-exit', async function unmountMidExit() {
-      await render(<ToggleRegionExample />);
-      await userEvent.click(page.getByRole('button', { name: 'Mount region' }));
-      await userEvent.click(page.getByRole('button', { name: 'Show toast' }));
+      const { unmount } = await render(<DefaultExample />);
+      const onClose = vi.fn();
+      const key = toast.add({ message: 'Queued toast', timeout: null, onClose });
       await expect.element(page.getByRole('alertdialog')).toBeVisible();
 
-      // Close, then unmount before the exit animation ends.
-      const close = document.querySelector<HTMLButtonElement>(`${HOST} [slot="close"]`) as HTMLButtonElement;
-      close.click();
-      await userEvent.click(page.getByRole('button', { name: 'Unmount region' }));
-      await userEvent.click(page.getByRole('button', { name: 'Mount region' }));
+      flushSync(function close() {
+        toast.close(key);
+      });
+      await expect.element(page.getByRole('alertdialog')).toHaveAttribute('data-exiting', 'true');
+      await unmount();
+      await render(<DefaultExample />);
 
-      await new Promise((resolve) => setTimeout(resolve, 300));
       assume(toasts().length).equals(0);
+      expect(onClose).toHaveBeenCalledTimes(1);
     });
 
     it('closes a toast that never showed', async function closeUnshown() {
@@ -523,7 +583,6 @@ describe('@godaddy/antares', function antares() {
       });
 
       try {
-        const { toast } = await import('@godaddy/antares');
         toast.close(toast.add({ message: 'Never shown', timeout: null }));
         vi.advanceTimersByTime(1000);
       } finally {
@@ -537,7 +596,6 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('closes from the default toast API', async function defaultApi() {
-      const { toast } = await import('@godaddy/antares');
       await render(<DefaultExample />);
 
       const key = toast.add({ message: 'From code', timeout: null });

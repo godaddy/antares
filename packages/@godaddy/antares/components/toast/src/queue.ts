@@ -79,6 +79,11 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
   add(content: ToastContent, { onClose, ...options }: RACToastOptions = {}): string {
     const key = super.add(content, options);
     if (onClose) this.closeCallbacks.set(key, onClose);
+
+    for (const exitingKey of [...this.exiting]) {
+      if (!this.visibleToasts.some((toast) => toast.key === exitingKey)) this.finishClose(exitingKey);
+    }
+
     return key;
   }
 

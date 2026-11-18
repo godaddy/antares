@@ -42,6 +42,11 @@ export const Playground = getStory(PlaygroundExample, {
     dismissible: {
       control: 'boolean',
       description: 'Show the close button (persistent toasts always show it)'
+    },
+    queue: {
+      control: false,
+      table: { disable: true },
+      description: 'Queue used by this playground'
     }
   }
 });

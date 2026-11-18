@@ -1,11 +1,12 @@
+import type { ReactNode } from 'react';
 import { Button, ToastQueue, ToastRegion, type ToastEmphasis } from '@godaddy/antares';
 
 // Its own queue, so the playground never shares toasts with other examples on the page.
-const queue = new ToastQueue();
+const defaultQueue = new ToastQueue();
 
 export interface PlaygroundExampleProps {
   /** Bold heading shown above the message. */
-  title?: string;
+  title?: ReactNode;
 
   /** The notification text. */
   message?: string;
@@ -18,6 +19,9 @@ export interface PlaygroundExampleProps {
 
   /** Whether to show the close button. */
   dismissible?: boolean;
+
+  /** Queue used by this playground. */
+  queue?: ToastQueue;
 }
 
 export function PlaygroundExample({
@@ -25,7 +29,8 @@ export function PlaygroundExample({
   message = 'Something happened in the background.',
   emphasis = 'none',
   timeout = 5000,
-  dismissible = true
+  dismissible = true,
+  queue = defaultQueue
 }: PlaygroundExampleProps) {
   return (
     <>
@@ -33,7 +38,7 @@ export function PlaygroundExample({
       <Button
         variant="secondary"
         onPress={function showToast() {
-          queue.add({ title: title || undefined, message, emphasis, timeout: timeout || null, dismissible });
+          queue.add({ title, message, emphasis, timeout: timeout || null, dismissible });
         }}
       >
         Show toast
