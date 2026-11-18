@@ -102,14 +102,12 @@ on adjustable timing; avoid shorter timeouts.
 
 ### toast.add(options)
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `message` | `ReactNode` | | The notification text; any React node, such as `<FormattedMessage />` |
-| `title` | `ReactNode` | | Bold heading above the message; any React node |
-| `emphasis` | `'none' \| 'success' \| 'critical' \| 'warning'` | `'none'` | The status icon |
-| `timeout` | `number \| null` | `5000` | Milliseconds before it closes; `null` keeps it open |
-| `dismissible` | `boolean` | `true` | Shows the close button; ignored when there is no timeout |
-| `onClose` | `() => void` | | Called when the toast closes |
+Returns the key to pass to `toast.close(key)`.
 
-Returns the key to pass to `toast.close(key)`. A `new ToastQueue({ maxVisibleToasts })` has the same `add` and
-`close` methods, and renders through `<ToastRegion queue={queue} />`.
+<ArgTypes of={Stories.ToastOptionsProps} />
+
+### new ToastQueue(options)
+
+A separate queue with the same `add` and `close` methods. Render it with `<ToastRegion queue={queue} />`.
+
+<ArgTypes of={Stories.ToastQueueOptionsProps} />

@@ -59,8 +59,11 @@ export function Toast({ toast, queue, closeLabel }: ToastProps) {
     [isExiting, key, queue]
   );
 
+  // `0` is a valid title, so only empty values count as "no title".
+  const hasTitle = title != null && title !== false && title !== '';
+
   // Without a title, the message labels the toast so it isn't announced twice.
-  const messageSlot = title ? 'description' : 'title';
+  const messageSlot = hasTitle ? 'description' : 'title';
 
   return (
     <RACToast
@@ -74,7 +77,7 @@ export function Toast({ toast, queue, closeLabel }: ToastProps) {
       <UNSAFE_PortalProvider getContainer={null}>
         {icon ? <Icon icon={icon} aria-hidden="true" className={styles.icon} /> : null}
         <RACToastContent className={styles.content}>
-          {title ? (
+          {hasTitle ? (
             <Text as="div" slot="title" className={cx(styles.title, textTreatmentClassName('inherit'))}>
               {title}
             </Text>

@@ -1,11 +1,15 @@
 'use client';
-import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { ToastRegion } from './src/index.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory, getTypeDocs } from '@bento/storybook-addon-helpers';
+import { ToastRegion, type ToastOptions, type ToastQueueOptions } from './src/index.tsx';
 import { PlaygroundExample } from './examples/toast-playground.tsx';
 
 export default getMeta({ title: 'components/Toast' });
 
 export const Props = getComponentDocs(ToastRegion);
+
+export const ToastOptionsProps = getTypeDocs<ToastOptions>({ primary: ['message', 'title'] });
+
+export const ToastQueueOptionsProps = getTypeDocs<ToastQueueOptions>();
 
 export const Examples = getExamples('./examples');
 

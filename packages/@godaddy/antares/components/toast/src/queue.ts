@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { UNSTABLE_ToastQueue as RACToastQueue } from 'react-aria-components';
+import { raiseToastHost } from './host.ts';
 
 /**
  * Controls the status icon and its color.
@@ -10,10 +11,10 @@ export type ToastEmphasis = 'none' | 'success' | 'critical' | 'warning';
  * Options for a single toast, passed to {@link ToastQueue.add} or `toast.add()`.
  */
 export interface ToastOptions {
-  /** Bold heading shown above the message. */
+  /** Bold heading shown above the message. Any React node. */
   title?: ReactNode;
 
-  /** The notification text. */
+  /** The notification text. Any React node, such as `<FormattedMessage />`. */
   message: ReactNode;
 
   /** The status icon to show before the text. @default 'none' */
@@ -183,6 +184,9 @@ export class ToastQueue {
     if (isDev && persistent && !dismissible) {
       console.warn('[Antares] Toast: a toast without a timeout must be dismissible, so the close button stays.');
     }
+
+    // Stay above any overlay opened since the host was created.
+    if (queue.isAttached) raiseToastHost();
 
     const key = queue.add(
       { title, message, emphasis, dismissible: dismissible || persistent },

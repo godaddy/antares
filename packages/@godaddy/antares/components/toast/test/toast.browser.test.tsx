@@ -12,6 +12,8 @@ import { MultipleRegionsExample } from '../examples/multiple-regions.tsx';
 import { ToggleRegionExample } from '../examples/toggle-region.tsx';
 import { SharedQueueExample } from '../examples/shared-queue.tsx';
 import { RichContentExample } from '../examples/rich-content.tsx';
+import { FromModalExample } from '../examples/from-modal.tsx';
+import { ZeroTitleExample } from '../examples/zero-title.tsx';
 
 const HOST = '[data-antares-toast-host="1"]';
 
@@ -82,6 +84,13 @@ describe('@godaddy/antares', function antares() {
       assume(document.querySelector(`${HOST} time`)?.getAttribute('datetime')).equals('2027-11-17');
     });
 
+    it('renders a title of 0', async function zeroTitle() {
+      await render(<ZeroTitleExample />);
+      await showToast();
+
+      await expect.element(page.getByRole('alertdialog', { name: '0' })).toHaveAccessibleDescription('Items left');
+    });
+
     it('renders no icon for the none emphasis', async function noIcon() {
       await render(<PlaygroundExample emphasis="none" />);
       await showToast();
@@ -124,6 +133,79 @@ describe('@godaddy/antares', function antares() {
         assume(style.opacity).equals('0.8');
         assume(style.backgroundColor).equals('rgba(0, 0, 0, 0)');
       });
+    });
+
+    it('stays inside a 320px viewport', async function narrow() {
+      await page.viewport(320, 640);
+
+      try {
+        await render(<DefaultExample />);
+        await showToast();
+
+        const toast = page.getByRole('alertdialog').element().getBoundingClientRect();
+        assume(toast.left).is.at.least(0);
+        assume(toast.right).is.at.most(320);
+      } finally {
+        await page.viewport(1024, 768);
+      }
+    });
+
+    it('scrolls when the toasts are taller than the viewport', async function scrolls() {
+      await page.viewport(1024, 300);
+
+      try {
+        await render(
+          <PlaygroundExample timeout={0} message="A long message that wraps onto a second line in the toast." />
+        );
+        for (let i = 0; i < 5; i++) await showToast();
+        await vi.waitFor(function five() {
+          assume(toasts().length).equals(5);
+        });
+
+        const host = document.querySelector(HOST) as HTMLElement;
+        assume(host.scrollHeight).is.above(host.clientHeight);
+        host.scrollTop = host.scrollHeight;
+        const last = toasts()[4].getBoundingClientRect();
+        assume(last.bottom).is.at.most(300);
+      } finally {
+        await page.viewport(1024, 768);
+      }
+    });
+
+    it('keeps focus on a toast when another is added', async function keepsFocus() {
+      const { toast } = await import('@godaddy/antares');
+      await render(<DefaultExample />);
+      toast.add({ message: 'First', timeout: null });
+
+      const close = page.getByRole('alertdialog', { name: 'First' }).getByRole('button', { name: 'Close' });
+      await expect.element(close).toBeVisible();
+      (close.element() as HTMLElement).focus();
+      // Something appended after the host, so the next add would want to move it.
+      document.body.append(document.createElement('div'));
+      toast.add({ message: 'Second', timeout: null });
+
+      await vi.waitFor(function two() {
+        assume(toasts().length).equals(2);
+      });
+      assume(document.activeElement).equals(close.element());
+    });
+
+    it('shows a toast above a Modal opened after the host', async function aboveModal() {
+      await render(<FromModalExample />);
+      await userEvent.click(page.getByRole('button', { name: 'Toast before modal' }));
+      await expect.element(page.getByRole('alertdialog', { name: 'Before the modal' })).toBeVisible();
+
+      await userEvent.click(page.getByRole('button', { name: 'Open modal' }));
+      await userEvent.click(page.getByRole('button', { name: 'Toast from modal' }));
+
+      const toast = page.getByRole('alertdialog', { name: 'From the modal' });
+      await expect.element(toast).toBeVisible();
+      const box = toast.element().getBoundingClientRect();
+      const top = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);
+      assume(top?.closest('[role="alertdialog"]')).equals(toast.element());
+
+      await userEvent.click(page.getByRole('button', { name: 'Close' }).first());
+      await userEvent.keyboard('{Escape}');
     });
 
     it('closes when the close button is pressed', async function closeButton() {

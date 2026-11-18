@@ -21,7 +21,9 @@ const HOST_STYLE = [
   'align-items: flex-end',
   'gap: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2))',
   'padding: var(--size-space-070, calc(var(--ux-1sbfig8, 0.25rem) * 4))',
+  'max-inline-size: 100vw',
   'max-block-size: 100dvh',
+  'overflow-y: auto',
   'box-sizing: border-box',
   'pointer-events: none'
 ].join(';');
@@ -41,4 +43,15 @@ export function getToastHost(): HTMLElement {
   document.body.append(host);
 
   return host;
+}
+
+/**
+ * Moves the host to the end of `<body>`, so a new toast paints above overlays opened since the host
+ * was created (Antares overlays use `z-index: auto` and stack in DOM order). Moving keeps the host's
+ * children; it's skipped while focus is inside, because moving a focused element blurs it.
+ */
+export function raiseToastHost() {
+  const host = getToastHost();
+  if (host === document.body.lastElementChild || host.contains(document.activeElement)) return;
+  document.body.append(host);
 }
