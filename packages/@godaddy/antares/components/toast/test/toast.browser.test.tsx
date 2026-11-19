@@ -188,27 +188,16 @@ describe('@godaddy/antares', function antares() {
       }
     });
 
-    it('keeps focus on a toast when another is added', async function keepsFocus() {
-      await render(<DefaultExample />);
-      toast.add({ message: 'First', timeout: null });
-
-      const close = page.getByRole('alertdialog', { name: 'First' }).getByRole('button', { name: 'Close' });
-      await expect.element(close).toBeVisible();
-      (close.element() as HTMLElement).focus();
-      // Something appended after the host, so the next add would want to move it.
-      document.body.append(document.createElement('div'));
-      toast.add({ message: 'Second', timeout: null });
-
-      await vi.waitFor(function two() {
-        assume(toasts().length).equals(2);
-      });
-      assume(document.activeElement).equals(close.element());
-    });
-
     it('shows a toast above a Modal opened after the host', async function aboveModal() {
       await render(<FromModalExample />);
       await userEvent.click(page.getByRole('button', { name: 'Toast before modal' }));
       await expect.element(page.getByRole('alertdialog', { name: 'Before the modal' })).toBeVisible();
+
+      // The host stays empty in the page while the modal opens.
+      await userEvent.click(page.getByRole('button', { name: 'Close' }));
+      await vi.waitFor(function closed() {
+        assume(toasts().length).equals(0);
+      });
 
       await userEvent.click(page.getByRole('button', { name: 'Open modal' }));
       await userEvent.click(page.getByRole('button', { name: 'Toast from modal' }));

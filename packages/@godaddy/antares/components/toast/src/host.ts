@@ -14,6 +14,7 @@ const TOAST_HOST_CONTRACT = '1';
 
 const HOST_STYLE = [
   'position: fixed',
+  'z-index: 100',
   'inset-block-start: 0',
   'inset-inline-end: 0',
   'display: flex',
@@ -40,17 +41,9 @@ export function getToastHost(): HTMLElement {
   const host = document.createElement('div');
   host.setAttribute(TOAST_HOST_ATTRIBUTE, TOAST_HOST_CONTRACT);
   host.setAttribute('style', HOST_STYLE);
+  // React Aria's marker that keeps the host interactive when a modal makes the rest of the page inert.
+  host.setAttribute('data-react-aria-top-layer', '');
   document.body.append(host);
 
   return host;
-}
-
-/**
- * Raises the host after a toast mounts. Antares overlays use `z-index: auto` and stack in DOM order.
- * Moving a focused element blurs it, so keep the host in place while it contains focus.
- */
-export function raiseToastHost() {
-  const host = getToastHost();
-  if (host === document.body.lastElementChild || host.contains(document.activeElement)) return;
-  document.body.append(host);
 }

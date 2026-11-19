@@ -10,7 +10,6 @@ import { textTreatmentClassName } from '#components/_internal/typography';
 import { Button } from '#components/button';
 import { Icon } from '#components/icon';
 import { Text } from '#components/text';
-import { raiseToastHost } from './host.ts';
 import type { InternalToastQueue, ToastContent, ToastEmphasis } from './queue.ts';
 import styles from './index.module.css';
 
@@ -42,10 +41,6 @@ export function Toast({ toast, queue, closeLabel }: ToastProps) {
   const { title, message, emphasis, dismissible } = content;
   const icon = emphasisIcons[emphasis];
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(function raiseHost() {
-    raiseToastHost();
-  }, []);
 
   // Toasts never render on the server, so the server snapshot can be the same function.
   const getIsExiting = () => queue.isExiting(key);
