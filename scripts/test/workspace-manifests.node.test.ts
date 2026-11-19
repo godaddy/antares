@@ -72,7 +72,7 @@ describe('workspace manifests', function workspaceManifestTests() {
   it('declares the d3 scale types used by Antares public declarations', function declaresD3ScaleTypes() {
     const antares = packages.find((manifest) => manifest.name === '@godaddy/antares');
 
-    expect(antares?.dependencies?.['@types/d3-scale']).toBe('^4.0.2');
+    expect(antares?.dependencies?.['@types/d3-scale']).toBe('^4.0.9');
     expect(antares?.devDependencies?.['@types/d3-scale']).toBeUndefined();
   });
 
@@ -97,7 +97,7 @@ describe('workspace manifests', function workspaceManifestTests() {
   });
 
   it('keeps the Storybook core catalog compatible with its addons', function keepsStorybookCatalogCompatible() {
-    expect(pnpmWorkspace.catalog?.storybook).toBe('^10.6.5');
+    expect(pnpmWorkspace.catalog?.storybook).toBe('^10.6.7');
   });
 
   it('keeps tsdown and its CSS package on matching catalog ranges', function keepsTsdownCatalogCompatible() {

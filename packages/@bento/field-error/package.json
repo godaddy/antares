@@ -49,7 +49,7 @@
     "vitest-browser-react": "catalog:",
     "@types/react-dom": "catalog:",
     "tsdown": "catalog:",
-    "@react-types/shared": "^3.34.0",
+    "@react-types/shared": "^3.37.0",
     "@types/react": "catalog:",
     "vitest": "catalog:"
   },
