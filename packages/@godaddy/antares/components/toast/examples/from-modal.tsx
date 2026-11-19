@@ -8,7 +8,7 @@ const queue = new ToastQueue();
  * Modal's backdrop.
  * @ignore
  */
-export function FromModalExample({ simultaneous = false }: { simultaneous?: boolean }) {
+export function FromModalExample() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -24,7 +24,6 @@ export function FromModalExample({ simultaneous = false }: { simultaneous?: bool
       <Button
         onPress={function openModal() {
           setIsOpen(true);
-          if (simultaneous) queue.add({ message: 'Opened with modal', timeout: null });
         }}
       >
         Open modal

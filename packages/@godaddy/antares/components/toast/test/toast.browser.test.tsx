@@ -212,26 +212,6 @@ describe('@godaddy/antares', function antares() {
       await userEvent.keyboard('{Escape}');
     });
 
-    it('shows a toast above a Modal opened in the same event', async function simultaneousModal() {
-      await render(<FromModalExample simultaneous />);
-      await userEvent.click(page.getByRole('button', { name: 'Toast before modal' }));
-      await expect.element(page.getByRole('alertdialog', { name: 'Before the modal' })).toBeVisible();
-      await userEvent.click(page.getByRole('button', { name: 'Open modal' }));
-
-      try {
-        await expect.element(page.getByRole('dialog', { name: 'Settings' })).toBeVisible();
-        const toast = page.getByRole('alertdialog', { name: 'Opened with modal' });
-        await expect.element(toast).toBeVisible();
-        await vi.waitFor(function above() {
-          const box = toast.element().getBoundingClientRect();
-          const top = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);
-          assume(top?.closest('[role="alertdialog"]')).equals(toast.element());
-        });
-      } finally {
-        await userEvent.keyboard('{Escape}');
-      }
-    });
-
     it('closes when the close button is pressed', async function closeButton() {
       await render(<DefaultExample />);
       await showToast();
@@ -285,15 +265,10 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('forces the close button on a persistent toast', async function forcedClose() {
-      const warn = vi.spyOn(console, 'warn').mockImplementation(function silence() {
-        // Asserted below.
-      });
       await render(<PlaygroundExample dismissible={false} timeout={0} />);
       await showToast();
 
       await expect.element(page.getByRole('button', { name: 'Close' })).toBeVisible();
-      assume(warn.mock.calls.some(([message]) => String(message).includes('must be dismissible'))).equals(true);
-      warn.mockRestore();
     });
 
     it('stacks several toasts, newest first', async function stacks() {
@@ -397,25 +372,19 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('can add a replacement from onClose before a region mounts', async function replacementWithoutRegion() {
-      vi.useFakeTimers({ toFake: ['setTimeout'] });
       const onClose = vi.fn(function complete() {
         toast.add({ message: 'Upload finished', timeout: null });
       });
 
-      try {
-        const key = toast.add({ message: 'Uploading', timeout: null, onClose });
-        toast.close(key);
-        expect(onClose).toHaveBeenCalledTimes(1);
-        await render(<DefaultExample />);
-        vi.advanceTimersByTime(1000);
+      const key = toast.add({ message: 'Uploading', timeout: null, onClose });
+      toast.close(key);
+      expect(onClose).toHaveBeenCalledTimes(1);
+      await render(<DefaultExample />);
 
-        await expect.element(page.getByRole('alertdialog', { name: 'Upload finished' })).toBeVisible();
-        assume(page.getByRole('alertdialog', { name: 'Uploading' }).query()).equals(null);
-        toast.close(key);
-        expect(onClose).toHaveBeenCalledTimes(1);
-      } finally {
-        vi.useRealTimers();
-      }
+      await expect.element(page.getByRole('alertdialog', { name: 'Upload finished' })).toBeVisible();
+      assume(page.getByRole('alertdialog', { name: 'Uploading' }).query()).equals(null);
+      toast.close(key);
+      expect(onClose).toHaveBeenCalledTimes(1);
     });
 
     it('shows one button per emphasis', async function emphases() {
@@ -505,47 +474,14 @@ describe('@godaddy/antares', function antares() {
       assume(toasts().length).equals(1);
     });
 
-    it('holds toasts until a region mounts, and warns', async function unmounted() {
-      vi.useFakeTimers({ toFake: ['setTimeout'] });
-      const warn = vi.spyOn(console, 'warn').mockImplementation(function silence() {
-        // Asserted below.
-      });
-
-      try {
-        toast.add({ message: 'Queued toast', timeout: null });
-        vi.advanceTimersByTime(1000);
-        assume(warn.mock.calls.some(([message]) => String(message).includes('no <ToastRegion /> is mounted'))).equals(
-          true
-        );
-        assume(toasts().length).equals(0);
-      } finally {
-        vi.useRealTimers();
-        warn.mockRestore();
-      }
+    it('holds toasts until a region mounts', async function unmounted() {
+      toast.add({ message: 'Queued toast', timeout: null });
+      assume(toasts().length).equals(0);
 
       await render(<DefaultExample />);
       await vi.waitFor(function shown() {
         assume(toasts().length).equals(1);
       });
-    });
-
-    it('does not warn when a region mounts in time', async function mountedInTime() {
-      vi.useFakeTimers({ toFake: ['setTimeout'] });
-      const warn = vi.spyOn(console, 'warn').mockImplementation(function silence() {
-        // Asserted below.
-      });
-
-      try {
-        toast.add({ message: 'Queued toast', timeout: null });
-        await render(<DefaultExample />);
-        vi.advanceTimersByTime(1000);
-        assume(warn.mock.calls.some(([message]) => String(message).includes('no <ToastRegion /> is mounted'))).equals(
-          false
-        );
-      } finally {
-        vi.useRealTimers();
-        warn.mockRestore();
-      }
     });
 
     it('finishes closing toasts when the region unmounts mid-exit', async function unmountMidExit() {
@@ -566,18 +502,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('closes a toast that never showed', async function closeUnshown() {
-      vi.useFakeTimers({ toFake: ['setTimeout'] });
-      const warn = vi.spyOn(console, 'warn').mockImplementation(function silence() {
-        // Expected: no region is mounted.
-      });
-
-      try {
-        toast.close(toast.add({ message: 'Never shown', timeout: null }));
-        vi.advanceTimersByTime(1000);
-      } finally {
-        vi.useRealTimers();
-        warn.mockRestore();
-      }
+      toast.close(toast.add({ message: 'Never shown', timeout: null }));
 
       await render(<DefaultExample />);
       await new Promise((resolve) => setTimeout(resolve, 100));

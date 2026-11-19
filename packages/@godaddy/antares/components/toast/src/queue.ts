@@ -54,11 +54,6 @@ export interface ToastContent {
 const DEFAULT_TIMEOUT = 5000;
 const DEFAULT_MAX_VISIBLE_TOASTS = 5;
 
-/** How long a toast may wait for a mounted `ToastRegion` before we warn in development. */
-const UNMOUNTED_WARNING_DELAY = 1000;
-
-const isDev = process.env.NODE_ENV !== 'production';
-
 /**
  * RAC's queue, plus two things:
  *
@@ -197,25 +192,11 @@ export class ToastQueue {
   add(options: ToastOptions): string {
     const { title, message, emphasis = 'none', timeout = DEFAULT_TIMEOUT, dismissible = true, onClose } = options;
     const persistent = !timeout;
-    const queue = getInternalQueue(this);
 
-    if (isDev && persistent && !dismissible) {
-      console.warn('[Antares] Toast: a toast without a timeout must be dismissible, so the close button stays.');
-    }
-
-    const key = queue.add(
+    return getInternalQueue(this).add(
       { title, message, emphasis, dismissible: dismissible || persistent },
       { timeout: persistent ? undefined : timeout, onClose }
     );
-
-    if (isDev && !queue.isAttached) {
-      setTimeout(function warnUnmounted() {
-        if (queue.isAttached) return;
-        console.warn('[Antares] Toast: no <ToastRegion /> is mounted for this queue, so the toast is not shown yet.');
-      }, UNMOUNTED_WARNING_DELAY);
-    }
-
-    return key;
   }
 
   /**
