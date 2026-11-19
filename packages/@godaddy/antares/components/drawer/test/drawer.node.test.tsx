@@ -5,7 +5,8 @@ import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
 import { PlaygroundExample } from '../examples/drawer-playground.tsx';
 import { PlacementsExample } from '../examples/placements.tsx';
 import { NestedPopoverExample } from '../examples/nested-popover.tsx';
-import { NoEscapeDismissExample } from '../examples/no-escape-dismiss.tsx';
+import { PreventDismissalExample } from '../examples/prevent-dismissal.tsx';
+import { NestedExample } from '../examples/nested.tsx';
 import { FilteredDismissExample } from '../examples/filtered-dismiss.tsx';
 import { ScrollableExample } from '../examples/scrollable.tsx';
 
@@ -63,8 +64,12 @@ describe('@godaddy/antares', function antares() {
       expect(renderToString(<NestedPopoverExample />)).toMatchSnapshot();
     });
 
-    it('renders NoEscapeDismissExample', function noEscapeDismissExample() {
-      expect(renderToString(<NoEscapeDismissExample />)).toMatchSnapshot();
+    it('renders PreventDismissalExample', function preventDismissalExample() {
+      expect(renderToString(<PreventDismissalExample />)).toMatchSnapshot();
+    });
+
+    it('renders NestedExample', function nestedExample() {
+      expect(renderToString(<NestedExample />)).toMatchSnapshot();
     });
 
     it('renders FilteredDismissExample', function filteredDismissExample() {

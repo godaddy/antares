@@ -15,7 +15,7 @@ export function BottomSheetExample() {
       <Button variant="primary" onPress={() => setOpen(true)}>
         Open bottom sheet
       </Button>
-      <Drawer placement="bottom" isOpen={open} onOpenChange={setOpen} isDismissable>
+      <Drawer placement="bottom" isOpen={open} onOpenChange={setOpen}>
         <Heading slot="title">Bottom sheet</Heading>
         <CloseButton />
         <Content>Bottom sheet with a composed close button.</Content>

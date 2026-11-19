@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { resolvePropsDoc } from '../src/docs.ts';
+import { toStorybookArgTypes } from '../src/storybook/arg-types.ts';
 
 const storiesPath = fileURLToPath(new URL('./fixtures/widget.stories.tsx', import.meta.url));
 const ignoreSourcePath = fileURLToPath(new URL('./fixtures/ignore-source/widget.stories.tsx', import.meta.url));
@@ -49,6 +50,30 @@ describe('resolvePropsDoc', function resolvePropsDocTests() {
     const doc = await resolvePropsDoc({ code, exportName: 'T' });
     expect(doc?.name).toBe('Local');
     expect(doc?.props.map((p) => p.name)).toEqual(['a']);
+  });
+
+  it('shares expanded literal aliases across docs getters and Storybook, honoring type overrides', async function literalAliasDocs() {
+    const code = `
+      import { getComponentDocs, getTypeDocs } from '../../src/storybook/getters.ts';
+      type AlertEmphasis = 'error' | 'message';
+      interface AlertProps { emphasis?: AlertEmphasis; }
+      function Alert(_props: AlertProps) { return null; }
+      export const Component = getComponentDocs(Alert);
+      export const Type = getTypeDocs<AlertProps>();
+      export const Override = getComponentDocs(Alert, {
+        overrides: [{ name: 'emphasis', type: 'Custom emphasis' }]
+      });
+    `;
+
+    for (const exportName of ['Component', 'Type']) {
+      const doc = await resolvePropsDoc({ code, exportName });
+      expect(doc?.props[0]).toMatchObject({ type: "'error' | 'message'", required: false });
+      expect(toStorybookArgTypes(doc!).argTypes.emphasis.table?.type).toEqual({
+        summary: "'error' | 'message'"
+      });
+    }
+    const overridden = await resolvePropsDoc({ code, exportName: 'Override' });
+    expect(overridden?.props[0].type).toBe('Custom emphasis');
   });
 
   it('reads a bare getComponentDocs (no options) from inline code', async function bareComponent() {

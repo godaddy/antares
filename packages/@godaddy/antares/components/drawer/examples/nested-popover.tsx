@@ -4,7 +4,7 @@ import { Button, Content, Drawer, Popover, PopoverTrigger, Text } from '@godaddy
 /**
  * Popovers rendered inside a drawer stay open without dismissing the drawer.
  * @title Nested Popover
- * @order 4
+ * @order 7
  */
 export function NestedPopoverExample() {
   const [open, setOpen] = useState(false);
@@ -14,7 +14,7 @@ export function NestedPopoverExample() {
       <Button variant="primary" onPress={() => setOpen(true)}>
         Open drawer
       </Button>
-      <Drawer placement="right" isOpen={open} onOpenChange={setOpen} isDismissable aria-label="Nested popover">
+      <Drawer placement="right" isOpen={open} onOpenChange={setOpen} aria-label="Nested popover">
         <Content>
           <PopoverTrigger>
             <Button variant="primary">Open popover</Button>
