@@ -44,6 +44,7 @@
 
   --_toast-motion: 300ms cubic-bezier(0.23, 1, 0.32, 1);
   --_toast-slide: 100%;
+  --_toast-collapsed: 0fr;
   --_toast-offset: 0;
   --_toast-opacity: 1;
   --_toast-outline: none;
@@ -56,14 +57,14 @@
   transition: grid-template-rows var(--_toast-motion);
 
   @starting-style {
-    grid-template-rows: 0fr;
+    grid-template-rows: var(--_toast-collapsed);
   }
 
   &:where([data-exiting]) {
     --_toast-offset: var(--_toast-slide);
     --_toast-opacity: 0;
 
-    grid-template-rows: 0fr;
+    grid-template-rows: var(--_toast-collapsed);
   }
 
   /* RAC wraps each toast in its own list item. */
@@ -180,8 +181,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Drop the slide, keep the fade. */
+  /* Drop the slide and the stack movement, keep the fade. */
   .toast {
     --_toast-slide: 0;
+    --_toast-collapsed: 1fr;
   }
 }

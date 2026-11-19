@@ -64,5 +64,22 @@ describe('@godaddy/antares', function antares() {
 
       await expect(document.querySelector(HOST) as HTMLElement).toMatchScreenshot('focus-ring');
     });
+
+    // This project runs with reduced motion, which only fades the toasts.
+    it('keeps the stack still under reduced motion', async function reducedMotion() {
+      await render(<PlaygroundExample timeout={0} />);
+      await userEvent.click(page.getByRole('button', { name: 'Show toast' }));
+      await settle();
+      const first = document.querySelector(`${HOST} [role="alertdialog"]`) as HTMLElement;
+
+      await userEvent.click(page.getByRole('button', { name: 'Show toast' }));
+      await vi.waitFor(function two() {
+        expect(document.querySelectorAll(`${HOST} [role="alertdialog"]`).length).toBe(2);
+      });
+      const top = first.getBoundingClientRect().top;
+      await settle();
+
+      expect(first.getBoundingClientRect().top).toBe(top);
+    });
   });
 });

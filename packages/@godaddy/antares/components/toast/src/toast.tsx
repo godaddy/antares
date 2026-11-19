@@ -41,6 +41,7 @@ export function Toast({ toast, queue, closeLabel }: ToastProps) {
   const { title, message, emphasis, dismissible } = content;
   const icon = emphasisIcons[emphasis];
   const ref = useRef<HTMLDivElement>(null);
+  const surfaceRef = useRef<HTMLDivElement>(null);
 
   // Toasts never render on the server, so the server snapshot can be the same function.
   const getIsExiting = () => queue.isExiting(key);
@@ -50,8 +51,8 @@ export function Toast({ toast, queue, closeLabel }: ToastProps) {
     function removeAfterExit() {
       if (!isExiting) return;
 
-      // Reduced motion, or no transition at all, resolves right away.
-      const transitions = ref.current?.getAnimations({ subtree: true }) ?? [];
+      // Only the toast's own exit counts: content such as a spinner can animate forever.
+      const transitions = [...(ref.current?.getAnimations() ?? []), ...(surfaceRef.current?.getAnimations() ?? [])];
       void Promise.allSettled(transitions.map((transition) => transition.finished)).then(function remove() {
         queue.remove(key);
       });
@@ -74,7 +75,7 @@ export function Toast({ toast, queue, closeLabel }: ToastProps) {
       data-exiting={isExiting || undefined}
     >
       <div className={styles.clip}>
-        <div className={styles.surface}>
+        <div ref={surfaceRef} className={styles.surface}>
           {/* Content inside a toast portals to the page as usual, not into the toast host. */}
           <UNSAFE_PortalProvider getContainer={null}>
             {icon ? <Icon icon={icon} aria-hidden="true" className={styles.icon} /> : null}

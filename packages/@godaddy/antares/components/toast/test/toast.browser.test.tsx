@@ -1,7 +1,7 @@
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
-import { toast } from '@godaddy/antares';
+import { CircularProgress, toast } from '@godaddy/antares';
 import assume from 'assume';
 import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
@@ -357,6 +357,24 @@ describe('@godaddy/antares', function antares() {
 
       // onClose ran, so the example re-enabled its button.
       await expect.element(page.getByRole('button', { name: 'Start upload' })).toBeEnabled();
+    });
+
+    it('closes a toast whose content animates forever', async function infiniteContent() {
+      await render(<DefaultExample />);
+      const onClose = vi.fn();
+      const key = toast.add({
+        message: <CircularProgress isIndeterminate aria-label="Uploading" />,
+        timeout: null,
+        onClose
+      });
+      await expect.element(page.getByRole('alertdialog')).toBeVisible();
+
+      toast.close(key);
+
+      await vi.waitFor(function closed() {
+        assume(toasts().length).equals(0);
+      });
+      expect(onClose).toHaveBeenCalledTimes(1);
     });
 
     it('uses translated labels', async function translated() {
