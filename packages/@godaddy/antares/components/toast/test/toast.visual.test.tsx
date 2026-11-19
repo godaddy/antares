@@ -77,6 +77,8 @@ describe('@godaddy/antares', function antares() {
         expect(document.querySelectorAll(`${HOST} [role="alertdialog"]`).length).toBe(2);
       });
       const top = first.getBoundingClientRect().top;
+      const newest = document.querySelector(`${HOST} [role="alertdialog"]`)?.firstElementChild?.firstElementChild;
+      expect(getComputedStyle(newest as HTMLElement).translate).toBe('0px');
       await settle();
 
       expect(first.getBoundingClientRect().top).toBe(top);

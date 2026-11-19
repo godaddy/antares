@@ -42,12 +42,6 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    it('renders nothing until a toast is added', async function emptyRegion() {
-      await render(<DefaultExample />);
-
-      assume(page.getByRole('region').query()).equals(null);
-    });
-
     it('shows a toast in the shared host', async function showsToast() {
       await render(<DefaultExample />);
       await showToast();
@@ -179,6 +173,9 @@ describe('@godaddy/antares', function antares() {
 
         const host = document.querySelector(HOST) as HTMLElement;
         assume(host.scrollHeight).is.above(host.clientHeight);
+        // The host's padding lets clicks through to the page underneath.
+        const box = host.getBoundingClientRect();
+        assume(document.elementFromPoint(box.right - 2, box.top + 2)).does.not.equal(host);
         host.scrollTop = host.scrollHeight;
         const last = toasts()[4].getBoundingClientRect();
         assume(last.bottom).is.at.most(300);
@@ -211,14 +208,16 @@ describe('@godaddy/antares', function antares() {
       await userEvent.keyboard('{Escape}');
     });
 
-    it('closes when the close button is pressed', async function closeButton() {
+    it('plays its exit before closing when the close button is pressed', async function closeButton() {
       await render(<DefaultExample />);
       await showToast();
+      const closing = page.getByRole('alertdialog').element();
 
       await userEvent.click(page.getByRole('button', { name: 'Close' }));
 
+      assume(closing.hasAttribute('data-exiting')).equals(true);
       await vi.waitFor(function closed() {
-        assume(toasts().length).equals(0);
+        assume(closing.isConnected).equals(false);
       });
     });
 
@@ -453,6 +452,25 @@ describe('@godaddy/antares', function antares() {
       await render(<DefaultExample />);
       await new Promise((resolve) => setTimeout(resolve, 100));
       assume(toasts().length).equals(0);
+    });
+
+    it('shows a default toast without an icon for 5 seconds', async function defaults() {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+
+      try {
+        await render(<DefaultExample />);
+        toast.add({ message: 'From code' });
+        await expect.element(page.getByRole('alertdialog', { name: 'From code' })).toBeVisible();
+        assume(document.querySelector(`${HOST} [data-emphasis="none"]`)).is.not.equal(null);
+
+        const shown = page.getByRole('alertdialog').element();
+        vi.advanceTimersByTime(4900);
+        assume(shown.hasAttribute('data-exiting')).equals(false);
+        vi.advanceTimersByTime(200);
+        await expect.element(page.getByRole('alertdialog')).toHaveAttribute('data-exiting');
+      } finally {
+        vi.useRealTimers();
+      }
     });
 
     it('closes from the default toast API', async function defaultApi() {

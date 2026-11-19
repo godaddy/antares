@@ -91,8 +91,8 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
   }
 
   /**
-   * Removes a toast. `onClose` runs after the toast is removed, since RAC calls it first, and a toast
-   * added from it would make RAC remove the wrong one.
+   * Removes a toast and calls its `onClose`. The queue keeps `onClose` from RAC, which calls it
+   * mid-removal: a toast added from it would make RAC remove the wrong one.
    *
    * @param key - The toast's key.
    */
