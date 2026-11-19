@@ -9,7 +9,6 @@ import { HostCompositionExample } from '../examples/host-composition.tsx';
 import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
 import { StyleRenderPropExample } from '../examples/style-render-prop.tsx';
 import { ContextExample } from '../examples/context.tsx';
-import { Box } from '@godaddy/antares';
 
 describe('@godaddy/antares', function antares() {
   describe('#Box', function boxTests() {
@@ -70,13 +69,11 @@ describe('@godaddy/antares', function antares() {
             } as CSSProperties
           }
         >
-          <Box padding="md" rounding="lg" elevation="card">
-            Tokens
-          </Box>
+          <PaddingExample rounding="lg" />
         </div>
       );
 
-      expect(getByText('Tokens')).toHaveStyle({
+      expect(getByText('Padding: md')).toHaveStyle({
         padding: '7px',
         borderRadius: '9px',
         backgroundColor: 'rgb(10, 20, 30)',

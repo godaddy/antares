@@ -1,5 +1,8 @@
 .tooltip {
-  /* High-contrast surface: overrides the overlay elevation `Box` paints this element with. */
+  /*
+    Paints the raised surface over the overlay elevation `Box` gives this element. Legacy's
+    high-contrast intents are the fallback until the token set has an inverse surface.
+  */
   --_box-bg-overlay: var(
     --color-surface-background-raised,
     var(--ux-7wu8i7, color-mix(in oklch, var(--_box-bg-raised), white 8%))

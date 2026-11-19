@@ -117,7 +117,8 @@ describe('@godaddy/antares', function antares() {
       ) as HTMLElement;
       const panel = arrow.parentElement as HTMLElement;
 
-      assume(getComputedStyle(arrow).borderTopColor).equals(getComputedStyle(panel).backgroundColor);
+      assume(getComputedStyle(panel).backgroundColor).equals('rgb(10, 20, 30)');
+      assume(getComputedStyle(arrow).borderTopColor).equals('rgb(10, 20, 30)');
       assume(getComputedStyle(panel).color).equals('rgb(240, 241, 242)');
     });
 

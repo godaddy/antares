@@ -138,9 +138,9 @@ claimed to be a GU multiple, and components have no use for those tiers anyway.
 
 The regular range is not an arithmetic imposed on the package: at 1 GU = 8px it reproduces the
 `tokens.yml` development defaults exactly, `005` through `100` (2, 4, 8, 12, 14, 16, 20, 24, 28, 32,
-40px). So adopting it requires no tier to change value. The range is not a uniform walk - it steps a
-quarter GU to `030`, then a quarter or half at a time to `090`, then a whole GU to `100` - which is
-what the package's own values do. The common component values sit at whole GU: 2 GU is `050`, 3 GU is
+40px). So adopting it requires no tier to change value. The range is not a uniform walk - it steps by
+quarters and halves of a GU up to `090`, then a whole GU to `100` - which is what the package's own
+values do. The common component values sit at whole GU: 2 GU is `050`, 3 GU is
 `070`, 5 GU is `100`.
 
 Placing 1 GU at `020` rather than at the bottom of the scale leaves two sub-GU steps beneath it -
@@ -162,8 +162,9 @@ Placing 1 GU at `020` rather than at the bottom of the scale leaves two sub-GU s
 
 Adopting these means `Box` needs no value change and its fallback chain becomes internally consistent.
 
-The Figma factors are the authority here, not the numeric scale. `xs` through `lg` happen to coincide
-with numeric tiers; `xl` and `2xl` do not, and are not made to - which is the independence stated in
+The Figma factors are the authority here, not the numeric scale. `xs` through `xl` happen to coincide
+with numeric tiers (`xl` is `100`, 5 GU); `2xl` lands on `160`'s development default, but `160` is in
+the free-form range, so no GU relationship is implied - which is the independence stated in
 [§1](#1-the-scales-split-by-purpose). The t-shirt scale is what Figma specs regions in, so it follows
 Figma.
 
@@ -275,6 +276,10 @@ value resolves through the nested `var(--ux-1sbfig8, 0.25rem)` fallback.
 
 - Give `bar-chart` / `line-chart` a fallback for `--ux-a2dzk8` - a live bug, independent of this proposal.
 - Fix `segmented-controller`'s `--space-` prefix.
+- Re-tier the numeric references that predate the current scale: `pagination` (`040` x2),
+  `size-provider` (`040` x2, `060` x3), `text-lockup` (`040` x2), `calendar` (`040` x2), `button`
+  (`040` x4), `collapsible` (`070` x4), gallery `file-items` (`080` x5), and project-inquiry-form
+  `attached-files` (`040` x4).
 - Replace the `0.25rem` literal in `--ux-1sbfig8` with `0.5rem` to align with `godaddy-antares` theme,
   in all six components that write it, and normalise `progress-bar`'s `8px` to the same literal.
 - Reconcile the `size-space-*` `$description`s in `@godaddy/design-tokens` with the purpose split in

@@ -65,6 +65,22 @@ describe('@godaddy/antares', function antares() {
       expect(getComputedStyle(input).color).toBe('rgb(240, 241, 242)');
     });
 
+    it('tints the page input as a card without surface tokens', async function legacyCardTint() {
+      const { getByRole } = await render(
+        <div style={{ '--ux-cao06b': 'rgb(0, 0, 0)' } as CSSProperties}>
+          <DefaultExample />
+        </div>
+      );
+      const input = getByRole('spinbutton', { name: 'Current page' }).element();
+      const probe = document.createElement('span');
+      probe.style.color = 'color-mix(in oklch, rgb(0, 0, 0), white 8%)';
+      document.body.append(probe);
+      const expected = getComputedStyle(probe).color;
+      probe.remove();
+
+      expect(getComputedStyle(input).backgroundColor).toBe(expected);
+    });
+
     it('starts the uncontrolled input at page one', async function startsInputAtPageOne() {
       const { getByRole } = await render(<DefaultExample />);
       await expect.element(getByRole('spinbutton', { name: 'Current page' })).toHaveValue(1);

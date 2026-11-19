@@ -1,5 +1,5 @@
 import { RouterProvider } from 'react-aria-components';
-import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
@@ -294,6 +294,28 @@ describe('@godaddy/antares', function packageTests() {
         await userEvent.keyboard('{Enter}');
         await expect.element(getByRole('dialog')).not.toBeInTheDocument();
         await expect.element(getByRole('status')).toMatchTextContent('Subscribed with owner@example.com');
+      });
+    });
+
+    describe('elevation', function elevationTests() {
+      it('takes its text color from the elevation surface, not its parent', async function elevatedText() {
+        // The modal portals to the body, so the surface tokens go on the root.
+        const root = document.documentElement.style;
+        root.setProperty('--color-surface-background-base', 'rgb(250, 250, 250)');
+        root.setProperty('--color-surface-text-base', 'rgb(1, 2, 3)');
+        root.setProperty('--color-surface-text-overlay', 'rgb(240, 241, 242)');
+        onTestFinished(function clearTokens() {
+          root.removeProperty('--color-surface-background-base');
+          root.removeProperty('--color-surface-text-base');
+          root.removeProperty('--color-surface-text-overlay');
+        });
+        const { getByRole } = await render(<ActionsExample />);
+        await userEvent.click(getByRole('row', { name: 'Join our mailing list' }));
+        const dialog = getByRole('dialog', { name: 'Join our mailing list' });
+        const card = dialog.element().querySelector('[data-elevation="base"]') as HTMLElement;
+
+        expect(getComputedStyle(card).backgroundColor).toBe('rgb(250, 250, 250)');
+        expect(getComputedStyle(card).color).toBe('rgb(1, 2, 3)');
       });
     });
 
