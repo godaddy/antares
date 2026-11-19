@@ -56,7 +56,8 @@ different versions. Each copy renders its own toasts, with its own components an
 page-wide element (`[data-antares-toast-host="1"]`) that the first copy creates. So toasts stack instead of
 overlapping, and nothing has to be shared between versions.
 
-Toasts are grouped by copy: the header's toasts stay together, and the app's stay together.
+Toasts are grouped by copy: the header's toasts stay together, and the app's stay together. Give each copy's
+region its own label with `ariaLabels={{ region }}`, so screen readers can tell them apart.
 
 If micro front-ends share **one** copy of Antares, their `<ToastRegion />`s all render the same default
 queue. Only the first one mounted shows the toasts, so none appear twice; if it unmounts, the next one
