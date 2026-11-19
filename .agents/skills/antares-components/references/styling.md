@@ -18,7 +18,7 @@ Read this while writing or changing a `*.module.css`.
 Two token scales, split by what the space sits between:
 
 - **Between components**: t-shirt sizes, through the layout props (`gap="md"`, `padding="sm"`). This is the public vocabulary that `Box`, `Flex`, and `Grid` expose, and it maps to `size-space-{xs…2xl}`. Values live in `components/layout/tokens.ts`.
-- **Inside a component**: the numeric scale (`size-space-005` … `size-space-100`, where 2 GU is `050` and 3 GU is `070`), declared as a private variable on the component's own root selector.
+- **Inside a component**: the numeric scale (`size-space-005` … `size-space-100`), declared as a private variable on the component's own root selector.
 
 ```css
 .menu {
@@ -30,7 +30,7 @@ Two token scales, split by what the space sits between:
 Three rules for that chain:
 
 - **Write all three links.** They cover a consumer who ships design tokens, legacy intents, or neither. A `var()` that points at nothing and has no literal fallback is invalid, so the property silently drops to its initial value. That is how `Menu` shipped with `padding: 0`.
-- **Declare it on your own root selector**, never on an ancestor. A variable defined on an ancestor resolves by luck of composition, and not at all inside a portal. `--_box-*` is set and read only on a `Box` your component renders or styles, and inside that element's subtree. You style a `Box` you don't render only through the class its owner accepts for it, as `Menu` does with `Popover`'s `containerProps`. Sitting inside someone else's `Box` grants nothing. Setting it on the `Box` element ties `.box` at `0-1-0` and wins only because your stylesheet loads after Box's.
+- **Declare it on your own root selector**, never on an ancestor. A variable defined on an ancestor resolves by luck of composition, and not at all inside a portal.
 - **Keep the component name in the variable.** Custom properties inherit and CSS Modules does not scope them, so a bare `--_padding` collides with any nested component that picked the same name. `--_menu-padding` cannot.
 
 GU count per tier, and the literal that goes with it: `docs/pdrs/antares/gu-spacing.md`.

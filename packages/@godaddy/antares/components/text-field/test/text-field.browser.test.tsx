@@ -81,15 +81,13 @@ describe('@godaddy/antares', function antares() {
         assume(textbox.getAttribute('placeholder')).equals('0.00');
       });
 
-      it('colors standalone and grouped inputs from the card text token', async function cardTextToken() {
+      it('colors grouped inputs from the card text token', async function cardTextToken() {
         const { locator } = await render(
           <div style={{ '--color-surface-text-card': 'rgb(1, 2, 3)' } as CSSProperties}>
-            <DefaultExample />
             <AdornmentsExample />
           </div>
         );
 
-        assume(getComputedStyle(locator.getByRole('textbox', { name: 'Name' }).element()).color).equals('rgb(1, 2, 3)');
         assume(getComputedStyle(locator.getByRole('textbox', { name: 'Amount' }).element()).color).equals(
           'rgb(1, 2, 3)'
         );

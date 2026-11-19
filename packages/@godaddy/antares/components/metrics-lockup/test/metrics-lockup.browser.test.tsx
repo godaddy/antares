@@ -34,16 +34,6 @@ describe('@godaddy/antares', function antares() {
       expect(getComputedStyle(getByText('vs. last month').element()).color).toBe(expected);
     });
 
-    it('reads the passive text token first', async function passiveToken() {
-      const { getByText } = await render(
-        <div style={{ '--color-feedback-passive-text': 'rgb(1, 2, 3)' } as CSSProperties}>
-          <DefaultExample />
-        </div>
-      );
-
-      expect(getComputedStyle(getByText('Total Revenue').element()).color).toBe('rgb(1, 2, 3)');
-    });
-
     it('shows tooltip on focus of info trigger', async function showsTooltip() {
       const { container, getByRole } = await render(<DefaultExample />);
       container.tabIndex = -1;

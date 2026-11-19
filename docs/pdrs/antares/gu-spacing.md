@@ -276,12 +276,7 @@ value resolves through the nested `var(--ux-1sbfig8, 0.25rem)` fallback.
 
 - Give `bar-chart` / `line-chart` a fallback for `--ux-a2dzk8` - a live bug, independent of this proposal.
 - Fix `segmented-controller`'s `--space-` prefix.
-- Re-tier the numeric references that predate the current scale, so each tier matches the GU
-  multiplier written beside it. Each entry is _tier written → tier for that GU_: `menu` (`005`→`010`,
-  `010`→`020`, `020`→`050`, `030`→`070`), `pagination` (`040`→`050`), `size-provider` (`040`→`050`,
-  `060`→`070`), `text-lockup` (`040`→`050`), `calendar` (`040`→`050`), `card` selection indicator
-  (`020`→`050`), `button` (`040`→`090`), `collapsible` (`070`→`090`), gallery `file-items`
-  (`080`→`100`), and project-inquiry-form `attached-files` (`030`→`070`, `040`→`090`).
+- Re-tier numeric references that predate the current scale so each tier matches its GU multiplier.
 - Replace the `0.25rem` literal in `--ux-1sbfig8` with `0.5rem` to align with `godaddy-antares` theme,
   in all six components that write it, and normalise `progress-bar`'s `8px` to the same literal.
 - Reconcile the `size-space-*` `$description`s in `@godaddy/design-tokens` with the purpose split in

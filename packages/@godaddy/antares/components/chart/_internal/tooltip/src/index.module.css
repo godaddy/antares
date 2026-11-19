@@ -1,5 +1,8 @@
 .tooltip {
-  --chart-tooltip-color: var(--color-surface-text-raised, var(--ux-1leynsm, var(--_box-fg-raised)));
+  --chart-tooltip-color: var(
+    --color-surface-text-raised,
+    var(--color-surface-text-base, var(--ux-1leynsm, var(--_box-fg-raised)))
+  );
   --chart-tooltip-font-size: var(--ux-2lqd62);
   --chart-tooltip-line-height: 1.5;
   --chart-tooltip-value-font-size: var(--ux-1s0t9v0);

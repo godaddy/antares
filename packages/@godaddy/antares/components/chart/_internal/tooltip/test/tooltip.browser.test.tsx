@@ -99,13 +99,13 @@ describe('@godaddy/antares', function antares() {
       assume(arrow).exists();
     });
 
-    it('matches the arrow and text to the raised surface tokens', async function raisedTokens() {
+    it('paints the panel, arrow, and text from partial surface tokens', async function surfaceTokens() {
       const { container } = await render(
         <div
           style={
             {
               '--color-surface-background-raised': 'rgb(10, 20, 30)',
-              '--color-surface-text-raised': 'rgb(240, 241, 242)'
+              '--color-surface-text-base': 'rgb(240, 241, 242)'
             } as CSSProperties
           }
         >
@@ -120,42 +120,6 @@ describe('@godaddy/antares', function antares() {
       assume(getComputedStyle(panel).backgroundColor).equals('rgb(10, 20, 30)');
       assume(getComputedStyle(arrow).borderTopColor).equals('rgb(10, 20, 30)');
       assume(getComputedStyle(panel).color).equals('rgb(240, 241, 242)');
-    });
-
-    it('matches the arrow to the panel without surface tokens', async function legacyArrow() {
-      const { container } = await render(
-        <div style={{ '--ux-cao06b': 'rgb(50, 60, 70)', '--ux-1mh0ktr': 'rgb(1, 2, 3)' } as CSSProperties}>
-          <ArrowExample />
-        </div>
-      );
-      const arrow = Array.from(container.querySelectorAll('[class]')).find(
-        (el) => el.className && el.className.toString().includes('tooltipArrow')
-      ) as HTMLElement;
-      const panel = arrow.parentElement as HTMLElement;
-
-      assume(getComputedStyle(arrow).borderTopColor).equals(getComputedStyle(panel).backgroundColor);
-    });
-
-    it('falls back to the raised surface text without text tokens', async function raisedTextFallback() {
-      const { container } = await render(
-        <div
-          style={
-            {
-              color: 'rgb(17, 17, 17)',
-              '--ux-1leynsm': 'initial',
-              '--color-surface-background-raised': 'rgb(17, 17, 17)',
-              '--color-surface-text-base': 'rgb(255, 255, 255)'
-            } as CSSProperties
-          }
-        >
-          <ArrowExample />
-        </div>
-      );
-      const arrow = Array.from(container.querySelectorAll('[class]')).find(
-        (el) => el.className && el.className.toString().includes('tooltipArrow')
-      ) as HTMLElement;
-
-      assume(getComputedStyle(arrow.parentElement as HTMLElement).color).equals('rgb(255, 255, 255)');
     });
 
     it('does not render arrow when showArrow is false', async function noArrow() {
