@@ -45,7 +45,7 @@
     "@bento/icon": "workspace:^",
     "@bento/svg-parser": "workspace:^",
     "@bento/use-data-attributes": "workspace:^",
-    "@types/d3-scale": "^4.0.2",
+    "@types/d3-scale": "^4.0.9",
     "@internationalized/date": "^3.12.2",
     "@react-aria/focus": "^3.22.0",
     "@react-aria/utils": "catalog:",
