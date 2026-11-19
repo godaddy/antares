@@ -1,7 +1,9 @@
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { useState } from 'react';
+import { flushSync } from 'react-dom';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
-import { CircularProgress, toast } from '@godaddy/antares';
+import { Button, CircularProgress, toast, ToastQueue, ToastRegion } from '@godaddy/antares';
 import assume from 'assume';
 import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
@@ -296,6 +298,51 @@ describe('@godaddy/antares', function antares() {
         assume(toasts().length).equals(5);
       });
       await expect.element(page.getByRole('alertdialog', { name: 'Toast 0' })).toBeVisible();
+    });
+
+    it('finishes a closing toast pushed out by a new one', async function closeThenReplace() {
+      const queue = new ToastQueue({ maxVisibleToasts: 1 });
+      const onClose = vi.fn();
+      await render(<PlaygroundExample queue={queue} />);
+      const key = queue.add({ message: 'Original toast', timeout: null, onClose });
+      await expect.element(page.getByRole('alertdialog', { name: 'Original toast' })).toBeVisible();
+
+      flushSync(function replace() {
+        queue.close(key);
+        queue.add({ message: 'Replacement toast', timeout: null });
+      });
+
+      await expect.element(page.getByRole('alertdialog', { name: 'Replacement toast' })).toBeVisible();
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+
+    it('finishes a closing toast when its region unmounts', async function closeThenUnmount() {
+      const onClose = vi.fn();
+      const key = toast.add({ message: 'Closing toast', timeout: null, onClose });
+
+      function App() {
+        const [isMounted, setIsMounted] = useState(true);
+
+        return (
+          <>
+            {isMounted ? <ToastRegion /> : null}
+            <Button
+              onPress={function closeAndUnmount() {
+                toast.close(key);
+                setIsMounted(false);
+              }}
+            >
+              Leave
+            </Button>
+          </>
+        );
+      }
+
+      await render(<App />);
+      await expect.element(page.getByRole('alertdialog')).toBeVisible();
+      await userEvent.click(page.getByRole('button', { name: 'Leave' }));
+
+      expect(onClose).toHaveBeenCalledTimes(1);
     });
 
     it('can add a replacement from onClose after the exit animation', async function replacementAfterExit() {

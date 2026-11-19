@@ -73,6 +73,11 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
     const key = super.add(content, options);
     if (onClose) this.closeCallbacks.set(key, onClose);
 
+    // A closing toast pushed out of view can't play its exit, so finish it now.
+    for (const exiting of [...this.exiting]) {
+      if (!this.visibleToasts.some((toast) => toast.key === exiting)) this.remove(exiting);
+    }
+
     return key;
   }
 
@@ -129,6 +134,8 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
     return () => {
       this.regions = this.regions.filter((other) => other !== region);
       this.notifyRegions();
+      // No region is left to play the exits, so finish them now.
+      if (this.regions.length === 0) for (const key of [...this.exiting]) this.remove(key);
     };
   }
 
