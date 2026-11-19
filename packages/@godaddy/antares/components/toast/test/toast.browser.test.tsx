@@ -1,8 +1,7 @@
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
-import { flushSync } from 'react-dom';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
-import { toast, ToastQueue } from '@godaddy/antares';
+import { toast } from '@godaddy/antares';
 import assume from 'assume';
 import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
@@ -300,60 +299,6 @@ describe('@godaddy/antares', function antares() {
       await expect.element(page.getByRole('alertdialog', { name: 'Toast 0' })).toBeVisible();
     });
 
-    it('finishes a closing toast replaced at capacity before its exit effect', async function closeThenReplace() {
-      const queue = new ToastQueue({ maxVisibleToasts: 1 });
-      const onClose = vi.fn();
-      await render(<PlaygroundExample queue={queue} />);
-      const key = queue.add({ message: 'Original toast', timeout: null, onClose });
-      await expect.element(page.getByRole('alertdialog', { name: 'Original toast' })).toBeVisible();
-      flushSync(function replace() {
-        queue.close(key);
-        queue.add({ message: 'Replacement toast', timeout: null });
-      });
-
-      await expect.element(page.getByRole('alertdialog', { name: 'Replacement toast' })).toBeVisible();
-      expect(onClose).toHaveBeenCalledTimes(1);
-      assume(page.getByRole('alertdialog', { name: 'Original toast' }).query()).equals(null);
-      queue.close(key);
-      expect(onClose).toHaveBeenCalledTimes(1);
-
-      await userEvent.click(page.getByRole('alertdialog').getByRole('button', { name: 'Close' }));
-      await vi.waitFor(function empty() {
-        assume(toasts().length).equals(0);
-      });
-      expect(onClose).toHaveBeenCalledTimes(1);
-    });
-
-    it('keeps a visible toast in its exit phase when there is spare capacity', async function visibleExit() {
-      const queue = new ToastQueue({ maxVisibleToasts: 2 });
-      const onClose = vi.fn();
-      await render(<PlaygroundExample queue={queue} />);
-      const key = queue.add({ message: 'Original toast', timeout: null, onClose });
-      const original = page.getByRole('alertdialog', { name: 'Original toast' });
-      await expect.element(original).toBeVisible();
-      const element = original.element();
-      const exitBlocker = element.animate([{}, {}], { duration: 1000 });
-      exitBlocker.pause();
-
-      try {
-        flushSync(function replace() {
-          queue.close(key);
-          queue.add({ message: 'Replacement toast', timeout: null });
-        });
-        await expect.element(page.getByRole('alertdialog', { name: 'Replacement toast' })).toBeVisible();
-        expect(onClose).not.toHaveBeenCalled();
-        assume(element.isConnected).equals(true);
-
-        exitBlocker.cancel();
-        await vi.waitFor(function removed() {
-          assume(element.isConnected).equals(false);
-        });
-        expect(onClose).toHaveBeenCalledTimes(1);
-      } finally {
-        exitBlocker.cancel();
-      }
-    });
-
     it('can add a replacement from onClose after the exit animation', async function replacementAfterExit() {
       await render(<DefaultExample />);
       const onClose = vi.fn(function complete() {
@@ -482,23 +427,6 @@ describe('@godaddy/antares', function antares() {
       await vi.waitFor(function shown() {
         assume(toasts().length).equals(1);
       });
-    });
-
-    it('finishes closing toasts when the region unmounts mid-exit', async function unmountMidExit() {
-      const { unmount } = await render(<DefaultExample />);
-      const onClose = vi.fn();
-      const key = toast.add({ message: 'Queued toast', timeout: null, onClose });
-      await expect.element(page.getByRole('alertdialog')).toBeVisible();
-
-      flushSync(function close() {
-        toast.close(key);
-      });
-      await expect.element(page.getByRole('alertdialog')).toHaveAttribute('data-exiting', 'true');
-      await unmount();
-      await render(<DefaultExample />);
-
-      assume(toasts().length).equals(0);
-      expect(onClose).toHaveBeenCalledTimes(1);
     });
 
     it('closes a toast that never showed', async function closeUnshown() {

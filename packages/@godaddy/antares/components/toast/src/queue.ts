@@ -60,27 +60,61 @@ const DEFAULT_MAX_VISIBLE_TOASTS = 5;
  * - Only one region renders it. Micro front-ends sharing one copy of Antares each mount a
  *   `ToastRegion` for the same default queue; the first one mounted renders the toasts, the others
  *   render nothing, and the next one takes over if it unmounts. So no toast shows twice.
- * - An exit phase: `close()` marks a toast as exiting so it can animate out, and the rendered toast
- *   calls `finishClose()` once its exit animation ends. RAC's own timers and close button call
- *   `close()` too, so every path animates.
+ * - A visible toast stays mounted while it plays its exit transition, then calls `remove()`.
  */
 export class InternalToastQueue extends RACToastQueue<ToastContent> {
   private regions: symbol[] = [];
   private regionListeners = new Set<() => void>();
+  private closeCallbacks = new Map<string, () => void>();
   private exiting = new Set<string>();
   private exitListeners = new Set<() => void>();
-  private closeCallbacks = new Map<string, () => void>();
 
   add(content: ToastContent, { onClose, ...options }: RACToastOptions = {}): string {
     const key = super.add(content, options);
     if (onClose) this.closeCallbacks.set(key, onClose);
 
-    for (const exitingKey of [...this.exiting]) {
-      if (!this.visibleToasts.some((toast) => toast.key === exitingKey)) this.finishClose(exitingKey);
-    }
-
     return key;
   }
+
+  /**
+   * Closes a toast, letting a visible one play its exit transition first.
+   *
+   * @param key - The toast's key.
+   */
+  close(key: string): void {
+    const isVisible = this.regions.length > 0 && this.visibleToasts.some((toast) => toast.key === key);
+    if (!isVisible) return this.remove(key);
+    if (this.exiting.has(key)) return;
+
+    this.exiting.add(key);
+    for (const listener of this.exitListeners) listener();
+  }
+
+  /**
+   * Removes a toast. `onClose` runs after the toast is removed, since RAC calls it first, and a toast
+   * added from it would make RAC remove the wrong one.
+   *
+   * @param key - The toast's key.
+   */
+  remove(key: string): void {
+    this.exiting.delete(key);
+    const onClose = this.closeCallbacks.get(key);
+    this.closeCallbacks.delete(key);
+    super.close(key);
+    onClose?.();
+  }
+
+  isExiting(key: string): boolean {
+    return this.exiting.has(key);
+  }
+
+  subscribeExiting = (listener: () => void): (() => void) => {
+    this.exitListeners.add(listener);
+
+    return () => {
+      this.exitListeners.delete(listener);
+    };
+  };
 
   /**
    * Registers a mounted region.
@@ -90,20 +124,12 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
    */
   attach(region: symbol): () => void {
     this.regions.push(region);
-    this.notify(this.regionListeners);
+    this.notifyRegions();
 
     return () => {
       this.regions = this.regions.filter((other) => other !== region);
-      this.notify(this.regionListeners);
-      if (this.isAttached) return;
-      // No region is left to play the exit animations, so finish them now.
-      for (const key of [...this.exiting]) this.finishClose(key);
+      this.notifyRegions();
     };
-  }
-
-  /** Whether any `ToastRegion` currently renders this queue. */
-  get isAttached(): boolean {
-    return this.regions.length > 0;
   }
 
   subscribeRegions = (listener: () => void): (() => void) => {
@@ -119,47 +145,8 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
     return this.regions[0] === region;
   }
 
-  subscribeExiting = (listener: () => void): (() => void) => {
-    this.exitListeners.add(listener);
-
-    return () => {
-      this.exitListeners.delete(listener);
-    };
-  };
-
-  isExiting(key: string): boolean {
-    return this.exiting.has(key);
-  }
-
-  close(key: string): void {
-    if (this.exiting.has(key)) return;
-
-    // Nothing on screen to animate: a queued toast, or no region mounted.
-    if (!this.isAttached || !this.visibleToasts.some((queued) => queued.key === key)) {
-      this.remove(key);
-      return;
-    }
-
-    this.exiting.add(key);
-    this.notify(this.exitListeners);
-  }
-
-  finishClose(key: string): void {
-    if (!this.exiting.delete(key)) return;
-
-    this.remove(key);
-    this.notify(this.exitListeners);
-  }
-
-  private remove(key: string): void {
-    const onClose = this.closeCallbacks.get(key);
-    this.closeCallbacks.delete(key);
-    super.close(key);
-    onClose?.();
-  }
-
-  private notify(listeners: Set<() => void>) {
-    for (const listener of listeners) listener();
+  private notifyRegions() {
+    for (const listener of this.regionListeners) listener();
   }
 }
 

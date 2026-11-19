@@ -24,7 +24,7 @@ interface ToastProps {
   /** The queued toast to render. */
   toast: QueuedToast<ToastContent>;
 
-  /** The queue it belongs to, for the exit phase. */
+  /** The queue it belongs to, for the exit transition. */
   queue: InternalToastQueue;
 
   /** Overrides RAC's localized close label. */
@@ -50,10 +50,10 @@ export function Toast({ toast, queue, closeLabel }: ToastProps) {
     function removeAfterExit() {
       if (!isExiting) return;
 
-      // Reduced motion, or no exit animation at all, resolves right away.
-      const animations = ref.current?.getAnimations() ?? [];
-      void Promise.allSettled(animations.map((animation) => animation.finished)).then(function finish() {
-        queue.finishClose(key);
+      // Reduced motion, or no transition at all, resolves right away.
+      const transitions = ref.current?.getAnimations({ subtree: true }) ?? [];
+      void Promise.allSettled(transitions.map((transition) => transition.finished)).then(function remove() {
+        queue.remove(key);
       });
     },
     [isExiting, key, queue]
@@ -73,25 +73,29 @@ export function Toast({ toast, queue, closeLabel }: ToastProps) {
       data-emphasis={emphasis}
       data-exiting={isExiting || undefined}
     >
-      {/* Content inside a toast portals to the page as usual, not into the toast host. */}
-      <UNSAFE_PortalProvider getContainer={null}>
-        {icon ? <Icon icon={icon} aria-hidden="true" className={styles.icon} /> : null}
-        <RACToastContent className={styles.content}>
-          {hasTitle ? (
-            <Text as="div" slot="title" className={cx(styles.title, textTreatmentClassName('inherit'))}>
-              {title}
-            </Text>
-          ) : null}
-          <Text as="div" slot={messageSlot} className={cx(styles.message, textTreatmentClassName('inherit'))}>
-            {message}
-          </Text>
-        </RACToastContent>
-        {dismissible ? (
-          <Button slot="close" variant="minimal" size="sm" aria-label={closeLabel} className={styles.close}>
-            <Icon icon="x" />
-          </Button>
-        ) : null}
-      </UNSAFE_PortalProvider>
+      <div className={styles.clip}>
+        <div className={styles.surface}>
+          {/* Content inside a toast portals to the page as usual, not into the toast host. */}
+          <UNSAFE_PortalProvider getContainer={null}>
+            {icon ? <Icon icon={icon} aria-hidden="true" className={styles.icon} /> : null}
+            <RACToastContent className={styles.content}>
+              {hasTitle ? (
+                <Text as="div" slot="title" className={cx(styles.title, textTreatmentClassName('inherit'))}>
+                  {title}
+                </Text>
+              ) : null}
+              <Text as="div" slot={messageSlot} className={cx(styles.message, textTreatmentClassName('inherit'))}>
+                {message}
+              </Text>
+            </RACToastContent>
+            {dismissible ? (
+              <Button slot="close" variant="minimal" size="sm" aria-label={closeLabel} className={styles.close}>
+                <Icon icon="x" />
+              </Button>
+            ) : null}
+          </UNSAFE_PortalProvider>
+        </div>
+      </div>
     </RACToast>
   );
 }
