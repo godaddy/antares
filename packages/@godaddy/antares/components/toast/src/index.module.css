@@ -46,6 +46,8 @@
   --_toast-slide: 100%;
   --_toast-offset: 0;
   --_toast-opacity: 1;
+  --_toast-outline: none;
+  --_toast-ring: 4px;
 
   /* A grid row that grows from 0fr, so the toasts around it slide to make room. */
   display: grid;
@@ -70,8 +72,7 @@
   }
 
   &:where([data-focus-visible]) {
-    outline: 2px solid Highlight;
-    outline-offset: -2px;
+    --_toast-outline: 2px solid Highlight;
   }
 
   &:where([data-emphasis="success"]) {
@@ -87,10 +88,15 @@
   }
 }
 
-/* The row's only cell: clips the toast while the row collapses, and holds the space between toasts. */
+/*
+ * The row's only cell: clips the toast while the row collapses. Its padding leaves room for the focus
+ * ring, and the negative margin keeps the toast where it was.
+ */
 .clip {
   min-block-size: 0;
   overflow: hidden;
+  padding: var(--_toast-ring);
+  margin: calc(var(--_toast-ring) * -1);
 }
 
 .surface {
@@ -103,6 +109,8 @@
   color: var(--_toast-fg);
   border: 1px solid var(--_toast-border);
   border-radius: var(--_toast-radius);
+  outline: var(--_toast-outline);
+  outline-offset: 2px;
   translate: var(--_toast-offset) 0;
   opacity: var(--_toast-opacity);
   transition:

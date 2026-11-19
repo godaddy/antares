@@ -52,5 +52,17 @@ describe('@godaddy/antares', function antares() {
 
       await expect(document.querySelector(`${HOST} [role="region"]`) as HTMLElement).toMatchScreenshot('message-only');
     });
+
+    it('focus ring', async function focusRing() {
+      await render(<PlaygroundExample timeout={0} />);
+      await userEvent.click(page.getByRole('button', { name: 'Show toast' }));
+      await resetHover();
+      await settle();
+      // F6 moves keyboard focus into the region, and Tab onto the toast.
+      await userEvent.keyboard('{F6}{Tab}');
+      await expect.element(page.getByRole('alertdialog')).toHaveAttribute('data-focus-visible');
+
+      await expect(document.querySelector(HOST) as HTMLElement).toMatchScreenshot('focus-ring');
+    });
   });
 });
