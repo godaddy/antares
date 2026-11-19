@@ -1,10 +1,6 @@
 .tooltip {
-  --_box-bg-overlay: var(
-    --color-surface-background-raised,
-    var(--ux-7wu8i7, color-mix(in oklch, var(--_box-bg-raised), white 8%))
-  );
-  --_box-fg-overlay: var(--color-surface-text-raised, var(--ux-1o8cusa, var(--_box-fg-base)));
-  --_box-bd-overlay: var(--color-surface-border-raised, transparent);
+  --_box-bg-overlay: var(--ux-7wu8i7, color-mix(in oklch, var(--_box-bg-raised), white 8%));
+  --_box-fg-overlay: var(--ux-1o8cusa, var(--_box-fg-base));
 
   --_arrow-width: 10px;
   --_arrow-rotated-width: calc(var(--_arrow-width) / pow(2, 1 / 2));
