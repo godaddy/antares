@@ -1,5 +1,6 @@
 import type { TooltipData } from '@visx/xychart';
 import assume from 'assume';
+import type { CSSProperties } from 'react';
 import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import type { DataPoint } from '../../../types.ts';
@@ -96,6 +97,29 @@ describe('@godaddy/antares', function antares() {
         (el) => el.className && el.className.toString().includes('tooltipArrow')
       );
       assume(arrow).exists();
+    });
+
+    it('paints the panel, arrow, and text from partial surface tokens', async function surfaceTokens() {
+      const { container } = await render(
+        <div
+          style={
+            {
+              '--color-surface-background-raised': 'rgb(10, 20, 30)',
+              '--color-surface-text-base': 'rgb(240, 241, 242)'
+            } as CSSProperties
+          }
+        >
+          <ArrowExample />
+        </div>
+      );
+      const arrow = Array.from(container.querySelectorAll('[class]')).find(
+        (el) => el.className && el.className.toString().includes('tooltipArrow')
+      ) as HTMLElement;
+      const panel = arrow.parentElement as HTMLElement;
+
+      assume(getComputedStyle(panel).backgroundColor).equals('rgb(10, 20, 30)');
+      assume(getComputedStyle(arrow).borderTopColor).equals('rgb(10, 20, 30)');
+      assume(getComputedStyle(panel).color).equals('rgb(240, 241, 242)');
     });
 
     it('does not render arrow when showArrow is false', async function noArrow() {

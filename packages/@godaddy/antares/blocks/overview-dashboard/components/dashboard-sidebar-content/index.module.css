@@ -4,7 +4,7 @@
 }
 
 .navigationHeader {
-  padding-inline-end: var(--sp-sm, 0.25rem);
+  padding-inline-end: var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 1));
   padding-inline-start: calc((var(--navigation-rail-size) - 24px) / 2);
 }
 
@@ -21,7 +21,7 @@
 .sideNavItem {
   justify-content: flex-start;
   inline-size: 100%;
-  padding-inline-end: var(--sp-md, 0.5rem);
+  padding-inline-end: var(--size-space-050, calc(var(--ux-1sbfig8, 0.25rem) * 2));
   padding-inline-start: calc((var(--navigation-rail-size) - 1lh) / 2 - 1px);
   position: relative;
   text-align: start;
@@ -29,12 +29,12 @@
 
 .sideNavItem::before {
   background: transparent;
-  border-radius: var(--rounding-full);
+  border-radius: 9999px;
   content: "";
   inset-block: 0;
   inset-inline-start: 0;
   position: absolute;
-  width: var(--sp-sm);
+  width: var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 1));
 }
 
 .sideNavItem:where([aria-pressed="true"]) {

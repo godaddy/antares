@@ -11,6 +11,8 @@
 }
 
 .drawer {
+  --_drawer-radius: var(--size-radius-md, 3px);
+
   outline: none;
   overflow: clip;
   transform: perspective(1000px);
@@ -30,12 +32,12 @@
 }
 
 .drawer:where([data-position="bottom"]) {
-  border-radius: var(--br-md) var(--br-md) 0 0;
+  border-radius: var(--_drawer-radius) var(--_drawer-radius) 0 0;
   transform-origin: center -150px;
 }
 
 .drawer:where([data-position="top"]) {
-  border-radius: 0 0 var(--br-md) var(--br-md);
+  border-radius: 0 0 var(--_drawer-radius) var(--_drawer-radius);
   transform-origin: center calc(100% + 150px);
 }
 

@@ -67,8 +67,8 @@ the same theme Storybook uses.
   overlays would then be confined to a content-sized viewport, which affects
   roughly a third of the library. The wrapper keeps overlays working exactly as
   they do in Storybook.
-- **Only `Legacy` is applied.** Storybook's theme switcher (`Legacy`, `Nextgen`,
-  `Both`, `None`) has no equivalent here; the site pins `Legacy`, which is also
+- **Only `Legacy` is applied.** Storybook's theme switcher (`Legacy`, `None`) has
+  no equivalent here; the site pins `Legacy`, which is also
   Storybook's default.
 
 ### Known gaps

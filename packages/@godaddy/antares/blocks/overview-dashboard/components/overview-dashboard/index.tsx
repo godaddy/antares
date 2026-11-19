@@ -96,7 +96,11 @@ export function OverviewDashboard() {
 
   return (
     <Box ref={dashboardFrameRef} className={styles.dashboardFrame}>
-      <Grid className={styles.dashboardShell} data-navigation-pinned-open={isNavigationPinnedOpen || undefined}>
+      <Grid
+        className={styles.dashboardShell}
+        gap="xl"
+        data-navigation-pinned-open={isNavigationPinnedOpen || undefined}
+      >
         <DashboardSidebar
           activeItem={activeNavigationItem}
           isPinnedOpen={isNavigationPinnedOpen}

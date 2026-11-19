@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { render } from 'vitest-browser-react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { userEvent } from 'vitest/browser';
@@ -15,6 +16,22 @@ describe('@godaddy/antares', function antares() {
       await expect.element(getByText('Total Revenue')).toBeVisible();
       await expect.element(getByText('$1,234.56')).toBeVisible();
       await expect.element(getByText('vs. last month')).toBeVisible();
+    });
+
+    it('mutes the title and description from the surrounding text color', async function passiveText() {
+      const { getByText } = await render(
+        <div style={{ color: 'rgb(255, 255, 255)', '--ux-1m9ys0v': 'rgb(118, 118, 118)' } as CSSProperties}>
+          <DefaultExample />
+        </div>
+      );
+      const probe = document.createElement('span');
+      probe.style.color = 'color-mix(in oklch, transparent, rgb(255, 255, 255) 60%)';
+      document.body.append(probe);
+      const expected = getComputedStyle(probe).color;
+      probe.remove();
+
+      expect(getComputedStyle(getByText('Total Revenue').element()).color).toBe(expected);
+      expect(getComputedStyle(getByText('vs. last month').element()).color).toBe(expected);
     });
 
     it('shows tooltip on focus of info trigger', async function showsTooltip() {

@@ -119,7 +119,7 @@ export const Text = forwardRef<HTMLElement, TextProps>(
 ```
 
 - **Props:** Prefer `interface` for component props; use `type` when necessary (e.g. polymorphic/utility types). Extend RAC props with `Omit` for overrides.
-- **Styling:** CSS Modules + `cx()` or `cva()`. Reference design tokens as `var(--fg-base)`, `var(--bg-selected)`, `var(--sp-sm)`.
+- **Styling:** CSS Modules + `cx()` or `cva()`. Reference `@godaddy/design-tokens` custom properties with a full fallback chain, e.g. `var(--color-surface-text-base, var(--ux-1leynsm, #111))`, `var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 1))`.
 - **Exports:** Add public exports to `packages/@godaddy/antares/index.tsx` using the `#components/` alias with inline `type` keyword.
 
 ## Test Structure
@@ -182,7 +182,7 @@ export const Styles = getVariants(ButtonVariantsExample, { /* variant configs */
 
 ## Layout & Spacing
 
-Use `Flex`, `Box`, `Grid` components with t-shirt size tokens: `sm`, `md`, `lg`. In CSS, use `var(--sp-sm)`.
+Use `Flex`, `Box`, `Grid` components with t-shirt size tokens: `sm`, `md`, `lg`. In component CSS, use the numeric `size-space-*` tokens through a private `--_<component>-*` variable on the component's root.
 
 ## Naming
 
