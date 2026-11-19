@@ -136,6 +136,28 @@ describe('@godaddy/antares', function antares() {
       assume(getComputedStyle(arrow).borderTopColor).equals(getComputedStyle(panel).backgroundColor);
     });
 
+    it('falls back to the raised surface text without text tokens', async function raisedTextFallback() {
+      const { container } = await render(
+        <div
+          style={
+            {
+              color: 'rgb(17, 17, 17)',
+              '--ux-1leynsm': 'initial',
+              '--color-surface-background-raised': 'rgb(17, 17, 17)',
+              '--color-surface-text-base': 'rgb(255, 255, 255)'
+            } as CSSProperties
+          }
+        >
+          <ArrowExample />
+        </div>
+      );
+      const arrow = Array.from(container.querySelectorAll('[class]')).find(
+        (el) => el.className && el.className.toString().includes('tooltipArrow')
+      ) as HTMLElement;
+
+      assume(getComputedStyle(arrow.parentElement as HTMLElement).color).equals('rgb(255, 255, 255)');
+    });
+
     it('does not render arrow when showArrow is false', async function noArrow() {
       const { container } = await render(<SingleSeriesExample showArrow={false} />);
       const arrow = Array.from(container.querySelectorAll('[class]')).find(

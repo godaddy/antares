@@ -1,6 +1,6 @@
 .title {
   font-size: var(--font-detail-size-lg, 0.875rem);
-  color: var(--color-feedback-passive-text, var(--ux-1m9ys0v, #767676));
+  color: var(--color-feedback-passive-text, color-mix(in oklch, transparent, currentColor 60%));
 }
 
 .infoTrigger {
@@ -29,7 +29,7 @@
 
 .description {
   font-size: var(--font-detail-size-lg, 0.875rem);
-  color: var(--color-feedback-passive-text, var(--ux-1m9ys0v, #767676));
+  color: var(--color-feedback-passive-text, color-mix(in oklch, transparent, currentColor 60%));
 }
 
 .trendIcon {
@@ -47,7 +47,7 @@
 }
 
 .trendIcon[data-trend="neutral"] {
-  color: var(--color-feedback-passive-text, var(--ux-1m9ys0v, #767676));
+  color: var(--color-feedback-passive-text, color-mix(in oklch, transparent, currentColor 60%));
 }
 
 .trendIcon[data-trend="negative"] {
