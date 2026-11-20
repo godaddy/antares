@@ -12,7 +12,6 @@
   container: alert / inline-size;
   position: relative;
   max-width: 100%;
-  gap: var(--alert-gap);
   padding: var(--alert-padding);
   background: var(--alert-bg);
   color: var(--alert-fg);
@@ -20,118 +19,85 @@
   border-inline-start-width: var(--alert-radius);
   border-radius: var(--alert-radius);
 
-  &[data-emphasis="critical"] {
+  &:where([data-emphasis="critical"]) {
     --alert-accent: var(--ux-1fhc073);
   }
 
-  &[data-emphasis="warning"] {
+  &:where([data-emphasis="warning"]) {
     --alert-accent: var(--ux-lv1r6m);
   }
 
-  &[data-emphasis="success"] {
+  &:where([data-emphasis="success"]) {
     --alert-accent: var(--ux-1ep3kxj);
   }
 
-  &[data-emphasis="info"] {
+  &:where([data-emphasis="info"]) {
     --alert-accent: var(--ux-1lpd00q);
   }
 
-  &[data-emphasis="highlight"] {
+  &:where([data-emphasis="highlight"]) {
     --alert-accent: var(--ux-cuskv8);
   }
 
-  &[data-emphasis="premium"] {
+  &:where([data-emphasis="premium"]) {
     --alert-accent: var(--ux-143smq7);
   }
 
-  &[data-emphasis="internal"] {
+  &:where([data-emphasis="internal"]) {
     --alert-accent: var(--ux-1iwdp0z);
   }
 }
 
-.float {
-  display: none;
-}
-
-.content {
-  gap: var(--alert-gap);
-  align-items: baseline;
-  flex: 1;
-  min-width: 0;
-}
-
-.iconWrapper {
-  flex-shrink: 0;
-  height: var(--alert-icon-size);
-  width: var(--alert-icon-size);
-  overflow: hidden;
-
-  &::before,
-  &::after {
-    content: "\200B";
-    visibility: hidden;
-  }
-}
-
-.icon {
-  flex-shrink: 0;
+.emphasisIcon {
   color: var(--alert-accent);
   width: var(--alert-icon-size);
   height: var(--alert-icon-size);
 }
 
-.textAndActionWrapper {
-  flex: 1;
-  min-width: 0;
-  gap: var(--alert-gap);
+.layout {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "icon content close"
+    ".    actions .";
+  align-items: start;
 }
 
-.text {
-  flex: 1 1 70%;
-  min-width: 0;
-  gap: var(--alert-gap);
-}
-
-.title {
-  font-size: var(--alert-title-font-size);
-  font-weight: var(--alert-title-font-weight);
-}
-
-.actions {
-  flex-shrink: 0;
+/* Context classes place the rendered regions, including those returned by custom components. */
+.layout > :where(.emphasisIcon) {
+  grid-area: icon;
   margin-inline-end: var(--alert-gap);
 }
 
-.close {
-  flex-shrink: 0;
+.layout > :where(.textRegion) {
+  grid-area: content;
+  min-inline-size: 0;
 }
 
-@container alert (width < 420px) {
-  .content {
-    .textAndActionWrapper {
-      flex-direction: column;
-      align-items: flex-start;
-    }
+.layout > :where(.actions) {
+  grid-area: actions;
+  min-inline-size: 0;
+  padding-block-start: var(--alert-gap);
+}
 
-    .actions {
-      margin-inline-end: 0;
-    }
+.layout > :where(.close) {
+  grid-area: close;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--_type-size, var(--alert-title-font-size));
+  font-weight: var(--alert-title-font-weight);
+}
+
+@container alert (min-width: 26.25rem) {
+  .layout {
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    grid-template-areas: "icon content actions close";
   }
 
-  .text {
-    .float {
-      display: block;
-      float: inline-end;
-      margin-block-end: var(--alert-gap);
-      margin-inline-start: var(--alert-gap);
-      height: calc(var(--alert-gap) * 2);
-      width: calc(var(--alert-gap) * 4);
-    }
-  }
-
-  .close {
-    position: absolute;
-    inset-block-start: var(--alert-padding);
-    inset-inline-end: var(--alert-padding);
+  .layout > :where(.actions) {
+    align-self: center;
+    margin-inline: var(--alert-gap);
+    padding-block-start: 0;
   }
 }

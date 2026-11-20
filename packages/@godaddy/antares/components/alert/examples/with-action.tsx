@@ -1,22 +1,22 @@
-import { Alert, Button } from '@godaddy/antares';
+import { Alert, Icon, Button, ButtonGroup, Content, Heading, Text } from '@godaddy/antares';
 
 /**
- * Pass a `Button` to the `actions` slot to give the user a clear path to resolve the alert.
+ * Compose ButtonGroup as the actions region. Button variants and sizes stay explicit and overridable.
  * @order 4
  */
-export function WithActionExample() {
+export function WithActionExample({ onAction }: { onAction?: () => void } = {}) {
   return (
-    <Alert
-      emphasis="warning"
-      title="Your payment method is expiring"
-      actions={
-        <Button variant="secondary" size="sm">
+    <Alert emphasis="warning">
+      <Icon slot="indicator" icon="alert" />
+      <Content>
+        <Heading slot="title">Your payment method is expiring</Heading>
+        <Text>Please update your payment method before it expires.</Text>
+      </Content>
+      <ButtonGroup>
+        <Button variant="secondary" size="sm" onPress={onAction}>
           Update Payment Method
         </Button>
-      }
-      onClose={() => undefined}
-    >
-      Please update your payment method before it expires.
+      </ButtonGroup>
     </Alert>
   );
 }

@@ -5,19 +5,22 @@ import {
   Alert,
   Box,
   Button,
+  Icon,
+  CloseButton,
+  Content,
   Detail,
   type DropEvent,
   type DropOptions,
   FileTrigger,
   Flex,
   Heading,
-  Icon,
   Label,
   ProgressBar,
   SegmentedController,
   SegmentedControllerItem,
   Tag,
   Text,
+  TextContext,
   isFileDropItem,
   useDrop
 } from '@godaddy/antares';
@@ -175,23 +178,28 @@ export function Gallery({ initialImages = [], defaultView = 'grid', limits, onIm
           </Flex>
 
           {errors.length ? (
-            <Alert
-              id={uploadErrorId}
-              emphasis="critical"
-              aria-label="Upload issues"
-              ariaLabels={{ close: 'Dismiss upload issues' }}
-              onClose={function dismissUploadIssues() {
-                addButton.current?.focus({ preventScroll: true });
-                dismissErrors();
-              }}
-            >
-              <Flex direction="column" gap="xs">
-                {errors.map((error) => (
-                  <Text key={error} size="sm">
-                    {error}
-                  </Text>
-                ))}
-              </Flex>
+            <Alert id={uploadErrorId} emphasis="critical" aria-label="Upload issues">
+              <Icon slot="indicator" icon="alert" />
+              <Content>
+                <Box>
+                  <TextContext.Provider value={null}>
+                    <Flex direction="column" gap="xs">
+                      {errors.map((error) => (
+                        <Text key={error} size="sm">
+                          {error}
+                        </Text>
+                      ))}
+                    </Flex>
+                  </TextContext.Provider>
+                </Box>
+              </Content>
+              <CloseButton
+                aria-label="Dismiss upload issues"
+                onPress={function dismissUploadIssues() {
+                  addButton.current?.focus({ preventScroll: true });
+                  dismissErrors();
+                }}
+              />
             </Alert>
           ) : null}
           <Detail role="status" aria-label="Gallery updates" aria-atomic="true" className={styles.notice}>
