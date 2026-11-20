@@ -50,6 +50,8 @@
 
 .emphasisIcon {
   color: var(--alert-accent);
+  width: var(--alert-icon-size);
+  height: var(--alert-icon-size);
 }
 
 .layout {

@@ -65,9 +65,8 @@ export function InteriorExample({
     <Icon
       slot="indicator"
       icon="star"
-      width={32}
-      height={32}
       className="caller-icon"
+      style={{ width: 32, height: 32 }}
       data-testid="owned-icon"
       ref={iconRef}
     />

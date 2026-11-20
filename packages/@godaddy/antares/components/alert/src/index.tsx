@@ -62,7 +62,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props
             TextContext,
             {
               slots: {
-                [DEFAULT_SLOT]: { elementType: 'div', className: inherit },
+                [DEFAULT_SLOT]: { className: inherit },
                 title: { elementType: 'div', ...title }
               }
             }
@@ -87,8 +87,6 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props
                 ...iconSlots,
                 [DEFAULT_SLOT]: iconSlots[DEFAULT_SLOT] ?? {},
                 indicator: mergeProps(iconSlots.indicator ?? {}, {
-                  width: 'var(--alert-icon-size)',
-                  height: 'var(--alert-icon-size)',
                   'aria-hidden': true,
                   className: styles.emphasisIcon
                 })
