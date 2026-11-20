@@ -3,7 +3,6 @@
   isolation: isolate;
   box-sizing: border-box;
   border-radius: var(--size-radius-lg, var(--ux-2jubes, 6px));
-  color: inherit;
   text-decoration: none;
 }
 

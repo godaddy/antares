@@ -1,6 +1,6 @@
 import { createMDX } from 'fumadocs-mdx/next';
 import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { dirname, join, relative } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -10,6 +10,8 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 // Injects `'use client'` into component example modules at build time, so the
 // example source files stay free of the directive (see lib/use-client-loader.cjs).
 const useClientLoader = join(__dirname, 'lib/use-client-loader.cjs');
+// MDX files in sibling packages also import Fumadocs' server helpers.
+const fumadocsServer = fileURLToPath(import.meta.resolve('fumadocs-core/server'));
 const EXAMPLE_MODULE = /[\\/]components[\\/].+[\\/]examples[\\/][^\\/]+\.tsx$/;
 
 /** @type {import('next').NextConfig} */
@@ -25,6 +27,7 @@ const config = {
   turbopack: {
     root: join(__dirname, '../..'),
     resolveAlias: {
+      'fumadocs-core/server': `./${relative(__dirname, fumadocsServer)}`,
       '@storybook/addon-docs/blocks': './lib/storybook-bridge/blocks.tsx',
       '@storybook/react-vite': './lib/storybook-bridge/react-vite.ts',
       '@bento/storybook-addon-helpers': '@bento/storybook-addon-helpers/runtime',
@@ -52,6 +55,7 @@ const config = {
   webpack(config) {
     config.resolve.alias = {
       ...config.resolve.alias,
+      'fumadocs-core/server$': fumadocsServer,
       '@storybook/addon-docs/blocks': join(__dirname, 'lib/storybook-bridge/blocks.tsx'),
       '@storybook/react-vite': join(__dirname, 'lib/storybook-bridge/react-vite.ts'),
       '@bento/storybook-addon-helpers$': '@bento/storybook-addon-helpers/runtime',

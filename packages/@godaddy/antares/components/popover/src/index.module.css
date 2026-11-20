@@ -5,9 +5,10 @@
   --_arrow-height: calc(var(--_arrow-rotated-width) / 2);
   --_content-offset: calc(var(--_arrow-height) + var(--_arrow-rounded-tip));
   --_arrow-offset: calc(var(--_arrow-height) * -1);
+  --_popover-viewport-inset: var(--size-space-050, calc(var(--ux-1sbfig8, 0.25rem) * 2));
 
   inline-size: max-content;
-  max-inline-size: calc(100dvw - var(--sp-md) * 2);
+  max-inline-size: calc(100dvw - var(--_popover-viewport-inset) * 2);
   isolation: isolate;
   transition:
     transform 200ms cubic-bezier(0.23, 1, 0.32, 1),

@@ -48,8 +48,8 @@
     "@bento/error": "workspace:^",
     "@bento/slots": "workspace:^",
     "@bento/use-props": "workspace:^0.2.1",
-    "@react-aria/overlays": "^3.32.0",
-    "@react-stately/overlays": "^3.7.0"
+    "@react-aria/overlays": "^3.32.1",
+    "@react-stately/overlays": "^3.7.1"
   },
   "devDependencies": {
     "@bento/button": "workspace:^",

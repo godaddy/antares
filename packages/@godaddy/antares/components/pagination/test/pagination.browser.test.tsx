@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { render } from 'vitest-browser-react';
 import { describe, expect, it } from 'vitest';
 import { userEvent } from 'vitest/browser';
@@ -43,6 +44,25 @@ describe('@godaddy/antares', function antares() {
       await expect.element(input).toHaveValue(1);
       await next.click();
       await expect.element(input).toHaveValue(2);
+    });
+
+    it('colors the page input from the card surface tokens', async function cardSurfaceTokens() {
+      const { getByRole } = await render(
+        <div
+          style={
+            {
+              '--color-surface-background-card': 'rgb(10, 20, 30)',
+              '--color-surface-text-card': 'rgb(240, 241, 242)'
+            } as CSSProperties
+          }
+        >
+          <DefaultExample />
+        </div>
+      );
+      const input = getByRole('spinbutton', { name: 'Current page' }).element();
+
+      expect(getComputedStyle(input).backgroundColor).toBe('rgb(10, 20, 30)');
+      expect(getComputedStyle(input).color).toBe('rgb(240, 241, 242)');
     });
 
     it('starts the uncontrolled input at page one', async function startsInputAtPageOne() {

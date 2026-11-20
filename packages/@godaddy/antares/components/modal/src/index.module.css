@@ -26,8 +26,10 @@
 }
 
 .dialog {
-  max-block-size: calc(100dvh - var(--sp-md) * 2);
-  inline-size: calc(100dvw - var(--sp-md) * 2);
+  --_modal-viewport-inset: var(--size-space-050, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+
+  max-block-size: calc(100dvh - var(--_modal-viewport-inset) * 2);
+  inline-size: calc(100dvw - var(--_modal-viewport-inset) * 2);
   max-inline-size: 80ch;
 }
 

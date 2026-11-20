@@ -1,4 +1,5 @@
 import assume from 'assume';
+import type { CSSProperties } from 'react';
 import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { DefaultExample } from '../examples/default';
@@ -60,6 +61,22 @@ describe('@godaddy/antares', function antares() {
 
         assume(input.hasAttribute('disabled')).equals(true);
         assume(frame.getAttribute('data-disabled')).equals('true');
+      });
+
+      it('fades the card text token on the disabled input', async function disabledCardTextToken() {
+        const { locator } = await render(
+          <div style={{ '--color-surface-text-card': 'rgb(1, 2, 3)' } as CSSProperties}>
+            <DisabledExample />
+          </div>
+        );
+        const input = locator.getByRole('textbox', { name: 'Quantity' }).element();
+        const probe = document.createElement('span');
+        probe.style.color = 'color-mix(in oklch, transparent, rgb(1, 2, 3) 40%)';
+        document.body.append(probe);
+        const expected = getComputedStyle(probe).color;
+        probe.remove();
+
+        assume(getComputedStyle(input).color).equals(expected);
       });
     });
 

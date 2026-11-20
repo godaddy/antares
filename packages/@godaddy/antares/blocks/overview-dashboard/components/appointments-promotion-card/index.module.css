@@ -6,7 +6,7 @@
   display: block;
   max-inline-size: 100%;
   block-size: auto;
-  border-radius: var(--rounding-sm);
+  border-radius: var(--size-radius-sm, 2px);
 }
 
 .mediaCardContent,
