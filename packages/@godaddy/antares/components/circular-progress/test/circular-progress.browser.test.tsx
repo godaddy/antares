@@ -336,6 +336,24 @@ describe('@godaddy/antares', function antares() {
       expect(screen.getByText('60% uploaded').element().getBoundingClientRect().top).toBeGreaterThan(
         screen.getByText('Uploading').element().getBoundingClientRect().bottom
       );
+      for (const alignment of ['start', 'end'] as const) {
+        for (const width of [undefined, 80]) {
+          await screen.rerender(
+            <CompositionExample
+              justifyItems={alignment}
+              alignItems={alignment}
+              rows="160px auto auto"
+              style={{ width: 320 }}
+              trackProps={{ style: { width } }}
+            />
+          );
+          const progress = screen.getByRole('progressbar').element();
+          const trackRect = progress.querySelector('[slot="track"]')!.getBoundingClientRect();
+          const valueRect = progress.querySelector('[slot="value"]')!.getBoundingClientRect();
+          expect(valueRect.x + valueRect.width / 2).toBeCloseTo(trackRect.x + trackRect.width / 2, 0);
+          expect(valueRect.y + valueRect.height / 2).toBeCloseTo(trackRect.y + trackRect.height / 2, 0);
+        }
+      }
       await screen.rerender(<CompositionExample areas={['label track', 'description track']} columns="1fr auto" />);
       expect(getComputedStyle(screen.getByRole('progressbar').element()).gridTemplateAreas).toBe(
         '"label track" "description track"'

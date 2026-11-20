@@ -57,6 +57,7 @@
 
 .indicator {
   grid-area: track;
+  place-self: center;
   width: var(--circular-progress-size);
   aspect-ratio: 1;
 }
