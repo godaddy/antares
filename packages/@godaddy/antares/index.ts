@@ -39,6 +39,7 @@ export * from './exports/ProgressBar';
 export * from './exports/ProgressSteps';
 export * from './exports/ToggleButton';
 export * from './exports/Alert';
+export * from './exports/Toast';
 export * from './exports/Tag';
 export * from './exports/DropZone';
 export * from './exports/FileTrigger';
