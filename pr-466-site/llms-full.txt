@@ -1202,8 +1202,11 @@ progress semantics.
 
 - Provide `Label`, `aria-label`, or `aria-labelledby` for the accessible name.
 - The root retains `role="progressbar"`, including when no visible value is composed.
-- `Text slot="description"` is associated automatically, preserving external `aria-describedby` references.
-- Indeterminate progress hides the value slot, including custom content, and omits `aria-valuenow` and `aria-valuetext`.
+- `Text slot="description"` is associated automatically after hydration, preserving external `aria-describedby` references.
+  For an association in server-rendered HTML, explicitly set the description's `id` and the root's `aria-describedby`.
+- Indeterminate progress hides the value slot and omits `aria-valuenow` and `aria-valuetext`.
+  Known limitation: custom `Text slot="value"` content with `maxLines` can remain visible.
+  Omit `maxLines` or use the children render function to omit the value slot while `isIndeterminate` is true.
 - The circular track and repeated visible value are decorative and hidden from assistive technology.
 - Reduced motion stops the activity animation while keeping the indicator visible.
 
