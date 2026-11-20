@@ -50,7 +50,7 @@
     "@bento/to-attribute-value": "workspace:^",
     "@bento/use-data-attributes": "workspace:^",
     "@bento/use-props": "workspace:^0.2.1",
-    "@react-types/shared": "^3.34.0"
+    "@react-types/shared": "^3.37.0"
   },
   "devDependencies": {
     "vitest-browser-react": "catalog:",
