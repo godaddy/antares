@@ -39,22 +39,22 @@
     --circular-progress-label-font-size: calc(var(--ux-16aixzc, 0.875rem) * 1.125 * 1.125 * 1.125);
   }
 
-  /* Emphasis overrides */
-  &:where([data-emphasis="success"]) {
+  /* Status overrides */
+  &:where([data-status="success"]) {
     --circular-progress-fill-color: var(--ux-1ep3kxj, #00a63f);
   }
 
-  &:where([data-emphasis="warning"]) {
+  &:where([data-status="warning"]) {
     --circular-progress-fill-color: var(--ux-lv1r6m, #de7c00);
   }
 
-  &:where([data-emphasis="critical"]) {
+  &:where([data-status="critical"]) {
     --circular-progress-fill-color: var(--ux-1fhc073, #db1802);
   }
 }
 
 .indicator {
-  position: relative;
+  grid-area: track;
   width: var(--circular-progress-size);
   aspect-ratio: 1;
 }
@@ -80,31 +80,42 @@
   transition: stroke-dashoffset 150ms linear;
 }
 
-.output {
-  position: absolute;
-  inset: 0;
-  font-size: var(--circular-progress-output-font-size);
+.value {
+  grid-area: track;
+  place-self: center;
+  font-size: var(--_type-size, var(--circular-progress-output-font-size));
   font-weight: bold;
-  color: var(--circular-progress-text-color);
+  --_type-slot-color: var(--circular-progress-text-color);
+  color: var(--_type-color, var(--_type-slot-color));
   font-family: var(--ux-1067ph9, sans-serif);
   line-height: 1;
+
+  &:where(:empty, [data-indeterminate]) {
+    display: none;
+  }
 }
 
 .label {
-  font-size: var(--circular-progress-label-font-size);
+  grid-area: label;
+  margin-block-start: var(--sp-sm);
+  font-size: var(--_type-size, var(--circular-progress-label-font-size));
   font-family: var(--ux-15ks663, sans-serif);
   font-weight: var(--ux-aarlu5, 400);
   line-height: var(--ux-h93mi7, 1.375);
-  color: var(--circular-progress-text-color);
+  --_type-slot-color: var(--circular-progress-text-color);
+  color: var(--_type-color, var(--_type-slot-color));
   text-align: center;
 }
 
-.helperText {
-  font-size: var(--ux-p4h24g, 0.875rem);
+.description {
+  grid-area: description;
+  margin-block-start: var(--sp-sm);
+  font-size: var(--_type-size, var(--ux-p4h24g, 0.875rem));
   font-family: var(--ux-1gutwvn, sans-serif);
   font-weight: var(--ux-g9ierp, 400);
   line-height: var(--ux-1dje42v, 1.5);
-  color: var(--circular-progress-help-color);
+  --_type-slot-color: var(--circular-progress-help-color);
+  color: var(--_type-color, var(--_type-slot-color));
   text-align: center;
 }
 

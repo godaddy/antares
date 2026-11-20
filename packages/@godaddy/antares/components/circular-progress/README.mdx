@@ -1,6 +1,6 @@
 ---
 title: CircularProgress
-description: A circular progress indicator shows determinate or indeterminate progress of an operation over time
+description: Composable circular progress with optional value, label, and description
 ---
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import { Examples } from '@bento/storybook-addon-helpers/runtime';
@@ -18,19 +18,70 @@ npm install --save @godaddy/antares
 
 <Examples of={Stories.Examples} />
 
+## Customization
+
+Compose `Box slot="track"` for the circular indicator and `Box slot="value"` or `Text slot="value"`
+for formatted or custom content. The root's children render function provides progress state,
+including `percentage`, `valueText`, and `isIndeterminate`. Custom ranges and `formatOptions` apply
+consistently to the indicator and formatted value. Use `valueLabel` to customize the accessible
+value text and the default visible value together.
+
+Use `status="default"`, `"success"`, `"warning"`, or `"critical"` to choose the fill color,
+matching ProgressBar. The default is `"default"`.
+
+The track and value share a grid area so the value is centered over the circle. Customize the
+layout with Grid props, `className`, and `style`. Omit any optional part without changing the
+progress semantics.
+
 ## Accessibility
 
-### ARIA Support
+- Provide `Label`, `aria-label`, or `aria-labelledby` for the accessible name.
+- The root retains `role="progressbar"`, including when no visible value is composed.
+- `Text slot="description"` is associated automatically, preserving external `aria-describedby` references.
+- Indeterminate progress hides the value slot, including custom content, and omits `aria-valuenow` and `aria-valuetext`.
+- The circular track and repeated visible value are decorative and hidden from assistive technology.
+- Reduced motion stops the activity animation while keeping the indicator visible.
 
-- `role="progressbar"` on the container
-- `aria-valuenow` is omitted while indeterminate; otherwise it reflects the current value (clamped to 0–100)
-- `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-- `aria-valuetext` and visible value text are omitted while indeterminate; otherwise `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
-- `aria-labelledby` associates the visible label when the `label` prop is provided
-- `aria-describedby` wires the `helperText` to the progressbar for screen readers
-- The decorative SVG and output text are hidden via `aria-hidden="true"`
+## Migration
+
+This is a breaking API change. Replace `label` with `Label` children and `helperText` with
+`Text slot="description"`. The root no longer inserts a track or visible value automatically;
+compose those slots explicitly to preserve the previous appearance.
+
+Rename the root's `emphasis` prop to `status` to match ProgressBar. The success, warning,
+and critical colors are unchanged; omitting `status` or setting it to `"default"` keeps the teal fill.
+
+Before:
+
+```tsx
+<CircularProgress value={60} emphasis="success" label="Uploading…" helperText="3 of 5 files uploaded" />
+```
+
+After:
+
+```tsx
+<CircularProgress value={60} status="success">
+  <Box slot="track" />
+  <Box slot="value" />
+  <Label>Uploading…</Label>
+  <Text slot="description">3 of 5 files uploaded</Text>
+</CircularProgress>
+```
+
+Keep existing `size`, range, and formatting props on the root. To show only the circle,
+compose the track slot and supply `aria-label` or `aria-labelledby`.
 
 ## Props
+
+```tsx
+<CircularProgress>
+  <Box slot="track" />
+  <Box slot="value" />
+  <Label />
+  <Text slot="description" />
+  {/* ... */}
+</CircularProgress>
+```
 
 ### CircularProgress
 

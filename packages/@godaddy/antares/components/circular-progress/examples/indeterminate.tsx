@@ -1,4 +1,4 @@
-import { CircularProgress, type CircularProgressProps } from '@godaddy/antares';
+import { Box, CircularProgress, Label, Text, type CircularProgressProps } from '@godaddy/antares';
 
 /**
  * Use indeterminate progress while preparing an upload whose total size is unknown.
@@ -7,6 +7,11 @@ import { CircularProgress, type CircularProgressProps } from '@godaddy/antares';
  */
 export function IndeterminateExample(props: CircularProgressProps) {
   return (
-    <CircularProgress label="Preparing upload…" helperText="Calculating the total size" isIndeterminate {...props} />
+    <CircularProgress isIndeterminate {...props}>
+      <Box slot="track" />
+      <Box slot="value" />
+      <Label>Preparing upload…</Label>
+      <Text slot="description">Calculating the total size</Text>
+    </CircularProgress>
   );
 }

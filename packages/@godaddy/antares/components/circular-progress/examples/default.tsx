@@ -1,9 +1,16 @@
-import { CircularProgress } from '@godaddy/antares';
+import { Box, CircularProgress, Label, Text, type CircularProgressProps } from '@godaddy/antares';
 
 /**
- * A basic determinate progress indicator with a label and helper text.
+ * Compose a circular track, formatted value, label, and description.
  * @order 1
  */
-export function DefaultExample() {
-  return <CircularProgress value={60} label="Uploading…" helperText="3 of 5 files uploaded" />;
+export function DefaultExample(props: CircularProgressProps) {
+  return (
+    <CircularProgress value={60} {...props}>
+      <Box slot="track" />
+      <Box slot="value" />
+      <Label>Uploading…</Label>
+      <Text slot="description">3 of 5 files uploaded</Text>
+    </CircularProgress>
+  );
 }
