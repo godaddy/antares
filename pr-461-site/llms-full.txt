@@ -1,6 +1,6 @@
 # Antares
 
-<Meta title="Welcome" />
+<Component title="Welcome" />
 
 # Antares
 
@@ -105,10 +105,9 @@ Any bundler that supports CSS imports will work with Antares. If your bundler do
 
 <ComponentCards />
 
-
 # Accordion
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -193,10 +192,9 @@ For a single independent section, use Collapsible without an Accordion.
 
 <ArgTypes of={Stories.Props} />
 
-
 # Alert
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Installation [#installation]
 
@@ -239,10 +237,9 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 
 <ArgTypes of={Stories.Props} />
 
-
 # Avatar
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -310,10 +307,9 @@ When an Avatar triggers an action, compose it with `Pressable` so the Avatar kee
 
 <ArgTypes of={Stories.Props} />
 
-
 # Button
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 Buttons trigger actions. To navigate, use `LinkButton`; `isExternal` adds an icon and opens a new tab.
 For selection, use `ChipGroup` for filters or `ToggleButtonGroup` for a set of options.
@@ -347,10 +343,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.CloseButtonProps} />
 
-
 # Calendar
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -410,10 +405,9 @@ import { Calendar } from '@godaddy/antares';
 
 <ArgTypes of={Stories.RangeCalendarProps} />
 
-
 # Card
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 Card groups related content, like media, text, and actions, on a single surface. On its own, a Card
 is a static surface, or a link when you pass `href`. Put Cards in a `CardGroup` to make them
@@ -474,10 +468,9 @@ and `[data-disabled]` to style Card states.
 
 <ArgTypes of={Stories.CardSelectionIndicatorProps} />
 
-
 # Carousel
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Installation [#installation]
 
@@ -495,10 +488,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-
 # Bar Chart
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -616,10 +608,9 @@ For better performance:
 
 <ArgTypes of={Stories.Props} />
 
-
 # DonutChart
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Installation [#installation]
 
@@ -637,10 +628,9 @@ npm install @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-
 # Gauge Chart
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Installation [#installation]
 
@@ -689,10 +679,9 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 
 <ArgTypes of={Stories.Props} />
 
-
 # LineChart
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Installation [#installation]
 
@@ -774,10 +763,9 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 
 <ArgTypes of={Stories.Props} />
 
-
 # Checkbox
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Installation [#installation]
 
@@ -1028,10 +1016,9 @@ Always provide clear error messages and use appropriate validation states:
 
 <ArgTypes of={Stories.CheckboxIndicatorProps} />
 
-
 # Chip
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -1182,10 +1169,9 @@ For a menu trigger, compose `MenuTrigger`, `Popover`, and `Menu`:
 
 <ArgTypes of={Stories.ChipButtonProps} />
 
-
 # CircularProgress
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Installation [#installation]
 
@@ -1215,10 +1201,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-
 # Collapsible
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -1333,10 +1318,9 @@ Panel content stays mounted when collapsed. Reset form state explicitly when the
 
 <ArgTypes of={Stories.CollapsiblePanelProps} />
 
-
 # DatePicker
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -1441,10 +1425,9 @@ controls to jump directly. Resizing changes the presentation on the next opening
 
 <ArgTypes of={Stories.DateRangePickerValueProps} />
 
-
 # Drawer
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 An overlay panel that slides in from a screen edge, for sidebar navigation and bottom sheets. It can
 be swiped closed, and drawers can be nested.
@@ -1504,10 +1487,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.DrawerTriggerProps} />
 
-
 # DropZone
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Installation [#installation]
 
@@ -1560,10 +1542,9 @@ The button's accessible name is built from two sources, combined in order:
 
 <ArgTypes of={Stories.Props} />
 
-
 # FieldError
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -1585,10 +1566,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-
 # FileTrigger
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -1623,10 +1603,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-
 # Heading
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -1653,10 +1632,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-
 # Icon
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 The `Icon` component provides a flexible and performant way to display SVG icons with extensive customization options. Built on top of the Bento Icon system, it features on-demand loading from a CDN, automatic caching, and enhanced props for the Antares design system.
 
@@ -1693,8 +1671,9 @@ The component extends `BentoIconProps` and passes through all standard HTML attr
 
 ## Basic Usage [#basic-usage]
 
-<Story of={Stories.Icon} inline />
-<Source language='tsx' code={SourceIcon} />
+<Component inline />
+
+<Component language="tsx" code="import { Icon, type IconProps } from '@godaddy/antares';\n\n/**\n * Example Icon component demonstrating basic usage with default star icon\n *\n * Renders a star icon with aria-label for accessibility and accepts additional\n * props to override defaults. Used in Storybook documentation and examples.\n *\n * @order 1\n * @param props - Partial IconProps (excluding ref) to override default icon properties\n * @returns JSX element rendering the Icon component with star icon\n *\n * @example\n * ```typescript\n * // Basic usage with defaults\n * <DefaultExample />\n *\n * // With custom dimensions and color\n * <DefaultExample width={24} height={24} color=\"blue\" />\n * ```\n */\nexport function DefaultExample(props: Partial<Omit<IconProps, 'ref'>>) {\n  return <Icon icon=\"star\" aria-label=\"Star icon\" {...props} />;\n}" />
 
 ## Size Variants [#size-variants]
 
@@ -2058,10 +2037,9 @@ For performance optimization:
 2. **Use sprite mode**: For repeated icons, consider sprite mode which consolidates multiple icons into a single SVG sprite sheet, reducing DOM size and improving performance when the same icon appears multiple times
 3. **Minimize icon sets**: Only load icons that are actually used
 
-
 # Image
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -2091,10 +2069,9 @@ npm install @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-
 # InlineDrawer
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 `InlineDrawerPanel` is the collapsible content for the accordion pattern — a thin wrapper over RAC `DisclosurePanel` that hides when collapsed. The trigger is any component you slot in with `slot="trigger"` — there's no dedicated trigger component.
 
@@ -2157,10 +2134,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.InlineDrawerPanelProps} />
 
-
 # Input
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 `Input` is the single-line control inside a field, not a field on its own. Prefer `TextField` or `NumberField` as the parent; see those components for fuller examples.
 
@@ -2187,10 +2163,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-
 # Label
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -2215,10 +2190,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-
 # Box
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 `Box` is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
 
@@ -2284,10 +2258,9 @@ slot unless the provider includes an unslotted default. Nested providers replace
 
 <ArgTypes of={Stories.Props} />
 
-
 # Flex
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 `Flex` is a one-dimensional layout component for arranging children in rows or columns with alignment and spacing control. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
 
@@ -2330,10 +2303,9 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 
 <ArgTypes of={Stories.Props} />
 
-
 # Grid
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 `Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
 
@@ -2374,10 +2346,9 @@ Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid 
 
 <ArgTypes of={Stories.Props} />
 
-
 # ListBox
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -2416,10 +2387,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.ListBoxItemProps} />
 
-
 # Menu
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 `MenuTrigger` wraps a trigger element and a `Popover` containing `Menu`. The menu is fully keyboard-navigable, supports typeahead search, and handles open/close state automatically. The trigger applies `hideArrow` and card styling to all popovers, including nested submenus.
 
@@ -2528,10 +2498,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.SubmenuTriggerProps} />
 
-
 # MetricsLockup
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
 
@@ -2573,10 +2542,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-
 # Modal
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 `ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
 
@@ -2637,10 +2605,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.ModalTriggerProps} />
 
-
 # NumberField
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -2681,10 +2648,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-
 # Pagination
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -2753,10 +2719,9 @@ provided by Antares.
 
 <ArgTypes of={Stories.PaginationDotsProps} />
 
-
 # Popover
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 `PopoverTrigger` wraps a trigger button and a `<Popover>`, handling open state and positioning automatically.
 Based on RAC `DialogTrigger`. To anchor a popover to an element it doesn't wrap, pass `triggerRef` instead.
@@ -2816,10 +2781,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.PopoverTriggerProps} />
 
-
 # Pressable
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -2885,10 +2849,9 @@ Do not add `role="button"` to a native `<button>` or `<a>` unless you intentiona
 
 <ArgTypes of={Stories.Props} />
 
-
 # ProgressBar
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Installation [#installation]
 
@@ -2928,10 +2891,9 @@ Grid props, `className`, and `style`.
 
 <ArgTypes of={Stories.Props} />
 
-
 # ProgressSteps
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -2999,10 +2961,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.ProgressStepProps} />
 
-
 # Radio
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Installation [#installation]
 
@@ -3197,10 +3158,9 @@ Always provide clear error messages:
 
 <ArgTypes of={Stories.GroupProps} />
 
-
 # RangeField
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -3313,10 +3273,9 @@ Negative values are supported. Set a negative `minValue` and ensure every scalar
 
 Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
 
-
 # Responsive
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -3368,10 +3327,9 @@ CSS instead of rendering different trees. Validate layouts with long text, RTL, 
 enlargement, and browser zoom. Resizing the viewport alone does not test every effect of zoom. Use
 pointer and hover media features to detect input capabilities, not widths.
 
-
 # SegmentedController
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Installation [#installation]
 
@@ -3439,10 +3397,9 @@ Components automatically add data attributes for styling different states:
 
 <ArgTypes of={Stories.SegmentedControllerItemProps} />
 
-
 # Select
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -3496,10 +3453,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.SelectItemProps} />
 
-
 # SizeProvider
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -3525,10 +3481,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-
 # Skeleton
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -3571,10 +3526,9 @@ npm install @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-
 # Structure primitives
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 **Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
 
@@ -3622,10 +3576,9 @@ Each container works in two modes:
 
 <ArgTypes of={Stories.CornerActionsProps} />
 
-
 # Switch
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -3747,10 +3700,9 @@ Use the interactive root data attributes for state-based customization. The trac
 
 <ArgTypes of={Stories.Props} />
 
-
 # Tabs
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -3830,10 +3782,9 @@ Use `TabList`'s `containerProps` to customize the outer tab list shell, such as 
 
 <ArgTypes of={Stories.TabPanelProps} />
 
-
 # Tag
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Installation [#installation]
 
@@ -3891,10 +3842,9 @@ The colored dot is decorative and invisible to screen readers. The text label mu
 
 <ArgTypes of={Stories.Props} />
 
-
 # TextArea
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 `TextArea` is the multiline control inside a field, not a field on its own. Prefer `TextField` as the parent; see that component for fuller examples.
 
@@ -3921,10 +3871,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-
 # TextField
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -3967,10 +3916,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-
 # TextLockup
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Features [#features]
 
@@ -4064,10 +4012,9 @@ Wrap the title in `Header` when using `CornerActions`.
 
 <ArgTypes of={Stories.Props} />
 
-
 # Text
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 `Text` is body copy and `Detail` is supporting copy: captions, metadata, and hints.
 
@@ -4102,10 +4049,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.DetailProps} />
 
-
 # ToggleButton
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 ## Installation [#installation]
 
@@ -4286,10 +4232,9 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 
 <ArgTypes of={Stories.ToggleButtonProps} />
 
-
 # Tooltip
 
-<Meta of={Stories} name="Overview" />
+<Component of={{}} name="Overview" />
 
 Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
 Once a tooltip has been shown, subsequent tooltips appear without delay.
@@ -4352,10 +4297,9 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.TooltipTriggerProps} />
 
-
 # Build product experiences with Antares.
 
-<Meta title="Blocks" id="blocks" />
+<Component title="Blocks" id="blocks" />
 
 ## Install a block [#install-a-block]
 
@@ -4387,10 +4331,9 @@ npx shadcn@latest add godaddy/antares/blocks/sign-in-form
 
 <Block id="sign-in-form" description="A simple Antares sign-in experience." of={SignInFormStories.Preview} />
 
-
 # Gallery
 
-<Meta of={Stories} name="Overview" id="blocks-gallery" />
+<Component of={{}} name="Overview" id="blocks-gallery" />
 
 <Block
   id="gallery"
@@ -4398,10 +4341,9 @@ npx shadcn@latest add godaddy/antares/blocks/sign-in-form
   of={Stories.Preview}
 />
 
-
 # Overview dashboard
 
-<Meta of={Stories} name="Overview" id="blocks-overview-dashboard" />
+<Component of={{}} name="Overview" id="blocks-overview-dashboard" />
 
 <Block
   id="overview-dashboard"
@@ -4409,10 +4351,9 @@ npx shadcn@latest add godaddy/antares/blocks/sign-in-form
   of={Stories.Preview}
 />
 
-
 # Project inquiry form
 
-<Meta of={Stories} name="Overview" id="blocks-project-inquiry-form" />
+<Component of={{}} name="Overview" id="blocks-project-inquiry-form" />
 
 <Block
   id="project-inquiry-form"
@@ -4420,9 +4361,8 @@ npx shadcn@latest add godaddy/antares/blocks/sign-in-form
   of={Stories.Preview}
 />
 
-
 # Sign-in form
 
-<Meta of={Stories} name="Overview" id="blocks-sign-in-form" />
+<Component of={{}} name="Overview" id="blocks-sign-in-form" />
 
 <Block id="sign-in-form" description="A simple Antares sign-in experience." of={Stories.Preview} />
