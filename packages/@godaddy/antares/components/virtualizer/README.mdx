@@ -1,0 +1,88 @@
+---
+title: Virtualizer
+description: Renders only the visible portion of a large collection while preserving selection, keyboard navigation, and focus.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './virtualizer.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- **Windowed rendering**: Mounts the visible items and a few neighbors instead of the whole collection.
+- **Wraps a collection**: Works with `ListBox`, `CardGroup`, and a composed `Select` popover. The collection stays the scrolling surface, so the `Virtualizer` adds no DOM or styling of its own.
+- **Layouts**: `ListLayout` for rows and `GridLayout` for uniform grids, with fixed or measured item sizes. `WaterfallLayout` and `TableLayout` are also exported for matching collection shapes.
+- **React Aria integration**: Selection, keyboard navigation, typeahead, and focus keep working for items outside the viewport.
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples
+
+Give the collection a definite block size and `overflow: auto`, and put the `Virtualizer` around the collection itself. Each item needs a stable `id` and a readable `textValue`.
+
+<Examples of={Stories.Examples} />
+
+## Customization
+
+- **List sizes**: Use `rowSize` when every item is the same height. Use `estimatedRowSize` with `shouldObserveItemSize` when content wraps or can be enlarged.
+- **Grid sizes**: Pass `new Size(width, height)` for `minItemSize` and `maxItemSize`. Set `preserveAspectRatio` to keep a fixed cell height. Pair `GridLayout` with `layout="grid"` on the child collection so keyboard movement matches the cell geometry.
+- **Item fit**: Let each item fill the size the layout gives it (`blockSize: '100%'`), and keep padding and borders inside it.
+- **Stability**: Keep the layout class and `layoutOptions` stable across renders, and use stable item `id`s when filtering or appending data.
+- **Select**: `SelectOptions` owns its list, so compose `Popover`, `Content`, and `ListBox` yourself to place a `Virtualizer` inside a `Select`.
+- **CardGroup**: Prefer `CardGroup` when items are selectable surfaces with media or actions. Keep CSS grid columns and gaps off the group so the virtualizer layout owns geometry.
+- **Other layouts**: Use `WaterfallLayout` for masonry-style cells and `TableLayout` when composing a table-shaped collection. Pass the matching collection and keep layout options stable.
+
+## Accessibility
+
+- Give every standalone `ListBox` or `CardGroup` an `aria-label` or `aria-labelledby`, and a `Select` a visible `Label`.
+- React Aria owns keyboard navigation and focus while items enter and leave the viewport, so do not add a competing key handler.
+- Offscreen items are not in the DOM. Browser find and print only see the mounted items, so offer search, filtering, or an export when people need the whole collection.
+- Keep interactive controls out of `ListBoxItem`. For items with actions, use `CardGroup`.
+
+## Best Practices
+
+- Virtualize only when the unvirtualized collection is slow. Small collections are simpler to render normally.
+- Keep selection and other item state outside the rendered rows, because offscreen rows unmount.
+- Virtualization controls rendering, not fetching. Keep pagination, loading, and retries in your application.
+- Avoid animating item positions or adding CSS gaps. Use the layout's `gap` option instead.
+- Render empty states with the collection's `renderEmptyState`, not as an item.
+
+## Troubleshooting
+
+- **No items appear:** the collection needs a nonzero inline and block size, and it must be the element that scrolls.
+- **Items overlap or clip:** make `rowSize` match the rendered height, or use `estimatedRowSize` for variable content.
+- **Scroll jumps after an update:** keep item ids and the layout identity stable.
+- **A Select opens away from its selected item:** scroll the focused option into view from the `ListBox` `onFocus` handler, as the Select example does.
+- **Server markup is not windowed:** SSR can render the collection fallback, but real windowing needs client viewport and item measurements. Do not treat server HTML as the virtualized list.
+- **A custom composition does not virtualize:** `Virtualizer` needs a React Aria collection. CSS `Grid` or `Flex` markup is not one.
+
+## Props
+
+```tsx
+<Virtualizer>
+  <ListBox>
+    <ListBoxItem />
+    {/* ... */}
+  </ListBox>
+</Virtualizer>
+```
+
+### Virtualizer
+
+<ArgTypes of={Stories.Props} />
+
+### ListLayout options
+
+<ArgTypes of={Stories.ListLayoutOptionsProps} />
+
+### GridLayout options
+
+<ArgTypes of={Stories.GridLayoutOptionsProps} />
+
+`WaterfallLayout` and `TableLayout` share the same `layout` and `layoutOptions` pattern as `ListLayout` and `GridLayout`. Pair each with a collection that matches its geometry.

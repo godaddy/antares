@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { defineConfig, defaultExclude, type TestProjectConfiguration } from 'vitest/config';
+import { defineConfig, defaultExclude, type TestProjectInlineConfiguration } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
 import type { Plugin } from 'vite';
@@ -57,7 +57,7 @@ function bentoInternalPropsVersionDefine(): Record<string, string> {
   };
 }
 
-export const ssr: TestProjectConfiguration = {
+export const ssr: TestProjectInlineConfiguration = {
   extends: true,
   test: {
     globals: true,
@@ -77,7 +77,7 @@ export const ssr: TestProjectConfiguration = {
   }
 };
 
-export const browser: TestProjectConfiguration = {
+export const browser: TestProjectInlineConfiguration = {
   extends: true,
   test: {
     globals: true,
@@ -105,7 +105,7 @@ export const browser: TestProjectConfiguration = {
   }
 };
 
-export const visual: TestProjectConfiguration = {
+export const visual: TestProjectInlineConfiguration = {
   extends: true,
   test: {
     ...browser.test,

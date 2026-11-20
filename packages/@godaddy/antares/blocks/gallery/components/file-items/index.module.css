@@ -30,3 +30,14 @@
 .collection {
   inline-size: 100%;
 }
+
+/* The virtualizer needs a scrollport; a max size lets short collections shrink to fit. */
+.group {
+  max-block-size: 40rem;
+  overflow: auto;
+}
+
+/* Virtualized grid cells have a fixed height from the layout, so the card fills its cell. */
+:where(.group) .card:where([data-variant="vertical"]) {
+  block-size: 100%;
+}

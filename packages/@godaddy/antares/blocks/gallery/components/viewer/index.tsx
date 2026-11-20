@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import {
   Button,
   Carousel,
@@ -12,14 +12,23 @@ import {
   Icon,
   CardGroup,
   Card,
+  ListLayout,
   Modal,
   Pagination,
   Text,
+  Virtualizer,
   type CardGroupProps
 } from '@godaddy/antares';
 import { GalleryImage } from '../image';
 import type { ImageItem } from '../../data/types';
 import styles from './index.module.css';
+
+const thumbnailLayoutOptions = {
+  orientation: 'horizontal' as const,
+  rowSize: 80,
+  gap: 8,
+  padding: 4
+};
 
 interface ViewerProps {
   /** Current viewable gallery order, shared by the list and grid views. */
@@ -38,6 +47,8 @@ interface ViewerProps {
 /** Modal image viewer that reuses Antares Carousel for the main image sequence. */
 export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps) {
   const activeThumbnail = useRef<HTMLElement>(null);
+  const thumbnailViewport = useRef<HTMLDivElement>(null);
+  const pendingThumbnailFocusId = useRef<string | null>(null);
   const index = images.findIndex(function findActiveImage(image) {
     return image.id === activeId;
   });
@@ -45,8 +56,26 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
 
   const registerActiveThumbnail = useCallback(function registerActiveThumbnail(element: HTMLElement | null) {
     activeThumbnail.current = element;
+    if (element?.id === pendingThumbnailFocusId.current) {
+      pendingThumbnailFocusId.current = null;
+      element.focus({ preventScroll: true });
+    }
     element?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }, []);
+
+  useEffect(
+    function revealActiveThumbnail() {
+      if (index < 0) return;
+      const scrollport = thumbnailViewport.current?.querySelector<HTMLElement>('[role="grid"]');
+      if (!(scrollport instanceof HTMLElement)) return;
+
+      const itemStart =
+        thumbnailLayoutOptions.padding + index * (thumbnailLayoutOptions.rowSize + thumbnailLayoutOptions.gap);
+      const maxScrollLeft = Math.max(0, scrollport.scrollWidth - scrollport.clientWidth);
+      scrollport.scrollLeft = Math.min(itemStart, maxScrollLeft);
+    },
+    [index]
+  );
 
   const focusActiveThumbnail = useCallback(function focusActiveThumbnail() {
     activeThumbnail.current?.focus({ preventScroll: true });
@@ -79,7 +108,10 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
     function handleThumbnailSelection(keys) {
       if (keys === 'all') return;
       const id = keys.values().next().value;
-      if (typeof id === 'string' && id !== activeId) onSelectImage(id);
+      if (typeof id === 'string' && id !== activeId) {
+        pendingThumbnailFocusId.current = id;
+        onSelectImage(id);
+      }
     },
     [activeId, onSelectImage]
   );
@@ -145,41 +177,46 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
             </Button>
           </Pagination>
         </Flex>
-        <CardGroup
-          items={images}
-          dependencies={[activeId]}
-          columns="none"
-          rows="max-content"
-          autoFlow="column"
-          autoColumns="max-content"
-          orientation="horizontal"
-          gap="md"
-          padding="sm"
-          aria-label="Image thumbnails"
-          className={styles.thumbnails}
-          selectionMode="single"
-          autoFocus
-          selectionBehavior="replace"
-          escapeKeyBehavior="none"
-          disallowEmptySelection
-          selectedKeys={activeId ? [activeId] : []}
-          onSelectionChange={handleThumbnailSelection}
-        >
-          {function renderThumbnail(thumbnailImage) {
-            return (
-              <Card
-                id={thumbnailImage.id}
-                textValue={thumbnailImage.name}
-                aria-label={`View ${thumbnailImage.name}`}
-                ref={thumbnailImage.id === activeId ? registerActiveThumbnail : undefined}
-                padding="0"
-                gap="0"
-              >
-                <GalleryImage image={thumbnailImage} variant="thumbnail" />
-              </Card>
-            );
-          }}
-        </CardGroup>
+        <Box ref={thumbnailViewport} className={styles.thumbnailViewport}>
+          <Virtualizer layout={ListLayout} layoutOptions={thumbnailLayoutOptions}>
+            <CardGroup
+              items={images}
+              dependencies={[activeId]}
+              columns="none"
+              rows="max-content"
+              autoFlow="column"
+              autoColumns="max-content"
+              orientation="horizontal"
+              gap="0"
+              padding="0"
+              aria-label="Image thumbnails"
+              className={styles.thumbnails}
+              style={{ display: 'block', inlineSize: '100%' }}
+              selectionMode="single"
+              autoFocus
+              selectionBehavior="replace"
+              escapeKeyBehavior="none"
+              disallowEmptySelection
+              selectedKeys={activeId ? [activeId] : []}
+              onSelectionChange={handleThumbnailSelection}
+            >
+              {function renderThumbnail(thumbnailImage) {
+                return (
+                  <Card
+                    id={thumbnailImage.id}
+                    textValue={thumbnailImage.name}
+                    aria-label={`View ${thumbnailImage.name}`}
+                    ref={thumbnailImage.id === activeId ? registerActiveThumbnail : undefined}
+                    padding="0"
+                    gap="0"
+                  >
+                    <GalleryImage image={thumbnailImage} variant="thumbnail" />
+                  </Card>
+                );
+              }}
+            </CardGroup>
+          </Virtualizer>
+        </Box>
       </Content>
     </Modal>
   );
