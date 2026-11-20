@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useRef } from 'react';
 import { scaleBand, scaleLinear } from '@visx/scale';
 import { useTooltip } from '@visx/tooltip';
+import type { ScaleBand, ScaleLinear } from 'd3-scale';
 import type { Accessors, SeriesConfig } from '../../types.ts';
 import {
   getCategoryValues,
@@ -98,7 +99,7 @@ export function useBarChart<T extends object>({
     [innerWidth, innerHeight, numGroups, totalBarWidth, isVertical]
   );
 
-  const categoryScale = useMemo(
+  const categoryScale = useMemo<ScaleBand<string | number | Date>>(
     function getCategoryScale() {
       return scaleBand({
         domain: categoryDomain,
@@ -110,7 +111,7 @@ export function useBarChart<T extends object>({
     [categoryDomain, innerWidth, innerHeight, paddingInner, paddingOuter, isVertical]
   );
 
-  const valueScale = useMemo(
+  const valueScale = useMemo<ScaleLinear<number, number>>(
     function getValueScale() {
       let domain: [number, number];
       if (isVertical && yDomain && typeof yDomain[0] === 'number') {
