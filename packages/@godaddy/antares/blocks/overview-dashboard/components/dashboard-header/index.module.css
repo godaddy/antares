@@ -10,11 +10,11 @@
 }
 
 .navigation {
-  gap: var(--sp-lg);
+  gap: var(--size-space-070, calc(var(--ux-1sbfig8, 0.25rem) * 3));
 }
 
 .navActions {
-  gap: var(--sp-md);
+  gap: var(--size-space-050, calc(var(--ux-1sbfig8, 0.25rem) * 2));
 }
 
 @container (max-width: 40rem) {
@@ -31,6 +31,6 @@
 
   .navigation,
   .navActions {
-    gap: var(--sp-sm);
+    gap: var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 1));
   }
 }

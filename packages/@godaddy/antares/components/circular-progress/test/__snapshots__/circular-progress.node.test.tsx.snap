@@ -7,7 +7,7 @@ exports[`@godaddy/antares > #CircularProgress > renders a named track without op
 `;
 
 exports[`@godaddy/antares > #CircularProgress > renders composed slots 1`] = `
-"<div class="box flex" style="align-items:start;flex-wrap:wrap;gap:var(--sp-lg)"><div data-size="sm" data-status="default" class="box grid root" style="grid-template-areas:&quot;track&quot;
+"<div class="box flex" style="align-items:start;flex-wrap:wrap;gap:var(--_box-space-lg)"><div data-size="sm" data-status="default" class="box grid root" style="grid-template-areas:&quot;track&quot;
 &quot;label&quot;
 &quot;description&quot;;grid-template-columns:minmax(0, 1fr);justify-items:center;--circular-progress-stroke-width:12.5" data-rac="" id="react-aria-_R_9_" aria-labelledby="react-aria-_R_9H1_" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-valuetext="60%" role="progressbar"><div aria-hidden="true" slot="track" class="box indicator"><svg class="svg" viewBox="0 0 100 100" aria-hidden="true"><circle class="track" cx="50" cy="50" r="43.75" fill="none" stroke-linecap="round"></circle><circle class="fill" cx="50" cy="50" r="43.75" fill="none" stroke-linecap="round" transform="rotate(-90 50 50)" stroke-dasharray="274.8893571891069" stroke-dashoffset="109.95574287564276"></circle></svg></div><div aria-hidden="true" slot="value" class="box value typeInherit">60%</div><span class="label type typeLabel scaleMd" id="react-aria-_R_9H1_">Box value</span><span class="description typeInherit text type typeText scaleMd" id="react-aria-_R_1_" slot="description">Processing files</span></div><div data-size="sm" data-status="default" class="box grid root" style="grid-template-areas:&quot;track&quot;
 &quot;label&quot;
@@ -29,7 +29,7 @@ exports[`@godaddy/antares > #CircularProgress > renders descriptions and wrapped
 `;
 
 exports[`@godaddy/antares > #CircularProgress > renders in different sizes 1`] = `
-"<div class="box flex" style="align-items:flex-end;gap:var(--sp-lg)"><div data-size="sm" data-status="default" class="box grid root" style="grid-template-areas:&quot;track&quot;
+"<div class="box flex" style="align-items:flex-end;gap:var(--_box-space-lg)"><div data-size="sm" data-status="default" class="box grid root" style="grid-template-areas:&quot;track&quot;
 &quot;label&quot;
 &quot;description&quot;;grid-template-columns:minmax(0, 1fr);justify-items:center;--circular-progress-stroke-width:12.5" data-rac="" id="react-aria-_R_9_" aria-labelledby="react-aria-_R_9H1_" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" aria-valuetext="40%" role="progressbar"><div aria-hidden="true" slot="track" class="box indicator"><svg class="svg" viewBox="0 0 100 100" aria-hidden="true"><circle class="track" cx="50" cy="50" r="43.75" fill="none" stroke-linecap="round"></circle><circle class="fill" cx="50" cy="50" r="43.75" fill="none" stroke-linecap="round" transform="rotate(-90 50 50)" stroke-dasharray="274.8893571891069" stroke-dashoffset="164.93361431346412"></circle></svg></div><div aria-hidden="true" slot="value" class="box value typeInherit">40%</div><span class="label type typeLabel scaleMd" id="react-aria-_R_9H1_">Small</span></div><div data-size="md" data-status="default" class="box grid root" style="grid-template-areas:&quot;track&quot;
 &quot;label&quot;
@@ -59,7 +59,7 @@ exports[`@godaddy/antares > #CircularProgress > renders the default circular pro
 `;
 
 exports[`@godaddy/antares > #CircularProgress > renders with different status variants 1`] = `
-"<div class="box flex" style="align-items:flex-end;gap:var(--sp-lg)"><div data-size="md" data-status="default" class="box grid root" style="grid-template-areas:&quot;track&quot;
+"<div class="box flex" style="align-items:flex-end;gap:var(--_box-space-lg)"><div data-size="md" data-status="default" class="box grid root" style="grid-template-areas:&quot;track&quot;
 &quot;label&quot;
 &quot;description&quot;;grid-template-columns:minmax(0, 1fr);justify-items:center;--circular-progress-stroke-width:12.5" data-rac="" id="react-aria-_R_9_" aria-labelledby="react-aria-_R_9H1_" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-valuetext="60%" role="progressbar"><div aria-hidden="true" slot="track" class="box indicator"><svg class="svg" viewBox="0 0 100 100" aria-hidden="true"><circle class="track" cx="50" cy="50" r="43.75" fill="none" stroke-linecap="round"></circle><circle class="fill" cx="50" cy="50" r="43.75" fill="none" stroke-linecap="round" transform="rotate(-90 50 50)" stroke-dasharray="274.8893571891069" stroke-dashoffset="109.95574287564276"></circle></svg></div><div aria-hidden="true" slot="value" class="box value typeInherit">60%</div><span class="label type typeLabel scaleMd" id="react-aria-_R_9H1_">Default</span></div><div data-size="md" data-status="success" class="box grid root" style="grid-template-areas:&quot;track&quot;
 &quot;label&quot;

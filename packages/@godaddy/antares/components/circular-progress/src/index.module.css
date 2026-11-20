@@ -1,4 +1,6 @@
 .root {
+  --_circular-progress-content-gap: var(--size-space-020, var(--ux-1sbfig8, 0.5rem));
+
   /* Color tokens */
   --circular-progress-fill-color: var(--ux-f7kpiw, #00a4a6);
   --circular-progress-track-color: var(--ux-1u2jy43, #d6d6d6);
@@ -97,7 +99,7 @@
 
 .label {
   grid-area: label;
-  margin-block-start: var(--sp-sm);
+  margin-block-start: var(--_circular-progress-content-gap);
   font-size: var(--_type-size, var(--circular-progress-label-font-size));
   font-family: var(--ux-15ks663, sans-serif);
   font-weight: var(--ux-aarlu5, 400);
@@ -109,7 +111,7 @@
 
 .description {
   grid-area: description;
-  margin-block-start: var(--sp-sm);
+  margin-block-start: var(--_circular-progress-content-gap);
   font-size: var(--_type-size, var(--ux-p4h24g, 0.875rem));
   font-family: var(--ux-1gutwvn, sans-serif);
   font-weight: var(--ux-g9ierp, 400);

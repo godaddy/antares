@@ -46,8 +46,8 @@
     "@bento/slots": "workspace:^",
     "@bento/use-data-attributes": "workspace:^",
     "@bento/use-props": "workspace:^",
-    "@react-aria/focus": "^3.22.0",
-    "@react-aria/interactions": "^3.28.0"
+    "@react-aria/focus": "^3.22.1",
+    "@react-aria/interactions": "^3.28.1"
   },
   "devDependencies": {
     "@bento/button": "workspace:^",

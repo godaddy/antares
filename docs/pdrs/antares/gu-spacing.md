@@ -1,6 +1,6 @@
 # GU and Spacing tokens
 
-Status: **Proposed**
+Status: **Accepted**
 
 ## Table of Contents
 
@@ -46,10 +46,10 @@ t-shirt scale exists "to describe _regions_ of space, such as cards, sections, a
 wording is the basis for the split in [Proposal](#proposal).
 
 The `tokens.yml` shipped today does not encode that split. Its `$description`s put both scales on
-both sides of the line: `size-space-020` is "padding inside chips" and `040` "standard card padding",
+both sides of the line: `size-space-020` is "padding inside chips" and `050` "standard card padding",
 while `size-space-sm` is "padding and gaps inside dense components". The t-shirt tiers are also filed
 under a "t-shirt aliases" heading with values that coincide with numeric ones (`xs`=`010`,
-`sm`=`020`, `md`=`040`, `lg`=`060`, `xl`=`070`, `2xl`=`090`), reading as shorthands rather than a
+`sm`=`020`, `md`=`050`, `lg`=`070`, `xl`=`100`, `2xl`=`160`), reading as shorthands rather than a
 scale with a distinct purpose.
 
 So the split below is this document's proposal, taken from the PR wording - not a description of the
@@ -82,25 +82,18 @@ in practice. This is expected given that the package defines names rather than v
 the fallback is doing all the work today, so a wrong multiplier or a wrong tier name is invisible
 until a theme starts defining the tokens.
 
-**`--sp-md` is only defined on `.box`.** Inside a `.box` subtree it is `2 x density`; anywhere else,
-including a portaled popover, it is undefined - so declarations using it fall back to their initial
-value. Separately, the name `md` is overloaded: `--sp-md` is 2 GU while the `size-space-md`
-development default is 16px.
+**Spacing is declared where it is used.** `Box` keeps its t-shirt scale in private `--_box-space-*`
+variables on `.box`, read only by the layout props. Every other component declares its own
+`--_<component>-*` variables on its own root, so nothing resolves by luck of composition and portaled
+overlays render the same as inline ones.
 
 ### Defects
 
-1. **Menu popover padding is `0` in production.** `menu/src/index.module.css:17` sets
-   `padding: var(--sp-xs)` with no fallback. `Menu` renders through `RACPopover` (portaled) and
-   imports no `Box` / `Flex`, so nothing defines `--sp-xs`; the declaration is invalid at
-   computed-value time and `padding` falls to its initial `0`. `--br-sm` is lost the same way.
-2. **The repo's guidance points the wrong way.** `antares-components/SKILL.md:25` tells authors "In
-   CSS, use `var(--sp-sm)` directly. Use t-shirt sizes" - the region scale, via a variable that only
-   resolves inside `.box`. It is the direct cause of the first row of the [Audit](#audit).
-3. **Chart content gap collapses with no theme.** `bar-chart/src/index.module.css:10` and
+1. **Chart content gap collapses with no theme.** `bar-chart/src/index.module.css:10` and
    `line-chart/src/index.module.css:10` set `--chart-content-gap: var(--ux-a2dzk8)` with no fallback.
    The intent is defined by the theme (16px, 2 GU, in `legacy-tokens.css`) but not by the token
    package, so with no theme the `gap` declarations at lines 12 and 62/78 are invalid at
-   computed-value time and fall back to `normal`. Same failure mode as the menu popover above.
+   computed-value time and fall back to `normal`.
 
 ## Proposal
 
@@ -130,21 +123,25 @@ rather than against it.
 | `size-space-010` | 0.5       | `calc(var(--ux-1sbfig8) * 0.5)`   |
 | `size-space-020` | 1         | `calc(var(--ux-1sbfig8) * 1)`     |
 | `size-space-030` | 1.5       | `calc(var(--ux-1sbfig8) * 1.5)`   |
-| `size-space-040` | 2         | `calc(var(--ux-1sbfig8) * 2)`     |
-| `size-space-050` | 2.5       | `calc(var(--ux-1sbfig8) * 2.5)`   |
-| `size-space-060` | 3         | `calc(var(--ux-1sbfig8) * 3)`     |
-| `size-space-070` | 4         | `calc(var(--ux-1sbfig8) * 4)`     |
-| `size-space-080` | 5         | `calc(var(--ux-1sbfig8) * 5)`     |
-| `090` and above  | free-form | per design; no arithmetic implied |
+| `size-space-040` | 1.75      | `calc(var(--ux-1sbfig8) * 1.75)`  |
+| `size-space-050` | 2         | `calc(var(--ux-1sbfig8) * 2)`     |
+| `size-space-060` | 2.5       | `calc(var(--ux-1sbfig8) * 2.5)`   |
+| `size-space-070` | 3         | `calc(var(--ux-1sbfig8) * 3)`     |
+| `size-space-080` | 3.5       | `calc(var(--ux-1sbfig8) * 3.5)`   |
+| `size-space-090` | 4         | `calc(var(--ux-1sbfig8) * 4)`     |
+| `size-space-100` | 5         | `calc(var(--ux-1sbfig8) * 5)`     |
+| `120` and above  | free-form | per design; no arithmetic implied |
 
-**Regular through `080`, free-form above.** Components need regularity; page-level structure needs
-freedom, which is the useful half of the spec's "bucket of values" position. Nothing above `080` is
+**Regular through `100`, free-form above.** Components need regularity; page-level structure needs
+freedom, which is the useful half of the spec's "bucket of values" position. Nothing above `100` is
 claimed to be a GU multiple, and components have no use for those tiers anyway.
 
 The regular range is not an arithmetic imposed on the package: at 1 GU = 8px it reproduces the
-`tokens.yml` development defaults exactly, `005` through `080` (2, 4, 8, 12, 16, 20, 24, 32, 40px). So
-adopting it requires no tier to change value. Note the range is not a uniform half-GU walk - it steps
-0.5 at a time to `060`, then whole GU at `070` and `080`, which is what the package's own values do.
+`tokens.yml` development defaults exactly, `005` through `100` (2, 4, 8, 12, 14, 16, 20, 24, 28, 32,
+40px). So adopting it requires no tier to change value. The range is not a uniform walk - it steps by
+quarters and halves of a GU up to `090`, then a whole GU to `100` - which is what the package's own
+values do. The common component values sit at whole GU: 2 GU is `050`, 3 GU is
+`070`, 5 GU is `100`.
 
 Placing 1 GU at `020` rather than at the bottom of the scale leaves two sub-GU steps beneath it -
 `010` at a half and `005` at a quarter - which covers small optical values without an exception.
@@ -165,8 +162,9 @@ Placing 1 GU at `020` rather than at the bottom of the scale leaves two sub-GU s
 
 Adopting these means `Box` needs no value change and its fallback chain becomes internally consistent.
 
-The Figma factors are the authority here, not the numeric scale. `xs` through `lg` happen to coincide
-with numeric tiers; `xl` and `2xl` do not, and are not made to - which is the independence stated in
+The Figma factors are the authority here, not the numeric scale. `xs` through `xl` happen to coincide
+with numeric tiers (`xl` is `100`, 5 GU); `2xl` lands on `160`'s development default, but `160` is in
+the free-form range, so no GU relationship is implied - which is the independence stated in
 [§1](#1-the-scales-split-by-purpose). The t-shirt scale is what Figma specs regions in, so it follows
 Figma.
 
@@ -189,8 +187,7 @@ theme, an intent theme, both, or neither. Six rules.
 ```
 
 Each link covers one of the four scenarios: `--size-space-010` a token theme, `--ux-1sbfig8` an intent
-theme, `0.5rem` neither. Dropping the literal is what makes [Defects](#defects) 1 and 3 render at `0`
-and `normal` - a `var()` whose reference is undefined and which has no fallback is invalid at
+theme, `0.5rem` neither. Dropping the literal is what makes [Defects](#defects) 1 render at `normal` - a `var()` whose reference is undefined and which has no fallback is invalid at
 computed-value time, so the property takes its **initial** value, not a smaller version of the intended
 one. The failure is silent and does not look like a missing theme.
 
@@ -200,8 +197,8 @@ target vocabulary and the intent chain is the compatibility path, so the compati
 be able to override the target.
 
 **3. Declare on the component's own root selector.** Never rely on an ancestor to define the variable.
-`--sp-md` is defined on `.box`, which is exactly why `Menu` - portaled through `RACPopover`, with no
-`Box` anywhere in its subtree - resolves nothing. A component that declares its own variables is
+A variable defined on `.box` resolves nothing for an element portaled through `RACPopover` with no
+`Box` in its subtree. A component that declares its own variables is
 correct wherever it is rendered, portal included. This is the rule that makes "self-contained"
 enforceable rather than aspirational.
 
@@ -213,7 +210,7 @@ component-local names in the component's own namespace, and neither is constrain
 vocabulary.
 
 So a t-shirt-named local variable holding a numeric-tier value is correct, not a mismatch:
-`--_button-space-md` denotes a button size and resolves to `size-space-040`. The two `md`s are unrelated
+`--_button-space-md` denotes a button size and resolves to `size-space-050`. The two `md`s are unrelated
 by design, which is what [§4](#4-components-with-sized-controls) already says.
 
 **5. Prefix the variable with `--_`, and keep the component name inside the prefix.** Spacing variables
@@ -248,8 +245,8 @@ Worked example, `button` today against the same four declarations under this pro
 /* proposed: numeric token scale, GU-correct literal, private prefix */
 --_button-space-xs: var(--size-space-010, calc(var(--ux-1sbfig8, 0.5rem) * 0.5));
 --_button-space-sm: var(--size-space-020, calc(var(--ux-1sbfig8, 0.5rem) * 1));
---_button-space-md: var(--size-space-040, calc(var(--ux-1sbfig8, 0.5rem) * 2));
---_button-space-lg: var(--size-space-060, calc(var(--ux-1sbfig8, 0.5rem) * 3));
+--_button-space-md: var(--size-space-050, calc(var(--ux-1sbfig8, 0.5rem) * 2));
+--_button-space-lg: var(--size-space-070, calc(var(--ux-1sbfig8, 0.5rem) * 3));
 ```
 
 The `xs`/`sm`/`md`/`lg` part of each name stays - those are `Button`'s size steps and remain accurate.
@@ -259,35 +256,32 @@ variable is marked private.
 
 ## Audit
 
-34 component directories, seven groups. Reference counts are lines containing a reference, not
+34 component directories, six groups. Reference counts are lines containing a reference, not
 occurrences. A component appears in more than one row where it mixes approaches.
 
 | Group                       | Components                                                                                                                                                                                                                                                 | Issue                                                                                                                                                                                                    |
 | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Consumes `--sp-*`           | `menu` (17 refs), `progress-steps` (3), `field` (3), `carousel` (3), `popover` (2), `modal` (2), `drawer` (2), `tooltip` (1)                                                                                                                               | Only defined on `.box`, so resolves by luck of composition. Also the region scale used for control internals                                                                                             |
-| Wrong scale                 | `button` (5 refs)                                                                                                                                                                                                                                          | Uses the t-shirt (region) scale for control internals. Its multipliers are correct against `godaddy-antares`, so there is no value change - only a move to the numeric tiers: `010`, `020`, `040`, `060` |
+| Wrong scale                 | `button` (5 refs)                                                                                                                                                                                                                                          | Uses the t-shirt (region) scale for control internals. Its multipliers are correct against `godaddy-antares`, so there is no value change - only a move to the numeric tiers: `010`, `020`, `050`, `070` |
 | Wrong prefix, wrong tiers   | `segmented-controller` (20 refs)                                                                                                                                                                                                                           | References `--space-005`; tokens emit `--size-space-005`, so it never resolves. Its multipliers assume 1 GU at `010`, so every reference doubles under this proposal - see [Tasks](#tasks)               |
 | Already derives from the GU | `toggle-button` (`--button-group-density`, padding and gap), `alert` (padding, gap), `tag` (4), `gauge-chart` (2 of 3), `calendar` (cell sizing), `switch` (thumb inset), `pagination` (dot size), `progress-bar` (content gap)                            | Spacing is `N x ux.box.density` already, so the multiplier is reviewable against Figma directly. These need the tier _naming_ from this proposal, not a value rethink                                    |
 | Inconsistent GU literal     | `0.25rem`: `button`, `segmented-controller`, `layout/box`, `pagination`, `switch`, `tag`. `0.5rem`: `alert`, `calendar`, `gauge-chart`, `toggle-button`. `8px`: `progress-bar`                                                                             | The same intent is written with three different literals. The `0.25rem` group is half a GU, so anything rendered with no theme at all comes out at half size                                             |
 | Genuinely hardcoded         | `menu` (2, optical), `modal` (`2rem` inline end), `button` (`0.5em` gap fallback), `calendar` (`2rem` viewport inset), `metrics-lockup` (`-0.75rem`), `tag` (`0.125rem` size steps), `gauge-chart` (1 of 3)                                                | No GU relationship. Each needs a Figma value before it can be assigned a tier                                                                                                                            |
 | No internal spacing         | `checkbox`, `radio`, `text`, `icon`, `listbox`, `drop-zone`, `inline-drawer`, `circular-progress`, `date-field`, `date-picker`, `file-trigger`, `number-field`, `select`, `text-field`, `layout/flex`, `layout/grid`, `chart/donut-chart`, chart internals | Compose `Flex` / `Box`, or have none                                                                                                                                                                     |
 
-`bar-chart` and `line-chart` sit outside these groups: see [Defects](#defects) 3. `tag` reaches the GU
+`bar-chart` and `line-chart` sit outside these groups: see [Defects](#defects) 1. `tag` reaches the GU
 only by accident - it references `--ux-x1uac9` and `--ux-148wxvi`, which nothing defines, so every
 value resolves through the nested `var(--ux-1sbfig8, 0.25rem)` fallback.
 
 ## Tasks
 
-- Fix Menu popover padding and radius - a live production bug, independent of this proposal.
-- Give `bar-chart` / `line-chart` a fallback for `--ux-a2dzk8` - also live, also independent.
-- Correct `antares-components/SKILL.md`, to align with new proposal.
+- Give `bar-chart` / `line-chart` a fallback for `--ux-a2dzk8` - a live bug, independent of this proposal.
 - Fix `segmented-controller`'s `--space-` prefix.
+- Re-tier numeric references that predate the current scale so each tier matches its GU multiplier.
 - Replace the `0.25rem` literal in `--ux-1sbfig8` with `0.5rem` to align with `godaddy-antares` theme,
   in all six components that write it, and normalise `progress-bar`'s `8px` to the same literal.
 - Reconcile the `size-space-*` `$description`s in `@godaddy/design-tokens` with the purpose split in
   [Proposal](#proposal), so the package stops describing both scales as component-internal _and_
   page-level.
-- Update component implementations to follow this proposal.
 - Rename component-local spacing variables to `--_`-prefixed, component-named form per
   [§5](#5-per-component-implementation) rule 5. This touches every component in the migration rows
   below, so it should ride along with each one rather than land as its own sweep. Nothing in the docs,
@@ -295,7 +289,7 @@ value resolves through the nested `var(--ux-1sbfig8, 0.25rem)` fallback.
   bare names - `--_arrow-offset`, `--_content-offset`, `--_animation-offset` in `popover` / `tooltip`,
   `--_min-size` / `--_max-size` in `drawer` / `inline-drawer` - need the component prefix added even
   though they are not spacing variables, since they carry the collision this rule exists to prevent.
-- Migrate: the eight `--sp-*` consumers, then `button`, then the hardcoded group. The components that
+- Migrate `button`, then the hardcoded group. The components that
   already derive from the GU intent need renaming to the proposed tiers, not remeasuring.
 - Extract the per-component GU values from Figma. The audit identifies which components are wrong,
   not what each measurement should be.

@@ -1,8 +1,10 @@
 .field {
+  /* The field root renders through `Box`, so its card surface is defined on this element. */
   --_field-critical-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));
-  --_field-bd: var(--bd-card);
-  --_field-fg: var(--fg-card);
-  --_field-input-fg: var(--ux-1glcx6s, #2b2b2b);
+  --_field-bd: var(--_box-bd-card);
+  --_field-fg: var(--_box-fg-card);
+  --_field-input-fg: var(--color-surface-text-card, var(--ux-1glcx6s, #2b2b2b));
+  --_field-input-inline-space: var(--size-space-050, calc(var(--ux-1sbfig8, 0.25rem) * 2));
 }
 
 .field:where([data-required]) :where(.label)::after {
@@ -45,7 +47,7 @@
   line-height: var(--ux-hm1ty7, 1.375);
   font-size: var(--_size-input-font);
   color: var(--_field-input-fg);
-  padding: var(--_size-control-padding-block) var(--sp-md);
+  padding: var(--_size-control-padding-block) var(--_field-input-inline-space);
   text-align: start;
   min-width: 0;
   max-width: 100%;
@@ -73,14 +75,14 @@
   --_field-br: var(--ux-1oqjeuu, 0.375rem);
   border: 1px solid var(--_field-bd);
   border-radius: var(--_field-br);
-  background: var(--bg-card);
+  background: var(--_box-bg-card);
   color: var(--_field-fg);
   box-sizing: border-box;
 }
 
 .field:where([data-interior="box"]) > :where(.trigger) {
-  --_field-bd: var(--bd-card);
-  --_field-fg: var(--fg-card);
+  --_field-bd: var(--_box-bd-card);
+  --_field-fg: var(--_box-fg-card);
 }
 
 .field:where([data-interior="box"]) > :where(.group, .input, .textarea) {
@@ -89,9 +91,9 @@
 
 .field:where([data-interior="box"][data-disabled]),
 .field:where([data-interior="box"]) :where(.group, .input, .textarea):where([data-disabled]) {
-  --_field-bd: color-mix(in oklch, transparent, var(--bd-card) 40%);
-  --_field-fg: color-mix(in oklch, transparent, var(--fg-card) 40%);
-  --_field-input-fg: color-mix(in oklch, transparent, var(--ux-1glcx6s, #2b2b2b) 40%);
+  --_field-bd: color-mix(in oklch, transparent, var(--_box-bd-card) 40%);
+  --_field-fg: color-mix(in oklch, transparent, var(--_box-fg-card) 40%);
+  --_field-input-fg: color-mix(in oklch, transparent, var(--color-surface-text-card, var(--ux-1glcx6s, #2b2b2b)) 40%);
   cursor: not-allowed;
 }
 

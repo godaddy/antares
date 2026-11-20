@@ -6,12 +6,12 @@ export type Spacing = (typeof SPACINGS)[number] | (string & {});
 
 /** Mapping of spacing values to CSS variables. */
 const SPACING_MAP = {
-  xs: 'var(--sp-xs)',
-  sm: 'var(--sp-sm)',
-  md: 'var(--sp-md)',
-  lg: 'var(--sp-lg)',
-  xl: 'var(--sp-xl)',
-  '2xl': 'var(--sp-2xl)'
+  xs: 'var(--_box-space-xs)',
+  sm: 'var(--_box-space-sm)',
+  md: 'var(--_box-space-md)',
+  lg: 'var(--_box-space-lg)',
+  xl: 'var(--_box-space-xl)',
+  '2xl': 'var(--_box-space-2xl)'
 } as const satisfies Record<Spacing, string>;
 
 /** Rounding values for border radius. */
@@ -22,13 +22,13 @@ export type Rounding = (typeof ROUNDINGS)[number] | (string & {});
 
 /** Mapping of rounding values to CSS variables. */
 const ROUNDING_MAP = {
-  xs: 'var(--rounding-xs)',
-  sm: 'var(--rounding-sm)',
-  md: 'var(--rounding-md)',
-  lg: 'var(--rounding-lg)',
-  xl: 'var(--rounding-xl)',
-  '2xl': 'var(--rounding-2xl)',
-  full: 'var(--rounding-full)'
+  xs: 'var(--_box-rounding-xs)',
+  sm: 'var(--_box-rounding-sm)',
+  md: 'var(--_box-rounding-md)',
+  lg: 'var(--_box-rounding-lg)',
+  xl: 'var(--_box-rounding-xl)',
+  '2xl': 'var(--_box-rounding-2xl)',
+  full: 'var(--_box-rounding-full)'
 } as const satisfies Record<Rounding, string>;
 
 /** Elevation levels for visual depth. */
@@ -39,8 +39,8 @@ export type Elevation = (typeof ELEVATIONS)[number];
 
 /**
  * Converts a spacing scale value(s) to CSS variable reference(s).
- * @example toSpacingVar('xs') => 'var(--sp-xs)'
- * @example toSpacingVar(['sm', 'md']) => 'var(--sp-sm) var(--sp-md)'
+ * @example toSpacingVar('xs') => 'var(--_box-space-xs)'
+ * @example toSpacingVar(['sm', 'md']) => 'var(--_box-space-sm) var(--_box-space-md)'
  *
  * @param size - Spacing scale value or array of values
  * @returns CSS variable reference(s) or undefined
@@ -54,7 +54,7 @@ export function toSpacingVar(size?: Spacing | Spacing[]): string | undefined {
 
 /**
  * Converts a rounding scale value to CSS variable reference or passes through custom values.
- * @example toRoundingVar('xs') => 'var(--rounding-xs)'
+ * @example toRoundingVar('xs') => 'var(--_box-rounding-xs)'
  * @example toRoundingVar('10px') => '10px'
  *
  * @param rounding - Rounding scale value or custom CSS value

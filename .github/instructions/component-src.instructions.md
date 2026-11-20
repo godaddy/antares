@@ -41,7 +41,7 @@ export const Switch = forwardRef<HTMLLabelElement, SwitchProps>(
 - **Named function expression** — always; prefer `forwardRef` when the component needs to expose a ref. The function name must match the export name.
 - **Prefer `interface`** for component props; use `type` when necessary (e.g. polymorphic/utility types). Extend RAC props with `Omit` for overridden fields.
 - **`cx()`** for className merging (most components). Only use `cva()` when the component has a full variant matrix (e.g. Button with variant + size).
-- **CSS Modules** — import as `styles` from `./index.module.css`. Reference design tokens: `var(--fg-base)`, `var(--bg-selected)`, `var(--sp-sm)`.
+- **CSS Modules** — import as `styles` from `./index.module.css`. Reference `@godaddy/design-tokens` custom properties with a full fallback chain, e.g. `var(--color-surface-text-base, var(--ux-1leynsm, #111))`, `var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 1))`.
 - **`#components/` alias** for internal imports within `packages/@godaddy/antares`. Relative imports between components are discouraged, but may be used for tightly-coupled internals (e.g. shared layout utilities).
 - **JSDoc** on every exported interface and component with `@param` tags.
 - **Re-export** from `packages/@godaddy/antares/index.tsx` using `#components/` alias:
