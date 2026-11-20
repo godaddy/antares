@@ -14,10 +14,12 @@ export const Examples = getExamples('./examples');
 export const Playground = getStory(PlaygroundExample, {
   args: {
     size: 'md',
+    status: 'default',
     value: 60,
     isIndeterminate: false,
     label: 'Progress',
-    helperText: 'Notice/helper text'
+    description: 'Notice/helper text',
+    showValue: true
   },
   argTypes: {
     size: {
@@ -25,10 +27,10 @@ export const Playground = getStory(PlaygroundExample, {
       options: ['sm', 'md', 'lg', 'xl'],
       description: 'Size preset controlling circle diameter and typography scale'
     },
-    emphasis: {
+    status: {
       control: 'radio',
-      options: ['success', 'warning', 'critical'],
-      description: 'Visual emphasis for status feedback'
+      options: ['default', 'success', 'warning', 'critical'],
+      description: 'Color intent of the fill'
     },
     isIndeterminate: {
       control: 'boolean',
@@ -42,9 +44,13 @@ export const Playground = getStory(PlaygroundExample, {
       control: 'text',
       description: 'Visible label text displayed below the circle'
     },
-    helperText: {
+    description: {
       control: 'text',
-      description: 'Helper or notice text displayed below the label'
+      description: 'Description displayed below the label'
+    },
+    showValue: {
+      control: 'boolean',
+      description: 'Whether to render the visible value slot'
     }
   }
 });
