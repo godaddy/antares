@@ -1,35 +1,44 @@
 3:"$Sreact.fragment"
-4:"/antares/pr-465-site/_next/static/chunks/0vsccybhj9id2.js"
-5:"/antares/pr-465-site/_next/static/chunks/2s1zyr2aclvls.js"
-6:I[386538,["$4","$5"],"default"]
-7:I[500986,["$4","$5"],"default"]
-c:"/antares/pr-465-site/_next/static/chunks/36ts-7z-0vkaj.js"
-d:"/antares/pr-465-site/_next/static/chunks/24anidr2jru7p.js"
-e:"/antares/pr-465-site/_next/static/chunks/1k4rq4emvro43.js"
-f:"/antares/pr-465-site/_next/static/chunks/2o0qs6p93vdl-.js"
-10:"/antares/pr-465-site/_next/static/chunks/2a6e0htkp5vsw.js"
-11:"/antares/pr-465-site/_next/static/chunks/29ollr6m9y3pq.js"
-12:"/antares/pr-465-site/_next/static/chunks/39uhuu0i3o09-.js"
-13:"/antares/pr-465-site/_next/static/chunks/005kimb-_1dbm.js"
-14:I[247172,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsPage"]
-15:I[247172,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsTitle"]
-16:I[247172,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsDescription"]
+4:"/antares/pr-465-site/_next/static/chunks/1bj42kke07nei.js"
+5:"/antares/pr-465-site/_next/static/chunks/36psp54ksgt8-.js"
+6:I[946463,["$4","$5"],"default"]
+7:I[204103,["$4","$5"],"default"]
+c:"/antares/pr-465-site/_next/static/chunks/1tvl__u23ikn3.js"
+d:"/antares/pr-465-site/_next/static/chunks/23vp0io-hrw_0.js"
+e:"/antares/pr-465-site/_next/static/chunks/1j9f_ofomxlhy.js"
+f:"/antares/pr-465-site/_next/static/chunks/4525nq0zs88or.js"
+10:"/antares/pr-465-site/_next/static/chunks/0s0-vbiftvnk3.js"
+11:"/antares/pr-465-site/_next/static/chunks/3exheo6ka_5c4.js"
+12:"/antares/pr-465-site/_next/static/chunks/0ts0tu0ngp9r_.js"
+13:"/antares/pr-465-site/_next/static/chunks/0cmo791-3fh-i.js"
+14:I[807658,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsPage"]
+15:I[807658,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsTitle"]
+16:I[807658,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsDescription"]
 17:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"LLMCopyButton"]
 18:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"ViewOptions"]
-19:I[247172,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsBody"]
+19:I[807658,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsBody"]
 1a:"SiteBlockExplorer"
 1b:I[696229,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$1a"]
 29:"ViewportBoundary"
-2a:I[716408,["$4","$5"],"$29"]
+2a:I[797667,["$4","$5"],"$29"]
 2b:"MetadataBoundary"
-2c:I[716408,["$4","$5"],"$2b"]
+2c:I[797667,["$4","$5"],"$2b"]
 2d:"$Sreact.suspense"
 9:X
 9:C
 a:X
-1c:T310e,'use client';
+1c:T405b,'use client';
 
-import { createContext, useCallback, useContext, useRef, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactNode
+} from 'react';
 import {
   Box,
   Button,
@@ -49,6 +58,8 @@ import {
 import { FileCover, type FileCoverVariant } from '../image';
 import type { ImageItem } from '../../data/types';
 import styles from './index.module.css';
+
+const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 interface FileItemsProps extends Pick<FileItemProps, 'onRemove' | 'onLoadError' | 'onLoadSuccess'> {
   /** Presentation chosen by Gallery. */
@@ -73,6 +84,8 @@ interface FileItemsProps extends Pick<FileItemProps, 'onRemove' | 'onLoadError' 
 const MAX_VISIBLE_ITEMS = 5;
 /** Virtualization is useful once the rendered collection is large enough to scroll. */
 const MIN_VIRTUALIZED_ITEMS = 20;
+/** RAC's post-mount focus reconciliation runs after the new virtualized rows are painted. */
+const FOCUS_RESTORE_DELAY_MS = 100;
 /** List rows are measured; the estimate only sizes the scrollbar before they mount. */
 const listLayoutOptions = { estimatedRowSize: 80, gap: 8 };
 
@@ -87,6 +100,9 @@ const gridLayoutOptions = {
 const fileSizeFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
 interface FileItemsContextValue {
+  /** Whether the collection can remount items while changing virtualizer layout. */
+  shouldVirtualize: boolean;
+
   /** Covers that have successfully decoded. */
   readyCoverIds: ReadonlySet<string>;
 
@@ -98,6 +114,14 @@ interface FileItemsContextValue {
 }
 
 const FileItemsContext = createContext<FileItemsContextValue | undefined>(undefined);
+
+interface FocusTarget {
+  /** Stable item ID to focus after a collection remount. */
+  id: string;
+
+  /** Restores the item action when the remove button had focus. */
+  removeButton: boolean;
+}
 
 /** Renders the same collection with either list or grid geometry. */
 export function FileItems({
@@ -114,24 +138,71 @@ export function FileItems({
   const isList = view === 'list';
   const firstRevealedId = useRef<string | null>(null);
   // Crossing the virtualization threshold remounts CardGroup; restore adjacent-row focus after that.
-  const focusAfterRemountId = useRef<string | null>(null);
-  // Survive Virtualizer remounts when switching list/grid layouts.
+  const focusAfterRemount = useRef<FocusTarget | null>(null);
+  // Virtualizer remounts when switching between ListLayout and GridLayout.
   const [readyCoverIds, setReadyCoverIds] = useState(() => new Set<string>());
   const visibleImages = isList && !showAll ? images.slice(0, MAX_VISIBLE_ITEMS) : images;
   const shouldVirtualize = visibleImages.length >= MIN_VIRTUALIZED_ITEMS;
   const errorCount = images.filter((image) => image.status === 'error').length;
 
-  const registerItem = useCallback(function registerItem(id: string, element: HTMLElement | null) {
-    if (!element) return;
-    if (firstRevealedId.current === id) {
-      firstRevealedId.current = null;
-      element.focus();
-      return;
+  const restoreFocusTarget = useCallback(function restoreFocusTarget(element?: HTMLElement | null) {
+    const target = focusAfterRemount.current;
+    if (!target) return;
+    const item =
+      element ??
+      Array.from(document.querySelectorAll<HTMLElement>('[data-gallery-item-id]')).find(
+        (candidate) => candidate.dataset.galleryItemId === target.id
+      );
+    if (!(item instanceof HTMLElement) || item.dataset.galleryItemId !== target.id) return;
+    const focusItem = item;
+    const focusTargetDetails = target;
+    focusAfterRemount.current = null;
+    function focusTarget() {
+      if (!focusItem.isConnected) return;
+      const removeButton = focusTargetDetails.removeButton
+        ? focusItem.querySelector<HTMLButtonElement>('button[aria-label^="Remove "]')
+        : null;
+      (removeButton ?? focusItem).focus();
     }
-    if (focusAfterRemountId.current === id) {
-      focusAfterRemountId.current = null;
-      element.focus();
-    }
+    focusTarget();
+    // RAC GridList may restore roving focus after the Virtualizer mounts; repeat after that pass.
+    setTimeout(focusTarget, FOCUS_RESTORE_DELAY_MS);
+  }, []);
+
+  const registerItem = useCallback(
+    function registerItem(id: string, element: HTMLElement | null) {
+      if (!element) return;
+      if (firstRevealedId.current === id) {
+        firstRevealedId.current = null;
+        element.focus();
+        return;
+      }
+      if (focusAfterRemount.current?.id === id) {
+        restoreFocusTarget(element);
+      }
+    },
+    [restoreFocusTarget]
+  );
+
+  const captureFocusedItem = useCallback(function captureFocusedItem() {
+    const activeElement = document.activeElement;
+    if (!(activeElement instanceof HTMLElement)) return;
+    const item = activeElement.closest<HTMLElement>('[data-gallery-item-id]');
+    const id = item?.dataset.galleryItemId;
+    if (!id) return;
+    focusAfterRemount.current = {
+      id,
+      removeButton: activeElement.matches('button[aria-label^="Remove "]')
+    };
+  }, []);
+
+  const forgetCover = useCallback(function forgetCover(id: string) {
+    setReadyCoverIds(function removeRemovedId(current) {
+      if (!current.has(id)) return current;
+      const next = new Set(current);
+      next.delete(id);
+      return next;
+    });
   }, []);
 
   const handleRemove = useCallback(
@@ -140,12 +211,14 @@ export function FileItems({
         return item.id === image.id;
       });
       const nextLength = visibleImages.length - 1;
+      forgetCover(image.id);
       if (shouldVirtualize && nextLength < MIN_VIRTUALIZED_ITEMS && index >= 0) {
-        focusAfterRemountId.current = visibleImages[index + 1]?.id ?? visibleImages[index - 1]?.id ?? null;
+        const id = visibleImages[index + 1]?.id ?? visibleImages[index - 1]?.id;
+        if (id) focusAfterRemount.current = { id, removeButton: false };
       }
       onRemove(image);
     },
-    [onRemove, shouldVirtualize, visibleImages]
+    [forgetCover, onRemove, shouldVirtualize, visibleImages]
   );
 
   const markCoverReady = useCallback(function markCoverReady(id: string) {
@@ -171,6 +244,20 @@ export function FileItems({
     onShowAll();
   }
 
+  useIsomorphicLayoutEffect(
+    function restoreFocusAfterCollectionRemount() {
+      restoreFocusTarget();
+    },
+    [shouldVirtualize, restoreFocusTarget]
+  );
+
+  useEffect(
+    function restoreFocusAfterCollectionPaint() {
+      restoreFocusTarget();
+    },
+    [shouldVirtualize, visibleImages, restoreFocusTarget]
+  );
+
   const handleSelection = useCallback<NonNullable<CardGroupProps<ImageItem>['onSelectionChange']>>(
     function handleSelection(keys) {
       if (keys === 'all') return;
@@ -194,7 +281,7 @@ export function FileItems({
     />
   );
 
-  const collection = shouldVirtualize ? (
+  const virtualizedCollection = (
     <CardGroup
       selectionMode="single"
       selectionBehavior="toggle"
@@ -205,48 +292,56 @@ export function FileItems({
       keyboardNavigationBehavior="tab"
       aria-label={isList ? 'Gallery files' : 'Gallery image grid'}
       items={visibleImages}
-      // The layout owns item geometry, so CSS grid and gap must not apply.
+      dependencies={[images, visibleImages, shouldVirtualize, isList]}
       gap="0"
       className={styles.group}
       style={{ display: 'block' }}
     >
       {renderItem}
     </CardGroup>
+  );
+  const collection = shouldVirtualize ? (
+    virtualizedCollection
   ) : (
-    <CardGroup
-      selectionMode="single"
-      selectionBehavior="toggle"
-      shouldSelectOnPressUp
-      selectedKeys={[]}
-      onSelectionChange={handleSelection}
-      disabledBehavior="selection"
-      keyboardNavigationBehavior="tab"
-      columns={isList ? '1fr' : 'repeat(auto-fill, minmax(min(100%, 240px), 1fr))'}
-      gap="sm"
-      justifyContent="start"
-      alignItems="start"
-      aria-label={isList ? 'Gallery files' : 'Gallery image grid'}
-    >
-      {visibleImages.map((image) => (
-        <FileItem
-          key={image.id}
-          image={image}
-          variant={isList ? 'horizontal' : 'vertical'}
-          onRemove={handleRemove}
-          onLoadError={onLoadError}
-          onLoadSuccess={onLoadSuccess}
-          onItemRef={registerItem}
-        />
-      ))}
-    </CardGroup>
+    <CollectionFocusBoundary onUnmount={captureFocusedItem}>
+      <CardGroup
+        selectionMode="single"
+        selectionBehavior="toggle"
+        shouldSelectOnPressUp
+        selectedKeys={[]}
+        onSelectionChange={handleSelection}
+        disabledBehavior="selection"
+        keyboardNavigationBehavior="tab"
+        columns={isList ? '1fr' : 'repeat(auto-fill, minmax(min(100%, 240px), 1fr))'}
+        gap="sm"
+        justifyContent="start"
+        alignItems="start"
+        aria-label={isList ? 'Gallery files' : 'Gallery image grid'}
+      >
+        {visibleImages.map(function renderNonVirtualizedItem(image) {
+          return (
+            <FileItem
+              key={image.id}
+              image={image}
+              variant={isList ? 'horizontal' : 'vertical'}
+              onRemove={handleRemove}
+              onLoadError={onLoadError}
+              onLoadSuccess={onLoadSuccess}
+              onItemRef={registerItem}
+            />
+          );
+        })}
+      </CardGroup>
+    </CollectionFocusBoundary>
   );
 
   return (
-    <FileItemsContext.Provider value={{ readyCoverIds, onCoverReady: markCoverReady, onCoverFailed: markCoverFailed }}>
+    <FileItemsContext.Provider
+      value={{ shouldVirtualize, readyCoverIds, onCoverReady: markCoverReady, onCoverFailed: markCoverFailed }}
+    >
       <Flex direction="column" gap="sm" className={styles.collection}>
         {shouldVirtualize ? (
           isList ? (
-            // A layout class change cannot be applied to a mounted collection, so each view remounts it.
             <Virtualizer key="list" layout={ListLayout} layoutOptions={listLayoutOptions} shouldObserveItemSize>
               {collection}
             </Virtualizer>
@@ -269,6 +364,27 @@ export function FileItems({
       </Flex>
     </FileItemsContext.Provider>
   );
+}
+
+interface CollectionFocusBoundaryProps {
+  /** Captures the active collection target immediately before the collection unmounts. */
+  onUnmount: () => void;
+
+  /** Collection subtree whose focus should survive a remount. */
+  children: ReactNode;
+}
+
+function CollectionFocusBoundary({ onUnmount, children }: CollectionFocusBoundaryProps) {
+  const onUnmountRef = useRef(onUnmount);
+  onUnmountRef.current = onUnmount;
+
+  useIsomorphicLayoutEffect(function captureBeforeUnmount() {
+    return function captureCollectionFocus() {
+      onUnmountRef.current();
+    };
+  }, []);
+
+  return children;
 }
 
 interface FileItemProps {
@@ -302,26 +418,29 @@ function formatFileSize(bytes: number) {
 function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItemRef }: FileItemProps) {
   const context = useContext(FileItemsContext);
   if (!context) throw new Error('FileItem must be rendered within FileItems.');
-  const { readyCoverIds, onCoverReady, onCoverFailed } = context;
+  const { shouldVirtualize, readyCoverIds, onCoverReady, onCoverFailed } = context;
+  const [localCoverReady, setLocalCoverReady] = useState(false);
   const size = image.size === undefined ? 'Size unavailable' : formatFileSize(image.size);
   const isError = image.status === 'error';
   const isLoading = image.status === 'loading';
-  const canOpen = !isError && !isLoading && readyCoverIds.has(image.id);
+  const canOpen = !isError && !isLoading && (shouldVirtualize ? readyCoverIds.has(image.id) : localCoverReady);
 
   const handleLoadSuccess = useCallback(
     function handleLoadSuccess(id: string) {
-      onCoverReady(id);
+      setLocalCoverReady(true);
+      if (shouldVirtualize) onCoverReady(id);
       if (isLoading) onLoadSuccess(id);
     },
-    [isLoading, onCoverReady, onLoadSuccess]
+    [isLoading, onCoverReady, onLoadSuccess, shouldVirtualize]
   );
 
   const handleLoadError = useCallback(
     function handleLoadError(id: string) {
-      onCoverFailed(id);
+      setLocalCoverReady(false);
+      if (shouldVirtualize) onCoverFailed(id);
       onLoadError(id);
     },
-    [onCoverFailed, onLoadError]
+    [onCoverFailed, onLoadError, shouldVirtualize]
   );
 
   return (
@@ -337,6 +456,7 @@ function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItem
       alignItems={variant === 'horizontal' ? 'center' : undefined}
       className={styles.card}
       data-error={isError || undefined}
+      data-gallery-item-id={image.id}
       data-variant={variant}
     >
       <Box flexShrink={0} className={styles.cover}>
@@ -429,7 +549,7 @@ function ViewBanner({ visibleCount, totalCount, errorCount, onShowAll }: ViewBan
     </Flex>
   );
 }
-1d:T2a34,'use client';
+1d:T2a72,'use client';
 
 import { forwardRef, useCallback, useEffect, useId, useRef, useState } from 'react';
 import {
@@ -504,15 +624,15 @@ export function Gallery({ initialImages = [], defaultView = 'grid', limits, onIm
   const [activeId, setActiveId] = useState<string | null>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const addButton = useRef<HTMLButtonElement>(null);
-  const previousImageCount = useRef(images.length);
+  const focusAfterFinalRemoval = useRef(false);
   const uploadErrorId = useId();
 
   useEffect(
     function restoreFocusAfterFinalRemoval() {
-      if (previousImageCount.current === 1 && images.length === 0) {
+      if (images.length === 0 && focusAfterFinalRemoval.current) {
+        focusAfterFinalRemoval.current = false;
         addButton.current?.focus({ preventScroll: true });
       }
-      previousImageCount.current = images.length;
     },
     [images.length]
   );
@@ -524,6 +644,7 @@ export function Gallery({ initialImages = [], defaultView = 'grid', limits, onIm
   const handleRemoveImage = useCallback(
     function handleRemoveImage(image: ImageItem) {
       // The collection restores adjacent-row focus. The final removal unmounts it entirely.
+      if (images.length === 1) focusAfterFinalRemoval.current = true;
       removeImage(image);
     },
     [images.length, removeImage]
@@ -1180,9 +1301,9 @@ export function GalleryImage({ image, variant = 'default', loading = 'lazy', onR
     </Flex>
   );
 }
-20:T173c,'use client';
+20:T1ce2,'use client';
 
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import {
   Button,
   Carousel,
@@ -1194,14 +1315,23 @@ import {
   Icon,
   CardGroup,
   Card,
+  ListLayout,
   Modal,
   Pagination,
   Text,
+  Virtualizer,
   type CardGroupProps
 } from '@godaddy/antares';
 import { GalleryImage } from '../image';
 import type { ImageItem } from '../../data/types';
 import styles from './index.module.css';
+
+const thumbnailLayoutOptions = {
+  orientation: 'horizontal' as const,
+  rowSize: 80,
+  gap: 8,
+  padding: 4
+};
 
 interface ViewerProps {
   /** Current viewable gallery order, shared by the list and grid views. */
@@ -1220,6 +1350,8 @@ interface ViewerProps {
 /** Modal image viewer that reuses Antares Carousel for the main image sequence. */
 export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps) {
   const activeThumbnail = useRef<HTMLElement>(null);
+  const thumbnailViewport = useRef<HTMLDivElement>(null);
+  const pendingThumbnailFocusId = useRef<string | null>(null);
   const index = images.findIndex(function findActiveImage(image) {
     return image.id === activeId;
   });
@@ -1227,8 +1359,26 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
 
   const registerActiveThumbnail = useCallback(function registerActiveThumbnail(element: HTMLElement | null) {
     activeThumbnail.current = element;
+    if (element?.id === pendingThumbnailFocusId.current) {
+      pendingThumbnailFocusId.current = null;
+      element.focus({ preventScroll: true });
+    }
     element?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }, []);
+
+  useEffect(
+    function revealActiveThumbnail() {
+      if (index < 0) return;
+      const scrollport = thumbnailViewport.current?.querySelector<HTMLElement>('[role="grid"]');
+      if (!(scrollport instanceof HTMLElement)) return;
+
+      const itemStart =
+        thumbnailLayoutOptions.padding + index * (thumbnailLayoutOptions.rowSize + thumbnailLayoutOptions.gap);
+      const maxScrollLeft = Math.max(0, scrollport.scrollWidth - scrollport.clientWidth);
+      scrollport.scrollLeft = Math.min(itemStart, maxScrollLeft);
+    },
+    [index]
+  );
 
   const focusActiveThumbnail = useCallback(function focusActiveThumbnail() {
     activeThumbnail.current?.focus({ preventScroll: true });
@@ -1261,7 +1411,10 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
     function handleThumbnailSelection(keys) {
       if (keys === 'all') return;
       const id = keys.values().next().value;
-      if (typeof id === 'string' && id !== activeId) onSelectImage(id);
+      if (typeof id === 'string' && id !== activeId) {
+        pendingThumbnailFocusId.current = id;
+        onSelectImage(id);
+      }
     },
     [activeId, onSelectImage]
   );
@@ -1327,41 +1480,46 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
             </Button>
           </Pagination>
         </Flex>
-        <CardGroup
-          items={images}
-          dependencies={[activeId]}
-          columns="none"
-          rows="max-content"
-          autoFlow="column"
-          autoColumns="max-content"
-          orientation="horizontal"
-          gap="md"
-          padding="sm"
-          aria-label="Image thumbnails"
-          className={styles.thumbnails}
-          selectionMode="single"
-          autoFocus
-          selectionBehavior="replace"
-          escapeKeyBehavior="none"
-          disallowEmptySelection
-          selectedKeys={activeId ? [activeId] : []}
-          onSelectionChange={handleThumbnailSelection}
-        >
-          {function renderThumbnail(thumbnailImage) {
-            return (
-              <Card
-                id={thumbnailImage.id}
-                textValue={thumbnailImage.name}
-                aria-label={`View ${thumbnailImage.name}`}
-                ref={thumbnailImage.id === activeId ? registerActiveThumbnail : undefined}
-                padding="0"
-                gap="0"
-              >
-                <GalleryImage image={thumbnailImage} variant="thumbnail" />
-              </Card>
-            );
-          }}
-        </CardGroup>
+        <Box ref={thumbnailViewport} className={styles.thumbnailViewport}>
+          <Virtualizer layout={ListLayout} layoutOptions={thumbnailLayoutOptions}>
+            <CardGroup
+              items={images}
+              dependencies={[activeId]}
+              columns="none"
+              rows="max-content"
+              autoFlow="column"
+              autoColumns="max-content"
+              orientation="horizontal"
+              gap="0"
+              padding="0"
+              aria-label="Image thumbnails"
+              className={styles.thumbnails}
+              style={{ display: 'block', inlineSize: '100%' }}
+              selectionMode="single"
+              autoFocus
+              selectionBehavior="replace"
+              escapeKeyBehavior="none"
+              disallowEmptySelection
+              selectedKeys={activeId ? [activeId] : []}
+              onSelectionChange={handleThumbnailSelection}
+            >
+              {function renderThumbnail(thumbnailImage) {
+                return (
+                  <Card
+                    id={thumbnailImage.id}
+                    textValue={thumbnailImage.name}
+                    aria-label={`View ${thumbnailImage.name}`}
+                    ref={thumbnailImage.id === activeId ? registerActiveThumbnail : undefined}
+                    padding="0"
+                    gap="0"
+                  >
+                    <GalleryImage image={thumbnailImage} variant="thumbnail" />
+                  </Card>
+                );
+              }}
+            </CardGroup>
+          </Virtualizer>
+        </Box>
       </Content>
     </Modal>
   );
@@ -1757,15 +1915,15 @@ export function useGalleryImages(
     dismissErrors
   };
 }
-b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L14",null,{"toc":[],"footer":{"enabled":true},"children":[["$","$L15",null,{"children":"Gallery"}],["$","$L16",null,{"className":"mb-0","children":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L17",null,{"markdownUrl":"/docs/blocks/gallery.mdx"}],["$","$L18",null,{"markdownUrl":"/docs/blocks/gallery.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/gallery/README.mdx"}]]}],["$","$L19",null,{"children":[null,"\n",["$","$L1b",null,{"block":{"id":"gallery","description":"Browse images in a list or grid, add local files, and open a media viewer.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/file-items/index.module.css","language":"css","source":".card {\n  inline-size: 100%;\n  min-inline-size: 0;\n  --_gallery-file-action-space: calc(var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5)) * 2);\n}\n\n.card:where([data-error]) {\n  border-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));\n}\n\n.cover {\n  box-sizing: border-box;\n  min-inline-size: 0;\n  border: 1px solid transparent;\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--_gallery-file-action-space);\n}\n\n.details:where([data-variant=\"vertical\"]) {\n  padding-inline-end: 0;\n}\n\n.retry {\n  text-decoration: underline;\n}\n\n.collection {\n  inline-size: 100%;\n}\n\n/* The virtualizer needs a scrollport; a max size lets short collections shrink to fit. */\n.group {\n  max-block-size: 40rem;\n  overflow: auto;\n}\n\n/* Grid cells have a fixed height from the layout, so the card fills its cell. */\n.card:where([data-variant=\"vertical\"]) {\n  block-size: 100%;\n}\n"},{"path":"components/file-items/index.tsx","language":"tsx","source":"$1c"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.notice:where(:empty) {\n  position: absolute;\n}\n\n.dropOverlay {\n  position: absolute;\n  inset: 0;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  color: var(--color-surface-text-base, var(--ux-1leynsm, CanvasText));\n  pointer-events: none;\n}\n\n.dropTarget {\n  position: relative;\n}\n\n.dropZone {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.emptyState {\n  min-block-size: 256px;\n  text-align: center;\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$1d"},{"path":"components/image/index.module.css","language":"css","source":"$1e"},{"path":"components/image/index.tsx","language":"tsx","source":"$1f"},{"path":"components/viewer/index.module.css","language":"css","source":".modalContainer {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n  min-inline-size: 0;\n}\n\n.modal {\n  inline-size: 100%;\n  max-inline-size: 100%;\n}\n\n.slide {\n  min-inline-size: 0;\n  max-inline-size: 100%;\n  block-size: 55dvh;\n}\n\n.name {\n  flex: 1 1 auto;\n  min-inline-size: 0;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  overflow-x: auto;\n  scroll-padding-inline: var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 1));\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$20"},{"path":"data/sample-images.ts","language":"ts","source":"$21"},{"path":"data/types.ts","language":"ts","source":"$22"},{"path":"hooks/use-gallery-images.ts","language":"ts","source":"$23"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery';\nexport type { ImageItem } from './data/types';\n"}]},"children":"$L24"}]]}]]}],["$L25","$L26"],"$L27"]}],"p":"$@28","v":null,"s":"$a"}}]]
+b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L14",null,{"toc":[],"footer":{"enabled":true},"children":[["$","$L15",null,{"children":"Gallery"}],["$","$L16",null,{"className":"mb-0","children":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L17",null,{"markdownUrl":"/docs/blocks/gallery.mdx"}],["$","$L18",null,{"markdownUrl":"/docs/blocks/gallery.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/blocks/gallery/README.mdx"}]]}],["$","$L19",null,{"children":[null,"\n",["$","$L1b",null,{"block":{"id":"gallery","description":"Browse images in a list or grid, add local files, and open a media viewer.","installCommand":"npx shadcn@latest add godaddy/antares/blocks/gallery","files":[{"path":"components/file-items/index.module.css","language":"css","source":".card {\n  inline-size: 100%;\n  min-inline-size: 0;\n  --_gallery-file-action-space: calc(var(--size-space-080, calc(var(--ux-1sbfig8, 0.25rem) * 5)) * 2);\n}\n\n.card:where([data-error]) {\n  border-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));\n}\n\n.cover {\n  box-sizing: border-box;\n  min-inline-size: 0;\n  border: 1px solid transparent;\n}\n\n.details {\n  min-inline-size: 0;\n  padding-inline-end: var(--_gallery-file-action-space);\n}\n\n.details:where([data-variant=\"vertical\"]) {\n  padding-inline-end: 0;\n}\n\n.retry {\n  text-decoration: underline;\n}\n\n.collection {\n  inline-size: 100%;\n}\n\n/* The virtualizer needs a scrollport; a max size lets short collections shrink to fit. */\n.group {\n  max-block-size: 40rem;\n  overflow: auto;\n}\n\n/* Virtualized grid cells have a fixed height from the layout, so the card fills its cell. */\n:where(.group) .card:where([data-variant=\"vertical\"]) {\n  block-size: 100%;\n}\n"},{"path":"components/file-items/index.tsx","language":"tsx","source":"$1c"},{"path":"components/gallery/index.module.css","language":"css","source":".content {\n  inline-size: 100%;\n  min-inline-size: 0;\n}\n\n.notice:where(:empty) {\n  position: absolute;\n}\n\n.dropOverlay {\n  position: absolute;\n  inset: 0;\n  z-index: 1;\n  border: 1px dashed var(--ux-f7kpiw, #00a4a6);\n  border-radius: var(--ux-2jubes, 16px);\n  background-color: rgba(216, 239, 239, 0.9);\n  color: var(--color-surface-text-base, var(--ux-1leynsm, CanvasText));\n  pointer-events: none;\n}\n\n.dropTarget {\n  position: relative;\n}\n\n.dropZone {\n  box-sizing: border-box;\n  inline-size: 100%;\n  max-inline-size: 80rem;\n  min-inline-size: 0;\n  margin-inline: auto;\n}\n\n.emptyState {\n  min-block-size: 256px;\n  text-align: center;\n}\n\n.description {\n  max-inline-size: 30rem;\n}\n"},{"path":"components/gallery/index.tsx","language":"tsx","source":"$1d"},{"path":"components/image/index.module.css","language":"css","source":"$1e"},{"path":"components/image/index.tsx","language":"tsx","source":"$1f"},{"path":"components/viewer/index.module.css","language":"css","source":".modalContainer {\n  inline-size: 100%;\n  max-inline-size: 60rem;\n  min-inline-size: 0;\n}\n\n.modal {\n  inline-size: 100%;\n  max-inline-size: 100%;\n}\n\n.slide {\n  min-inline-size: 0;\n  max-inline-size: 100%;\n  block-size: 55dvh;\n}\n\n.name {\n  flex: 1 1 auto;\n  min-inline-size: 0;\n}\n\n.thumbnails {\n  min-inline-size: 0;\n  overflow-x: auto;\n  scroll-padding-inline: var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 1));\n}\n\n.thumbnailViewport {\n  block-size: 68px;\n  min-inline-size: 0;\n}\n\n:where(.thumbnailViewport) > div {\n  block-size: 100%;\n}\n"},{"path":"components/viewer/index.tsx","language":"tsx","source":"$20"},{"path":"data/sample-images.ts","language":"ts","source":"$21"},{"path":"data/types.ts","language":"ts","source":"$22"},{"path":"hooks/use-gallery-images.ts","language":"ts","source":"$23"},{"path":"index.tsx","language":"tsx","source":"export { Gallery, type GalleryProps } from './components/gallery';\nexport type { ImageItem } from './data/types';\n"}]},"children":"$L24"}]]}]]}],["$L25","$L26"],"$L27"]}],"p":"$@28","v":null,"s":"$a"}}]]
 2:[["children",{"s":{"n":"slug","t":"oc","k":"blocks/gallery","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
 1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
-0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L2a",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L2c",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$2d",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Gallery"}],["$","meta","1",{"name":"description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","2",{"property":"og:title","content":"Gallery"}],["$","meta","3",{"property":"og:description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/gallery/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Gallery"}],["$","meta","7",{"name":"twitter:description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/gallery/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@2e","v":null,"s":"$a"}},"a":"$@2f","u":"$@30","b":"fy80o-ycdiLYWKTgMi6Mj"}
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L2a",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L2c",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$2d",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Gallery"}],["$","meta","1",{"name":"description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","2",{"property":"og:title","content":"Gallery"}],["$","meta","3",{"property":"og:description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/blocks/gallery/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Gallery"}],["$","meta","7",{"name":"twitter:description","content":"Browse images in a list or grid, add local files, and open a media viewer."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/blocks/gallery/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@2e","v":null,"s":"$a"}},"a":"$@2f","u":"$@30","b":"yTJ-JzrbXlam6cqR5pnYr"}
 31:I[128903,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"Preview"]
-32:I[716408,["$4","$5"],"OutletBoundary"]
+32:I[797667,["$4","$5"],"OutletBoundary"]
 24:["$","$L31",null,{}]
-25:["$","script","script-0",{"src":"/antares/pr-465-site/_next/static/chunks/39uhuu0i3o09-.js","async":true}]
-26:["$","script","script-1",{"src":"/antares/pr-465-site/_next/static/chunks/005kimb-_1dbm.js","async":true}]
+25:["$","script","script-0",{"src":"/antares/pr-465-site/_next/static/chunks/0ts0tu0ngp9r_.js","async":true}]
+26:["$","script","script-1",{"src":"/antares/pr-465-site/_next/static/chunks/0cmo791-3fh-i.js","async":true}]
 27:["$","$L32",null,{"children":["$","$2d",null,{"name":"Next.MetadataOutlet","children":"$@33"}]}]
 30:true
 a:300
