@@ -1,5 +1,15 @@
 # @godaddy/antares
 
+## 0.13.0
+
+### Minor Changes
+
+- Spacing, rounding, typography, and surface colors now read from `@godaddy/design-tokens`. Breaking: the `--sp-*`, `--rounding-*`, and `--bg-*`/`--fg-*`/`--bd-*`/`--sh-*` custom properties on `Box` are now private; set `size-space-*`, `size-radius-*`, and `color-surface-*` instead. ([#459](https://github.com/godaddy/antares/pull/459) by @egaitan-godaddy)
+- Rebuild `Drawer` on React Aria's `Sheet`, adding swipe-to-close and nested drawers. Breaking: `isDismissable`, `isKeyboardDismissDisabled`, and `animate` are replaced by `preventDismissal` (dismissal is on by default), `overlayProps` now targets the backdrop, and the panel's `data-placement` is now `data-position`. ([#426](https://github.com/godaddy/antares/pull/426) by @egaitan-godaddy)
+- Redesign Menu with a composable API.
+  
+  Breaking changes: removed `size`, `icon`, `isIndeterminate`, `MenuGroup.label`, and the implicit `Popover` and `popoverProps` from menu triggers; renamed `MenuSeparator` to `Separator`. Use `Header` with `Heading` for group labels and wrap each menu in `Popover`, moving `popoverProps` there. ([#428](https://github.com/godaddy/antares/pull/428) by @rmojica-godaddy)
+
 ## 0.12.2
 
 ### Patch Changes
