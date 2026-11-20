@@ -1,4 +1,4 @@
-:HL["/antares/pr-464-site/_next/static/chunks/42pj5jr1a83-p.css","style"]
+:HL["/antares/pr-464-site/_next/static/chunks/0xpkcixwzjqh-.css","style"]
 :HL["/antares/pr-464-site/_next/static/chunks/23goh3axsvxg8.css","style"]
 :HL["/antares/pr-464-site/_next/static/chunks/1b4fgajp8lueq.css","style"]
 :HL["/antares/pr-464-site/_next/static/chunks/18xti33i-86g6.css","style"]
@@ -9,4 +9,4 @@
 3:[["children",{"s":"__PAGE__","h":160}]]
 2:[["children",{"s":{"n":"slug","t":"oc","k":"blocks/overview-dashboard","s":[]},"h":64,"c":"$Q3"}]]
 1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
-0:{"b":"eTNiUurCdUBSo1xjajv6L","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"5EGMANVw3FHb4guxpeN9z","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
