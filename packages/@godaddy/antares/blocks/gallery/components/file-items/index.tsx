@@ -84,6 +84,8 @@ export function FileItems({
 }: FileItemsProps) {
   const isList = view === 'list';
   const firstRevealedId = useRef<string | null>(null);
+  // Crossing the virtualization threshold remounts CardGroup; restore adjacent-row focus after that.
+  const focusAfterRemountId = useRef<string | null>(null);
   // Survive Virtualizer remounts when switching list/grid layouts.
   const [readyCoverIds, setReadyCoverIds] = useState(() => new Set<string>());
   const visibleImages = isList && !showAll ? images.slice(0, MAX_VISIBLE_ITEMS) : images;
@@ -91,11 +93,31 @@ export function FileItems({
   const errorCount = images.filter((image) => image.status === 'error').length;
 
   const registerItem = useCallback(function registerItem(id: string, element: HTMLElement | null) {
-    if (element && firstRevealedId.current === id) {
+    if (!element) return;
+    if (firstRevealedId.current === id) {
       firstRevealedId.current = null;
+      element.focus();
+      return;
+    }
+    if (focusAfterRemountId.current === id) {
+      focusAfterRemountId.current = null;
       element.focus();
     }
   }, []);
+
+  const handleRemove = useCallback(
+    function handleRemove(image: ImageItem) {
+      const index = visibleImages.findIndex(function findRemoved(item) {
+        return item.id === image.id;
+      });
+      const nextLength = visibleImages.length - 1;
+      if (shouldVirtualize && nextLength < MIN_VIRTUALIZED_ITEMS && index >= 0) {
+        focusAfterRemountId.current = visibleImages[index + 1]?.id ?? visibleImages[index - 1]?.id ?? null;
+      }
+      onRemove(image);
+    },
+    [onRemove, shouldVirtualize, visibleImages]
+  );
 
   const markCoverReady = useCallback(function markCoverReady(id: string) {
     setReadyCoverIds(function addReadyId(current) {
@@ -136,7 +158,7 @@ export function FileItems({
     <FileItem
       image={image}
       variant={isList ? 'horizontal' : 'vertical'}
-      onRemove={onRemove}
+      onRemove={handleRemove}
       onLoadError={onLoadError}
       onLoadSuccess={onLoadSuccess}
       onItemRef={registerItem}
@@ -181,7 +203,7 @@ export function FileItems({
           key={image.id}
           image={image}
           variant={isList ? 'horizontal' : 'vertical'}
-          onRemove={onRemove}
+          onRemove={handleRemove}
           onLoadError={onLoadError}
           onLoadSuccess={onLoadSuccess}
           onItemRef={registerItem}

@@ -1369,6 +1369,27 @@ describe('@godaddy/antares', function packageTests() {
       }
     );
 
+    it.each(['list', 'grid'] as const)(
+      'keeps adjacent-row focus when deletion leaves the virtualized %s threshold',
+      async function virtualizationThresholdFocus(view) {
+        const thresholdSamples = Array.from({ length: 20 }, function createThresholdSample(_, index) {
+          return {
+            id: `threshold-${index}`,
+            name: `Threshold_${index + 1}.png`,
+            src: `data:image/png;base64,${pixel}`,
+            size: 1024
+          };
+        });
+        const screen = await render(<Gallery defaultView={view} initialImages={thresholdSamples} />);
+        if (view === 'list') {
+          await userEvent.click(screen.getByRole('button', { name: 'Show all', exact: true }));
+          await expect.element(screen.getByRole('row', { name: 'Open Threshold_6.png', exact: true })).toBeVisible();
+        }
+        await userEvent.click(screen.getByRole('button', { name: 'Remove Threshold_10.png' }));
+        await expect.element(screen.getByRole('row', { name: 'Open Threshold_11.png', exact: true })).toHaveFocus();
+      }
+    );
+
     it('keeps accepted files when a later local URL fails and permits retry', async function partialBatchFailure() {
       const createUrl = URL.createObjectURL.bind(URL);
       vi.spyOn(URL, 'createObjectURL')
