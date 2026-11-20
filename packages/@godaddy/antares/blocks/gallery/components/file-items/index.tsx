@@ -1,6 +1,15 @@
 'use client';
 
-import { createContext, useCallback, useContext, useRef, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactNode
+} from 'react';
 import {
   Box,
   Button,
@@ -20,6 +29,8 @@ import {
 import { FileCover, type FileCoverVariant } from '../image';
 import type { ImageItem } from '../../data/types';
 import styles from './index.module.css';
+
+const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 interface FileItemsProps extends Pick<FileItemProps, 'onRemove' | 'onLoadError' | 'onLoadSuccess'> {
   /** Presentation chosen by Gallery. */
@@ -44,6 +55,8 @@ interface FileItemsProps extends Pick<FileItemProps, 'onRemove' | 'onLoadError' 
 const MAX_VISIBLE_ITEMS = 5;
 /** Virtualization is useful once the rendered collection is large enough to scroll. */
 const MIN_VIRTUALIZED_ITEMS = 20;
+/** RAC's post-mount focus reconciliation runs after the new virtualized rows are painted. */
+const FOCUS_RESTORE_DELAY_MS = 100;
 /** List rows are measured; the estimate only sizes the scrollbar before they mount. */
 const listLayoutOptions = { estimatedRowSize: 80, gap: 8 };
 
@@ -58,6 +71,9 @@ const gridLayoutOptions = {
 const fileSizeFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
 interface FileItemsContextValue {
+  /** Whether the collection can remount items while changing virtualizer layout. */
+  shouldVirtualize: boolean;
+
   /** Covers that have successfully decoded. */
   readyCoverIds: ReadonlySet<string>;
 
@@ -69,6 +85,14 @@ interface FileItemsContextValue {
 }
 
 const FileItemsContext = createContext<FileItemsContextValue | undefined>(undefined);
+
+interface FocusTarget {
+  /** Stable item ID to focus after a collection remount. */
+  id: string;
+
+  /** Restores the item action when the remove button had focus. */
+  removeButton: boolean;
+}
 
 /** Renders the same collection with either list or grid geometry. */
 export function FileItems({
@@ -85,24 +109,71 @@ export function FileItems({
   const isList = view === 'list';
   const firstRevealedId = useRef<string | null>(null);
   // Crossing the virtualization threshold remounts CardGroup; restore adjacent-row focus after that.
-  const focusAfterRemountId = useRef<string | null>(null);
-  // Survive Virtualizer remounts when switching list/grid layouts.
+  const focusAfterRemount = useRef<FocusTarget | null>(null);
+  // Virtualizer remounts when switching between ListLayout and GridLayout.
   const [readyCoverIds, setReadyCoverIds] = useState(() => new Set<string>());
   const visibleImages = isList && !showAll ? images.slice(0, MAX_VISIBLE_ITEMS) : images;
   const shouldVirtualize = visibleImages.length >= MIN_VIRTUALIZED_ITEMS;
   const errorCount = images.filter((image) => image.status === 'error').length;
 
-  const registerItem = useCallback(function registerItem(id: string, element: HTMLElement | null) {
-    if (!element) return;
-    if (firstRevealedId.current === id) {
-      firstRevealedId.current = null;
-      element.focus();
-      return;
+  const restoreFocusTarget = useCallback(function restoreFocusTarget(element?: HTMLElement | null) {
+    const target = focusAfterRemount.current;
+    if (!target) return;
+    const item =
+      element ??
+      Array.from(document.querySelectorAll<HTMLElement>('[data-gallery-item-id]')).find(
+        (candidate) => candidate.dataset.galleryItemId === target.id
+      );
+    if (!(item instanceof HTMLElement) || item.dataset.galleryItemId !== target.id) return;
+    const focusItem = item;
+    const focusTargetDetails = target;
+    focusAfterRemount.current = null;
+    function focusTarget() {
+      if (!focusItem.isConnected) return;
+      const removeButton = focusTargetDetails.removeButton
+        ? focusItem.querySelector<HTMLButtonElement>('button[aria-label^="Remove "]')
+        : null;
+      (removeButton ?? focusItem).focus();
     }
-    if (focusAfterRemountId.current === id) {
-      focusAfterRemountId.current = null;
-      element.focus();
-    }
+    focusTarget();
+    // RAC GridList may restore roving focus after the Virtualizer mounts; repeat after that pass.
+    setTimeout(focusTarget, FOCUS_RESTORE_DELAY_MS);
+  }, []);
+
+  const registerItem = useCallback(
+    function registerItem(id: string, element: HTMLElement | null) {
+      if (!element) return;
+      if (firstRevealedId.current === id) {
+        firstRevealedId.current = null;
+        element.focus();
+        return;
+      }
+      if (focusAfterRemount.current?.id === id) {
+        restoreFocusTarget(element);
+      }
+    },
+    [restoreFocusTarget]
+  );
+
+  const captureFocusedItem = useCallback(function captureFocusedItem() {
+    const activeElement = document.activeElement;
+    if (!(activeElement instanceof HTMLElement)) return;
+    const item = activeElement.closest<HTMLElement>('[data-gallery-item-id]');
+    const id = item?.dataset.galleryItemId;
+    if (!id) return;
+    focusAfterRemount.current = {
+      id,
+      removeButton: activeElement.matches('button[aria-label^="Remove "]')
+    };
+  }, []);
+
+  const forgetCover = useCallback(function forgetCover(id: string) {
+    setReadyCoverIds(function removeRemovedId(current) {
+      if (!current.has(id)) return current;
+      const next = new Set(current);
+      next.delete(id);
+      return next;
+    });
   }, []);
 
   const handleRemove = useCallback(
@@ -111,12 +182,14 @@ export function FileItems({
         return item.id === image.id;
       });
       const nextLength = visibleImages.length - 1;
+      forgetCover(image.id);
       if (shouldVirtualize && nextLength < MIN_VIRTUALIZED_ITEMS && index >= 0) {
-        focusAfterRemountId.current = visibleImages[index + 1]?.id ?? visibleImages[index - 1]?.id ?? null;
+        const id = visibleImages[index + 1]?.id ?? visibleImages[index - 1]?.id;
+        if (id) focusAfterRemount.current = { id, removeButton: false };
       }
       onRemove(image);
     },
-    [onRemove, shouldVirtualize, visibleImages]
+    [forgetCover, onRemove, shouldVirtualize, visibleImages]
   );
 
   const markCoverReady = useCallback(function markCoverReady(id: string) {
@@ -142,6 +215,20 @@ export function FileItems({
     onShowAll();
   }
 
+  useIsomorphicLayoutEffect(
+    function restoreFocusAfterCollectionRemount() {
+      restoreFocusTarget();
+    },
+    [shouldVirtualize, restoreFocusTarget]
+  );
+
+  useEffect(
+    function restoreFocusAfterCollectionPaint() {
+      restoreFocusTarget();
+    },
+    [shouldVirtualize, visibleImages, restoreFocusTarget]
+  );
+
   const handleSelection = useCallback<NonNullable<CardGroupProps<ImageItem>['onSelectionChange']>>(
     function handleSelection(keys) {
       if (keys === 'all') return;
@@ -165,7 +252,7 @@ export function FileItems({
     />
   );
 
-  const collection = shouldVirtualize ? (
+  const virtualizedCollection = (
     <CardGroup
       selectionMode="single"
       selectionBehavior="toggle"
@@ -176,48 +263,56 @@ export function FileItems({
       keyboardNavigationBehavior="tab"
       aria-label={isList ? 'Gallery files' : 'Gallery image grid'}
       items={visibleImages}
-      // The layout owns item geometry, so CSS grid and gap must not apply.
+      dependencies={[images, visibleImages, shouldVirtualize, isList]}
       gap="0"
       className={styles.group}
       style={{ display: 'block' }}
     >
       {renderItem}
     </CardGroup>
+  );
+  const collection = shouldVirtualize ? (
+    virtualizedCollection
   ) : (
-    <CardGroup
-      selectionMode="single"
-      selectionBehavior="toggle"
-      shouldSelectOnPressUp
-      selectedKeys={[]}
-      onSelectionChange={handleSelection}
-      disabledBehavior="selection"
-      keyboardNavigationBehavior="tab"
-      columns={isList ? '1fr' : 'repeat(auto-fill, minmax(min(100%, 240px), 1fr))'}
-      gap="sm"
-      justifyContent="start"
-      alignItems="start"
-      aria-label={isList ? 'Gallery files' : 'Gallery image grid'}
-    >
-      {visibleImages.map((image) => (
-        <FileItem
-          key={image.id}
-          image={image}
-          variant={isList ? 'horizontal' : 'vertical'}
-          onRemove={handleRemove}
-          onLoadError={onLoadError}
-          onLoadSuccess={onLoadSuccess}
-          onItemRef={registerItem}
-        />
-      ))}
-    </CardGroup>
+    <CollectionFocusBoundary onUnmount={captureFocusedItem}>
+      <CardGroup
+        selectionMode="single"
+        selectionBehavior="toggle"
+        shouldSelectOnPressUp
+        selectedKeys={[]}
+        onSelectionChange={handleSelection}
+        disabledBehavior="selection"
+        keyboardNavigationBehavior="tab"
+        columns={isList ? '1fr' : 'repeat(auto-fill, minmax(min(100%, 240px), 1fr))'}
+        gap="sm"
+        justifyContent="start"
+        alignItems="start"
+        aria-label={isList ? 'Gallery files' : 'Gallery image grid'}
+      >
+        {visibleImages.map(function renderNonVirtualizedItem(image) {
+          return (
+            <FileItem
+              key={image.id}
+              image={image}
+              variant={isList ? 'horizontal' : 'vertical'}
+              onRemove={handleRemove}
+              onLoadError={onLoadError}
+              onLoadSuccess={onLoadSuccess}
+              onItemRef={registerItem}
+            />
+          );
+        })}
+      </CardGroup>
+    </CollectionFocusBoundary>
   );
 
   return (
-    <FileItemsContext.Provider value={{ readyCoverIds, onCoverReady: markCoverReady, onCoverFailed: markCoverFailed }}>
+    <FileItemsContext.Provider
+      value={{ shouldVirtualize, readyCoverIds, onCoverReady: markCoverReady, onCoverFailed: markCoverFailed }}
+    >
       <Flex direction="column" gap="sm" className={styles.collection}>
         {shouldVirtualize ? (
           isList ? (
-            // A layout class change cannot be applied to a mounted collection, so each view remounts it.
             <Virtualizer key="list" layout={ListLayout} layoutOptions={listLayoutOptions} shouldObserveItemSize>
               {collection}
             </Virtualizer>
@@ -240,6 +335,27 @@ export function FileItems({
       </Flex>
     </FileItemsContext.Provider>
   );
+}
+
+interface CollectionFocusBoundaryProps {
+  /** Captures the active collection target immediately before the collection unmounts. */
+  onUnmount: () => void;
+
+  /** Collection subtree whose focus should survive a remount. */
+  children: ReactNode;
+}
+
+function CollectionFocusBoundary({ onUnmount, children }: CollectionFocusBoundaryProps) {
+  const onUnmountRef = useRef(onUnmount);
+  onUnmountRef.current = onUnmount;
+
+  useIsomorphicLayoutEffect(function captureBeforeUnmount() {
+    return function captureCollectionFocus() {
+      onUnmountRef.current();
+    };
+  }, []);
+
+  return children;
 }
 
 interface FileItemProps {
@@ -273,26 +389,29 @@ function formatFileSize(bytes: number) {
 function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItemRef }: FileItemProps) {
   const context = useContext(FileItemsContext);
   if (!context) throw new Error('FileItem must be rendered within FileItems.');
-  const { readyCoverIds, onCoverReady, onCoverFailed } = context;
+  const { shouldVirtualize, readyCoverIds, onCoverReady, onCoverFailed } = context;
+  const [localCoverReady, setLocalCoverReady] = useState(false);
   const size = image.size === undefined ? 'Size unavailable' : formatFileSize(image.size);
   const isError = image.status === 'error';
   const isLoading = image.status === 'loading';
-  const canOpen = !isError && !isLoading && readyCoverIds.has(image.id);
+  const canOpen = !isError && !isLoading && (shouldVirtualize ? readyCoverIds.has(image.id) : localCoverReady);
 
   const handleLoadSuccess = useCallback(
     function handleLoadSuccess(id: string) {
-      onCoverReady(id);
+      setLocalCoverReady(true);
+      if (shouldVirtualize) onCoverReady(id);
       if (isLoading) onLoadSuccess(id);
     },
-    [isLoading, onCoverReady, onLoadSuccess]
+    [isLoading, onCoverReady, onLoadSuccess, shouldVirtualize]
   );
 
   const handleLoadError = useCallback(
     function handleLoadError(id: string) {
-      onCoverFailed(id);
+      setLocalCoverReady(false);
+      if (shouldVirtualize) onCoverFailed(id);
       onLoadError(id);
     },
-    [onCoverFailed, onLoadError]
+    [onCoverFailed, onLoadError, shouldVirtualize]
   );
 
   return (
@@ -308,6 +427,7 @@ function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItem
       alignItems={variant === 'horizontal' ? 'center' : undefined}
       className={styles.card}
       data-error={isError || undefined}
+      data-gallery-item-id={image.id}
       data-variant={variant}
     >
       <Box flexShrink={0} className={styles.cover}>

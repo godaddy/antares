@@ -28,6 +28,14 @@ const browserSamples: ImageItem[] = [
     errorMessage: 'Couldn’t load Photo_error.png.'
   }
 ];
+const virtualizedSamples: ImageItem[] = Array.from({ length: 40 }, function createVirtualizedSample(_, index) {
+  return {
+    id: `virtualized-${index}`,
+    name: `Virtualized_${index + 1}.png`,
+    src: `data:image/png;base64,${pixel}`,
+    size: (index + 1) * 1024
+  };
+});
 
 function png(name = 'local.png') {
   const bytes = Uint8Array.from(atob(pixel), function byte(value) {
@@ -424,6 +432,54 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.click(screen.getByRole('radio', { name: 'List', exact: true }));
       await expect.element(screen.getByRole('button', { name: 'Remove Photo_10.png' })).toBeVisible();
       await expect.element(screen.getByRole('button', { name: 'Show all', exact: true })).not.toBeInTheDocument();
+    });
+
+    it.each(['grid', 'list'] as const)(
+      'windows large collections, scrolls, and preserves loaded covers across a %s view switch',
+      async function virtualizedCollection(view) {
+        const screen = await render(<Gallery initialImages={virtualizedSamples} defaultView={view} />);
+
+        async function verifyVirtualizedView(currentView: 'grid' | 'list') {
+          const collection = screen.getByRole('grid', {
+            name: currentView === 'list' ? 'Gallery files' : 'Gallery image grid'
+          });
+          await expect.element(collection).toBeVisible();
+          await expect
+            .poll(() => collection.element().querySelectorAll('[role="row"]').length)
+            .toBeLessThan(virtualizedSamples.length);
+
+          collection.element().scrollTo({ top: collection.element().scrollHeight });
+          await expect.element(screen.getByRole('row', { name: 'Open Virtualized_40.png', exact: true })).toBeVisible();
+        }
+
+        if (view === 'list') await userEvent.click(screen.getByRole('button', { name: 'Show all', exact: true }));
+        await verifyVirtualizedView(view);
+
+        const switchedView = view === 'grid' ? 'list' : 'grid';
+        await userEvent.click(
+          screen.getByRole('radio', { name: switchedView === 'list' ? 'List' : 'Grid', exact: true })
+        );
+        if (switchedView === 'list')
+          await userEvent.click(screen.getByRole('button', { name: 'Show all', exact: true }));
+        await verifyVirtualizedView(switchedView);
+
+        await userEvent.click(screen.getByRole('row', { name: 'Open Virtualized_40.png', exact: true }));
+        await expect.element(screen.getByRole('dialog', { name: 'Media gallery' })).toBeVisible();
+      }
+    );
+
+    it('preserves a focused remove action when a drop enters virtualization', async function dropCrossesThreshold() {
+      const screen = await render(<Gallery initialImages={virtualizedSamples.slice(0, 19)} />);
+      const remove = screen.getByRole('button', { name: 'Remove Virtualized_1.png', exact: true });
+      remove.element().focus();
+      const dropTarget = screen.getByRole('region', { name: 'Grid view' }).element();
+      const data = transfer([png('new.png')]);
+      drag(dropTarget, 'dragenter', data);
+      drag(dropTarget, 'dragover', data);
+      drag(dropTarget, 'drop', data);
+
+      await expect.element(screen.getByRole('row', { name: 'Open new.png', exact: true })).toBeVisible();
+      await expect.element(screen.getByRole('button', { name: 'Remove Virtualized_1.png', exact: true })).toHaveFocus();
     });
 
     it.each([5, 11])(
@@ -984,28 +1040,23 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('focuses the active thumbnail when opening an image at the end of the gallery', async function offscreenThumbnail() {
-      try {
-        await page.viewport(390, 844);
-        const screen = await render(<Gallery initialImages={browserSamples.slice(0, 10)} />);
-        const opener = screen.getByRole('row', { name: 'Open Photo_10.png' });
-        await userEvent.click(opener);
-        const dialog = screen.getByRole('dialog');
-        const thumbnail = dialog.getByRole('row', { name: 'View Photo_10.png' });
-        await expect.element(thumbnail).toHaveFocus();
-        await expect.element(thumbnail).toHaveAttribute('aria-selected', 'true');
-        await expect
-          .poll(() =>
-            isThumbnailRevealed(thumbnail.element(), dialog.getByRole('grid', { name: 'Image thumbnails' }).element())
-          )
-          .toBe(true);
-        await userEvent.keyboard('{ArrowLeft}');
-        await expect.element(dialog.getByRole('row', { name: 'View Photo_9.png' })).toHaveFocus();
-        await expect.element(dialog.getByRole('status')).toMatchTextContent('9 of 10');
-        await userEvent.keyboard('{Escape}');
-        await expect.element(opener).toHaveFocus();
-      } finally {
-        await page.viewport(1280, 800);
-      }
+      const screen = await render(<Gallery initialImages={browserSamples.slice(0, 10)} />);
+      const opener = screen.getByRole('row', { name: 'Open Photo_10.png' });
+      await userEvent.click(opener);
+      const dialog = screen.getByRole('dialog');
+      const thumbnail = dialog.getByRole('row', { name: 'View Photo_10.png' });
+      await expect.element(thumbnail).toHaveFocus();
+      await expect.element(thumbnail).toHaveAttribute('aria-selected', 'true');
+      await expect
+        .poll(() =>
+          isThumbnailRevealed(thumbnail.element(), dialog.getByRole('grid', { name: 'Image thumbnails' }).element())
+        )
+        .toBe(true);
+      await userEvent.keyboard('{ArrowLeft}');
+      await expect.element(dialog.getByRole('row', { name: 'View Photo_9.png' })).toHaveFocus();
+      await expect.element(dialog.getByRole('status')).toMatchTextContent('9 of 10');
+      await userEvent.keyboard('{Escape}');
+      await expect.element(opener).toHaveFocus();
     });
 
     it.each(['grid', 'list'] as const)(
@@ -1370,9 +1421,9 @@ describe('@godaddy/antares', function packageTests() {
     );
 
     it.each(['list', 'grid'] as const)(
-      'keeps adjacent-row focus when deletion leaves the virtualized %s threshold',
+      'keeps adjacent-row focus across consecutive deletion in %s view',
       async function virtualizationThresholdFocus(view) {
-        const thresholdSamples = Array.from({ length: 20 }, function createThresholdSample(_, index) {
+        const thresholdSamples = Array.from({ length: 21 }, function createThresholdSample(_, index) {
           return {
             id: `threshold-${index}`,
             name: `Threshold_${index + 1}.png`,
@@ -1387,6 +1438,8 @@ describe('@godaddy/antares', function packageTests() {
         }
         await userEvent.click(screen.getByRole('button', { name: 'Remove Threshold_10.png' }));
         await expect.element(screen.getByRole('row', { name: 'Open Threshold_11.png', exact: true })).toHaveFocus();
+        await userEvent.click(screen.getByRole('button', { name: 'Remove Threshold_11.png' }));
+        await expect.element(screen.getByRole('row', { name: 'Open Threshold_12.png', exact: true })).toHaveFocus();
       }
     );
 

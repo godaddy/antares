@@ -73,15 +73,15 @@ export function Gallery({ initialImages = [], defaultView = 'grid', limits, onIm
   const [activeId, setActiveId] = useState<string | null>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const addButton = useRef<HTMLButtonElement>(null);
-  const previousImageCount = useRef(images.length);
+  const focusAfterFinalRemoval = useRef(false);
   const uploadErrorId = useId();
 
   useEffect(
     function restoreFocusAfterFinalRemoval() {
-      if (previousImageCount.current === 1 && images.length === 0) {
+      if (images.length === 0 && focusAfterFinalRemoval.current) {
+        focusAfterFinalRemoval.current = false;
         addButton.current?.focus({ preventScroll: true });
       }
-      previousImageCount.current = images.length;
     },
     [images.length]
   );
@@ -93,6 +93,7 @@ export function Gallery({ initialImages = [], defaultView = 'grid', limits, onIm
   const handleRemoveImage = useCallback(
     function handleRemoveImage(image: ImageItem) {
       // The collection restores adjacent-row focus. The final removal unmounts it entirely.
+      if (images.length === 1) focusAfterFinalRemoval.current = true;
       removeImage(image);
     },
     [images.length, removeImage]

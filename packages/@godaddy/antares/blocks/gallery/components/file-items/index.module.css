@@ -37,7 +37,7 @@
   overflow: auto;
 }
 
-/* Grid cells have a fixed height from the layout, so the card fills its cell. */
-.card:where([data-variant="vertical"]) {
+/* Virtualized grid cells have a fixed height from the layout, so the card fills its cell. */
+:where(.group) .card:where([data-variant="vertical"]) {
   block-size: 100%;
 }
