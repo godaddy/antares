@@ -1,18 +1,23 @@
-import { Alert, type AlertProps, Button } from '@godaddy/antares';
 import { useState } from 'react';
+import { Alert, Icon, Button, CloseButton, Content, Heading, Text } from '@godaddy/antares';
 
 /**
- * When an `onClose` callback is provided, a dismiss button is rendered. The component does not manage its own visibility — the parent is responsible for unmounting or hiding the alert when `onClose` fires.
+ * Compose CloseButton and control visibility in the parent. Set its accessible label directly.
  * @order 3
  */
-export function DismissibleExample(props?: Partial<AlertProps>) {
+export function DismissibleExample({ closeLabel = 'Close' }: { closeLabel?: string } = {}) {
   const [visible, setVisible] = useState(true);
 
   if (!visible) return <Button onPress={() => setVisible(true)}>Show alert</Button>;
 
   return (
-    <Alert emphasis="success" title="Your account's been verified" onClose={() => setVisible(false)} {...props}>
-      We've successfully verified your identity.
+    <Alert emphasis="success">
+      <Icon slot="indicator" icon="checkmark" />
+      <Content>
+        <Heading slot="title">Your account's been verified</Heading>
+        <Text>We've successfully verified your identity.</Text>
+      </Content>
+      <CloseButton aria-label={closeLabel} onPress={() => setVisible(false)} />
     </Alert>
   );
 }

@@ -1,15 +1,16 @@
 'use client';
 
-import { useId, useReducer, useRef, useState, type FormEvent } from 'react';
+import { useId, useReducer, useRef, useState, type SubmitEvent } from 'react';
 import {
   Alert,
+  Icon,
+  Content,
   Box,
   Button,
   Checkbox,
   Flex,
   Grid,
   Heading,
-  Icon,
   Text,
   TextContext,
   isFileDropItem,
@@ -157,7 +158,7 @@ export function ProjectInquiryForm() {
     clearConfirmation();
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     if (canSubmit) setSubmitted(true);
   }
@@ -243,7 +244,12 @@ export function ProjectInquiryForm() {
               </Checkbox>
 
               {submitted ? (
-                <Alert emphasis="success">Demo complete. No information was sent and no call was scheduled.</Alert>
+                <Alert emphasis="success">
+                  <Icon slot="indicator" icon="checkmark" />
+                  <Content>
+                    <Text>Demo complete. No information was sent and no call was scheduled.</Text>
+                  </Content>
+                </Alert>
               ) : null}
 
               <DropOverlay isDropTarget={isDropTarget} />

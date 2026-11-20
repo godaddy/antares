@@ -1,6 +1,6 @@
 ---
 title: Alert
-description: In-page alerts are non-intrusive notifications within a webpage, providing users with timely information or feedback without disrupting their experience.
+description: Compose an in-page notification from content, optional emphasis icon, actions, and a close button.
 ---
 
 import { Meta, ArgTypes } from '@storybook/addon-docs/blocks';
@@ -8,6 +8,13 @@ import { Examples } from '@bento/storybook-addon-helpers/runtime';
 import * as Stories from './alert.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
+
+## Features
+
+- Seven emphasis categories with an optional composed icon
+- Consumer-owned title, body, actions, and dismissal
+- Native props on the outer surface and overridable presentation defaults for its children
+- Container-based action reflow with logical layout for RTL
 
 ## Installation
 
@@ -19,32 +26,60 @@ npm install --save @godaddy/antares
 
 <Examples of={Stories.Examples} />
 
+## Customization
+
+Alert positions and styles its regions. You supply the regions.
+
+- **Compose siblings inside Alert**: optional `Icon slot="indicator"`, `Content` for the title and body, optional `ButtonGroup`, and optional `CloseButton`. Use `Button slot="close"` when the dismiss control needs a visible label. Pass `onPress` on the close control and hide the alert from the parent.
+- **Name the title with a slot**: `Heading slot="title"`, or `Text slot="title"` when heading semantics do not fit. Body copy is an unslotted `Text` inside `Content`.
+- **Choose the glyph on Icon**: for example `<Icon slot="indicator" icon="alert" />`. The indicator is decorative. Omit it when the message stands alone.
+- **Keep region roots as direct children of Alert.** Return several regions from a fragment when you extract them. An extra DOM wrapper is not placed in the layout grid. Put custom layout inside `Content` instead.
+- **Child props win** over Alert's context defaults. Classes merge. Local style properties win over context styles.
+- **`Content` has no inset inside Alert.** The surface owns padding. Override `Content` spacing only when a custom interior needs it.
+- **Surface props stay on Alert**: `className`, `style`, `ref`, native attributes, and `data-emphasis` for theming.
+- **Narrow containers stack actions** under the content and keep the close control in its own column. Empty icon and close columns collapse. Source order remains the keyboard order.
+
+Alert owns region contexts the way overlay shells do, so a nested Alert does not pick up a parent Modal or Card `Content` padding. Only `IconContext` is merged from outside, so ambient icons and `CloseButton` keep parent icon customization. Unslotted icons do not receive the indicator defaults.
+
 ## Accessibility
 
 ### Keyboard
 
 | Key | Description |
 | --- | --- |
-| `Tab` | Moves focus to the dismiss button or action button |
-| `Space` / `Enter` | Activates the focused button |
+| Tab / Shift+Tab | Moves between controls in the consumer's source order |
+| Enter / Space | Activates the focused button |
 
 ### Screen readers
 
-The alert container uses `role="alert"`, which creates an ARIA live region. When an alert is rendered or its content changes, screen readers announce the message automatically — the user does not need to navigate to the alert to hear it.
+The surface defaults to `role="alert"`, an assertive live region. Use `role="status"` for polite updates when appropriate. Screen reader announcements depend on how content enters or updates the live region; rendering an SSR snapshot does not verify an announcement.
 
-### Dismiss button label
+Choose the `Heading` level for the surrounding page. The `title` slot styles the title but does not set `aria-labelledby` or `aria-describedby` on `Alert`. Add explicit labeling attributes when the surface needs an accessible name. `CloseButton` defaults to `aria-label="Close"`; set `aria-label` directly on that button for localization or more context.
 
-The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels={{ close: '...' }}` to provide more specific context for screen readers (e.g. `"Dismiss payment warning"`). This is especially useful when multiple alerts are visible at the same time.
+The parent controls visibility and focus restoration after dismissal. An `Alert` inside a `Modal` owns a separate close slot, so its close button does not inherit the `Modal`'s dismiss handler. The enclosing dialog keeps its own title.
 
 ## Best Practices
 
-- Write alert content from the user's perspective: describe what happened and what they can do next, not the underlying technical error.
-- Use `critical` only when the user truly cannot continue without resolving the issue. Overusing it reduces its impact.
-- Always provide a `title` when the alert includes a dismiss button — it improves the reading experience for screen reader users.
-- When using `actions`, prefer `secondary` or `tertiary` Button variants. Avoid placing a primary action inside an alert.
-- Do not stack multiple alerts of the same emphasis; consolidate the message into a single alert.
+- Explain what happened and how the user can respond.
+- Reserve critical emphasis and assertive announcements for messages that warrant interruption.
+- Prefer secondary or tertiary actions inside an alert.
+- Keep interactive source order aligned with the reading order.
+- Test long content, RTL, and enlarged text in narrow containers.
 
 ## Props
+
+```tsx
+<Alert>
+  <Icon slot="indicator" icon="information" />
+  <Content>
+    <Heading slot="title" />
+    <Text />
+  </Content>
+  <ButtonGroup />
+  <CloseButton />
+  {/* ... */}
+</Alert>
+```
 
 ### Alert
 
