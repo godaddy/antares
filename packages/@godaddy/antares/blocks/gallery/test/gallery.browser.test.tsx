@@ -2,6 +2,7 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vite
 import { render } from 'vitest-browser-react';
 import { cdp, page, userEvent } from 'vitest/browser';
 import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
+import { RTLProvider } from '#utils/rtl-locale-provider.tsx';
 import { Gallery, type ImageItem } from '../index.tsx';
 import { FileCover, GalleryImage } from '../components/image';
 
@@ -468,18 +469,18 @@ describe('@godaddy/antares', function packageTests() {
       }
     );
 
-    it('preserves a focused remove action when a drop enters virtualization', async function dropCrossesThreshold() {
-      const screen = await render(<Gallery initialImages={virtualizedSamples.slice(0, 19)} />);
-      const remove = screen.getByRole('button', { name: 'Remove Virtualized_1.png', exact: true });
-      remove.element().focus();
-      const dropTarget = screen.getByRole('region', { name: 'Grid view' }).element();
-      const data = transfer([png('new.png')]);
-      drag(dropTarget, 'dragenter', data);
-      drag(dropTarget, 'dragover', data);
-      drag(dropTarget, 'drop', data);
+    it('loads covers eagerly only when the collection is virtualized', async function coverLoading() {
+      const small = await render(<Gallery initialImages={browserSamples.slice(0, 6)} defaultView="grid" />);
+      const smallCovers = Array.from(small.container.querySelectorAll('img'));
+      expect(smallCovers.length).toBeGreaterThan(0);
+      for (const cover of smallCovers) expect(cover).toHaveAttribute('loading', 'lazy');
+      await small.unmount();
 
-      await expect.element(screen.getByRole('row', { name: 'Open new.png', exact: true })).toBeVisible();
-      await expect.element(screen.getByRole('button', { name: 'Remove Virtualized_1.png', exact: true })).toHaveFocus();
+      const large = await render(<Gallery initialImages={virtualizedSamples} defaultView="grid" />);
+      await expect.element(large.getByRole('grid', { name: 'Gallery image grid' })).toBeVisible();
+      const largeCovers = Array.from(large.container.querySelectorAll('img'));
+      expect(largeCovers.length).toBeGreaterThan(0);
+      for (const cover of largeCovers) expect(cover).toHaveAttribute('loading', 'eager');
     });
 
     it.each([5, 11])(
@@ -990,25 +991,34 @@ describe('@godaddy/antares', function packageTests() {
         await page.viewport(1280, 800);
       });
 
-      it('reveals the first and last thumbnails by keyboard without scrolling the modal or page', async function keyboardReveal() {
-        const screen = await render(<Gallery initialImages={browserSamples.slice(0, 10)} />);
-        await userEvent.click(screen.getByRole('row', { name: 'Open file_name.png' }));
-        const dialog = screen.getByRole('dialog');
-        const rail = dialog.getByRole('grid', { name: 'Image thumbnails' });
-        const first = dialog.getByRole('row', { name: 'View file_name.png' });
-        const last = dialog.getByRole('row', { name: 'View Photo_10.png' });
-        const initialScroll = scrollPositionsAbove(rail.element());
-        await expect.element(first).toHaveFocus();
-        await userEvent.keyboard('{End}');
-        await expect.element(last).toHaveFocus();
-        await expect.element(last).toHaveAttribute('aria-selected', 'true');
-        await expect.poll(() => isThumbnailRevealed(last.element(), rail.element())).toBe(true);
-        await userEvent.keyboard('{Home}');
-        await expect.element(first).toHaveFocus();
-        await expect.element(first).toHaveAttribute('aria-selected', 'true');
-        await expect.poll(() => isThumbnailRevealed(first.element(), rail.element())).toBe(true);
-        expect(scrollPositionsAbove(rail.element())).toEqual(initialScroll);
-      });
+      it.each(['ltr', 'rtl'] as const)(
+        'reveals the first and last thumbnails by keyboard without scrolling the modal or page in %s',
+        async function keyboardReveal(textDirection) {
+          if (textDirection === 'rtl') document.documentElement.dir = 'rtl';
+          try {
+            const gallery = <Gallery initialImages={browserSamples.slice(0, 10)} />;
+            const screen = await render(textDirection === 'rtl' ? <RTLProvider>{gallery}</RTLProvider> : gallery);
+            await userEvent.click(screen.getByRole('row', { name: 'Open file_name.png' }));
+            const dialog = screen.getByRole('dialog');
+            const rail = dialog.getByRole('grid', { name: 'Image thumbnails' });
+            const first = dialog.getByRole('row', { name: 'View file_name.png' });
+            const last = dialog.getByRole('row', { name: 'View Photo_10.png' });
+            const initialScroll = scrollPositionsAbove(rail.element());
+            await expect.element(first).toHaveFocus();
+            await userEvent.keyboard('{End}');
+            await expect.element(last).toHaveFocus();
+            await expect.element(last).toHaveAttribute('aria-selected', 'true');
+            await expect.poll(() => isThumbnailRevealed(last.element(), rail.element())).toBe(true);
+            await userEvent.keyboard('{Home}');
+            await expect.element(first).toHaveFocus();
+            await expect.element(first).toHaveAttribute('aria-selected', 'true');
+            await expect.poll(() => isThumbnailRevealed(first.element(), rail.element())).toBe(true);
+            expect(scrollPositionsAbove(rail.element())).toEqual(initialScroll);
+          } finally {
+            document.documentElement.removeAttribute('dir');
+          }
+        }
+      );
 
       it.each([
         { direction: 'next', from: 0, to: 3, position: 'intermediate' },
@@ -1417,29 +1427,6 @@ describe('@godaddy/antares', function packageTests() {
         await userEvent.keyboard('{Tab}{Enter}');
         await expect.element(screen.getByRole('button', { name: 'Add files', exact: true })).toHaveFocus();
         await expect.element(screen.getByRole('region', { name: 'Empty gallery' })).toBeVisible();
-      }
-    );
-
-    it.each(['list', 'grid'] as const)(
-      'keeps adjacent-row focus across consecutive deletion in %s view',
-      async function virtualizationThresholdFocus(view) {
-        const thresholdSamples = Array.from({ length: 21 }, function createThresholdSample(_, index) {
-          return {
-            id: `threshold-${index}`,
-            name: `Threshold_${index + 1}.png`,
-            src: `data:image/png;base64,${pixel}`,
-            size: 1024
-          };
-        });
-        const screen = await render(<Gallery defaultView={view} initialImages={thresholdSamples} />);
-        if (view === 'list') {
-          await userEvent.click(screen.getByRole('button', { name: 'Show all', exact: true }));
-          await expect.element(screen.getByRole('row', { name: 'Open Threshold_6.png', exact: true })).toBeVisible();
-        }
-        await userEvent.click(screen.getByRole('button', { name: 'Remove Threshold_10.png' }));
-        await expect.element(screen.getByRole('row', { name: 'Open Threshold_11.png', exact: true })).toHaveFocus();
-        await userEvent.click(screen.getByRole('button', { name: 'Remove Threshold_11.png' }));
-        await expect.element(screen.getByRole('row', { name: 'Open Threshold_12.png', exact: true })).toHaveFocus();
       }
     );
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useCallback, useEffect, useId, useRef, useState } from 'react';
+import { forwardRef, useCallback, useId, useRef, useState } from 'react';
 import {
   Alert,
   Box,
@@ -73,18 +73,7 @@ export function Gallery({ initialImages = [], defaultView = 'grid', limits, onIm
   const [activeId, setActiveId] = useState<string | null>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const addButton = useRef<HTMLButtonElement>(null);
-  const focusAfterFinalRemoval = useRef(false);
   const uploadErrorId = useId();
-
-  useEffect(
-    function restoreFocusAfterFinalRemoval() {
-      if (images.length === 0 && focusAfterFinalRemoval.current) {
-        focusAfterFinalRemoval.current = false;
-        addButton.current?.focus({ preventScroll: true });
-      }
-    },
-    [images.length]
-  );
 
   const handleShowAll = useCallback(function handleShowAll() {
     setShowAll(true);
@@ -93,7 +82,7 @@ export function Gallery({ initialImages = [], defaultView = 'grid', limits, onIm
   const handleRemoveImage = useCallback(
     function handleRemoveImage(image: ImageItem) {
       // The collection restores adjacent-row focus. The final removal unmounts it entirely.
-      if (images.length === 1) focusAfterFinalRemoval.current = true;
+      if (images.length === 1) addButton.current?.focus({ preventScroll: true });
       removeImage(image);
     },
     [images.length, removeImage]

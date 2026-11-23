@@ -48,7 +48,6 @@ interface ViewerProps {
 export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps) {
   const activeThumbnail = useRef<HTMLElement>(null);
   const thumbnailViewport = useRef<HTMLDivElement>(null);
-  const pendingThumbnailFocusId = useRef<string | null>(null);
   const index = images.findIndex(function findActiveImage(image) {
     return image.id === activeId;
   });
@@ -56,10 +55,6 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
 
   const registerActiveThumbnail = useCallback(function registerActiveThumbnail(element: HTMLElement | null) {
     activeThumbnail.current = element;
-    if (element?.id === pendingThumbnailFocusId.current) {
-      pendingThumbnailFocusId.current = null;
-      element.focus({ preventScroll: true });
-    }
     element?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }, []);
 
@@ -72,7 +67,9 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
       const itemStart =
         thumbnailLayoutOptions.padding + index * (thumbnailLayoutOptions.rowSize + thumbnailLayoutOptions.gap);
       const maxScrollLeft = Math.max(0, scrollport.scrollWidth - scrollport.clientWidth);
-      scrollport.scrollLeft = Math.min(itemStart, maxScrollLeft);
+      const offset = Math.min(itemStart, maxScrollLeft);
+      // Horizontal scrollports measure from the start edge, which is negative in RTL.
+      scrollport.scrollLeft = getComputedStyle(scrollport).direction === 'rtl' ? -offset : offset;
     },
     [index]
   );
@@ -108,10 +105,7 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
     function handleThumbnailSelection(keys) {
       if (keys === 'all') return;
       const id = keys.values().next().value;
-      if (typeof id === 'string' && id !== activeId) {
-        pendingThumbnailFocusId.current = id;
-        onSelectImage(id);
-      }
+      if (typeof id === 'string' && id !== activeId) onSelectImage(id);
     },
     [activeId, onSelectImage]
   );
@@ -210,7 +204,7 @@ export function Viewer({ images, activeId, onClose, onSelectImage }: ViewerProps
                     padding="0"
                     gap="0"
                   >
-                    <GalleryImage image={thumbnailImage} variant="thumbnail" />
+                    <GalleryImage image={thumbnailImage} variant="thumbnail" loading="eager" />
                   </Card>
                 );
               }}

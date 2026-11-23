@@ -40,8 +40,24 @@ Give the collection a definite block size and `overflow: auto`, and put the `Vir
 
 ## Accessibility
 
+### Keyboard
+
+React Aria owns keyboard navigation and focus while items enter and leave the viewport, so do not add a competing key handler. Keys reach items that are not mounted yet.
+
+| Key | Action |
+| --- | --- |
+| `Tab` / `Shift + Tab` | Moves focus into and out of the collection as a single tab stop |
+| `Arrow Up` / `Arrow Down` | Moves focus to the previous or next item, or row in a grid |
+| `Arrow Left` / `Arrow Right` | Moves focus between columns in a grid. Directions reverse in RTL |
+| `Page Up` / `Page Down` | Moves focus by about one viewport of items |
+| `Home` / `End` | Moves focus to the first or last item, even when it is offscreen |
+| `Enter` / `Space` | Selects the focused item according to the collection's `selectionMode` |
+| Typeahead (letters) | Moves focus to the item whose `textValue` matches |
+
+### Screen readers
+
 - Give every standalone `ListBox` or `CardGroup` an `aria-label` or `aria-labelledby`, and a `Select` a visible `Label`.
-- React Aria owns keyboard navigation and focus while items enter and leave the viewport, so do not add a competing key handler.
+- Items expose their position in the full collection with `aria-posinset` and `aria-setsize`, even though only some are mounted.
 - Offscreen items are not in the DOM. Browser find and print only see the mounted items, so offer search, filtering, or an export when people need the whole collection.
 - Keep interactive controls out of `ListBoxItem`. For items with actions, use `CardGroup`.
 
