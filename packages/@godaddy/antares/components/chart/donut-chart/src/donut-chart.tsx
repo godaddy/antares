@@ -91,7 +91,7 @@ export interface DonutChartProps extends Omit<GridProps<'div'>, 'as' | 'areas' |
  *
  * @param props - {@link DonutChartProps}
  */
-export const DonutChart = forwardRef<HTMLDivElement, DonutChartProps>(function DonutChart(props, ref) {
+export const DonutChart = /* @__PURE__ */ forwardRef<HTMLDivElement, DonutChartProps>(function DonutChart(props, ref) {
   const {
     data,
     children,

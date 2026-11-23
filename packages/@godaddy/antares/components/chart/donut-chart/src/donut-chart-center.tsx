@@ -11,18 +11,18 @@ export interface DonutChartCenterProps extends Omit<FlexProps<'div'>, 'as'> {
   children?: ReactNode;
 }
 
-export const DonutChartCenterContext = createContext<ContextValue<DonutChartCenterProps, HTMLDivElement>>(null);
-
-const textSlots = {
-  [DEFAULT_SLOT]: {},
-  value: { className: composeClassName(undefined, styles.value, textTreatmentClassName('inherit')) },
-  description: { className: composeClassName(undefined, styles.description, textTreatmentClassName('inherit')) }
-};
+export const DonutChartCenterContext =
+  /* @__PURE__ */ createContext<ContextValue<DonutChartCenterProps, HTMLDivElement>>(null);
 
 /** Positions content inside a donut ring. */
-export const DonutChartCenter = forwardRef<HTMLDivElement, DonutChartCenterProps>(
+export const DonutChartCenter = /* @__PURE__ */ forwardRef<HTMLDivElement, DonutChartCenterProps>(
   function DonutChartCenter(props, ref) {
     const [{ children, ...rest }, centerRef] = useContextProps(props, ref, DonutChartCenterContext);
+    const textSlots = {
+      [DEFAULT_SLOT]: {},
+      value: { className: composeClassName(undefined, styles.value, textTreatmentClassName('inherit')) },
+      description: { className: composeClassName(undefined, styles.description, textTreatmentClassName('inherit')) }
+    };
     return (
       <Flex alignItems="center" justifyContent="center" direction="column" {...rest} ref={centerRef}>
         <TextContext.Provider value={{ slots: textSlots }}>{children}</TextContext.Provider>

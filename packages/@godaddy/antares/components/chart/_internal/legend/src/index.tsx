@@ -105,7 +105,7 @@ function LegendItem(props: LegendItemProps) {
   );
 }
 
-export const Legend = forwardRef<HTMLDivElement, LegendProps>(function Legend(props, ref) {
+export const Legend = /* @__PURE__ */ forwardRef<HTMLDivElement, LegendProps>(function Legend(props, ref) {
   const { series, label, size = 'md', orientation = 'horizontal', className, ...rootFlexProps } = props;
   const isHorizontal = orientation === 'horizontal';
 
