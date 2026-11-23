@@ -6,7 +6,7 @@ const data = [
 ];
 
 /**
- * Place `ChartLegend` inside a chart. It reads the chart's series, so the names and colors always match.
+ * Place `ChartLegend` inside a `DonutChart`. It reads the chart's slices, so the names and colors always match.
  * @order 1
  */
 export function DefaultExample() {
