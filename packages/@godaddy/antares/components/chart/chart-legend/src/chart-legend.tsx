@@ -1,4 +1,4 @@
-import { createContext, forwardRef, useContext, type Context } from 'react';
+import { createContext, useContext, type Context } from 'react';
 import { useContextProps, type ContextValue } from 'react-aria-components';
 import { Legend, type LegendProps } from '#components/chart/_internal/legend';
 import { composeClassName } from '#utils/render-props.ts';
@@ -14,22 +14,14 @@ export const InternalChartLegendContext: Context<InternalChartLegendValue | null
 export const ChartLegendContext = createContext<ContextValue<ChartLegendProps, HTMLDivElement>>(null);
 
 /** Displays the current chart's series names and colors. */
-export const ChartLegend = /* @__PURE__ */ forwardRef<HTMLDivElement, ChartLegendProps>(
-  function ChartLegend(props, ref) {
-    const [{ className, ...rest }, legendRef] = useContextProps(props, ref, ChartLegendContext);
-    const chart = useContext(InternalChartLegendContext);
-    if (!chart) {
-      return null;
-    }
-    const { series, className: chartClassName, ...chartDefaults } = chart;
-    return (
-      <Legend
-        {...chartDefaults}
-        {...rest}
-        series={series}
-        ref={legendRef}
-        className={composeClassName(className, chartClassName)}
-      />
-    );
+export function ChartLegend(props: ChartLegendProps) {
+  const [{ className, ...rest }] = useContextProps(props, null, ChartLegendContext);
+  const chart = useContext(InternalChartLegendContext);
+  if (!chart) {
+    return null;
   }
-);
+  const { series, className: chartClassName, ...chartDefaults } = chart;
+  return (
+    <Legend {...chartDefaults} {...rest} series={series} className={composeClassName(className, chartClassName)} />
+  );
+}

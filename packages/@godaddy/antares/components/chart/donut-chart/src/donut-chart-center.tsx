@@ -1,4 +1,4 @@
-import { createContext, forwardRef, useContext, type ReactNode } from 'react';
+import { createContext, useContext, type ReactNode } from 'react';
 import { DEFAULT_SLOT, useContextProps, type ContextValue } from 'react-aria-components';
 import { textTreatmentClassName } from '#components/_internal/typography';
 import { Flex, type FlexProps } from '#components/layout/flex';
@@ -15,26 +15,23 @@ export interface DonutChartCenterProps extends Omit<FlexProps<'div'>, 'as'> {
 export const DonutChartCenterContext = createContext<ContextValue<DonutChartCenterProps, HTMLDivElement>>(null);
 
 /** Positions content inside a donut ring. */
-export const DonutChartCenter = /* @__PURE__ */ forwardRef<HTMLDivElement, DonutChartCenterProps>(
-  function DonutChartCenter(props, ref) {
-    const [{ children, className, ...rest }, centerRef] = useContextProps(props, ref, DonutChartCenterContext);
-    const layoutClassName = useContext(DonutChartCenterLayoutContext);
-    const textSlots = {
-      [DEFAULT_SLOT]: {},
-      value: { className: composeClassName(undefined, styles.value, textTreatmentClassName('inherit')) },
-      description: { className: composeClassName(undefined, styles.description, textTreatmentClassName('inherit')) }
-    };
-    return (
-      <Flex
-        alignItems="center"
-        justifyContent="center"
-        direction="column"
-        {...rest}
-        ref={centerRef}
-        className={composeClassName(className, layoutClassName)}
-      >
-        <TextContext.Provider value={{ slots: textSlots }}>{children}</TextContext.Provider>
-      </Flex>
-    );
-  }
-);
+export function DonutChartCenter(props: DonutChartCenterProps) {
+  const [{ children, className, ...rest }] = useContextProps(props, null, DonutChartCenterContext);
+  const layoutClassName = useContext(DonutChartCenterLayoutContext);
+  const textSlots = {
+    [DEFAULT_SLOT]: {},
+    value: { className: composeClassName(undefined, styles.value, textTreatmentClassName('inherit')) },
+    description: { className: composeClassName(undefined, styles.description, textTreatmentClassName('inherit')) }
+  };
+  return (
+    <Flex
+      alignItems="center"
+      justifyContent="center"
+      direction="column"
+      {...rest}
+      className={composeClassName(className, layoutClassName)}
+    >
+      <TextContext.Provider value={{ slots: textSlots }}>{children}</TextContext.Provider>
+    </Flex>
+  );
+}

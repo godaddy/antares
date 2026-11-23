@@ -1,4 +1,3 @@
-import { forwardRef } from 'react';
 import type { InternalSeriesConfig, LineSeriesVariant, SeriesConfig } from '#components/chart/types.ts';
 import { cx } from 'cva';
 import { ChartColorProvider, useChartColor } from '#components/chart/_internal/use-chart-color';
@@ -109,7 +108,7 @@ function LegendItem(props: LegendItemProps) {
   );
 }
 
-export const Legend = /* @__PURE__ */ forwardRef<HTMLDivElement, LegendProps>(function Legend(props, ref) {
+export function Legend(props: LegendProps) {
   const {
     series,
     label,
@@ -126,7 +125,6 @@ export const Legend = /* @__PURE__ */ forwardRef<HTMLDivElement, LegendProps>(fu
     <ChartColorProvider>
       <Flex
         {...rootFlexProps}
-        ref={ref}
         direction="column"
         alignItems="flex-start"
         display="inline-flex"
@@ -153,4 +151,4 @@ export const Legend = /* @__PURE__ */ forwardRef<HTMLDivElement, LegendProps>(fu
       </Flex>
     </ChartColorProvider>
   );
-});
+}
