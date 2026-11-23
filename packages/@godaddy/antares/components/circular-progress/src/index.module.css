@@ -1,5 +1,5 @@
 .root {
-  --_circular-progress-content-gap: var(--size-space-020, var(--ux-1sbfig8, 0.5rem));
+  --_circular-progress-content-gap: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
 
   /* Color tokens */
   --circular-progress-fill-color: var(--ux-f7kpiw, #00a4a6);

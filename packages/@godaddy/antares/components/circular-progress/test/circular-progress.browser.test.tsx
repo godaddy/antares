@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { act } from 'react';
+import { act, type CSSProperties } from 'react';
 import { hydrateRoot, type Root } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
 import { cdp, page, userEvent } from 'vitest/browser';
@@ -214,6 +214,21 @@ describe('@godaddy/antares', function antares() {
       const valueRect = value.getBoundingClientRect();
       expect(valueRect.x + valueRect.width / 2).toBeCloseTo(trackRect.x + trackRect.width / 2, 0);
       expect(valueRect.y + valueRect.height / 2).toBeCloseTo(trackRect.y + trackRect.height / 2, 0);
+    });
+
+    it.each([
+      ['without a theme', 'initial', 'initial', 4],
+      ['with legacy density', 'initial', '12px', 12],
+      ['with a spacing token', '10px', '12px', 10]
+    ])('preserves content spacing %s', async function contentSpacing(_theme, token, density, expectedGap) {
+      const screen = await render(
+        <DefaultExample style={{ '--size-space-020': token, '--ux-1sbfig8': density } as CSSProperties} />
+      );
+      const track = screen.getByRole('progressbar').element().querySelector('[slot="track"]')!.getBoundingClientRect();
+      const label = screen.getByText('Uploading…').element().getBoundingClientRect();
+      const description = screen.getByText('3 of 5 files uploaded').element().getBoundingClientRect();
+      expect(label.top - track.bottom).toBe(expectedGap);
+      expect(description.top - label.bottom).toBe(expectedGap);
     });
 
     it('supports omitted parts, external names, and compact circles', async function optionalParts() {
