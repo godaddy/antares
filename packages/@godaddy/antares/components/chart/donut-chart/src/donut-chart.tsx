@@ -10,7 +10,7 @@ import {
 } from 'react';
 import { Group } from '@visx/group';
 import { Pie } from '@visx/shape';
-import { Provider as RACProvider, TooltipTrigger as RACTooltipTrigger } from 'react-aria-components';
+import { TooltipTrigger as RACTooltipTrigger } from 'react-aria-components';
 import { chartColorForIndex } from '#components/chart/_internal/use-chart-color';
 import { useNormalizedSeries } from '#components/chart/_internal/use-normalized-series';
 import { Box } from '#components/layout/box';
@@ -21,8 +21,7 @@ import { Tooltip } from '#components/tooltip';
 import { composeClassName } from '#utils/render-props.ts';
 import type { Optional, SeriesConfig } from '../../types.ts';
 import { chartSegmentGapPadAngle } from '../../utils.ts';
-import { DonutChartCenterContext } from './donut-chart-center.tsx';
-import { DonutChartLegendContext, DonutChartLegendSeriesContext } from './donut-chart-legend.tsx';
+import { DonutChartSeriesContext } from './donut-chart-context.ts';
 import styles from './index.module.css';
 import { textTreatmentClassName } from '#components/_internal/typography';
 
@@ -364,15 +363,7 @@ export const DonutChart = /* @__PURE__ */ forwardRef<HTMLDivElement, DonutChartP
           </Flex>
         </Tooltip>
       </RACTooltipTrigger>
-      <RACProvider
-        values={[
-          [DonutChartCenterContext, { className: styles.center }],
-          [DonutChartLegendContext, { className: styles.legend }],
-          [DonutChartLegendSeriesContext, coloredData]
-        ]}
-      >
-        {children}
-      </RACProvider>
+      <DonutChartSeriesContext.Provider value={coloredData}>{children}</DonutChartSeriesContext.Provider>
     </Grid>
   );
 });

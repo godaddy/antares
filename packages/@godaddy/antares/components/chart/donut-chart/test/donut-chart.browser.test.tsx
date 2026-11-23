@@ -1,3 +1,4 @@
+import { DonutChartCenterContext, DonutChartLegendContext } from '@godaddy/antares';
 import assume from 'assume';
 import type { ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
@@ -71,14 +72,24 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#legend', function legendTests() {
-      it('places the legend below or at the inline end and displays the slice names', async function legendLayout() {
-        const { locator } = await renderDonutExample(<LegendLayoutExample />, 600, 900);
+      it('keeps the legend in place with consumer context overrides', async function legendLayout() {
+        const { locator } = await renderDonutExample(
+          <DonutChartCenterContext.Provider value={{ className: 'custom-center' }}>
+            <DonutChartLegendContext.Provider value={{ className: 'custom-legend', orientation: 'horizontal' }}>
+              <LegendLayoutExample />
+            </DonutChartLegendContext.Provider>
+          </DonutChartCenterContext.Provider>,
+          600,
+          900
+        );
         const sideLegend = locator.getByRole('list', { name: 'Side legend' });
         const bottomLegend = locator.getByRole('list', { name: 'Bottom legend' });
         const sideChart = locator.getByRole('img', { name: 'Donut with legend beside it' });
         const bottomChart = locator.getByRole('img', { name: 'Donut with legend below' });
 
         await expect.element(bottomChart).toBeVisible();
+        expect(sideLegend.element().closest('.custom-legend')).not.toBeNull();
+        expect(locator.getByText('100%').all()[0].element().closest('.custom-center')).not.toBeNull();
         expect(sideLegend.element().getBoundingClientRect().left).toBeGreaterThan(
           sideChart.element().getBoundingClientRect().right
         );

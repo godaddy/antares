@@ -1,9 +1,10 @@
-import { createContext, forwardRef, type ReactNode } from 'react';
+import { createContext, forwardRef, useContext, type ReactNode } from 'react';
 import { DEFAULT_SLOT, useContextProps, type ContextValue } from 'react-aria-components';
 import { textTreatmentClassName } from '#components/_internal/typography';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { TextContext } from '#components/text';
 import { composeClassName } from '#utils/render-props.ts';
+import { DonutChartSeriesContext } from './donut-chart-context.ts';
 import styles from './index.module.css';
 
 export interface DonutChartCenterProps extends Omit<FlexProps<'div'>, 'as'> {
@@ -17,14 +18,22 @@ export const DonutChartCenterContext =
 /** Positions content inside a donut ring. */
 export const DonutChartCenter = /* @__PURE__ */ forwardRef<HTMLDivElement, DonutChartCenterProps>(
   function DonutChartCenter(props, ref) {
-    const [{ children, ...rest }, centerRef] = useContextProps(props, ref, DonutChartCenterContext);
+    const [{ children, className, ...rest }, centerRef] = useContextProps(props, ref, DonutChartCenterContext);
+    const inChart = useContext(DonutChartSeriesContext) !== null;
     const textSlots = {
       [DEFAULT_SLOT]: {},
       value: { className: composeClassName(undefined, styles.value, textTreatmentClassName('inherit')) },
       description: { className: composeClassName(undefined, styles.description, textTreatmentClassName('inherit')) }
     };
     return (
-      <Flex alignItems="center" justifyContent="center" direction="column" {...rest} ref={centerRef}>
+      <Flex
+        alignItems="center"
+        justifyContent="center"
+        direction="column"
+        {...rest}
+        ref={centerRef}
+        className={composeClassName(className, inChart && styles.center)}
+      >
         <TextContext.Provider value={{ slots: textSlots }}>{children}</TextContext.Provider>
       </Flex>
     );
