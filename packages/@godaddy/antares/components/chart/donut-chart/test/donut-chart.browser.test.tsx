@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { waitForSelector } from '#test/utils/wait-for-selector.ts';
+import { AllSmallSlicesExample } from '../examples/all-small-slices.tsx';
 import { CenterOverrideExample } from '../examples/center-override.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { FormatValueExample } from '../examples/format-value.tsx';
@@ -220,8 +221,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('groups all small slices in one tooltip', async function allSmallSlices() {
-        const data = Array.from({ length: 20 }, (_, i) => ({ id: `slice-${i}`, name: `Slice ${i}`, value: 1 }));
-        const { container } = await renderDonutExample(<DefaultExample data={data} />);
+        const { container } = await renderDonutExample(<AllSmallSlicesExample />);
 
         const paths = container.querySelectorAll('svg path');
         assume(paths.length).equals(20);

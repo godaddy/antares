@@ -1,4 +1,4 @@
-import { DonutChart, DonutChartCenter, type DonutChartProps, Text } from '@godaddy/antares';
+import { DonutChart, DonutChartCenter, Text } from '@godaddy/antares';
 
 const data = [
   { id: '1', name: 'Category A', value: 35 },
@@ -12,17 +12,12 @@ const data = [
  * Give the chart a `data` array with a `name` and `value` for each slice and an optional `id`. Use `DonutChartCenter` to place a headline number or title in the ring.
  * @order 1
  */
-export function DefaultExample({
-  children = (
-    <DonutChartCenter>
-      <Text slot="value">100%</Text>
-    </DonutChartCenter>
-  ),
-  ...props
-}: Partial<DonutChartProps>) {
+export function DefaultExample() {
   return (
-    <DonutChart data={data} aria-label="Donut chart with five categories" {...props}>
-      {children}
+    <DonutChart data={data} aria-label="Donut chart with five categories">
+      <DonutChartCenter>
+        <Text slot="value">100%</Text>
+      </DonutChartCenter>
     </DonutChart>
   );
 }
