@@ -704,11 +704,11 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
     expect(rootEntry.exports).toContain('FocusScope');
     expect(surface.find((entry) => entry.from === '@godaddy/antares/Chart')?.exports).toEqual([
       'BarChart',
+      'ChartLegend',
+      'ChartLegendContext',
       'DonutChart',
       'DonutChartCenter',
       'DonutChartCenterContext',
-      'DonutChartLegend',
-      'DonutChartLegendContext',
       'GaugeChart',
       'LineChart'
     ]);

@@ -1,4 +1,4 @@
-import { Card, DonutChart, DonutChartCenter, DonutChartLegend, Flex, Heading, Text } from '@godaddy/antares';
+import { Card, ChartLegend, DonutChart, DonutChartCenter, Flex, Heading, Text } from '@godaddy/antares';
 import { salesChannelData } from '../../constants/config';
 import styles from './index.module.css';
 
@@ -42,7 +42,7 @@ export function SalesChannelsCard() {
             <Text slot="value">{formatNumber(totalSales)}</Text>
             <Text slot="description">USD</Text>
           </DonutChartCenter>
-          <DonutChartLegend />
+          <ChartLegend />
         </DonutChart>
       </Flex>
     </Card>

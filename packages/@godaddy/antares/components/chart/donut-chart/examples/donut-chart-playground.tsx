@@ -1,4 +1,4 @@
-import { Box, DonutChart, DonutChartCenter, DonutChartLegend, Text } from '@godaddy/antares';
+import { Box, ChartLegend, DonutChart, DonutChartCenter, Text } from '@godaddy/antares';
 
 const DATA_BY_PRESET = {
   three: [
@@ -82,7 +82,7 @@ export function PlaygroundExample({
           <Text slot="value">{value}</Text>
           {description.trim() && <Text slot="description">{description}</Text>}
         </DonutChartCenter>
-        {showLegend && <DonutChartLegend label={legendLabel} />}
+        {showLegend && <ChartLegend label={legendLabel} />}
       </DonutChart>
     </Box>
   );

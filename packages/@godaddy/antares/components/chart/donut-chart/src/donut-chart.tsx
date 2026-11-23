@@ -11,6 +11,7 @@ import {
 import { Group } from '@visx/group';
 import { Pie } from '@visx/shape';
 import { TooltipTrigger as RACTooltipTrigger } from 'react-aria-components';
+import { InternalChartLegendContext, type InternalChartLegendValue } from '#components/chart/chart-legend';
 import { chartColorForIndex } from '#components/chart/_internal/use-chart-color';
 import { useNormalizedSeries } from '#components/chart/_internal/use-normalized-series';
 import { Box } from '#components/layout/box';
@@ -21,7 +22,7 @@ import { Tooltip } from '#components/tooltip';
 import { composeClassName } from '#utils/render-props.ts';
 import type { Optional, SeriesConfig } from '../../types.ts';
 import { chartSegmentGapPadAngle } from '../../utils.ts';
-import { DonutChartSeriesContext } from './donut-chart-context.ts';
+import { DonutChartCenterLayoutContext } from './donut-chart-context.ts';
 import styles from './index.module.css';
 import { textTreatmentClassName } from '#components/_internal/typography';
 
@@ -109,6 +110,12 @@ export const DonutChart = /* @__PURE__ */ forwardRef<HTMLDivElement, DonutChartP
       });
     },
     [normalizedData]
+  );
+  const legend = useMemo(
+    function createLegendValue(): InternalChartLegendValue {
+      return { series: coloredData, className: styles.legend, orientation: 'vertical' };
+    },
+    [coloredData]
   );
 
   const chartWrapRef = useRef<HTMLDivElement>(null);
@@ -363,7 +370,11 @@ export const DonutChart = /* @__PURE__ */ forwardRef<HTMLDivElement, DonutChartP
           </Flex>
         </Tooltip>
       </RACTooltipTrigger>
-      <DonutChartSeriesContext.Provider value={coloredData}>{children}</DonutChartSeriesContext.Provider>
+      <InternalChartLegendContext.Provider value={legend}>
+        <DonutChartCenterLayoutContext.Provider value={styles.center}>
+          {children}
+        </DonutChartCenterLayoutContext.Provider>
+      </InternalChartLegendContext.Provider>
     </Grid>
   );
 });

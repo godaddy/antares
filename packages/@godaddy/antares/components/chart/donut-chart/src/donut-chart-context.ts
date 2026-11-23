@@ -1,6 +1,6 @@
 import { createContext, type Context } from 'react';
-import type { LegendProps } from '#components/chart/_internal/legend';
 
-export const DonutChartSeriesContext: Context<LegendProps['series'] | null> = /* @__PURE__ */ createContext<
-  LegendProps['series'] | null
->(null);
+/** Layout class the chart gives its composed center. Not public. */
+export const DonutChartCenterLayoutContext: Context<string | undefined> = /* @__PURE__ */ createContext<
+  string | undefined
+>(undefined);

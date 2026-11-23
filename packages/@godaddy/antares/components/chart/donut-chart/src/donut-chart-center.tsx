@@ -4,7 +4,7 @@ import { textTreatmentClassName } from '#components/_internal/typography';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { TextContext } from '#components/text';
 import { composeClassName } from '#utils/render-props.ts';
-import { DonutChartSeriesContext } from './donut-chart-context.ts';
+import { DonutChartCenterLayoutContext } from './donut-chart-context.ts';
 import styles from './index.module.css';
 
 export interface DonutChartCenterProps extends Omit<FlexProps<'div'>, 'as'> {
@@ -19,7 +19,7 @@ export const DonutChartCenterContext =
 export const DonutChartCenter = /* @__PURE__ */ forwardRef<HTMLDivElement, DonutChartCenterProps>(
   function DonutChartCenter(props, ref) {
     const [{ children, className, ...rest }, centerRef] = useContextProps(props, ref, DonutChartCenterContext);
-    const inChart = useContext(DonutChartSeriesContext) !== null;
+    const layoutClassName = useContext(DonutChartCenterLayoutContext);
     const textSlots = {
       [DEFAULT_SLOT]: {},
       value: { className: composeClassName(undefined, styles.value, textTreatmentClassName('inherit')) },
@@ -32,7 +32,7 @@ export const DonutChartCenter = /* @__PURE__ */ forwardRef<HTMLDivElement, Donut
         direction="column"
         {...rest}
         ref={centerRef}
-        className={composeClassName(className, inChart && styles.center)}
+        className={composeClassName(className, layoutClassName)}
       >
         <TextContext.Provider value={{ slots: textSlots }}>{children}</TextContext.Provider>
       </Flex>

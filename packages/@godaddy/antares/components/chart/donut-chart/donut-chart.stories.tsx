@@ -1,5 +1,6 @@
 'use client';
-import { DonutChart, DonutChartCenter, DonutChartLegend } from '#components/chart/donut-chart';
+import { ChartLegend } from '#components/chart/chart-legend';
+import { DonutChart, DonutChartCenter } from '#components/chart/donut-chart';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { PlaygroundExample } from './examples/donut-chart-playground.tsx';
 
@@ -9,7 +10,7 @@ export default getMeta({
 
 export const Props = getComponentDocs(DonutChart);
 export const DonutChartCenterProps = getComponentDocs(DonutChartCenter);
-export const DonutChartLegendProps = getComponentDocs(DonutChartLegend);
+export const ChartLegendProps = getComponentDocs(ChartLegend);
 
 export const Examples = getExamples('./examples');
 

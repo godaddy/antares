@@ -1,4 +1,4 @@
-import { DonutChartCenterContext, DonutChartLegendContext } from '@godaddy/antares';
+import { ChartLegendContext, DonutChartCenterContext } from '@godaddy/antares';
 import assume from 'assume';
 import type { ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
@@ -76,9 +76,9 @@ describe('@godaddy/antares', function antares() {
       it('keeps the legend in place with consumer context overrides', async function legendLayout() {
         const { locator } = await renderDonutExample(
           <DonutChartCenterContext.Provider value={{ className: 'custom-center' }}>
-            <DonutChartLegendContext.Provider value={{ className: 'custom-legend', orientation: 'horizontal' }}>
+            <ChartLegendContext.Provider value={{ className: 'custom-legend', orientation: 'horizontal' }}>
               <LegendLayoutExample />
-            </DonutChartLegendContext.Provider>
+            </ChartLegendContext.Provider>
           </DonutChartCenterContext.Provider>,
           600,
           900

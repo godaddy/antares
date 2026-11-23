@@ -11,15 +11,13 @@ export {
   type BarChartTooltipRenderProps,
   type BarChartTooltipSeries
 } from '#components/chart/bar-chart';
+export { ChartLegend, ChartLegendContext, type ChartLegendProps } from '#components/chart/chart-legend';
 export {
   DonutChart,
   type DonutChartProps,
   DonutChartCenter,
   DonutChartCenterContext,
-  type DonutChartCenterProps,
-  DonutChartLegend,
-  DonutChartLegendContext,
-  type DonutChartLegendProps
+  type DonutChartCenterProps
 } from '#components/chart/donut-chart';
 export { LineChart, type LineChartProps, type LineChartTooltipRenderProps } from '#components/chart/line-chart';
 export { GaugeChart, type GaugeChartProps } from '#components/chart/gauge-chart';

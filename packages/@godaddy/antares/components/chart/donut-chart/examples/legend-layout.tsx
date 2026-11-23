@@ -1,4 +1,4 @@
-import { DonutChart, DonutChartCenter, DonutChartLegend, type DonutChartProps, Flex, Text } from '@godaddy/antares';
+import { ChartLegend, DonutChart, DonutChartCenter, type DonutChartProps, Flex, Text } from '@godaddy/antares';
 
 const data = [
   { id: '1', name: 'Product A', value: 40 },
@@ -16,7 +16,7 @@ export function LegendLayoutExample({ data: slices = data }: Partial<Pick<DonutC
   return (
     <Flex direction="column" gap="xl">
       <DonutChart data={slices} legendPlacement="end" aria-label="Donut with legend beside it">
-        <DonutChartLegend label="Side legend" />
+        <ChartLegend label="Side legend" />
         <DonutChartCenter>
           <Text slot="value">100%</Text>
         </DonutChartCenter>
@@ -25,7 +25,7 @@ export function LegendLayoutExample({ data: slices = data }: Partial<Pick<DonutC
         <DonutChartCenter>
           <Text slot="value">100%</Text>
         </DonutChartCenter>
-        <DonutChartLegend label="Bottom legend" />
+        <ChartLegend label="Bottom legend" />
       </DonutChart>
     </Flex>
   );

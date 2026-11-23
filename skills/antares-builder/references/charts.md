@@ -70,10 +70,10 @@ Check `xDomain`/`yDomain`, tick formatting/values and `xZero`/`yZero` when the s
 
 ## DonutChart: parts of a whole
 
-Pass `data` containing `{ id, name, value }` with numeric non-negative values. Use `DonutChartCenter` for optional content in the ring and `DonutChartLegend` to display the slice names. Prefer a small set of categories that form a whole.
+Pass `data` containing `{ id, name, value }` with numeric non-negative values. Use `DonutChartCenter` for optional content in the ring and `ChartLegend` to display the slice names. Prefer a small set of categories that form a whole.
 
 ```tsx
-import { DonutChart, DonutChartCenter, DonutChartLegend } from '@godaddy/antares/Chart';
+import { ChartLegend, DonutChart, DonutChartCenter } from '@godaddy/antares/Chart';
 import { Text } from '@godaddy/antares/Text';
 
 export function TrafficSources() {
@@ -86,7 +86,7 @@ export function TrafficSources() {
         <Text slot="value">100%</Text>
         <Text slot="description">Traffic</Text>
       </DonutChartCenter>
-      <DonutChartLegend label="Source" />
+      <ChartLegend label="Source" />
     </DonutChart>
   );
 }
