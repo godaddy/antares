@@ -7,8 +7,7 @@
   --alert-title-font-weight: var(--ux-1a9e4a3, 700);
   --alert-padding: calc(var(--ux-1sbfig8, 0.5rem) * 2);
   --alert-gap: var(--ux-1sbfig8, 0.5rem);
-  --alert-icon-size: 1.625rem;
-
+  --alert-region-gap: calc(var(--alert-gap) * 2);
   container: alert / inline-size;
   position: relative;
   max-width: 100%;
@@ -48,39 +47,42 @@
   }
 }
 
-.emphasisIcon {
-  color: var(--alert-accent);
-  width: var(--alert-icon-size);
-  height: var(--alert-icon-size);
-}
-
 .layout {
   grid-template-columns: auto minmax(0, 1fr) auto;
   grid-template-areas:
     "icon content close"
     ".    actions .";
   align-items: start;
-}
 
-/* Context classes place the rendered regions, including those returned by custom components. */
-.layout > :where(.emphasisIcon) {
-  grid-area: icon;
-  margin-inline-end: var(--alert-gap);
-}
+  > :where(.indicator) {
+    grid-area: icon;
+    margin-inline-end: var(--alert-gap);
+  }
 
-.layout > :where(.textRegion) {
-  grid-area: content;
-  min-inline-size: 0;
-}
+  > :where(.content) {
+    grid-area: content;
+    min-inline-size: 0;
+  }
 
-.layout > :where(.actions) {
-  grid-area: actions;
-  min-inline-size: 0;
-  padding-block-start: var(--alert-gap);
-}
+  > :where(.actions) {
+    grid-area: actions;
+    min-inline-size: 0;
+    padding-block-start: var(--alert-region-gap);
+  }
 
-.layout > :where(.close) {
-  grid-area: close;
+  > .close {
+    grid-area: close;
+    --_button-slot-border-width: 0;
+    --alert-close-bleed: var(--alert-gap);
+    padding: var(--alert-gap);
+    margin: calc(var(--alert-close-bleed) * -1);
+    margin-inline-start: calc(var(--alert-region-gap) - var(--alert-close-bleed));
+
+    > [data-icon] {
+      inline-size: 1.5em;
+      block-size: 1.5em;
+    }
+  }
 }
 
 .title {
@@ -89,15 +91,22 @@
   font-weight: var(--alert-title-font-weight);
 }
 
+.indicator {
+  color: var(--alert-accent);
+  font-size: var(--alert-title-font-size);
+  line-height: var(--font-heading-line-height, var(--ux-p25s1t, 1.25));
+  margin-block: calc((1lh - 26px) / 2);
+}
+
 @container alert (min-width: 26.25rem) {
   .layout {
-    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    grid-template-columns: auto minmax(0, 1fr) fit-content(50%) auto;
     grid-template-areas: "icon content actions close";
-  }
 
-  .layout > :where(.actions) {
-    align-self: center;
-    margin-inline: var(--alert-gap);
-    padding-block-start: 0;
+    > :where(.actions) {
+      align-self: center;
+      margin-inline-start: var(--alert-region-gap);
+      padding-block-start: 0;
+    }
   }
 }

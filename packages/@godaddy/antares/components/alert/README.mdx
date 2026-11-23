@@ -31,15 +31,15 @@ npm install --save @godaddy/antares
 Alert positions and styles its regions. You supply the regions.
 
 - **Compose siblings inside Alert**: optional `Icon slot="indicator"`, `Content` for the title and body, optional `ButtonGroup`, and optional `CloseButton`. Use `Button slot="close"` when the dismiss control needs a visible label. Pass `onPress` on the close control and hide the alert from the parent.
-- **Name the title with a slot**: `Heading slot="title"`, or `Text slot="title"` when heading semantics do not fit. Body copy is an unslotted `Text` inside `Content`.
-- **Choose the glyph on Icon**: for example `<Icon slot="indicator" icon="alert" />`. The indicator is decorative. Omit it when the message stands alone. Override its size with `style` when you need a different dimension than Alert's default.
+- **Name the title with a slot**: `Heading slot="title"`. Body copy is an unslotted `Text` inside `Content`.
+- **Choose the glyph on Icon**: for example `<Icon slot="indicator" icon="alert" />`. The indicator is decorative. Omit it when the message stands alone. Alert sizes it to 26px; pass `width` and `height` on the `Icon` to choose a different dimension.
 - **Keep region roots as direct children of Alert.** Return several regions from a fragment when you extract them. An extra DOM wrapper is not placed in the layout grid. Put custom layout inside `Content` instead.
 - **Child props win** over Alert's context defaults. Classes merge. Local style properties win over context styles.
 - **`Content` has no inset inside Alert.** The surface owns padding. Override `Content` spacing only when a custom interior needs it.
 - **Surface props stay on Alert**: `className`, `style`, `ref`, native attributes, and `data-emphasis` for theming.
 - **Narrow containers stack actions** under the content and keep the close control in its own column. Empty icon and close columns collapse. Source order remains the keyboard order.
 
-Alert owns region contexts the way overlay shells do, so a nested Alert does not pick up a parent Modal or Card `Content` padding. Only `IconContext` is merged from outside, so ambient icons and `CloseButton` keep parent icon customization. Unslotted icons do not receive the indicator defaults.
+Alert owns region contexts the way overlay shells do, so a nested Alert does not pick up a parent Modal or Card `Content` padding. Alert also publishes its own `IconContext`, so icon customization from a parent provider does not reach icons inside it. Unslotted icons do not receive the indicator defaults.
 
 ## Accessibility
 

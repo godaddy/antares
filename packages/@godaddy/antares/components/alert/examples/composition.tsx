@@ -18,12 +18,6 @@ export function CompositionExample() {
           <Heading slot="title">Your domain is ready</Heading>
         </Content>
       </Alert>
-      <Alert aria-label="Text title">
-        <Content>
-          <Text slot="title">Plain title</Text>
-          <Text>A title does not require heading semantics.</Text>
-        </Content>
-      </Alert>
       <Alert emphasis="warning" aria-label="Documentation notice">
         <Icon slot="indicator" icon="star" />
         <Content>

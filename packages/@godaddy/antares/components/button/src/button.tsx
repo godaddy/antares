@@ -73,7 +73,7 @@ interface BaseButtonProps<V extends ButtonVariant = ButtonVariant> {
 
 export interface ButtonProps extends BaseButtonProps, Omit<RACButtonProps, 'children' | 'isPending'> {}
 
-export const ButtonContext: Context<ContextValue<RACButtonProps, HTMLButtonElement>> = RACButtonContext;
+export const ButtonContext = RACButtonContext as Context<ContextValue<ButtonProps, HTMLButtonElement>>;
 
 type ButtonPresentationProps = Pick<ButtonProps, 'variant' | 'size'>;
 
