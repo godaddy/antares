@@ -624,7 +624,7 @@ npm install @godaddy/antares
 
 ## Props [#props]
 
-Place it as a direct child of a chart. Outside a chart it renders nothing.
+Place it as a direct child of `DonutChart`. Elsewhere it renders nothing. `BarChart` and `LineChart` show their legend with `legendPosition`.
 
 <ArgTypes of={Stories.Props} />
 
