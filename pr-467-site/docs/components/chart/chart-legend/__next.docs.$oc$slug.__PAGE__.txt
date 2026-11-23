@@ -1,0 +1,81 @@
+3:"$Sreact.fragment"
+4:"/antares/pr-467-site/_next/static/chunks/0ti36u7hu49jh.js"
+5:"/antares/pr-467-site/_next/static/chunks/3ed20vn0i8epr.js"
+6:I[946463,["$4","$5"],"default"]
+7:I[204103,["$4","$5"],"default"]
+c:"/antares/pr-467-site/_next/static/chunks/1sprlsr17z7u3.js"
+d:"/antares/pr-467-site/_next/static/chunks/23vp0io-hrw_0.js"
+e:"/antares/pr-467-site/_next/static/chunks/1j9f_ofomxlhy.js"
+f:"/antares/pr-467-site/_next/static/chunks/2c_bv8uh90ml4.js"
+10:"/antares/pr-467-site/_next/static/chunks/0s0-vbiftvnk3.js"
+11:"/antares/pr-467-site/_next/static/chunks/3exheo6ka_5c4.js"
+12:"/antares/pr-467-site/_next/static/chunks/0ts0tu0ngp9r_.js"
+13:"/antares/pr-467-site/_next/static/chunks/0cmo791-3fh-i.js"
+14:I[807658,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsPage"]
+15:I[807658,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsTitle"]
+16:I[807658,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsDescription"]
+17:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"LLMCopyButton"]
+18:I[748747,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"ViewOptions"]
+19:I[807658,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DocsBody"]
+1a:I[297689,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"Heading"]
+1b:I[405146,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"CodeBlock"]
+1c:I[405146,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"Pre"]
+1d:I[403113,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"StoryRenderer"]
+1e:I[333418,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"DefaultExample"]
+1f:"DynamicCodeBlock"
+20:I[268949,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"$1f"]
+21:I[403299,["$4","$5","$c","$d","$e","$f","$10","$11","$12","$13"],"PropTableClient"]
+44:"ViewportBoundary"
+45:I[797667,["$4","$5"],"$44"]
+46:"MetadataBoundary"
+47:I[797667,["$4","$5"],"$46"]
+48:"$Sreact.suspense"
+9:X
+9:C
+a:X
+b:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","$L14",null,{"toc":[{"depth":2,"url":"#installation","title":"Installation"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#default","title":"Default"},{"depth":2,"url":"#props","title":"Props"}],"footer":{"enabled":true},"children":[["$","$L15",null,{"children":"ChartLegend"}],["$","$L16",null,{"className":"mb-0","children":"ChartLegend lists a chart's series names and colors, read from the chart it is placed in."}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L17",null,{"markdownUrl":"/docs/components/chart/chart-legend.mdx"}],["$","$L18",null,{"markdownUrl":"/docs/components/chart/chart-legend.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/chart/chart-legend/README.mdx"}]]}],["$","$L19",null,{"children":[null,"\n",["$","$L1a",null,{"as":"h2","id":"installation","children":"Installation"}],"\n",["$","$L1b",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$L1c",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npm"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" install"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" @godaddy/antares"}]]}]}]}]}],"\n",["$","$L1a",null,{"as":"h2","id":"examples","children":"Examples"}],"\n",["$","$L1a",null,{"as":"h3","id":"default","children":"Default"}],"\n",["$","p",null,{"children":["Place ",["$","code",null,{"children":"ChartLegend"}]," inside a chart. It reads the chart's series, so the names and colors always match."]}],"\n",["$","$L1d",null,{"component":"$1e"}],"\n",["$","$L20",null,{"lang":"tsx","code":"import { ChartLegend, DonutChart } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Online', value: 60 },\n  { id: '2', name: 'In store', value: 40 }\n];\n\nexport function DefaultExample() {\n  return (\n    <DonutChart data={data} aria-label=\"Sales by channel\">\n      <ChartLegend label=\"Channel\" />\n    </DonutChart>\n  );\n}"}],"\n",["$","$L1a",null,{"as":"h2","id":"props","children":"Props"}],"\n",["$","p",null,{"children":"Place it as a direct child of a chart. Outside a chart it renders nothing."}],"\n",["$","$L21",null,{"entries":[{"name":"justifyContent","type":"| 'normal'\n    | 'start'\n    | 'end'\n    | 'center'\n    | 'stretch'\n    | 'space-around'\n    | 'space-between'\n    | 'space-evenly'\n    | (string & {})","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The distribution of space around children along the main axis in flex or inline axis in grid"}]],"required":false},{"name":"alignContent","type":"| 'normal'\n    | 'start'\n    | 'end'\n    | 'center'\n    | 'stretch'\n    | 'space-around'\n    | 'space-between'\n    | 'space-evenly'\n    | 'baseline'\n    | (string & {})","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The distribution of space around children along the cross axis in flex or block axis in grid"}]],"required":false},{"name":"justifyItems","type":"'normal' | 'start' | 'end' | 'center' | 'stretch' | 'legacy' | (string & {})","description":[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Defines the default justify-self for all children in a grid container."}]],"required":false},{"name":"columnGap","type":"Spacing","description":"$L22","required":false},{"name":"rowGap","type":"Spacing","description":"$L23","required":false},{"name":"padding","type":"Spacing | Spacing[]","description":"$L24","required":false},{"name":"inlinePadding","type":"Spacing | Spacing[]","description":"$L25","required":false},{"name":"inlinePaddingStart","type":"Spacing","description":"$L26","required":false},{"name":"inlinePaddingEnd","type":"Spacing","description":"$L27","required":false},{"name":"blockPadding","type":"Spacing | Spacing[]","description":"$L28","required":false},{"name":"blockPaddingStart","type":"Spacing","description":"$L29","required":false},{"name":"blockPaddingEnd","type":"Spacing","description":"$L2a","required":false},{"name":"alignSelf","type":"| 'auto'\n    | 'normal'\n    | 'start'\n    | 'end'\n    | 'center'\n    | 'flex-start'\n    | 'flex-end'\n    | 'self-start'\n    | 'self-end'\n    | 'stretch'\n    | (string & {})","description":"$L2b","required":false},{"name":"justifySelf","type":"| 'auto'\n    | 'normal'\n    | 'start'\n    | 'end'\n    | 'flex-start'\n    | 'flex-end'\n    | 'self-start'\n    | 'self-end'\n    | 'center'\n    | 'left'\n    | 'right'\n    | 'stretch'\n    | (string & {})","description":"$L2c","required":false},{"name":"order","type":"number | string","description":"$L2d","required":false},{"name":"flex","type":"number | string","description":"$L2e","required":false},{"name":"flexGrow","type":"number | string","description":"$L2f","required":false},{"name":"flexShrink","type":"number | string","description":"$L30","required":false},{"name":"flexBasis","type":"string","description":"$L31","required":false},{"name":"gridArea","type":"string","description":"$L32","required":false},{"name":"gridColumnStart","type":"string","description":"$L33","required":false},{"name":"gridColumnEnd","type":"string","description":"$L34","required":false},{"name":"gridRowStart","type":"string","description":"$L35","required":false},{"name":"gridRowEnd","type":"string","description":"$L36","required":false},{"name":"wrap","type":"'nowrap' | 'wrap' | 'wrap-reverse'","description":"$L37","required":false},{"name":"aria-label","type":"string","description":"$L38","required":false},{"name":"aria-labelledby","type":"string","description":"$L39","required":false},{"name":"label","type":"string","description":"$L3a","required":false},{"name":"size","type":"'sm' | 'md' | 'lg' | 'xl'","default":"'md'","description":"$L3b","required":false},{"name":"orientation","type":"'horizontal' | 'vertical'","description":"$L3c","required":false},{"name":"elevation","type":"Elevation","description":"$L3d","required":false},{"name":"rounding","type":"Rounding","description":"$L3e","required":false},{"name":"slot","type":"string | null","description":"$L3f","required":false}],"categories":{"Layout":["justifyContent","alignContent","justifyItems","columnGap","rowGap","padding","inlinePadding","inlinePaddingStart","inlinePaddingEnd","blockPadding","blockPaddingStart","blockPaddingEnd","alignSelf","justifySelf","order","flex","flexGrow","flexShrink","flexBasis","gridArea","gridColumnStart","gridColumnEnd","gridRowStart","gridRowEnd","wrap"],"Aria":["aria-label","aria-labelledby"]}}]]}]]}],["$L40","$L41"],"$L42"]}],"p":"$@43","v":null,"s":"$a"}}]]
+2:[["children",{"s":{"n":"slug","t":"oc","k":"components/chart/chart-legend","s":[]},"h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
+1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
+0:{"t":{"t":{"s":"","h":80,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L45",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L47",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$48",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"ChartLegend"}],["$","meta","1",{"name":"description","content":"ChartLegend lists a chart's series names and colors, read from the chart it is placed in."}],["$","meta","2",{"property":"og:title","content":"ChartLegend"}],["$","meta","3",{"property":"og:description","content":"ChartLegend lists a chart's series names and colors, read from the chart it is placed in."}],["$","meta","4",{"property":"og:image","content":"http://localhost:3000/og/docs/components/chart/chart-legend/image.png"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"ChartLegend"}],["$","meta","7",{"name":"twitter:description","content":"ChartLegend lists a chart's series names and colors, read from the chart it is placed in."}],["$","meta","8",{"name":"twitter:image","content":"http://localhost:3000/og/docs/components/chart/chart-legend/image.png"}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@49","v":null,"s":"$a"}},"a":"$@4a","u":"$@4b","b":"9SnP426VLTxRgLZrVLtnW"}
+4c:I[797667,["$4","$5"],"OutletBoundary"]
+22:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The gap between columns."}]]
+23:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"The gap between rows."}]]
+24:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Padding on all sides. Accepts single value or array."}]]
+25:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Padding on inline (horizontal) direction."}]]
+26:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Padding on inline start (left in LTR)."}]]
+27:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Padding on inline end (right in LTR)."}]]
+28:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Padding on block (vertical) direction."}]]
+29:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Padding on block start (top)."}]]
+2a:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Padding on block end (bottom)."}]]
+2b:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Cross-axis alignment within flex/grid container."}]]
+2c:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Main-axis alignment within flex/grid container."}]]
+2d:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Layout order within flex/grid container."}]]
+2e:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Flex shorthand for grow, shrink, and basis."}]]
+2f:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. How much the item will grow relative to siblings."}]]
+30:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. How much the item will shrink relative to siblings."}]]
+31:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Initial main size before growing/shrinking."}]]
+32:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Named grid area for placement."}]]
+33:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Grid column start line."}]]
+34:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Grid column end line."}]]
+35:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Grid row start line."}]]
+36:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"In Flex/Grid layout. Grid row end line."}]]
+37:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Whether to wrap items onto multiple lines."}]]
+38:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Accessible name for the list. Defaults to the visible label or \"Chart legend\"."}]]
+39:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"IDs of elements that name the list."}]]
+3a:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Optional visible and accessible label for the legend."}]]
+3b:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Size of the legend labels and swatches."}]]
+3c:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Layout orientation for legend items. Defaults to horizontal."}]]
+3d:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Elevation levels for visual depth."}]]
+3e:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":"Rounding values for border radius."}]]
+3f:[["$","p","p-0",{"className":"mb-1 last:mb-0","children":["A slot name for the component. Slots allow the component to receive props from a parent\ncomponent. An explicit ",["$","code","code-0",{"className":"font-mono","children":"null"}]," value indicates that the local props completely override all\nprops received from a parent."]}]]
+40:["$","script","script-0",{"src":"/antares/pr-467-site/_next/static/chunks/0ts0tu0ngp9r_.js","async":true}]
+41:["$","script","script-1",{"src":"/antares/pr-467-site/_next/static/chunks/0cmo791-3fh-i.js","async":true}]
+42:["$","$L4c",null,{"children":["$","$48",null,{"name":"Next.MetadataOutlet","children":"$@4d"}]}]
+4b:true
+a:300
+4d:null
+a:C
+4a:0
+8:"$undefined"
+49:"$undefined"
+43:"$undefined"
