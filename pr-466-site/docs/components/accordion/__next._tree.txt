@@ -1,6 +1,6 @@
 :HL["/antares/pr-466-site/_next/static/chunks/0xpkcixwzjqh-.css","style"]
 :HL["/antares/pr-466-site/_next/static/chunks/23goh3axsvxg8.css","style"]
-:HL["/antares/pr-466-site/_next/static/chunks/2kgdomxce1c34.css","style"]
+:HL["/antares/pr-466-site/_next/static/chunks/34ck-nevpzz8d.css","style"]
 :HL["/antares/pr-466-site/_next/static/chunks/3q6e28v_1ue9s.css","style"]
 :HL["/antares/pr-466-site/_next/static/media/07c7676b89ed2778-s.p.2bn3s6zvc0dyp.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["https://img6.wsimg.com/ux-assets/@ux/fonts/4.4.0/GDSherpa-regular.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
@@ -9,4 +9,4 @@
 3:[["children",{"s":"__PAGE__","h":160}]]
 2:[["children",{"s":{"n":"slug","t":"oc","k":"components/accordion","s":[]},"h":64,"c":"$Q3"}]]
 1:[["children",{"s":"docs","h":32,"c":"$Q2"}]]
-0:{"b":"fev6DygtFU0lE0oRUub_j","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"k0TIu4rSQezg3J4fVUjRh","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
