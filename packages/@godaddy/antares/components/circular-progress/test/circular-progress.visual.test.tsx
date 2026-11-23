@@ -29,7 +29,7 @@ describe('@godaddy/antares', function antares() {
     it('status variants', async function statusesRender() {
       await page.viewport(600, 200);
       const { container } = await render(<StatusesExample />);
-      await expect(container).toMatchScreenshot('emphasis');
+      await expect(container).toMatchScreenshot('statuses');
     });
   });
 });

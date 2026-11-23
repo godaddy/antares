@@ -106,7 +106,6 @@
   font-weight: var(--ux-aarlu5, 400);
   line-height: var(--ux-h93mi7, 1.375);
   --_type-slot-color: var(--circular-progress-text-color);
-  color: var(--_type-color, var(--_type-slot-color));
   text-align: center;
 }
 
@@ -118,7 +117,6 @@
   font-weight: var(--ux-g9ierp, 400);
   line-height: var(--ux-1dje42v, 1.5);
   --_type-slot-color: var(--circular-progress-help-color);
-  color: var(--_type-color, var(--_type-slot-color));
   text-align: center;
 }
 

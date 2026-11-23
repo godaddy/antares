@@ -1,14 +1,10 @@
 import { useState, type ReactNode, type RefAttributes } from 'react';
+import { Box, Button, Label, Text, type BoxProps } from '@godaddy/antares';
 import {
-  Box,
-  Button,
   CircularProgress,
-  Label,
-  Text,
-  type BoxProps,
   type CircularProgressProps,
   type ProgressBarRenderProps
-} from '@godaddy/antares';
+} from '@godaddy/antares/CircularProgress';
 
 interface CompositionExampleProps extends CircularProgressProps, RefAttributes<HTMLDivElement> {
   /** Props for the circular track. */

@@ -1,18 +1,7 @@
-import { forwardRef, useCallback, useState, type CSSProperties, type ReactNode, type Ref } from 'react';
-import { useId } from 'react-aria';
-import {
-  DEFAULT_SLOT,
-  ProgressBar as RACProgressBar,
-  Provider as RACProvider,
-  type ProgressBarProps as RACProgressBarProps,
-  type ProgressBarRenderProps,
-  useSlottedContext
-} from 'react-aria-components';
-import { LabelContext } from '#components/label';
-import { TextContext } from '#components/text';
+import { forwardRef, type CSSProperties } from 'react';
+import { ProgressBar as RACProgressBar, type ProgressBarProps as RACProgressBarProps } from 'react-aria-components';
 import { Grid, type GridOwnProps } from '#components/layout/grid';
-import { BoxContext } from '#components/layout/box';
-import { textTreatmentClassName } from '#components/_internal/typography';
+import { ProgressSlots, useProgressDescription } from '#components/_internal/progress-slots';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
@@ -30,81 +19,10 @@ export interface ProgressBarProps extends RACProgressBarProps, Omit<GridOwnProps
   status?: 'default' | 'success' | 'warning' | 'critical';
 }
 
-interface ProgressBarBodyProps {
-  /** Current progress state for the visual slots. */
-  state: ProgressBarRenderProps;
-
-  /** ID for the description slot. */
-  descriptionId: string;
-
-  /** Tracks whether a description is mounted. */
-  descriptionRef: Ref<HTMLElement>;
-
-  /** Composed interior. */
-  children: ReactNode;
-}
-
-// Read the context inside RACProgressBar so React Aria's label ID and ref survive styling.
-function ProgressBarBody({ state, descriptionId, descriptionRef, children }: ProgressBarBodyProps) {
-  const label = useSlottedContext(LabelContext) ?? {};
-  const value = {
-    children: state.isIndeterminate ? null : state.valueText,
-    className: composeClassName(undefined, styles.value, textTreatmentClassName('inherit')),
-    'data-indeterminate': state.isIndeterminate || undefined
-  };
-
-  return (
-    <RACProvider
-      values={[
-        [LabelContext, { ...label, className: composeClassName(label.className, styles.label) }],
-        [
-          BoxContext,
-          {
-            slots: {
-              [DEFAULT_SLOT]: {},
-              value,
-              track: {
-                className: styles.track,
-                style: {
-                  '--progress-bar-progress': state.isIndeterminate ? undefined : `${state.percentage ?? 0}%`
-                } as CSSProperties,
-                'aria-hidden': true,
-                'data-indeterminate': state.isIndeterminate || undefined
-              }
-            }
-          }
-        ],
-        [
-          TextContext,
-          {
-            slots: {
-              [DEFAULT_SLOT]: {},
-              value,
-              description: {
-                id: descriptionId,
-                ref: descriptionRef,
-                className: composeClassName(undefined, styles.description, textTreatmentClassName('inherit'))
-              }
-            }
-          }
-        ]
-      ]}
-    >
-      {children}
-    </RACProvider>
-  );
-}
-
 /** Shows determinate or indeterminate progress. Compose only the parts you need. */
 export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(function ProgressBar(props, ref) {
   const { size = 'md', status = 'default', className, children, 'aria-describedby': describedBy, ...rest } = props;
-  // React Aria merges a consumer's description ID back into this ID via TextContext.
-  const descriptionId = useId();
-  const [hasDescription, setHasDescription] = useState(false);
-  const descriptionRef = useCallback(function descriptionRef(element: HTMLElement | null) {
-    setHasDescription(!!element);
-  }, []);
-  const description = [describedBy, hasDescription ? descriptionId : undefined].filter(Boolean).join(' ') || undefined;
+  const { descriptionId, descriptionRef, describedBy: description } = useProgressDescription(describedBy);
 
   return (
     <Grid
@@ -122,9 +40,22 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(function
     >
       {function renderContent(state) {
         return (
-          <ProgressBarBody state={state} descriptionId={descriptionId} descriptionRef={descriptionRef}>
+          <ProgressSlots
+            state={state}
+            descriptionId={descriptionId}
+            descriptionRef={descriptionRef}
+            classNames={{ label: styles.label, value: styles.value, description: styles.description }}
+            track={{
+              className: styles.track,
+              style: {
+                '--progress-bar-progress': state.isIndeterminate ? undefined : `${state.percentage ?? 0}%`
+              } as CSSProperties,
+              'aria-hidden': true,
+              'data-indeterminate': state.isIndeterminate || undefined
+            }}
+          >
             {typeof children === 'function' ? children(state) : children}
-          </ProgressBarBody>
+          </ProgressSlots>
         );
       }}
     </Grid>
