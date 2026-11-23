@@ -1,6 +1,6 @@
 import { ChartLegendContext, DonutChartCenterContext } from '@godaddy/antares';
 import assume from 'assume';
-import type { ReactNode } from 'react';
+import { createRef, type ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
@@ -74,9 +74,13 @@ describe('@godaddy/antares', function antares() {
 
     describe('#legend', function legendTests() {
       it('keeps the legend in place with consumer context overrides', async function legendLayout() {
+        const centerRef = createRef<HTMLDivElement>();
+        const legendRef = createRef<HTMLDivElement>();
         const { locator } = await renderDonutExample(
-          <DonutChartCenterContext.Provider value={{ className: 'custom-center' }}>
-            <ChartLegendContext.Provider value={{ className: 'custom-legend', orientation: 'horizontal' }}>
+          <DonutChartCenterContext.Provider value={{ className: 'custom-center', ref: centerRef }}>
+            <ChartLegendContext.Provider
+              value={{ className: 'custom-legend', orientation: 'horizontal', ref: legendRef }}
+            >
               <LegendLayoutExample />
             </ChartLegendContext.Provider>
           </DonutChartCenterContext.Provider>,
@@ -91,6 +95,8 @@ describe('@godaddy/antares', function antares() {
         await expect.element(bottomChart).toBeVisible();
         expect(sideLegend.element().closest('.custom-legend')).not.toBeNull();
         expect(locator.getByText('100%').all()[0].element().closest('.custom-center')).not.toBeNull();
+        expect(centerRef.current?.classList.contains('custom-center')).toBe(true);
+        expect(legendRef.current?.contains(bottomLegend.element())).toBe(true);
         expect(sideLegend.element().getBoundingClientRect().left).toBeGreaterThan(
           sideChart.element().getBoundingClientRect().right
         );

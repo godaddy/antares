@@ -16,7 +16,7 @@ export const DonutChartCenterContext = createContext<ContextValue<DonutChartCent
 
 /** Positions content inside a donut ring. */
 export function DonutChartCenter(props: DonutChartCenterProps) {
-  const [{ children, className, ...rest }] = useContextProps(props, null, DonutChartCenterContext);
+  const [{ children, className, ...rest }, centerRef] = useContextProps(props, null, DonutChartCenterContext);
   const layoutClassName = useContext(DonutChartCenterLayoutContext);
   const textSlots = {
     [DEFAULT_SLOT]: {},
@@ -29,6 +29,7 @@ export function DonutChartCenter(props: DonutChartCenterProps) {
       justifyContent="center"
       direction="column"
       {...rest}
+      ref={centerRef}
       className={composeClassName(className, layoutClassName)}
     >
       <TextContext.Provider value={{ slots: textSlots }}>{children}</TextContext.Provider>
