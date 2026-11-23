@@ -70,18 +70,12 @@
     padding-block-start: var(--alert-region-gap);
   }
 
-  > .close {
+  > :where(.close) {
     grid-area: close;
-    --_button-slot-border-width: 0;
-    --alert-close-bleed: var(--alert-gap);
-    padding: var(--alert-gap);
-    margin: calc(var(--alert-close-bleed) * -1);
-    margin-inline-start: calc(var(--alert-region-gap) - var(--alert-close-bleed));
-
-    > [data-icon] {
-      inline-size: 1.5em;
-      block-size: 1.5em;
-    }
+    line-height: 1.5;
+    padding: calc(var(--alert-gap) - var(--_button-slot-border-width, 1px));
+    margin: calc(var(--alert-gap) * -1);
+    margin-inline-start: calc(var(--alert-region-gap) - var(--alert-gap));
   }
 }
 
