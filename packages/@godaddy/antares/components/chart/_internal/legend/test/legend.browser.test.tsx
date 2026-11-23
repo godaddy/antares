@@ -45,6 +45,13 @@ describe('@godaddy/antares', function antares() {
         assume(list).exists();
         assume(label).exists();
       });
+
+      it('applies an explicit accessible name to the list', async function accessibleListName() {
+        const { locator } = await render(<LegendWithLabelExample aria-label="Revenue by product" />);
+
+        assume(locator.getByRole('list', { name: 'Revenue by product' }).element()).exists();
+        assume(locator.getByText('Sales by product').element()).exists();
+      });
     });
 
     describe('#orientation', function orientationTests() {

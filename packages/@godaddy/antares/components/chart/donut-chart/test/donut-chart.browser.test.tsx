@@ -51,6 +51,14 @@ describe('@godaddy/antares', function antares() {
         expect(Number.parseFloat(getComputedStyle(description).fontSize)).toBeCloseTo(ringBounds.width * 0.0681, 1);
       });
 
+      it('honors explicit text sizing in the center slots', async function explicitTextSize() {
+        const { locator } = await renderDonutExample(<SingleSliceExample size="xs" />);
+
+        for (const text of ['$1,000', 'Sub label']) {
+          expect(getComputedStyle(locator.getByText(text).element()).fontSize).toBe('12px');
+        }
+      });
+
       it('renders basic chart with central label and category names', async function basicChart() {
         const { container, locator } = await renderDonutExample(<DefaultExample />);
 
@@ -121,6 +129,16 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#tooltip', function tooltipTests() {
+      it('keeps the ring hoverable when center text overlaps a slice', async function overlappingCenter() {
+        const { locator } = await renderDonutExample(<SingleSliceExample value="WWWWWWWWWWWWWW" />, 180, 300);
+        const chart = locator.getByRole('img').element();
+        const slice = chart.querySelector('path')!;
+        const { width, height } = chart.getBoundingClientRect();
+
+        await page.elementLocator(slice).hover({ position: { x: width - 5, y: height / 2 } });
+        await expect.element(page.getByRole('tooltip')).toHaveTextContent('Total100%100');
+      });
+
       it('opens tooltip on slice hover and closes when pointer leaves the svg', async function hoverAndLeave() {
         const { locator } = await renderDonutExample(<DefaultExample />);
 

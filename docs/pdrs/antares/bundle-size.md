@@ -70,6 +70,8 @@ When adding or changing an export:
 4. Run the package check and explain intentional budget increases in the PR.
 5. Regenerate reports and remove obsolete budget keys when deleting or renaming exports. A budget without a matching measurement fails the check.
 
+Chart exports share a published JavaScript chunk. The `/* @__PURE__ */` annotations on side-effect-free React initializers let consumer bundlers discard unused chart code from that chunk.
+
 For changes to the analyzer itself, run `npm exec -- nx run scripts:test` and regenerate the affected reports. The implementation is in [bundle-analysis.ts](../../../scripts/bundle-analysis.ts) and [bundle-discovery.ts](../../../scripts/bundle-discovery.ts).
 
 ## Budgets

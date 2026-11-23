@@ -22,7 +22,7 @@ import { composeClassName } from '#utils/render-props.ts';
 import type { Optional, SeriesConfig } from '../../types.ts';
 import { chartSegmentGapPadAngle } from '../../utils.ts';
 import { DonutChartCenterContext } from './donut-chart-center.tsx';
-import { DonutChartLegendContext } from './donut-chart-legend.tsx';
+import { DonutChartLegendContext, DonutChartLegendSeriesContext } from './donut-chart-legend.tsx';
 import styles from './index.module.css';
 import { textTreatmentClassName } from '#components/_internal/typography';
 
@@ -367,7 +367,8 @@ export const DonutChart = /* @__PURE__ */ forwardRef<HTMLDivElement, DonutChartP
       <RACProvider
         values={[
           [DonutChartCenterContext, { className: styles.center }],
-          [DonutChartLegendContext, { className: styles.legend, series: coloredData }]
+          [DonutChartLegendContext, { className: styles.legend }],
+          [DonutChartLegendSeriesContext, coloredData]
         ]}
       >
         {children}

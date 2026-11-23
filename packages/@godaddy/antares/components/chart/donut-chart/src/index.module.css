@@ -28,14 +28,20 @@
   align-self: center;
   aspect-ratio: 1;
   max-width: 100%;
+  pointer-events: none;
   position: relative;
   width: 100%;
+  z-index: 1;
 }
 
 .chart {
   display: block;
   height: 100%;
   width: 100%;
+}
+
+.chart :where(path) {
+  pointer-events: visiblePainted;
 }
 
 .center {
@@ -55,13 +61,14 @@
 }
 
 .value {
-  font-size: var(--donut-value-font-size, inherit);
+  --_type-slot-size: var(--donut-value-font-size, 1em);
+
   font-weight: bolder;
   line-height: var(--ux-hm1ty7);
 }
 
 .description {
-  font-size: var(--donut-description-font-size, inherit);
+  --_type-slot-size: var(--donut-description-font-size, 1em);
 }
 
 .tooltip {
