@@ -1,13 +1,4 @@
-import {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type PointerEvent,
-  type ReactNode
-} from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode } from 'react';
 import { Group } from '@visx/group';
 import { Pie } from '@visx/shape';
 import { TooltipTrigger as RACTooltipTrigger } from 'react-aria-components';
@@ -91,7 +82,7 @@ export interface DonutChartProps extends Omit<GridProps<'div'>, 'as' | 'areas' |
  *
  * @param props - {@link DonutChartProps}
  */
-export const DonutChart = /* @__PURE__ */ forwardRef<HTMLDivElement, DonutChartProps>(function DonutChart(props, ref) {
+export function DonutChart(props: DonutChartProps) {
   const {
     data,
     children,
@@ -281,7 +272,6 @@ export const DonutChart = /* @__PURE__ */ forwardRef<HTMLDivElement, DonutChartP
     <Grid
       gap="lg"
       {...gridProps}
-      ref={ref}
       className={composeClassName(className, styles.root, legendPlacement === 'end' && styles.legendAtEnd)}
     >
       <RACTooltipTrigger isOpen={tooltipOpen}>
@@ -377,4 +367,4 @@ export const DonutChart = /* @__PURE__ */ forwardRef<HTMLDivElement, DonutChartP
       </InternalChartLegendContext.Provider>
     </Grid>
   );
-});
+}

@@ -9,9 +9,9 @@ export interface ChartLegendProps extends Omit<LegendProps, 'as' | 'series'> {}
 export interface InternalChartLegendValue extends Pick<LegendProps, 'series' | 'className' | 'orientation'> {}
 
 export const InternalChartLegendContext: Context<InternalChartLegendValue | null> =
-  /* @__PURE__ */ createContext<InternalChartLegendValue | null>(null);
+  createContext<InternalChartLegendValue | null>(null);
 
-export const ChartLegendContext = /* @__PURE__ */ createContext<ContextValue<ChartLegendProps, HTMLDivElement>>(null);
+export const ChartLegendContext = createContext<ContextValue<ChartLegendProps, HTMLDivElement>>(null);
 
 /** Displays the current chart's series names and colors. */
 export const ChartLegend = /* @__PURE__ */ forwardRef<HTMLDivElement, ChartLegendProps>(

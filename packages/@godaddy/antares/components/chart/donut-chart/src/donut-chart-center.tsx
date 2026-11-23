@@ -12,8 +12,7 @@ export interface DonutChartCenterProps extends Omit<FlexProps<'div'>, 'as'> {
   children?: ReactNode;
 }
 
-export const DonutChartCenterContext =
-  /* @__PURE__ */ createContext<ContextValue<DonutChartCenterProps, HTMLDivElement>>(null);
+export const DonutChartCenterContext = createContext<ContextValue<DonutChartCenterProps, HTMLDivElement>>(null);
 
 /** Positions content inside a donut ring. */
 export const DonutChartCenter = /* @__PURE__ */ forwardRef<HTMLDivElement, DonutChartCenterProps>(
