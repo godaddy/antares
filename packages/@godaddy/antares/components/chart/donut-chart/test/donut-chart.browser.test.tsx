@@ -1,6 +1,6 @@
 import assume from 'assume';
 import type { ReactNode } from 'react';
-import { describe, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { waitForSelector } from '#test/utils/wait-for-selector.ts';
@@ -40,8 +40,15 @@ describe('@godaddy/antares', function antares() {
         const paths = svg.querySelectorAll('path');
         assume(paths.length).equals(1);
 
-        assume(locator.getByText('$1,000').element()).exists();
-        assume(locator.getByText('Sub label').element()).exists();
+        const value = locator.getByText('$1,000').element();
+        const description = locator.getByText('Sub label').element();
+        const valueBounds = value.getBoundingClientRect();
+        const ringBounds = svg.getBoundingClientRect();
+
+        expect(valueBounds.left + valueBounds.width / 2).toBeCloseTo(ringBounds.left + ringBounds.width / 2, 1);
+        expect(valueBounds.bottom).toBeLessThanOrEqual(description.getBoundingClientRect().top);
+        expect(Number.parseFloat(getComputedStyle(value).fontSize)).toBeCloseTo(ringBounds.width * 0.1573, 1);
+        expect(Number.parseFloat(getComputedStyle(description).fontSize)).toBeCloseTo(ringBounds.width * 0.0681, 1);
       });
 
       it('renders basic chart with central label and category names', async function basicChart() {
@@ -55,20 +62,22 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#legend', function legendTests() {
-      it('renders two legends with series names and legend label', async function legendLayout() {
-        await page.viewport(900, 900);
-        const { container, locator } = await render(
-          <div style={{ width: '900px', height: '900px' }}>
-            <LegendLayoutExample />
-          </div>
+      it('places the legend below or at the inline end and displays the slice names', async function legendLayout() {
+        const { locator } = await renderDonutExample(<LegendLayoutExample />, 600, 900);
+        const sideLegend = locator.getByRole('list', { name: 'Side legend' });
+        const bottomLegend = locator.getByRole('list', { name: 'Bottom legend' });
+        const sideChart = locator.getByRole('img', { name: 'Donut with legend beside it' });
+        const bottomChart = locator.getByRole('img', { name: 'Donut with legend below' });
+
+        await expect.element(bottomChart).toBeVisible();
+        expect(sideLegend.element().getBoundingClientRect().left).toBeGreaterThan(
+          sideChart.element().getBoundingClientRect().right
         );
-        await waitForSelector(container, 'svg');
-        await waitForSelector(container, 'svg path');
+        expect(bottomLegend.element().getBoundingClientRect().top).toBeGreaterThan(
+          bottomChart.element().getBoundingClientRect().bottom
+        );
 
-        const legends = locator.getByRole('list').all();
-        assume(legends.length).equals(2);
-
-        legends.forEach(function assertLegendContent(legend) {
+        [sideLegend, bottomLegend].forEach(function assertLegendContent(legend) {
           const expectedItems = ['Product A', 'Product B', 'Product C', 'Product D'];
           const items = legend.getByRole('listitem').all();
           assume(items.length).equals(expectedItems.length);
@@ -76,6 +85,38 @@ describe('@godaddy/antares', function antares() {
             assume(item.getByText(expectedItems.shift()!).element()).exists();
           });
         });
+      });
+
+      it('places an inline-end legend to the left in right-to-left layouts', async function rtlLegendLayout() {
+        const { locator } = await renderDonutExample(
+          <div dir="rtl">
+            <LegendLayoutExample />
+          </div>
+        );
+        const legend = locator.getByRole('list', { name: 'Side legend' }).element();
+        const chart = locator.getByRole('img', { name: 'Donut with legend beside it' }).element();
+
+        expect(legend.getBoundingClientRect().right).toBeLessThan(chart.getBoundingClientRect().left);
+      });
+
+      it('matches legend swatches to slices when zero values are omitted from the ring', async function legendColors() {
+        const { locator } = await renderDonutExample(
+          <LegendLayoutExample
+            data={[
+              { name: 'No sales', value: 0 },
+              { name: 'Sales', value: 100 }
+            ]}
+          />
+        );
+        const chart = locator.getByRole('img', { name: 'Donut with legend beside it' }).element();
+        const legend = locator.getByRole('list', { name: 'Side legend' });
+        const slices = chart.querySelectorAll('path');
+        const swatches = legend.element().querySelectorAll<HTMLElement>('[style*="background-color"]');
+
+        expect(slices).toHaveLength(1);
+        expect(swatches).toHaveLength(2);
+        expect(swatches[0].style.backgroundColor).not.toBe(swatches[1].style.backgroundColor);
+        expect(slices[0].getAttribute('fill')).toBe(swatches[1].style.backgroundColor);
       });
     });
 
@@ -91,6 +132,9 @@ describe('@godaddy/antares', function antares() {
 
         assume(tooltip).exists();
         assume(tooltip.element().textContent).includes('Category A35%35');
+
+        await locator.getByText('100%').hover();
+        await expect.element(tooltip).not.toBeInTheDocument();
       });
 
       it('shows formatValue output in tooltip for FormatValueExample', async function formatValueTooltip() {

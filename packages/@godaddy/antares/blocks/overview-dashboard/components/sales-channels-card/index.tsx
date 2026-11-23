@@ -1,4 +1,4 @@
-import { Card, DonutChart, Flex, Heading } from '@godaddy/antares';
+import { Card, DonutChart, DonutChartCenter, DonutChartLegend, Flex, Heading, Text } from '@godaddy/antares';
 import { salesChannelData } from '../../constants/config';
 import styles from './index.module.css';
 
@@ -37,14 +37,13 @@ export function SalesChannelsCard() {
     <Card elevation="card" className={styles.salesCardMeasure}>
       <Flex direction="column" gap="lg">
         <Heading level={3}>Sales by Sales Channels</Heading>
-        <DonutChart
-          data={salesChannelData}
-          label={formatNumber(totalSales)}
-          subLabel="USD"
-          legend="bottom"
-          formatValue={formatCurrency}
-          aria-label={salesChannelAriaLabel}
-        />
+        <DonutChart data={salesChannelData} formatValue={formatCurrency} aria-label={salesChannelAriaLabel}>
+          <DonutChartCenter>
+            <Text slot="value">{formatNumber(totalSales)}</Text>
+            <Text slot="description">USD</Text>
+          </DonutChartCenter>
+          <DonutChartLegend />
+        </DonutChart>
       </Flex>
     </Card>
   );

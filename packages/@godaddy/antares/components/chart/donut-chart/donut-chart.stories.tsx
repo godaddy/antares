@@ -1,5 +1,5 @@
 'use client';
-import { DonutChart } from '#components/chart/donut-chart';
+import { DonutChart, DonutChartCenter, DonutChartLegend } from '#components/chart/donut-chart';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { PlaygroundExample } from './examples/donut-chart-playground.tsx';
 
@@ -8,14 +8,16 @@ export default getMeta({
 });
 
 export const Props = getComponentDocs(DonutChart);
+export const DonutChartCenterProps = getComponentDocs(DonutChartCenter);
+export const DonutChartLegendProps = getComponentDocs(DonutChartLegend);
 
 export const Examples = getExamples('./examples');
 
 export const Playground = getStory(PlaygroundExample, {
   args: {
     dataPreset: 'four',
-    label: '100%',
-    subLabel: '',
+    value: '100%',
+    description: '',
     legendPlacement: 'none',
     legendLabel: 'Legend',
     smallSliceThreshold: 0.05,
@@ -28,18 +30,18 @@ export const Playground = getStory(PlaygroundExample, {
       options: ['three', 'four', 'five', 'skewed'],
       description: 'Sample slice data (names and values)'
     },
-    label: {
+    value: {
       control: 'text',
-      description: 'Primary label in the donut hole'
+      description: 'Primary value in the center of the ring'
     },
-    subLabel: {
+    description: {
       control: 'text',
-      description: 'Secondary label below the primary label (leave empty to hide)'
+      description: 'Description below the primary value (leave empty to hide)'
     },
     legendPlacement: {
       control: 'radio',
-      options: ['none', 'bottom', 'right'],
-      description: 'Legend position, or none to hide the legend'
+      options: ['none', 'bottom', 'end'],
+      description: 'Legend below the ring, at its inline end, or hidden'
     },
     legendLabel: {
       control: 'text',

@@ -21,6 +21,27 @@ npm install @godaddy/antares
 
 ## Props
 
+```tsx
+<DonutChart>
+  <DonutChartCenter>
+    <Text slot="value" />
+    <Text slot="description" />
+    {/* ... */}
+  </DonutChartCenter>
+  <DonutChartLegend />
+</DonutChart>
+```
+
+Compose the center and legend as optional direct children in either order. The ring, legend, and tooltip share the same slice colors. The built-in tooltip keeps percentage and value columns and groups adjacent small slices.
+
 ### DonutChart
 
 <ArgTypes of={Stories.Props} />
+
+### DonutChartCenter
+
+<ArgTypes of={Stories.DonutChartCenterProps} />
+
+### DonutChartLegend
+
+<ArgTypes of={Stories.DonutChartLegendProps} />

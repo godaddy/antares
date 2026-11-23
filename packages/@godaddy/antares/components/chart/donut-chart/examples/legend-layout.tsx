@@ -1,4 +1,4 @@
-import { DonutChart, Flex } from '@godaddy/antares';
+import { DonutChart, DonutChartCenter, DonutChartLegend, type DonutChartProps, Flex, Text } from '@godaddy/antares';
 
 const data = [
   { id: '1', name: 'Product A', value: 40 },
@@ -8,27 +8,25 @@ const data = [
 ];
 
 /**
- * Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+ * The legend reads the chart's data and appears below the ring by default. Set `legendPlacement="end"` to place it beside the ring in the current text direction.
  * @title Legend placement
  * @order 3
  */
-export function LegendLayoutExample() {
+export function LegendLayoutExample({ data: slices = data }: Partial<Pick<DonutChartProps, 'data'>>) {
   return (
     <Flex direction="column" gap="xl">
-      <DonutChart
-        data={data}
-        label="100%"
-        legend="right"
-        legendLabel="Legend title"
-        aria-label="Donut with legend to the right"
-      />
-      <DonutChart
-        data={data}
-        label="100%"
-        legend="bottom"
-        legendLabel="Legend title"
-        aria-label="Donut with legend below"
-      />
+      <DonutChart data={slices} legendPlacement="end" aria-label="Donut with legend beside it">
+        <DonutChartLegend label="Side legend" />
+        <DonutChartCenter>
+          <Text slot="value">100%</Text>
+        </DonutChartCenter>
+      </DonutChart>
+      <DonutChart data={slices} aria-label="Donut with legend below">
+        <DonutChartCenter>
+          <Text slot="value">100%</Text>
+        </DonutChartCenter>
+        <DonutChartLegend label="Bottom legend" />
+      </DonutChart>
     </Flex>
   );
 }

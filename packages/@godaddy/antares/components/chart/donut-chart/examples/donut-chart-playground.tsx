@@ -1,4 +1,4 @@
-import { Box, DonutChart } from '@godaddy/antares';
+import { Box, DonutChart, DonutChartCenter, DonutChartLegend, Text } from '@godaddy/antares';
 
 const DATA_BY_PRESET = {
   three: [
@@ -34,9 +34,9 @@ type DonutChartDataPreset = keyof typeof DATA_BY_PRESET;
 /** Props for the DonutChart Storybook playground. */
 export interface PlaygroundExampleProps {
   dataPreset: DonutChartDataPreset;
-  label: string;
-  subLabel: string;
-  legendPlacement: 'none' | 'bottom' | 'right';
+  value: string;
+  description: string;
+  legendPlacement: 'none' | 'bottom' | 'end';
   legendLabel: string;
   smallSliceThreshold: number;
   useCurrencyFormat: boolean;
@@ -48,8 +48,8 @@ const PLAYGROUND_WIDTH_PX = '320px';
 
 export function PlaygroundExample({
   dataPreset,
-  label,
-  subLabel,
+  value,
+  description,
   legendPlacement,
   legendLabel,
   smallSliceThreshold,
@@ -58,14 +58,14 @@ export function PlaygroundExample({
   width = PLAYGROUND_WIDTH_PX
 }: PlaygroundExampleProps) {
   const data = [...DATA_BY_PRESET[dataPreset]];
-  const legend = legendPlacement === 'none' ? undefined : legendPlacement;
+  const showLegend = legendPlacement !== 'none';
   const formatValue = useCurrencyFormat
-    ? function formatCurrency(value: number) {
+    ? function formatCurrency(amount: number) {
         return new Intl.NumberFormat(undefined, {
           style: 'currency',
           currency: 'USD',
           maximumFractionDigits: 0
-        }).format(value);
+        }).format(amount);
       }
     : undefined;
 
@@ -73,14 +73,17 @@ export function PlaygroundExample({
     <Box style={{ width }}>
       <DonutChart
         data={data}
-        label={label}
-        subLabel={subLabel.trim() ? subLabel : undefined}
-        legend={legend}
-        legendLabel={legend ? legendLabel : undefined}
+        legendPlacement={showLegend ? legendPlacement : undefined}
         smallSliceThreshold={smallSliceThreshold}
         formatValue={formatValue}
         aria-label={ariaLabel}
-      />
+      >
+        <DonutChartCenter>
+          <Text slot="value">{value}</Text>
+          {description.trim() && <Text slot="description">{description}</Text>}
+        </DonutChartCenter>
+        {showLegend && <DonutChartLegend label={legendLabel} />}
+      </DonutChart>
     </Box>
   );
 }

@@ -18,5 +18,5 @@ const data = [
  * @order 4
  */
 export function SmallSlicesExample() {
-  return <DonutChart data={data} label="88%" aria-label="Donut with small slices for combined tooltip" />;
+  return <DonutChart data={data} aria-label="Donut with small slices for combined tooltip" />;
 }

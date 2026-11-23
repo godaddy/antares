@@ -705,6 +705,10 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
     expect(surface.find((entry) => entry.from === '@godaddy/antares/Chart')?.exports).toEqual([
       'BarChart',
       'DonutChart',
+      'DonutChartCenter',
+      'DonutChartCenterContext',
+      'DonutChartLegend',
+      'DonutChartLegendContext',
       'GaugeChart',
       'LineChart'
     ]);

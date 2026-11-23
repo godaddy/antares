@@ -1,4 +1,4 @@
-import { DonutChart, type DonutChartProps } from '@godaddy/antares';
+import { DonutChart, DonutChartCenter, Text } from '@godaddy/antares';
 
 const data = [
   { id: '1', name: 'Sales', value: 42 },
@@ -11,16 +11,18 @@ const data = [
  * @title Format value
  * @order 5
  */
-export function FormatValueExample(props: Partial<DonutChartProps>) {
+export function FormatValueExample() {
   return (
     <DonutChart
       data={data}
-      label="$100.00"
       formatValue={function format(v: number) {
         return `$${v}.00`;
       }}
       aria-label="Donut with formatted tooltip values for multiple revenue categories"
-      {...props}
-    />
+    >
+      <DonutChartCenter>
+        <Text slot="value">$100.00</Text>
+      </DonutChartCenter>
+    </DonutChart>
   );
 }
