@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { waitForSelector } from '#test/utils/wait-for-selector.ts';
+import { CenterOverrideExample } from '../examples/center-override.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { FormatValueExample } from '../examples/format-value.tsx';
 import { LegendLayoutExample } from '../examples/legend-layout.tsx';
@@ -52,7 +53,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('honors explicit text sizing in the center slots', async function explicitTextSize() {
-        const { locator } = await renderDonutExample(<SingleSliceExample size="xs" />);
+        const { locator } = await renderDonutExample(<CenterOverrideExample size="xs" />);
 
         for (const text of ['$1,000', 'Sub label']) {
           expect(getComputedStyle(locator.getByText(text).element()).fontSize).toBe('12px');
@@ -130,7 +131,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#tooltip', function tooltipTests() {
       it('keeps the ring hoverable when center text overlaps a slice', async function overlappingCenter() {
-        const { locator } = await renderDonutExample(<SingleSliceExample value="WWWWWWWWWWWWWW" />, 180, 300);
+        const { locator } = await renderDonutExample(<CenterOverrideExample value="WWWWWWWWWWWWWW" />, 180, 300);
         const chart = locator.getByRole('img').element();
         const slice = chart.querySelector('path')!;
         const { width, height } = chart.getBoundingClientRect();
