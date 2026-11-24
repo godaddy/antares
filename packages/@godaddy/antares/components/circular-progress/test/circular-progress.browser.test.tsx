@@ -10,6 +10,7 @@ import { SizesExample } from '../examples/sizes.tsx';
 import { StatusesExample } from '../examples/statuses.tsx';
 import { CompositionExample } from '../examples/composition.tsx';
 import { SlotsExample } from '../examples/slots.tsx';
+import { ValueDisplayExample } from '../examples/value-display.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#CircularProgress', function circularProgressTests() {
@@ -193,7 +194,7 @@ describe('@godaddy/antares', function antares() {
       expect(getComputedStyle(boxValue).color).toBe(getComputedStyle(textValue).color);
       await expect.element(screen.getByText('60/100')).toBeVisible();
       expect(screen.getByRole('progressbar', { name: 'Track only' }).element().getBoundingClientRect().height).toBe(64);
-      await expect.element(screen.getByText('Waiting')).not.toBeVisible();
+      expect(screen.getByRole('progressbar', { name: 'Preparing upload' }).element().textContent).toBe('');
     });
 
     it('exposes the composed name, description, and decorative progress', async function defaultProgress() {
@@ -260,6 +261,20 @@ describe('@godaddy/antares', function antares() {
       await expect
         .element(screen.getByRole('progressbar', { name: 'Keep this window open.' }))
         .not.toHaveAttribute('aria-valuenow');
+    });
+
+    it('demonstrates custom ranges, formatted amounts, and value labels', async function valueDisplay() {
+      const screen = await render(<ValueDisplayExample />);
+
+      for (const [name, value] of [
+        ['Custom range', '50%'],
+        ['Budget used', '$60'],
+        ['Files uploaded', '3 of 5']
+      ]) {
+        const progress = screen.getByRole('progressbar', { name });
+        await expect.element(progress).toHaveAttribute('aria-valuetext', value);
+        await expect.element(progress.getByText(value, { exact: true })).toBeVisible();
+      }
     });
 
     it('updates the ring and formatted values for custom ranges and clamping', async function rangesAndFormatting() {

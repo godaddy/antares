@@ -37,7 +37,6 @@ export function SlotsExample() {
       </CircularProgress>
       <CircularProgress aria-label="Preparing upload" isIndeterminate size="sm">
         <Box slot="track" />
-        <Box slot="value">Waiting</Box>
       </CircularProgress>
     </Flex>
   );

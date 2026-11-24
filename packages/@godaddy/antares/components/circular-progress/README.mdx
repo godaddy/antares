@@ -45,35 +45,6 @@ progress semantics.
 - The circular track and repeated visible value are decorative and hidden from assistive technology.
 - Reduced motion stops the activity animation while keeping the indicator visible.
 
-## Migration
-
-This is a breaking API change. Replace `label` with `Label` children and `helperText` with
-`Text slot="description"`. The root no longer inserts a track or visible value automatically;
-compose those slots explicitly to preserve the previous appearance.
-
-Rename the root's `emphasis` prop to `status` to match ProgressBar. The success, warning,
-and critical colors are unchanged; omitting `status` or setting it to `"default"` keeps the teal fill.
-
-Before:
-
-```tsx
-<CircularProgress value={60} emphasis="success" label="Uploading…" helperText="3 of 5 files uploaded" />
-```
-
-After:
-
-```tsx
-<CircularProgress value={60} status="success">
-  <Box slot="track" />
-  <Box slot="value" />
-  <Label>Uploading…</Label>
-  <Text slot="description">3 of 5 files uploaded</Text>
-</CircularProgress>
-```
-
-Keep existing `size`, range, and formatting props on the root. To show only the circle,
-compose the track slot and supply `aria-label` or `aria-labelledby`.
-
 ## Props
 
 ```tsx

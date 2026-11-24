@@ -30,7 +30,19 @@ export interface CircularProgressProps extends RACProgressBarProps, Omit<GridOwn
   status?: 'default' | 'success' | 'warning' | 'critical';
 }
 
-/** Shows circular determinate or indeterminate progress. Compose only the parts you need. */
+/**
+ * Shows circular determinate or indeterminate progress.
+ * A `<Box slot="track" />` is required to render the ring.
+ *
+ * @example
+ * ```tsx
+ * <CircularProgress value={60}>
+ *   <Box slot="track" />
+ *   <Box slot="value" />
+ *   <Label>Uploading…</Label>
+ * </CircularProgress>
+ * ```
+ */
 export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps>(
   function CircularProgress(props, ref) {
     const {
