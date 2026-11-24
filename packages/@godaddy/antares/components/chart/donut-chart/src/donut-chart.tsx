@@ -48,7 +48,7 @@ function formatSlicePercent(value: number, total: number): string {
 /**
  * Radial thickness of the donut ring as a percentage of the measured width.
  */
-const DONUT_RING_THICKNESS_CQI_PERCENT = 6.9;
+const DONUT_RING_THICKNESS_PERCENT = 6.9;
 
 /**
  * Donut chart component props.
@@ -264,7 +264,7 @@ export function DonutChart(props: DonutChartProps) {
     : 0;
   const center = chartSizePx / 2;
   const outerRadius = chartSizePx > 0 ? chartSizePx / 2 : 0;
-  const ringThicknessPx = (chartSizePx * DONUT_RING_THICKNESS_CQI_PERCENT) / 100;
+  const ringThicknessPx = (chartSizePx * DONUT_RING_THICKNESS_PERCENT) / 100;
   const innerRadius = Math.max(0, outerRadius - ringThicknessPx);
   const padAngle = chartSegmentGapPadAngle(outerRadius);
 

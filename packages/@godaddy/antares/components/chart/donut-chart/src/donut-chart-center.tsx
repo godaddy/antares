@@ -1,5 +1,6 @@
 import { createContext, forwardRef, useContext, type ReactNode } from 'react';
 import { DEFAULT_SLOT, useContextProps, type ContextValue } from 'react-aria-components';
+import { cx } from 'cva';
 import { textTreatmentClassName } from '#components/_internal/typography';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { TextContext } from '#components/text';
@@ -22,8 +23,8 @@ export const DonutChartCenter = /* @__PURE__ */ forwardRef<HTMLDivElement, Donut
     const layoutClassName = useContext(DonutChartCenterLayoutContext);
     const textSlots = {
       [DEFAULT_SLOT]: {},
-      value: { className: composeClassName(undefined, styles.value, textTreatmentClassName('inherit')) },
-      description: { className: composeClassName(undefined, styles.description, textTreatmentClassName('inherit')) }
+      value: { className: cx(styles.value, textTreatmentClassName('inherit')) },
+      description: { className: cx(styles.description, textTreatmentClassName('inherit')) }
     };
     return (
       <Flex
