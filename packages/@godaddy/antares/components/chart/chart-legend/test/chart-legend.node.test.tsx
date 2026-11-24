@@ -1,7 +1,7 @@
-import { ChartLegend } from '@godaddy/antares';
 import { renderToString } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { DefaultExample } from '../examples/default.tsx';
+import { OutsideChartExample } from '../examples/outside-chart.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#ChartLegend', function chartLegendTests() {
@@ -10,7 +10,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('renders nothing outside a chart', function outsideChart() {
-      expect(renderToString(<ChartLegend label="Channel" />)).toBe('');
+      expect(renderToString(<OutsideChartExample />)).toMatchSnapshot();
     });
   });
 });
