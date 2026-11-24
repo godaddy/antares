@@ -19,7 +19,7 @@ export const Playground = getStory(PlaygroundExample, {
     dataPreset: 'four',
     value: '100%',
     description: '',
-    legendPlacement: 'none',
+    legendPosition: 'none',
     legendLabel: 'Legend',
     smallSliceThreshold: 0.05,
     useCurrencyFormat: false,
@@ -39,7 +39,7 @@ export const Playground = getStory(PlaygroundExample, {
       control: 'text',
       description: 'Description below the primary value (leave empty to hide)'
     },
-    legendPlacement: {
+    legendPosition: {
       control: 'radio',
       options: ['none', 'bottom', 'end'],
       description: 'Legend below the ring, at its inline end, or hidden'

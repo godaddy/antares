@@ -36,7 +36,7 @@ export interface PlaygroundExampleProps {
   dataPreset: DonutChartDataPreset;
   value: string;
   description: string;
-  legendPlacement: 'none' | 'bottom' | 'end';
+  legendPosition: 'none' | 'bottom' | 'end';
   legendLabel: string;
   smallSliceThreshold: number;
   useCurrencyFormat: boolean;
@@ -50,7 +50,7 @@ export function PlaygroundExample({
   dataPreset,
   value,
   description,
-  legendPlacement,
+  legendPosition,
   legendLabel,
   smallSliceThreshold,
   useCurrencyFormat,
@@ -58,7 +58,7 @@ export function PlaygroundExample({
   width = PLAYGROUND_WIDTH_PX
 }: PlaygroundExampleProps) {
   const data = [...DATA_BY_PRESET[dataPreset]];
-  const showLegend = legendPlacement !== 'none';
+  const showLegend = legendPosition !== 'none';
   const formatValue = useCurrencyFormat
     ? function formatCurrency(amount: number) {
         return new Intl.NumberFormat(undefined, {
@@ -73,7 +73,7 @@ export function PlaygroundExample({
     <Box style={{ width }}>
       <DonutChart
         data={data}
-        legendPlacement={showLegend ? legendPlacement : undefined}
+        legendPosition={showLegend ? legendPosition : undefined}
         smallSliceThreshold={smallSliceThreshold}
         formatValue={formatValue}
         aria-label={ariaLabel}

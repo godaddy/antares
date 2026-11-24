@@ -92,7 +92,7 @@ export function TrafficSources() {
 }
 ```
 
-`legendPlacement` defaults to `"bottom"` and accepts `"end"` for a legend beside the ring. `formatValue` formats slice values in the tooltip. Only positive slices appear in the ring. Handle an empty or all-zero total explicitly. `smallSliceThreshold` groups adjacent small slices in the tooltip.
+`legendPosition` defaults to `"bottom"` and accepts `"end"` for a legend beside the ring. `formatValue` formats slice values in the tooltip. Only positive slices appear in the ring. Handle an empty or all-zero total explicitly. `smallSliceThreshold` groups adjacent small slices in the tooltip.
 
 ## GaugeChart: one value on a known scale
 

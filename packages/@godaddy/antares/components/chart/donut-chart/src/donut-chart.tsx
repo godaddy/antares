@@ -61,7 +61,7 @@ export interface DonutChartProps extends Omit<GridProps<'div'>, 'as' | 'areas' |
   children?: ReactNode;
 
   /** Places a composed legend below the chart or at its inline end. @default 'bottom' */
-  legendPlacement?: 'bottom' | 'end';
+  legendPosition?: 'bottom' | 'end';
 
   /** Accessible name for the ring. */
   'aria-label'?: string;
@@ -86,7 +86,7 @@ export function DonutChart(props: DonutChartProps) {
   const {
     data,
     children,
-    legendPlacement = 'bottom',
+    legendPosition = 'bottom',
     smallSliceThreshold = 0.05,
     formatValue: formatValueProp,
     'aria-label': ariaLabel,
@@ -272,7 +272,7 @@ export function DonutChart(props: DonutChartProps) {
     <Grid
       gap="lg"
       {...gridProps}
-      className={composeClassName(className, styles.root, legendPlacement === 'end' && styles.legendAtEnd)}
+      className={composeClassName(className, styles.root, legendPosition === 'end' && styles.legendAtEnd)}
     >
       <RACTooltipTrigger isOpen={tooltipOpen}>
         <Box ref={chartWrapRef} className={styles.chartWrap}>

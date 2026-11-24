@@ -8,14 +8,14 @@ const data = [
 ];
 
 /**
- * The legend reads the chart's data and appears below the ring by default. Set `legendPlacement="end"` to place it beside the ring in the current text direction.
+ * The legend reads the chart's data and appears below the ring by default. Set `legendPosition="end"` to place it beside the ring in the current text direction.
  * @title Legend placement
  * @order 3
  */
 export function LegendLayoutExample({ data: slices = data }: Partial<Pick<DonutChartProps, 'data'>>) {
   return (
     <Flex direction="column" gap="xl">
-      <DonutChart data={slices} legendPlacement="end" aria-label="Donut with legend beside it">
+      <DonutChart data={slices} legendPosition="end" aria-label="Donut with legend beside it">
         <ChartLegend label="Side legend" />
         <DonutChartCenter>
           <Text slot="value">100%</Text>
