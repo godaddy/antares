@@ -28,20 +28,14 @@
   align-self: center;
   aspect-ratio: 1;
   max-width: 100%;
-  pointer-events: none;
   position: relative;
   width: 100%;
-  z-index: 1;
 }
 
 .chart {
   display: block;
   height: 100%;
   width: 100%;
-}
-
-.chart :where(path) {
-  pointer-events: visiblePainted;
 }
 
 .center {
@@ -56,7 +50,7 @@
   position: relative;
 }
 
-.center > :where(*) {
+.center :where(a[href], button, input, select, textarea, label, summary, [tabindex], [role="button"], [role="link"]) {
   pointer-events: auto;
 }
 

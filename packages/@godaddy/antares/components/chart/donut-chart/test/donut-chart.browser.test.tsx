@@ -1,7 +1,7 @@
 import { ChartLegendContext, DonutChartCenterContext } from '@godaddy/antares';
 import assume from 'assume';
 import { createRef, type ReactNode } from 'react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { waitForSelector } from '#test/utils/wait-for-selector.ts';
@@ -9,6 +9,7 @@ import { AllSmallSlicesExample } from '../examples/all-small-slices.tsx';
 import { CenterOverrideExample } from '../examples/center-override.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { FormatValueExample } from '../examples/format-value.tsx';
+import { InteractiveCenterExample } from '../examples/interactive-center.tsx';
 import { LegendLayoutExample } from '../examples/legend-layout.tsx';
 import { SingleSliceExample } from '../examples/single-slice.tsx';
 import { SmallSlicesExample } from '../examples/small-slices.tsx';
@@ -158,7 +159,17 @@ describe('@godaddy/antares', function antares() {
         await expect.element(page.getByRole('tooltip')).toHaveTextContent('Total100%100');
       });
 
-      it('opens tooltip on slice hover and closes when pointer leaves the svg', async function hoverAndLeave() {
+      it('keeps the full target of interactive center content clickable', async function interactiveCenter() {
+        const onPress = vi.fn();
+        const { locator } = await renderDonutExample(<InteractiveCenterExample onPress={onPress} />, 200, 200);
+        const button = locator.getByRole('button', { name: 'View details' });
+        const { width, height } = button.element().getBoundingClientRect();
+
+        await button.click({ position: { x: width - 3, y: height / 2 } });
+        expect(onPress).toHaveBeenCalledOnce();
+      });
+
+      it('opens tooltip on slice hover and closes when the pointer moves into the ring hole', async function hoverAndLeave() {
         const { locator } = await renderDonutExample(<DefaultExample />);
 
         const chart = locator.getByRole('img');
@@ -170,7 +181,7 @@ describe('@godaddy/antares', function antares() {
         assume(tooltip).exists();
         assume(tooltip.element().textContent).includes('Category A35%35');
 
-        await locator.getByText('100%').hover();
+        await chart.hover();
         await expect.element(tooltip).not.toBeInTheDocument();
       });
 
