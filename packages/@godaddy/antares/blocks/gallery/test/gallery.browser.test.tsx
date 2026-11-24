@@ -2,7 +2,6 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vite
 import { render } from 'vitest-browser-react';
 import { cdp, page, userEvent } from 'vitest/browser';
 import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
-import { RTLProvider } from '#utils/rtl-locale-provider.tsx';
 import { Gallery, type ImageItem } from '../index.tsx';
 import { FileCover, GalleryImage } from '../components/image';
 
@@ -29,14 +28,6 @@ const browserSamples: ImageItem[] = [
     errorMessage: 'Couldn’t load Photo_error.png.'
   }
 ];
-const virtualizedSamples: ImageItem[] = Array.from({ length: 40 }, function createVirtualizedSample(_, index) {
-  return {
-    id: `virtualized-${index}`,
-    name: `Virtualized_${index + 1}.png`,
-    src: `data:image/png;base64,${pixel}`,
-    size: (index + 1) * 1024
-  };
-});
 
 function png(name = 'local.png') {
   const bytes = Uint8Array.from(atob(pixel), function byte(value) {
@@ -433,54 +424,6 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.click(screen.getByRole('radio', { name: 'List', exact: true }));
       await expect.element(screen.getByRole('button', { name: 'Remove Photo_10.png' })).toBeVisible();
       await expect.element(screen.getByRole('button', { name: 'Show all', exact: true })).not.toBeInTheDocument();
-    });
-
-    it.each(['grid', 'list'] as const)(
-      'windows large collections, scrolls, and preserves loaded covers across a %s view switch',
-      async function virtualizedCollection(view) {
-        const screen = await render(<Gallery initialImages={virtualizedSamples} defaultView={view} />);
-
-        async function verifyVirtualizedView(currentView: 'grid' | 'list') {
-          const collection = screen.getByRole('grid', {
-            name: currentView === 'list' ? 'Gallery files' : 'Gallery image grid'
-          });
-          await expect.element(collection).toBeVisible();
-          await expect
-            .poll(() => collection.element().querySelectorAll('[role="row"]').length)
-            .toBeLessThan(virtualizedSamples.length);
-
-          collection.element().scrollTo({ top: collection.element().scrollHeight });
-          await expect.element(screen.getByRole('row', { name: 'Open Virtualized_40.png', exact: true })).toBeVisible();
-        }
-
-        if (view === 'list') await userEvent.click(screen.getByRole('button', { name: 'Show all', exact: true }));
-        await verifyVirtualizedView(view);
-
-        const switchedView = view === 'grid' ? 'list' : 'grid';
-        await userEvent.click(
-          screen.getByRole('radio', { name: switchedView === 'list' ? 'List' : 'Grid', exact: true })
-        );
-        if (switchedView === 'list')
-          await userEvent.click(screen.getByRole('button', { name: 'Show all', exact: true }));
-        await verifyVirtualizedView(switchedView);
-
-        await userEvent.click(screen.getByRole('row', { name: 'Open Virtualized_40.png', exact: true }));
-        await expect.element(screen.getByRole('dialog', { name: 'Media gallery' })).toBeVisible();
-      }
-    );
-
-    it('loads covers eagerly only when the collection is virtualized', async function coverLoading() {
-      const small = await render(<Gallery initialImages={browserSamples.slice(0, 6)} defaultView="grid" />);
-      const smallCovers = Array.from(small.container.querySelectorAll('img'));
-      expect(smallCovers.length).toBeGreaterThan(0);
-      for (const cover of smallCovers) expect(cover).toHaveAttribute('loading', 'lazy');
-      await small.unmount();
-
-      const large = await render(<Gallery initialImages={virtualizedSamples} defaultView="grid" />);
-      await expect.element(large.getByRole('grid', { name: 'Gallery image grid' })).toBeVisible();
-      const largeCovers = Array.from(large.container.querySelectorAll('img'));
-      expect(largeCovers.length).toBeGreaterThan(0);
-      for (const cover of largeCovers) expect(cover).toHaveAttribute('loading', 'eager');
     });
 
     it.each([5, 11])(
@@ -991,34 +934,25 @@ describe('@godaddy/antares', function packageTests() {
         await page.viewport(1280, 800);
       });
 
-      it.each(['ltr', 'rtl'] as const)(
-        'reveals the first and last thumbnails by keyboard without scrolling the modal or page in %s',
-        async function keyboardReveal(textDirection) {
-          if (textDirection === 'rtl') document.documentElement.dir = 'rtl';
-          try {
-            const gallery = <Gallery initialImages={browserSamples.slice(0, 10)} />;
-            const screen = await render(textDirection === 'rtl' ? <RTLProvider>{gallery}</RTLProvider> : gallery);
-            await userEvent.click(screen.getByRole('row', { name: 'Open file_name.png' }));
-            const dialog = screen.getByRole('dialog');
-            const rail = dialog.getByRole('grid', { name: 'Image thumbnails' });
-            const first = dialog.getByRole('row', { name: 'View file_name.png' });
-            const last = dialog.getByRole('row', { name: 'View Photo_10.png' });
-            const initialScroll = scrollPositionsAbove(rail.element());
-            await expect.element(first).toHaveFocus();
-            await userEvent.keyboard('{End}');
-            await expect.element(last).toHaveFocus();
-            await expect.element(last).toHaveAttribute('aria-selected', 'true');
-            await expect.poll(() => isThumbnailRevealed(last.element(), rail.element())).toBe(true);
-            await userEvent.keyboard('{Home}');
-            await expect.element(first).toHaveFocus();
-            await expect.element(first).toHaveAttribute('aria-selected', 'true');
-            await expect.poll(() => isThumbnailRevealed(first.element(), rail.element())).toBe(true);
-            expect(scrollPositionsAbove(rail.element())).toEqual(initialScroll);
-          } finally {
-            document.documentElement.removeAttribute('dir');
-          }
-        }
-      );
+      it('reveals the first and last thumbnails by keyboard without scrolling the modal or page', async function keyboardReveal() {
+        const screen = await render(<Gallery initialImages={browserSamples.slice(0, 10)} />);
+        await userEvent.click(screen.getByRole('row', { name: 'Open file_name.png' }));
+        const dialog = screen.getByRole('dialog');
+        const rail = dialog.getByRole('grid', { name: 'Image thumbnails' });
+        const first = dialog.getByRole('row', { name: 'View file_name.png' });
+        const last = dialog.getByRole('row', { name: 'View Photo_10.png' });
+        const initialScroll = scrollPositionsAbove(rail.element());
+        await expect.element(first).toHaveFocus();
+        await userEvent.keyboard('{End}');
+        await expect.element(last).toHaveFocus();
+        await expect.element(last).toHaveAttribute('aria-selected', 'true');
+        await expect.poll(() => isThumbnailRevealed(last.element(), rail.element())).toBe(true);
+        await userEvent.keyboard('{Home}');
+        await expect.element(first).toHaveFocus();
+        await expect.element(first).toHaveAttribute('aria-selected', 'true');
+        await expect.poll(() => isThumbnailRevealed(first.element(), rail.element())).toBe(true);
+        expect(scrollPositionsAbove(rail.element())).toEqual(initialScroll);
+      });
 
       it.each([
         { direction: 'next', from: 0, to: 3, position: 'intermediate' },
@@ -1050,23 +984,28 @@ describe('@godaddy/antares', function packageTests() {
     });
 
     it('focuses the active thumbnail when opening an image at the end of the gallery', async function offscreenThumbnail() {
-      const screen = await render(<Gallery initialImages={browserSamples.slice(0, 10)} />);
-      const opener = screen.getByRole('row', { name: 'Open Photo_10.png' });
-      await userEvent.click(opener);
-      const dialog = screen.getByRole('dialog');
-      const thumbnail = dialog.getByRole('row', { name: 'View Photo_10.png' });
-      await expect.element(thumbnail).toHaveFocus();
-      await expect.element(thumbnail).toHaveAttribute('aria-selected', 'true');
-      await expect
-        .poll(() =>
-          isThumbnailRevealed(thumbnail.element(), dialog.getByRole('grid', { name: 'Image thumbnails' }).element())
-        )
-        .toBe(true);
-      await userEvent.keyboard('{ArrowLeft}');
-      await expect.element(dialog.getByRole('row', { name: 'View Photo_9.png' })).toHaveFocus();
-      await expect.element(dialog.getByRole('status')).toMatchTextContent('9 of 10');
-      await userEvent.keyboard('{Escape}');
-      await expect.element(opener).toHaveFocus();
+      try {
+        await page.viewport(390, 844);
+        const screen = await render(<Gallery initialImages={browserSamples.slice(0, 10)} />);
+        const opener = screen.getByRole('row', { name: 'Open Photo_10.png' });
+        await userEvent.click(opener);
+        const dialog = screen.getByRole('dialog');
+        const thumbnail = dialog.getByRole('row', { name: 'View Photo_10.png' });
+        await expect.element(thumbnail).toHaveFocus();
+        await expect.element(thumbnail).toHaveAttribute('aria-selected', 'true');
+        await expect
+          .poll(() =>
+            isThumbnailRevealed(thumbnail.element(), dialog.getByRole('grid', { name: 'Image thumbnails' }).element())
+          )
+          .toBe(true);
+        await userEvent.keyboard('{ArrowLeft}');
+        await expect.element(dialog.getByRole('row', { name: 'View Photo_9.png' })).toHaveFocus();
+        await expect.element(dialog.getByRole('status')).toMatchTextContent('9 of 10');
+        await userEvent.keyboard('{Escape}');
+        await expect.element(opener).toHaveFocus();
+      } finally {
+        await page.viewport(1280, 800);
+      }
     });
 
     it.each(['grid', 'list'] as const)(

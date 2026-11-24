@@ -189,13 +189,10 @@ interface FileCoverProps {
 
   /** Reports a successful retry to the owning gallery. */
   onLoadSuccess?: (id: string) => void;
-
-  /** Virtualized collections only mount covers near the viewport, so they can load eagerly. */
-  loading?: 'eager' | 'lazy';
 }
 
 /** A small, reusable image/error surface shared by every Gallery presentation. */
-export function FileCover({ image, variant, onLoadError, onLoadSuccess, loading = 'lazy' }: FileCoverProps) {
+export function FileCover({ image, variant, onLoadError, onLoadSuccess }: FileCoverProps) {
   const [failedThumbnail, setFailedThumbnail] = useState<string | null>(null);
   const thumbnail = image.thumbnailSrc && failedThumbnail !== image.thumbnailSrc ? image.thumbnailSrc : undefined;
   const reportLoadError = useCallback(
@@ -240,7 +237,7 @@ export function FileCover({ image, variant, onLoadError, onLoadSuccess, loading 
       alt={image.alt ?? image.name}
       className={styles.surface}
       variant={variant}
-      loading={loading}
+      loading="lazy"
       isLoading={state === 'loading'}
       onLoad={onLoad}
       onError={onError}

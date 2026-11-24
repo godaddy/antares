@@ -9,12 +9,8 @@ import {
   CornerActions,
   Detail,
   Flex,
-  GridLayout,
   Icon,
-  ListLayout,
-  Size,
   Text,
-  Virtualizer,
   type CardGroupProps
 } from '@godaddy/antares';
 import { FileCover, type FileCoverVariant } from '../image';
@@ -42,19 +38,6 @@ interface FileItemsProps extends Pick<FileItemProps, 'onRemove' | 'onLoadError' 
 }
 
 const MAX_VISIBLE_ITEMS = 5;
-/** Virtualization is useful once the rendered collection is large enough to scroll. */
-const MIN_VIRTUALIZED_ITEMS = 20;
-/** List rows are measured; the estimate only sizes the scrollbar before they mount. */
-const listLayoutOptions = { estimatedRowSize: 80, gap: 8 };
-
-/** Grid cells keep the cover square, so the cell height follows its width. */
-const gridLayoutOptions = {
-  minItemSize: new Size(200, 280),
-  maxItemSize: new Size(320, 400),
-  minSpace: new Size(8, 8),
-  preserveAspectRatio: true
-};
-
 const fileSizeFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
 /** Renders the same collection with either list or grid geometry. */
@@ -72,7 +55,6 @@ export function FileItems({
   const isList = view === 'list';
   const firstRevealedId = useRef<string | null>(null);
   const visibleImages = isList && !showAll ? images.slice(0, MAX_VISIBLE_ITEMS) : images;
-  const shouldVirtualize = visibleImages.length >= MIN_VIRTUALIZED_ITEMS;
   const errorCount = images.filter((image) => image.status === 'error').length;
 
   const registerItem = useCallback(function registerItem(id: string, element: HTMLElement | null) {
@@ -99,83 +81,34 @@ export function FileItems({
     [images, onOpen, onRetry]
   );
 
-  const renderItem = (image: ImageItem) => (
-    <FileItem
-      image={image}
-      variant={isList ? 'horizontal' : 'vertical'}
-      onRemove={onRemove}
-      onLoadError={onLoadError}
-      onLoadSuccess={onLoadSuccess}
-      onItemRef={registerItem}
-      isVirtualized
-    />
-  );
-
-  const virtualizedCollection = (
-    <CardGroup
-      selectionMode="single"
-      selectionBehavior="toggle"
-      shouldSelectOnPressUp
-      selectedKeys={[]}
-      onSelectionChange={handleSelection}
-      disabledBehavior="selection"
-      keyboardNavigationBehavior="tab"
-      aria-label={isList ? 'Gallery files' : 'Gallery image grid'}
-      items={visibleImages}
-      dependencies={[images, visibleImages, isList]}
-      gap="0"
-      className={styles.group}
-      style={{ display: 'block' }}
-    >
-      {renderItem}
-    </CardGroup>
-  );
-  const collection = shouldVirtualize ? (
-    virtualizedCollection
-  ) : (
-    <CardGroup
-      selectionMode="single"
-      selectionBehavior="toggle"
-      shouldSelectOnPressUp
-      selectedKeys={[]}
-      onSelectionChange={handleSelection}
-      disabledBehavior="selection"
-      keyboardNavigationBehavior="tab"
-      columns={isList ? '1fr' : 'repeat(auto-fill, minmax(min(100%, 240px), 1fr))'}
-      gap="sm"
-      justifyContent="start"
-      alignItems="start"
-      aria-label={isList ? 'Gallery files' : 'Gallery image grid'}
-    >
-      {visibleImages.map((image) => (
-        <FileItem
-          key={image.id}
-          image={image}
-          variant={isList ? 'horizontal' : 'vertical'}
-          onRemove={onRemove}
-          onLoadError={onLoadError}
-          onLoadSuccess={onLoadSuccess}
-          onItemRef={registerItem}
-        />
-      ))}
-    </CardGroup>
-  );
-
   return (
     <Flex direction="column" gap="sm" className={styles.collection}>
-      {shouldVirtualize ? (
-        isList ? (
-          <Virtualizer key="list" layout={ListLayout} layoutOptions={listLayoutOptions} shouldObserveItemSize>
-            {collection}
-          </Virtualizer>
-        ) : (
-          <Virtualizer key="grid" layout={GridLayout} layoutOptions={gridLayoutOptions}>
-            {collection}
-          </Virtualizer>
-        )
-      ) : (
-        collection
-      )}
+      <CardGroup
+        selectionMode="single"
+        selectionBehavior="toggle"
+        shouldSelectOnPressUp
+        selectedKeys={[]}
+        onSelectionChange={handleSelection}
+        disabledBehavior="selection"
+        keyboardNavigationBehavior="tab"
+        columns={isList ? '1fr' : 'repeat(auto-fill, minmax(min(100%, 240px), 1fr))'}
+        gap="sm"
+        justifyContent="start"
+        alignItems="start"
+        aria-label={isList ? 'Gallery files' : 'Gallery image grid'}
+      >
+        {visibleImages.map((image) => (
+          <FileItem
+            key={image.id}
+            image={image}
+            variant={isList ? 'horizontal' : 'vertical'}
+            onRemove={onRemove}
+            onLoadError={onLoadError}
+            onLoadSuccess={onLoadSuccess}
+            onItemRef={registerItem}
+          />
+        ))}
+      </CardGroup>
       {isList ? (
         <ViewBanner
           visibleCount={visibleImages.length}
@@ -206,9 +139,6 @@ interface FileItemProps {
 
   /** Registers the collection row for revealing expanded files. */
   onItemRef?: (id: string, element: HTMLElement | null) => void;
-
-  /** Virtualized items only mount near the viewport, so their cover loads eagerly. */
-  isVirtualized?: boolean;
 }
 
 /** Preserves useful precision for small files instead of rounding their size to zero MiB. */
@@ -219,7 +149,7 @@ function formatFileSize(bytes: number) {
 }
 
 /** One file item with the same actions and states across list and grid views. */
-function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItemRef, isVirtualized }: FileItemProps) {
+function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItemRef }: FileItemProps) {
   const [coverReady, setCoverReady] = useState(false);
   const size = image.size === undefined ? 'Size unavailable' : formatFileSize(image.size);
   const isError = image.status === 'error';
@@ -255,16 +185,9 @@ function FileItem({ image, variant, onRemove, onLoadError, onLoadSuccess, onItem
       alignItems={variant === 'horizontal' ? 'center' : undefined}
       className={styles.card}
       data-error={isError || undefined}
-      data-variant={variant}
     >
       <Box flexShrink={0} className={styles.cover}>
-        <FileCover
-          image={image}
-          variant={variant}
-          loading={isVirtualized ? 'eager' : 'lazy'}
-          onLoadError={handleLoadError}
-          onLoadSuccess={handleLoadSuccess}
-        />
+        <FileCover image={image} variant={variant} onLoadError={handleLoadError} onLoadSuccess={handleLoadSuccess} />
       </Box>
 
       <Flex

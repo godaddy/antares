@@ -25,12 +25,3 @@
   overflow-x: auto;
   scroll-padding-inline: var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 1));
 }
-
-.thumbnailViewport {
-  block-size: 68px;
-  min-inline-size: 0;
-}
-
-:where(.thumbnailViewport) > div {
-  block-size: 100%;
-}
