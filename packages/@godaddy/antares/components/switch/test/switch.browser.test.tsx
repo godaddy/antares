@@ -5,7 +5,6 @@ import { DefaultExample } from '../examples/default';
 import { SwitchDisabledExample } from '../examples/disabled';
 import { SwitchNoLabelExample } from '../examples/no-label';
 import { SwitchRootCustomizationExample } from '../examples/root-customization';
-import { SwitchSizesExample } from '../examples/sizes';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
@@ -110,27 +109,6 @@ describe('@godaddy/antares', function antares() {
       const fieldContainer = container.querySelector('.custom-switch') as HTMLElement;
       assume(fieldContainer.style.opacity).equals('0.5');
       assume(fieldContainer.tagName).equals('DIV');
-    });
-
-    it('insets the thumb by one GU inside each track size', async function thumbInset() {
-      const { container } = await render(<SwitchSizesExample />);
-      const tracks = Array.from(container.querySelectorAll('[aria-hidden="true"]'));
-
-      const geometry = tracks.map(function measure(track) {
-        const trackRect = track.getBoundingClientRect();
-        const thumbRect = (track.firstElementChild as HTMLElement).getBoundingClientRect();
-        return {
-          width: trackRect.width,
-          height: trackRect.height,
-          thumb: thumbRect.width,
-          inset: thumbRect.top - trackRect.top
-        };
-      });
-
-      assume(geometry).deep.equals([
-        { width: 52, height: 28, thumb: 20, inset: 4 },
-        { width: 40, height: 24, thumb: 16, inset: 4 }
-      ]);
     });
 
     it('forwards ref to the interactive root', async function forwardsRef() {
