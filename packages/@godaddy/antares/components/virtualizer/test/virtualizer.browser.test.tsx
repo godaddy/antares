@@ -56,7 +56,7 @@ describe('@godaddy/antares', function packageTests() {
       const last = screen.getByRole('option', { name: 'Item 10000' });
       await expect.element(last).toBeVisible();
       await expect.element(last).toHaveFocus();
-      // Focused rows can stay mounted outside the scrollport; End only needs last-item focus.
+      await expect.poll(() => isInsideScrollport(last.element(), listbox.element())).toBe(true);
       expect(listbox.element().querySelectorAll('[role="option"]').length).toBeLessThan(200);
       await userEvent.keyboard('{Home}');
       await expect.element(first).toHaveFocus();
