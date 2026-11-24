@@ -11,6 +11,7 @@ import { DefaultExample } from '../examples/default.tsx';
 import { FormatValueExample } from '../examples/format-value.tsx';
 import { InteractiveCenterExample } from '../examples/interactive-center.tsx';
 import { LegendLayoutExample } from '../examples/legend-layout.tsx';
+import { RegionRefsExample } from '../examples/region-refs.tsx';
 import { SingleSliceExample } from '../examples/single-slice.tsx';
 import { SmallSlicesExample } from '../examples/small-slices.tsx';
 /**
@@ -113,6 +114,15 @@ describe('@godaddy/antares', function antares() {
             assume(item.getByText(expectedItems.shift()!).element()).exists();
           });
         });
+      });
+
+      it('forwards refs to the center and legend roots', async function regionRefs() {
+        const centerRef = createRef<HTMLDivElement>();
+        const legendRef = createRef<HTMLDivElement>();
+        const { locator } = await renderDonutExample(<RegionRefsExample centerRef={centerRef} legendRef={legendRef} />);
+
+        expect(centerRef.current?.contains(locator.getByText('100%').element())).toBe(true);
+        expect(legendRef.current?.contains(locator.getByRole('list', { name: 'Channel' }).element())).toBe(true);
       });
 
       it('places an inline-end legend to the left in right-to-left layouts', async function rtlLegendLayout() {

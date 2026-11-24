@@ -1,4 +1,4 @@
-import type { Ref } from 'react';
+import { forwardRef } from 'react';
 import type { InternalSeriesConfig, LineSeriesVariant, SeriesConfig } from '#components/chart/types.ts';
 import { cx } from 'cva';
 import { ChartColorProvider, useChartColor } from '#components/chart/_internal/use-chart-color';
@@ -32,8 +32,6 @@ export interface LegendProps
   'aria-labelledby'?: string;
   /** Size of the legend labels and swatches. @default 'md' */
   size?: 'sm' | 'md' | 'lg' | 'xl';
-  /** Ref to the root element. A plain prop so it reaches the root on React 18 without `forwardRef`. */
-  rootRef?: Ref<HTMLDivElement>;
   /** Layout orientation for legend items. Defaults to horizontal. */
   orientation?: 'horizontal' | 'vertical';
 }
@@ -111,7 +109,7 @@ function LegendItem(props: LegendItemProps) {
   );
 }
 
-export function Legend(props: LegendProps) {
+export const Legend = /* @__PURE__ */ forwardRef<HTMLDivElement, LegendProps>(function Legend(props, ref) {
   const {
     series,
     label,
@@ -120,7 +118,6 @@ export function Legend(props: LegendProps) {
     className,
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
-    rootRef,
     ...rootFlexProps
   } = props;
   const isHorizontal = orientation === 'horizontal';
@@ -129,7 +126,7 @@ export function Legend(props: LegendProps) {
     <ChartColorProvider>
       <Flex
         {...rootFlexProps}
-        ref={rootRef}
+        ref={ref}
         direction="column"
         alignItems="flex-start"
         display="inline-flex"
@@ -156,4 +153,4 @@ export function Legend(props: LegendProps) {
       </Flex>
     </ChartColorProvider>
   );
-}
+});
