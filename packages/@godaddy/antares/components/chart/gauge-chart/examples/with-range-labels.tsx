@@ -1,28 +1,32 @@
-import { Grid, GaugeChart } from '@godaddy/antares';
+import { GaugeChart, GaugeChartCenter, GaugeChartRange, Grid, Text } from '@godaddy/antares';
 
 /**
- * Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+ * Add `GaugeChartRange` to label the ends of the arc. The labels describe the scale; they do not change it.
  * @order 4
  */
 export function WithRangeLabelsExample() {
   return (
     <Grid columns="repeat(2, 1fr)" gap="lg" justifyContent="center">
-      <GaugeChart
-        value={65}
-        label="65%"
-        subLabel="CPU Usage"
-        rangeLabel={{ min: 0, max: 100 }}
-        aria-label="CPU usage gauge"
-      />
-      <GaugeChart
-        value={3}
-        segments={5}
-        label="3/5"
-        subLabel="Risk Level"
-        rangeLabel={{ min: 'Low', max: 'High' }}
-        variant="warning"
-        aria-label="Risk level gauge"
-      />
+      <GaugeChart value={65} aria-label="CPU usage gauge">
+        <GaugeChartCenter>
+          <Text slot="value">65%</Text>
+          <Text slot="description">CPU Usage</Text>
+        </GaugeChartCenter>
+        <GaugeChartRange>
+          <Text slot="min">0</Text>
+          <Text slot="max">100</Text>
+        </GaugeChartRange>
+      </GaugeChart>
+      <GaugeChart value={3} segments={5} valueLabel="3 of 5" variant="warning" aria-label="Risk level gauge">
+        <GaugeChartCenter>
+          <Text slot="value">3/5</Text>
+          <Text slot="description">Risk Level</Text>
+        </GaugeChartCenter>
+        <GaugeChartRange>
+          <Text slot="min">Low</Text>
+          <Text slot="max">High</Text>
+        </GaugeChartRange>
+      </GaugeChart>
     </Grid>
   );
 }

@@ -706,6 +706,10 @@ describe('bundle measurement contracts', function bundleMeasurementTests() {
       'BarChart',
       'DonutChart',
       'GaugeChart',
+      'GaugeChartCenter',
+      'GaugeChartCenterContext',
+      'GaugeChartRange',
+      'GaugeChartRangeContext',
       'LineChart'
     ]);
     expect(surface.find((entry) => entry.from === '@godaddy/antares/date')?.exports).toContain('parseDate');

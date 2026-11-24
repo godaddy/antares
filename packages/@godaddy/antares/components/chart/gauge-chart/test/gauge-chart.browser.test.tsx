@@ -1,8 +1,11 @@
+import { GaugeChartCenterContext, GaugeChartRangeContext } from '@godaddy/antares';
+import { createRef } from 'react';
 import { render } from 'vitest-browser-react';
 import { describe, expect, it } from 'vitest';
 import { ContinuousExample } from '../examples/continuous.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { PlaygroundExample } from '../examples/gauge-chart-playground.tsx';
+import { RegionOrderExample } from '../examples/region-order.tsx';
 import { SegmentedExample } from '../examples/segmented.tsx';
 import { VariantsExample } from '../examples/variants.tsx';
 import { WithRangeLabelsExample } from '../examples/with-range-labels.tsx';
@@ -79,34 +82,90 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#range-labels', function rangeLabels() {
-      it('renders numeric and string range labels', async function rangeLabelContent() {
-        const { container } = await render(<WithRangeLabelsExample />);
+      it('places min and max labels under the ends of the arc', async function rangeLabelPlacement() {
+        const { getByRole } = await render(<WithRangeLabelsExample />);
 
-        const mins = container.querySelectorAll('[data-range-label="min"]');
-        const maxs = container.querySelectorAll('[data-range-label="max"]');
-        expect(mins.length).toBe(2);
-        expect(maxs.length).toBe(2);
+        const meter = getByRole('meter', { name: 'Risk level gauge' });
+        await expect.element(meter).toBeVisible();
+        const min = meter.getByText('Low').element().getBoundingClientRect();
+        const max = meter.getByText('High').element().getBoundingClientRect();
+        const description = meter.getByText('Risk Level').element().getBoundingClientRect();
 
-        expect(mins[0]?.textContent).toBe('0');
-        expect(maxs[0]?.textContent).toBe('100');
-        expect(mins[1]?.textContent).toBe('Low');
-        expect(maxs[1]?.textContent).toBe('High');
+        expect(min.right).toBeLessThanOrEqual(description.left);
+        expect(max.left).toBeGreaterThanOrEqual(description.right);
+        expect(min.top).toBeCloseTo(max.top, 0);
+      });
+
+      it('flips the range labels in right-to-left layouts', async function rtlRangeLabels() {
+        const { getByRole } = await render(
+          <div dir="rtl">
+            <WithRangeLabelsExample />
+          </div>
+        );
+
+        const meter = getByRole('meter', { name: 'Risk level gauge' });
+        await expect.element(meter).toBeVisible();
+        expect(meter.getByText('Low').element().getBoundingClientRect().left).toBeGreaterThan(
+          meter.getByText('High').element().getBoundingClientRect().right
+        );
       });
     });
 
-    describe('#aria-valuetext', function ariaValueText() {
-      it('uses label only without subLabel', async function labelOnly() {
-        const { getByRole } = await render(<PlaygroundExample label="Plain" value={40} />);
+    describe('#composition', function composition() {
+      it('lays out regions the same in either order', async function regionOrder() {
+        const { getByRole } = await render(<RegionOrderExample />);
 
-        const meter = getByRole('meter', { name: 'Playground gauge' });
-        expect(meter.element()?.getAttribute('aria-valuetext')).toBe('Plain');
+        const [rangeFirst, centerFirst] = ['Range first', 'Center first'].map(function measure(name) {
+          const meter = getByRole('meter', { name });
+          const origin = meter.element().getBoundingClientRect();
+          return ['72%', 'Score', 'Low', 'High'].map(function offset(text) {
+            const rect = meter.getByText(text).element().getBoundingClientRect();
+            return [rect.left - origin.left, rect.top - origin.top];
+          });
+        });
+
+        expect(rangeFirst).toEqual(centerFirst);
       });
 
-      it('combines label and subLabel in aria-valuetext', async function labelWithSub() {
-        const { getByRole } = await render(<PlaygroundExample label="50%" subLabel="Done" value={50} />);
+      it('keeps region layout with consumer context overrides', async function contextOverrides() {
+        const centerRef = createRef<HTMLDivElement>();
+        const rangeRef = createRef<HTMLDivElement>();
+        const { getByRole } = await render(
+          <GaugeChartCenterContext.Provider value={{ className: 'custom-center', ref: centerRef }}>
+            <GaugeChartRangeContext.Provider value={{ className: 'custom-range', ref: rangeRef }}>
+              <WithRangeLabelsExample />
+            </GaugeChartRangeContext.Provider>
+          </GaugeChartCenterContext.Provider>
+        );
+
+        const meter = getByRole('meter', { name: 'Risk level gauge' });
+        await expect.element(meter).toBeVisible();
+        expect(centerRef.current?.classList.contains('custom-center')).toBe(true);
+        expect(rangeRef.current?.classList.contains('custom-range')).toBe(true);
+        expect(meter.getByText('Low').element().getBoundingClientRect().right).toBeLessThanOrEqual(
+          meter.getByText('Risk Level').element().getBoundingClientRect().left
+        );
+      });
+    });
+
+    describe('#accessible-text', function accessibleText() {
+      it('announces valueLabel as the value text', async function valueLabel() {
+        const { getByRole } = await render(<SegmentedExample />);
+
+        await expect
+          .element(getByRole('meter', { name: 'Gauge with 2 of 5 filled' }))
+          .toHaveAttribute('aria-valuetext', '2 of 5');
+      });
+
+      it('uses the description to describe the meter', async function describedByDescription() {
+        const { getByRole, rerender } = await render(<PlaygroundExample label="50%" description="Done" value={50} />);
 
         const meter = getByRole('meter', { name: 'Playground gauge' });
-        expect(meter.element()?.getAttribute('aria-valuetext')).toBe('50% - Done');
+        await expect.element(meter).toHaveAccessibleDescription('Done');
+        expect(meter.element().hasAttribute('aria-valuetext')).toBe(false);
+
+        await rerender(<PlaygroundExample label="50%" value={50} />);
+        expect(meter.element().hasAttribute('aria-describedby')).toBe(false);
       });
     });
 

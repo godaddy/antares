@@ -17,21 +17,25 @@
   --gauge-range-label-line-height: var(--ux-h93mi7, 1.375);
   --gauge-range-label-margin-top: calc(var(--ux-1sbfig8, 0.5rem) * 0.5);
 
-  --gauge-sublabel-fg: var(--ux-1le7uoa, #111);
-  --gauge-sublabel-font-size: 9.37cqi;
-  --gauge-sublabel-margin-top: calc(var(--ux-1sbfig8, 0.5rem) * 0.5);
-  --gauge-sublabel-font-weight: 500;
-  --gauge-sublabel-line-height: var(--ux-h93mi7, 1.375);
+  --gauge-description-fg: var(--ux-1le7uoa, #111);
+  --gauge-description-font-size: 9.37cqi;
+  --gauge-description-margin-top: calc(var(--ux-1sbfig8, 0.5rem) * 0.5);
+  --gauge-description-font-weight: 500;
+  --gauge-description-line-height: var(--ux-h93mi7, 1.375);
 
+  /* Row 1 holds the arc and value; row 2 the description between the range labels. */
+  grid-template-columns: auto 1fr auto;
+  justify-content: center;
+  justify-items: center;
   container-type: inline-size;
   width: 100%;
 
   &:where([data-label-type="value"]) {
-    --gauge-label-font-size: max(19.3cqi, 1px);
+    --gauge-value-font-size: max(19.3cqi, 1px);
   }
 
   &:where([data-label-type="text"]) {
-    --gauge-label-font-size: max(13.56cqi, 1px);
+    --gauge-value-font-size: max(13.56cqi, 1px);
   }
 
   &:where([data-variant="success"]) {
@@ -46,24 +50,38 @@
     --gauge-fg-color: var(--gauge-fg-critical);
   }
 
-  &:where([data-filled]) .content::before {
+  &:where([data-filled]) .caps::before {
     background: var(--gauge-fg-color);
   }
 
-  &:where([data-full]) .content::after {
+  &:where([data-full]) .caps::after {
     background: var(--gauge-fg-color);
   }
 }
 
-/* Primary label; ::before/::after = rounded caps at arc ends */
-.content {
-  aspect-ratio: 2;
-  grid-area: 1 / 1 / -1 / -1;
-  position: relative;
-  color: var(--gauge-fg-label);
-  font-family: var(--gauge-font-family);
-  font-size: var(--gauge-label-font-size);
-  font-weight: 400;
+/* Composed regions share the root's rows and columns, so their parts align with the arc in any source order. */
+.center,
+.range {
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  grid-template-rows: subgrid;
+  justify-self: stretch;
+  justify-items: center;
+  min-width: 0;
+}
+
+.center {
+  grid-row: 1 / span 2;
+}
+
+.range {
+  grid-row: 2;
+}
+
+/* ::before/::after = rounded caps at arc ends */
+.caps {
+  position: absolute;
+  inset: 0;
 
   &::after,
   &::before {
@@ -88,18 +106,28 @@
   }
 }
 
+/* Sits at the bottom of the arc row, half an end-cap diameter below the arc base. */
 .value {
+  --_type-slot-size: var(--gauge-value-font-size, 1em);
+
+  grid-column: 1 / -1;
+  grid-row: 1;
+  align-self: end;
   display: block;
   max-width: 66cqi;
+  color: var(--gauge-fg-label);
+  font-family: var(--gauge-font-family);
+  font-weight: 400;
   line-height: 1;
-  /* Pull the label down toward the arc base by half the rounded end-cap diameter. */
-  margin-bottom: calc(var(--gauge-thickness) / -2);
+  text-align: center;
 }
 
 /* Arc: ::before = fill, ::after = track (--gauge-gap-angle from inline style after layout) */
 .gauge {
   position: relative;
-  grid-area: 1 / 1 / 2 / -1;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  align-self: end;
   aspect-ratio: 2;
   width: 100%;
   margin-bottom: calc(var(--gauge-thickness) / 2);
@@ -149,7 +177,7 @@
 }
 
 /* Narrow the arc when range labels are present so its end caps sit just inside them. */
-.root:has([data-range-label]) .gauge {
+.root:has(> .range) .gauge {
   width: calc(100% - 2 * 9.3cqi);
 }
 
@@ -235,23 +263,26 @@
   }
 }
 
-/* Second row: sublabel + optional min/max */
-.subLabel {
+/* Second row: description + optional min/max */
+.description {
+  --_type-slot-size: var(--gauge-description-font-size, 1em);
+
   grid-column: 2;
   grid-row: 2;
-  margin-top: var(--gauge-sublabel-margin-top);
+  margin-top: var(--gauge-description-margin-top);
   min-width: 0;
   max-width: 100%;
-  color: var(--gauge-sublabel-fg);
+  color: var(--gauge-description-fg);
   font-family: var(--gauge-font-family);
-  font-size: var(--gauge-sublabel-font-size);
-  font-weight: var(--gauge-sublabel-font-weight);
-  line-height: var(--gauge-sublabel-line-height);
+  font-weight: var(--gauge-description-font-weight);
+  line-height: var(--gauge-description-line-height);
+  text-align: center;
   align-self: center;
-  justify-self: center;
 }
 
 .rangeLabel {
+  --_type-slot-size: var(--gauge-range-label-font-size, 1em);
+
   display: inline-flex;
   justify-content: center;
   width: 4ch;
@@ -259,17 +290,15 @@
   margin-top: var(--gauge-range-label-margin-top);
   color: var(--gauge-range-label-fg);
   font-family: var(--gauge-font-family);
-  font-size: var(--gauge-range-label-font-size);
   font-weight: var(--gauge-range-label-font-weight);
   line-height: var(--gauge-range-label-line-height);
+  grid-row: 1;
+}
 
-  &[data-range-label="min"] {
-    grid-column: 1;
-    grid-row: 2;
-  }
+.rangeLabel:where(.min) {
+  grid-column: 1;
+}
 
-  &[data-range-label="max"] {
-    grid-column: 3;
-    grid-row: 2;
-  }
+.rangeLabel:where(.max) {
+  grid-column: 3;
 }

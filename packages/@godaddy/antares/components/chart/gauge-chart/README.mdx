@@ -1,6 +1,6 @@
 ---
 title: Gauge Chart
-description: A visual indicator for representing a single quantitative value within a known range, rendered as a semicircle arc in continuous or segmented mode.
+description: GaugeChart shows one value on a known scale as a semicircle arc, in continuous or segmented mode.
 ---
 
 import { Meta, ArgTypes } from '@storybook/addon-docs/blocks';
@@ -23,35 +23,45 @@ npm install --save @godaddy/antares
 
 ### Gauge Not Sizing Correctly
 
-The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
+The gauge fills its parent's width and scales its text with it. Constrain the parent or set a `maxWidth`:
 
 ```tsx
-// ❌ No width constraint — gauge may stretch to full viewport
-<GaugeChart label="50%" value={50} aria-label="Progress" />
-
-// ✅ Parent provides width context
-<div style={{ width: 200 }}>
-  <GaugeChart label="50%" value={50} aria-label="Progress" />
-</div>
-
-// ✅ Or use className for max-width
-<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
+<GaugeChart value={50} aria-label="Progress" style={{ maxWidth: 200 }}>
+  <GaugeChartCenter>
+    <Text slot="value">50%</Text>
+  </GaugeChartCenter>
+</GaugeChart>
 ```
 
 ### Value Out of Range
 
-Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
-
-```tsx
-// ✅ Continuous: 0–100
-<GaugeChart label="75%" value={75} aria-label="Score" />
-
-// ✅ Segmented: 0 to segments
-<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
-```
+Values outside the scale are clamped. Continuous mode uses 0–100 and segmented mode uses 0 to `segments`. Normalize other measurements before passing them.
 
 ## Props
+
+```tsx
+<GaugeChart value={3} segments={5}>
+  <GaugeChartCenter>
+    <Text slot="value" />
+    <Text slot="description" />
+  </GaugeChartCenter>
+  <GaugeChartRange>
+    <Text slot="min" />
+    <Text slot="max" />
+  </GaugeChartRange>
+</GaugeChart>
+```
+
+Compose the center and range as optional direct children in either order. The description also describes the meter. Set `valueLabel` when the visible value isn't a plain number.
 
 ### GaugeChart
 
 <ArgTypes of={Stories.Props} />
+
+### GaugeChartCenter
+
+<ArgTypes of={Stories.GaugeChartCenterProps} />
+
+### GaugeChartRange
+
+<ArgTypes of={Stories.GaugeChartRangeProps} />

@@ -22,7 +22,7 @@ const SSR_EXAMPLES: Array<[string, ReactElement]> = [
       rangeMax="High"
       labelType="text"
       variant="warning"
-      subLabel="Risk"
+      description="Risk"
       width="118px"
     />
   ],
