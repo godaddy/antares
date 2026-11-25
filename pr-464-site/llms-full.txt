@@ -230,7 +230,8 @@ Alert positions and styles its regions. Compose an optional `Icon slot="indicato
 - Extract regions into a component by returning them from a fragment. A wrapper element is not placed in the layout
   grid, so put custom layout inside `Content`.
 - Props on a child win over Alert's defaults. Classes merge and local style properties win.
-- Put `className`, `style`, `ref`, native attributes, and `data-emphasis` on Alert for the surface.
+- Use `emphasis` to set the alert’s tone. Alert applies `className`, `style`, `ref`, and native HTML attributes to
+  its surface.
 - Omitted regions collapse. On wider alerts, the title and body share a column with a gap before the vertically
   centered actions. The close button has its own column. In narrow alerts with a message, actions appear under
   the message. With no message, actions and the close button share one row. Choose action and dismissal labels
