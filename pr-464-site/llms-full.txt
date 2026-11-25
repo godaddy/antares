@@ -215,35 +215,50 @@ npm install --save @godaddy/antares
 
 ## Customization [#customization]
 
-Alert positions and styles its regions. You supply the regions.
+Alert positions and styles its regions. Compose an optional `Icon slot="indicator"`, a `Heading slot="title"`,
+`Content`, an optional `ButtonGroup`, and an optional `CloseButton` as direct children.
 
-- **Compose siblings inside Alert**: optional `Icon slot="indicator"`, `Content` for the title and body, optional `ButtonGroup`, and optional `CloseButton`. Use `Button slot="close"` when the dismiss control needs a visible label. Pass `onPress` on the close control and hide the alert from the parent.
-- **Name the title with a slot**: `Heading slot="title"`, or `Text slot="title"` when heading semantics do not fit. Body copy is an unslotted `Text` inside `Content`.
-- **Choose the glyph on Icon**: for example `<Icon slot="indicator" icon="alert" />`. The indicator is decorative. Omit it when the message stands alone. Override its size with `style` when you need a different dimension than Alert's default.
-- **Keep region roots as direct children of Alert.** Return several regions from a fragment when you extract them. An extra DOM wrapper is not placed in the layout grid. Put custom layout inside `Content` instead.
-- **Child props win** over Alert's context defaults. Classes merge. Local style properties win over context styles.
-- **`Content` has no inset inside Alert.** The surface owns padding. Override `Content` spacing only when a custom interior needs it.
-- **Surface props stay on Alert**: `className`, `style`, `ref`, native attributes, and `data-emphasis` for theming.
-- **Narrow containers stack actions** under the content and keep the close control in its own column. Empty icon and close columns collapse. Source order remains the keyboard order.
-
-Alert owns region contexts the way overlay shells do, so a nested Alert does not pick up a parent Modal or Card `Content` padding. Only `IconContext` is merged from outside, so ambient icons and `CloseButton` keep parent icon customization. Unslotted icons do not receive the indicator defaults.
+- Put the body inside `Content`. The title and body regions are separated by one grid unit at every width.
+  A direct `Heading slot="title"` lets the body extend underneath the close button in narrow containers.
+  If there is no direct title, `Content` stays beside the close button. A title inside `Content` still receives
+  the title styling.
+- Choose the glyph on the icon, for example `<Icon slot="indicator" icon="alert" />`. It is decorative and defaults
+  to `1.625rem` for each dimension absent from the SVG (26 px with a 16 px root font size). To size a custom SVG the
+  same way as a CDN icon, register it with a `viewBox` and omit its `width` and `height` attributes. You can also set
+  either dimension on `Icon` or omit the indicator when the message stands alone.
+- Pass `onPress` on `CloseButton` and hide the alert from the parent. Use `Button slot="close"` for a visible label.
+- Extract regions into a component by returning them from a fragment. A wrapper element is not placed in the layout
+  grid, so put custom layout inside `Content`.
+- Props on a child win over Alert's defaults. Classes merge and local style properties win.
+- Put `className`, `style`, `ref`, native attributes, and `data-emphasis` on Alert for the surface.
+- Omitted regions collapse. On wider alerts, the title and body share a column with a gap before the vertically
+  centered actions. The close button has its own column. In narrow alerts with a message, actions appear under
+  the message. With no message, actions and the close button share one row. Choose action and dismissal labels
+  that fit the available space, or set wrapping on those controls.
 
 ## Accessibility [#accessibility]
 
 ### Keyboard [#keyboard]
 
-| Key | Description |
+| Key | Action |
 | --- | --- |
-| Tab / Shift+Tab | Moves between controls in the consumer's source order |
-| Enter / Space | Activates the focused button |
+| `Tab` / `Shift + Tab` | Moves between controls in the consumer's source order |
+| `Enter` / `Space` | Activates the focused button |
+
+When using both `CloseButton` and `ButtonGroup`, use this source order to keep the same Tab sequence across
+container widths.
+
+- With a direct title, use `Heading`, `CloseButton`, `Content` when present, then `ButtonGroup`.
+- With body only, use `Content`, `CloseButton`, then `ButtonGroup`.
+- With neither title nor body, use `ButtonGroup` followed by `CloseButton`.
 
 ### Screen readers [#screen-readers]
 
-The surface defaults to `role="alert"`, an assertive live region. Use `role="status"` for polite updates when appropriate. Screen reader announcements depend on how content enters or updates the live region; rendering an SSR snapshot does not verify an announcement.
+The surface defaults to `role="alert"`, an assertive live region. Use `role="status"` for polite updates when appropriate.
 
 Choose the `Heading` level for the surrounding page. The `title` slot styles the title but does not set `aria-labelledby` or `aria-describedby` on `Alert`. Add explicit labeling attributes when the surface needs an accessible name. `CloseButton` defaults to `aria-label="Close"`; set `aria-label` directly on that button for localization or more context.
 
-The parent controls visibility and focus restoration after dismissal. An `Alert` inside a `Modal` owns a separate close slot, so its close button does not inherit the `Modal`'s dismiss handler. The enclosing dialog keeps its own title.
+The parent controls visibility and focus restoration after dismissal.
 
 ## Best Practices [#best-practices]
 
@@ -258,12 +273,12 @@ The parent controls visibility and focus restoration after dismissal. An `Alert`
 ```tsx
 <Alert>
   <Icon slot="indicator" icon="information" />
+  <Heading slot="title" />
+  <CloseButton />
   <Content>
-    <Heading slot="title" />
     <Text />
   </Content>
   <ButtonGroup />
-  <CloseButton />
   {/* ... */}
 </Alert>
 ```
