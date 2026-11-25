@@ -13,7 +13,7 @@ import * as Stories from './virtualizer.stories.tsx';
 
 - **Windowed rendering**: Mounts the visible items and a few neighbors instead of the whole collection.
 - **Wraps a collection**: Works with `ListBox`, `CardGroup`, and a composed `Select` popover. The collection stays the scrolling surface, so the `Virtualizer` adds no DOM or styling of its own.
-- **Layouts**: `ListLayout` for rows and `GridLayout` for uniform grids, with fixed or measured item sizes. `WaterfallLayout` and `TableLayout` are also exported for matching collection shapes.
+- **Layouts**: `ListLayout` for rows and `GridLayout` for uniform grids, with fixed or measured item sizes.
 - **React Aria integration**: Selection, keyboard navigation, typeahead, and focus keep working for items outside the viewport.
 
 ## Installation
@@ -24,7 +24,7 @@ npm install --save @godaddy/antares
 
 ## Examples
 
-Give the collection a definite block size and `overflow: auto`, and put the `Virtualizer` around the collection itself. Each item needs a stable `id` and a readable `textValue`.
+Wrap the collection in `Virtualizer`. For a collection with its own scroll area, give it a definite block size and `overflow: auto`. Each item needs a stable `id` and a readable `textValue`.
 
 <Examples of={Stories.Examples} />
 
@@ -32,11 +32,10 @@ Give the collection a definite block size and `overflow: auto`, and put the `Vir
 
 - **List sizes**: Use `rowSize` when every item is the same height. Use `estimatedRowSize` with `shouldObserveItemSize` when content wraps or can be enlarged.
 - **Grid sizes**: Pass `new Size(width, height)` for `minItemSize` and `maxItemSize`. Set `preserveAspectRatio` to keep a fixed cell height. Pair `GridLayout` with `layout="grid"` on the child collection so keyboard movement matches the cell geometry.
-- **Item fit**: Let each item fill the size the layout gives it (`blockSize: '100%'`), and keep padding and borders inside it.
+- **Item fit**: For fixed-size items, use `blockSize: '100%'` and `boxSizing: 'border-box'` to fill the space the layout assigns. For measured items, let the content determine the block size.
 - **Stability**: Keep the layout class and `layoutOptions` stable across renders, and use stable item `id`s when filtering or appending data.
 - **Select**: `SelectOptions` owns its list, so compose `Popover`, `Content`, and `ListBox` yourself to place a `Virtualizer` inside a `Select`.
 - **CardGroup**: Prefer `CardGroup` when items are selectable surfaces with media or actions. Keep CSS grid columns and gaps off the group so the virtualizer layout owns geometry.
-- **Other layouts**: Use `WaterfallLayout` for masonry-style cells and `TableLayout` when composing a table-shaped collection. Pass the matching collection and keep layout options stable.
 
 ## Accessibility
 
@@ -71,18 +70,18 @@ React Aria owns keyboard navigation and focus while items enter and leave the vi
 
 ## Troubleshooting
 
-- **No items appear:** the collection needs a nonzero inline and block size, and it must be the element that scrolls.
+- **No items appear:** check that the collection has a nonzero inline size. If it has its own scroll area, give it a definite block size and enable overflow scrolling.
 - **Items overlap or clip:** make `rowSize` match the rendered height, or use `estimatedRowSize` for variable content.
+- **A composed Select opens with its selected option out of view:** reveal the focused option from the list's `onFocus` handler, as shown in the Select example.
 - **Scroll jumps after an update:** keep item ids and the layout identity stable.
-- **A Select opens away from its selected item:** scroll the focused option into view from the `ListBox` `onFocus` handler, as the Select example does.
-- **Server markup is not windowed:** SSR can render the collection fallback, but real windowing needs client viewport and item measurements. Do not treat server HTML as the virtualized list.
+- **No items in server markup:** Virtualized items render once the browser measures the viewport.
 - **A custom composition does not virtualize:** `Virtualizer` needs a React Aria collection. CSS `Grid` or `Flex` markup is not one.
 
 ## Props
 
 ```tsx
-<Virtualizer>
-  <ListBox>
+<Virtualizer layout={ListLayout} layoutOptions={{ rowSize: 48 }}>
+  <ListBox style={{ display: 'block', overflow: 'auto', blockSize: 288 }}>
     <ListBoxItem />
     {/* ... */}
   </ListBox>
@@ -100,5 +99,3 @@ React Aria owns keyboard navigation and focus while items enter and leave the vi
 ### GridLayout options
 
 <ArgTypes of={Stories.GridLayoutOptionsProps} />
-
-`WaterfallLayout` and `TableLayout` share the same `layout` and `layoutOptions` pattern as `ListLayout` and `GridLayout`. Pair each with a collection that matches its geometry.

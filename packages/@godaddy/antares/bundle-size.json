@@ -115,7 +115,6 @@
     "export:@godaddy/antares#TabList": 50176,
     "export:@godaddy/antares#TabPanel": 50176,
     "export:@godaddy/antares#TabPanels": 50304,
-    "export:@godaddy/antares#TableLayout": 12416,
     "export:@godaddy/antares#Tabs": 50176,
     "export:@godaddy/antares#Tag": 3456,
     "export:@godaddy/antares#TagContext": 3456,
@@ -130,7 +129,6 @@
     "export:@godaddy/antares#Tooltip": 14848,
     "export:@godaddy/antares#TooltipTrigger": 18816,
     "export:@godaddy/antares#Virtualizer": 9216,
-    "export:@godaddy/antares#WaterfallLayout": 2688,
     "export:@godaddy/antares#isDirectoryDropItem": 640,
     "export:@godaddy/antares#isFileDropItem": 640,
     "export:@godaddy/antares#isTextDropItem": 640,
@@ -382,12 +380,10 @@
     "entry:@godaddy/antares/Tooltip": 18816,
     "export:@godaddy/antares/Tooltip#Tooltip": 14848,
     "export:@godaddy/antares/Tooltip#TooltipTrigger": 18816,
-    "entry:@godaddy/antares/Virtualizer": 22144,
+    "entry:@godaddy/antares/Virtualizer": 13824,
     "export:@godaddy/antares/Virtualizer#GridLayout": 3712,
     "export:@godaddy/antares/Virtualizer#ListLayout": 4224,
     "export:@godaddy/antares/Virtualizer#Size": 384,
-    "export:@godaddy/antares/Virtualizer#TableLayout": 12416,
-    "export:@godaddy/antares/Virtualizer#Virtualizer": 9216,
-    "export:@godaddy/antares/Virtualizer#WaterfallLayout": 2688
+    "export:@godaddy/antares/Virtualizer#Virtualizer": 9216
   }
 }

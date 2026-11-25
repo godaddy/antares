@@ -40,7 +40,7 @@ export function PlaygroundExample({ itemCount = 10000, rowSize = 48, viewportHei
             id={item.id}
             textValue={item.name}
             padding="sm"
-            style={{ blockSize: rowSize, minHeight: 0, boxSizing: 'border-box' }}
+            style={{ blockSize: rowSize, minBlockSize: 0, boxSizing: 'border-box' }}
           >
             {item.name}
           </ListBoxItem>

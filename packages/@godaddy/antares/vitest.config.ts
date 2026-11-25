@@ -1,27 +1,8 @@
-import sharedConfig, {
-  ssr,
-  browser as browserConfig,
-  visual as visualConfig
-} from '../../../configs/vitest.config.mts';
-import { defineConfig, mergeConfig, type TestProjectInlineConfiguration } from 'vitest/config';
+import sharedConfig, { ssr, browser, visual } from '../../../configs/vitest.config.mts';
+import { defineConfig, mergeConfig } from 'vitest/config';
 import replace from '@rollup/plugin-replace';
 import { generateCdnUrl } from '../generate-cdn-url/src/index.ts';
 import { CDN, ICON_PACKAGE, DESIGN_ASSETS_VERSION } from './utils/icon-cdn.ts';
-
-// Opt into React Aria's normal windowing in browser tests; preserve the SSR test fallback.
-const virtualizerConfig: Pick<TestProjectInlineConfiguration, 'define'> = {
-  define: { 'process.env.VIRT_ON': JSON.stringify('1') }
-};
-
-const browser: TestProjectInlineConfiguration = {
-  ...browserConfig,
-  ...virtualizerConfig
-};
-
-const visual: TestProjectInlineConfiguration = {
-  ...visualConfig,
-  ...virtualizerConfig
-};
 
 export default mergeConfig(
   sharedConfig,

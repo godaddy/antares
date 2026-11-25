@@ -33,7 +33,7 @@ export function CardGroupExample() {
             id={item.id}
             textValue={item.name}
             padding="sm"
-            style={{ blockSize: '100%', minHeight: 0, boxSizing: 'border-box' }}
+            style={{ blockSize: '100%', minBlockSize: 0, boxSizing: 'border-box' }}
           >
             <TextLockup>
               <Heading slot="title">{item.name}</Heading>

@@ -36,10 +36,7 @@ export function DynamicCollectionExample() {
 
   function appendItems() {
     setItems(function nextItems(current) {
-      const nextIndex = current.reduce(function maxItemIndex(max, item) {
-        const value = Number(item.id.replace('item-', ''));
-        return Number.isFinite(value) ? Math.max(max, value) : max;
-      }, 0);
+      const nextIndex = current.length;
       return [
         ...current,
         ...Array.from({ length: 100 }, (_, index) => ({
@@ -72,7 +69,7 @@ export function DynamicCollectionExample() {
         <Button onPress={clearCollection}>Clear collection</Button>
         <Button onPress={resetCollection}>Reset collection</Button>
       </Flex>
-      <Text role="status" aria-live="polite">
+      <Text role="status">
         {filteredItems.length} {filteredItems.length === 1 ? 'result' : 'results'}
       </Text>
       <Virtualizer layout={ListLayout} layoutOptions={{ rowSize: 48 }}>
@@ -96,7 +93,7 @@ export function DynamicCollectionExample() {
               id={item.id}
               textValue={item.name}
               padding="sm"
-              style={{ blockSize: '100%', minHeight: 0, boxSizing: 'border-box' }}
+              style={{ blockSize: '100%', minBlockSize: 0, boxSizing: 'border-box' }}
             >
               {item.name}
             </ListBoxItem>

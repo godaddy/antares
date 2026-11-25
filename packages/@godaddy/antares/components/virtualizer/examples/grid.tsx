@@ -36,7 +36,7 @@ export function GridExample() {
             padding="sm"
             alignItems="center"
             justifyContent="center"
-            style={{ blockSize: '100%', minHeight: 0, boxSizing: 'border-box' }}
+            style={{ blockSize: '100%', minBlockSize: 0, boxSizing: 'border-box' }}
           >
             {item.name}
           </ListBoxItem>

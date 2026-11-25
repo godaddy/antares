@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
@@ -10,11 +10,17 @@ import { GridExample } from '../examples/grid.tsx';
 import { SelectExample } from '../examples/select.tsx';
 import { VariableHeightExample } from '../examples/variable-height.tsx';
 
-// CI only. Linux baselines come from the existing screenshot CI bot.
 describe('@godaddy/antares', function packageTests() {
   beforeAll(preloadTestIcons);
   beforeEach(resetHover);
   describe('#Virtualizer', function virtualizerTests() {
+    beforeEach(function enableWindowing() {
+      vi.stubGlobal('process', { env: { VIRT_ON: '1' } });
+    });
+    afterEach(function restoreGlobals() {
+      vi.unstubAllGlobals();
+    });
+
     it('renders the fixed row example', async function fixedRows() {
       const { container, getByRole } = await render(<DefaultExample />);
       await expect.element(getByRole('option', { name: 'Item 1' })).toBeVisible();

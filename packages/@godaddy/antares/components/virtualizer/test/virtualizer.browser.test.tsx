@@ -21,11 +21,13 @@ function isInsideScrollport(item: Element, scrollport: Element) {
   return itemRect.bottom > viewportRect.top - 1 && itemRect.top < viewportRect.bottom + 1;
 }
 
-// Requires the test-only Vite define for process.env.VIRT_ON.
-// A shell variable alone does not enable virtualization inside real Chromium.
 describe('@godaddy/antares', function packageTests() {
   describe('#Virtualizer', function virtualizerTests() {
     beforeAll(preloadTestIcons);
+    beforeEach(function enableWindowing() {
+      // React Stately reads this test flag from Node's process global, which Chromium lacks.
+      vi.stubGlobal('process', { env: { VIRT_ON: '1' } });
+    });
     beforeEach(resetHover);
     afterEach(async function reset() {
       await cleanup();
@@ -191,6 +193,10 @@ describe('@godaddy/antares', function packageTests() {
       await screen.getByRole('button', { name: 'Clear collection' }).click();
       await expect.element(screen.getByText('No items', { exact: true })).toBeVisible();
       await expect.element(screen.getByRole('status')).toMatchTextContent('0 results');
+      await screen.getByRole('textbox', { name: 'Filter items' }).fill('Item 100');
+      await screen.getByRole('button', { name: 'Append 100 items' }).click();
+      await expect.element(screen.getByRole('status')).toMatchTextContent('1 result');
+      await expect.element(screen.getByRole('option', { name: 'Item 100' })).toBeVisible();
       await screen.getByRole('button', { name: 'Reset collection' }).click();
       await screen.getByRole('textbox', { name: 'Filter items' }).fill('');
       await expect.element(screen.getByRole('status')).toMatchTextContent('1000 results');
@@ -215,6 +221,7 @@ describe('@godaddy/antares', function packageTests() {
         .poll(() => isInsideScrollport(page.getByRole('option', { name: 'Item 9000' }).element(), listbox.element()))
         .toBe(true);
       await expect.element(page.getByRole('option', { name: 'Item 9000' })).toBeVisible();
+      await expect.element(page.getByRole('option', { name: 'Item 9000' })).toHaveFocus();
       await expect.element(page.getByRole('option', { name: 'Item 9000' })).toHaveAttribute('aria-selected', 'true');
       await userEvent.keyboard('{End}{Enter}');
       await expect.element(trigger).toMatchTextContent('Item 10000');

@@ -21,14 +21,14 @@ export function SSRFixtureExample() {
           selectionMode="single"
           gap="0"
           padding="0"
-          style={{ display: 'block', blockSize: 144, inlineSize: 320, overflow: 'auto' }}
+          style={{ display: 'block', overflow: 'auto', blockSize: 144, inlineSize: 320 }}
         >
           {(item) => (
             <ListBoxItem
               id={item.id}
               textValue={item.name}
               padding="sm"
-              style={{ boxSizing: 'border-box', height: '100%', minHeight: 0 }}
+              style={{ blockSize: '100%', minBlockSize: 0, boxSizing: 'border-box' }}
             >
               {item.name}
             </ListBoxItem>

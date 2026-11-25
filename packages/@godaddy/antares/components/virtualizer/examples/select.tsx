@@ -32,10 +32,16 @@ export function SelectExample() {
               items={items}
               gap="0"
               padding="0"
-              onFocus={function scrollFocusedOption(event) {
-                // A selected option can mount after the collection's initial autofocus effect.
-                if (event.target.getAttribute('role') === 'option') {
-                  event.target.scrollIntoView({ block: 'nearest' });
+              onFocus={function revealFocusedOption(event) {
+                const { currentTarget, target } = event;
+                // The selected option can mount after React Aria first tries to scroll to it.
+                if (
+                  target instanceof HTMLElement &&
+                  currentTarget.contains(target) &&
+                  target.getAttribute('role') === 'option'
+                ) {
+                  const options = { block: 'nearest', container: 'nearest' } as const;
+                  target.scrollIntoView(options);
                 }
               }}
               style={{ display: 'block', blockSize: 288, inlineSize: 280, maxInlineSize: '100%', overflow: 'auto' }}
@@ -45,7 +51,7 @@ export function SelectExample() {
                   id={item.id}
                   textValue={item.name}
                   padding="sm"
-                  style={{ blockSize: '100%', minHeight: 0, boxSizing: 'border-box' }}
+                  style={{ blockSize: '100%', minBlockSize: 0, boxSizing: 'border-box' }}
                 >
                   {item.name}
                 </SelectItem>
