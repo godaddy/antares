@@ -13,8 +13,8 @@ export function DismissibleExample({ closeLabel = 'Close' }: { closeLabel?: stri
   return (
     <Alert emphasis="success">
       <Icon slot="indicator" icon="checkmark" />
+      <Heading slot="title">Your account's been verified</Heading>
       <Content>
-        <Heading slot="title">Your account's been verified</Heading>
         <Text>We've successfully verified your identity.</Text>
       </Content>
       <CloseButton aria-label={closeLabel} onPress={() => setVisible(false)} />

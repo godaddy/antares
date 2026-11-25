@@ -156,16 +156,47 @@ describe('@godaddy/antares', function antares() {
       }
     );
 
-    it('keeps focus and source-order tabbing when the container changes width', async function reflowFocus() {
-      const { getByRole } = await render(<PlaygroundExample width={320} showAction dismissible />);
-      const action = getByRole('button', { name: 'Action' });
-      action.element().focus();
-      await userEvent.keyboard('{Tab}');
-      const close = getByRole('button', { name: 'Close' });
-      await expect.element(close).toHaveFocus();
-      getByRole('alert').element().style.width = '640px';
-      await expect.element(close).toHaveFocus();
-    });
+    it.each([
+      { description: 'title and body', title: 'Alert title', children: 'Review your payment options.', dir: 'ltr' },
+      { description: 'body only', title: '', children: 'Review your payment options.', dir: 'rtl' },
+      { description: 'title only', title: 'Alert title', children: '', dir: 'ltr' }
+    ] as const)(
+      'keeps the close-to-action Tab sequence as the layout reflows with $description',
+      async function reflowFocus({ title, children, dir }) {
+        const { getByRole } = await render(
+          <PlaygroundExample title={title} width={320} dir={dir} showAction dismissible>
+            {children}
+          </PlaygroundExample>
+        );
+        const alert = getByRole('alert').element();
+        const action = getByRole('button', { name: 'Action' });
+        const close = getByRole('button', { name: 'Close' });
+        close.element().focus();
+
+        for (const width of [320, 419, 420, 640]) {
+          alert.style.width = `${width}px`;
+          await expect.element(close).toHaveFocus();
+          await userEvent.keyboard('{Tab}');
+          await expect.element(action).toHaveFocus();
+          await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
+          await expect.element(close).toHaveFocus();
+        }
+      }
+    );
+
+    it.each([320, 640])(
+      'keeps the action-to-close Tab sequence without a message at %i px',
+      async function actionsWithoutMessage(width) {
+        const { getByRole } = await render(
+          <PlaygroundExample title="" children="" width={width} showAction dismissible />
+        );
+        const action = getByRole('button', { name: 'Action' });
+        const close = getByRole('button', { name: 'Close' });
+        action.element().focus();
+        await userEvent.keyboard('{Tab}');
+        await expect.element(close).toHaveFocus();
+      }
+    );
 
     it('hydrates the composed regions without replacing their DOM', async function hydration() {
       const container = document.createElement('div');
@@ -173,6 +204,7 @@ describe('@godaddy/antares', function antares() {
       document.body.append(container);
       const surface = container.querySelector('[role="alert"]');
       const heading = container.querySelector('h3');
+      const indicator = container.querySelector(`svg.${styles.indicator}`);
       const onRecoverableError = vi.fn();
       let root: Root | undefined;
       try {
@@ -184,6 +216,7 @@ describe('@godaddy/antares', function antares() {
         expect(onRecoverableError).not.toHaveBeenCalled();
         expect(container.querySelector('[role="alert"]')).toBe(surface);
         expect(container.querySelector('h3')).toBe(heading);
+        expect(container.querySelector(`svg.${styles.indicator}`)).toBe(indicator);
       } finally {
         await act(async function unmount() {
           root?.unmount();

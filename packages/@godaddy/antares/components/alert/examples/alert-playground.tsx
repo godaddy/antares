@@ -58,6 +58,8 @@ export function PlaygroundExample({
 
   if (!visible) return <Button onPress={() => setVisible(true)}>Show alert</Button>;
 
+  const close = dismissible && <CloseButton onPress={() => setVisible(false)} />;
+
   return (
     <Alert
       emphasis={emphasis}
@@ -65,10 +67,14 @@ export function PlaygroundExample({
       style={{ width, maxWidth: width === undefined ? undefined : 'none', boxSizing: 'content-box' }}
     >
       {showIcon && <Icon slot="indicator" icon={emphasisIcons[emphasis]} />}
-      <Content>
-        {title && <Heading slot="title">{title}</Heading>}
-        {children && <Text>{children}</Text>}
-      </Content>
+      {title && <Heading slot="title">{title}</Heading>}
+      {title && close}
+      {children && (
+        <Content>
+          <Text>{children}</Text>
+        </Content>
+      )}
+      {!title && children && close}
       {showAction && (
         <ButtonGroup>
           <Button variant="secondary" size="sm">
@@ -76,7 +82,7 @@ export function PlaygroundExample({
           </Button>
         </ButtonGroup>
       )}
-      {dismissible && <CloseButton onPress={() => setVisible(false)} />}
+      {!title && !children && close}
     </Alert>
   );
 }

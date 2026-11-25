@@ -8,6 +8,7 @@
   --alert-padding: calc(var(--ux-1sbfig8, 0.5rem) * 2);
   --alert-gap: var(--ux-1sbfig8, 0.5rem);
   --alert-region-gap: calc(var(--alert-gap) * 2);
+  --alert-icon-size: 1.625rem;
   container: alert / inline-size;
   position: relative;
   max-width: 100%;
@@ -48,11 +49,34 @@
 }
 
 .layout {
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  --alert-close-gap: 0px;
+  grid-template-columns: auto minmax(0, 1fr) var(--alert-close-gap) auto;
   grid-template-areas:
-    "icon content close"
-    ".    actions .";
+    "icon content . close"
+    ".    actions . .";
   align-items: start;
+
+  &:where(:has(> .close)) {
+    --alert-close-gap: var(--alert-gap);
+  }
+
+  &:where(:has(> .title)) {
+    grid-template-areas:
+      "icon title   .       close"
+      ".    content content content"
+      ".    actions .       .";
+
+    > :where(.content) {
+      margin-block-start: var(--alert-gap);
+    }
+  }
+
+  > :where(.title) {
+    grid-area: title;
+    align-self: stretch;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
 
   > :where(.indicator) {
     grid-area: icon;
@@ -73,9 +97,6 @@
   > :where(.close) {
     grid-area: close;
     line-height: 1.5;
-    padding: calc(var(--alert-gap) - var(--_button-slot-border-width, 1px));
-    margin: calc(var(--alert-gap) * -1);
-    margin-inline-start: calc(var(--alert-region-gap) - var(--alert-gap));
   }
 }
 
@@ -89,18 +110,46 @@
   color: var(--alert-accent);
   font-size: var(--alert-title-font-size);
   line-height: var(--font-heading-line-height, var(--ux-p25s1t, 1.25));
-  margin-block: calc((1lh - 26px) / 2);
+  margin-block: calc((1lh - var(--alert-icon-size)) / 2);
+}
+
+/* Override Icon's 1lh default for each dimension absent from the SVG. */
+.alert .indicator {
+  &:not([width]) {
+    width: var(--alert-icon-size);
+  }
+
+  &:not([height]) {
+    height: var(--alert-icon-size);
+  }
 }
 
 @container alert (min-width: 26.25rem) {
   .layout {
-    grid-template-columns: auto minmax(0, 1fr) fit-content(50%) auto;
-    grid-template-areas: "icon content actions close";
+    grid-template-columns: auto minmax(0, 1fr) fit-content(50%) var(--alert-close-gap) auto;
+    grid-template-areas: "icon content actions . close";
+
+    &:where(:has(> .title)) {
+      grid-template-areas:
+        "icon title   actions . close"
+        ".    content actions . .";
+    }
 
     > :where(.actions) {
       align-self: center;
       margin-inline-start: var(--alert-region-gap);
       padding-block-start: 0;
     }
+  }
+}
+
+.layout:where(:has(> .actions):not(:has(> :is(.title, .content)))) {
+  grid-template-columns: auto minmax(0, 1fr) var(--alert-close-gap) auto;
+  grid-template-areas: "icon actions . close";
+
+  > :where(.actions) {
+    align-self: start;
+    margin-inline-start: 0;
+    padding-block-start: 0;
   }
 }

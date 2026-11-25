@@ -28,19 +28,26 @@ npm install --save @godaddy/antares
 
 ## Customization
 
-Alert positions and styles its regions. Compose them as direct children, in any source order: an optional
-`Icon slot="indicator"`, a `Content`, an optional `ButtonGroup`, and an optional `CloseButton`.
+Alert positions and styles its regions. Compose an optional `Icon slot="indicator"`, a `Heading slot="title"`,
+`Content`, an optional `ButtonGroup`, and an optional `CloseButton` as direct children.
 
-- Put `Heading slot="title"` and an unslotted `Text` body inside `Content`.
-- Choose the glyph on the icon, for example `<Icon slot="indicator" icon="alert" />`. It is decorative and 26px by
-  default; pass `width` and `height` to change it, or omit it when the message stands alone. Icons without
-  `slot="indicator"` do not get these defaults.
+- Put the body inside `Content`. The title and body regions are separated by one grid unit at every width.
+  A direct `Heading slot="title"` lets the body extend underneath the close button in narrow containers.
+  If there is no direct title, `Content` stays beside the close button. A title inside `Content` still receives
+  the title styling.
+- Choose the glyph on the icon, for example `<Icon slot="indicator" icon="alert" />`. It is decorative and defaults
+  to `1.625rem` for each dimension absent from the SVG (26 px with a 16 px root font size). To size a custom SVG the
+  same way as a CDN icon, register it with a `viewBox` and omit its `width` and `height` attributes. You can also set
+  either dimension on `Icon` or omit the indicator when the message stands alone.
 - Pass `onPress` on `CloseButton` and hide the alert from the parent. Use `Button slot="close"` for a visible label.
 - Extract regions into a component by returning them from a fragment. A wrapper element is not placed in the layout
   grid, so put custom layout inside `Content`.
 - Props on a child win over Alert's defaults. Classes merge and local style properties win.
 - Put `className`, `style`, `ref`, native attributes, and `data-emphasis` on Alert for the surface.
-- Omitted regions collapse, and in narrow containers the actions stack under the content.
+- Omitted regions collapse. On wider alerts, the title and body share a column with a gap before the vertically
+  centered actions. The close button has its own column. In narrow alerts with a message, actions appear under
+  the message. With no message, actions and the close button share one row. Choose action and dismissal labels
+  that fit the available space, or set wrapping on those controls.
 
 ## Accessibility
 
@@ -50,6 +57,13 @@ Alert positions and styles its regions. Compose them as direct children, in any 
 | --- | --- |
 | `Tab` / `Shift + Tab` | Moves between controls in the consumer's source order |
 | `Enter` / `Space` | Activates the focused button |
+
+When using both `CloseButton` and `ButtonGroup`, use this source order to keep the same Tab sequence across
+container widths.
+
+- With a direct title, use `Heading`, `CloseButton`, `Content` when present, then `ButtonGroup`.
+- With body only, use `Content`, `CloseButton`, then `ButtonGroup`.
+- With neither title nor body, use `ButtonGroup` followed by `CloseButton`.
 
 ### Screen readers
 
@@ -72,12 +86,12 @@ The parent controls visibility and focus restoration after dismissal.
 ```tsx
 <Alert>
   <Icon slot="indicator" icon="information" />
+  <Heading slot="title" />
+  <CloseButton />
   <Content>
-    <Heading slot="title" />
     <Text />
   </Content>
   <ButtonGroup />
-  <CloseButton />
   {/* ... */}
 </Alert>
 ```

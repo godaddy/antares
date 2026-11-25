@@ -28,8 +28,8 @@ export interface AlertProps extends Omit<ComponentPropsWithoutRef<'div'>, 'title
  * @example
  * <Alert emphasis="warning">
  *   <Icon slot="indicator" icon="alert" />
+ *   <Heading slot="title">Payment method expiring</Heading>
  *   <Content>
- *     <Heading slot="title">Payment method expiring</Heading>
  *     <Text>Please update your payment method.</Text>
  *   </Content>
  *   <CloseButton onPress={dismiss} />
@@ -64,8 +64,6 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props
                 [DEFAULT_SLOT]: {},
                 indicator: {
                   'aria-hidden': true,
-                  width: 26,
-                  height: 26,
                   className: styles.indicator
                 }
               }
