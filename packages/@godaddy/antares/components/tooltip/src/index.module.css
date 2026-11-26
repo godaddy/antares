@@ -1,23 +1,41 @@
 .tooltip {
-  --_box-bg-overlay: var(--ux-7wu8i7, color-mix(in oklch, var(--_box-bg-raised), white 8%));
-  --_box-fg-overlay: var(--ux-1o8cusa, var(--_box-fg-base));
+  --_tooltip-padding-block: var(--size-space-020, var(--ux-1sbfig8, 8px));
+  --_tooltip-padding-inline: var(--size-space-050, calc(var(--ux-1sbfig8, 8px) * 2));
+  --_tooltip-radius: var(--size-radius-md, var(--ux-2jubes, 6px));
 
-  --_arrow-width: 10px;
-  --_arrow-rotated-width: calc(var(--_arrow-width) / pow(2, 1 / 2));
-  --_arrow-height: calc(var(--_arrow-rotated-width) / 2);
-  --_content-offset: calc(var(--_arrow-height) + var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 1)));
-  --_arrow-offset: calc(var(--_arrow-height) * -1 + 1px);
+  --_tooltip-tip-width: 10px;
+  --_tooltip-tip-depth: 6px;
+  --_tooltip-arrow-frame: 8px;
+
+  /* Preserve the legacy tip-to-trigger gap as the visible tip grows from 5px to 6px. */
+  --_tooltip-panel-offset: calc(var(--ux-1sbfig8, 0.25rem) + var(--_tooltip-tip-depth) - 1.5px);
 
   transition:
     transform 125ms cubic-bezier(0.23, 1, 0.32, 1),
     opacity 125ms cubic-bezier(0.23, 1, 0.32, 1);
+}
 
-  /* Own stacking context so `.arrow` can sit behind the content. See `.arrow`. */
-  isolation: isolate;
+/* The attribute raises only the palette declarations above Box, independent of load order. */
+.tooltip[data-elevation="overlay"] {
+  /* Black and white have equal WCAG contrast at y ≈ 0.17913. The XYZ clamps use D65 white. */
+  --_tooltip-contrasting-background: color(
+    from var(--ux-1o8cusa) xyz clamp(0, (0.17913 - y) * infinity, 0.95046) clamp(0, (0.17913 - y) * infinity, 1)
+      clamp(0, (0.17913 - y) * infinity, 1.08906) /
+    1
+  );
+  --_tooltip-contrasting-text: color(
+    from var(--ux-7wu8i7) xyz clamp(0, (0.17913 - y) * infinity, 0.95046) clamp(0, (0.17913 - y) * infinity, 1)
+      clamp(0, (0.17913 - y) * infinity, 1.08906) /
+    1
+  );
+
+  /* A missing source invalidates its relative color and allows the literal fallback. */
+  --_box-bg-overlay: var(--ux-7wu8i7, var(--_tooltip-contrasting-background, #111));
+  --_box-fg-overlay: var(--ux-1o8cusa, var(--_tooltip-contrasting-text, #fff));
 }
 
 .tooltip:where([data-noarrow="true"]) {
-  --_arrow-width: 0px;
+  --_tooltip-panel-offset: var(--ux-1sbfig8, 0.25rem);
 }
 
 .tooltip:where([data-entering], [data-exiting]) {
@@ -28,62 +46,95 @@
 .tooltip:where([data-placement="top"]) {
   --_animation-offset: translateY(4px) scale(0.95);
   transform-origin: var(--trigger-anchor-point, bottom center);
-  margin-bottom: var(--_content-offset);
+  margin-bottom: var(--_tooltip-panel-offset);
 }
 
 .tooltip:where([data-placement="bottom"]) {
   --_animation-offset: translateY(-4px) scale(0.95);
   transform-origin: var(--trigger-anchor-point, top center);
-  margin-top: var(--_content-offset);
+  margin-top: var(--_tooltip-panel-offset);
 }
 
 .tooltip:where([data-placement="right"]) {
   --_animation-offset: translateX(-4px) scale(0.95);
   transform-origin: var(--trigger-anchor-point, left center);
-  margin-left: var(--_content-offset);
+  margin-left: var(--_tooltip-panel-offset);
 }
 
 .tooltip:where([data-placement="left"]) {
   --_animation-offset: translateX(4px) scale(0.95);
   transform-origin: var(--trigger-anchor-point, right center);
-  margin-right: var(--_content-offset);
+  margin-right: var(--_tooltip-panel-offset);
 }
 
-/*
- * A square rotated 45deg: one corner pokes out past the panel edge as the tip, the rest stays
- * inside to cover the panel's border so the bubble reads as one shape. That inside half must not
- * paint over the content, so the arrow goes behind it - `z-index: -1` inside the panel's stacking
- * context paints above the panel's background and border, but below its in-flow children. The
- * panel's `elevation` filter still sees the arrow, so bubble and tip share one drop shadow.
- */
+/* React Aria measures the wrapper's width for every placement. The square keeps that measurement stable. */
 .arrow {
+  display: flex;
+  width: var(--_tooltip-tip-width);
+  height: var(--_tooltip-tip-width);
+  pointer-events: none;
+
+  /* The empty wrapper and frame pass the panel background to the tip without painting it. */
   background: inherit;
-  width: var(--_arrow-rotated-width);
-  height: var(--_arrow-rotated-width);
-  rotate: 45deg;
-  z-index: -1;
+  background-clip: text;
 }
 
+.arrowFrame {
+  display: flex;
+  width: var(--_tooltip-tip-width);
+  height: var(--_tooltip-arrow-frame);
+  background: inherit;
+}
+
+.tip {
+  width: var(--_tooltip-tip-width);
+  height: var(--_tooltip-tip-depth);
+  background: inherit;
+  background-clip: border-box;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+/* OverlayArrow starts at the padding edge. Clear Box's 1px transparent border. */
 .arrow:where([data-placement="top"]) {
-  transform-origin: left;
-  rotate: -45deg;
-  margin-top: var(--_arrow-offset);
+  margin-top: 1px;
 }
 
 .arrow:where([data-placement="bottom"]) {
-  transform-origin: left;
-  margin-bottom: var(--_arrow-offset);
+  align-items: flex-end;
+  margin-bottom: 1px;
+}
+
+.arrow:where([data-placement="bottom"]) :where(.tip) {
+  margin-top: auto;
+  clip-path: polygon(0 100%, 50% 0, 100% 100%);
+}
+
+.arrow:where([data-placement="left"], [data-placement="right"]) :where(.arrowFrame) {
+  width: var(--_tooltip-arrow-frame);
+  height: var(--_tooltip-tip-width);
+}
+
+.arrow:where([data-placement="left"], [data-placement="right"]) :where(.tip) {
+  width: var(--_tooltip-tip-depth);
+  height: var(--_tooltip-tip-width);
 }
 
 .arrow:where([data-placement="left"]) {
-  transform-origin: top;
-  margin-left: var(--_arrow-offset);
+  margin-left: 1px;
+}
+
+.arrow:where([data-placement="left"]) :where(.tip) {
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
 
 .arrow:where([data-placement="right"]) {
-  transform-origin: top;
-  rotate: -45deg;
-  margin-right: var(--_arrow-offset);
+  justify-content: flex-end;
+  margin-right: 1px;
+}
+
+.arrow:where([data-placement="right"]) :where(.tip) {
+  margin-left: auto;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
 }
 
 @media (prefers-reduced-motion: reduce) {

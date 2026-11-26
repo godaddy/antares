@@ -8,11 +8,12 @@ import {
 } from 'react-aria-components';
 import { useTypographyClassName } from '#components/_internal/typography';
 import { Flex } from '#components/layout/flex';
+import { useDeclaredSize } from '#components/size-provider';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
 export interface TooltipTriggerProps extends RACTooltipTriggerProps {
-  /** The delay time in milliseconds for the tooltip to show up on hover. @default 500 */
+  /** The delay time in milliseconds for the tooltip to show up on hover. @default 250 */
   delay?: number;
 
   /** The delay time in milliseconds for the tooltip to close. @default 250 */
@@ -43,20 +44,27 @@ export interface TooltipProps extends RACTooltipProps {
  */
 export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(props, ref) {
   const { className, children, hideArrow, ...rest } = props;
-  const typography = useTypographyClassName('text');
+  const size = useDeclaredSize();
+  const typography = useTypographyClassName('text', { size: !size || size === 'md' ? 'sm' : undefined });
 
   return (
     <Flex
       as={RACTooltip}
       ref={ref}
-      padding={['sm', 'md']}
-      rounding="md"
+      padding={['var(--_tooltip-padding-block)', 'var(--_tooltip-padding-inline)']}
+      rounding="var(--_tooltip-radius)"
       elevation="overlay"
       data-noarrow={hideArrow}
       {...rest}
       className={composeClassName(className, styles.tooltip, typography)}
     >
-      {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
+      {hideArrow ? null : (
+        <RACOverlayArrow aria-hidden="true" className={styles.arrow}>
+          <span className={styles.arrowFrame}>
+            <span className={styles.tip} />
+          </span>
+        </RACOverlayArrow>
+      )}
       {children}
     </Flex>
   );
@@ -68,7 +76,7 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
  * @param props - {@link TooltipTriggerProps}
  */
 export const TooltipTrigger = function TooltipTrigger(props: TooltipTriggerProps) {
-  const { delay = 500, closeDelay = 250, ...rest } = props;
+  const { delay = 250, closeDelay = 250, ...rest } = props;
 
   return <RACTooltipTrigger delay={delay} closeDelay={closeDelay} {...rest} />;
 };

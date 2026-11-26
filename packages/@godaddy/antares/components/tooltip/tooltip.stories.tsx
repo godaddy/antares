@@ -16,9 +16,7 @@ export const Examples = getExamples('./examples');
 export const Playground = getStory(PlaygroundExample, {
   args: {
     placement: 'bottom',
-    hideArrow: false,
-    delay: 1500,
-    closeDelay: 500
+    hideArrow: false
   },
   argTypes: {
     placement: {

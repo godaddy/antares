@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { resetHover } from '#test/utils/test-helpers.tsx';
@@ -11,24 +11,22 @@ describe('@godaddy/antares', function antares() {
     it('open tooltip', async function openTooltip() {
       const originalViewport = { width: window.innerWidth, height: window.innerHeight };
       await page.viewport(320, 120);
+      const { getByRole, unmount } = await render(
+        <DefaultExample tooltipTriggerProps={{ defaultOpen: true }} tooltipProps={{ placement: 'bottom' }} />
+      );
 
       try {
-        const { getByRole, unmount } = await render(
-          <DefaultExample tooltipTriggerProps={{ defaultOpen: true }} tooltipProps={{ placement: 'bottom' }} />
-        );
+        const tooltip = getByRole('tooltip');
+        await expect.element(tooltip).toBeVisible();
+        await expect
+          .element(tooltip)
+          .toHaveStyle({ backgroundColor: 'rgb(17, 17, 17)', padding: '8px 16px', opacity: '1' });
+        await expect.element(getByRole('button', { name: 'Hover me' })).toBeVisible();
 
-        await vi.waitFor(async function visible() {
-          await expect.element(getByRole('tooltip')).toBeVisible();
-        });
-
-        await new Promise(function settleTransition(resolve) {
-          setTimeout(resolve, 200);
-        });
-
-        // The arrow extends beyond the tooltip's bounds, so capture the page to include both.
+        // Capture both the trigger and the arrow beyond the panel's bounds.
         await expect(document.body).toMatchScreenshot('open');
-        await unmount();
       } finally {
+        await unmount();
         await page.viewport(originalViewport.width, originalViewport.height);
       }
     });

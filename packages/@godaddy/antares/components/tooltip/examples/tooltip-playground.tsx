@@ -1,12 +1,4 @@
-import {
-  Button,
-  Flex,
-  Tooltip,
-  TooltipTrigger,
-  Text,
-  type TooltipProps,
-  type TooltipTriggerProps
-} from '@godaddy/antares';
+import { Button, Flex, Tooltip, TooltipTrigger, type TooltipProps, type TooltipTriggerProps } from '@godaddy/antares';
 
 export interface PlaygroundExampleProps {
   placement?: TooltipProps['placement'];
@@ -26,7 +18,7 @@ export function PlaygroundExample({
       <TooltipTrigger delay={delay} closeDelay={closeDelay}>
         <Button variant="primary">Hover me</Button>
         <Tooltip placement={placement} hideArrow={hideArrow}>
-          <Text>Tooltip content!</Text>
+          Tooltip content!
         </Tooltip>
       </TooltipTrigger>
     </Flex>
