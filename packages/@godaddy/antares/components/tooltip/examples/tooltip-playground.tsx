@@ -14,7 +14,7 @@ export function PlaygroundExample({
   closeDelay
 }: PlaygroundExampleProps) {
   return (
-    <Flex padding="2xl" justifyContent="center">
+    <Flex blockPadding="4rem" inlinePadding="2xl" justifyContent="center">
       <TooltipTrigger delay={delay} closeDelay={closeDelay}>
         <Button variant="primary">Hover me</Button>
         <Tooltip placement={placement} hideArrow={hideArrow}>

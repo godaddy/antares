@@ -9,15 +9,14 @@ import * as Stories from './tooltip.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-The first tooltip opens after 250 ms of hover by default. As you move between triggers while the
-previous tooltip is still recent, the next tooltip opens immediately. Keyboard focus also opens
-the tooltip immediately.
+Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
+Once a tooltip has been shown, subsequent tooltips appear without delay.
 
 `TooltipTrigger` wraps a focusable element and a `<Tooltip>`, handling hover/focus state and positioning automatically.
 
 ## Features
 
-- High-contrast panel positioned relative to its trigger, with an optional matching arrow
+- `overlay` elevation panel positioned relative to its trigger, with an optional arrow
 - Flips and shifts to stay in the viewport
 - Configurable open and close delays
 
@@ -34,26 +33,6 @@ npm install --save @godaddy/antares
 ## Customization
 
 `className` and `style` apply to the tooltip panel.
-
-Tooltip uses 14 px text with 21 px line height at a 16 px root in the default size scope. It uses
-1 grid unit of vertical padding and 2 grid units of horizontal padding, with 8 px and 16 px
-fallbacks. The panel and arrow share a dark background by default, and theme values can set
-the background, text color, spacing, and corner radius.
-
-Use `--size-space-020` for vertical padding and `--size-space-050` for horizontal padding.
-Migrate Tooltip overrides from `--size-space-sm` and `--size-space-md` to the corresponding
-numeric tokens.
-
-Set `delay` on `TooltipTrigger` to customize the first hover and `closeDelay` to customize how long
-it stays visible after the pointer leaves. Both values are in milliseconds. This example restores
-the previous 500 ms opening delay and sets a 300 ms closing delay.
-
-```tsx
-<TooltipTrigger delay={500} closeDelay={300}>
-  <Button>Hover me</Button>
-  <Tooltip>This is the tooltip content!</Tooltip>
-</TooltipTrigger>
-```
 
 ## Accessibility
 

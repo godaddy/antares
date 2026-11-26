@@ -8,9 +8,11 @@ import {
 } from 'react-aria-components';
 import { useTypographyClassName } from '#components/_internal/typography';
 import { Flex } from '#components/layout/flex';
-import { useDeclaredSize } from '#components/size-provider';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
+
+// Allow for the 6px radius, Box's 1px transparent border, and position rounding.
+const ARROW_BOUNDARY_OFFSET = 8;
 
 export interface TooltipTriggerProps extends RACTooltipTriggerProps {
   /** The delay time in milliseconds for the tooltip to show up on hover. @default 250 */
@@ -44,27 +46,19 @@ export interface TooltipProps extends RACTooltipProps {
  */
 export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(props, ref) {
   const { className, children, hideArrow, ...rest } = props;
-  const size = useDeclaredSize();
-  const typography = useTypographyClassName('text', { size: !size || size === 'md' ? 'sm' : undefined });
+  const typography = useTypographyClassName('text', { size: 'sm' });
 
   return (
     <Flex
       as={RACTooltip}
       ref={ref}
-      padding={['var(--_tooltip-padding-block)', 'var(--_tooltip-padding-inline)']}
-      rounding="var(--_tooltip-radius)"
       elevation="overlay"
+      arrowBoundaryOffset={hideArrow ? undefined : ARROW_BOUNDARY_OFFSET}
       data-noarrow={hideArrow}
       {...rest}
       className={composeClassName(className, styles.tooltip, typography)}
     >
-      {hideArrow ? null : (
-        <RACOverlayArrow aria-hidden="true" className={styles.arrow}>
-          <span className={styles.arrowFrame}>
-            <span className={styles.tip} />
-          </span>
-        </RACOverlayArrow>
-      )}
+      {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
       {children}
     </Flex>
   );
