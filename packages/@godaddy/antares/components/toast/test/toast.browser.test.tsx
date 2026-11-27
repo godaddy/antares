@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
-import { useState } from 'react';
+import { createRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
@@ -697,23 +697,27 @@ describe('@godaddy/antares', function antares() {
 
     it('starts a fresh timer after the focused region detaches', async function detachedRegion() {
       const queue = new ToastQueue();
-      await render(<ToastRegion queue={queue} />);
+      const ref = createRef<HTMLDivElement>();
+      await render(<ToastRegion queue={queue} ref={ref} />);
       const key = queue.add({ message: 'First notification', timeout: null });
       const region = page.getByRole('region');
       await expect.element(region).toBeVisible();
       const oldRegion = region.element() as HTMLElement;
+      expect(ref.current).toBe(oldRegion);
       oldRegion.focus();
       expect(document.activeElement).toBe(oldRegion);
       queue.close(key);
       await vi.waitFor(function detached() {
         expect(oldRegion.isConnected).toBe(false);
       });
+      expect(ref.current).toBeNull();
 
       vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
       try {
         queue.add({ message: 'Second notification', timeout: 1000 });
         const second = page.getByRole('alertdialog', { name: 'Second notification' });
         await expect.element(second).toBeVisible();
+        expect(ref.current).toBe(region.element());
         const shown = second.element();
         await vi.advanceTimersByTimeAsync(1250);
         expect(!shown.isConnected || shown.hasAttribute('data-exiting')).toBe(true);

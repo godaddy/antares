@@ -1,5 +1,5 @@
 import {
-  type ComponentPropsWithRef,
+  type ComponentPropsWithoutRef,
   type CSSProperties,
   type HTMLAttributes,
   forwardRef,
@@ -39,15 +39,18 @@ export interface ToastRegionProps extends Pick<HTMLAttributes<HTMLDivElement>, '
   style?: CSSProperties;
 }
 
-function ToastRegionElement({ queue, ...props }: ComponentPropsWithRef<'div'> & { queue: InternalToastQueue }) {
+const ToastRegionElement = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  ComponentPropsWithoutRef<'div'> & { queue: InternalToastQueue }
+>(function ToastRegionElement({ queue, ...props }, ref) {
   useLayoutEffect(
     function trackRegion() {
       return queue.resetTimerPause;
     },
     [queue]
   );
-  return <div {...props} />;
-}
+  return <div {...props} ref={ref} />;
+});
 
 /**
  * Renders a queue's toasts in the top-right corner of the page. Mount one per app, inside your
