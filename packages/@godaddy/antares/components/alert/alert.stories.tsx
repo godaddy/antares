@@ -14,6 +14,7 @@ export const Examples = getExamples('./examples');
 export const Playground = getStory(PlaygroundExample, {
   args: {
     emphasis: 'info',
+    showIcon: true,
     title: 'Alert title',
     children: 'Optional description text providing additional context.',
     dismissible: false,
@@ -24,6 +25,10 @@ export const Playground = getStory(PlaygroundExample, {
       control: 'select',
       options: ['critical', 'warning', 'success', 'info', 'highlight', 'premium', 'internal'],
       description: 'The semantic emphasis of the alert'
+    },
+    showIcon: {
+      control: 'boolean',
+      description: 'Include a composed Icon'
     },
     title: {
       control: 'text',

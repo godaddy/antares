@@ -7,12 +7,11 @@
   --alert-title-font-weight: var(--ux-1a9e4a3, 700);
   --alert-padding: calc(var(--ux-1sbfig8, 0.5rem) * 2);
   --alert-gap: var(--ux-1sbfig8, 0.5rem);
+  --alert-region-gap: calc(var(--alert-gap) * 2);
   --alert-icon-size: 1.625rem;
-
   container: alert / inline-size;
   position: relative;
   max-width: 100%;
-  gap: var(--alert-gap);
   padding: var(--alert-padding);
   background: var(--alert-bg);
   color: var(--alert-fg);
@@ -20,118 +19,137 @@
   border-inline-start-width: var(--alert-radius);
   border-radius: var(--alert-radius);
 
-  &[data-emphasis="critical"] {
+  &:where([data-emphasis="critical"]) {
     --alert-accent: var(--ux-1fhc073);
   }
 
-  &[data-emphasis="warning"] {
+  &:where([data-emphasis="warning"]) {
     --alert-accent: var(--ux-lv1r6m);
   }
 
-  &[data-emphasis="success"] {
+  &:where([data-emphasis="success"]) {
     --alert-accent: var(--ux-1ep3kxj);
   }
 
-  &[data-emphasis="info"] {
+  &:where([data-emphasis="info"]) {
     --alert-accent: var(--ux-1lpd00q);
   }
 
-  &[data-emphasis="highlight"] {
+  &:where([data-emphasis="highlight"]) {
     --alert-accent: var(--ux-cuskv8);
   }
 
-  &[data-emphasis="premium"] {
+  &:where([data-emphasis="premium"]) {
     --alert-accent: var(--ux-143smq7);
   }
 
-  &[data-emphasis="internal"] {
+  &:where([data-emphasis="internal"]) {
     --alert-accent: var(--ux-1iwdp0z);
   }
 }
 
-.float {
-  display: none;
-}
+.layout {
+  --alert-close-gap: 0px;
+  grid-template-columns: auto minmax(0, 1fr) var(--alert-close-gap) auto;
+  grid-template-areas:
+    "icon content . close"
+    ".    actions . .";
+  align-items: start;
 
-.content {
-  gap: var(--alert-gap);
-  align-items: baseline;
-  flex: 1;
-  min-width: 0;
-}
-
-.iconWrapper {
-  flex-shrink: 0;
-  height: var(--alert-icon-size);
-  width: var(--alert-icon-size);
-  overflow: hidden;
-
-  &::before,
-  &::after {
-    content: "\200B";
-    visibility: hidden;
+  &:where(:has(> .close)) {
+    --alert-close-gap: var(--alert-gap);
   }
-}
 
-.icon {
-  flex-shrink: 0;
-  color: var(--alert-accent);
-  width: var(--alert-icon-size);
-  height: var(--alert-icon-size);
-}
+  &:where(:has(> .title)) {
+    grid-template-areas:
+      "icon title   .       close"
+      ".    content content content"
+      ".    actions .       .";
 
-.textAndActionWrapper {
-  flex: 1;
-  min-width: 0;
-  gap: var(--alert-gap);
-}
+    > :where(.content) {
+      margin-block-start: var(--alert-gap);
+    }
+  }
 
-.text {
-  flex: 1 1 70%;
-  min-width: 0;
-  gap: var(--alert-gap);
+  > :where(.title) {
+    grid-area: title;
+    align-self: stretch;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  > :where(.indicator) {
+    grid-area: icon;
+    margin-inline-end: var(--alert-gap);
+  }
+
+  > :where(.content) {
+    grid-area: content;
+    min-inline-size: 0;
+  }
+
+  > :where(.actions) {
+    grid-area: actions;
+    min-inline-size: 0;
+    padding-block-start: var(--alert-region-gap);
+  }
+
+  > :where(.close) {
+    grid-area: close;
+    line-height: 1.5;
+  }
 }
 
 .title {
-  font-size: var(--alert-title-font-size);
+  margin: 0;
+  font-size: var(--_type-size, var(--alert-title-font-size));
   font-weight: var(--alert-title-font-weight);
 }
 
-.actions {
-  flex-shrink: 0;
-  margin-inline-end: var(--alert-gap);
+.indicator {
+  color: var(--alert-accent);
+  font-size: var(--alert-title-font-size);
+  line-height: var(--font-heading-line-height, var(--ux-p25s1t, 1.25));
+  margin-block: calc((1lh - var(--alert-icon-size)) / 2);
 }
 
-.close {
-  flex-shrink: 0;
+/* Override Icon's 1lh default for each dimension absent from the SVG. */
+.alert .indicator {
+  &:not([width]) {
+    width: var(--alert-icon-size);
+  }
+
+  &:not([height]) {
+    height: var(--alert-icon-size);
+  }
 }
 
-@container alert (width < 420px) {
-  .content {
-    .textAndActionWrapper {
-      flex-direction: column;
-      align-items: flex-start;
+@container alert (min-width: 26.25rem) {
+  .layout {
+    grid-template-columns: auto minmax(0, 1fr) fit-content(50%) var(--alert-close-gap) auto;
+    grid-template-areas: "icon content actions . close";
+
+    &:where(:has(> .title)) {
+      grid-template-areas:
+        "icon title   actions . close"
+        ".    content actions . .";
     }
 
-    .actions {
-      margin-inline-end: 0;
-    }
-  }
-
-  .text {
-    .float {
-      display: block;
-      float: inline-end;
-      margin-block-end: var(--alert-gap);
-      margin-inline-start: var(--alert-gap);
-      height: calc(var(--alert-gap) * 2);
-      width: calc(var(--alert-gap) * 4);
+    > :where(.actions) {
+      align-self: center;
+      margin-inline-start: var(--alert-region-gap);
+      padding-block-start: 0;
     }
   }
+}
 
-  .close {
-    position: absolute;
-    inset-block-start: var(--alert-padding);
-    inset-inline-end: var(--alert-padding);
+.layout:where(:has(> .actions):not(:has(> :is(.title, .content)))) {
+  grid-template-columns: auto minmax(0, 1fr) var(--alert-close-gap) auto;
+  grid-template-areas: "icon actions . close";
+
+  > :where(.actions) {
+    align-self: start;
+    margin-inline-start: 0;
+    padding-block-start: 0;
   }
 }

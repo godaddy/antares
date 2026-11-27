@@ -1,15 +1,17 @@
 'use client';
 
+// biome-ignore lint/suspicious/noDeprecatedImports: React 18's types do not export SubmitEvent.
 import { useId, useReducer, useRef, useState, type FormEvent } from 'react';
 import {
   Alert,
+  Icon,
+  Content,
   Box,
   Button,
   Checkbox,
   Flex,
   Grid,
   Heading,
-  Icon,
   Text,
   TextContext,
   isFileDropItem,
@@ -243,7 +245,12 @@ export function ProjectInquiryForm() {
               </Checkbox>
 
               {submitted ? (
-                <Alert emphasis="success">Demo complete. No information was sent and no call was scheduled.</Alert>
+                <Alert emphasis="success">
+                  <Icon slot="indicator" icon="checkmark" />
+                  <Content>
+                    <Text>Demo complete. No information was sent and no call was scheduled.</Text>
+                  </Content>
+                </Alert>
               ) : null}
 
               <DropOverlay isDropTarget={isDropTarget} />

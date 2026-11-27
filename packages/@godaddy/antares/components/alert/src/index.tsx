@@ -1,138 +1,87 @@
-import type React from 'react';
-import { type ComponentProps, forwardRef } from 'react';
+import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { cx } from 'cva';
-import { Button } from '#components/button';
-import { Icon } from '#components/icon';
-import { Flex } from '#components/layout/flex';
-import { Text } from '#components/text';
+import { DEFAULT_SLOT, Provider as RACProvider } from 'react-aria-components';
+import { textSlotSizeClassName, textTreatmentClassName } from '#components/_internal/typography';
+import { ButtonContext } from '#components/button';
+import { HeadingContext } from '#components/heading';
+import { IconContext } from '#components/icon';
+import { Box } from '#components/layout/box';
+import { Grid } from '#components/layout/grid';
+import { ButtonGroupContext, ContentContext } from '#components/structure';
+import { TextContext } from '#components/text';
+import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
-import { textTreatmentClassName } from '#components/_internal/typography';
 
-const emphasisIcons: Record<AlertEmphasis, string> = {
-  critical: 'alert',
-  warning: 'alert',
-  success: 'checkmark',
-  info: 'information',
-  highlight: 'star',
-  premium: 'diamond',
-  internal: 'comment'
-};
-
-const DEFAULT_ARIA_LABELS = {
-  close: 'Close'
-};
-
-/**
- * Controls the visual accent, semantic icon, and intended tone of the alert.
- */
+/** Controls the visual accent of the alert. */
 export type AlertEmphasis = 'critical' | 'warning' | 'success' | 'info' | 'highlight' | 'premium' | 'internal';
 
-/**
- * Props for the {@link Alert} component.
- */
-export interface AlertProps extends Omit<ComponentProps<'div'>, 'title'> {
-  /** Describes the importance or nature of the message. @default 'info' */
+export interface AlertProps extends Omit<ComponentPropsWithoutRef<'div'>, 'title'> {
+  /** Visual intent of the alert. @default 'info' */
   emphasis?: AlertEmphasis;
-
-  /** Sets title text for the alert. */
-  title?: string;
-
-  /** Optional body text. */
-  children?: React.ReactNode;
-
-  /** Adds action button(s). */
-  actions?: React.ReactNode;
-
-  /** Callback fired when the dismiss button is clicked. When provided, renders a dismiss (X) icon button. */
-  onClose?: () => void;
-
-  /** Screen reader labels for sub-elements. */
-  ariaLabels?: {
-    /** Sets aria label for close button. @default 'Close' */
-    close?: string;
-  };
-
-  /** Additional CSS class names applied to the root element. */
-  className?: string;
 }
 
 /**
- * Displays a non-intrusive, persistent notification within the page.
+ * An in-page notification with consumer-owned content, actions, and dismissal.
+ * Native props, className, style, and ref apply to the outer alert surface.
  *
+ * @param props - Alert intent and composed regions.
  * @example
- * // Warn the user about an expiring payment method with a clear call to action.
- * <Alert
- *   emphasis="warning"
- *   title="Your payment method is expiring"
- *   actions={<Button variant="secondary" size="sm">Update Payment Method</Button>}
- *   onClose={() => setVisible(false)}
- * >
- *   Please update your payment method before it expires to avoid service interruption.
+ * <Alert emphasis="warning">
+ *   <Icon slot="indicator" icon="alert" />
+ *   <Heading slot="title">Payment method expiring</Heading>
+ *   <Content>
+ *     <Text>Please update your payment method.</Text>
+ *   </Content>
+ *   <CloseButton onPress={dismiss} />
  * </Alert>
- *
- * @param props - {@link AlertProps}
  */
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
-  const {
-    emphasis = 'info',
-    title,
-    children,
-    actions,
-    onClose,
-    ariaLabels: _ariaLabels = DEFAULT_ARIA_LABELS,
-    className,
-    ...rest
-  } = props;
-
-  const float = <span aria-hidden="true" className={styles.float} />;
+  const { emphasis = 'info', role = 'alert', className, children, ...rest } = props;
+  const inherit = textTreatmentClassName('inherit');
 
   return (
-    <Flex
-      ref={ref}
-      className={cx(styles.alert, className)}
-      alignItems="start"
-      data-emphasis={emphasis}
-      data-dismissible={onClose ? '' : undefined}
-      role="alert"
-      {...rest}
-    >
-      <Flex className={styles.content} alignItems="baseline">
-        <Flex className={styles.iconWrapper} alignItems="center" justifyContent="center">
-          <Icon icon={emphasisIcons[emphasis]} className={styles.icon} />
-        </Flex>
-        <Flex className={styles.textAndActionWrapper} alignItems="center" wrap="wrap">
-          <Flex direction="column" className={styles.text}>
-            {title && (
-              <Text as="div" className={cx(styles.title, textTreatmentClassName('inherit'))}>
-                {onClose ? float : null}
-                {title}
-              </Text>
-            )}
-            {children && (
-              <div>
-                {onClose && !title ? float : null}
-                {children}
-              </div>
-            )}
-          </Flex>
-          {actions ? (
-            <Flex className={styles.actions} alignItems="center" gap="sm" wrap="wrap">
-              {actions}
-            </Flex>
-          ) : null}
-        </Flex>
-      </Flex>
-      {onClose ? (
-        <Button
-          variant="minimal"
-          size="sm"
-          className={styles.close}
-          onPress={onClose}
-          aria-label={_ariaLabels.close ?? DEFAULT_ARIA_LABELS.close}
-        >
-          <Icon icon="x" />
-        </Button>
-      ) : null}
-    </Flex>
+    <Box {...rest} ref={ref} role={role} data-emphasis={emphasis} className={composeClassName(className, styles.alert)}>
+      <RACProvider
+        values={[
+          [HeadingContext, { slots: { [DEFAULT_SLOT]: {}, title: { className: styles.title } } }],
+          [TextContext, { className: cx(inherit, textSlotSizeClassName('sm')) }],
+          [
+            ContentContext,
+            {
+              as: 'div',
+              inlinePadding: '0',
+              blockPadding: '0',
+              gap: 'var(--alert-gap)',
+              style: { minBlockSize: 'auto', overflow: 'visible' },
+              className: styles.content
+            }
+          ],
+          [ButtonGroupContext, { alignItems: 'center', className: styles.actions }],
+          [
+            IconContext,
+            {
+              slots: {
+                [DEFAULT_SLOT]: {},
+                indicator: {
+                  'aria-hidden': true,
+                  className: styles.indicator
+                }
+              }
+            }
+          ],
+          [
+            ButtonContext,
+            {
+              slots: {
+                [DEFAULT_SLOT]: {},
+                close: { variant: 'minimal', size: 'sm', className: styles.close }
+              }
+            }
+          ]
+        ]}
+      >
+        <Grid className={styles.layout}>{children}</Grid>
+      </RACProvider>
+    </Box>
   );
 });
