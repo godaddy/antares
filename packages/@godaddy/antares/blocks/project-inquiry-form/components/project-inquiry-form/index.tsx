@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useReducer, useRef, useState, type FormEvent } from 'react';
+import { useId, useReducer, useRef, useState, type SyntheticEvent } from 'react';
 import {
   Alert,
   Box,
@@ -157,7 +157,7 @@ export function ProjectInquiryForm() {
     clearConfirmation();
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     if (canSubmit) setSubmitted(true);
   }

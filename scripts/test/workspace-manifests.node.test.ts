@@ -97,7 +97,11 @@ describe('workspace manifests', function workspaceManifestTests() {
   });
 
   it('keeps the Storybook core catalog compatible with its addons', function keepsStorybookCatalogCompatible() {
-    expect(pnpmWorkspace.catalog?.storybook).toBe('^10.6.7');
+    const catalog = pnpmWorkspace.catalog ?? {};
+    expect(catalog.storybook).toBeDefined();
+    for (const [name, range] of Object.entries(catalog)) {
+      if (name.startsWith('@storybook/')) expect(range, name).toBe(catalog.storybook);
+    }
   });
 
   it('keeps tsdown and its CSS package on matching catalog ranges', function keepsTsdownCatalogCompatible() {

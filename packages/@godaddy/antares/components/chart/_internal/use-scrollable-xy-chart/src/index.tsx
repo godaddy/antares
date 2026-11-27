@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type RefObject } from 'react';
+import { useEffect, useState } from 'react';
 import { useParentSize } from '@visx/responsive';
 import type { Margin } from '@visx/xychart';
 import { useLocale } from 'react-aria-components';
@@ -123,7 +123,7 @@ export interface UseScrollableXYChartProps {
 /** Result returned by {@link useScrollableXYChart}. */
 interface UseScrollableXYChartResult {
   /** Ref for the scrollable chart container. */
-  parentRef: RefObject<HTMLDivElement | null>;
+  parentRef: (node: HTMLDivElement | null) => void;
   /** Chart width in pixels (visible width or minimum from axis labels). */
   chartWidth: number;
   /** Minimum chart height (px) derived from Y-axis label dimensions. */
@@ -137,9 +137,9 @@ interface UseScrollableXYChartResult {
   /** Current vertical scroll offset of the parent container. */
   scrollTop: number;
   /** Ref to attach to the X-axis SVG group via visx `Axis` `innerRef`. */
-  xAxisRef: RefObject<SVGGElement | null>;
+  xAxisRef: (node: SVGGElement | null) => void;
   /** Ref to attach to the Y-axis SVG group via visx `Axis` `innerRef`. */
-  yAxisRef: RefObject<SVGGElement | null>;
+  yAxisRef: (node: SVGGElement | null) => void;
   /** True when X-axis labels are rendered rotated to vertical. */
   xLabelsVertical: boolean;
   /** Bounding box of the Y-axis SVG group. */
@@ -156,6 +156,7 @@ export function useScrollableXYChart(props?: UseScrollableXYChartProps): UseScro
   const { xLabelsOrientation = 'auto' } = props ?? {};
   const {
     parentRef,
+    node: scrollContainer,
     width: visibleChartWidth,
     height: visibleChartHeight
   } = useParentSize({
@@ -163,12 +164,11 @@ export function useScrollableXYChart(props?: UseScrollableXYChartProps): UseScro
   });
   const { direction } = useLocale();
   const isRtl = direction === 'rtl';
-  const xAxisRef = useRef<SVGGElement>(null);
-  const yAxisRef = useRef<SVGGElement>(null);
+  const [xAxis, xAxisRef] = useState<SVGGElement | null>(null);
+  const [yAxis, yAxisRef] = useState<SVGGElement | null>(null);
   const [axisState, setAxisState] = useState<AxisState>(INITIAL_AXIS_STATE);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [scrollTop, setScrollTop] = useState(0);
-  const isVisibleChart = visibleChartWidth > 0 && visibleChartHeight > 0;
   const {
     inlineStart,
     inlineEnd,
@@ -194,71 +194,67 @@ export function useScrollableXYChart(props?: UseScrollableXYChartProps): UseScro
 
   // Track scroll offsets and re-dispatch the last pointermove on scroll so visx tooltips,
   // crosshairs, and glyphs follow the cursor while the chart scrolls under it.
-  useEffect(function onParentScroll() {
-    const el = parentRef.current;
-    if (!el) return;
+  useEffect(
+    function onParentScroll() {
+      if (!scrollContainer) return;
+      const el = scrollContainer;
 
-    // Track the last pointer state so we can re-dispatch on scroll.
-    // Storing the actual event target avoids relying on visx's internal DOM structure.
-    let lastClientX = 0;
-    let lastClientY = 0;
-    let lastTarget: EventTarget | null = null;
+      // Track the last pointer state so we can re-dispatch on scroll.
+      // Storing the actual event target avoids relying on visx's internal DOM structure.
+      let lastClientX = 0;
+      let lastClientY = 0;
+      let lastTarget: EventTarget | null = null;
 
-    function onPointerMove(e: PointerEvent) {
-      lastClientX = e.clientX;
-      lastClientY = e.clientY;
-      lastTarget = e.target;
-    }
-
-    function onPointerLeave() {
-      lastTarget = null;
-    }
-
-    /**
-     * Mirrors the container's scroll offsets into state and re-dispatches the last pointermove
-     * on the cached target. visx's `localPoint()` re-derives the SVG point from `clientX/clientY`
-     * via `SVGSVGElement.getScreenCTM()`, which already reflects the new scroll position, so the
-     * same screen coordinates now resolve to the correct datum after scrolling.
-     */
-    function onScroll() {
-      setScrollLeft(el?.scrollLeft ?? 0);
-      setScrollTop(el?.scrollTop ?? 0);
-
-      if (lastTarget) {
-        lastTarget.dispatchEvent(
-          new PointerEvent('pointermove', {
-            bubbles: true,
-            cancelable: true,
-            clientX: lastClientX,
-            clientY: lastClientY
-          })
-        );
+      function onPointerMove(e: PointerEvent) {
+        lastClientX = e.clientX;
+        lastClientY = e.clientY;
+        lastTarget = e.target;
       }
-    }
 
-    el.addEventListener('pointermove', onPointerMove, { passive: true });
-    el.addEventListener('pointerleave', onPointerLeave, { passive: true });
-    el.addEventListener('scroll', onScroll, { passive: true });
+      function onPointerLeave() {
+        lastTarget = null;
+      }
 
-    return function cleanup() {
-      el.removeEventListener('pointermove', onPointerMove);
-      el.removeEventListener('pointerleave', onPointerLeave);
-      el.removeEventListener('scroll', onScroll);
-    };
-  }, []);
+      /**
+       * Mirrors the container's scroll offsets into state and re-dispatches the last pointermove
+       * on the cached target. visx's `localPoint()` re-derives the SVG point from `clientX/clientY`
+       * via `SVGSVGElement.getScreenCTM()`, which already reflects the new scroll position, so the
+       * same screen coordinates now resolve to the correct datum after scrolling.
+       */
+      function onScroll() {
+        setScrollLeft(el.scrollLeft);
+        setScrollTop(el.scrollTop);
+
+        if (lastTarget) {
+          lastTarget.dispatchEvent(
+            new PointerEvent('pointermove', {
+              bubbles: true,
+              cancelable: true,
+              clientX: lastClientX,
+              clientY: lastClientY
+            })
+          );
+        }
+      }
+
+      el.addEventListener('pointermove', onPointerMove, { passive: true });
+      el.addEventListener('pointerleave', onPointerLeave, { passive: true });
+      el.addEventListener('scroll', onScroll, { passive: true });
+
+      return function cleanup() {
+        el.removeEventListener('pointermove', onPointerMove);
+        el.removeEventListener('pointerleave', onPointerLeave);
+        el.removeEventListener('scroll', onScroll);
+      };
+    },
+    [scrollContainer]
+  );
 
   // Observe both axes and recompute axis-derived layout state when their DOM mutates or they
   // resize. Measurements are batched into a single rAF so concurrent observer callbacks
   // produce at most one re-render.
   useEffect(
     function syncAxes() {
-      if (!isVisibleChart) {
-        return;
-      }
-
-      const xAxis = xAxisRef.current;
-      const yAxis = yAxisRef.current;
-
       if (!xAxis && !yAxis) {
         return;
       }
@@ -336,7 +332,7 @@ export function useScrollableXYChart(props?: UseScrollableXYChartProps): UseScro
         resizeObserver.disconnect();
       };
     },
-    [isVisibleChart, isRtl]
+    [xAxis, yAxis, isRtl]
   );
 
   return {

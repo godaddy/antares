@@ -95,6 +95,7 @@ function MonthScroller({ type, months, setMonths }: MonthScrollerProps) {
   const rangeProps = useSlottedContext(RACRangeCalendarContext);
   // A pending range narrows the state's bounds, so months are filtered by the calendar's own props.
   const { minValue, maxValue } = calendarProps ?? rangeProps ?? {};
+  const header = useRef<HTMLElement>(null);
   const viewport = useRef<HTMLDivElement>(null);
   const anchor = useRef<{ month: string; offset: number } | null>({
     month: startOfMonth(state.focusedDate).toString(),
@@ -179,10 +180,24 @@ function MonthScroller({ type, months, setMonths }: MonthScrollerProps) {
 
   return (
     <>
-      <Flex as="header" justifyContent="center" className={styles.scrollHeader}>
+      <Flex as="header" ref={header} justifyContent="center" className={styles.scrollHeader}>
         <MonthControls date={active} onChange={navigate} />
       </Flex>
-      <div ref={viewport} className={styles.monthViewport} onScroll={scroll}>
+      <div
+        ref={viewport}
+        className={styles.monthViewport}
+        onScroll={scroll}
+        onBlur={function keepRangeWhenFocusStaysInCalendar(event) {
+          // Chromium can deliver a cell's blur after the header has already received focus.
+          if (
+            rangeState?.anchorDate &&
+            !event.relatedTarget &&
+            header.current?.contains(event.currentTarget.ownerDocument.activeElement)
+          ) {
+            event.stopPropagation();
+          }
+        }}
+      >
         {offsets.map(function renderMonth(offset) {
           const month = start.add({ months: offset });
           const isNear =

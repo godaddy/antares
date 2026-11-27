@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useState, type SyntheticEvent } from 'react';
 import {
   Box,
   Button,
@@ -27,7 +27,7 @@ export function ActionsExample() {
   const [saved, setSaved] = useState(false);
   const [subscribedEmail, setSubscribedEmail] = useState('');
 
-  function subscribe(event: FormEvent<HTMLFormElement>) {
+  function subscribe(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubscribedEmail(String(new FormData(event.currentTarget).get('email')));
     setSubscribing(false);
