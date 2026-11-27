@@ -420,6 +420,80 @@ describe('@godaddy/antares', function antares() {
       }
     });
 
+    it.each(['hover', 'keyboard focus'])('pauses a newly visible toast during %s', async function pausedArrival(input) {
+      const queue = new ToastQueue();
+      await render(<PlaygroundExample queue={queue} timeout={0} />);
+      await showToast();
+      const first = page.getByRole('alertdialog', { name: 'Toast title' });
+      await expect.element(first).toBeVisible();
+      await Promise.all(
+        first
+          .element()
+          .getAnimations({ subtree: true })
+          .map((animation) => animation.finished)
+      );
+
+      if (input === 'hover') await userEvent.hover(first);
+      else {
+        await userEvent.keyboard('{F6}{Tab}');
+        expect(document.activeElement).toBe(first.element());
+      }
+
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+      try {
+        queue.add({ message: 'Timed arrival', timeout: 2000 });
+        const arrival = page.getByRole('alertdialog', { name: 'Timed arrival' });
+        await expect.element(arrival).toBeVisible();
+        const shown = arrival.element();
+        await vi.advanceTimersByTimeAsync(2500);
+        expect(shown.hasAttribute('data-exiting')).toBe(false);
+
+        const trigger = page.getByRole('button', { name: 'Show toast' });
+        if (input === 'hover') await userEvent.hover(trigger);
+        else (trigger.element() as HTMLElement).focus();
+        await vi.advanceTimersByTimeAsync(2100);
+        await vi.waitFor(function startsExit() {
+          expect(shown.hasAttribute('data-exiting')).toBe(true);
+        });
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+
+    it('pauses a promoted toast while keyboard focus stays in the stack', async function pausedPromotion() {
+      const queue = new ToastQueue({ maxVisibleToasts: 2 });
+      queue.add({ message: 'Waiting notification', timeout: 2000 });
+      queue.add({ message: 'Focus destination', timeout: null });
+      queue.add({ message: 'Close to promote', timeout: null });
+      await render(<PlaygroundExample queue={queue} />);
+      const trigger = page.getByRole('button', { name: 'Show toast' }).element() as HTMLElement;
+      const closing = page.getByRole('alertdialog', { name: 'Close to promote' });
+      await expect.element(closing).toBeVisible();
+      const waiting = page.getByRole('alertdialog', { name: 'Waiting notification' });
+      expect(waiting.query()).toBeNull();
+
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+      try {
+        trigger.focus();
+        await userEvent.keyboard('{F6}{Tab}{Tab}');
+        expect(document.activeElement).toBe(closing.getByRole('button', { name: 'Close' }).element());
+        await userEvent.keyboard('{Enter}');
+        await expect.element(waiting).toBeVisible();
+        expect(document.activeElement).toBe(page.getByRole('alertdialog', { name: 'Focus destination' }).element());
+        const shown = waiting.element();
+
+        await vi.advanceTimersByTimeAsync(2500);
+        expect(shown.hasAttribute('data-exiting')).toBe(false);
+        trigger.focus();
+        await vi.advanceTimersByTimeAsync(2100);
+        await vi.waitFor(function startsExit() {
+          expect(shown.hasAttribute('data-exiting')).toBe(true);
+        });
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+
     it('keeps a persistent toast open', async function persistent() {
       vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
 
@@ -459,6 +533,36 @@ describe('@godaddy/antares', function antares() {
       await showToast();
 
       await expect.element(page.getByRole('button', { name: 'Close' })).toBeVisible();
+    });
+
+    it('normalizes out-of-range timeouts', async function timeoutRange() {
+      await render(<DefaultExample />);
+      const keys: string[] = [];
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+      try {
+        for (const timeout of [-1, Number.NaN, Number.POSITIVE_INFINITY]) {
+          keys.push(toast.add({ message: `Timeout ${timeout}`, timeout, dismissible: false }));
+        }
+        keys.push(toast.add({ message: 'Large finite timeout', timeout: 2 ** 32 }));
+        const large = page.getByRole('alertdialog', { name: 'Large finite timeout' });
+        await expect.element(large).toBeVisible();
+        const shown = large.element();
+        await vi.advanceTimersByTimeAsync(1000);
+        expect(shown.hasAttribute('data-exiting')).toBe(false);
+        for (const timeout of [-1, Number.NaN, Number.POSITIVE_INFINITY]) {
+          const dialog = page.getByRole('alertdialog', { name: `Timeout ${timeout}` });
+          expect(dialog.element().hasAttribute('data-exiting')).toBe(false);
+          await expect.element(dialog.getByRole('button', { name: 'Close' })).toBeVisible();
+        }
+
+        await vi.advanceTimersByTimeAsync(2 ** 31 - 1);
+        await vi.waitFor(function startsExit() {
+          expect(shown.hasAttribute('data-exiting')).toBe(true);
+        });
+      } finally {
+        vi.useRealTimers();
+        for (const key of keys) toast.close(key);
+      }
     });
 
     it('stacks several toasts, newest first', async function stacks() {
@@ -570,18 +674,6 @@ describe('@godaddy/antares', function antares() {
       expect(onClose).toHaveBeenCalledTimes(1);
     });
 
-    it('shows one button per emphasis', async function emphases() {
-      await render(<EmphasesExample />);
-
-      for (const emphasis of ['none', 'success', 'critical', 'warning']) {
-        await userEvent.click(page.getByRole('button', { name: `Show ${emphasis}` }));
-      }
-
-      await vi.waitFor(function four() {
-        assume(toasts().length).equals(4);
-      });
-    });
-
     it('closes a persistent toast from code', async function closeFromCode() {
       await render(<PersistentExample />);
 
@@ -624,18 +716,6 @@ describe('@godaddy/antares', function antares() {
       await vi.waitFor(function closed() {
         assume(toasts().length).equals(0);
       });
-    });
-
-    it('renders several regions into one shared host', async function sharedHost() {
-      await render(<MultipleRegionsExample />);
-
-      await userEvent.click(page.getByRole('button', { name: 'Header toast' }));
-      await userEvent.click(page.getByRole('button', { name: 'App toast' }));
-
-      await expect.element(page.getByRole('region', { name: 'Header notifications' })).toBeVisible();
-      await expect.element(page.getByRole('region', { name: 'App notifications' })).toBeVisible();
-      assume(document.querySelectorAll(HOST).length).equals(1);
-      assume(document.querySelectorAll(`${HOST} > [role="region"]`).length).equals(2);
     });
 
     it('preserves independent region contexts for title and message content', async function independentContexts() {

@@ -1,5 +1,9 @@
 import type { ReactNode } from 'react';
-import { UNSTABLE_ToastQueue as RACToastQueue, type ToastOptions as RACToastOptions } from 'react-aria-components';
+import {
+  UNSTABLE_ToastQueue as RACToastQueue,
+  type QueuedToast,
+  type ToastOptions as RACToastOptions
+} from 'react-aria-components';
 
 /**
  * Controls the status icon and its color.
@@ -21,7 +25,8 @@ export interface ToastOptions {
 
   /**
    * Milliseconds before the toast closes on its own. The timer pauses while the region is hovered or
-   * focused. `null` (or `0`) keeps the toast until the user closes it. @default 5000
+   * focused. A null, non-positive, or non-finite value keeps the toast until it is closed.
+   * @default 5000
    */
   timeout?: number | null;
 
@@ -52,6 +57,7 @@ export interface ToastContent {
 }
 
 const DEFAULT_TIMEOUT = 5000;
+const MAX_TIMEOUT = 2 ** 31 - 1;
 const DEFAULT_MAX_VISIBLE_TOASTS = 5;
 
 /**
@@ -68,6 +74,7 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
   private closeCallbacks = new Map<string, () => void>();
   private exiting = new Set<string>();
   private exitListeners = new Set<() => void>();
+  private timersPaused = false;
 
   add(content: ToastContent, { onClose, ...options }: RACToastOptions = {}): string {
     const key = super.add(content, options);
@@ -106,7 +113,27 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
     const onClose = this.closeCallbacks.get(key);
     this.closeCallbacks.delete(key);
     super.close(key);
+    if (this.visibleToasts.length === 0) this.timersPaused = false;
     onClose?.();
+  }
+
+  override pauseAll(): void {
+    this.timersPaused = true;
+    super.pauseAll();
+  }
+
+  override resumeAll(): void {
+    if (!this.timersPaused) return;
+    this.timersPaused = false;
+    super.resumeAll();
+  }
+
+  startTimer({ timer, timeout }: Pick<QueuedToast<ToastContent>, 'timer' | 'timeout'>): (() => void) | undefined {
+    if (!timer || timeout === undefined) return;
+    timer.pause();
+    timer.reset(timeout);
+    if (this.timersPaused) timer.pause();
+    return () => timer.pause();
   }
 
   isExiting(key: string): boolean {
@@ -132,6 +159,7 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
     this.notifyRegions();
 
     return () => {
+      if (this.isActiveRegion(region)) this.timersPaused = false;
       this.regions = this.regions.filter((other) => other !== region);
       this.notifyRegions();
       // No region is left to play the exits, so finish them now.
@@ -157,11 +185,12 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
   }
 }
 
-const internals = new WeakMap<ToastQueue, InternalToastQueue>();
+const internals = /* @__PURE__ */ new WeakMap<ToastQueue, InternalToastQueue>();
 
 /**
  * A queue of toasts. Each `ToastRegion` renders one queue, the default `toast` queue unless you
  * pass your own, for example to isolate a micro front-end or a test.
+ * Create the queue with the same copy of Antares as its `ToastRegion`.
  *
  * @example
  * ```tsx
@@ -185,11 +214,12 @@ export class ToastQueue {
    */
   add(options: ToastOptions): string {
     const { title, message, emphasis = 'none', timeout = DEFAULT_TIMEOUT, dismissible = true, onClose } = options;
-    const persistent = !timeout;
+    const duration =
+      timeout !== null && Number.isFinite(timeout) && timeout > 0 ? Math.min(timeout, MAX_TIMEOUT) : undefined;
 
     return getInternalQueue(this).add(
-      { title, message, emphasis, dismissible: dismissible || persistent },
-      { timeout: persistent ? undefined : timeout, onClose }
+      { title, message, emphasis, dismissible: dismissible || duration === undefined },
+      { timeout: duration, onClose }
     );
   }
 
@@ -210,11 +240,13 @@ export class ToastQueue {
  * @returns Its internal queue.
  */
 export function getInternalQueue(queue: ToastQueue): InternalToastQueue {
-  return internals.get(queue) as InternalToastQueue;
+  const internal = internals.get(queue);
+  if (!internal) throw new Error('Create the ToastQueue with the same copy of Antares as its ToastRegion.');
+  return internal;
 }
 
 /** The queue `toast` and a `ToastRegion` without a `queue` prop share. */
-export const defaultToastQueue = new ToastQueue();
+export const defaultToastQueue = /* @__PURE__ */ new ToastQueue();
 
 /**
  * Shows and closes toasts on the default queue, from anywhere in the app. Mount one

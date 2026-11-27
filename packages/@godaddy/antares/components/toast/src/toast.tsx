@@ -40,7 +40,7 @@ interface ToastProps {
  * @param props - {@link ToastProps}
  */
 export function Toast({ toast, queue, closeLabel, moveFocus }: ToastProps) {
-  const { key, content } = toast;
+  const { key, content, timer, timeout } = toast;
   const { title, message, emphasis, dismissible } = content;
   const icon = emphasisIcons[emphasis];
   const ref = useRef<HTMLDivElement>(null);
@@ -49,6 +49,13 @@ export function Toast({ toast, queue, closeLabel, moveFocus }: ToastProps) {
   // Toasts never render on the server, so the server snapshot can be the same function.
   const getIsExiting = () => queue.isExiting(key);
   const isExiting = useSyncExternalStore(queue.subscribeExiting, getIsExiting, getIsExiting);
+
+  useEffect(
+    function startTimer() {
+      return queue.startTimer({ timer, timeout });
+    },
+    [queue, timer, timeout]
+  );
 
   useLayoutEffect(
     function endInteraction() {
@@ -82,7 +89,7 @@ export function Toast({ toast, queue, closeLabel, moveFocus }: ToastProps) {
 
   return (
     <RACToast
-      toast={toast}
+      toast={{ ...toast, timer: undefined }}
       ref={ref}
       className={styles.toast}
       data-emphasis={emphasis}

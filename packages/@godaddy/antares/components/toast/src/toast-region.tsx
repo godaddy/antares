@@ -1,27 +1,25 @@
 import {
   type CSSProperties,
-  type FocusEvent,
+  type HTMLAttributes,
   forwardRef,
   useEffect,
+  useMemo,
   useRef,
   useState,
   useSyncExternalStore
 } from 'react';
 import { createFocusManager } from '@react-aria/focus';
-import { UNSAFE_PortalProvider, useFocusVisible } from 'react-aria';
-import {
-  UNSTABLE_ToastRegion as RACToastRegion,
-  type ToastRegionProps as RACToastRegionProps
-} from 'react-aria-components';
+import { mergeRefs, UNSAFE_PortalProvider, useFocusVisible } from 'react-aria';
+import { UNSTABLE_ToastRegion as RACToastRegion } from 'react-aria-components';
 import { composeClassName } from '#utils/render-props.ts';
 import { getToastHost } from './host.ts';
-import { defaultToastQueue, getInternalQueue, type ToastContent, type ToastQueue } from './queue.ts';
+import { defaultToastQueue, getInternalQueue, type ToastQueue } from './queue.ts';
 import { Toast } from './toast.tsx';
 import styles from './index.module.css';
 
 export interface ToastRegionProps
-  extends Omit<RACToastRegionProps<ToastContent>, 'queue' | 'children' | 'className' | 'style' | 'aria-label'> {
-  /** The queue to render. @default the queue behind `toast` */
+  extends Pick<HTMLAttributes<HTMLDivElement>, 'id' | 'lang' | 'hidden' | 'inert' | 'translate'> {
+  /** The queue to render, created by this copy of Antares. @default the queue behind `toast` */
   queue?: ToastQueue;
 
   /** Screen reader labels. Each defaults to React Aria's localized string. */
@@ -57,71 +55,75 @@ export interface ToastRegionProps
  *
  * @param props - {@link ToastRegionProps}
  */
-export const ToastRegion = forwardRef<HTMLDivElement, ToastRegionProps>(function ToastRegion(props, ref) {
-  const { queue = defaultToastQueue, ariaLabels, className, render, ...rest } = props;
-  const internal = getInternalQueue(queue);
-  const lastFocused = useRef<HTMLElement | SVGElement | null>(null);
-  const { isFocusVisible } = useFocusVisible();
-  const [region] = useState(() => Symbol('ToastRegion'));
-  const isActive = useSyncExternalStore(
-    internal.subscribeRegions,
-    () => internal.isActiveRegion(region),
-    () => false
-  );
+export const ToastRegion = /* @__PURE__ */ forwardRef<HTMLDivElement, ToastRegionProps>(
+  function ToastRegion(props, ref) {
+    const { queue = defaultToastQueue, ariaLabels, className, ...rest } = props;
+    const internal = getInternalQueue(queue);
+    const lastFocused = useRef<HTMLElement | SVGElement | null>(null);
+    const regionRef = useMemo(
+      () =>
+        mergeRefs(ref, function trackFocus(element: HTMLDivElement | null) {
+          if (!element) return;
 
-  useEffect(
-    function attach() {
-      return internal.attach(region);
-    },
-    [internal, region]
-  );
+          function rememberFocus({ relatedTarget }: FocusEvent) {
+            if (relatedTarget instanceof Node && element?.contains(relatedTarget)) return;
+            lastFocused.current =
+              relatedTarget instanceof HTMLElement || relatedTarget instanceof SVGElement ? relatedTarget : null;
+          }
 
-  if (!isActive) return null;
+          element.addEventListener('focusin', rememberFocus);
+          return () => element.removeEventListener('focusin', rememberFocus);
+        }),
+      [ref]
+    );
+    const { isFocusVisible } = useFocusVisible();
+    const [region] = useState(() => Symbol('ToastRegion'));
+    const isActive = useSyncExternalStore(
+      internal.subscribeRegions,
+      () => internal.isActiveRegion(region),
+      () => false
+    );
 
-  function moveFocus(closingToast: HTMLDivElement) {
-    if (!closingToast.contains(closingToast.ownerDocument.activeElement)) return;
+    useEffect(
+      function attach() {
+        return internal.attach(region);
+      },
+      [internal, region]
+    );
 
-    const previous = lastFocused.current?.isConnected ? lastFocused.current : null;
-    if (!isFocusVisible && previous) {
-      previous.focus({ preventScroll: true });
-      return;
+    if (!isActive) return null;
+
+    function moveFocus(closingToast: HTMLDivElement) {
+      if (!closingToast.contains(closingToast.ownerDocument.activeElement)) return;
+
+      const previous = lastFocused.current?.isConnected ? lastFocused.current : null;
+      if (!isFocusVisible && previous) {
+        previous.focus({ preventScroll: true });
+        return;
+      }
+
+      const focus = createFocusManager({ current: closingToast.closest('ol') });
+      const options = {
+        from: closingToast,
+        accept: (node: Element) => node.matches(`.${styles.toast}:not([data-exiting])`)
+      };
+      if (!focus.focusPrevious(options) && !focus.focusNext(options)) previous?.focus();
     }
 
-    const focus = createFocusManager({ current: closingToast.closest('ol') });
-    const options = {
-      from: closingToast,
-      accept: (node: Element) => node.matches(`.${styles.toast}:not([data-exiting])`)
-    };
-    if (!focus.focusPrevious(options) && !focus.focusNext(options)) previous?.focus();
+    return (
+      <UNSAFE_PortalProvider getContainer={getToastHost}>
+        <RACToastRegion
+          {...rest}
+          ref={regionRef}
+          queue={internal}
+          aria-label={ariaLabels?.region}
+          className={composeClassName(className, styles.region)}
+        >
+          {function renderToast({ toast }) {
+            return <Toast toast={toast} queue={internal} closeLabel={ariaLabels?.close} moveFocus={moveFocus} />;
+          }}
+        </RACToastRegion>
+      </UNSAFE_PortalProvider>
+    );
   }
-
-  return (
-    <UNSAFE_PortalProvider getContainer={getToastHost}>
-      <RACToastRegion
-        {...rest}
-        ref={ref}
-        queue={internal}
-        aria-label={ariaLabels?.region}
-        className={composeClassName(className, styles.region)}
-        render={function renderRegion(domProps, renderProps) {
-          const regionProps = {
-            ...domProps,
-            onFocusCapture(event: FocusEvent<HTMLDivElement>) {
-              const { relatedTarget } = event;
-              if (event.currentTarget.contains(event.target) && !event.currentTarget.contains(relatedTarget)) {
-                lastFocused.current =
-                  relatedTarget instanceof HTMLElement || relatedTarget instanceof SVGElement ? relatedTarget : null;
-              }
-              domProps.onFocusCapture?.(event);
-            }
-          };
-          return render ? render(regionProps, renderProps) : <div {...regionProps} />;
-        }}
-      >
-        {function renderToast({ toast }) {
-          return <Toast toast={toast} queue={internal} closeLabel={ariaLabels?.close} moveFocus={moveFocus} />;
-        }}
-      </RACToastRegion>
-    </UNSAFE_PortalProvider>
-  );
-});
+);
