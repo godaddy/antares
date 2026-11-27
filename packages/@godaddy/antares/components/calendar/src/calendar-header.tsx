@@ -66,6 +66,7 @@ interface MonthControlsProps {
 
 export function MonthControls({ date: displayDate, onChange }: MonthControlsProps) {
   const { locale } = useLocale();
+  const rangeState = useContext(RACRangeCalendarStateContext);
   const monthNames = useMemo(
     function computeMonthNames() {
       const formatter = new DateFormatter(locale, { month: 'long', calendar: displayDate.calendar.identifier });
@@ -122,7 +123,12 @@ export function MonthControls({ date: displayDate, onChange }: MonthControlsProp
         onChange={handleYearChange}
         className={styles.yearField}
       >
-        <Input />
+        <Input
+          onPointerUp={function editYear(event) {
+            // React Aria commits a pending range on pointer release outside a calendar button.
+            if (rangeState?.anchorDate && !rangeState.isDragging) event.stopPropagation();
+          }}
+        />
       </NumberField>
     </Flex>
   );

@@ -216,26 +216,32 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(year).toHaveValue('2027');
     });
 
-    it('limits header navigation to an unfinished range', async function pendingRange() {
-      await page.viewport(320, 768);
-      const screen = await render(<MobileExample range keepOpen unavailable />);
-      await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
-      await settle(screen.getByRole('dialog').element());
-      await screen.getByRole('button', { name: /September 15, 2026/ }).click();
-      const year = screen.getByRole('textbox', { name: 'Year' });
-      await year.fill('2028');
-      await userEvent.keyboard('{Enter}');
-      await expect.element(year).toHaveValue('2026');
-      await screen.getByRole('button', { name: /September 18, 2026/ }).click();
-      await expect.element(screen.getByLabelText('Selected dates')).toMatchTextContent('2026-09-15/2026-09-18');
-      const months = document.querySelectorAll<HTMLElement>('[data-calendar-month]');
-      months[months.length - 1].scrollIntoView();
-      await expect
-        .poll(function loaded() {
-          return document.querySelectorAll('[data-calendar-month]').length;
-        })
-        .toBeGreaterThan(months.length);
-    });
+    it.each(['keyboard', 'pointer'])(
+      'limits header navigation to an unfinished range using the %s',
+      async function pendingRange(input) {
+        await page.viewport(320, 768);
+        const screen = await render(<MobileExample range keepOpen unavailable />);
+        await screen.getByRole('button', { name: /Calendar Event dates/ }).click();
+        await settle(screen.getByRole('dialog').element());
+        await screen.getByRole('button', { name: /September 15, 2026/ }).click();
+        const year = screen.getByRole('textbox', { name: 'Year' });
+        if (input === 'pointer') await year.click();
+        else await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
+        await expect.element(year).toHaveFocus();
+        await year.fill('2028');
+        await userEvent.keyboard('{Enter}');
+        await expect.element(year).toHaveValue('2026');
+        await screen.getByRole('button', { name: /September 18, 2026/ }).click();
+        await expect.element(screen.getByLabelText('Selected dates')).toMatchTextContent('2026-09-15/2026-09-18');
+        const months = document.querySelectorAll<HTMLElement>('[data-calendar-month]');
+        months[months.length - 1].scrollIntoView();
+        await expect
+          .poll(function loaded() {
+            return document.querySelectorAll('[data-calendar-month]').length;
+          })
+          .toBeGreaterThan(months.length);
+      }
+    );
 
     it('updates month choices when navigating between Hebrew common and leap years', async function leapYear() {
       await page.viewport(320, 768);

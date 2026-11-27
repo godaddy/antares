@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useState, type SyntheticEvent } from 'react';
 import { Box, Button, FieldError, Flex, Label, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';
 
 /**
@@ -8,7 +8,7 @@ import { Box, Button, FieldError, Flex, Label, Select, SelectItem, SelectOptions
 export function FormExample() {
   const [submitted, setSubmitted] = useState<Record<string, string | string[]> | null>(null);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const entries: Record<string, string | string[]> = {};

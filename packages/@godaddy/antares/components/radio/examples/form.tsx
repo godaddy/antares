@@ -1,5 +1,5 @@
 import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';
-import { type FormEvent, useState } from 'react';
+import { type SyntheticEvent, useState } from 'react';
 
 /**
  * A radio group integrated with native form submission.
@@ -9,7 +9,7 @@ import { type FormEvent, useState } from 'react';
 export function FormExample() {
   const [submittedValue, setSubmittedValue] = useState<string | null>(null);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     const value = new FormData(event.currentTarget).get('plan');
     setSubmittedValue(value != null ? String(value) : null);

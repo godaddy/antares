@@ -207,15 +207,16 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
  * @returns Header content, or `null` when neither label is present.
  */
 function RangeFieldHeader({ label, valueLabel }: Pick<RangeFieldProps<number | number[]>, 'label' | 'valueLabel'>) {
+  const hasLabel = Boolean(label);
   const valueLabelVisible = valueLabel != null && valueLabel !== false;
 
-  if (!label && !valueLabelVisible) {
+  if (!hasLabel && !valueLabelVisible) {
     return null;
   }
 
   return (
     <Flex direction="row" wrap="wrap" gap="sm" alignItems="center" className={styles.header}>
-      {label ? <Label className={cx(fieldStyles.label, styles.label)}>{label}</Label> : null}
+      {hasLabel ? <Label className={cx(fieldStyles.label, styles.label)}>{label}</Label> : null}
       {valueLabelVisible && (
         <RACSliderOutput className={styles.valueLabel}>{valueLabel === true ? undefined : valueLabel}</RACSliderOutput>
       )}
