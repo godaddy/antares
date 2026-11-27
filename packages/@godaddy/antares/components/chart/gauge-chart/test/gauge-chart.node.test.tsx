@@ -23,6 +23,7 @@ const SSR_EXAMPLES: Array<[string, ReactElement]> = [
       labelType="text"
       variant="warning"
       description="Risk"
+      descriptionId="risk-description"
       width="118px"
     />
   ],

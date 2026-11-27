@@ -12,6 +12,12 @@ import { composeClassName } from '#utils/render-props.ts';
 
 export { useChartDescription } from './use-chart-description.ts';
 
+export interface ChartRootProps
+  extends Omit<GridProps<'div'>, 'as' | 'areas' | 'columns' | 'rows' | 'justifyContent' | 'justifyItems'> {
+  /** Accessible name for the chart. */
+  'aria-label'?: string;
+}
+
 /** Props shared by every composed chart region. */
 export interface ChartRegionProps extends Omit<GridProps<'div'>, 'as' | 'areas' | 'columns' | 'rows'> {
   /** Region content. Fill the region's named `Text` slots for the default text styles. */

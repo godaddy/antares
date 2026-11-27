@@ -93,7 +93,7 @@ export function TrafficSources() {
 
 ## GaugeChart: one value on a known scale
 
-Provide a numeric `value` and an accessible name. Continuous mode uses 0–100. Segmented mode uses 0–`segments`; `segments` must be a finite positive integer or the component throws. Values are clamped. Use `GaugeChartCenter` for the visible value and description, and `GaugeChartRange` for optional end labels.
+Provide a numeric `value` and an accessible name. Continuous mode clamps to 0–100. To use a segmented scale, pass a positive integer as `segments`.
 
 ```tsx
 import { GaugeChart, GaugeChartCenter, GaugeChartRange } from '@godaddy/antares/Chart';
@@ -122,9 +122,7 @@ export function HealthScore() {
 }
 ```
 
-Use `GaugeChartCenter` with `Text` in the `value` and `description` slots. The slots can appear in either order. An explicit `Text size` overrides the chart's responsive default.
-
-Omit `segments` for continuous mode. Normalize a different measurement range in application code. Keep the visible value consistent with `value` and set `valueLabel` when it is not a plain number. Use `labelType="text"` for a short word in the center. The description describes the meter, and the arc's meter role leaves center controls accessible. Use ProgressBar or CircularProgress for task completion.
+Compose the optional center and range in either order. Use `Text` in the `value` and `description` slots and set `size` to override the responsive default. Set `valueLabel` for accessible value text. Use ProgressBar or CircularProgress for task completion.
 
 ## Dimensions, legends and tooltips
 

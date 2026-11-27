@@ -74,10 +74,22 @@
 
 .center {
   grid-row: 1 / span 2;
+  pointer-events: none;
+
+  & > :where(:not(.value, .description)) {
+    grid-area: value;
+    align-self: center;
+    pointer-events: auto;
+  }
+
+  & :where(.value, .description) > * {
+    pointer-events: auto;
+  }
 }
 
 .range {
   grid-row: 2;
+  pointer-events: none;
 }
 
 /* ::before/::after = rounded caps at arc ends */
@@ -285,6 +297,7 @@
   --_type-slot-color: var(--gauge-range-label-fg);
 
   display: inline-flex;
+  pointer-events: auto;
   justify-content: center;
   width: 4ch;
   overflow: hidden;

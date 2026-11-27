@@ -87,15 +87,26 @@ describe('@godaddy/antares', function antares() {
       it('places min and max labels under the ends of the arc', async function rangeLabelPlacement() {
         const { getByRole, getByText } = await render(<WithRangeLabelsExample />);
 
-        const meter = getByRole('meter', { name: 'Risk level gauge' });
-        await expect.element(meter).toBeVisible();
-        const min = getByText('Low').element().getBoundingClientRect();
-        const max = getByText('High').element().getBoundingClientRect();
-        const description = getByText('Risk Level').element().getBoundingClientRect();
+        for (const [name, minLabel, maxLabel, descriptionLabel] of [
+          ['CPU usage gauge', '0', '100', 'CPU Usage'],
+          ['Risk level gauge', 'Low', 'High', 'Risk Level']
+        ]) {
+          const meter = getByRole('meter', { name });
+          await expect.element(meter).toBeVisible();
+          const arc = meter.element().getBoundingClientRect();
+          const min = getByText(minLabel, { exact: true }).element().getBoundingClientRect();
+          const max = getByText(maxLabel, { exact: true }).element().getBoundingClientRect();
+          const description = getByText(descriptionLabel).element().getBoundingClientRect();
 
-        expect(min.right).toBeLessThanOrEqual(description.left);
-        expect(max.left).toBeGreaterThanOrEqual(description.right);
-        expect(min.top).toBeCloseTo(max.top, 0);
+          expect(min.right).toBeLessThanOrEqual(description.left);
+          expect(max.left).toBeGreaterThanOrEqual(description.right);
+          expect(arc.left).toBeGreaterThanOrEqual(min.left);
+          expect(arc.left).toBeLessThanOrEqual(min.right);
+          expect(arc.right).toBeGreaterThanOrEqual(max.left);
+          expect(arc.right).toBeLessThanOrEqual(max.right);
+          expect(min.top).toBeGreaterThanOrEqual(arc.bottom);
+          expect(max.top).toBeCloseTo(min.top, 0);
+        }
       });
 
       it('flips the range labels in right-to-left layouts', async function rtlRangeLabels() {
@@ -114,7 +125,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#composition', function composition() {
-      it('honors explicit text emphasis in all four slots', async function slotEmphasis() {
+      it('honors explicit text emphasis and center sizing', async function slotEmphasis() {
         const { getByText } = await render(
           <PlaygroundExample
             label="50%"
@@ -122,12 +133,16 @@ describe('@godaddy/antares', function antares() {
             rangeMin="Low"
             rangeMax="High"
             emphasis="critical"
+            textSize="xs"
             value={50}
           />
         );
 
         for (const label of ['50%', 'Risk level', 'Low', 'High']) {
           await expect.element(getByText(label)).toHaveStyle({ color: 'rgb(219, 24, 2)' });
+        }
+        for (const label of ['50%', 'Risk level']) {
+          expect(getComputedStyle(getByText(label).element()).fontSize).toBe('12px');
         }
       });
 
@@ -172,25 +187,49 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#accessible-text', function accessibleText() {
-      it('preserves external descriptions when the description slot changes', async function dynamicDescription() {
-        const { getByRole } = await render(<DynamicDescriptionExample />);
-        const meter = getByRole('meter', { name: 'Site health' });
-        const changeDescription = getByRole('button', { name: 'Change description' });
+      it.each([false, true])(
+        'keeps center controls clickable and descriptions current (range first: %s)',
+        async function dynamicDescription(rangeFirst) {
+          const { getByRole, getByText } = await render(<DynamicDescriptionExample rangeFirst={rangeFirst} />);
+          const meter = getByRole('meter', { name: 'Site health' });
+          const changeDescription = getByRole('button', { name: 'Change description' });
+          const descriptionButton = getByRole('button', { name: 'Change from description' });
+          const arc = meter.element().getBoundingClientRect();
+          const control = changeDescription.element().getBoundingClientRect();
 
-        await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description score-description');
-        await expect.element(meter).toHaveAccessibleDescription('Updated daily. Site health score.');
-        expect(meter.element().contains(changeDescription.element())).toBe(false);
-        await userEvent.tab();
-        await expect.element(changeDescription).toHaveFocus();
-        await userEvent.keyboard('{Enter}');
-        await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description renamed-description');
-        await expect.element(meter).toHaveAccessibleDescription('Updated daily. Site health score.');
-        await userEvent.click(changeDescription);
-        await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description');
-        await expect.element(meter).toHaveAccessibleDescription('Updated daily.');
-        await userEvent.click(changeDescription);
-        await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description score-description');
-      });
+          expect(control.left + control.width / 2).toBeCloseTo(arc.left + arc.width / 2, 0);
+          expect(Math.abs(control.top + control.height / 2 - (arc.top + arc.height / 2))).toBeLessThan(arc.height / 10);
+          await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description score-description');
+          await expect
+            .element(meter)
+            .toHaveAccessibleDescription('Updated daily. Site health score. Change from description');
+          expect(meter.element().contains(changeDescription.element())).toBe(false);
+          await userEvent.tab();
+          await expect.element(changeDescription).toHaveFocus();
+
+          const target = descriptionButton.element().getBoundingClientRect();
+          expect(document.elementFromPoint(target.x + target.width / 2, target.y + target.height / 2)).toBe(
+            descriptionButton.element()
+          );
+          await descriptionButton.click();
+          await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description renamed-description');
+          await userEvent.keyboard('{Enter}');
+          const slot = getByText('Site health score.', { exact: false });
+          await expect.element(meter).not.toHaveAttribute('aria-describedby', /renamed-description/);
+          const generatedId = slot.element().id;
+          expect(generatedId).toBeTruthy();
+          expect(generatedId).not.toBe('score-description');
+          await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description ' + generatedId);
+          await expect
+            .element(meter)
+            .toHaveAccessibleDescription('Updated daily. Site health score. Change from description');
+          await changeDescription.click();
+          await expect.element(meter).toHaveAccessibleDescription('Updated daily.');
+          await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description');
+          await changeDescription.click();
+          await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description score-description');
+        }
+      );
 
       it('announces valueLabel as the value text', async function valueLabel() {
         const { getByRole } = await render(<SegmentedExample />);
