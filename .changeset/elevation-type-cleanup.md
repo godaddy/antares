@@ -2,4 +2,4 @@
 '@godaddy/antares': patch
 ---
 
-Simplify the internal `Elevation` type to a union of the four elevation levels.
+Clean up the `Elevation` type, a small leftover from an earlier change. No behavior change.
