@@ -1,23 +1,30 @@
 .tooltip {
-  --_box-bg-overlay: var(--ux-7wu8i7, color-mix(in oklch, var(--_box-bg-raised), white 8%));
-  --_box-fg-overlay: var(--ux-1o8cusa, var(--_box-fg-base));
+  --_tooltip-padding-block: var(--size-space-020, var(--ux-1sbfig8, 8px));
+  --_tooltip-padding-inline: var(--size-space-050, calc(var(--ux-1sbfig8, 8px) * 2));
+  --_tooltip-radius: var(--size-radius-md, var(--ux-2jubes, 6px));
 
-  --_arrow-width: 10px;
-  --_arrow-rotated-width: calc(var(--_arrow-width) / pow(2, 1 / 2));
-  --_arrow-height: calc(var(--_arrow-rotated-width) / 2);
-  --_content-offset: calc(var(--_arrow-height) + var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 1)));
-  --_arrow-offset: calc(var(--_arrow-height) * -1 + 1px);
+  --_tooltip-tip-width: 10px;
+  --_tooltip-tip-depth: 6px;
+  --_tooltip-arrow-frame: 8px;
 
+  /* Preserve the legacy tip-to-trigger gap as the visible tip grows from 5px to 6px. */
+  --_tooltip-panel-offset: calc(var(--ux-1sbfig8, 0.25rem) + var(--_tooltip-tip-depth) - 1.5px);
+
+  padding: var(--_tooltip-padding-block) var(--_tooltip-padding-inline);
+  border-radius: var(--_tooltip-radius);
   transition:
     transform 125ms cubic-bezier(0.23, 1, 0.32, 1),
     opacity 125ms cubic-bezier(0.23, 1, 0.32, 1);
+}
 
-  /* Own stacking context so `.arrow` can sit behind the content. See `.arrow`. */
-  isolation: isolate;
+/* The attribute raises only the palette declarations above Box, independent of load order. */
+.tooltip[data-elevation="overlay"] {
+  --_box-bg-overlay: var(--ux-7wu8i7, #111);
+  --_box-fg-overlay: var(--ux-1o8cusa, #fff);
 }
 
 .tooltip:where([data-noarrow="true"]) {
-  --_arrow-width: 0px;
+  --_tooltip-panel-offset: var(--ux-1sbfig8, 0.25rem);
 }
 
 .tooltip:where([data-entering], [data-exiting]) {
@@ -28,62 +35,122 @@
 .tooltip:where([data-placement="top"]) {
   --_animation-offset: translateY(4px) scale(0.95);
   transform-origin: var(--trigger-anchor-point, bottom center);
-  margin-bottom: var(--_content-offset);
+  margin-bottom: var(--_tooltip-panel-offset);
 }
 
 .tooltip:where([data-placement="bottom"]) {
   --_animation-offset: translateY(-4px) scale(0.95);
   transform-origin: var(--trigger-anchor-point, top center);
-  margin-top: var(--_content-offset);
+  margin-top: var(--_tooltip-panel-offset);
 }
 
 .tooltip:where([data-placement="right"]) {
   --_animation-offset: translateX(-4px) scale(0.95);
   transform-origin: var(--trigger-anchor-point, left center);
-  margin-left: var(--_content-offset);
+  margin-left: var(--_tooltip-panel-offset);
 }
 
 .tooltip:where([data-placement="left"]) {
   --_animation-offset: translateX(4px) scale(0.95);
   transform-origin: var(--trigger-anchor-point, right center);
-  margin-right: var(--_content-offset);
+  margin-right: var(--_tooltip-panel-offset);
 }
 
-/*
- * A square rotated 45deg: one corner pokes out past the panel edge as the tip, the rest stays
- * inside to cover the panel's border so the bubble reads as one shape. That inside half must not
- * paint over the content, so the arrow goes behind it - `z-index: -1` inside the panel's stacking
- * context paints above the panel's background and border, but below its in-flow children. The
- * panel's `elevation` filter still sees the arrow, so bubble and tip share one drop shadow.
- */
+/* React Aria measures the wrapper's width for every placement. The square keeps that measurement stable. */
 .arrow {
+  --_tooltip-tip-overlap: 1px;
+  --_tooltip-painted-depth: calc(var(--_tooltip-tip-depth) + var(--_tooltip-tip-overlap));
+  --_tooltip-frame-space: calc(var(--_tooltip-arrow-frame) - var(--_tooltip-tip-depth));
+
+  width: var(--_tooltip-tip-width);
+  height: var(--_tooltip-tip-width);
+  pointer-events: none;
+
+  /* Pass the panel background to the pseudo-element without painting the wrapper. */
   background: inherit;
-  width: var(--_arrow-rotated-width);
-  height: var(--_arrow-rotated-width);
-  rotate: 45deg;
-  z-index: -1;
+  background-clip: text;
 }
 
+/* Padding completes the frame. The painted base extends into the panel to cover subpixel seams. */
+.arrow::before {
+  content: "";
+  position: absolute;
+  box-sizing: content-box;
+  width: 100%;
+  height: var(--_tooltip-painted-depth);
+  background: inherit;
+  background-origin: content-box;
+  background-clip: content-box;
+}
+
+/* OverlayArrow starts at the padding edge. Clear Box's 1px transparent border. */
 .arrow:where([data-placement="top"]) {
-  transform-origin: left;
-  rotate: -45deg;
-  margin-top: var(--_arrow-offset);
+  margin-top: 1px;
+
+  &::before {
+    inset: calc(-1 * var(--_tooltip-tip-overlap)) auto auto 0;
+    padding-bottom: var(--_tooltip-frame-space);
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% var(--_tooltip-tip-overlap),
+      50% var(--_tooltip-painted-depth),
+      0 var(--_tooltip-tip-overlap)
+    );
+  }
 }
 
 .arrow:where([data-placement="bottom"]) {
-  transform-origin: left;
-  margin-bottom: var(--_arrow-offset);
+  margin-bottom: 1px;
+
+  &::before {
+    inset: auto auto calc(-1 * var(--_tooltip-tip-overlap)) 0;
+    padding-top: var(--_tooltip-frame-space);
+    clip-path: polygon(
+      0 100%,
+      0 calc(100% - var(--_tooltip-tip-overlap)),
+      50% var(--_tooltip-frame-space),
+      100% calc(100% - var(--_tooltip-tip-overlap)),
+      100% 100%
+    );
+  }
+}
+
+.arrow:where([data-placement="left"], [data-placement="right"])::before {
+  width: var(--_tooltip-painted-depth);
+  height: 100%;
 }
 
 .arrow:where([data-placement="left"]) {
-  transform-origin: top;
-  margin-left: var(--_arrow-offset);
+  margin-left: 1px;
+
+  &::before {
+    inset: 0 auto auto calc(-1 * var(--_tooltip-tip-overlap));
+    padding-right: var(--_tooltip-frame-space);
+    clip-path: polygon(
+      0 0,
+      var(--_tooltip-tip-overlap) 0,
+      var(--_tooltip-painted-depth) 50%,
+      var(--_tooltip-tip-overlap) 100%,
+      0 100%
+    );
+  }
 }
 
 .arrow:where([data-placement="right"]) {
-  transform-origin: top;
-  rotate: -45deg;
-  margin-right: var(--_arrow-offset);
+  margin-right: 1px;
+
+  &::before {
+    inset: 0 calc(-1 * var(--_tooltip-tip-overlap)) auto auto;
+    padding-left: var(--_tooltip-frame-space);
+    clip-path: polygon(
+      100% 0,
+      calc(100% - var(--_tooltip-tip-overlap)) 0,
+      var(--_tooltip-frame-space) 50%,
+      calc(100% - var(--_tooltip-tip-overlap)) 100%,
+      100% 100%
+    );
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

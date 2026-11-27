@@ -11,8 +11,11 @@ import { Flex } from '#components/layout/flex';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
+// Allow for the 6px radius, Box's 1px transparent border, and position rounding.
+const ARROW_BOUNDARY_OFFSET = 8;
+
 export interface TooltipTriggerProps extends RACTooltipTriggerProps {
-  /** The delay time in milliseconds for the tooltip to show up on hover. @default 500 */
+  /** The delay time in milliseconds for the tooltip to show up on hover. @default 250 */
   delay?: number;
 
   /** The delay time in milliseconds for the tooltip to close. @default 250 */
@@ -43,15 +46,14 @@ export interface TooltipProps extends RACTooltipProps {
  */
 export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(props, ref) {
   const { className, children, hideArrow, ...rest } = props;
-  const typography = useTypographyClassName('text');
+  const typography = useTypographyClassName('text', { size: 'sm' });
 
   return (
     <Flex
       as={RACTooltip}
       ref={ref}
-      padding={['sm', 'md']}
-      rounding="md"
       elevation="overlay"
+      arrowBoundaryOffset={hideArrow ? undefined : ARROW_BOUNDARY_OFFSET}
       data-noarrow={hideArrow}
       {...rest}
       className={composeClassName(className, styles.tooltip, typography)}
@@ -68,7 +70,7 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
  * @param props - {@link TooltipTriggerProps}
  */
 export const TooltipTrigger = function TooltipTrigger(props: TooltipTriggerProps) {
-  const { delay = 500, closeDelay = 250, ...rest } = props;
+  const { delay = 250, closeDelay = 250, ...rest } = props;
 
   return <RACTooltipTrigger delay={delay} closeDelay={closeDelay} {...rest} />;
 };
