@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -5,7 +6,10 @@ import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import { Button, CircularProgress, toast, ToastQueue, ToastRegion } from '@godaddy/antares';
 import assume from 'assume';
+import { parse } from 'yaml';
 import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
+import curatedTokens from '../../../../design-tokens/src/tokens.yml?raw';
+import legacyTokens from '../../../../../../apps/docs/.storybook/legacy-tokens.css?raw';
 import { DefaultExample } from '../examples/default.tsx';
 import { PlaygroundExample } from '../examples/toast-playground.tsx';
 import { EmphasesExample } from '../examples/emphases.tsx';
@@ -24,6 +28,17 @@ function toasts() {
 
 async function showToast() {
   await userEvent.click(page.getByRole('button', { name: 'Show toast' }));
+}
+
+function luminance(color: string) {
+  const [red, green, blue] = color
+    .slice(4, -1)
+    .split(', ')
+    .map(function linearize(channel) {
+      const srgb = Number(channel) / 255;
+      return srgb <= 0.04045 ? srgb / 12.92 : ((srgb + 0.055) / 1.055) ** 2.4;
+    });
+  return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
 }
 
 describe('@godaddy/antares', function antares() {
@@ -129,6 +144,54 @@ describe('@godaddy/antares', function antares() {
           assume(toasts().length).equals(0);
         });
         await unmount();
+      }
+    });
+
+    it('keeps emphasis icons legible with curated and legacy colors', async function iconContrast() {
+      const tokens = parse(curatedTokens) as Record<string, { $value: string }>;
+      const curatedColors = Object.entries(tokens)
+        .filter(([name]) => name === 'color-surface-background-raised' || name.startsWith('color-feedback-'))
+        .map(([name, token]) => `--${name}: ${token.$value};`)
+        .join(' ');
+      const icons = [
+        ['warning', 'Storage almost full', 'alert', 'rgb(255, 238, 169)'],
+        ['critical', 'Payment failed', 'alert', 'rgb(255, 187, 187)'],
+        ['success', 'Domain connected', 'checkmark', 'rgb(159, 255, 184)']
+      ] as const;
+      const palette = document.createElement('style');
+      document.head.append(palette);
+
+      try {
+        await render(<EmphasesExample />);
+        for (const [emphasis] of icons) {
+          await userEvent.click(page.getByRole('button', { name: `Show ${emphasis}` }));
+        }
+
+        for (const [name, css] of [
+          ['curated', `:root { ${curatedColors} }`],
+          ['legacy', legacyTokens]
+        ]) {
+          palette.textContent = css;
+          for (const [emphasis, title, glyph, legacyFill] of icons) {
+            const notification = page.getByRole('alertdialog', { name: title }).element();
+            const icon = notification.querySelector(`[data-icon="${glyph}"]`);
+            if (!icon?.parentElement) throw new Error(`Missing ${emphasis} icon`);
+
+            const { fill } = getComputedStyle(icon);
+            const { backgroundColor } = getComputedStyle(icon.parentElement);
+            const foreground = luminance(fill);
+            const background = luminance(backgroundColor);
+            const contrast = (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05);
+            expect(contrast, `${name} ${emphasis}: ${fill} on ${backgroundColor}`).toBeGreaterThanOrEqual(3);
+
+            if (name === 'legacy') {
+              expect(fill).toBe(legacyFill);
+              expect(backgroundColor).toBe('rgb(17, 17, 17)');
+            }
+          }
+        }
+      } finally {
+        palette.remove();
       }
     });
 

@@ -17,7 +17,7 @@
 }
 
 .toast {
-  /* The high-contrast (inverted) surface, as in Avatar. */
+  /* Raised surface with the legacy high-contrast fallback. */
   --_toast-bg: var(--color-surface-background-raised, var(--ux-7wu8i7, black));
   --_toast-fg: var(--color-surface-text-raised, var(--ux-1o8cusa, white));
   --_toast-border: var(--color-surface-border-overlay, var(--ux-17fhz5j, black));
@@ -90,7 +90,7 @@
   }
 
   &:where([data-emphasis="warning"]) {
-    --_toast-icon-color: var(--color-feedback-warning-strong, var(--ux-1tgn1ki, palegoldenrod));
+    --_toast-icon-color: var(--color-feedback-warning-text, var(--ux-1tgn1ki, palegoldenrod));
   }
 }
 
