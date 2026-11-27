@@ -4096,9 +4096,8 @@ Toasts added before the region mounts wait in the queue and show once it does.
 ## Several copies of Antares on one page [#several-copies-of-antares-on-one-page]
 
 A page can load more than one copy of Antares, such as a shared header and the app it wraps, possibly at
-different versions. Each copy renders its own toasts, with its own components and React context, into one
-page-wide element (`[data-antares-toast-host="1"]`) that the first copy creates. So toasts stack instead of
-overlapping, and nothing has to be shared between versions.
+different versions. Each copy renders its toasts with its own components and React context. The toasts share
+one page-wide stack.
 
 Toasts are grouped by copy: the header's toasts stay together, and the app's stay together. Give each copy's
 region its own label with `ariaLabels={{ region }}`, so screen readers can tell them apart.
@@ -4128,8 +4127,8 @@ and is labelled by its title (or its message when there is no title). Translate 
 
 ### Timing [#timing]
 
-Timeouts pause while the user hovers or focuses the toasts. The default of 5 seconds follows WCAG's guidance
-on adjustable timing; avoid shorter timeouts.
+Toasts close after 5 seconds by default. The timer pauses while the user hovers over or focuses the stack.
+Use a persistent toast or make essential messages available elsewhere in the page.
 
 ## Best Practices [#best-practices]
 
@@ -4138,6 +4137,7 @@ on adjustable timing; avoid shorter timeouts.
 - Use `timeout: null` for messages the user must see, and close them from code when the work finishes.
 - Only hide the close button (`dismissible: false`) on short, timed toasts. Persistent toasts always show it.
 - Use `critical` for failures the user can fix, and `warning` for things that matter but don't need action now.
+- State the severity of critical and warning notifications in the title or message so everyone can tell them apart.
 
 ## Props [#props]
 
