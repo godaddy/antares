@@ -90,7 +90,7 @@
   }
 
   &:where([data-emphasis="warning"]) {
-    --_toast-icon-color: var(--color-feedback-warning-text, var(--ux-1tgn1ki, palegoldenrod));
+    --_toast-icon-color: var(--color-feedback-warning-text, var(--ux-lv1r6m, #de7c00));
   }
 }
 

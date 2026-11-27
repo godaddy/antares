@@ -154,7 +154,7 @@ describe('@godaddy/antares', function antares() {
         .map(([name, token]) => `--${name}: ${token.$value};`)
         .join(' ');
       const icons = [
-        ['warning', 'Storage almost full', 'alert', 'rgb(255, 238, 169)'],
+        ['warning', 'Storage almost full', 'alert', 'rgb(222, 124, 0)'],
         ['critical', 'Payment failed', 'alert', 'rgb(255, 187, 187)'],
         ['success', 'Domain connected', 'checkmark', 'rgb(159, 255, 184)']
       ] as const;

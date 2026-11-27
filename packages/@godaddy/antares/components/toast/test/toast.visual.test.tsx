@@ -34,14 +34,20 @@ describe('@godaddy/antares', function antares() {
 
   describe('#Toast', function toastTests() {
     it('emphases', async function emphases() {
-      await render(<EmphasesExample />);
-      for (const emphasis of ['warning', 'critical', 'success', 'none']) {
-        await userEvent.click(page.getByRole('button', { name: `Show ${emphasis}` }));
-      }
-      await resetHover();
-      await settle();
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+      try {
+        await render(<EmphasesExample />);
+        for (const emphasis of ['warning', 'critical', 'success', 'none']) {
+          await userEvent.click(page.getByRole('button', { name: `Show ${emphasis}` }));
+        }
+        await resetHover();
 
-      await expect(document.querySelector(`${HOST} [role="region"]`) as HTMLElement).toMatchScreenshot('emphases');
+        const region = page.getByRole('region').element();
+        await Promise.all(region.getAnimations({ subtree: true }).map((animation) => animation.finished));
+        await expect(region as HTMLElement).toMatchScreenshot('emphases');
+      } finally {
+        vi.useRealTimers();
+      }
     });
 
     it('message only, not dismissible', async function messageOnly() {
