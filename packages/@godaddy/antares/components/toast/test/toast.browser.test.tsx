@@ -223,6 +223,34 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
+    it('slides out toward the left edge in RTL', async function rtlSlide() {
+      const root = document.documentElement;
+      const direction = root.getAttribute('dir');
+      root.dir = 'rtl';
+
+      try {
+        await render(<DefaultExample />);
+        const key = toast.add({ message: 'Saved', timeout: null });
+        const dialog = page.getByRole('alertdialog', { name: 'Saved' });
+        await expect.element(dialog).toBeVisible();
+        const shown = dialog.element();
+        await Promise.all(shown.getAnimations({ subtree: true }).map((animation) => animation.finished));
+
+        flushSync(function close() {
+          toast.close(key);
+        });
+
+        const slide = shown
+          .getAnimations({ subtree: true })
+          .find((animation) => animation instanceof CSSTransition && animation.transitionProperty === 'translate');
+        const effect = slide?.effect;
+        expect(effect instanceof KeyframeEffect && effect.getKeyframes().at(-1)?.translate).toBe('-100%');
+      } finally {
+        if (direction === null) root.removeAttribute('dir');
+        else root.dir = direction;
+      }
+    });
+
     it('closes on its own after the timeout', async function timeout() {
       await render(<PlaygroundExample timeout={300} />);
       await showToast();
