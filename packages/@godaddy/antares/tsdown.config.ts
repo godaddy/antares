@@ -51,6 +51,17 @@ const mergedConfig = mergeConfig(config, {
     })
   ],
   entry: ['./index.ts', './exports/*.ts'],
+  outputOptions: {
+    codeSplitting: {
+      groups: [
+        {
+          name: 'toast-queue',
+          test: /components[\\/]toast[\\/]src[\\/]queue\.ts$/,
+          includeDependenciesRecursively: false
+        }
+      ]
+    }
+  },
   css: {
     inject: true,
     modules: {
