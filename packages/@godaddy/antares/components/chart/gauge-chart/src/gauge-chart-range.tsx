@@ -16,7 +16,10 @@ export const GaugeChartRangeContext =
 const rangeRegion: ChartRegionDefinition = {
   name: 'range',
   context: GaugeChartRangeContext,
-  slots: { min: cx(styles.rangeLabel, styles.min), max: cx(styles.rangeLabel, styles.max) }
+  slots: {
+    min: /* @__PURE__ */ cx(styles.rangeLabel, styles.min),
+    max: /* @__PURE__ */ cx(styles.rangeLabel, styles.max)
+  }
 };
 
 /** Labels the start and end of the gauge arc with the `min` and `max` slots. The labels do not change the scale. */
