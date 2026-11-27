@@ -8,6 +8,7 @@ import { ContinuousExample } from '../examples/continuous.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { DynamicDescriptionExample } from '../examples/dynamic-description.tsx';
 import { PlaygroundExample } from '../examples/gauge-chart-playground.tsx';
+import { OverlappingDescriptionsExample } from '../examples/overlapping-descriptions.tsx';
 import { RegionOrderExample } from '../examples/region-order.tsx';
 import { SegmentedExample } from '../examples/segmented.tsx';
 import { VariantsExample } from '../examples/variants.tsx';
@@ -207,6 +208,17 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#accessible-text', function accessibleText() {
+      it('keeps the description linked until the last slot unmounts', async function overlappingDescriptions() {
+        const { getByRole, rerender } = await render(<OverlappingDescriptionsExample count={2} />);
+        const meter = getByRole('meter', { name: 'Site health' });
+
+        await rerender(<OverlappingDescriptionsExample count={1} />);
+        await expect.element(meter).toHaveAccessibleDescription('Updated daily. Current score.');
+
+        await rerender(<OverlappingDescriptionsExample count={0} />);
+        await expect.element(meter).toHaveAccessibleDescription('Updated daily.');
+      });
+
       it.each([false, true])(
         'keeps center controls clickable and descriptions current (range first: %s)',
         async function dynamicDescription(rangeFirst) {
