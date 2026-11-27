@@ -74,17 +74,15 @@
 
 .center {
   grid-row: 1 / span 2;
-  pointer-events: none;
+}
 
-  & > :where(:not(.value, .description)) {
-    grid-area: value;
-    align-self: center;
-    pointer-events: auto;
-  }
+.centerContent {
+  grid-area: value;
+  align-self: center;
+}
 
-  & :where(.value, .description) > * {
-    pointer-events: auto;
-  }
+.centerContent:where(:has(> .value, > .description):not(:has(> :not(.value, .description)))) {
+  display: contents;
 }
 
 .range {

@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
+import { ContextDescriptionExample } from '../examples/context-description.tsx';
 import { ContinuousExample } from '../examples/continuous.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { PlaygroundExample } from '../examples/gauge-chart-playground.tsx';
@@ -10,6 +11,7 @@ import { WithRangeLabelsExample } from '../examples/with-range-labels.tsx';
 
 const SSR_EXAMPLES: Array<[string, ReactElement]> = [
   ['continuous', <ContinuousExample key="continuous" />],
+  ['context description', <ContextDescriptionExample key="context" />],
   ['basic', <DefaultExample key="basic" />],
   [
     'playground',

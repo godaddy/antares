@@ -10,7 +10,6 @@ import { Grid } from '#components/layout/grid';
 import { composeClassName } from '#utils/render-props.ts';
 import { chartArcGapAngleDeg } from '../../utils.ts';
 import styles from './index.module.css';
-import { GaugeChartCenter } from './gauge-chart-center.tsx';
 
 // Avoid useLayoutEffect SSR warnings; use it in the browser so gap angle updates before paint.
 const canUseDOM = typeof window !== 'undefined';
@@ -91,11 +90,15 @@ export function GaugeChart(props: GaugeChartProps) {
   const clampedValue = Math.min(Math.max(0, value), maxValue);
   const normalizedValue = clampedValue / maxValue;
 
-  const { descriptionSlot, describedBy } = useChartDescription(children, GaugeChartCenter, externalDescription);
+  const { descriptionSlot, describedBy } = useChartDescription(children != null, externalDescription);
   const regions = useMemo(
     function createRegions(): ChartRegionPlacements {
       return {
-        center: { className: styles.center, slots: { description: descriptionSlot } },
+        center: {
+          className: styles.center,
+          contentClassName: styles.centerContent,
+          slots: { description: descriptionSlot }
+        },
         range: { className: styles.range }
       };
     },

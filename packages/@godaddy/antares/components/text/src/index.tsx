@@ -1,10 +1,11 @@
-import { forwardRef } from 'react';
+import { forwardRef, useContext } from 'react';
 import { Text as RACText, TextContext as RACTextContext, type TextProps as RACTextProps } from 'react-aria-components';
 import { useTypographyClassName, type TypographyProps } from '#components/_internal/typography';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
 export const TextContext = RACTextContext;
+export const textDescriptionId = /* @__PURE__ */ Symbol();
 
 export interface TextProps extends Omit<RACTextProps, 'elementType' | 'slot'>, TypographyProps {
   /** Text alignment. */
@@ -34,6 +35,9 @@ interface TextElementProps extends TextProps {
 
 const TextElement = forwardRef<HTMLElement, TextElementProps>(function TextElement(props, ref) {
   const { as, align, maxLines, wrap, className, slot, size, emphasis, treatment, ...rest } = props;
+  const context = useContext(TextContext);
+  const descriptionId =
+    slot === 'description' && context && textDescriptionId in context ? context[textDescriptionId] : undefined;
   const typography = useTypographyClassName(treatment, { size, emphasis });
 
   const style = Object.assign({}, props.style, {
@@ -46,6 +50,7 @@ const TextElement = forwardRef<HTMLElement, TextElementProps>(function TextEleme
   return (
     <RACText
       {...(rest as Omit<RACTextProps, 'slot'>)}
+      id={typeof descriptionId === 'string' ? descriptionId : rest.id}
       slot={slot as RACTextProps['slot']}
       ref={ref}
       className={composeClassName(className, styles.text, typography)}

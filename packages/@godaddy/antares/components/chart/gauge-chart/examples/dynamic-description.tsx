@@ -15,9 +15,10 @@ export function DynamicDescriptionExample({ rangeFirst }: { rangeFirst: boolean 
   const center = (
     <GaugeChartCenter key="center">
       <Button onPress={changeDescription}>Change description</Button>
+      <Button onPress={changeDescription}>Change again</Button>
       {descriptionId !== null && (
-        <Text id={descriptionId} slot="description">
-          Site health score. <Button onPress={changeDescription}>Change from description</Button>
+        <Text as="button" id={descriptionId} slot="description" onClick={changeDescription}>
+          Change from description
         </Text>
       )}
     </GaugeChartCenter>
