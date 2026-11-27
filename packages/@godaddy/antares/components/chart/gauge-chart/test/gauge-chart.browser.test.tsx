@@ -3,6 +3,7 @@ import { createRef } from 'react';
 import { render } from 'vitest-browser-react';
 import { describe, expect, it } from 'vitest';
 import { userEvent } from 'vitest/browser';
+import { ContextDescriptionExample } from '../examples/context-description.tsx';
 import { ContinuousExample } from '../examples/continuous.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { DynamicDescriptionExample } from '../examples/dynamic-description.tsx';
@@ -125,6 +126,25 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#composition', function composition() {
+      it('keeps a wrapped description below the arc when Flex styles load last', async function lateFlexStyles() {
+        const { getByRole, getByText } = await render(<ContextDescriptionExample />);
+        const meter = getByRole('meter', { name: 'Site health' });
+        const description = getByText('Health from context.');
+        const flexStyles = document.querySelector('style[data-vite-dev-id$="/layout/flex/src/index.module.css"]');
+        if (!flexStyles) throw new Error('Flex stylesheet is missing');
+        const stylesheet = document.createElement('style');
+        stylesheet.textContent = flexStyles.textContent;
+        document.head.append(stylesheet);
+
+        try {
+          expect(description.element().getBoundingClientRect().top).toBeGreaterThanOrEqual(
+            meter.element().getBoundingClientRect().bottom
+          );
+        } finally {
+          stylesheet.remove();
+        }
+      });
+
       it('honors explicit text emphasis and center sizing', async function slotEmphasis() {
         const { getByText } = await render(
           <PlaygroundExample

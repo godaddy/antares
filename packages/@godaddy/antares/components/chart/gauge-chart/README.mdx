@@ -36,6 +36,8 @@ npm install @godaddy/antares
 
 Compose the optional center and range in either order. Use `Text` in the `value` and `description` slots. An explicit `Text size` overrides the responsive default. The chart assigns the description slot ID. Use `labelType="text"` for a smaller default and `valueLabel` for accessible value text.
 
+Place slotted `Text` directly inside `GaugeChartCenter` when mixing it with unslotted controls.
+
 Continuous values are clamped to 0–100. Segmented values are clamped to 0–`segments`.
 
 ### GaugeChart

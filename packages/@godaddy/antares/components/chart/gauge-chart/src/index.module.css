@@ -81,7 +81,8 @@
   align-self: center;
 }
 
-.centerContent:where(:has(> .value, > .description):not(:has(> :not(.value, .description)))) {
+/* Override Flex's display rule regardless of stylesheet order. */
+.center > .centerContent:where(:has(> .value, > .description):not(:has(> :not(.value, .description)))) {
   display: contents;
 }
 
