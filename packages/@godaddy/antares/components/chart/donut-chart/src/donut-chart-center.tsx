@@ -1,42 +1,34 @@
-import { createContext, forwardRef, useContext, type ReactNode } from 'react';
-import { DEFAULT_SLOT, useContextProps, type ContextValue } from 'react-aria-components';
-import { cx } from 'cva';
-import { textTreatmentClassName } from '#components/_internal/typography';
-import { Flex, type FlexProps } from '#components/layout/flex';
-import { TextContext } from '#components/text';
+import { createContext, forwardRef } from 'react';
+import type { ContextValue } from 'react-aria-components';
+import {
+  ChartRegion,
+  type ChartRegionDefinition,
+  type ChartRegionProps
+} from '#components/chart/_internal/chart-region';
 import { composeClassName } from '#utils/render-props.ts';
-import { DonutChartCenterLayoutContext } from './donut-chart-context.ts';
 import styles from './index.module.css';
 
-export interface DonutChartCenterProps extends Omit<FlexProps<'div'>, 'as'> {
-  /** Content centered in the ring. Use the `value` and `description` slots for the default text styles. */
-  children?: ReactNode;
-}
+export interface DonutChartCenterProps extends ChartRegionProps {}
 
 export const DonutChartCenterContext =
   /* @__PURE__ */ createContext<ContextValue<DonutChartCenterProps, HTMLDivElement>>(null);
 
-/** Positions content inside a donut ring. */
+const centerRegion: ChartRegionDefinition = {
+  name: 'center',
+  context: DonutChartCenterContext,
+  slots: { value: styles.value, description: styles.description }
+};
+
+/** Positions a value and description inside the donut ring. Use the `value` and `description` slots. */
 export const DonutChartCenter = /* @__PURE__ */ forwardRef<HTMLDivElement, DonutChartCenterProps>(
   function DonutChartCenter(props, ref) {
-    const [{ children, className, ...rest }, centerRef] = useContextProps(props, ref, DonutChartCenterContext);
-    const layoutClassName = useContext(DonutChartCenterLayoutContext);
-    const textSlots = {
-      [DEFAULT_SLOT]: {},
-      value: { className: cx(styles.value, textTreatmentClassName('inherit')) },
-      description: { className: cx(styles.description, textTreatmentClassName('inherit')) }
-    };
     return (
-      <Flex
-        alignItems="center"
-        justifyContent="center"
-        direction="column"
-        {...rest}
-        ref={centerRef}
-        className={composeClassName(className, layoutClassName)}
-      >
-        <TextContext.Provider value={{ slots: textSlots }}>{children}</TextContext.Provider>
-      </Flex>
+      <ChartRegion
+        {...props}
+        region={centerRegion}
+        ref={ref}
+        className={composeClassName(props.className, styles.centerContent)}
+      />
     );
   }
 );

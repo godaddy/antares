@@ -8,6 +8,7 @@ import { waitForSelector } from '#test/utils/wait-for-selector.ts';
 import { AllSmallSlicesExample } from '../examples/all-small-slices.tsx';
 import { CenterOverrideExample } from '../examples/center-override.tsx';
 import { DefaultExample } from '../examples/default.tsx';
+import { DynamicDescriptionExample } from '../examples/dynamic-description.tsx';
 import { FormatValueExample } from '../examples/format-value.tsx';
 import { InteractiveCenterExample } from '../examples/interactive-center.tsx';
 import { LegendLayoutExample } from '../examples/legend-layout.tsx';
@@ -34,34 +35,61 @@ async function renderDonutExample(node: ReactNode, width = 400, height = 400) {
 describe('@godaddy/antares', function antares() {
   describe('#DonutChart', function donutChartTests() {
     describe('#render', function renderTests() {
-      it('renders single slice with aria-label, one path, and center labels', async function singleSlice() {
-        const { container, locator } = await renderDonutExample(<SingleSliceExample />);
+      it.each([false, true])(
+        'lays out a single slice and center labels (description first: %s)',
+        async function singleSlice(descriptionFirst) {
+          const { container, locator } = await renderDonutExample(
+            <SingleSliceExample descriptionFirst={descriptionFirst} />
+          );
 
-        const svg = container.querySelector('svg') as SVGSVGElement;
-        assume(svg).exists();
-        assume(svg.getAttribute('role')).equals('img');
-        assume(svg.getAttribute('aria-label')).equals('Donut chart with a single full ring');
+          const svg = container.querySelector('svg') as SVGSVGElement;
+          assume(svg).exists();
+          assume(svg.getAttribute('role')).equals('img');
+          assume(svg.getAttribute('aria-label')).equals('Donut chart with a single full ring');
 
-        const paths = svg.querySelectorAll('path');
-        assume(paths.length).equals(1);
+          const paths = svg.querySelectorAll('path');
+          assume(paths.length).equals(1);
 
-        const value = locator.getByText('$1,000').element();
-        const description = locator.getByText('Sub label').element();
-        const valueBounds = value.getBoundingClientRect();
-        const ringBounds = svg.getBoundingClientRect();
+          const value = locator.getByText('$1,000').element();
+          const description = locator.getByText('Sub label').element();
+          const valueBounds = value.getBoundingClientRect();
+          const descriptionBounds = description.getBoundingClientRect();
+          const ringBounds = svg.getBoundingClientRect();
 
-        expect(valueBounds.left + valueBounds.width / 2).toBeCloseTo(ringBounds.left + ringBounds.width / 2, 1);
-        expect(valueBounds.bottom).toBeLessThanOrEqual(description.getBoundingClientRect().top);
-        expect(Number.parseFloat(getComputedStyle(value).fontSize)).toBeCloseTo(ringBounds.width * 0.1573, 1);
-        expect(Number.parseFloat(getComputedStyle(description).fontSize)).toBeCloseTo(ringBounds.width * 0.0681, 1);
-      });
+          expect(valueBounds.left + valueBounds.width / 2).toBeCloseTo(ringBounds.left + ringBounds.width / 2, 1);
+          expect(valueBounds.bottom).toBeLessThanOrEqual(descriptionBounds.top);
+          expect((valueBounds.top + descriptionBounds.bottom) / 2).toBeCloseTo(
+            ringBounds.top + ringBounds.height / 2,
+            0
+          );
+          expect(Number.parseFloat(getComputedStyle(value).fontSize)).toBeCloseTo(ringBounds.width * 0.1573, 1);
+          expect(Number.parseFloat(getComputedStyle(description).fontSize)).toBeCloseTo(ringBounds.width * 0.0681, 1);
+        }
+      );
 
-      it('honors explicit text sizing in the center slots', async function explicitTextSize() {
-        const { locator } = await renderDonutExample(<CenterOverrideExample size="xs" />);
+      it('honors explicit text sizing and emphasis in the center slots', async function overrides() {
+        const { locator } = await renderDonutExample(<CenterOverrideExample size="xs" emphasis="critical" />);
 
         for (const text of ['$1,000', 'Sub label']) {
-          expect(getComputedStyle(locator.getByText(text).element()).fontSize).toBe('12px');
+          await expect.element(locator.getByText(text)).toHaveStyle({ fontSize: '12px', color: 'rgb(219, 24, 2)' });
         }
+      });
+
+      it('preserves external descriptions when the description slot changes', async function dynamicDescription() {
+        const { locator } = await renderDonutExample(<DynamicDescriptionExample />);
+        const chart = locator.getByRole('img', { name: 'Total sales' });
+        const changeDescription = locator.getByRole('button', { name: 'Change description' });
+
+        await expect.element(chart).toHaveAttribute('aria-describedby', 'external-description sales-description');
+        await expect.element(chart).toHaveAccessibleDescription('Updated daily. Online sales.');
+        await changeDescription.click();
+        await expect.element(chart).toHaveAttribute('aria-describedby', 'external-description renamed-description');
+        await expect.element(chart).toHaveAccessibleDescription('Updated daily. Online sales.');
+        await changeDescription.click();
+        await expect.element(chart).toHaveAttribute('aria-describedby', 'external-description');
+        await expect.element(chart).toHaveAccessibleDescription('Updated daily.');
+        await changeDescription.click();
+        await expect.element(chart).toHaveAttribute('aria-describedby', 'external-description sales-description');
       });
 
       it('renders basic chart with central label and category names', async function basicChart() {

@@ -54,6 +54,31 @@
   pointer-events: auto;
 }
 
+.centerContent {
+  align-content: center;
+  justify-items: center;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.centerContent:where(:has(> .value):has(> .description)) {
+  grid-template-areas:
+    "value"
+    "description";
+
+  & > :where(.value) {
+    grid-area: value;
+  }
+
+  & > :where(.description) {
+    grid-area: description;
+  }
+}
+
+.value,
+.description {
+  --_type-slot-color: currentColor;
+}
+
 .value {
   --_type-slot-size: var(--donut-value-font-size, 1em);
 

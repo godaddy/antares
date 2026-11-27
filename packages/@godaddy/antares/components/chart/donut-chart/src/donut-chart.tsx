@@ -3,6 +3,11 @@ import { Group } from '@visx/group';
 import { Pie } from '@visx/shape';
 import { TooltipTrigger as RACTooltipTrigger } from 'react-aria-components';
 import { InternalChartLegendContext, type InternalChartLegendValue } from '#components/chart/chart-legend';
+import {
+  ChartRegionsContext,
+  useChartDescription,
+  type ChartRegionPlacements
+} from '#components/chart/_internal/chart-region';
 import { chartColorForIndex } from '#components/chart/_internal/use-chart-color';
 import { useNormalizedSeries } from '#components/chart/_internal/use-normalized-series';
 import { Box } from '#components/layout/box';
@@ -13,7 +18,6 @@ import { Tooltip } from '#components/tooltip';
 import { composeClassName } from '#utils/render-props.ts';
 import type { Optional, SeriesConfig } from '../../types.ts';
 import { chartSegmentGapPadAngle } from '../../utils.ts';
-import { DonutChartCenterLayoutContext } from './donut-chart-context.ts';
 import styles from './index.module.css';
 import { textTreatmentClassName } from '#components/_internal/typography';
 
@@ -90,9 +94,20 @@ export function DonutChart(props: DonutChartProps) {
     smallSliceThreshold = 0.05,
     formatValue: formatValueProp,
     'aria-label': ariaLabel,
+    'aria-labelledby': labelledBy,
+    'aria-describedby': externalDescription,
+    'aria-description': ariaDescription,
+    'aria-details': ariaDetails,
     className,
     ...gridProps
   } = props;
+  const { descriptionSlot, describedBy } = useChartDescription(externalDescription);
+  const regions = useMemo(
+    function createRegions(): ChartRegionPlacements {
+      return { center: { className: styles.center, slots: { description: descriptionSlot } } };
+    },
+    [descriptionSlot]
+  );
   const normalizedData = useNormalizedSeries(data);
   const coloredData = useMemo(
     function assignSliceColors(): ColoredSlice[] {
@@ -293,6 +308,10 @@ export function DonutChart(props: DonutChartProps) {
               role="img"
               onPointerLeave={clearTooltipSlices}
               aria-label={ariaLabel}
+              aria-labelledby={labelledBy}
+              aria-describedby={describedBy}
+              aria-description={ariaDescription}
+              aria-details={ariaDetails}
             >
               <Pie<ColoredSlice>
                 data={pieData}
@@ -361,9 +380,7 @@ export function DonutChart(props: DonutChartProps) {
         </Tooltip>
       </RACTooltipTrigger>
       <InternalChartLegendContext.Provider value={legend}>
-        <DonutChartCenterLayoutContext.Provider value={styles.center}>
-          {children}
-        </DonutChartCenterLayoutContext.Provider>
+        <ChartRegionsContext.Provider value={regions}>{children}</ChartRegionsContext.Provider>
       </InternalChartLegendContext.Provider>
     </Grid>
   );

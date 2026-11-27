@@ -83,7 +83,7 @@ export function TrafficSources() {
       aria-label="Traffic sources: 70 percent organic, 30 percent direct"
     >
       <DonutChartCenter>
-        <Text slot="value">100%</Text>
+        <Text slot="value" size="2xl">100%</Text>
         <Text slot="description">Traffic</Text>
       </DonutChartCenter>
       <ChartLegend label="Source" />
@@ -91,6 +91,8 @@ export function TrafficSources() {
   );
 }
 ```
+
+Use `DonutChartCenter` with `Text` in the `value` and `description` slots. The slots can appear in either order. An explicit `Text size` overrides the chart's responsive default. The description also describes the ring.
 
 `legendPosition` defaults to `"bottom"` and accepts `"end"` for a legend beside the ring. `formatValue` formats slice values in the tooltip. Only positive slices appear in the ring. Handle an empty or all-zero total explicitly. `smallSliceThreshold` groups adjacent small slices in the tooltip.
 
