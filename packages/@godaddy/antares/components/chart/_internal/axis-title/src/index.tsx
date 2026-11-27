@@ -1,16 +1,7 @@
-import { cx, cva } from 'cva';
+import { cx } from 'cva';
 import { useLocale } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
 import styles from './index.module.css';
-
-const axisTitleVariants = cva(undefined, {
-  variants: {
-    axis: {
-      x: styles.xAxis,
-      y: styles.yAxis
-    }
-  }
-});
 
 export interface AxisTitleProps {
   /** Axis title text */
@@ -40,6 +31,7 @@ export interface AxisTitleProps {
 export function AxisTitle(props: AxisTitleProps) {
   const { title, axis, className } = props;
   const { direction } = useLocale();
+  const axisClassName = axis === 'x' ? styles.xAxis : styles.yAxis;
 
   return (
     <Flex
@@ -47,7 +39,7 @@ export function AxisTitle(props: AxisTitleProps) {
       aria-label={`${axis} axis title`}
       justifyContent="center"
       alignItems="center"
-      className={cx(styles.axis, axisTitleVariants({ axis }), className)}
+      className={cx(styles.axis, axisClassName, className)}
       dir={direction}
     >
       {title}

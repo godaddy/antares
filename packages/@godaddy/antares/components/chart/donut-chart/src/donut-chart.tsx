@@ -38,7 +38,7 @@ interface ColoredSlice extends DonutSliceDatum {
 const TOOLTIP_PLACEMENT_STABILITY_EPSILON = 1e-6;
 
 /** Reused for every tooltip slice row; avoids allocating Intl.NumberFormat per cell per render. */
-const slicePercentFormatter = new Intl.NumberFormat(undefined, {
+const slicePercentFormatter = /* @__PURE__ */ new Intl.NumberFormat(undefined, {
   style: 'percent',
   maximumFractionDigits: 1,
   minimumFractionDigits: 0
