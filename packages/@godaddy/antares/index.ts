@@ -14,6 +14,7 @@ export * from './exports/Image';
 export * from './exports/Layout';
 export * from './exports/Structure';
 export * from './exports/ListBox';
+export * from './exports/Virtualizer';
 export * from './exports/Select';
 export * from './exports/Menu';
 export * from './exports/Chart';
