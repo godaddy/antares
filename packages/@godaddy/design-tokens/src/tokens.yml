@@ -338,6 +338,10 @@ color-canvas-text:
   $type: color
   $value: "black"
   $description: "Default body text color on the canvas when no surface-specific token applies."
+color-canvas-focus:
+  $type: color
+  $value: "Highlight"
+  $description: "Focus indicator (focus-visible outline/ring) color for interactive elements. Defaults to the system Highlight color so production matches the browser's native focus treatment unless a theme overrides it."
 
 # --
 # Color — chart
