@@ -1,4 +1,4 @@
-import { Button, DonutChart, DonutChartCenter } from '@godaddy/antares';
+import { Button, DonutChart, DonutChartCenter, Text } from '@godaddy/antares';
 
 /** @ignore */
 export function InteractiveCenterExample({ onPress }: { onPress?: () => void }) {
@@ -14,6 +14,9 @@ export function InteractiveCenterExample({ onPress }: { onPress?: () => void }) 
           aria-label="Edit center note"
           style={{ inlineSize: 96, minBlockSize: 24 }}
         />
+        <Text as="button" slot="description" onClick={onPress}>
+          Open center note
+        </Text>
       </DonutChartCenter>
     </DonutChart>
   );

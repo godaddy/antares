@@ -19,7 +19,6 @@ import { Tooltip } from '#components/tooltip';
 import { composeClassName } from '#utils/render-props.ts';
 import type { Optional, SeriesConfig } from '../../types.ts';
 import { chartSegmentGapPadAngle } from '../../utils.ts';
-import { DonutChartCenter } from './donut-chart-center.tsx';
 import styles from './index.module.css';
 import { textTreatmentClassName } from '#components/_internal/typography';
 
@@ -100,7 +99,7 @@ export function DonutChart(props: DonutChartProps) {
     className,
     ...gridProps
   } = props;
-  const { descriptionSlot, describedBy } = useChartDescription(children, DonutChartCenter, externalDescription);
+  const { descriptionSlot, describedBy } = useChartDescription(children != null, externalDescription);
   const regions = useMemo(
     function createRegions(): ChartRegionPlacements {
       return { center: { className: styles.center, slots: { description: descriptionSlot } } };
@@ -273,6 +272,10 @@ export function DonutChart(props: DonutChartProps) {
   }, []);
 
   const tooltipOpen = tooltipSlices.length > 0;
+  if (hoveredSliceId !== null && !tooltipOpen) {
+    setHoveredSliceId(null);
+    setTooltipAnchorOffset({ left: 0, top: 0 });
+  }
   const tooltipPlacementEpsilon = tooltipOpen
     ? (tooltipAnchorOffset.left + tooltipAnchorOffset.top) * TOOLTIP_PLACEMENT_STABILITY_EPSILON
     : 0;

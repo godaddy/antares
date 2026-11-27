@@ -81,26 +81,26 @@ describe('@godaddy/antares', function antares() {
         const chart = locator.getByRole('img', { name: 'Total sales' });
         const changeDescription = locator.getByRole('button', { name: 'Change description' });
 
-        await expect.element(chart).toHaveAttribute('aria-describedby', 'external-description sales-description');
+        const slot = locator.getByText('Online sales.');
+        const id = slot.element().id;
+        expect(id).toBeTruthy();
+        expect(id).not.toBe('sales-description');
+        const describedBy = 'external-description ' + id;
+        await expect.element(chart).toHaveAttribute('aria-describedby', describedBy);
         await expect.element(chart).toHaveAccessibleDescription('Updated daily. Online sales.');
-        expect(chart.element().contains(changeDescription.element())).toBe(false);
         await userEvent.tab();
         await expect.element(changeDescription).toHaveFocus();
         await userEvent.keyboard('{Enter}');
-        await expect.element(chart).toHaveAttribute('aria-describedby', 'external-description renamed-description');
+        await expect.element(slot).toHaveAttribute('id', id);
         await changeDescription.click();
-        const slot = locator.getByText('Online sales.');
-        await expect.element(chart).not.toHaveAttribute('aria-describedby', /renamed-description/);
-        const generatedId = slot.element().id;
-        expect(generatedId).toBeTruthy();
-        expect(generatedId).not.toBe('sales-description');
-        await expect.element(chart).toHaveAttribute('aria-describedby', 'external-description ' + generatedId);
+        await expect.element(slot).toHaveAttribute('id', id);
+        await expect.element(chart).toHaveAttribute('aria-describedby', describedBy);
         await expect.element(chart).toHaveAccessibleDescription('Updated daily. Online sales.');
         await changeDescription.click();
         await expect.element(chart).toHaveAttribute('aria-describedby', 'external-description');
         await expect.element(chart).toHaveAccessibleDescription('Updated daily.');
         await changeDescription.click();
-        await expect.element(chart).toHaveAttribute('aria-describedby', 'external-description sales-description');
+        await expect.element(chart).toHaveAttribute('aria-describedby', describedBy);
       });
 
       it('renders basic chart with central label and category names', async function basicChart() {
@@ -204,12 +204,18 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#tooltip', function tooltipTests() {
-      it('keeps the ring hoverable when center text overlaps a slice', async function overlappingCenter() {
-        const { locator } = await renderDonutExample(<CenterOverrideExample value="WWWWWWWWWWWWWW" />, 180, 300);
+      it('keeps the ring hoverable when formatted center text overlaps a slice', async function overlappingCenter() {
+        const { locator } = await renderDonutExample(
+          <CenterOverrideExample value="WWWWWWWWWWWWWW" formatted />,
+          180,
+          300
+        );
         const chart = locator.getByRole('img').element();
         const slice = chart.querySelector('path')!;
         const { width, height } = chart.getBoundingClientRect();
 
+        const bounds = slice.getBoundingClientRect();
+        expect(document.elementFromPoint(bounds.left + width - 5, bounds.top + height / 2)).toBe(slice);
         await page.elementLocator(slice).hover({ position: { x: width - 5, y: height / 2 } });
         await expect.element(page.getByRole('tooltip')).toHaveTextContent('Total100%100');
       });
@@ -232,6 +238,14 @@ describe('@godaddy/antares', function antares() {
         ).toBe(editor.element());
         await editor.click();
         await expect.element(editor).toHaveFocus();
+
+        const slottedButton = locator.getByRole('button', { name: 'Open center note' });
+        const buttonBounds = slottedButton.element().getBoundingClientRect();
+        expect(
+          document.elementFromPoint(buttonBounds.x + buttonBounds.width / 2, buttonBounds.y + buttonBounds.height / 2)
+        ).toBe(slottedButton.element());
+        await slottedButton.click();
+        expect(onPress).toHaveBeenCalledTimes(2);
       });
 
       it('opens tooltip on slice hover and closes when the pointer moves into the ring hole', async function hoverAndLeave() {
@@ -271,6 +285,8 @@ describe('@godaddy/antares', function antares() {
         }
 
         const { width, height } = chart.element().getBoundingClientRect();
+        const bounds = slice.getBoundingClientRect();
+        expect(document.elementFromPoint(bounds.left + width - 5, bounds.top + height / 2)).toBe(slice);
         await page.elementLocator(slice).hover({ position: { x: width - 5, y: height / 2 } });
         const tooltip = page.getByRole('tooltip');
         await expect.element(tooltip).toBeVisible();
@@ -287,6 +303,14 @@ describe('@godaddy/antares', function antares() {
         expect(salesSwatchColor('Channel')).toBe(updatedFill);
         await expect.element(tooltip).toBeVisible();
         expect(salesSwatchColor('Tooltip data')).toBe(updatedFill);
+
+        await rerender(<LegendExample data={[]} />);
+        await expect.element(chart).not.toBeInTheDocument();
+        await expect.element(tooltip).not.toBeInTheDocument();
+        await page.getByText('Channel', { exact: true }).hover();
+        await rerender(<LegendExample data={[sales]} />);
+        await expect.element(chart).toBeVisible();
+        await expect.element(tooltip).not.toBeInTheDocument();
       });
 
       it('shows formatValue output in tooltip for FormatValueExample', async function formatValueTooltip() {

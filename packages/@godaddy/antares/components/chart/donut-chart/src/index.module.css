@@ -46,16 +46,10 @@
   align-self: stretch;
   justify-self: stretch;
   container-type: size;
-  pointer-events: none;
   position: relative;
   align-content: center;
   justify-items: center;
   grid-template-columns: minmax(0, 1fr);
-
-  & > :where(:not(.value, .description)),
-  & :where(.value, .description) > * {
-    pointer-events: auto;
-  }
 }
 
 .center:where(:has(> .value):has(> .description)) {
