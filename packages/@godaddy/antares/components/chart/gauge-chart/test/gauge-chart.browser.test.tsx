@@ -190,19 +190,26 @@ describe('@godaddy/antares', function antares() {
       it.each([false, true])(
         'keeps center controls clickable and descriptions current (range first: %s)',
         async function dynamicDescription(rangeFirst) {
-          const { getByRole, getByText } = await render(<DynamicDescriptionExample rangeFirst={rangeFirst} />);
+          const { getByRole } = await render(<DynamicDescriptionExample rangeFirst={rangeFirst} />);
           const meter = getByRole('meter', { name: 'Site health' });
           const changeDescription = getByRole('button', { name: 'Change description' });
           const descriptionButton = getByRole('button', { name: 'Change from description' });
+          const changeAgain = getByRole('button', { name: 'Change again' });
           const arc = meter.element().getBoundingClientRect();
           const control = changeDescription.element().getBoundingClientRect();
+          const sibling = changeAgain.element().getBoundingClientRect();
+          const groupCenter = (control.top + sibling.bottom) / 2;
 
           expect(control.left + control.width / 2).toBeCloseTo(arc.left + arc.width / 2, 0);
-          expect(Math.abs(control.top + control.height / 2 - (arc.top + arc.height / 2))).toBeLessThan(arc.height / 10);
-          await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description score-description');
-          await expect
-            .element(meter)
-            .toHaveAccessibleDescription('Updated daily. Site health score. Change from description');
+          expect(Math.abs(groupCenter - (arc.top + arc.height / 2))).toBeLessThan(arc.height / 10);
+          expect(control.bottom).toBeLessThanOrEqual(sibling.top);
+
+          const id = descriptionButton.element().id;
+          expect(id).toBeTruthy();
+          expect(id).not.toBe('score-description');
+          const describedBy = 'external-description ' + id;
+          await expect.element(meter).toHaveAttribute('aria-describedby', describedBy);
+          await expect.element(meter).toHaveAccessibleDescription('Updated daily. Change from description');
           expect(meter.element().contains(changeDescription.element())).toBe(false);
           await userEvent.tab();
           await expect.element(changeDescription).toHaveFocus();
@@ -212,22 +219,16 @@ describe('@godaddy/antares', function antares() {
             descriptionButton.element()
           );
           await descriptionButton.click();
-          await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description renamed-description');
-          await userEvent.keyboard('{Enter}');
-          const slot = getByText('Site health score.', { exact: false });
-          await expect.element(meter).not.toHaveAttribute('aria-describedby', /renamed-description/);
-          const generatedId = slot.element().id;
-          expect(generatedId).toBeTruthy();
-          expect(generatedId).not.toBe('score-description');
-          await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description ' + generatedId);
-          await expect
-            .element(meter)
-            .toHaveAccessibleDescription('Updated daily. Site health score. Change from description');
+          await expect.element(descriptionButton).toHaveAttribute('id', id);
+          await changeAgain.click();
+          await expect.element(descriptionButton).toHaveAttribute('id', id);
+          await expect.element(meter).toHaveAttribute('aria-describedby', describedBy);
+          await expect.element(meter).toHaveAccessibleDescription('Updated daily. Change from description');
           await changeDescription.click();
-          await expect.element(meter).toHaveAccessibleDescription('Updated daily.');
           await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description');
+          await expect.element(meter).toHaveAccessibleDescription('Updated daily.');
           await changeDescription.click();
-          await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description score-description');
+          await expect.element(meter).toHaveAttribute('aria-describedby', describedBy);
         }
       );
 
