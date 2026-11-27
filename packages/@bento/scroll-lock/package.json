@@ -47,7 +47,7 @@
     "@bento/slots": "workspace:^",
     "@bento/use-data-attributes": "workspace:^",
     "@bento/use-props": "workspace:^0.2.2",
-    "@react-aria/overlays": "^3.32.0"
+    "@react-aria/overlays": "^3.32.1"
   },
   "devDependencies": {
     "@types/react-dom": "catalog:",

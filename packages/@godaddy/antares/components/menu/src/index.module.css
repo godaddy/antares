@@ -14,7 +14,7 @@
 }
 
 .overlay {
-  --rounding-md: var(--size-radius-2xl, 16px);
+  --_box-rounding-md: var(--size-radius-2xl, 16px);
   display: flex;
   flex-direction: column;
   align-items: stretch;

@@ -1,6 +1,9 @@
 .container {
-  --edge-fade-width: var(--sp-lg);
-  --edge-clear-width: calc(var(--sp-lg) + var(--sp-sm));
+  --_carousel-space-sm: var(--size-space-020, calc(var(--ux-1sbfig8, 0.25rem) * 1));
+  --_carousel-space-lg: var(--size-space-070, calc(var(--ux-1sbfig8, 0.25rem) * 3));
+  --_carousel-edge-fade-width: var(--_carousel-space-lg);
+  --_carousel-edge-clear-width: calc(var(--_carousel-space-lg) + var(--_carousel-space-sm));
+  --_carousel-edge-bg: var(--color-surface-background-base, var(--ux-cao06b, Canvas));
   --mask-fade-direction-start: to left;
   --mask-fade-direction-end: to right;
 
@@ -28,14 +31,14 @@
 .edgeMask::before,
 .edgeMask::after {
   content: "";
-  background: var(--bg-base);
-  width: calc(var(--edge-clear-width) + var(--edge-fade-width));
+  background: var(--_carousel-edge-bg);
+  width: calc(var(--_carousel-edge-clear-width) + var(--_carousel-edge-fade-width));
   transition: opacity 200ms ease;
   mask-image: linear-gradient(
     var(--mask-fade-direction-start),
     transparent 0,
-    transparent calc(var(--edge-clear-width)),
-    black calc((var(--edge-clear-width) + var(--edge-fade-width))),
+    transparent calc(var(--_carousel-edge-clear-width)),
+    black calc((var(--_carousel-edge-clear-width) + var(--_carousel-edge-fade-width))),
     black 100%
   );
 }
@@ -44,8 +47,8 @@
   mask-image: linear-gradient(
     var(--mask-fade-direction-end),
     transparent 0,
-    transparent calc(var(--edge-clear-width)),
-    black calc((var(--edge-clear-width) + var(--edge-fade-width))),
+    transparent calc(var(--_carousel-edge-clear-width)),
+    black calc((var(--_carousel-edge-clear-width) + var(--_carousel-edge-fade-width))),
     black 100%
   );
 }
@@ -58,7 +61,7 @@
 :where(.slide) {
   flex-shrink: 0;
   flex-grow: 0;
-  max-width: calc(100% - var(--sp-lg) * 2);
+  max-width: calc(100% - var(--_carousel-space-lg) * 2);
   width: 100%;
 }
 

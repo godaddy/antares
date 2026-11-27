@@ -1,4 +1,5 @@
 import assume from 'assume';
+import type { CSSProperties } from 'react';
 import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
@@ -78,6 +79,18 @@ describe('@godaddy/antares', function antares() {
         assume(trailingText).exists();
         assume(textbox).exists();
         assume(textbox.getAttribute('placeholder')).equals('0.00');
+      });
+
+      it('colors grouped inputs from the card text token', async function cardTextToken() {
+        const { locator } = await render(
+          <div style={{ '--color-surface-text-card': 'rgb(1, 2, 3)' } as CSSProperties}>
+            <AdornmentsExample />
+          </div>
+        );
+
+        assume(getComputedStyle(locator.getByRole('textbox', { name: 'Amount' }).element()).color).equals(
+          'rgb(1, 2, 3)'
+        );
       });
     });
 

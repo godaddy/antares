@@ -39,10 +39,8 @@ Edit `recipes.ts`:
 ```ts
 export const RECIPES = {
   Legacy: [legacy],
-  Nextgen: [nextgen],
-  Both: [legacy, nextgen],
   None: [],
-  BothLegacyWins: [nextgen, legacy] // Legacy wins collisions
+  LegacyDense: [legacy, dense] // later sheets win collisions
 } as const satisfies Record<string, readonly CSSStyleSheet[]>;
 ```
 
@@ -54,13 +52,13 @@ recipes.
 
 ```ts
 // Doesn't update the toolbar visual:
-export const TokensCollision = {
-  parameters: { themes: { themeOverride: 'Both' } }
+export const Unthemed = {
+  parameters: { themes: { themeOverride: 'None' } }
 };
 
 // Updates the toolbar visual when active:
 export default {
-  globals: { theme: 'Nextgen' }
+  globals: { theme: 'None' }
 };
 ```
 

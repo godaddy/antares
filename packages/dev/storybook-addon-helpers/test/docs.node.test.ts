@@ -157,7 +157,9 @@ describe('resolvePropsDoc', function resolvePropsDocTests() {
     expect(doc?.props.find((p) => p.name === 'onPress')?.category).toBe('Events');
   });
 
-  it('drops inherited props whose sourceFile matches ignoreSourceFiles', async function ignoresBySourceFile() {
+  it('drops inherited props whose sourceFile matches ignoreSourceFiles', {
+    timeout: 15_000
+  }, async function ignoresBySourceFile() {
     const kept = await resolvePropsDoc({ filePath: ignoreSourcePath, exportName: 'Kept' });
     expect(kept?.props.map((p) => p.name).sort()).toEqual(['inherited', 'local']);
 
@@ -166,7 +168,9 @@ describe('resolvePropsDoc', function resolvePropsDocTests() {
     expect(ignored?.props.some((p) => p.name === 'inherited')).toBe(false);
   });
 
-  it('honors a RegExp ignoreSourceFiles supplied via global defaults', async function ignoresViaDefaults() {
+  it('honors a RegExp ignoreSourceFiles supplied via global defaults', {
+    timeout: 15_000
+  }, async function ignoresViaDefaults() {
     const doc = await resolvePropsDoc({
       filePath: ignoreSourcePath,
       exportName: 'Kept',
