@@ -1,122 +1,118 @@
-import type { CSSProperties, ReactNode } from 'react';
-import { forwardRef, useId } from 'react';
+import { forwardRef, type CSSProperties } from 'react';
 import {
   ProgressBar as RACProgressBar,
   type ProgressBarProps as RACProgressBarProps,
   composeRenderProps
 } from 'react-aria-components';
-import { Label } from '#components/label';
-import { Text } from '#components/text';
-import { Flex } from '#components/layout/flex';
+import { Grid, type GridOwnProps } from '#components/layout/grid';
+import { ProgressSlots, useProgressDescription } from '#components/_internal/progress-slots';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
-import { cx } from 'cva';
-import { textTreatmentClassName } from '#components/_internal/typography';
+
+export type { ProgressBarRenderProps } from 'react-aria-components';
 
 const VIEWBOX_SIZE = 100;
 const STROKE_WIDTH = 12.5;
 const RADIUS = (VIEWBOX_SIZE - STROKE_WIDTH) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-export interface CircularProgressProps extends Omit<RACProgressBarProps, 'children'> {
-  /** Show ongoing activity when progress cannot be measured. Ignores value and hides value text. @default false */
-  isIndeterminate?: boolean;
+export interface CircularProgressProps extends RACProgressBarProps, Omit<GridOwnProps, 'as'> {
+  /** Composed label, value, circular track, and description. A function receives progress state. */
+  children?: RACProgressBarProps['children'];
+
+  /** Accessible value text and default value-slot content. Does not add visible output. */
+  valueLabel?: string;
 
   /** Size preset controlling circle diameter and typography scale. @default 'md' */
   size?: 'sm' | 'md' | 'lg' | 'xl';
 
-  /** Visual emphasis for status feedback. Overrides the fill color. */
-  emphasis?: 'success' | 'warning' | 'critical';
-
-  /** Visible label text displayed below the circle. */
-  label?: string;
-
-  /** Helper or notice text displayed below the label. */
-  helperText?: ReactNode;
+  /** Color intent of the fill. @default 'default' */
+  status?: 'default' | 'success' | 'warning' | 'critical';
 }
 
 /**
- * A circular progress indicator shows determinate or indeterminate progress of an operation over time.
- *
- * @param props - The properties {@link CircularProgressProps} passed to the component.
+ * Shows circular determinate or indeterminate progress.
+ * A `<Box slot="track" />` is required to render the ring.
  *
  * @example
  * ```tsx
- * <CircularProgress label="Uploading…" value={60} helperText="3 of 5 files uploaded" />
+ * <CircularProgress value={60}>
+ *   <Box slot="track" />
+ *   <Box slot="value" />
+ *   <Label>Uploading…</Label>
+ * </CircularProgress>
  * ```
  */
 export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps>(
   function CircularProgress(props, ref) {
     const {
       size = 'md',
-      emphasis,
-      label,
-      helperText,
+      status = 'default',
       className,
       style,
-      'aria-describedby': describedByProp,
+      children,
+      'aria-describedby': describedBy,
       ...rest
     } = props;
-
-    const helperTextId = useId();
-    const describedBy = helperText ? [describedByProp, helperTextId].filter(Boolean).join(' ') : describedByProp;
+    const { descriptionId, descriptionRef, describedBy: description } = useProgressDescription(describedBy);
 
     return (
-      <Flex
+      <Grid
+        columns="minmax(0, 1fr)"
+        areas={['track', 'label', 'description']}
+        justifyItems="center"
         {...rest}
-        ref={ref}
-        direction="column"
-        alignItems="center"
-        gap="sm"
         as={RACProgressBar}
+        ref={ref}
         className={composeClassName(className, styles.root)}
         data-size={size}
-        data-emphasis={emphasis}
-        aria-describedby={describedBy}
+        data-status={status}
+        aria-describedby={description}
         style={composeRenderProps(style, function composeStyle(value) {
           return { ...value, '--circular-progress-stroke-width': STROKE_WIDTH } as CSSProperties;
         })}
       >
-        {function renderContent({ percentage, valueText, isIndeterminate }) {
-          const offset = CIRCUMFERENCE * (isIndeterminate ? 0.75 : 1 - (percentage ?? 0) / 100);
+        {function renderContent(state) {
+          const offset = CIRCUMFERENCE * (state.isIndeterminate ? 0.75 : 1 - (state.percentage ?? 0) / 100);
           return (
-            <>
-              <div className={styles.indicator}>
-                <svg
-                  className={styles.svg}
-                  data-indeterminate={isIndeterminate || undefined}
-                  viewBox={`0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`}
-                  aria-hidden="true"
-                >
-                  <circle className={styles.track} cx="50" cy="50" r={RADIUS} fill="none" strokeLinecap="round" />
-                  <circle
-                    className={styles.fill}
-                    cx="50"
-                    cy="50"
-                    r={RADIUS}
-                    fill="none"
-                    strokeLinecap="round"
-                    transform="rotate(-90 50 50)"
-                    strokeDasharray={CIRCUMFERENCE}
-                    strokeDashoffset={offset}
-                  />
-                </svg>
-                {!isIndeterminate && valueText ? (
-                  <Flex className={styles.output} alignItems="center" justifyContent="center" aria-hidden="true">
-                    {valueText}
-                  </Flex>
-                ) : null}
-              </div>
-              {label ? <Label className={styles.label}>{label}</Label> : null}
-              {helperText ? (
-                <Text id={helperTextId} className={cx(styles.helperText, textTreatmentClassName('inherit'))}>
-                  {helperText}
-                </Text>
-              ) : null}
-            </>
+            <ProgressSlots
+              state={state}
+              descriptionId={descriptionId}
+              descriptionRef={descriptionRef}
+              classNames={{ label: styles.label, value: styles.value, description: styles.description }}
+              isValueDecorative
+              track={{
+                className: styles.indicator,
+                'aria-hidden': true,
+                'data-indeterminate': state.isIndeterminate || undefined,
+                children: (
+                  <svg
+                    className={styles.svg}
+                    data-indeterminate={state.isIndeterminate || undefined}
+                    viewBox={`0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`}
+                    aria-hidden="true"
+                  >
+                    <circle className={styles.track} cx="50" cy="50" r={RADIUS} fill="none" strokeLinecap="round" />
+                    <circle
+                      className={styles.fill}
+                      cx="50"
+                      cy="50"
+                      r={RADIUS}
+                      fill="none"
+                      strokeLinecap="round"
+                      transform="rotate(-90 50 50)"
+                      strokeDasharray={CIRCUMFERENCE}
+                      strokeDashoffset={offset}
+                    />
+                  </svg>
+                )
+              }}
+            >
+              {typeof children === 'function' ? children(state) : children}
+            </ProgressSlots>
           );
         }}
-      </Flex>
+      </Grid>
     );
   }
 );
