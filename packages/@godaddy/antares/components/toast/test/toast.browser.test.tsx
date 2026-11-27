@@ -641,21 +641,85 @@ describe('@godaddy/antares', function antares() {
       expect(onClose).toHaveBeenCalledTimes(1);
     });
 
-    it('can add a replacement from onClose after the exit animation', async function replacementAfterExit() {
-      await render(<DefaultExample />);
-      const onClose = vi.fn(function complete() {
-        toast.add({ message: 'Upload finished', timeout: null });
-      });
-      const key = toast.add({ message: 'Uploading', timeout: null, onClose });
-      await expect.element(page.getByRole('alertdialog', { name: 'Uploading' })).toBeVisible();
-      await userEvent.click(page.getByRole('alertdialog').getByRole('button', { name: 'Close' }));
+    it.each(['close button', 'focused region'])(
+      'can add a replacement from onClose with a %s',
+      async function replacementAfterExit(input) {
+        await render(<DefaultExample />);
+        const keepFocus = input === 'focused region';
+        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+        try {
+          const onClose = vi.fn(function complete() {
+            toast.add({ message: 'Upload finished', timeout: keepFocus ? 1000 : null });
+          });
+          const key = toast.add({ message: 'Uploading', timeout: null, onClose });
+          const uploading = page.getByRole('alertdialog', { name: 'Uploading' });
+          await expect.element(uploading).toBeVisible();
 
-      await expect.element(page.getByRole('alertdialog', { name: 'Upload finished' })).toBeVisible();
-      assume(page.getByRole('alertdialog', { name: 'Uploading' }).query()).equals(null);
-      expect(onClose).toHaveBeenCalledTimes(1);
-      toast.close(key);
-      expect(onClose).toHaveBeenCalledTimes(1);
-      assume(toasts().length).equals(1);
+          const triggerButton = page.getByRole('button', { name: 'Show toast' });
+          const trigger = triggerButton.element() as HTMLElement;
+          const region = page.getByRole('region').element();
+          if (keepFocus) {
+            await userEvent.hover(triggerButton);
+            trigger.focus();
+            await userEvent.keyboard('{F6}');
+            expect(document.activeElement).toBe(region);
+            toast.close(key);
+          } else {
+            await userEvent.click(uploading.getByRole('button', { name: 'Close' }));
+          }
+
+          const replacement = page.getByRole('alertdialog', { name: 'Upload finished' });
+          await expect.element(replacement).toBeVisible();
+          assume(uploading.query()).equals(null);
+          expect(onClose).toHaveBeenCalledTimes(1);
+          toast.close(key);
+          expect(onClose).toHaveBeenCalledTimes(1);
+          assume(toasts().length).equals(1);
+
+          if (keepFocus) {
+            const shown = replacement.element();
+            expect(document.activeElement).toBe(region);
+            await vi.advanceTimersByTimeAsync(1500);
+            expect(shown.hasAttribute('data-exiting')).toBe(false);
+            expect(shown.isConnected).toBe(true);
+            trigger.focus();
+            expect(document.activeElement).toBe(trigger);
+            await vi.advanceTimersByTimeAsync(1100);
+            await vi.waitFor(function startsExit() {
+              expect(!shown.isConnected || shown.hasAttribute('data-exiting')).toBe(true);
+            });
+          }
+        } finally {
+          vi.useRealTimers();
+        }
+      }
+    );
+
+    it('starts a fresh timer after the focused region detaches', async function detachedRegion() {
+      const queue = new ToastQueue();
+      await render(<ToastRegion queue={queue} />);
+      const key = queue.add({ message: 'First notification', timeout: null });
+      const region = page.getByRole('region');
+      await expect.element(region).toBeVisible();
+      const oldRegion = region.element() as HTMLElement;
+      oldRegion.focus();
+      expect(document.activeElement).toBe(oldRegion);
+      queue.close(key);
+      await vi.waitFor(function detached() {
+        expect(oldRegion.isConnected).toBe(false);
+      });
+
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+      try {
+        queue.add({ message: 'Second notification', timeout: 1000 });
+        const second = page.getByRole('alertdialog', { name: 'Second notification' });
+        await expect.element(second).toBeVisible();
+        const shown = second.element();
+        await vi.advanceTimersByTimeAsync(1250);
+        expect(!shown.isConnected || shown.hasAttribute('data-exiting')).toBe(true);
+      } finally {
+        vi.useRealTimers();
+      }
     });
 
     it('can add a replacement from onClose before a region mounts', async function replacementWithoutRegion() {

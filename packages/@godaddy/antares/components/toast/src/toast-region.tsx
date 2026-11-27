@@ -1,8 +1,10 @@
 import {
+  type ComponentPropsWithRef,
   type CSSProperties,
   type HTMLAttributes,
   forwardRef,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -13,12 +15,11 @@ import { mergeRefs, UNSAFE_PortalProvider, useFocusVisible } from 'react-aria';
 import { UNSTABLE_ToastRegion as RACToastRegion } from 'react-aria-components';
 import { composeClassName } from '#utils/render-props.ts';
 import { getToastHost } from './host.ts';
-import { defaultToastQueue, getInternalQueue, type ToastQueue } from './queue.ts';
+import { defaultToastQueue, getInternalQueue, type InternalToastQueue, type ToastQueue } from './queue.ts';
 import { Toast } from './toast.tsx';
 import styles from './index.module.css';
 
-export interface ToastRegionProps
-  extends Pick<HTMLAttributes<HTMLDivElement>, 'id' | 'lang' | 'hidden' | 'inert' | 'translate'> {
+export interface ToastRegionProps extends Pick<HTMLAttributes<HTMLDivElement>, 'id' | 'lang' | 'inert' | 'translate'> {
   /** The queue to render, created by this copy of Antares. @default the queue behind `toast` */
   queue?: ToastQueue;
 
@@ -36,6 +37,16 @@ export interface ToastRegionProps
 
   /** Inline styles applied to the region. */
   style?: CSSProperties;
+}
+
+function ToastRegionElement({ queue, ...props }: ComponentPropsWithRef<'div'> & { queue: InternalToastQueue }) {
+  useLayoutEffect(
+    function trackRegion() {
+      return queue.resetTimerPause;
+    },
+    [queue]
+  );
+  return <div {...props} />;
 }
 
 /**
@@ -118,6 +129,7 @@ export const ToastRegion = /* @__PURE__ */ forwardRef<HTMLDivElement, ToastRegio
           queue={internal}
           aria-label={ariaLabels?.region}
           className={composeClassName(className, styles.region)}
+          render={(domProps) => <ToastRegionElement {...domProps} queue={internal} />}
         >
           {function renderToast({ toast }) {
             return <Toast toast={toast} queue={internal} closeLabel={ariaLabels?.close} moveFocus={moveFocus} />;

@@ -113,7 +113,6 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
     const onClose = this.closeCallbacks.get(key);
     this.closeCallbacks.delete(key);
     super.close(key);
-    if (this.visibleToasts.length === 0) this.timersPaused = false;
     onClose?.();
   }
 
@@ -127,6 +126,10 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
     this.timersPaused = false;
     super.resumeAll();
   }
+
+  resetTimerPause = (): void => {
+    this.timersPaused = false;
+  };
 
   startTimer({ timer, timeout }: Pick<QueuedToast<ToastContent>, 'timer' | 'timeout'>): (() => void) | undefined {
     if (!timer || timeout === undefined) return;
@@ -159,7 +162,6 @@ export class InternalToastQueue extends RACToastQueue<ToastContent> {
     this.notifyRegions();
 
     return () => {
-      if (this.isActiveRegion(region)) this.timersPaused = false;
       this.regions = this.regions.filter((other) => other !== region);
       this.notifyRegions();
       // No region is left to play the exits, so finish them now.
