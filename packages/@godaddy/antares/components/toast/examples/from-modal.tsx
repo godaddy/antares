@@ -28,6 +28,14 @@ export function FromModalExample() {
       >
         Open modal
       </Button>
+      <Button
+        onPress={function openModalWithToast() {
+          setIsOpen(true);
+          queue.add({ message: 'While opening the modal', timeout: null });
+        }}
+      >
+        Open modal and show toast
+      </Button>
       <Modal isOpen={isOpen} onOpenChange={setIsOpen}>
         <Heading slot="title">Settings</Heading>
         <CloseButton />

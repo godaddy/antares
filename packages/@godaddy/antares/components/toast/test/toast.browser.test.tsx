@@ -74,9 +74,8 @@ describe('@godaddy/antares', function antares() {
 
       const toast = page.getByRole('alertdialog', { name: 'example.com' });
       await expect.element(toast).toBeVisible();
-      assume(document.querySelector(`${HOST} [data-rich-title]`)).is.not.equal(null);
-      assume(document.querySelector(`${HOST} strong`)?.textContent).equals('1 year');
-      assume(document.querySelector(`${HOST} time`)?.getAttribute('datetime')).equals('2027-11-17');
+      assume(toast.element().querySelector('strong')?.textContent).equals('1 year');
+      assume(toast.element().querySelector('time')?.getAttribute('datetime')).equals('2027-11-17');
     });
 
     it('renders a title of 0', async function zeroTitle() {
@@ -210,6 +209,23 @@ describe('@godaddy/antares', function antares() {
       await userEvent.keyboard('{Escape}');
     });
 
+    it('shows a toast above a Modal opened by the same press', async function aboveSameEventModal() {
+      await render(<FromModalExample />);
+      await userEvent.click(page.getByRole('button', { name: 'Open modal and show toast' }));
+      await expect.element(page.getByRole('dialog', { name: 'Settings' })).toBeVisible();
+
+      const notification = page.getByRole('alertdialog', { name: 'While opening the modal' });
+      await vi.waitFor(function onTop() {
+        const dialog = notification.element();
+        const box = dialog.getBoundingClientRect();
+        const top = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);
+        expect(top?.closest('[role="alertdialog"]')).toBe(dialog);
+      });
+
+      await userEvent.click(notification.getByRole('button', { name: 'Close' }));
+      await userEvent.keyboard('{Escape}');
+    });
+
     it('plays its exit before closing when the close button is pressed', async function closeButton() {
       await render(<DefaultExample />);
       await showToast();
@@ -268,11 +284,20 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('keeps a persistent toast open', async function persistent() {
-      await render(<PlaygroundExample timeout={0} />);
-      await showToast();
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
 
-      await new Promise((resolve) => setTimeout(resolve, 600));
-      assume(toasts().length).equals(1);
+      try {
+        await render(<DefaultExample />);
+        toast.add({ message: 'Still working', timeout: 0 });
+        const notification = page.getByRole('alertdialog', { name: 'Still working' });
+        await expect.element(notification).toBeVisible();
+
+        await vi.advanceTimersByTimeAsync(5100);
+
+        await expect.element(notification).not.toHaveAttribute('data-exiting');
+      } finally {
+        vi.useRealTimers();
+      }
     });
 
     it('hides the close button only when the toast has a timeout', async function dismissible() {
@@ -300,14 +325,16 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('stacks several toasts, newest first', async function stacks() {
-      await render(<PlaygroundExample timeout={0} />);
-      await showToast();
-      await showToast();
-      await showToast();
+      await render(<DefaultExample />);
+      for (const message of ['First toast', 'Second toast', 'Third toast']) {
+        toast.add({ message, timeout: null });
+      }
 
-      await vi.waitFor(function three() {
-        assume(toasts().length).equals(3);
-      });
+      const dialogs = page.getByRole('alertdialog');
+      await expect.element(dialogs.nth(0)).toHaveAccessibleName('Third toast');
+      await expect.element(dialogs.nth(1)).toHaveAccessibleName('Second toast');
+      await expect.element(dialogs.nth(2)).toHaveAccessibleName('First toast');
+      expect(dialogs.elements()).toHaveLength(3);
     });
 
     it('caps visible toasts at 5 and shows the next one when a toast closes', async function cap() {

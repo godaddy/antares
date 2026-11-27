@@ -11,7 +11,7 @@ const emphases: ReadonlyArray<readonly [ToastEmphasis, string, string]> = [
 
 /**
  * `emphasis` picks the status icon: none, a checkmark for success, and an alert icon for critical and
- * warning, told apart by color.
+ * warning. The title and message explain the severity.
  * @title Emphasis Variants
  * @order 2
  */

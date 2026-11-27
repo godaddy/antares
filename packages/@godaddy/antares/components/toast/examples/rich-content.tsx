@@ -16,7 +16,7 @@ export function RichContentExample() {
         variant="secondary"
         onPress={function showToast() {
           queue.add({
-            title: <span data-rich-title="">example.com</span>,
+            title: <span>example.com</span>,
             message: (
               <>
                 Renewed for <strong>1 year</strong>. Your next payment is on{' '}
