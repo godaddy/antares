@@ -4,6 +4,6 @@
 
 Redesign GaugeChart with a composable center and range.
 
-Replace `label` and `subLabel` with `Text` in the `value` and `description` slots of `GaugeChartCenter`. Replace `rangeLabel` with `GaugeChartRange` and `Text` in its `min` and `max` slots. The center slots can appear in either order. Use `Text size` to override the responsive default and `valueLabel` for the meter's accessible value text.
+Breaking changes: replace `label` and `subLabel` with the `value` and `description` slots of `GaugeChartCenter`. Replace `rangeLabel` with the `min` and `max` slots of `GaugeChartRange`. The chart root no longer accepts `as`, `areas`, or `rows`. The chart also owns `columns`, `justifyContent`, and `justifyItems`.
 
-The meter role now lives on the arc so center controls remain accessible. The mounted description slot describes the meter alongside any caller-provided `aria-describedby` references.
+The visible label and sub-label no longer supply the announced value. Set `valueLabel` for accessible value text. Root ARIA naming and description props now apply to the inner meter. The root keeps its `data-*` attributes. The description slot adds to any caller-provided `aria-describedby` references.

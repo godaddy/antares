@@ -2,13 +2,15 @@ import { type CSSProperties, type ReactNode, useEffect, useLayoutEffect, useMemo
 import {
   ChartRegionsContext,
   useChartDescription,
-  type ChartRegionPlacements
+  type ChartRegionPlacements,
+  type ChartRootProps
 } from '#components/chart/_internal/chart-region';
 import { Box } from '#components/layout/box';
-import { Grid, type GridProps } from '#components/layout/grid';
+import { Grid } from '#components/layout/grid';
 import { composeClassName } from '#utils/render-props.ts';
 import { chartArcGapAngleDeg } from '../../utils.ts';
 import styles from './index.module.css';
+import { GaugeChartCenter } from './gauge-chart-center.tsx';
 
 // Avoid useLayoutEffect SSR warnings; use it in the browser so gap angle updates before paint.
 const canUseDOM = typeof window !== 'undefined';
@@ -33,8 +35,7 @@ function resolveSegmentCount(segments: number | undefined): number | undefined {
 /**
  * Gauge Chart component props.
  */
-export interface GaugeChartProps
-  extends Omit<GridProps<'div'>, 'as' | 'areas' | 'columns' | 'rows' | 'justifyContent' | 'justifyItems'> {
+export interface GaugeChartProps extends ChartRootProps {
   /** Optional center and range regions, in either order. */
   children?: ReactNode;
 
@@ -90,7 +91,7 @@ export function GaugeChart(props: GaugeChartProps) {
   const clampedValue = Math.min(Math.max(0, value), maxValue);
   const normalizedValue = clampedValue / maxValue;
 
-  const { descriptionSlot, describedBy } = useChartDescription(externalDescription);
+  const { descriptionSlot, describedBy } = useChartDescription(children, GaugeChartCenter, externalDescription);
   const regions = useMemo(
     function createRegions(): ChartRegionPlacements {
       return {

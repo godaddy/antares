@@ -12,12 +12,16 @@ export interface PlaygroundExampleProps {
   label?: string;
   /** Description below the value. */
   description?: string;
+  /** Explicit ID for the description slot. */
+  descriptionId?: string;
   /** Minimum range label. */
   rangeMin?: string;
   /** Maximum range label. */
   rangeMax?: string;
   /** Text emphasis for the value, description, and range labels. */
   emphasis?: TextProps['emphasis'];
+  /** Explicit size for the value and description. */
+  textSize?: TextProps['size'];
   /** Accessible text for the value. */
   valueLabel?: string;
   /** Number of segments (omit for continuous). */
@@ -35,9 +39,11 @@ export interface PlaygroundExampleProps {
 export function PlaygroundExample({
   label = '50%',
   description,
+  descriptionId,
   rangeMin,
   rangeMax,
   emphasis,
+  textSize,
   valueLabel,
   segments,
   labelType = 'value',
@@ -57,12 +63,12 @@ export function PlaygroundExample({
     >
       <GaugeChartCenter>
         {label && (
-          <Text slot="value" emphasis={emphasis}>
+          <Text slot="value" emphasis={emphasis} size={textSize}>
             {label}
           </Text>
         )}
         {description && (
-          <Text slot="description" emphasis={emphasis}>
+          <Text slot="description" id={descriptionId} emphasis={emphasis} size={textSize}>
             {description}
           </Text>
         )}
