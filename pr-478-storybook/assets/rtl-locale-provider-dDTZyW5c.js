@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-CKc6enmn.js";import{t}from"./jsx-runtime-DcPHa6qH.js";import{n,r}from"./I18nProvider-Dta-JCXL.js";function i({children:e}){return(0,a.jsx)(n,{locale:o,children:e})}var a,o;function s(){return(s=e((()=>{r(),a=t(),o=`ar-EG`})))()}export{s as n,i as t};
