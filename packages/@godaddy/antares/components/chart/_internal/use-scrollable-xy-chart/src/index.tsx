@@ -164,6 +164,7 @@ export function useScrollableXYChart(props?: UseScrollableXYChartProps): UseScro
   });
   const { direction } = useLocale();
   const isRtl = direction === 'rtl';
+  const isVisibleChart = visibleChartWidth > 0 && visibleChartHeight > 0;
   const [xAxis, xAxisRef] = useState<SVGGElement | null>(null);
   const [yAxis, yAxisRef] = useState<SVGGElement | null>(null);
   const [axisState, setAxisState] = useState<AxisState>(INITIAL_AXIS_STATE);
@@ -255,7 +256,7 @@ export function useScrollableXYChart(props?: UseScrollableXYChartProps): UseScro
   // produce at most one re-render.
   useEffect(
     function syncAxes() {
-      if (!xAxis && !yAxis) {
+      if (!isVisibleChart || (!xAxis && !yAxis)) {
         return;
       }
 
@@ -332,7 +333,7 @@ export function useScrollableXYChart(props?: UseScrollableXYChartProps): UseScro
         resizeObserver.disconnect();
       };
     },
-    [xAxis, yAxis, isRtl]
+    [xAxis, yAxis, isVisibleChart, isRtl]
   );
 
   return {

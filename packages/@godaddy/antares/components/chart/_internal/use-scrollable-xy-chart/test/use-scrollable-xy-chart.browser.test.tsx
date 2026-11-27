@@ -29,21 +29,19 @@ describe('@godaddy/antares', function antares() {
 
     it('exposes non-zero chart dimensions after parent size is measured', async function chartDimensions() {
       await page.viewport(800, 600);
-      const { container } = await render(<AutoLayoutExample />);
+      const chart = <AutoLayoutExample />;
+      const { container, rerender } = await render(<div hidden>{chart}</div>);
       const parent = container.querySelector('[data-testid="scroll-parent"]') as HTMLElement;
 
       expect(parent.getAttribute('data-chart-width')).toBe('0');
+      expect(parent.getAttribute('data-chart-height')).toBe('0');
 
-      await vi.waitFor(
-        function waitForSize() {
-          const w = Number(parent.getAttribute('data-chart-width') ?? '0');
-          expect(w).toBeGreaterThan(0);
-        },
-        { timeout: 3000, interval: 50 }
-      );
-      const h = Number(parent.getAttribute('data-chart-height') ?? '0');
-
-      expect(h).toBeGreaterThan(0);
+      await rerender(<div>{chart}</div>);
+      await expect
+        .poll(function measuredDimensions() {
+          return [Number(parent.dataset.chartWidth), Number(parent.dataset.chartHeight)];
+        })
+        .toEqual([parent.clientWidth, parent.clientHeight]);
     });
 
     it('updates scrollLeft when the scroll container is scrolled', async function scrollOffset() {
