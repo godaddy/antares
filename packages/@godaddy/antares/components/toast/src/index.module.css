@@ -162,8 +162,9 @@
 /*
  * No action token targets the inverted surface, so the minimal button takes the toast's own text
  * color and shows hover/press through opacity instead of a fill.
+ * The surface selector gives these overrides precedence when the Button stylesheet loads later.
  */
-.close {
+.surface > .close {
   --_button-text: currentColor;
   --_button-text-hovered: currentColor;
   --_button-text-pressed: currentColor;
