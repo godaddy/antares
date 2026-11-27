@@ -302,6 +302,37 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
+    it('hands off focus during keyboard dismissal before each exit finishes', async function keyboardDismissal() {
+      await render(<DefaultExample />);
+      await showToast();
+      toast.add({ message: 'Newest notification', timeout: null });
+
+      const trigger = page.getByRole('button', { name: 'Show toast' }).element();
+      const newest = page.getByRole('alertdialog', { name: 'Newest notification' });
+      const older = page.getByRole('alertdialog', { name: 'Domain connected' });
+      await expect.element(newest).toBeVisible();
+      const firstExit = newest.element() as HTMLElement;
+      const lastExit = older.element() as HTMLElement;
+      const firstClose = newest.getByRole('button', { name: 'Close' }).element() as HTMLElement;
+      const lastClose = older.getByRole('button', { name: 'Close' }).element();
+
+      await userEvent.keyboard('{F6}{Tab}{Tab}');
+      expect(document.activeElement).toBe(firstClose);
+      await userEvent.keyboard('{Enter}');
+      expect(firstExit.isConnected).toBe(true);
+      expect(document.activeElement).toBe(lastExit);
+      expect(firstExit.inert).toBe(true);
+      firstClose.focus();
+      expect(document.activeElement).toBe(lastExit);
+
+      await userEvent.keyboard('{Tab}');
+      expect(document.activeElement).toBe(lastClose);
+      await userEvent.keyboard('{Space}');
+      expect(lastExit.isConnected).toBe(true);
+      expect(document.activeElement).toBe(trigger);
+      expect(lastExit.inert).toBe(true);
+    });
+
     it('slides out toward the left edge in RTL', async function rtlSlide() {
       const root = document.documentElement;
       const direction = root.getAttribute('dir');

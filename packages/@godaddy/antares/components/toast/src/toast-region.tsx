@@ -1,5 +1,14 @@
-import { type CSSProperties, forwardRef, useEffect, useState, useSyncExternalStore } from 'react';
-import { UNSAFE_PortalProvider } from 'react-aria';
+import {
+  type CSSProperties,
+  type FocusEvent,
+  forwardRef,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore
+} from 'react';
+import { createFocusManager } from '@react-aria/focus';
+import { UNSAFE_PortalProvider, useFocusVisible } from 'react-aria';
 import {
   UNSTABLE_ToastRegion as RACToastRegion,
   type ToastRegionProps as RACToastRegionProps
@@ -49,8 +58,10 @@ export interface ToastRegionProps
  * @param props - {@link ToastRegionProps}
  */
 export const ToastRegion = forwardRef<HTMLDivElement, ToastRegionProps>(function ToastRegion(props, ref) {
-  const { queue = defaultToastQueue, ariaLabels, className, ...rest } = props;
+  const { queue = defaultToastQueue, ariaLabels, className, render, ...rest } = props;
   const internal = getInternalQueue(queue);
+  const lastFocused = useRef<HTMLElement | SVGElement | null>(null);
+  const { isFocusVisible } = useFocusVisible();
   const [region] = useState(() => Symbol('ToastRegion'));
   const isActive = useSyncExternalStore(
     internal.subscribeRegions,
@@ -67,6 +78,23 @@ export const ToastRegion = forwardRef<HTMLDivElement, ToastRegionProps>(function
 
   if (!isActive) return null;
 
+  function moveFocus(closingToast: HTMLDivElement) {
+    if (!closingToast.contains(closingToast.ownerDocument.activeElement)) return;
+
+    const previous = lastFocused.current?.isConnected ? lastFocused.current : null;
+    if (!isFocusVisible && previous) {
+      previous.focus({ preventScroll: true });
+      return;
+    }
+
+    const focus = createFocusManager({ current: closingToast.closest('ol') });
+    const options = {
+      from: closingToast,
+      accept: (node: Element) => node.matches(`.${styles.toast}:not([data-exiting])`)
+    };
+    if (!focus.focusPrevious(options) && !focus.focusNext(options)) previous?.focus();
+  }
+
   return (
     <UNSAFE_PortalProvider getContainer={getToastHost}>
       <RACToastRegion
@@ -75,9 +103,23 @@ export const ToastRegion = forwardRef<HTMLDivElement, ToastRegionProps>(function
         queue={internal}
         aria-label={ariaLabels?.region}
         className={composeClassName(className, styles.region)}
+        render={function renderRegion(domProps, renderProps) {
+          const regionProps = {
+            ...domProps,
+            onFocusCapture(event: FocusEvent<HTMLDivElement>) {
+              const { relatedTarget } = event;
+              if (event.currentTarget.contains(event.target) && !event.currentTarget.contains(relatedTarget)) {
+                lastFocused.current =
+                  relatedTarget instanceof HTMLElement || relatedTarget instanceof SVGElement ? relatedTarget : null;
+              }
+              domProps.onFocusCapture?.(event);
+            }
+          };
+          return render ? render(regionProps, renderProps) : <div {...regionProps} />;
+        }}
       >
         {function renderToast({ toast }) {
-          return <Toast toast={toast} queue={internal} closeLabel={ariaLabels?.close} />;
+          return <Toast toast={toast} queue={internal} closeLabel={ariaLabels?.close} moveFocus={moveFocus} />;
         }}
       </RACToastRegion>
     </UNSAFE_PortalProvider>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useSyncExternalStore } from 'react';
+import { useEffect, useLayoutEffect, useRef, useSyncExternalStore } from 'react';
 import { cx } from 'cva';
 import { UNSAFE_PortalProvider } from 'react-aria';
 import {
@@ -29,6 +29,9 @@ interface ToastProps {
 
   /** Overrides RAC's localized close label. */
   closeLabel?: string;
+
+  /** Hands off focus from a closing toast within this region. */
+  moveFocus: (element: HTMLDivElement) => void;
 }
 
 /**
@@ -36,7 +39,7 @@ interface ToastProps {
  *
  * @param props - {@link ToastProps}
  */
-export function Toast({ toast, queue, closeLabel }: ToastProps) {
+export function Toast({ toast, queue, closeLabel, moveFocus }: ToastProps) {
   const { key, content } = toast;
   const { title, message, emphasis, dismissible } = content;
   const icon = emphasisIcons[emphasis];
@@ -46,6 +49,17 @@ export function Toast({ toast, queue, closeLabel }: ToastProps) {
   // Toasts never render on the server, so the server snapshot can be the same function.
   const getIsExiting = () => queue.isExiting(key);
   const isExiting = useSyncExternalStore(queue.subscribeExiting, getIsExiting, getIsExiting);
+
+  useLayoutEffect(
+    function endInteraction() {
+      const element = ref.current;
+      if (!isExiting || !element || element.inert) return;
+      // Move focus before inert can blur the active control.
+      moveFocus(element);
+      element.inert = true;
+    },
+    [isExiting, moveFocus]
+  );
 
   useEffect(
     function removeAfterExit() {
