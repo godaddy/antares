@@ -1,6 +1,7 @@
 'use client';
 
-import { useId, useReducer, useRef, useState, type SubmitEvent } from 'react';
+// biome-ignore lint/suspicious/noDeprecatedImports: React 18's types do not export SubmitEvent.
+import { useId, useReducer, useRef, useState, type FormEvent } from 'react';
 import {
   Alert,
   Icon,
@@ -158,7 +159,7 @@ export function ProjectInquiryForm() {
     clearConfirmation();
   }
 
-  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (canSubmit) setSubmitted(true);
   }
