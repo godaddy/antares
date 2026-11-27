@@ -27,6 +27,9 @@ export function DynamicDescriptionExample({ rangeFirst }: { rangeFirst: boolean 
     <GaugeChartRange key="range">
       <Text slot="min">Low</Text>
       <Text slot="max">High</Text>
+      <Button onPress={changeDescription} style={{ gridColumn: 3, gridRow: 1, marginBlockStart: '4rem' }}>
+        Change from range
+      </Button>
     </GaugeChartRange>
   );
 

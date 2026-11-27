@@ -23,6 +23,8 @@ import styles from './index.module.css';
 
 export { useChartDescription } from './use-chart-description.ts';
 
+const { center: regionPointerEventsClassName } = styles;
+
 export interface ChartRootProps
   extends Omit<GridProps<'div'>, 'as' | 'areas' | 'columns' | 'rows' | 'justifyContent' | 'justifyItems'> {
   /** Accessible name for the chart. */
@@ -124,7 +126,7 @@ export const ChartRegion = /* @__PURE__ */ forwardRef<HTMLDivElement, ChartRegio
     <Grid
       {...rest}
       ref={regionRef}
-      className={composeClassName(className, placement?.className, region.name === 'center' && styles.center)}
+      className={composeClassName(className, placement?.className, regionPointerEventsClassName)}
     >
       <TextContext.Provider value={textSlots}>{content}</TextContext.Provider>
     </Grid>

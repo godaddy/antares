@@ -220,13 +220,14 @@ describe('@godaddy/antares', function antares() {
       });
 
       it.each([false, true])(
-        'keeps center controls clickable and descriptions current (range first: %s)',
+        'keeps region controls clickable and descriptions current (range first: %s)',
         async function dynamicDescription(rangeFirst) {
           const { getByRole } = await render(<DynamicDescriptionExample rangeFirst={rangeFirst} />);
           const meter = getByRole('meter', { name: 'Site health' });
           const changeDescription = getByRole('button', { name: 'Change description' });
           const descriptionButton = getByRole('button', { name: 'Change from description' });
           const changeAgain = getByRole('button', { name: 'Change again' });
+          const changeFromRange = getByRole('button', { name: 'Change from range' });
           const arc = meter.element().getBoundingClientRect();
           const control = changeDescription.element().getBoundingClientRect();
           const sibling = changeAgain.element().getBoundingClientRect();
@@ -244,6 +245,10 @@ describe('@godaddy/antares', function antares() {
           await expect.element(meter).toHaveAccessibleDescription('Updated daily. Change from description');
           expect(meter.element().contains(changeDescription.element())).toBe(false);
           await userEvent.tab();
+          if (rangeFirst) {
+            await expect.element(changeFromRange).toHaveFocus();
+            await userEvent.tab();
+          }
           await expect.element(changeDescription).toHaveFocus();
 
           const target = descriptionButton.element().getBoundingClientRect();
@@ -259,8 +264,13 @@ describe('@godaddy/antares', function antares() {
           await changeDescription.click();
           await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description');
           await expect.element(meter).toHaveAccessibleDescription('Updated daily.');
-          await changeDescription.click();
+          const rangeTarget = changeFromRange.element().getBoundingClientRect();
+          expect(
+            document.elementFromPoint(rangeTarget.x + rangeTarget.width / 2, rangeTarget.y + rangeTarget.height / 2)
+          ).toBe(changeFromRange.element());
+          await changeFromRange.click();
           await expect.element(meter).toHaveAttribute('aria-describedby', describedBy);
+          await expect.element(meter).toHaveAccessibleDescription('Updated daily. Change from description');
         }
       );
 

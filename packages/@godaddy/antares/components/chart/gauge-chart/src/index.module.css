@@ -88,7 +88,6 @@
 
 .range {
   grid-row: 2;
-  pointer-events: none;
 }
 
 /* ::before/::after = rounded caps at arc ends */
