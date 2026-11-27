@@ -1,0 +1,3 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@godaddy/antares > #ChartRegion > renders the placement example 1`] = `"<div data-testid="region" class="box grid example-placement consumer-override"><span class="example-title typeInherit text type typeText scaleMd" slot="title">Revenue</span><span class="example-note typeInherit text type typeText scaleMd" id="example-note-id" slot="note">Last 30 days</span></div>"`;

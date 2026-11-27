@@ -20,4 +20,13 @@ export {
   type DonutChartCenterProps
 } from '#components/chart/donut-chart';
 export { LineChart, type LineChartProps, type LineChartTooltipRenderProps } from '#components/chart/line-chart';
-export { GaugeChart, type GaugeChartProps } from '#components/chart/gauge-chart';
+export {
+  GaugeChart,
+  type GaugeChartProps,
+  GaugeChartCenter,
+  GaugeChartCenterContext,
+  type GaugeChartCenterProps,
+  GaugeChartRange,
+  GaugeChartRangeContext,
+  type GaugeChartRangeProps
+} from '#components/chart/gauge-chart';

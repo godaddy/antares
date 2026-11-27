@@ -96,28 +96,38 @@ export function TrafficSources() {
 
 ## GaugeChart: one value on a known scale
 
-Provide numeric `value`, visible `label` and an accessible name. Continuous mode uses 0–100. Segmented mode uses 0–`segments`; `segments` must be a finite positive integer or the component throws. Values are clamped, so keep the displayed label consistent with the intended scale.
+Provide a numeric `value` and an accessible name. Continuous mode uses 0–100. Segmented mode uses 0–`segments`; `segments` must be a finite positive integer or the component throws. Values are clamped. Use `GaugeChartCenter` for the visible value and description, and `GaugeChartRange` for optional end labels.
 
 ```tsx
-import { GaugeChart } from '@godaddy/antares/Chart';
+import { GaugeChart, GaugeChartCenter, GaugeChartRange } from '@godaddy/antares/Chart';
+import { Text } from '@godaddy/antares/Text';
 
 export function HealthScore() {
   return (
     <GaugeChart
       value={3}
       segments={5}
-      label="3/5"
-      subLabel="Site health"
-      rangeLabel={{ min: '0', max: '5' }}
+      valueLabel="3 of 5"
       variant="warning"
       aria-label="Site health score"
       style={{ maxWidth: '16rem' }}
-    />
+    >
+      <GaugeChartCenter>
+        <Text slot="value" size="2xl">3/5</Text>
+        <Text slot="description">Site health</Text>
+      </GaugeChartCenter>
+      <GaugeChartRange>
+        <Text slot="min">0</Text>
+        <Text slot="max">5</Text>
+      </GaugeChartRange>
+    </GaugeChart>
   );
 }
 ```
 
-Omit `segments` for continuous mode. Normalize a different measurement range in application code rather than inventing min/max props. `rangeLabel` requires both min/max display labels; it does not change the numeric scale. Use `labelType="text"` for a short textual center label. Gauge exposes meter semantics; task completion belongs to ProgressBar/CircularProgress.
+Use `GaugeChartCenter` with `Text` in the `value` and `description` slots. The slots can appear in either order. An explicit `Text size` overrides the chart's responsive default.
+
+Omit `segments` for continuous mode. Normalize a different measurement range in application code. Keep the visible value consistent with `value` and set `valueLabel` when it is not a plain number. Use `labelType="text"` for a short word in the center. The description describes the meter, and the arc's meter role leaves center controls accessible. Use ProgressBar or CircularProgress for task completion.
 
 ## Dimensions, legends and tooltips
 

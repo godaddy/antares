@@ -78,9 +78,9 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#scaling', function scaling() {
-      it('label + sublabel scales with width', async function labelSubLabelScaling() {
+      it('value + description scales with width', async function valueDescriptionScaling() {
         const { container } = await renderAndWait(
-          scalingRow(<PlaygroundExample label="50%" subLabel="Progress" value={50} />)
+          scalingRow(<PlaygroundExample label="50%" description="Progress" value={50} />)
         );
 
         await expect(container).toMatchScreenshot('label-sublabel-scaling');
@@ -91,7 +91,7 @@ describe('@godaddy/antares', function antares() {
           scalingRow(
             <PlaygroundExample
               label="3/5"
-              subLabel="Risk Level"
+              description="Risk Level"
               rangeMin="Low"
               rangeMax="High"
               segments={5}
