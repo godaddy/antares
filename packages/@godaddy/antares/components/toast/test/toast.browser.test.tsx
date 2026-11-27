@@ -377,6 +377,49 @@ describe('@godaddy/antares', function antares() {
       );
     });
 
+    it.each(['hover', 'keyboard focus'])('preserves the remaining timeout during %s', async function paused(input) {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+
+      try {
+        await render(<DefaultExample />);
+        await showToast();
+        const trigger = page.getByRole('button', { name: 'Show toast' });
+        const notification = page.getByRole('alertdialog', { name: 'Domain connected' });
+        await expect.element(notification).toBeVisible();
+        const shown = notification.element();
+        await Promise.all(shown.getAnimations({ subtree: true }).map((animation) => animation.finished));
+        await vi.advanceTimersByTimeAsync(2000);
+
+        if (input === 'hover') {
+          await userEvent.hover(notification);
+        } else {
+          await userEvent.keyboard('{F6}{Tab}');
+          expect(document.activeElement).toBe(shown);
+        }
+
+        await vi.advanceTimersByTimeAsync(5000);
+        expect(shown.hasAttribute('data-exiting')).toBe(false);
+        expect(shown.isConnected).toBe(true);
+
+        if (input === 'hover') {
+          await userEvent.hover(trigger);
+        } else {
+          await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
+          expect(shown.closest('[role="region"]')?.contains(document.activeElement)).toBe(false);
+        }
+
+        await vi.advanceTimersByTimeAsync(2500);
+        expect(shown.hasAttribute('data-exiting')).toBe(false);
+        expect(shown.isConnected).toBe(true);
+        await vi.advanceTimersByTimeAsync(1000);
+        await vi.waitFor(function startsExit() {
+          expect(shown.hasAttribute('data-exiting')).toBe(true);
+        });
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+
     it('keeps a persistent toast open', async function persistent() {
       vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
 
