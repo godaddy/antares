@@ -1,35 +1,29 @@
 import { Button, DonutChart, DonutChartCenter, Text } from '@godaddy/antares';
 import { useState } from 'react';
 
+const descriptionIds = ['sales-description', 'renamed-description', undefined, null] as const;
+
 /** @ignore */
 export function DynamicDescriptionExample() {
-  const [descriptionId, setDescriptionId] = useState<string | undefined>('sales-description');
+  const [step, setStep] = useState(0);
+  const descriptionId = descriptionIds[step];
+
+  function changeDescription() {
+    setStep((current) => (current + 1) % descriptionIds.length);
+  }
 
   return (
     <>
       <Text id="external-description">Updated daily.</Text>
+      {step === 2 && <Text id="renamed-description">Previous ID reused elsewhere.</Text>}
       <DonutChart
         data={[{ name: 'Sales', value: 100 }]}
         aria-label="Total sales"
         aria-describedby="external-description"
       >
         <DonutChartCenter>
-          <Text slot="value">
-            <Button
-              onPress={function changeDescription() {
-                setDescriptionId(
-                  descriptionId === 'sales-description'
-                    ? 'renamed-description'
-                    : descriptionId
-                      ? undefined
-                      : 'sales-description'
-                );
-              }}
-            >
-              Change description
-            </Button>
-          </Text>
-          {descriptionId && (
+          <Button onPress={changeDescription}>Change description</Button>
+          {descriptionId !== null && (
             <Text id={descriptionId} slot="description">
               Online sales.
             </Text>

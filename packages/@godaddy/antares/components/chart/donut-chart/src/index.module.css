@@ -48,19 +48,17 @@
   container-type: size;
   pointer-events: none;
   position: relative;
-}
-
-.center :where(a[href], button, input, select, textarea, label, summary, [tabindex], [role="button"], [role="link"]) {
-  pointer-events: auto;
-}
-
-.centerContent {
   align-content: center;
   justify-items: center;
   grid-template-columns: minmax(0, 1fr);
+
+  & > :where(:not(.value, .description)),
+  & :where(.value, .description) > * {
+    pointer-events: auto;
+  }
 }
 
-.centerContent:where(:has(> .value):has(> .description)) {
+.center:where(:has(> .value):has(> .description)) {
   grid-template-areas:
     "value"
     "description";

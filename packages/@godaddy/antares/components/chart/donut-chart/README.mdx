@@ -1,6 +1,6 @@
 ---
 title: DonutChart
-description: Donut charts are for parts-to-whole comparison—how partial elements add up to a total—shown as a ring so a few categories are easy to compare at a glance.
+description: DonutChart shows parts of a whole as slices of a ring.
 ---
 
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
@@ -31,9 +31,7 @@ npm install @godaddy/antares
 </DonutChart>
 ```
 
-Use `DonutChartCenter` with `Text` in the `value` and `description` slots. The slots can appear in either order. An explicit `Text size` overrides the chart's responsive default.
-
-Compose the center and legend as optional direct children in either order. The description also describes the ring. The ring, legend, and tooltip share the same slice colors. The built-in tooltip keeps percentage and value columns and groups adjacent small slices.
+Compose the optional center and legend in either order. Use `Text` in the `value` and `description` slots. An explicit `Text size` overrides the responsive default.
 
 ### DonutChart
 

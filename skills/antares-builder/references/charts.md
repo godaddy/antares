@@ -70,7 +70,7 @@ Check `xDomain`/`yDomain`, tick formatting/values and `xZero`/`yZero` when the s
 
 ## DonutChart: parts of a whole
 
-Pass `data` containing `{ id, name, value }` with numeric non-negative values. Use `DonutChartCenter` for optional content in the ring and `ChartLegend` to display the slice names. Prefer a small set of categories that form a whole.
+Pass `data` containing `{ id, name, value }` with numeric non-negative values. Prefer a small set of categories that form a whole.
 
 ```tsx
 import { ChartLegend, DonutChart, DonutChartCenter } from '@godaddy/antares/Chart';
@@ -92,7 +92,7 @@ export function TrafficSources() {
 }
 ```
 
-Use `DonutChartCenter` with `Text` in the `value` and `description` slots. The slots can appear in either order. An explicit `Text size` overrides the chart's responsive default. The description also describes the ring.
+Compose the optional center and legend in either order. Use `Text` in the `value` and `description` slots and set `size` to override the responsive default.
 
 `legendPosition` defaults to `"bottom"` and accepts `"end"` for a legend beside the ring. `formatValue` formats slice values in the tooltip. Only positive slices appear in the ring. Handle an empty or all-zero total explicitly. `smallSliceThreshold` groups adjacent small slices in the tooltip.
 

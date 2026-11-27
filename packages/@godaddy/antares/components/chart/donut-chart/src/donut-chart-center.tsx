@@ -5,7 +5,6 @@ import {
   type ChartRegionDefinition,
   type ChartRegionProps
 } from '#components/chart/_internal/chart-region';
-import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
 export interface DonutChartCenterProps extends ChartRegionProps {}
@@ -22,13 +21,6 @@ const centerRegion: ChartRegionDefinition = {
 /** Positions a value and description inside the donut ring. Use the `value` and `description` slots. */
 export const DonutChartCenter = /* @__PURE__ */ forwardRef<HTMLDivElement, DonutChartCenterProps>(
   function DonutChartCenter(props, ref) {
-    return (
-      <ChartRegion
-        {...props}
-        region={centerRegion}
-        ref={ref}
-        className={composeClassName(props.className, styles.centerContent)}
-      />
-    );
+    return <ChartRegion {...props} region={centerRegion} ref={ref} />;
   }
 );

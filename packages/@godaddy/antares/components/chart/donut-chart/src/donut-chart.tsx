@@ -6,18 +6,20 @@ import { InternalChartLegendContext, type InternalChartLegendValue } from '#comp
 import {
   ChartRegionsContext,
   useChartDescription,
-  type ChartRegionPlacements
+  type ChartRegionPlacements,
+  type ChartRootProps
 } from '#components/chart/_internal/chart-region';
 import { chartColorForIndex } from '#components/chart/_internal/use-chart-color';
 import { useNormalizedSeries } from '#components/chart/_internal/use-normalized-series';
 import { Box } from '#components/layout/box';
 import { Flex } from '#components/layout/flex';
-import { Grid, type GridProps } from '#components/layout/grid';
+import { Grid } from '#components/layout/grid';
 import { Text } from '#components/text';
 import { Tooltip } from '#components/tooltip';
 import { composeClassName } from '#utils/render-props.ts';
 import type { Optional, SeriesConfig } from '../../types.ts';
 import { chartSegmentGapPadAngle } from '../../utils.ts';
+import { DonutChartCenter } from './donut-chart-center.tsx';
 import styles from './index.module.css';
 import { textTreatmentClassName } from '#components/_internal/typography';
 
@@ -57,7 +59,7 @@ const DONUT_RING_THICKNESS_PERCENT = 6.9;
 /**
  * Donut chart component props.
  */
-export interface DonutChartProps extends Omit<GridProps<'div'>, 'as' | 'areas' | 'columns' | 'rows'> {
+export interface DonutChartProps extends ChartRootProps {
   /** Slice definitions (`name`, `value`; `id` optional, auto-assigned like line/bar chart series). */
   data: Optional<DonutSliceDatum, 'id'>[];
 
@@ -66,9 +68,6 @@ export interface DonutChartProps extends Omit<GridProps<'div'>, 'as' | 'areas' |
 
   /** Places a composed legend below the chart or at its inline end. @default 'bottom' */
   legendPosition?: 'bottom' | 'end';
-
-  /** Accessible name for the ring. */
-  'aria-label'?: string;
 
   /**
    * Share of total at or below which a slice is “small”; hovering a small slice shows that contiguous group of
@@ -101,7 +100,7 @@ export function DonutChart(props: DonutChartProps) {
     className,
     ...gridProps
   } = props;
-  const { descriptionSlot, describedBy } = useChartDescription(externalDescription);
+  const { descriptionSlot, describedBy } = useChartDescription(children, DonutChartCenter, externalDescription);
   const regions = useMemo(
     function createRegions(): ChartRegionPlacements {
       return { center: { className: styles.center, slots: { description: descriptionSlot } } };

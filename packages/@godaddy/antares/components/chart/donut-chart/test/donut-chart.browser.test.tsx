@@ -3,7 +3,7 @@ import assume from 'assume';
 import { createRef, type ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { page } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 import { waitForSelector } from '#test/utils/wait-for-selector.ts';
 import { AllSmallSlicesExample } from '../examples/all-small-slices.tsx';
 import { CenterOverrideExample } from '../examples/center-override.tsx';
@@ -82,8 +82,18 @@ describe('@godaddy/antares', function antares() {
 
         await expect.element(chart).toHaveAttribute('aria-describedby', 'external-description sales-description');
         await expect.element(chart).toHaveAccessibleDescription('Updated daily. Online sales.');
-        await changeDescription.click();
+        expect(chart.element().contains(changeDescription.element())).toBe(false);
+        await userEvent.tab();
+        await expect.element(changeDescription).toHaveFocus();
+        await userEvent.keyboard('{Enter}');
         await expect.element(chart).toHaveAttribute('aria-describedby', 'external-description renamed-description');
+        await changeDescription.click();
+        const slot = locator.getByText('Online sales.');
+        await expect.element(chart).not.toHaveAttribute('aria-describedby', /renamed-description/);
+        const generatedId = slot.element().id;
+        expect(generatedId).toBeTruthy();
+        expect(generatedId).not.toBe('sales-description');
+        await expect.element(chart).toHaveAttribute('aria-describedby', 'external-description ' + generatedId);
         await expect.element(chart).toHaveAccessibleDescription('Updated daily. Online sales.');
         await changeDescription.click();
         await expect.element(chart).toHaveAttribute('aria-describedby', 'external-description');
@@ -133,6 +143,12 @@ describe('@godaddy/antares', function antares() {
         expect(bottomLegend.element().getBoundingClientRect().top).toBeGreaterThan(
           bottomChart.element().getBoundingClientRect().bottom
         );
+
+        const [firstItem, secondItem] = bottomLegend.getByRole('listitem').all();
+        const first = firstItem.element().getBoundingClientRect();
+        const second = secondItem.element().getBoundingClientRect();
+        expect(first.top).toBeCloseTo(second.top, 0);
+        expect(second.left).toBeGreaterThan(first.left);
 
         [sideLegend, bottomLegend].forEach(function assertLegendContent(legend) {
           const expectedItems = ['Product A', 'Product B', 'Product C', 'Product D'];
@@ -205,6 +221,16 @@ describe('@godaddy/antares', function antares() {
 
         await button.click({ position: { x: width - 3, y: height / 2 } });
         expect(onPress).toHaveBeenCalledOnce();
+
+        const editor = locator.getByRole('textbox', { name: 'Edit center note' });
+        const ring = locator.getByRole('img').element().getBoundingClientRect();
+        const editorBounds = editor.element().getBoundingClientRect();
+        expect(editorBounds.left + editorBounds.width / 2).toBeCloseTo(ring.left + ring.width / 2, 0);
+        expect(
+          document.elementFromPoint(editorBounds.x + editorBounds.width / 2, editorBounds.y + editorBounds.height / 2)
+        ).toBe(editor.element());
+        await editor.click();
+        await expect.element(editor).toHaveFocus();
       });
 
       it('opens tooltip on slice hover and closes when the pointer moves into the ring hole', async function hoverAndLeave() {

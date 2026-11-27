@@ -8,6 +8,12 @@ export function InteractiveCenterExample({ onPress }: { onPress?: () => void }) 
         <Button onPress={onPress} style={{ inlineSize: '100%' }}>
           View details
         </Button>
+        <div
+          contentEditable
+          role="textbox"
+          aria-label="Edit center note"
+          style={{ inlineSize: 96, minBlockSize: 24 }}
+        />
       </DonutChartCenter>
     </DonutChart>
   );

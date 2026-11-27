@@ -4,8 +4,6 @@
 
 Redesign DonutChart with a composable center and legend.
 
-Replace `label` and `subLabel` with `Text` in the `value` and `description` slots of `DonutChartCenter`. Replace `legend` and `legendLabel` with `ChartLegend` and its optional `label`. The legend appears below by default. Set `legendPosition="end"` on `DonutChart` for a legend at the inline end. The chart root now accepts Grid layout props instead of Flex props, so Flex-only props such as `direction` and `wrap` are no longer accepted.
+Breaking changes: replace `label` and `subLabel` with the `value` and `description` slots of `DonutChartCenter`. Replace `legend` and `legendLabel` with `ChartLegend` and its optional `label`. The root uses Grid layout props. The root no longer accepts `as`, `direction`, `wrap`, `justifyContent`, or `justifyItems`. Use `display="grid"` or `"inline-grid"` in place of the Flex display values. The chart owns `areas`, `columns`, and `rows`.
 
-`DonutChartCenter` now uses Grid layout props in place of Flex props. Replace Flex-only props such as `direction` and `wrap` with Grid layout. The center slots can appear in either order. Use `Text size` to override the responsive default. The mounted description slot describes the ring alongside any caller-provided `aria-describedby` references.
-
-Ring and tooltip colors match the legend when zero or negative values are present.
+The legend appears below by default. Set `legendPosition="end"` for an inline-end legend. The description slot adds to any caller-provided `aria-describedby` references. Ring and tooltip colors match the legend when zero or negative values are present.
