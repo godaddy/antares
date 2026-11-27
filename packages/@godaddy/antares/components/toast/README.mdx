@@ -1,0 +1,113 @@
+---
+title: Toast
+description: Toasts are short, non-modal notifications in the top-right corner of the page that tell the user a system event has happened.
+---
+
+import { Meta, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './toast.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Call `toast.add()` from anywhere; mount one `<ToastRegion />` per app
+- Emphasis variants with status icons: none, success, critical, warning
+- Closes on its own after 5 seconds by default, or stays until dismissed
+- Timers pause while the pointer or keyboard focus is on the toasts
+- Safe with several copies of Antares on one page: they share one stack in the corner
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Usage
+
+Mount one region inside your app's providers, so toast content keeps your context (i18n, theme, and so on):
+
+```tsx
+import { ToastRegion, toast } from '@godaddy/antares';
+
+function App() {
+  return (
+    <IntlProvider>
+      <ToastRegion />
+      {/* ... */}
+    </IntlProvider>
+  );
+}
+
+const key = toast.add({ title: 'Domain connected', message: 'Your site is now live.', emphasis: 'success' });
+toast.close(key);
+```
+
+Toasts added before the region mounts wait in the queue and show once it does.
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Several copies of Antares on one page
+
+A page can load more than one copy of Antares, such as a shared header and the app it wraps, possibly at
+different versions. Each copy renders its own toasts, with its own components and React context, into one
+page-wide element (`[data-antares-toast-host="1"]`) that the first copy creates. So toasts stack instead of
+overlapping, and nothing has to be shared between versions.
+
+Toasts are grouped by copy: the header's toasts stay together, and the app's stay together.
+
+If micro front-ends share **one** copy of Antares, their `<ToastRegion />`s all render the same default
+queue. Only the first one mounted shows the toasts, so none appear twice; if it unmounts, the next one
+takes over. Those toasts render inside the active region's app, so a micro front-end that needs its own
+context (such as its own i18n) should use its own `new ToastQueue()` and `<ToastRegion queue={queue} />`.
+
+## Accessibility
+
+### Keyboard
+
+| Key | Description |
+| --- | --- |
+| `F6` / `Shift+F6` | Moves focus into and out of the notifications region |
+| `Tab` / `Shift+Tab` | Moves between toasts and their close buttons |
+| `Space` / `Enter` | Closes the toast when its close button is focused |
+
+When the focused toast closes, focus moves to the next toast, or back to where it was before entering the region.
+
+### Screen readers
+
+The region is a landmark labelled with the number of notifications. Each toast is announced when it appears,
+and is labelled by its title (or its message when there is no title). Translate the labels with
+`ariaLabels={{ region, close }}` on `ToastRegion`.
+
+### Timing
+
+Timeouts pause while the user hovers or focuses the toasts. The default of 5 seconds follows WCAG's guidance
+on adjustable timing; avoid shorter timeouts.
+
+## Best Practices
+
+- Keep the title to one or two words and the message to one sentence.
+- Don't put links or actions in a toast that times out; the user may not reach them in time.
+- Use `timeout: null` for messages the user must see, and close them from code when the work finishes.
+- Only hide the close button (`dismissible: false`) on short, timed toasts. Persistent toasts always show it.
+- Use `critical` for failures the user can fix, and `warning` for things that matter but don't need action now.
+
+## Props
+
+### ToastRegion
+
+<ArgTypes of={Stories.Props} />
+
+### toast.add(options)
+
+Returns the key to pass to `toast.close(key)`.
+
+<ArgTypes of={Stories.ToastOptionsProps} />
+
+### new ToastQueue(options)
+
+A separate queue with the same `add` and `close` methods. Render it with `<ToastRegion queue={queue} />`.
+
+<ArgTypes of={Stories.ToastQueueOptionsProps} />

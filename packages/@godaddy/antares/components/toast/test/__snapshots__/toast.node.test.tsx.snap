@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@godaddy/antares > #Toast > renders the default example 1`] = `"<button class="button secondary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_2_">Show toast</button>"`;
+
+exports[`@godaddy/antares > #Toast > renders the emphases example 1`] = `"<div class="box flex" style="flex-wrap:wrap;gap:var(--sp-sm)"><button class="button secondary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_6_">Show <!-- -->none</button><button class="button secondary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_a_">Show <!-- -->success</button><button class="button secondary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_e_">Show <!-- -->critical</button><button class="button secondary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_i_">Show <!-- -->warning</button></div>"`;
+
+exports[`@godaddy/antares > #Toast > renders the multiple regions example 1`] = `"<div class="box flex" style="flex-wrap:wrap;gap:var(--sp-sm)"><button class="button secondary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_7_">Header toast</button><button class="button secondary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_b_">App toast</button></div>"`;
+
+exports[`@godaddy/antares > #Toast > renders the persistent example 1`] = `"<div class="box flex" style="flex-wrap:wrap;gap:var(--sp-sm)"><button class="button secondary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_6_">Start upload</button><button class="button secondary" data-rac="" type="button" disabled="" data-react-aria-pressable="true" id="react-aria-_R_a_" data-disabled="true">Finish upload</button></div>"`;
+
+exports[`@godaddy/antares > #Toast > renders the playground defaults 1`] = `"<button class="button secondary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_2_">Show toast</button>"`;
+
+exports[`@godaddy/antares > #Toast > renders the rich content example 1`] = `"<button class="button secondary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_2_">Show rich toast</button>"`;
+
+exports[`@godaddy/antares > #Toast > renders the translated labels example 1`] = `"<button class="button secondary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_2_">Mostrar aviso</button>"`;
