@@ -44,7 +44,7 @@ export interface ToastOptions {
  * Options for a {@link ToastQueue}.
  */
 export interface ToastQueueOptions {
-  /** How many toasts show at once. Extra toasts wait until one closes. @default 5 */
+  /** Positive safe integer limit for visible toasts. Extra toasts wait until one closes. @default 5 */
   maxVisibleToasts?: number;
 }
 
@@ -205,6 +205,9 @@ const internals = /* @__PURE__ */ new WeakMap<ToastQueue, InternalToastQueue>();
 export class ToastQueue {
   constructor(options: ToastQueueOptions = {}) {
     const { maxVisibleToasts = DEFAULT_MAX_VISIBLE_TOASTS } = options;
+    if (!Number.isSafeInteger(maxVisibleToasts) || maxVisibleToasts <= 0) {
+      throw new RangeError('ToastQueue: maxVisibleToasts must be a positive safe integer.');
+    }
     internals.set(this, new InternalToastQueue({ maxVisibleToasts }));
   }
 
