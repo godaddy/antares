@@ -52,9 +52,8 @@ Toasts added before the region mounts wait in the queue and show once it does.
 ## Several copies of Antares on one page
 
 A page can load more than one copy of Antares, such as a shared header and the app it wraps, possibly at
-different versions. Each copy renders its own toasts, with its own components and React context, into one
-page-wide element (`[data-antares-toast-host="1"]`) that the first copy creates. So toasts stack instead of
-overlapping, and nothing has to be shared between versions.
+different versions. Each copy renders its toasts with its own components and React context. The toasts share
+one page-wide stack.
 
 Toasts are grouped by copy: the header's toasts stay together, and the app's stay together. Give each copy's
 region its own label with `ariaLabels={{ region }}`, so screen readers can tell them apart.
@@ -84,8 +83,8 @@ and is labelled by its title (or its message when there is no title). Translate 
 
 ### Timing
 
-Timeouts pause while the user hovers or focuses the toasts. The default of 5 seconds follows WCAG's guidance
-on adjustable timing; avoid shorter timeouts.
+Toasts close after 5 seconds by default. The timer pauses while the user hovers over or focuses the stack.
+Use a persistent toast or make essential messages available elsewhere in the page.
 
 ## Best Practices
 
