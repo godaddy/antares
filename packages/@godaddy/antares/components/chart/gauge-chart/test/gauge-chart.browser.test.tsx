@@ -112,6 +112,23 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#composition', function composition() {
+      it('honors explicit text emphasis in all four slots', async function slotEmphasis() {
+        const { getByText } = await render(
+          <PlaygroundExample
+            label="50%"
+            description="Risk level"
+            rangeMin="Low"
+            rangeMax="High"
+            emphasis="critical"
+            value={50}
+          />
+        );
+
+        for (const label of ['50%', 'Risk level', 'Low', 'High']) {
+          await expect.element(getByText(label)).toHaveStyle({ color: 'rgb(219, 24, 2)' });
+        }
+      });
+
       it('lays out regions the same in either order', async function regionOrder() {
         const { getByRole } = await render(<RegionOrderExample />);
 
@@ -130,10 +147,12 @@ describe('@godaddy/antares', function antares() {
       it('keeps region layout with consumer context overrides', async function contextOverrides() {
         const centerRef = createRef<HTMLDivElement>();
         const rangeRef = createRef<HTMLDivElement>();
+        const centerContextRef = createRef<HTMLDivElement>();
+        const rangeContextRef = createRef<HTMLDivElement>();
         const { getByRole } = await render(
-          <GaugeChartCenterContext.Provider value={{ className: 'custom-center', ref: centerRef }}>
-            <GaugeChartRangeContext.Provider value={{ className: 'custom-range', ref: rangeRef }}>
-              <WithRangeLabelsExample />
+          <GaugeChartCenterContext.Provider value={{ className: 'custom-center', ref: centerContextRef }}>
+            <GaugeChartRangeContext.Provider value={{ className: 'custom-range', ref: rangeContextRef }}>
+              <WithRangeLabelsExample centerRef={centerRef} rangeRef={rangeRef} />
             </GaugeChartRangeContext.Provider>
           </GaugeChartCenterContext.Provider>
         );
@@ -142,6 +161,8 @@ describe('@godaddy/antares', function antares() {
         await expect.element(meter).toBeVisible();
         expect(centerRef.current?.classList.contains('custom-center')).toBe(true);
         expect(rangeRef.current?.classList.contains('custom-range')).toBe(true);
+        expect(centerRef.current).toBe(centerContextRef.current);
+        expect(rangeRef.current).toBe(rangeContextRef.current);
         expect(meter.getByText('Low').element().getBoundingClientRect().right).toBeLessThanOrEqual(
           meter.getByText('Risk Level').element().getBoundingClientRect().left
         );

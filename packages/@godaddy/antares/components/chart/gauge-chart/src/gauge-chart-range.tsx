@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, forwardRef } from 'react';
 import type { ContextValue } from 'react-aria-components';
 import { cx } from 'cva';
 import {
@@ -10,7 +10,8 @@ import styles from './index.module.css';
 
 export interface GaugeChartRangeProps extends ChartRegionProps {}
 
-export const GaugeChartRangeContext = createContext<ContextValue<GaugeChartRangeProps, HTMLDivElement>>(null);
+export const GaugeChartRangeContext =
+  /* @__PURE__ */ createContext<ContextValue<GaugeChartRangeProps, HTMLDivElement>>(null);
 
 const rangeRegion: ChartRegionDefinition = {
   name: 'range',
@@ -19,6 +20,8 @@ const rangeRegion: ChartRegionDefinition = {
 };
 
 /** Labels the start and end of the gauge arc with the `min` and `max` slots. The labels do not change the scale. */
-export function GaugeChartRange(props: GaugeChartRangeProps) {
-  return <ChartRegion {...props} region={rangeRegion} />;
-}
+export const GaugeChartRange = /* @__PURE__ */ forwardRef<HTMLDivElement, GaugeChartRangeProps>(
+  function GaugeChartRange(props, ref) {
+    return <ChartRegion {...props} region={rangeRegion} ref={ref} />;
+  }
+);

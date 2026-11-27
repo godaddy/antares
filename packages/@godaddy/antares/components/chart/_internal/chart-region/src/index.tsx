@@ -1,4 +1,4 @@
-import { createContext, useContext, type Context, type ReactNode, type Ref } from 'react';
+import { createContext, forwardRef, useContext, type Context, type ReactNode, type Ref } from 'react';
 import {
   DEFAULT_SLOT,
   useContextProps,
@@ -35,9 +35,8 @@ export interface ChartRegionPlacement {
 export type ChartRegionPlacements = Record<string, ChartRegionPlacement>;
 
 /** Context a chart provides so its composed regions know their placement. Not public. */
-export const ChartRegionsContext: Context<ChartRegionPlacements | null> = createContext<ChartRegionPlacements | null>(
-  null
-);
+export const ChartRegionsContext: Context<ChartRegionPlacements | null> =
+  /* @__PURE__ */ createContext<ChartRegionPlacements | null>(null);
 
 /** Describes one kind of region. Define it once at module scope. */
 export interface ChartRegionDefinition {
@@ -62,8 +61,11 @@ interface ChartRegionRenderProps extends ChartRegionProps {
  *
  * @param props - {@link ChartRegionRenderProps}
  */
-export function ChartRegion({ region, ...props }: ChartRegionRenderProps) {
-  const [{ children, className, ...rest }, ref] = useContextProps(props, null, region.context);
+export const ChartRegion = /* @__PURE__ */ forwardRef<HTMLDivElement, ChartRegionRenderProps>(function ChartRegion(
+  { region, ...props },
+  ref
+) {
+  const [{ children, className, ...rest }, regionRef] = useContextProps(props, ref, region.context);
   const placement = useContext(ChartRegionsContext)?.[region.name];
   const slots: Record<string, RACTextProps & { ref?: Ref<HTMLElement> }> = { [DEFAULT_SLOT]: {} };
   for (const [slot, slotClassName] of Object.entries(region.slots)) {
@@ -73,8 +75,8 @@ export function ChartRegion({ region, ...props }: ChartRegionRenderProps) {
     };
   }
   return (
-    <Grid {...rest} ref={ref} className={composeClassName(className, placement?.className)}>
+    <Grid {...rest} ref={regionRef} className={composeClassName(className, placement?.className)}>
       <TextContext.Provider value={{ slots }}>{children}</TextContext.Provider>
     </Grid>
   );
-}
+});

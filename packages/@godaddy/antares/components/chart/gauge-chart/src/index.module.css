@@ -115,7 +115,7 @@
   align-self: end;
   display: block;
   max-width: 66cqi;
-  color: var(--gauge-fg-label);
+  color: var(--_type-color, var(--gauge-fg-label));
   font-family: var(--gauge-font-family);
   font-weight: 400;
   line-height: 1;
@@ -272,7 +272,7 @@
   margin-top: var(--gauge-description-margin-top);
   min-width: 0;
   max-width: 100%;
-  color: var(--gauge-description-fg);
+  color: var(--_type-color, var(--gauge-description-fg));
   font-family: var(--gauge-font-family);
   font-weight: var(--gauge-description-font-weight);
   line-height: var(--gauge-description-line-height);
@@ -288,7 +288,7 @@
   width: 4ch;
   overflow: hidden;
   margin-top: var(--gauge-range-label-margin-top);
-  color: var(--gauge-range-label-fg);
+  color: var(--_type-color, var(--gauge-range-label-fg));
   font-family: var(--gauge-font-family);
   font-weight: var(--gauge-range-label-font-weight);
   line-height: var(--gauge-range-label-line-height);

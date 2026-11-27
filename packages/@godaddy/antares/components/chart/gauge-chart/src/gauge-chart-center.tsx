@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, forwardRef } from 'react';
 import type { ContextValue } from 'react-aria-components';
 import {
   ChartRegion,
@@ -9,7 +9,8 @@ import styles from './index.module.css';
 
 export interface GaugeChartCenterProps extends ChartRegionProps {}
 
-export const GaugeChartCenterContext = createContext<ContextValue<GaugeChartCenterProps, HTMLDivElement>>(null);
+export const GaugeChartCenterContext =
+  /* @__PURE__ */ createContext<ContextValue<GaugeChartCenterProps, HTMLDivElement>>(null);
 
 const centerRegion: ChartRegionDefinition = {
   name: 'center',
@@ -18,6 +19,8 @@ const centerRegion: ChartRegionDefinition = {
 };
 
 /** Positions a value inside the gauge arc and a description below it. Use the `value` and `description` slots. */
-export function GaugeChartCenter(props: GaugeChartCenterProps) {
-  return <ChartRegion {...props} region={centerRegion} />;
-}
+export const GaugeChartCenter = /* @__PURE__ */ forwardRef<HTMLDivElement, GaugeChartCenterProps>(
+  function GaugeChartCenter(props, ref) {
+    return <ChartRegion {...props} region={centerRegion} ref={ref} />;
+  }
+);
