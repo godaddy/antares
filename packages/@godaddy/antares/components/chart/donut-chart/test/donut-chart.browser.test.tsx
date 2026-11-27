@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import { waitForSelector } from '#test/utils/wait-for-selector.ts';
+import { DefaultExample as LegendExample } from '../../chart-legend/examples/default.tsx';
 import { AllSmallSlicesExample } from '../examples/all-small-slices.tsx';
 import { CenterOverrideExample } from '../examples/center-override.tsx';
 import { DefaultExample } from '../examples/default.tsx';
@@ -247,6 +248,45 @@ describe('@godaddy/antares', function antares() {
 
         await chart.hover();
         await expect.element(tooltip).not.toBeInTheDocument();
+      });
+
+      it('keeps the hovered tooltip swatch in sync when slice colors change', async function updatesHoveredSwatch() {
+        const sales = { id: 'sales', name: 'Sales', value: 100 };
+        const zero = { id: 'zero', name: 'Zero', value: 0 };
+        await page.viewport(400, 520);
+        const { container, locator, rerender } = await render(<LegendExample data={[zero, sales]} />);
+        await waitForSelector(container, 'svg path');
+        const chart = locator.getByRole('img', { name: 'Sales by channel' });
+        const slice = chart.element().querySelector('path')!;
+        const enter = vi.fn();
+        slice.addEventListener('pointerenter', enter);
+
+        function salesSwatchColor(listName: string) {
+          return page
+            .getByRole('list', { name: listName })
+            .getByText('Sales', { exact: true })
+            .element()
+            .closest('[role="listitem"]')
+            ?.querySelector<HTMLElement>('[style*="background-color"]')?.style.backgroundColor;
+        }
+
+        const { width, height } = chart.element().getBoundingClientRect();
+        await page.elementLocator(slice).hover({ position: { x: width - 5, y: height / 2 } });
+        const tooltip = page.getByRole('tooltip');
+        await expect.element(tooltip).toBeVisible();
+        const originalFill = slice.getAttribute('fill');
+        expect(salesSwatchColor('Channel')).toBe(originalFill);
+        expect(salesSwatchColor('Tooltip data')).toBe(originalFill);
+
+        await rerender(<LegendExample data={[sales]} />);
+
+        expect(chart.element().querySelector('path')).toBe(slice);
+        expect(enter).toHaveBeenCalledOnce();
+        const updatedFill = slice.getAttribute('fill');
+        expect(updatedFill).not.toBe(originalFill);
+        expect(salesSwatchColor('Channel')).toBe(updatedFill);
+        await expect.element(tooltip).toBeVisible();
+        expect(salesSwatchColor('Tooltip data')).toBe(updatedFill);
       });
 
       it('shows formatValue output in tooltip for FormatValueExample', async function formatValueTooltip() {

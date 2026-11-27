@@ -126,7 +126,7 @@ export function DonutChart(props: DonutChartProps) {
   const chartWrapRef = useRef<HTMLDivElement>(null);
   const tooltipAnchorRef = useRef<HTMLDivElement>(null);
   const [chartSizePx, setChartSizePx] = useState(0);
-  const [tooltipSlices, setTooltipSlices] = useState<ColoredSlice[]>([]);
+  const [hoveredSliceId, setHoveredSliceId] = useState<string | null>(null);
   const [tooltipAnchorOffset, setTooltipAnchorOffset] = useState({ left: 0, top: 0 });
 
   /** Measure the chart wrapper so the square SVG uses the correct side length. */
@@ -180,8 +180,18 @@ export function DonutChart(props: DonutChartProps) {
    * Slice data for the tooltip when hovering: one “small slice” group is a
    * maximal contiguous run of small slices on the ring (0 … n−1 wraps). Non-small hover → only that slice.
    */
-  const getTooltipSlicesForRingIndex = useCallback(
-    function getTooltipSlicesForRingIndex(ringIndex: number): ColoredSlice[] {
+  const tooltipSlices = useMemo(
+    function getHoveredTooltipSlices(): ColoredSlice[] {
+      if (hoveredSliceId === null) {
+        return [];
+      }
+      const ringIndex = pieData.findIndex(function findHovered(slice) {
+        return slice.id === hoveredSliceId;
+      });
+      if (ringIndex === -1) {
+        return [];
+      }
+
       const n = pieData.length;
 
       // Hovered slice is not small — no grouping with neighbors.
@@ -224,7 +234,7 @@ export function DonutChart(props: DonutChartProps) {
       }
       return slices;
     },
-    [pieData, isSmallSlice]
+    [hoveredSliceId, pieData, isSmallSlice]
   );
 
   const formatSliceValue = useCallback(
@@ -234,19 +244,9 @@ export function DonutChart(props: DonutChartProps) {
     [formatValueProp]
   );
 
-  const clearTooltipSlices = useCallback(function clearTooltipSlices() {
-    setTooltipSlices([]);
+  const clearHoveredSlice = useCallback(function clearHoveredSlice() {
+    setHoveredSliceId(null);
   }, []);
-
-  const updateTooltipSlicesForHoveredDatum = useCallback(
-    function updateTooltipSlicesForHoveredDatum(hovered: DonutSliceDatum) {
-      const ringIndex = pieData.findIndex(function findHovered(d) {
-        return d.id === hovered.id;
-      });
-      setTooltipSlices(getTooltipSlicesForRingIndex(ringIndex));
-    },
-    [getTooltipSlicesForRingIndex, pieData]
-  );
 
   const updateTooltipAnchorFromPointer = useCallback(function updateTooltipAnchorFromPointer(event: PointerEvent) {
     const chartWrap = chartWrapRef.current;
@@ -262,10 +262,10 @@ export function DonutChart(props: DonutChartProps) {
 
   const handleSlicePointerEnter = useCallback(
     function handleSlicePointerEnter(e: PointerEvent, datum: DonutSliceDatum) {
-      updateTooltipSlicesForHoveredDatum(datum);
+      setHoveredSliceId(datum.id);
       updateTooltipAnchorFromPointer(e);
     },
-    [updateTooltipSlicesForHoveredDatum, updateTooltipAnchorFromPointer]
+    [updateTooltipAnchorFromPointer]
   );
 
   const getPieSliceValue = useCallback(function getPieSliceValue(d: DonutSliceDatum) {
@@ -305,7 +305,7 @@ export function DonutChart(props: DonutChartProps) {
               height={chartSizePx}
               className={styles.chart}
               role="img"
-              onPointerLeave={clearTooltipSlices}
+              onPointerLeave={clearHoveredSlice}
               aria-label={ariaLabel}
               aria-labelledby={labelledBy}
               aria-describedby={describedBy}
@@ -337,7 +337,7 @@ export function DonutChart(props: DonutChartProps) {
                               handleSlicePointerEnter(e, arc.data);
                             }}
                             onPointerMove={updateTooltipAnchorFromPointer}
-                            onPointerLeave={clearTooltipSlices}
+                            onPointerLeave={clearHoveredSlice}
                           />
                         );
                       })}

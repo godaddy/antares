@@ -1,4 +1,4 @@
-import { ChartLegend, DonutChart } from '@godaddy/antares';
+import { ChartLegend, DonutChart, type DonutChartProps } from '@godaddy/antares';
 
 const data = [
   { id: '1', name: 'Online', value: 60 },
@@ -9,9 +9,9 @@ const data = [
  * Place `ChartLegend` inside a `DonutChart`. It reads the chart's slices, so the names and colors always match.
  * @order 1
  */
-export function DefaultExample() {
+export function DefaultExample({ data: slices = data }: Partial<Pick<DonutChartProps, 'data'>>) {
   return (
-    <DonutChart data={data} aria-label="Sales by channel">
+    <DonutChart data={slices} aria-label="Sales by channel">
       <ChartLegend label="Channel" />
     </DonutChart>
   );
