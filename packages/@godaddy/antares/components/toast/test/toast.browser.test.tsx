@@ -195,6 +195,33 @@ describe('@godaddy/antares', function antares() {
       }
     });
 
+    it('matches the close glyph color to the toast text when Button styles load last', async function closeColor() {
+      const stylesheet = document.createElement('style');
+      // Reapply the minimal Button foreground at its original specificity, after Toast's styles.
+      stylesheet.textContent = `
+        [slot="close"] {
+          --_button-text: var(--color-action-text-tertiary-default, var(--ux-ut3xrx, #4169e1));
+        }
+      `;
+      document.head.append(stylesheet);
+
+      try {
+        await render(<DefaultExample />);
+        await showToast();
+
+        const notification = page.getByRole('alertdialog', { name: 'Domain connected' });
+        const close = notification.getByRole('button', { name: 'Close' });
+        await expect.element(close).toBeVisible();
+        const glyph = close.element().querySelector('[data-icon="x"]');
+        if (!glyph) throw new Error('Missing close glyph');
+
+        const title = notification.getByText('Domain connected').element();
+        expect(getComputedStyle(glyph).fill).toBe(getComputedStyle(title).color);
+      } finally {
+        stylesheet.remove();
+      }
+    });
+
     it('dims the close button on hover instead of filling it', async function closeHover() {
       await render(<DefaultExample />);
       await showToast();
