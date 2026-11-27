@@ -1,15 +1,9 @@
+import { type CSSProperties, type ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
-  type CSSProperties,
-  type ReactNode,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react';
-import { useId } from 'react-aria';
-import { ChartRegionsContext, type ChartRegionPlacements } from '#components/chart/_internal/chart-region';
+  ChartRegionsContext,
+  useChartDescription,
+  type ChartRegionPlacements
+} from '#components/chart/_internal/chart-region';
 import { Box } from '#components/layout/box';
 import { Grid, type GridProps } from '#components/layout/grid';
 import { composeClassName } from '#utils/render-props.ts';
@@ -80,7 +74,11 @@ export function GaugeChart(props: GaugeChartProps) {
     variant = 'default',
     className,
     style,
-    'aria-describedby': describedBy,
+    'aria-label': ariaLabel,
+    'aria-labelledby': labelledBy,
+    'aria-describedby': externalDescription,
+    'aria-description': ariaDescription,
+    'aria-details': ariaDetails,
     ...gridRest
   } = props;
 
@@ -92,23 +90,15 @@ export function GaugeChart(props: GaugeChartProps) {
   const clampedValue = Math.min(Math.max(0, value), maxValue);
   const normalizedValue = clampedValue / maxValue;
 
-  // React Aria merges a consumer's description ID back into this ID via TextContext.
-  const descriptionId = useId();
-  const [hasDescription, setHasDescription] = useState(false);
-  const descriptionRef = useCallback(function descriptionRef(element: HTMLElement | null) {
-    setHasDescription(!!element);
-  }, []);
-  const description = [describedBy, hasDescription ? descriptionId : undefined].filter(Boolean).join(' ') || undefined;
-
+  const { descriptionSlot, describedBy } = useChartDescription(externalDescription);
   const regions = useMemo(
     function createRegions(): ChartRegionPlacements {
       return {
-        // The meter hides its children from assistive technology, so the description is linked to it instead.
-        center: { className: styles.center, slots: { description: { id: descriptionId, ref: descriptionRef } } },
+        center: { className: styles.center, slots: { description: descriptionSlot } },
         range: { className: styles.range }
       };
     },
-    [descriptionId, descriptionRef]
+    [descriptionSlot]
   );
 
   useIsomorphicLayoutEffect(function syncGaugeGapAngle() {
@@ -149,15 +139,22 @@ export function GaugeChart(props: GaugeChartProps) {
       data-segmented={isSegmented || undefined}
       data-filled={clampedValue > 0 ? true : undefined}
       data-full={clampedValue >= maxValue ? true : undefined}
-      role="meter"
-      aria-valuenow={clampedValue}
-      aria-valuemin={0}
-      aria-valuemax={maxValue}
-      aria-valuetext={valueLabel}
-      aria-describedby={description}
     >
-      <Box ref={gaugeRef} className={styles.gauge} aria-hidden>
-        <Box className={styles.caps} />
+      <Box
+        ref={gaugeRef}
+        className={styles.gauge}
+        role="meter"
+        aria-label={ariaLabel}
+        aria-labelledby={labelledBy}
+        aria-describedby={describedBy}
+        aria-description={ariaDescription}
+        aria-details={ariaDetails}
+        aria-valuenow={clampedValue}
+        aria-valuemin={0}
+        aria-valuemax={maxValue}
+        aria-valuetext={valueLabel}
+      >
+        <Box className={styles.caps} aria-hidden />
       </Box>
       <ChartRegionsContext.Provider value={regions}>{children}</ChartRegionsContext.Provider>
     </Grid>

@@ -40,10 +40,10 @@ Values outside the scale are clamped. Continuous mode uses 0–100 and segmented
 ## Props
 
 ```tsx
-<GaugeChart value={3} segments={5}>
+<GaugeChart value={3} segments={5} valueLabel="3 of 5" aria-label="Site health">
   <GaugeChartCenter>
-    <Text slot="value" />
-    <Text slot="description" />
+    <Text slot="value" size="2xl">3/5</Text>
+    <Text slot="description">Health score</Text>
   </GaugeChartCenter>
   <GaugeChartRange>
     <Text slot="min" />
@@ -52,7 +52,9 @@ Values outside the scale are clamped. Continuous mode uses 0–100 and segmented
 </GaugeChart>
 ```
 
-Compose the center and range as optional direct children in either order. The description also describes the meter. Set `valueLabel` when the visible value isn't a plain number.
+Use `GaugeChartCenter` with `Text` in the `value` and `description` slots. The slots can appear in either order. An explicit `Text size` overrides the chart's responsive default.
+
+Compose the center and range as optional direct children in either order. The description also describes the meter. Set `valueLabel` when the visible value isn't a plain number. `labelType="text"` makes the default value size smaller for short words. The arc carries the meter role so controls in the center stay accessible.
 
 ### GaugeChart
 

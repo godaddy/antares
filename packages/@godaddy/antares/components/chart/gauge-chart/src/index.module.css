@@ -23,7 +23,9 @@
   --gauge-description-font-weight: 500;
   --gauge-description-line-height: var(--ux-h93mi7, 1.375);
 
-  /* Row 1 holds the arc and value; row 2 the description between the range labels. */
+  grid-template-areas:
+    "value value value"
+    ". description .";
   grid-template-columns: auto 1fr auto;
   justify-content: center;
   justify-items: center;
@@ -109,13 +111,12 @@
 /* Sits at the bottom of the arc row, half an end-cap diameter below the arc base. */
 .value {
   --_type-slot-size: var(--gauge-value-font-size, 1em);
+  --_type-slot-color: var(--gauge-fg-label);
 
-  grid-column: 1 / -1;
-  grid-row: 1;
+  grid-area: value;
   align-self: end;
   display: block;
   max-width: 66cqi;
-  color: var(--_type-color, var(--gauge-fg-label));
   font-family: var(--gauge-font-family);
   font-weight: 400;
   line-height: 1;
@@ -125,8 +126,8 @@
 /* Arc: ::before = fill, ::after = track (--gauge-gap-angle from inline style after layout) */
 .gauge {
   position: relative;
-  grid-column: 1 / -1;
-  grid-row: 1;
+  pointer-events: none;
+  grid-area: value;
   align-self: end;
   aspect-ratio: 2;
   width: 100%;
@@ -266,13 +267,12 @@
 /* Second row: description + optional min/max */
 .description {
   --_type-slot-size: var(--gauge-description-font-size, 1em);
+  --_type-slot-color: var(--gauge-description-fg);
 
-  grid-column: 2;
-  grid-row: 2;
+  grid-area: description;
   margin-top: var(--gauge-description-margin-top);
   min-width: 0;
   max-width: 100%;
-  color: var(--_type-color, var(--gauge-description-fg));
   font-family: var(--gauge-font-family);
   font-weight: var(--gauge-description-font-weight);
   line-height: var(--gauge-description-line-height);
@@ -282,13 +282,13 @@
 
 .rangeLabel {
   --_type-slot-size: var(--gauge-range-label-font-size, 1em);
+  --_type-slot-color: var(--gauge-range-label-fg);
 
   display: inline-flex;
   justify-content: center;
   width: 4ch;
   overflow: hidden;
   margin-top: var(--gauge-range-label-margin-top);
-  color: var(--_type-color, var(--gauge-range-label-fg));
   font-family: var(--gauge-font-family);
   font-weight: var(--gauge-range-label-font-weight);
   line-height: var(--gauge-range-label-line-height);

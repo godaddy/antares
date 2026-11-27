@@ -110,7 +110,7 @@ export function HealthScore() {
       style={{ maxWidth: '16rem' }}
     >
       <GaugeChartCenter>
-        <Text slot="value">3/5</Text>
+        <Text slot="value" size="2xl">3/5</Text>
         <Text slot="description">Site health</Text>
       </GaugeChartCenter>
       <GaugeChartRange>
@@ -122,7 +122,9 @@ export function HealthScore() {
 }
 ```
 
-Omit `segments` for continuous mode. Normalize a different measurement range in application code. Range labels describe the scale; they do not change it. Keep the visible value consistent with `value`, and set `valueLabel` when it is not a plain number. Use `labelType="text"` for a short word in the center. Gauge exposes meter semantics; task completion belongs to ProgressBar/CircularProgress.
+Use `GaugeChartCenter` with `Text` in the `value` and `description` slots. The slots can appear in either order. An explicit `Text size` overrides the chart's responsive default.
+
+Omit `segments` for continuous mode. Normalize a different measurement range in application code. Keep the visible value consistent with `value` and set `valueLabel` when it is not a plain number. Use `labelType="text"` for a short word in the center. The description describes the meter, and the arc's meter role leaves center controls accessible. Use ProgressBar or CircularProgress for task completion.
 
 ## Dimensions, legends and tooltips
 

@@ -10,6 +10,8 @@ import { Grid, type GridProps } from '#components/layout/grid';
 import { TextContext } from '#components/text';
 import { composeClassName } from '#utils/render-props.ts';
 
+export { useChartDescription } from './use-chart-description.ts';
+
 /** Props shared by every composed chart region. */
 export interface ChartRegionProps extends Omit<GridProps<'div'>, 'as' | 'areas' | 'columns' | 'rows'> {
   /** Region content. Fill the region's named `Text` slots for the default text styles. */

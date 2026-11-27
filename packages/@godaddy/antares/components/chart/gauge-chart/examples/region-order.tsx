@@ -4,7 +4,7 @@ import { GaugeChart, GaugeChartCenter, GaugeChartRange, Grid, Text } from '@goda
 export function RegionOrderExample() {
   return (
     <Grid columns="repeat(2, 200px)" gap="lg">
-      <GaugeChart value={72} aria-label="Range first">
+      <GaugeChart value={72} aria-label="Range first" data-testid="range-first">
         <GaugeChartRange>
           <Text slot="max">High</Text>
           <Text slot="min">Low</Text>
@@ -14,7 +14,7 @@ export function RegionOrderExample() {
           <Text slot="value">72%</Text>
         </GaugeChartCenter>
       </GaugeChart>
-      <GaugeChart value={72} aria-label="Center first">
+      <GaugeChart value={72} aria-label="Center first" data-testid="center-first">
         <GaugeChartCenter>
           <Text slot="value">72%</Text>
           <Text slot="description">Score</Text>

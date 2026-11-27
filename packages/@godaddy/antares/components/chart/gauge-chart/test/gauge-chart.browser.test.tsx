@@ -2,8 +2,10 @@ import { GaugeChartCenterContext, GaugeChartRangeContext } from '@godaddy/antare
 import { createRef } from 'react';
 import { render } from 'vitest-browser-react';
 import { describe, expect, it } from 'vitest';
+import { userEvent } from 'vitest/browser';
 import { ContinuousExample } from '../examples/continuous.tsx';
 import { DefaultExample } from '../examples/default.tsx';
+import { DynamicDescriptionExample } from '../examples/dynamic-description.tsx';
 import { PlaygroundExample } from '../examples/gauge-chart-playground.tsx';
 import { RegionOrderExample } from '../examples/region-order.tsx';
 import { SegmentedExample } from '../examples/segmented.tsx';
@@ -24,7 +26,7 @@ describe('@godaddy/antares', function antares() {
         expect(el?.getAttribute('aria-valuenow')).toBe('50');
         expect(el?.getAttribute('aria-valuemin')).toBe('0');
         expect(el?.getAttribute('aria-valuemax')).toBe('100');
-        expect(el?.hasAttribute('data-segmented')).toBe(false);
+        expect(el.parentElement?.hasAttribute('data-segmented')).toBe(false);
       });
 
       it('renders continuous example meters at 0 and 100', async function continuousMeters() {
@@ -33,12 +35,12 @@ describe('@godaddy/antares', function antares() {
         const atZero = getByRole('meter', { name: 'Gauge at 0%' });
         await expect.element(atZero).toBeVisible();
         expect(atZero.element()?.getAttribute('aria-valuenow')).toBe('0');
-        expect(atZero.element()?.hasAttribute('data-filled')).toBe(false);
+        expect(atZero.element().parentElement?.hasAttribute('data-filled')).toBe(false);
 
         const atFull = getByRole('meter', { name: 'Gauge at 100%' });
         await expect.element(atFull).toBeVisible();
         expect(atFull.element()?.getAttribute('aria-valuenow')).toBe('100');
-        expect(atFull.element()?.hasAttribute('data-full')).toBe(true);
+        expect(atFull.element().parentElement?.hasAttribute('data-full')).toBe(true);
 
         expect(container.querySelectorAll('[role="meter"]').length).toBe(5);
       });
@@ -52,13 +54,13 @@ describe('@godaddy/antares', function antares() {
         await expect.element(empty).toBeVisible();
         expect(empty.element()?.getAttribute('aria-valuemax')).toBe('5');
         expect(empty.element()?.getAttribute('aria-valuenow')).toBe('0');
-        expect(empty.element()?.hasAttribute('data-segmented')).toBe(true);
-        expect(empty.element()?.hasAttribute('data-filled')).toBe(false);
+        expect(empty.element().parentElement?.hasAttribute('data-segmented')).toBe(true);
+        expect(empty.element().parentElement?.hasAttribute('data-filled')).toBe(false);
 
         const full = getByRole('meter', { name: 'Gauge with 5 of 5 filled' });
         await expect.element(full).toBeVisible();
         expect(full.element()?.getAttribute('aria-valuenow')).toBe('5');
-        expect(full.element()?.hasAttribute('data-full')).toBe(true);
+        expect(full.element().parentElement?.hasAttribute('data-full')).toBe(true);
       });
     });
 
@@ -76,20 +78,20 @@ describe('@godaddy/antares', function antares() {
         for (const [name, variant] of cases) {
           const meter = getByRole('meter', { name });
           await expect.element(meter).toBeVisible();
-          expect(meter.element()?.getAttribute('data-variant')).toBe(variant);
+          expect(meter.element().parentElement?.getAttribute('data-variant')).toBe(variant);
         }
       });
     });
 
     describe('#range-labels', function rangeLabels() {
       it('places min and max labels under the ends of the arc', async function rangeLabelPlacement() {
-        const { getByRole } = await render(<WithRangeLabelsExample />);
+        const { getByRole, getByText } = await render(<WithRangeLabelsExample />);
 
         const meter = getByRole('meter', { name: 'Risk level gauge' });
         await expect.element(meter).toBeVisible();
-        const min = meter.getByText('Low').element().getBoundingClientRect();
-        const max = meter.getByText('High').element().getBoundingClientRect();
-        const description = meter.getByText('Risk Level').element().getBoundingClientRect();
+        const min = getByText('Low').element().getBoundingClientRect();
+        const max = getByText('High').element().getBoundingClientRect();
+        const description = getByText('Risk Level').element().getBoundingClientRect();
 
         expect(min.right).toBeLessThanOrEqual(description.left);
         expect(max.left).toBeGreaterThanOrEqual(description.right);
@@ -97,7 +99,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('flips the range labels in right-to-left layouts', async function rtlRangeLabels() {
-        const { getByRole } = await render(
+        const { getByRole, getByText } = await render(
           <div dir="rtl">
             <WithRangeLabelsExample />
           </div>
@@ -105,8 +107,8 @@ describe('@godaddy/antares', function antares() {
 
         const meter = getByRole('meter', { name: 'Risk level gauge' });
         await expect.element(meter).toBeVisible();
-        expect(meter.getByText('Low').element().getBoundingClientRect().left).toBeGreaterThan(
-          meter.getByText('High').element().getBoundingClientRect().right
+        expect(getByText('Low').element().getBoundingClientRect().left).toBeGreaterThan(
+          getByText('High').element().getBoundingClientRect().right
         );
       });
     });
@@ -130,13 +132,13 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('lays out regions the same in either order', async function regionOrder() {
-        const { getByRole } = await render(<RegionOrderExample />);
+        const { getByTestId } = await render(<RegionOrderExample />);
 
-        const [rangeFirst, centerFirst] = ['Range first', 'Center first'].map(function measure(name) {
-          const meter = getByRole('meter', { name });
-          const origin = meter.element().getBoundingClientRect();
+        const [rangeFirst, centerFirst] = ['range-first', 'center-first'].map(function measure(id) {
+          const chart = getByTestId(id);
+          const origin = chart.element().getBoundingClientRect();
           return ['72%', 'Score', 'Low', 'High'].map(function offset(text) {
-            const rect = meter.getByText(text).element().getBoundingClientRect();
+            const rect = chart.getByText(text).element().getBoundingClientRect();
             return [rect.left - origin.left, rect.top - origin.top];
           });
         });
@@ -149,7 +151,7 @@ describe('@godaddy/antares', function antares() {
         const rangeRef = createRef<HTMLDivElement>();
         const centerContextRef = createRef<HTMLDivElement>();
         const rangeContextRef = createRef<HTMLDivElement>();
-        const { getByRole } = await render(
+        const { getByRole, getByText } = await render(
           <GaugeChartCenterContext.Provider value={{ className: 'custom-center', ref: centerContextRef }}>
             <GaugeChartRangeContext.Provider value={{ className: 'custom-range', ref: rangeContextRef }}>
               <WithRangeLabelsExample centerRef={centerRef} rangeRef={rangeRef} />
@@ -163,13 +165,33 @@ describe('@godaddy/antares', function antares() {
         expect(rangeRef.current?.classList.contains('custom-range')).toBe(true);
         expect(centerRef.current).toBe(centerContextRef.current);
         expect(rangeRef.current).toBe(rangeContextRef.current);
-        expect(meter.getByText('Low').element().getBoundingClientRect().right).toBeLessThanOrEqual(
-          meter.getByText('Risk Level').element().getBoundingClientRect().left
+        expect(getByText('Low').element().getBoundingClientRect().right).toBeLessThanOrEqual(
+          getByText('Risk Level').element().getBoundingClientRect().left
         );
       });
     });
 
     describe('#accessible-text', function accessibleText() {
+      it('preserves external descriptions when the description slot changes', async function dynamicDescription() {
+        const { getByRole } = await render(<DynamicDescriptionExample />);
+        const meter = getByRole('meter', { name: 'Site health' });
+        const changeDescription = getByRole('button', { name: 'Change description' });
+
+        await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description score-description');
+        await expect.element(meter).toHaveAccessibleDescription('Updated daily. Site health score.');
+        expect(meter.element().contains(changeDescription.element())).toBe(false);
+        await userEvent.tab();
+        await expect.element(changeDescription).toHaveFocus();
+        await userEvent.keyboard('{Enter}');
+        await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description renamed-description');
+        await expect.element(meter).toHaveAccessibleDescription('Updated daily. Site health score.');
+        await userEvent.click(changeDescription);
+        await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description');
+        await expect.element(meter).toHaveAccessibleDescription('Updated daily.');
+        await userEvent.click(changeDescription);
+        await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description score-description');
+      });
+
       it('announces valueLabel as the value text', async function valueLabel() {
         const { getByRole } = await render(<SegmentedExample />);
 
@@ -236,7 +258,7 @@ describe('@godaddy/antares', function antares() {
         const { getByRole } = await render(<PlaygroundExample label="OK" labelType="text" value={1} />);
 
         const meter = getByRole('meter', { name: 'Playground gauge' });
-        expect(meter.element()?.getAttribute('data-label-type')).toBe('text');
+        expect(meter.element().parentElement?.getAttribute('data-label-type')).toBe('text');
       });
     });
   });
