@@ -254,9 +254,10 @@ describe('@godaddy/antares', function antares() {
       await page.viewport(1024, 300);
 
       try {
-        await render(
+        const { container } = await render(
           <PlaygroundExample timeout={0} message="A long message that wraps onto a second line in the toast." />
         );
+        container.style.minHeight = '200vh';
         for (let i = 0; i < 5; i++) await showToast();
         await vi.waitFor(function five() {
           assume(toasts().length).equals(5);
@@ -270,7 +271,12 @@ describe('@godaddy/antares', function antares() {
         host.scrollTop = host.scrollHeight;
         const last = toasts()[4].getBoundingClientRect();
         assume(last.bottom).is.at.most(300);
+
+        window.scrollTo(0, 100);
+        await expect.poll(() => window.scrollY).toBe(100);
+        expect(host.getBoundingClientRect().top).toBe(box.top);
       } finally {
+        window.scrollTo(0, 0);
         await page.viewport(1024, 768);
       }
     });
@@ -875,11 +881,20 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('closes a toast that never showed', async function closeUnshown() {
-      toast.close(toast.add({ message: 'Never shown', timeout: null }));
+      const queue = new ToastQueue({ maxVisibleToasts: 1 });
+      queue.close(queue.add({ message: 'Never shown', timeout: null }));
 
-      await render(<DefaultExample />);
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await render(<PlaygroundExample queue={queue} />);
       assume(toasts().length).equals(0);
+
+      const onClose = vi.fn();
+      const hidden = queue.add({ message: 'Hidden toast', timeout: null, onClose });
+      queue.add({ message: 'Visible toast', timeout: null });
+      await expect.element(page.getByRole('alertdialog', { name: 'Visible toast' })).toBeVisible();
+      expect(page.getByRole('alertdialog', { name: 'Hidden toast' }).query()).toBeNull();
+
+      queue.close(hidden);
+      expect(onClose).toHaveBeenCalledTimes(1);
     });
 
     it('shows a default toast without an icon for 5 seconds', async function defaults() {
