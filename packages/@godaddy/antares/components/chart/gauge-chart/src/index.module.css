@@ -11,6 +11,7 @@
   --gauge-fg-label: var(--ux-1le7uoa, #111);
   --gauge-font-family: var(--ux-1067ph9, "gdsherpa", Helvetica, Arial, sans-serif);
 
+  --_gauge-range-column-width: 0%;
   --gauge-range-label-fg: var(--ux-by6mab, #767676);
   --gauge-range-label-font-size: 9.37cqi;
   --gauge-range-label-font-weight: 500;
@@ -26,7 +27,7 @@
   grid-template-areas:
     "value value value"
     ". description .";
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: var(--_gauge-range-column-width) minmax(0, 1fr) var(--_gauge-range-column-width);
   justify-content: center;
   justify-items: center;
   container-type: inline-size;
@@ -37,6 +38,10 @@
       "content content content"
       "value value value"
       ". description .";
+  }
+
+  &:where(:has(> .range > .rangeLabel)) {
+    --_gauge-range-column-width: 18.6%;
   }
 
   &:where([data-label-type="value"]) {
@@ -153,7 +158,7 @@
   grid-area: 1 / 1 / value-end / -1;
   align-self: end;
   aspect-ratio: 2;
-  width: 100%;
+  width: calc(100% - var(--_gauge-range-column-width));
   margin-bottom: calc(var(--gauge-thickness) / 2);
 
   &::before,
@@ -198,11 +203,6 @@
     bottom: -1px;
     background-clip: padding-box;
   }
-}
-
-/* Narrow the arc when range labels are present so its end caps sit just inside them. */
-.root:has(> .range > .rangeLabel) .gauge {
-  width: calc(100% - 2 * 9.3cqi);
 }
 
 /* Continuous, value 0 */
@@ -315,6 +315,10 @@
   font-weight: var(--gauge-range-label-font-weight);
   line-height: var(--gauge-range-label-line-height);
   grid-row: 1;
+
+  :where(.range) > & {
+    width: 100%;
+  }
 }
 
 .rangeLabel:where(.min) {

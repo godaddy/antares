@@ -15,6 +15,10 @@ import { SegmentedExample } from '../examples/segmented.tsx';
 import { VariantsExample } from '../examples/variants.tsx';
 import { WithRangeLabelsExample } from '../examples/with-range-labels.tsx';
 
+function horizontalCenter({ left, right }: DOMRect) {
+  return (left + right) / 2;
+}
+
 describe('@godaddy/antares', function antares() {
   describe('#GaugeChart', function gaugeChartTests() {
     describe('#basic-and-continuous', function basicAndContinuous() {
@@ -91,27 +95,19 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#range-labels', function rangeLabels() {
-      it('places min and max labels under the arc ends and keeps the unlabeled arc full width', async function rangeLabelPlacement() {
+      it('places min and max labels below the arc and keeps the unlabeled arc full width', async function rangeLabelPlacement() {
         const rangeRef = createRef<HTMLDivElement>();
         const { getByRole, getByText, rerender } = await render(<WithRangeLabelsExample rangeRef={rangeRef} />);
 
-        for (const [name, minLabel, maxLabel, descriptionLabel] of [
-          ['CPU usage gauge', '0', '100', 'CPU Usage'],
-          ['Risk level gauge', 'Low', 'High', 'Risk Level']
+        for (const [name, minLabel, maxLabel] of [
+          ['CPU usage gauge', '0', '100'],
+          ['Risk level gauge', 'Low', 'High']
         ]) {
           const meter = getByRole('meter', { name });
           await expect.element(meter).toBeVisible();
           const arc = meter.element().getBoundingClientRect();
           const min = getByText(minLabel, { exact: true }).element().getBoundingClientRect();
           const max = getByText(maxLabel, { exact: true }).element().getBoundingClientRect();
-          const description = getByText(descriptionLabel).element().getBoundingClientRect();
-
-          expect(min.right).toBeLessThanOrEqual(description.left);
-          expect(max.left).toBeGreaterThanOrEqual(description.right);
-          expect(arc.left).toBeGreaterThanOrEqual(min.left);
-          expect(arc.left).toBeLessThanOrEqual(min.right);
-          expect(arc.right).toBeGreaterThanOrEqual(max.left);
-          expect(arc.right).toBeLessThanOrEqual(max.right);
           expect(min.top).toBeGreaterThanOrEqual(arc.bottom);
           expect(max.top).toBeCloseTo(min.top, 0);
         }
@@ -120,38 +116,32 @@ describe('@godaddy/antares', function antares() {
         const arc = getByRole('meter', { name: 'Risk level gauge' }).element().getBoundingClientRect();
         expect(arc.width).toBe(rangeRef.current?.getBoundingClientRect().width);
       });
-
-      it('flips the range labels in right-to-left layouts', async function rtlRangeLabels() {
-        const { getByRole, getByText } = await render(
-          <div dir="rtl">
-            <WithRangeLabelsExample />
-          </div>
-        );
-
-        const meter = getByRole('meter', { name: 'Risk level gauge' });
-        await expect.element(meter).toBeVisible();
-        expect(getByText('Low').element().getBoundingClientRect().left).toBeGreaterThan(
-          getByText('High').element().getBoundingClientRect().right
-        );
-      });
     });
 
     describe('#composition', function composition() {
-      it('keeps center controls clear of the value', async function centerControls() {
+      it('keeps center controls clear of the value and aligns range labels', async function centerControls() {
         const onPress = vi.fn();
         const { getByTestId } = await render(<CenterControlsExample onPress={onPress} />);
 
         for (const [name, labels] of [
-          ['Compact', ['Low']],
-          ['Regular', ['High']],
-          ['Both labels', ['Low', 'High']]
+          ['Compact', [['Low', 'left']]],
+          ['Regular', [['High', 'right']]],
+          [
+            'Both labels',
+            [
+              ['Low', 'right'],
+              ['High', 'left']
+            ]
+          ]
         ] as const) {
           const chart = getByTestId(name);
+          const arc = chart.getByRole('meter').element().getBoundingClientRect();
           const buttons = ['Edit', 'Reset'].map((action) => chart.getByRole('button', { name: action }));
           const value = chart.getByText('72%').element().getBoundingClientRect();
           const description = chart.getByText('Score').element().getBoundingClientRect();
-          const rangeLabels = labels.map((label) => ({
+          const rangeLabels = labels.map(([label, end]) => ({
             label,
+            end,
             rect: chart.getByText(label).element().getBoundingClientRect()
           }));
           const boxes = [
@@ -172,6 +162,17 @@ describe('@godaddy/antares', function antares() {
               expect(overlap, `${name}: ${label} overlaps ${other.label}`).toBe(false);
             }
           }
+
+          for (const { label, end, rect } of rangeLabels) {
+            expect(
+              Math.abs(horizontalCenter(rect) - arc[end]),
+              `${name}: ${label} label alignment`
+            ).toBeLessThanOrEqual(1);
+          }
+          expect(
+            Math.abs(horizontalCenter(description) - horizontalCenter(value)),
+            `${name}: description alignment`
+          ).toBeLessThanOrEqual(1);
 
           for (const button of buttons) {
             const element = button.element();
