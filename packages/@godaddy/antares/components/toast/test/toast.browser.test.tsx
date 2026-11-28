@@ -813,6 +813,20 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
+    it('reaches a region with a custom label using F6', async function focusCustomRegion() {
+      await render(<AriaLabelsExample />);
+      const region = page.getByRole('region', { name: 'Notificaciones' });
+      expect(region.query()).toBeNull();
+
+      const trigger = page.getByRole('button', { name: 'Mostrar aviso' });
+      await userEvent.click(trigger);
+      await expect.element(region).toBeVisible();
+      await expect.element(trigger).toHaveFocus();
+
+      await userEvent.keyboard('{F6}');
+      await expect.element(region).toHaveFocus();
+    });
+
     it('preserves independent region contexts for title and message content', async function independentContexts() {
       await render(<MultipleRegionsExample />);
       await userEvent.click(page.getByRole('button', { name: 'Header toast' }));

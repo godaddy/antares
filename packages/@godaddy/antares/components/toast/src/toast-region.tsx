@@ -97,6 +97,12 @@ export const ToastRegion = /* @__PURE__ */ forwardRef<HTMLDivElement, ToastRegio
       () => internal.isActiveRegion(region),
       () => false
     );
+    const subscribeToasts = useMemo(() => internal.subscribe.bind(internal), [internal]);
+    const hasVisibleToasts = useSyncExternalStore(
+      subscribeToasts,
+      () => internal.visibleToasts.length > 0,
+      () => false
+    );
 
     useEffect(
       function attach() {
@@ -105,7 +111,7 @@ export const ToastRegion = /* @__PURE__ */ forwardRef<HTMLDivElement, ToastRegio
       [internal, region]
     );
 
-    if (!isActive) return null;
+    if (!isActive || !hasVisibleToasts) return null;
 
     function moveFocus(closingToast: HTMLDivElement) {
       if (!closingToast.contains(closingToast.ownerDocument.activeElement)) return;
