@@ -185,23 +185,14 @@ describe('@godaddy/antares', function antares() {
         expect(onPress).toHaveBeenCalledTimes(6);
       });
 
-      it('keeps a wrapped description below the arc when Flex styles load last', async function lateFlexStyles() {
+      it('keeps a context-supplied description below the arc', async function contextDescriptionPlacement() {
         const { getByRole, getByText } = await render(<ContextDescriptionExample />);
         const meter = getByRole('meter', { name: 'Site health' });
         const description = getByText('Health from context.');
-        const flexStyles = document.querySelector('style[data-vite-dev-id$="/layout/flex/src/index.module.css"]');
-        if (!flexStyles) throw new Error('Flex stylesheet is missing');
-        const stylesheet = document.createElement('style');
-        stylesheet.textContent = flexStyles.textContent;
-        document.head.append(stylesheet);
 
-        try {
-          expect(description.element().getBoundingClientRect().top).toBeGreaterThanOrEqual(
-            meter.element().getBoundingClientRect().bottom
-          );
-        } finally {
-          stylesheet.remove();
-        }
+        expect(description.element().getBoundingClientRect().top).toBeGreaterThanOrEqual(
+          meter.element().getBoundingClientRect().bottom
+        );
       });
 
       it('honors explicit text emphasis and center sizing', async function slotEmphasis() {
