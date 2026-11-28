@@ -920,12 +920,18 @@ describe('@godaddy/antares', function antares() {
 
       const onClose = vi.fn();
       const hidden = queue.add({ message: 'Hidden toast', timeout: null, onClose });
-      queue.add({ message: 'Visible toast', timeout: null });
+      const visible = queue.add({ message: 'Visible toast', timeout: null });
       await expect.element(page.getByRole('alertdialog', { name: 'Visible toast' })).toBeVisible();
       expect(page.getByRole('alertdialog', { name: 'Hidden toast' }).query()).toBeNull();
 
       queue.close(hidden);
       expect(onClose).toHaveBeenCalledTimes(1);
+
+      queue.close(visible);
+      await vi.waitFor(function detached() {
+        expect(toasts()).toHaveLength(0);
+        expect(document.querySelector(`${HOST} [role="region"]`)).toBeNull();
+      });
     });
 
     it('shows a default toast without an icon for 5 seconds', async function defaults() {
