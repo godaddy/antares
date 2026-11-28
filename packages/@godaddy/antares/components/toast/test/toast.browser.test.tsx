@@ -113,14 +113,36 @@ describe('@godaddy/antares', function antares() {
 
         toast.add({ title: 'Toast with details', message: <PopoverExample />, timeout: null });
         const notification = page.getByRole('alertdialog', { name: 'Toast with details' });
-        await userEvent.click(notification.getByRole('button', { name: 'Open popover' }));
+        await expect.element(notification).toBeVisible();
+        const renderedToast = notification.element();
+        const pageButton = page.getByRole('button', { name: 'Show toast' });
+        const popoverTrigger = notification.getByRole('button', { name: 'Open popover' });
+        (pageButton.element() as HTMLElement).focus();
+        await expect.element(pageButton).toHaveFocus();
+        await userEvent.keyboard('{F6}{Tab}{Tab}');
+        await expect.element(popoverTrigger).toHaveFocus();
+        await userEvent.keyboard('{Enter}');
 
         const dialog = page.getByRole('dialog', { name: 'Open popover' });
         await expect.element(dialog).toBeVisible();
         const container = useAppContainer ? portalContainer.current : document.body;
         expect(container?.contains(dialog.element())).toBe(true);
         expect(dialog.element().closest(HOST)).toBeNull();
+        await expect.element(dialog).toHaveFocus();
+        await expect
+          .poll(function popoverOpacity() {
+            const panel = dialog.element().parentElement;
+            return panel && getComputedStyle(panel).opacity;
+          })
+          .toBe('1');
+
         await userEvent.keyboard('{Escape}');
+        await expect.element(popoverTrigger).toHaveFocus();
+        await userEvent.keyboard('{Tab}');
+        await expect.element(notification.getByRole('button', { name: 'Close' })).toHaveFocus();
+        await userEvent.keyboard('{Enter}');
+        await expect.poll(() => renderedToast.isConnected).toBe(false);
+        await expect.element(pageButton).toHaveFocus();
       }
     );
 

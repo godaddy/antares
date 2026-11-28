@@ -81,9 +81,12 @@ export const ToastRegion = /* @__PURE__ */ forwardRef<HTMLDivElement, ToastRegio
           if (!element) return;
 
           function rememberFocus({ relatedTarget }: FocusEvent) {
-            if (relatedTarget instanceof Node && element?.contains(relatedTarget)) return;
-            lastFocused.current =
-              relatedTarget instanceof HTMLElement || relatedTarget instanceof SVGElement ? relatedTarget : null;
+            if (
+              (relatedTarget instanceof HTMLElement || relatedTarget instanceof SVGElement) &&
+              !element?.contains(relatedTarget)
+            ) {
+              lastFocused.current = relatedTarget;
+            }
           }
 
           element.addEventListener('focusin', rememberFocus);
