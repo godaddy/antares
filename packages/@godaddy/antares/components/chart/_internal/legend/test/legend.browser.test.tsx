@@ -1,6 +1,7 @@
 import { SingleSeriesLegendExample } from '../examples/single-series.tsx';
 import { MultiSeriesLegendExample } from '../examples/multi-series.tsx';
 import { LegendWithLabelExample } from '../examples/with-label.tsx';
+import { LegendLabelledByExample } from '../examples/labelled-by.tsx';
 import { LegendVerticalExample } from '../examples/vertical.tsx';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
@@ -44,6 +45,19 @@ describe('@godaddy/antares', function antares() {
 
         assume(list).exists();
         assume(label).exists();
+      });
+
+      it('applies an explicit accessible name to the list', async function accessibleListName() {
+        const { locator } = await render(<LegendWithLabelExample aria-label="Revenue by product" />);
+
+        assume(locator.getByRole('list', { name: 'Revenue by product' }).element()).exists();
+        assume(locator.getByText('Sales by product').element()).exists();
+      });
+
+      it('names the list from the element it is labelled by', async function labelledByLegend() {
+        const { locator } = await render(<LegendLabelledByExample />);
+
+        assume(locator.getByRole('list', { name: 'Quarterly revenue' }).element()).exists();
       });
     });
 

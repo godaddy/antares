@@ -1,17 +1,24 @@
-import { DonutChart } from '@godaddy/antares';
+import { DonutChart, DonutChartCenter, Text } from '@godaddy/antares';
 
 /**
- * When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+ * One slice fills the ring. The `description` slot adds a smaller second line beneath the main value.
  * @title Single slice
  * @order 2
  */
-export function SingleSliceExample() {
+export function SingleSliceExample({ descriptionFirst }: { descriptionFirst?: boolean }) {
+  const value = (
+    <Text key="value" slot="value">
+      $1,000
+    </Text>
+  );
+  const description = (
+    <Text key="description" slot="description">
+      Sub label
+    </Text>
+  );
   return (
-    <DonutChart
-      data={[{ id: 'only', name: 'Total', value: 100 }]}
-      label="$1,000"
-      subLabel="Sub label"
-      aria-label="Donut chart with a single full ring"
-    />
+    <DonutChart data={[{ id: 'only', name: 'Total', value: 100 }]} aria-label="Donut chart with a single full ring">
+      <DonutChartCenter>{descriptionFirst ? [description, value] : [value, description]}</DonutChartCenter>
+    </DonutChart>
   );
 }

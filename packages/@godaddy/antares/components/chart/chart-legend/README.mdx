@@ -1,0 +1,26 @@
+---
+title: ChartLegend
+description: ChartLegend lists a chart's series names and colors, read from the chart it is placed in.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './chart-legend.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Props
+
+Place it as a direct child of `DonutChart`. Elsewhere it renders nothing. `BarChart` and `LineChart` show their legend with `legendPosition`.
+
+<ArgTypes of={Stories.Props} />

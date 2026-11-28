@@ -70,26 +70,31 @@ Check `xDomain`/`yDomain`, tick formatting/values and `xZero`/`yZero` when the s
 
 ## DonutChart: parts of a whole
 
-Pass `data` containing `{ id, name, value }`, with numeric non-negative values, and a required center `label`; `subLabel` is optional. This is not the Bar/Line `series` API. Prefer a small set of categories that actually form a whole.
+Pass `data` containing `{ id, name, value }` with numeric non-negative values. Prefer a small set of categories that form a whole.
 
 ```tsx
-import { DonutChart } from '@godaddy/antares/Chart';
+import { ChartLegend, DonutChart, DonutChartCenter } from '@godaddy/antares/Chart';
+import { Text } from '@godaddy/antares/Text';
 
 export function TrafficSources() {
   return (
     <DonutChart
       data={[{ id: 'organic', name: 'Organic', value: 70 }, { id: 'direct', name: 'Direct', value: 30 }]}
-      label="100%"
-      subLabel="Traffic"
-      legend="bottom"
-      legendLabel="Source"
       aria-label="Traffic sources: 70 percent organic, 30 percent direct"
-    />
+    >
+      <DonutChartCenter>
+        <Text slot="value" size="2xl">100%</Text>
+        <Text slot="description">Traffic</Text>
+      </DonutChartCenter>
+      <ChartLegend label="Source" />
+    </DonutChart>
   );
 }
 ```
 
-`legend` accepts `"bottom"` or `"right"`; `formatValue` formats slice values. Zero/negative slices are omitted from the ring. Handle an empty/all-zero total explicitly. `smallSliceThreshold` groups adjacent small slices in hover feedback; it does not aggregate or rewrite the application's dataset.
+Compose the optional center and legend in either order. Use `Text` in the `value` and `description` slots and set `size` to override the responsive default.
+
+`legendPosition` defaults to `"bottom"` and accepts `"end"` for a legend beside the ring. `formatValue` formats slice values in the tooltip. Only positive slices appear in the ring. Handle an empty or all-zero total explicitly. `smallSliceThreshold` groups adjacent small slices in the tooltip.
 
 ## GaugeChart: one value on a known scale
 

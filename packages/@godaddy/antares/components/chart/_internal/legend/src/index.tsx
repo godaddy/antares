@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import type { InternalSeriesConfig, LineSeriesVariant, SeriesConfig } from '#components/chart/types.ts';
 import { cx } from 'cva';
 import { ChartColorProvider, useChartColor } from '#components/chart/_internal/use-chart-color';
@@ -25,6 +26,10 @@ export interface LegendProps
   series: LegendSeriesItem[];
   /** Optional visible and accessible label for the legend. */
   label?: string;
+  /** Accessible name for the list. Defaults to the visible label or "Chart legend". */
+  'aria-label'?: string;
+  /** IDs of elements that name the list. */
+  'aria-labelledby'?: string;
   /** Size of the legend labels and swatches. @default 'md' */
   size?: 'sm' | 'md' | 'lg' | 'xl';
   /** Layout orientation for legend items. Defaults to horizontal. */
@@ -104,14 +109,24 @@ function LegendItem(props: LegendItemProps) {
   );
 }
 
-export function Legend(props: LegendProps) {
-  const { series, label, size = 'md', orientation = 'horizontal', className, ...rootFlexProps } = props;
+export const Legend = /* @__PURE__ */ forwardRef<HTMLDivElement, LegendProps>(function Legend(props, ref) {
+  const {
+    series,
+    label,
+    size = 'md',
+    orientation = 'horizontal',
+    className,
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledBy,
+    ...rootFlexProps
+  } = props;
   const isHorizontal = orientation === 'horizontal';
 
   return (
     <ChartColorProvider>
       <Flex
         {...rootFlexProps}
+        ref={ref}
         direction="column"
         alignItems="flex-start"
         display="inline-flex"
@@ -122,7 +137,8 @@ export function Legend(props: LegendProps) {
         {label ? <Text className={cx(styles.label, textTreatmentClassName('inherit'))}>{label}</Text> : null}
         <Flex
           role="list"
-          aria-label={label ?? 'Chart legend'}
+          aria-label={ariaLabel ?? label ?? 'Chart legend'}
+          aria-labelledby={ariaLabelledBy}
           alignItems="flex-start"
           direction={isHorizontal ? 'row' : 'column'}
           gap={isHorizontal ? 'lg' : 'sm'}
@@ -137,4 +153,4 @@ export function Legend(props: LegendProps) {
       </Flex>
     </ChartColorProvider>
   );
-}
+});

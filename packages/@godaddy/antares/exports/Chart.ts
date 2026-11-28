@@ -11,7 +11,14 @@ export {
   type BarChartTooltipRenderProps,
   type BarChartTooltipSeries
 } from '#components/chart/bar-chart';
-export { DonutChart, type DonutChartProps } from '#components/chart/donut-chart';
+export { ChartLegend, ChartLegendContext, type ChartLegendProps } from '#components/chart/chart-legend';
+export {
+  DonutChart,
+  type DonutChartProps,
+  DonutChartCenter,
+  DonutChartCenterContext,
+  type DonutChartCenterProps
+} from '#components/chart/donut-chart';
 export { LineChart, type LineChartProps, type LineChartTooltipRenderProps } from '#components/chart/line-chart';
 export {
   GaugeChart,

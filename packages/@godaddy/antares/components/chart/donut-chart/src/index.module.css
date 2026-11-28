@@ -1,15 +1,35 @@
+.root {
+  grid-template-areas: "plot";
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.root:where(:has(> .legend)) {
+  grid-template-areas:
+    "plot"
+    "legend";
+}
+
+.root:where(.legendAtEnd:has(> .legend)) {
+  grid-template-areas: "plot legend";
+  grid-template-columns: minmax(0, 1fr) fit-content(50%);
+}
+
+.legend {
+  grid-area: legend;
+  align-self: center;
+  overflow-wrap: anywhere;
+}
+
 .chartWrap {
-  --donut-label-line-height: var(--ux-hm1ty7);
-  --donut-label-font-size: 15.73cqi;
-  --donut-sub-label-font-size: 6.81cqi;
   --donut-tooltip-item-font-size: var(--ux-vvspv2);
   --donut-tooltip-item-line-height: var(--ux-1dje42v);
 
+  grid-area: plot;
+  align-self: center;
   aspect-ratio: 1;
   max-width: 100%;
   position: relative;
   width: 100%;
-  container-type: inline-size;
 }
 
 .chart {
@@ -18,21 +38,67 @@
   width: 100%;
 }
 
-.content {
-  background: transparent;
-  inset: 0;
+.center {
+  --donut-value-font-size: 15.73cqi;
+  --donut-description-font-size: 6.81cqi;
+
+  grid-area: plot;
+  align-self: stretch;
+  justify-self: stretch;
+  container-type: size;
+  position: relative;
+  align-content: center;
+  justify-items: center;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.center:where(:has(> .value):has(> .description)) {
+  grid-template-areas:
+    "value"
+    "description";
+
+  & > :where(.value) {
+    grid-area: value;
+  }
+
+  & > :where(.description) {
+    grid-area: description;
+  }
+}
+
+.value,
+.description {
+  --_type-slot-color: currentColor;
+}
+
+.center > :where(.value, .description) {
   pointer-events: none;
-  position: absolute;
 }
 
-.label {
-  font-size: var(--donut-label-font-size);
+.center
+  :where(.value, .description, .value *, .description *):where(
+    a[href],
+    button,
+    input,
+    select,
+    textarea,
+    summary,
+    label,
+    [tabindex],
+    [contenteditable]:not([contenteditable="false"])
+  ) {
+  pointer-events: auto;
+}
+
+.value {
+  --_type-slot-size: var(--donut-value-font-size, 1em);
+
   font-weight: bolder;
-  line-height: var(--donut-label-line-height);
+  line-height: var(--ux-hm1ty7);
 }
 
-.subLabel {
-  font-size: var(--donut-sub-label-font-size);
+.description {
+  --_type-slot-size: var(--donut-description-font-size, 1em);
 }
 
 .tooltip {

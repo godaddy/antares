@@ -1,6 +1,6 @@
 ---
 title: DonutChart
-description: Donut charts are for parts-to-whole comparison—how partial elements add up to a total—shown as a ring so a few categories are easy to compare at a glance.
+description: DonutChart shows parts of a whole as slices of a ring.
 ---
 
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
@@ -21,6 +21,26 @@ npm install @godaddy/antares
 
 ## Props
 
+```tsx
+<DonutChart data={[{ name: 'Online', value: 70 }, { name: 'In store', value: 30 }]} aria-label="Sales by channel">
+  <DonutChartCenter>
+    <Text slot="value" size="2xl">100%</Text>
+    <Text slot="description">Total sales</Text>
+  </DonutChartCenter>
+  <ChartLegend />
+</DonutChart>
+```
+
+Compose the optional center and legend in either order. Use `Text` in the `value` and `description` slots. An explicit `Text size` overrides the responsive default. The chart links to the mounted description using its `id`, or generates one when the slot has no `id`.
+
 ### DonutChart
 
 <ArgTypes of={Stories.Props} />
+
+### DonutChartCenter
+
+<ArgTypes of={Stories.DonutChartCenterProps} />
+
+### ChartLegend
+
+<ArgTypes of={Stories.ChartLegendProps} />
