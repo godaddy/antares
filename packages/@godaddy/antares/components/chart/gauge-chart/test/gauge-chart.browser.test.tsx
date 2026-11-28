@@ -34,6 +34,8 @@ describe('@godaddy/antares', function antares() {
         expect(document.elementFromPoint(target.x + target.width / 2, target.y + target.height / 2)).toBe(value);
 
         const el = meter.element();
+        const arc = el.getBoundingClientRect();
+        expect(Math.abs(target.bottom - arc.bottom)).toBeLessThan(arc.height / 10);
         expect(el?.getAttribute('aria-valuenow')).toBe('50');
         expect(el?.getAttribute('aria-valuemin')).toBe('0');
         expect(el?.getAttribute('aria-valuemax')).toBe('100');
@@ -139,11 +141,10 @@ describe('@godaddy/antares', function antares() {
           const buttons = ['Edit', 'Reset'].map((action) => chart.getByRole('button', { name: action }));
           const value = chart.getByText('72%').element().getBoundingClientRect();
           const description = chart.getByText('Score').element().getBoundingClientRect();
-          const rangeLabels = labels.map(([label, end]) => ({
-            label,
-            end,
-            rect: chart.getByText(label).element().getBoundingClientRect()
-          }));
+          const rangeLabels = labels.map(function measureRangeLabel([label, end]) {
+            const element = chart.getByText(label).element();
+            return { label, end, element, rect: element.getBoundingClientRect() };
+          });
           const boxes = [
             { label: 'value', rect: value },
             { label: 'description', rect: description },
@@ -163,7 +164,9 @@ describe('@godaddy/antares', function antares() {
             }
           }
 
-          for (const { label, end, rect } of rangeLabels) {
+          for (const { label, end, element, rect } of rangeLabels) {
+            expect(rect.width, `${name}: ${label} label width`).toBeGreaterThan(0);
+            await expect.element(element).toBeVisible();
             expect(
               Math.abs(horizontalCenter(rect) - arc[end]),
               `${name}: ${label} label alignment`
@@ -334,13 +337,24 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('uses the description to describe the meter', async function describedByDescription() {
-        const { getByRole, rerender } = await render(<PlaygroundExample label="50%" description="Done" value={50} />);
+        const title = <span id="gauge-title">Site health score</span>;
+        const { getByRole, rerender } = await render(
+          <>
+            {title}
+            <PlaygroundExample aria-labelledby="gauge-title" label="50%" description="Done" value={50} />
+          </>
+        );
 
-        const meter = getByRole('meter', { name: 'Playground gauge' });
+        const meter = getByRole('meter', { name: 'Site health score' });
         await expect.element(meter).toHaveAccessibleDescription('Done');
         expect(meter.element().hasAttribute('aria-valuetext')).toBe(false);
 
-        await rerender(<PlaygroundExample label="50%" value={50} />);
+        await rerender(
+          <>
+            {title}
+            <PlaygroundExample aria-labelledby="gauge-title" label="50%" value={50} />
+          </>
+        );
         expect(meter.element().hasAttribute('aria-describedby')).toBe(false);
       });
     });
@@ -388,10 +402,18 @@ describe('@godaddy/antares', function antares() {
 
     describe('#label-type', function labelType() {
       it('applies data-label-type text', async function textLabelType() {
-        const { getByRole } = await render(<PlaygroundExample label="OK" labelType="text" value={1} />);
+        const { getByRole, getByText, rerender } = await render(
+          <PlaygroundExample label="OK" labelType="text" value={1} width="240px" />
+        );
 
         const meter = getByRole('meter', { name: 'Playground gauge' });
         expect(meter.element().parentElement?.getAttribute('data-label-type')).toBe('text');
+        const label = getByText('OK');
+        const textFontSize = parseFloat(getComputedStyle(label.element()).fontSize);
+
+        await rerender(<PlaygroundExample label="OK" labelType="value" value={1} width="240px" />);
+        const valueFontSize = parseFloat(getComputedStyle(label.element()).fontSize);
+        expect(textFontSize).toBeLessThan(valueFontSize);
       });
     });
   });

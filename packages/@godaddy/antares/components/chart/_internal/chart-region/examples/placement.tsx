@@ -1,5 +1,5 @@
 import { Text } from '@godaddy/antares';
-import { createContext } from 'react';
+import { createContext, type ReactNode } from 'react';
 import type { ContextValue } from 'react-aria-components';
 import {
   ChartRegion,
@@ -27,13 +27,14 @@ const placements: ChartRegionPlacements = {
  * @title Placement
  * @order 1
  */
-export function PlacementExample() {
+export function PlacementExample({ children }: { children?: ReactNode }) {
   return (
     <ChartRegionsContext.Provider value={placements}>
       <ExampleRegionContext.Provider value={{ className: 'consumer-override' }}>
         <ChartRegion region={exampleRegion} data-testid="region">
           <Text slot="title">Revenue</Text>
           <Text slot="note">Last 30 days</Text>
+          {children}
         </ChartRegion>
       </ExampleRegionContext.Provider>
     </ChartRegionsContext.Provider>

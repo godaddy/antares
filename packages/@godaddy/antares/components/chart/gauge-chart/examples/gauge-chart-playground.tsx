@@ -8,6 +8,8 @@ import {
 } from '@godaddy/antares';
 
 export interface PlaygroundExampleProps {
+  /** ID of the visible label that names the meter. */
+  'aria-labelledby'?: GaugeChartProps['aria-labelledby'];
   /** Value shown inside the arc. */
   label?: string;
   /** Description below the value. */
@@ -37,6 +39,7 @@ export interface PlaygroundExampleProps {
 }
 
 export function PlaygroundExample({
+  'aria-labelledby': labelledBy,
   label = '50%',
   description,
   descriptionId,
@@ -59,7 +62,8 @@ export function PlaygroundExample({
       value={value}
       valueLabel={valueLabel}
       style={width ? { maxWidth: width, margin: 'auto' } : undefined}
-      aria-label="Playground gauge"
+      aria-label={labelledBy ? undefined : 'Playground gauge'}
+      aria-labelledby={labelledBy}
     >
       <GaugeChartCenter>
         {label && (
