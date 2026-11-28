@@ -90,8 +90,9 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#range-labels', function rangeLabels() {
-      it('places min and max labels under the ends of the arc', async function rangeLabelPlacement() {
-        const { getByRole, getByText } = await render(<WithRangeLabelsExample />);
+      it('places min and max labels under the arc ends and keeps the unlabeled arc full width', async function rangeLabelPlacement() {
+        const rangeRef = createRef<HTMLDivElement>();
+        const { getByRole, getByText, rerender } = await render(<WithRangeLabelsExample rangeRef={rangeRef} />);
 
         for (const [name, minLabel, maxLabel, descriptionLabel] of [
           ['CPU usage gauge', '0', '100', 'CPU Usage'],
@@ -113,6 +114,10 @@ describe('@godaddy/antares', function antares() {
           expect(min.top).toBeGreaterThanOrEqual(arc.bottom);
           expect(max.top).toBeCloseTo(min.top, 0);
         }
+
+        await rerender(<WithRangeLabelsExample rangeRef={rangeRef} showRangeLabels={false} />);
+        const arc = getByRole('meter', { name: 'Risk level gauge' }).element().getBoundingClientRect();
+        expect(arc.width).toBe(rangeRef.current?.getBoundingClientRect().width);
       });
 
       it('flips the range labels in right-to-left layouts', async function rtlRangeLabels() {

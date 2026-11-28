@@ -188,7 +188,7 @@
 }
 
 /* Narrow the arc when range labels are present so its end caps sit just inside them. */
-.root:has(> .range) .gauge {
+.root:has(> .range > .rangeLabel) .gauge {
   width: calc(100% - 2 * 9.3cqi);
 }
 
