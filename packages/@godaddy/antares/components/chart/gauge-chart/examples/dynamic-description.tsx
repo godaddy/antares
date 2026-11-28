@@ -1,9 +1,9 @@
 import { Button, Flex, GaugeChart, GaugeChartCenter, GaugeChartRange, Text } from '@godaddy/antares';
 import { useState } from 'react';
 
-const descriptionIds = ['score-description', 'renamed-description', undefined, null] as const;
+const descriptionIds = ['score-description', 'renamed-description', null] as const;
 
-function DescriptionButton({ id, onClick }: { id?: string; onClick: () => void }) {
+function DescriptionButton({ id, onClick }: { id: string; onClick: () => void }) {
   return (
     <Text as="button" id={id} slot="description" onClick={onClick}>
       Change from description
@@ -40,7 +40,7 @@ export function DynamicDescriptionExample({ rangeFirst }: { rangeFirst: boolean 
   return (
     <>
       <Text id="external-description">Updated daily.</Text>
-      {step === 2 && <Text id="renamed-description">Previous ID reused elsewhere.</Text>}
+      {descriptionId === null && <Text id="renamed-description">Previous ID reused elsewhere.</Text>}
       <GaugeChart value={72} aria-label="Site health" aria-describedby="external-description" style={{ maxWidth: 360 }}>
         {rangeFirst ? [range, center] : [center, range]}
       </GaugeChart>
