@@ -90,7 +90,7 @@ export function GaugeChart(props: GaugeChartProps) {
   const clampedValue = Math.min(Math.max(0, value), maxValue);
   const normalizedValue = clampedValue / maxValue;
 
-  const { descriptionSlot, describedBy } = useChartDescription(children != null, externalDescription);
+  const { descriptionSlot, describedBy } = useChartDescription(externalDescription);
   const regions = useMemo(
     function createRegions(): ChartRegionPlacements {
       return {

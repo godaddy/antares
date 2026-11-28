@@ -17,7 +17,7 @@ import {
 import { textTreatmentClassName } from '#components/_internal/typography';
 import { Flex } from '#components/layout/flex';
 import { Grid, type GridProps } from '#components/layout/grid';
-import { TextContext, textDescriptionId } from '#components/text';
+import { TextContext } from '#components/text';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
@@ -140,11 +140,9 @@ export const ChartRegion = /* @__PURE__ */ forwardRef<HTMLDivElement, ChartRegio
       </>
     );
   }
-  const textSlots = { slots, [textDescriptionId]: placement?.slots?.description?.id };
-
   return (
     <Grid {...rest} ref={regionRef} className={composeClassName(className, placement?.className, styles.region)}>
-      <TextContext.Provider value={textSlots}>{content}</TextContext.Provider>
+      <TextContext.Provider value={{ slots }}>{content}</TextContext.Provider>
     </Grid>
   );
 });

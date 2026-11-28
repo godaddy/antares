@@ -248,7 +248,7 @@ describe('@godaddy/antares', function antares() {
 
           const id = descriptionButton.element().id;
           expect(id).toBeTruthy();
-          expect(id).not.toBe('score-description');
+          expect(id).toBe('score-description');
           const describedBy = 'external-description ' + id;
           await expect.element(meter).toHaveAttribute('aria-describedby', describedBy);
           await expect.element(meter).toHaveAccessibleDescription('Updated daily. Change from description');
@@ -265,10 +265,13 @@ describe('@godaddy/antares', function antares() {
             descriptionButton.element()
           );
           await descriptionButton.click();
-          await expect.element(descriptionButton).toHaveAttribute('id', id);
+          await expect.element(descriptionButton).toHaveAttribute('id', 'renamed-description');
+          await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description renamed-description');
           await changeAgain.click();
-          await expect.element(descriptionButton).toHaveAttribute('id', id);
-          await expect.element(meter).toHaveAttribute('aria-describedby', describedBy);
+          const generatedId = descriptionButton.element().id;
+          expect(generatedId).toBeTruthy();
+          expect(generatedId).not.toBe('renamed-description');
+          await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description ' + generatedId);
           await expect.element(meter).toHaveAccessibleDescription('Updated daily. Change from description');
           await changeDescription.click();
           await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description');

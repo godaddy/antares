@@ -1,20 +1,33 @@
-import { useCallback, useEffect, useId, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { useId } from 'react-aria';
 
-/** Links the chart to its description on the server and drops an unused reference after mounting. */
-export function useChartDescription(hasChildren: boolean, externalDescription?: string) {
-  const id = useId();
-  const [descriptionCount, setDescriptionCount] = useState<number>();
+export function useChartDescription(externalDescription?: string) {
+  // React Aria retains a merged ID when the caller clears it. Keep the slot fallback independent of that merge.
+  const id = useId() + '-description';
+  const descriptions = useRef(new Set<HTMLElement>());
+  const [descriptionId, setDescriptionId] = useState<string>();
   const ref = useCallback(function descriptionRef(element: HTMLElement | null) {
-    setDescriptionCount((count) => (count ?? 0) + (element ? 1 : -1));
-  }, []);
+    if (!element) return;
+    const mounted = descriptions.current;
 
-  useEffect(function clearUnusedDescription() {
-    setDescriptionCount((count) => count ?? 0);
+    function syncDescriptionId() {
+      setDescriptionId(mounted.values().next().value?.id);
+    }
+
+    mounted.add(element);
+    const observer = new MutationObserver(syncDescriptionId);
+    observer.observe(element, { attributes: true, attributeFilter: ['id'] });
+    syncDescriptionId();
+
+    return function untrackDescription() {
+      observer.disconnect();
+      mounted.delete(element);
+      syncDescriptionId();
+    };
   }, []);
 
   const descriptionSlot = useMemo(() => ({ id, ref }), [id, ref]);
-  const hasDescription = descriptionCount === undefined ? hasChildren : descriptionCount > 0;
-  const describedBy = [externalDescription, hasDescription ? id : undefined].filter(Boolean).join(' ');
+  const describedBy = [externalDescription, descriptionId].filter(Boolean).join(' ');
 
   return { descriptionSlot, describedBy: describedBy || undefined };
 }
