@@ -30,7 +30,29 @@ export interface ChartRootProps
 }
 
 /** Props shared by every composed chart region. */
-export interface ChartRegionProps extends Omit<GridProps<'div'>, 'as' | 'areas' | 'columns' | 'rows'> {
+export interface ChartRegionProps
+  extends Omit<
+    GridProps<'div'>,
+    | 'as'
+    | 'display'
+    | 'areas'
+    | 'columns'
+    | 'rows'
+    | 'autoColumns'
+    | 'autoRows'
+    | 'autoFlow'
+    | 'gridArea'
+    | 'gridColumnStart'
+    | 'gridColumnEnd'
+    | 'gridRowStart'
+    | 'gridRowEnd'
+    | 'justifySelf'
+    | 'alignSelf'
+    | 'justifyItems'
+    | 'alignItems'
+    | 'justifyContent'
+    | 'alignContent'
+  > {
   /** Region content. Fill the region's named `Text` slots for the default text styles. */
   children?: ReactNode;
 }
@@ -78,8 +100,8 @@ interface ChartRegionRenderProps extends ChartRegionProps {
 }
 
 /**
- * Renders a composed chart region. Precedence is region defaults, then the public context, then props. The
- * chart's placement class and slot props always apply, so overrides cannot break the chart layout.
+ * Renders a composed chart region. Region props take precedence over the public context and defaults.
+ * The chart supplies the placement class and slot props.
  *
  * @param props - {@link ChartRegionRenderProps}
  */
