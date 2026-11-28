@@ -44,7 +44,11 @@ export interface ToastOptions {
  * Options for a {@link ToastQueue}.
  */
 export interface ToastQueueOptions {
-  /** Positive safe integer limit for visible toasts. Extra toasts wait until one closes. @default 5 */
+  /**
+   * At this positive safe integer limit, a new toast appears on top and hides the oldest visible
+   * toast until another closes.
+   * @default 5
+   */
   maxVisibleToasts?: number;
 }
 
