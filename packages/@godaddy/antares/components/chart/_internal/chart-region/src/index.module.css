@@ -1,18 +1,7 @@
 .region {
   pointer-events: none;
+}
 
-  &
-    :where(
-      a[href],
-      button,
-      input,
-      select,
-      textarea,
-      summary,
-      label,
-      [tabindex],
-      [contenteditable]:not([contenteditable="false"])
-    ) {
-    pointer-events: auto;
-  }
+.region > * {
+  pointer-events: auto;
 }

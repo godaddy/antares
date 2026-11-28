@@ -22,7 +22,11 @@ describe('@godaddy/antares', function antares() {
 
         const meter = getByRole('meter', { name: 'Basic gauge' });
         await expect.element(meter).toBeVisible();
-        await expect.element(getByText('50%')).toBeVisible();
+        const value = getByText('50%').element();
+        await expect.element(value).toBeVisible();
+
+        const target = value.getBoundingClientRect();
+        expect(document.elementFromPoint(target.x + target.width / 2, target.y + target.height / 2)).toBe(value);
 
         const el = meter.element();
         expect(el?.getAttribute('aria-valuenow')).toBe('50');

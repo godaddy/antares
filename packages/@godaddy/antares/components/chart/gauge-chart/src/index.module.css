@@ -295,7 +295,6 @@
   --_type-slot-color: var(--gauge-range-label-fg);
 
   display: inline-flex;
-  pointer-events: auto;
   justify-content: center;
   width: 4ch;
   overflow: hidden;
