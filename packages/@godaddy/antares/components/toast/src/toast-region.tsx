@@ -19,7 +19,7 @@ import { defaultToastQueue, getInternalQueue, type InternalToastQueue, type Toas
 import { Toast } from './toast.tsx';
 import styles from './index.module.css';
 
-export interface ToastRegionProps extends Pick<HTMLAttributes<HTMLDivElement>, 'id' | 'lang' | 'inert' | 'translate'> {
+export interface ToastRegionProps extends Pick<HTMLAttributes<HTMLDivElement>, 'id' | 'lang' | 'translate'> {
   /** The queue to render, created by this copy of Antares. @default the queue behind `toast` */
   queue?: ToastQueue;
 
