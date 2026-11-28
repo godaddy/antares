@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react';
+import { GaugeChart, GaugeChartCenter, Text } from '@godaddy/antares';
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { ContextDescriptionExample } from '../examples/context-description.tsx';
@@ -39,6 +40,18 @@ describe('@godaddy/antares', function antares() {
     it.each(SSR_EXAMPLES)('renders %s example', function ssrSnapshot(_name, element) {
       const result = renderToString(element);
       expect(result).toMatchSnapshot();
+    });
+
+    it('rejects chart-owned placement props on the center region', function centerPlacementProps() {
+      const result = renderToString(
+        <GaugeChart value={50} aria-label="Placement">
+          {/* @ts-expect-error - The chart owns how the center region aligns its items. */}
+          <GaugeChartCenter justifyItems="start">
+            <Text slot="value">50%</Text>
+          </GaugeChartCenter>
+        </GaugeChart>
+      );
+      expect(result).toContain('50%');
     });
   });
 });
