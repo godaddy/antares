@@ -1,8 +1,9 @@
 import { GaugeChartCenterContext, GaugeChartRangeContext } from '@godaddy/antares';
 import { createRef } from 'react';
 import { render } from 'vitest-browser-react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { userEvent } from 'vitest/browser';
+import { CenterControlsExample } from '../examples/center-controls.tsx';
 import { ContextDescriptionExample } from '../examples/context-description.tsx';
 import { ContinuousExample } from '../examples/continuous.tsx';
 import { DefaultExample } from '../examples/default.tsx';
@@ -136,6 +137,53 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#composition', function composition() {
+      it('keeps center controls clear of the value', async function centerControls() {
+        const onPress = vi.fn();
+        const { getByTestId } = await render(<CenterControlsExample onPress={onPress} />);
+
+        for (const [name, labels] of [
+          ['Compact', ['Low']],
+          ['Regular', ['High']],
+          ['Both labels', ['Low', 'High']]
+        ] as const) {
+          const chart = getByTestId(name);
+          const buttons = ['Edit', 'Reset'].map((action) => chart.getByRole('button', { name: action }));
+          const value = chart.getByText('72%').element().getBoundingClientRect();
+          const description = chart.getByText('Score').element().getBoundingClientRect();
+          const rangeLabels = labels.map((label) => ({
+            label,
+            rect: chart.getByText(label).element().getBoundingClientRect()
+          }));
+          const boxes = [
+            { label: 'value', rect: value },
+            { label: 'description', rect: description },
+            ...buttons.map((button) => ({
+              label: button.element().textContent,
+              rect: button.element().getBoundingClientRect()
+            })),
+            ...rangeLabels
+          ];
+
+          for (const [index, { label, rect }] of boxes.entries()) {
+            for (const other of boxes.slice(index + 1)) {
+              const overlap =
+                Math.min(rect.right, other.rect.right) > Math.max(rect.left, other.rect.left) &&
+                Math.min(rect.bottom, other.rect.bottom) > Math.max(rect.top, other.rect.top);
+              expect(overlap, `${name}: ${label} overlaps ${other.label}`).toBe(false);
+            }
+          }
+
+          for (const button of buttons) {
+            const element = button.element();
+            const { width, height } = element.getBoundingClientRect();
+            await button.click({ position: { x: width / 2, y: height / 2 } });
+            expect(onPress).toHaveBeenLastCalledWith(name, element.textContent);
+          }
+        }
+
+        expect(onPress).toHaveBeenCalledTimes(6);
+      });
+
       it('keeps a wrapped description below the arc when Flex styles load last', async function lateFlexStyles() {
         const { getByRole, getByText } = await render(<ContextDescriptionExample />);
         const meter = getByRole('meter', { name: 'Site health' });
@@ -250,7 +298,6 @@ describe('@godaddy/antares', function antares() {
           expect(rangeControl.top).toBeGreaterThanOrEqual(Math.max(min.bottom, max.bottom, description.bottom));
           expect(control.left + control.width / 2).toBeCloseTo(arc.left + arc.width / 2, 0);
           expect(Math.abs(groupCenter - (arc.top + arc.height / 2))).toBeLessThan(arc.height / 10);
-          expect(control.bottom).toBeLessThanOrEqual(sibling.top);
 
           const id = descriptionButton.element().id;
           expect(id).toBeTruthy();

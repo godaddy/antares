@@ -32,6 +32,13 @@
   container-type: inline-size;
   width: 100%;
 
+  &:where(:has(> .center > .value):has(> .center > :not(.value, .description))) {
+    grid-template-areas:
+      "content content content"
+      "value value value"
+      ". description .";
+  }
+
   &:where([data-label-type="value"]) {
     --gauge-value-font-size: max(19.3cqi, 1px);
   }
@@ -73,19 +80,20 @@
 }
 
 .center {
-  grid-row: 1 / span 2;
+  grid-row: 1 / description-end;
 }
 
 .center > :where(:not(.value, .description)) {
-  grid-area: value;
+  grid-row: 1;
+  grid-column: 1 / -1;
   place-self: center;
 }
 
 .range {
-  grid-row: 2;
+  grid-row: description-start;
 
   &:where(:has(> :not(.rangeLabel))) {
-    grid-row: 2 / span 2;
+    grid-row: description-start / span 2;
   }
 
   & > :where(:not(.rangeLabel)) {
@@ -142,7 +150,7 @@
 .gauge {
   position: relative;
   pointer-events: none;
-  grid-area: value;
+  grid-area: 1 / 1 / value-end / -1;
   align-self: end;
   aspect-ratio: 2;
   width: 100%;
@@ -279,7 +287,6 @@
   }
 }
 
-/* Second row: description + optional min/max */
 .description {
   --_type-slot-size: var(--gauge-description-font-size, 1em);
   --_type-slot-color: var(--gauge-description-fg);
