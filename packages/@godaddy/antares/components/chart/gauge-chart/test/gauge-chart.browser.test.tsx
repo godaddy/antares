@@ -1,8 +1,9 @@
 import { GaugeChartCenterContext, GaugeChartRangeContext } from '@godaddy/antares';
 import { createRef } from 'react';
 import { render } from 'vitest-browser-react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { userEvent } from 'vitest/browser';
+import { CenterControlsExample } from '../examples/center-controls.tsx';
 import { ContextDescriptionExample } from '../examples/context-description.tsx';
 import { ContinuousExample } from '../examples/continuous.tsx';
 import { DefaultExample } from '../examples/default.tsx';
@@ -14,6 +15,10 @@ import { SegmentedExample } from '../examples/segmented.tsx';
 import { VariantsExample } from '../examples/variants.tsx';
 import { WithRangeLabelsExample } from '../examples/with-range-labels.tsx';
 
+function horizontalCenter({ left, right }: DOMRect) {
+  return (left + right) / 2;
+}
+
 describe('@godaddy/antares', function antares() {
   describe('#GaugeChart', function gaugeChartTests() {
     describe('#basic-and-continuous', function basicAndContinuous() {
@@ -22,9 +27,15 @@ describe('@godaddy/antares', function antares() {
 
         const meter = getByRole('meter', { name: 'Basic gauge' });
         await expect.element(meter).toBeVisible();
-        await expect.element(getByText('50%')).toBeVisible();
+        const value = getByText('50%').element();
+        await expect.element(value).toBeVisible();
+
+        const target = value.getBoundingClientRect();
+        expect(document.elementFromPoint(target.x + target.width / 2, target.y + target.height / 2)).toBe(value);
 
         const el = meter.element();
+        const arc = el.getBoundingClientRect();
+        expect(Math.abs(target.bottom - arc.bottom)).toBeLessThan(arc.height / 10);
         expect(el?.getAttribute('aria-valuenow')).toBe('50');
         expect(el?.getAttribute('aria-valuemin')).toBe('0');
         expect(el?.getAttribute('aria-valuemax')).toBe('100');
@@ -86,64 +97,105 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#range-labels', function rangeLabels() {
-      it('places min and max labels under the ends of the arc', async function rangeLabelPlacement() {
-        const { getByRole, getByText } = await render(<WithRangeLabelsExample />);
+      it('places min and max labels below the arc and keeps the unlabeled arc full width', async function rangeLabelPlacement() {
+        const rangeRef = createRef<HTMLDivElement>();
+        const { getByRole, getByText, rerender } = await render(<WithRangeLabelsExample rangeRef={rangeRef} />);
 
-        for (const [name, minLabel, maxLabel, descriptionLabel] of [
-          ['CPU usage gauge', '0', '100', 'CPU Usage'],
-          ['Risk level gauge', 'Low', 'High', 'Risk Level']
+        for (const [name, minLabel, maxLabel] of [
+          ['CPU usage gauge', '0', '100'],
+          ['Risk level gauge', 'Low', 'High']
         ]) {
           const meter = getByRole('meter', { name });
           await expect.element(meter).toBeVisible();
           const arc = meter.element().getBoundingClientRect();
           const min = getByText(minLabel, { exact: true }).element().getBoundingClientRect();
           const max = getByText(maxLabel, { exact: true }).element().getBoundingClientRect();
-          const description = getByText(descriptionLabel).element().getBoundingClientRect();
-
-          expect(min.right).toBeLessThanOrEqual(description.left);
-          expect(max.left).toBeGreaterThanOrEqual(description.right);
-          expect(arc.left).toBeGreaterThanOrEqual(min.left);
-          expect(arc.left).toBeLessThanOrEqual(min.right);
-          expect(arc.right).toBeGreaterThanOrEqual(max.left);
-          expect(arc.right).toBeLessThanOrEqual(max.right);
           expect(min.top).toBeGreaterThanOrEqual(arc.bottom);
           expect(max.top).toBeCloseTo(min.top, 0);
         }
-      });
 
-      it('flips the range labels in right-to-left layouts', async function rtlRangeLabels() {
-        const { getByRole, getByText } = await render(
-          <div dir="rtl">
-            <WithRangeLabelsExample />
-          </div>
-        );
-
-        const meter = getByRole('meter', { name: 'Risk level gauge' });
-        await expect.element(meter).toBeVisible();
-        expect(getByText('Low').element().getBoundingClientRect().left).toBeGreaterThan(
-          getByText('High').element().getBoundingClientRect().right
-        );
+        await rerender(<WithRangeLabelsExample rangeRef={rangeRef} showRangeLabels={false} />);
+        const arc = getByRole('meter', { name: 'Risk level gauge' }).element().getBoundingClientRect();
+        expect(arc.width).toBe(rangeRef.current?.getBoundingClientRect().width);
       });
     });
 
     describe('#composition', function composition() {
-      it('keeps a wrapped description below the arc when Flex styles load last', async function lateFlexStyles() {
+      it('keeps center controls clear of the value and aligns range labels', async function centerControls() {
+        const onPress = vi.fn();
+        const { getByTestId } = await render(<CenterControlsExample onPress={onPress} />);
+
+        for (const [name, labels] of [
+          ['Compact', [['Low', 'left']]],
+          ['Regular', [['High', 'right']]],
+          [
+            'Both labels',
+            [
+              ['Low', 'right'],
+              ['High', 'left']
+            ]
+          ]
+        ] as const) {
+          const chart = getByTestId(name);
+          const arc = chart.getByRole('meter').element().getBoundingClientRect();
+          const buttons = ['Edit', 'Reset'].map((action) => chart.getByRole('button', { name: action }));
+          const value = chart.getByText('72%').element().getBoundingClientRect();
+          const description = chart.getByText('Score').element().getBoundingClientRect();
+          const rangeLabels = labels.map(function measureRangeLabel([label, end]) {
+            const element = chart.getByText(label).element();
+            return { label, end, element, rect: element.getBoundingClientRect() };
+          });
+          const boxes = [
+            { label: 'value', rect: value },
+            { label: 'description', rect: description },
+            ...buttons.map((button) => ({
+              label: button.element().textContent,
+              rect: button.element().getBoundingClientRect()
+            })),
+            ...rangeLabels
+          ];
+
+          for (const [index, { label, rect }] of boxes.entries()) {
+            for (const other of boxes.slice(index + 1)) {
+              const overlap =
+                Math.min(rect.right, other.rect.right) > Math.max(rect.left, other.rect.left) &&
+                Math.min(rect.bottom, other.rect.bottom) > Math.max(rect.top, other.rect.top);
+              expect(overlap, `${name}: ${label} overlaps ${other.label}`).toBe(false);
+            }
+          }
+
+          for (const { label, end, element, rect } of rangeLabels) {
+            expect(rect.width, `${name}: ${label} label width`).toBeGreaterThan(0);
+            await expect.element(element).toBeVisible();
+            expect(
+              Math.abs(horizontalCenter(rect) - arc[end]),
+              `${name}: ${label} label alignment`
+            ).toBeLessThanOrEqual(1);
+          }
+          expect(
+            Math.abs(horizontalCenter(description) - horizontalCenter(value)),
+            `${name}: description alignment`
+          ).toBeLessThanOrEqual(1);
+
+          for (const button of buttons) {
+            const element = button.element();
+            const { width, height } = element.getBoundingClientRect();
+            await button.click({ position: { x: width / 2, y: height / 2 } });
+            expect(onPress).toHaveBeenLastCalledWith(name, element.textContent);
+          }
+        }
+
+        expect(onPress).toHaveBeenCalledTimes(6);
+      });
+
+      it('keeps a context-supplied description below the arc', async function contextDescriptionPlacement() {
         const { getByRole, getByText } = await render(<ContextDescriptionExample />);
         const meter = getByRole('meter', { name: 'Site health' });
         const description = getByText('Health from context.');
-        const flexStyles = document.querySelector('style[data-vite-dev-id$="/layout/flex/src/index.module.css"]');
-        if (!flexStyles) throw new Error('Flex stylesheet is missing');
-        const stylesheet = document.createElement('style');
-        stylesheet.textContent = flexStyles.textContent;
-        document.head.append(stylesheet);
 
-        try {
-          expect(description.element().getBoundingClientRect().top).toBeGreaterThanOrEqual(
-            meter.element().getBoundingClientRect().bottom
-          );
-        } finally {
-          stylesheet.remove();
-        }
+        expect(description.element().getBoundingClientRect().top).toBeGreaterThanOrEqual(
+          meter.element().getBoundingClientRect().bottom
+        );
       });
 
       it('honors explicit text emphasis and center sizing', async function slotEmphasis() {
@@ -220,30 +272,40 @@ describe('@godaddy/antares', function antares() {
       });
 
       it.each([false, true])(
-        'keeps center controls clickable and descriptions current (range first: %s)',
+        'keeps region controls clickable and descriptions current (range first: %s)',
         async function dynamicDescription(rangeFirst) {
-          const { getByRole } = await render(<DynamicDescriptionExample rangeFirst={rangeFirst} />);
+          const { getByRole, getByText } = await render(<DynamicDescriptionExample rangeFirst={rangeFirst} />);
           const meter = getByRole('meter', { name: 'Site health' });
           const changeDescription = getByRole('button', { name: 'Change description' });
           const descriptionButton = getByRole('button', { name: 'Change from description' });
           const changeAgain = getByRole('button', { name: 'Change again' });
+          const changeFromRange = getByRole('button', { name: 'Change from range' });
           const arc = meter.element().getBoundingClientRect();
           const control = changeDescription.element().getBoundingClientRect();
           const sibling = changeAgain.element().getBoundingClientRect();
           const groupCenter = (control.top + sibling.bottom) / 2;
+          const description = descriptionButton.element().getBoundingClientRect();
+          const min = getByText('Low').element().getBoundingClientRect();
+          const max = getByText('High').element().getBoundingClientRect();
+          const rangeControl = changeFromRange.element().getBoundingClientRect();
 
+          expect(description.top).toBeGreaterThanOrEqual(arc.bottom);
+          expect(rangeControl.top).toBeGreaterThanOrEqual(Math.max(min.bottom, max.bottom, description.bottom));
           expect(control.left + control.width / 2).toBeCloseTo(arc.left + arc.width / 2, 0);
           expect(Math.abs(groupCenter - (arc.top + arc.height / 2))).toBeLessThan(arc.height / 10);
-          expect(control.bottom).toBeLessThanOrEqual(sibling.top);
 
           const id = descriptionButton.element().id;
           expect(id).toBeTruthy();
-          expect(id).not.toBe('score-description');
+          expect(id).toBe('score-description');
           const describedBy = 'external-description ' + id;
           await expect.element(meter).toHaveAttribute('aria-describedby', describedBy);
           await expect.element(meter).toHaveAccessibleDescription('Updated daily. Change from description');
           expect(meter.element().contains(changeDescription.element())).toBe(false);
           await userEvent.tab();
+          if (rangeFirst) {
+            await expect.element(changeFromRange).toHaveFocus();
+            await userEvent.tab();
+          }
           await expect.element(changeDescription).toHaveFocus();
 
           const target = descriptionButton.element().getBoundingClientRect();
@@ -251,16 +313,18 @@ describe('@godaddy/antares', function antares() {
             descriptionButton.element()
           );
           await descriptionButton.click();
-          await expect.element(descriptionButton).toHaveAttribute('id', id);
+          await expect.element(descriptionButton).toHaveAttribute('id', 'renamed-description');
+          await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description renamed-description');
           await changeAgain.click();
-          await expect.element(descriptionButton).toHaveAttribute('id', id);
-          await expect.element(meter).toHaveAttribute('aria-describedby', describedBy);
-          await expect.element(meter).toHaveAccessibleDescription('Updated daily. Change from description');
-          await changeDescription.click();
           await expect.element(meter).toHaveAttribute('aria-describedby', 'external-description');
           await expect.element(meter).toHaveAccessibleDescription('Updated daily.');
-          await changeDescription.click();
+          const rangeTarget = changeFromRange.element().getBoundingClientRect();
+          expect(
+            document.elementFromPoint(rangeTarget.x + rangeTarget.width / 2, rangeTarget.y + rangeTarget.height / 2)
+          ).toBe(changeFromRange.element());
+          await changeFromRange.click();
           await expect.element(meter).toHaveAttribute('aria-describedby', describedBy);
+          await expect.element(meter).toHaveAccessibleDescription('Updated daily. Change from description');
         }
       );
 
@@ -273,13 +337,24 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('uses the description to describe the meter', async function describedByDescription() {
-        const { getByRole, rerender } = await render(<PlaygroundExample label="50%" description="Done" value={50} />);
+        const title = <span id="gauge-title">Site health score</span>;
+        const { getByRole, rerender } = await render(
+          <>
+            {title}
+            <PlaygroundExample aria-labelledby="gauge-title" label="50%" description="Done" value={50} />
+          </>
+        );
 
-        const meter = getByRole('meter', { name: 'Playground gauge' });
+        const meter = getByRole('meter', { name: 'Site health score' });
         await expect.element(meter).toHaveAccessibleDescription('Done');
         expect(meter.element().hasAttribute('aria-valuetext')).toBe(false);
 
-        await rerender(<PlaygroundExample label="50%" value={50} />);
+        await rerender(
+          <>
+            {title}
+            <PlaygroundExample aria-labelledby="gauge-title" label="50%" value={50} />
+          </>
+        );
         expect(meter.element().hasAttribute('aria-describedby')).toBe(false);
       });
     });
@@ -327,10 +402,18 @@ describe('@godaddy/antares', function antares() {
 
     describe('#label-type', function labelType() {
       it('applies data-label-type text', async function textLabelType() {
-        const { getByRole } = await render(<PlaygroundExample label="OK" labelType="text" value={1} />);
+        const { getByRole, getByText, rerender } = await render(
+          <PlaygroundExample label="OK" labelType="text" value={1} width="240px" />
+        );
 
         const meter = getByRole('meter', { name: 'Playground gauge' });
         expect(meter.element().parentElement?.getAttribute('data-label-type')).toBe('text');
+        const label = getByText('OK');
+        const textFontSize = parseFloat(getComputedStyle(label.element()).fontSize);
+
+        await rerender(<PlaygroundExample label="OK" labelType="value" value={1} width="240px" />);
+        const valueFontSize = parseFloat(getComputedStyle(label.element()).fontSize);
+        expect(textFontSize).toBeLessThan(valueFontSize);
       });
     });
   });

@@ -1,20 +1,15 @@
-import { useCallback, useEffect, useId, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { useId } from 'react-aria';
 
-/** Links the chart to its description on the server and drops an unused reference after mounting. */
-export function useChartDescription(hasChildren: boolean, externalDescription?: string) {
+export function useChartDescription(externalDescription?: string) {
   const id = useId();
-  const [descriptionCount, setDescriptionCount] = useState<number>();
+  const [descriptionCount, setDescriptionCount] = useState(0);
   const ref = useCallback(function descriptionRef(element: HTMLElement | null) {
-    setDescriptionCount((count) => (count ?? 0) + (element ? 1 : -1));
-  }, []);
-
-  useEffect(function clearUnusedDescription() {
-    setDescriptionCount((count) => count ?? 0);
+    setDescriptionCount((count) => count + (element ? 1 : -1));
   }, []);
 
   const descriptionSlot = useMemo(() => ({ id, ref }), [id, ref]);
-  const hasDescription = descriptionCount === undefined ? hasChildren : descriptionCount > 0;
-  const describedBy = [externalDescription, hasDescription ? id : undefined].filter(Boolean).join(' ');
+  const describedBy = [externalDescription, descriptionCount > 0 ? id : undefined].filter(Boolean).join(' ');
 
   return { descriptionSlot, describedBy: describedBy || undefined };
 }

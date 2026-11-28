@@ -21,7 +21,9 @@ export function Center(props: CenterProps) {
 }
 ```
 
-Consumer props and context overrides apply over the region's defaults. The chart's placement class and slot props always apply, so overrides cannot break the chart layout.
+Consumer props and context overrides apply over the region's defaults. The chart owns grid placement and alignment.
+
+Regions let pointer events pass through their empty space while keeping controls interactive.
 
 ## Examples
 

@@ -11,6 +11,7 @@
   --gauge-fg-label: var(--ux-1le7uoa, #111);
   --gauge-font-family: var(--ux-1067ph9, "gdsherpa", Helvetica, Arial, sans-serif);
 
+  --_gauge-range-column-width: 0%;
   --gauge-range-label-fg: var(--ux-by6mab, #767676);
   --gauge-range-label-font-size: 9.37cqi;
   --gauge-range-label-font-weight: 500;
@@ -26,11 +27,22 @@
   grid-template-areas:
     "value value value"
     ". description .";
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: var(--_gauge-range-column-width) minmax(0, 1fr) var(--_gauge-range-column-width);
   justify-content: center;
   justify-items: center;
   container-type: inline-size;
   width: 100%;
+
+  &:where(:has(> .center > .value):has(> .center > :not(.value, .description))) {
+    grid-template-areas:
+      "content content content"
+      "value value value"
+      ". description .";
+  }
+
+  &:where(:has(> .range > .rangeLabel)) {
+    --_gauge-range-column-width: 18.6%;
+  }
 
   &:where([data-label-type="value"]) {
     --gauge-value-font-size: max(19.3cqi, 1px);
@@ -73,22 +85,27 @@
 }
 
 .center {
-  grid-row: 1 / span 2;
+  grid-row: 1 / description-end;
 }
 
-.centerContent {
-  grid-area: value;
-  align-self: center;
-}
-
-/* Override Flex's display rule regardless of stylesheet order. */
-.center > .centerContent:where(:has(> .value, > .description):not(:has(> :not(.value, .description)))) {
-  display: contents;
+.center > :where(:not(.value, .description)) {
+  grid-row: 1;
+  grid-column: 1 / -1;
+  place-self: center;
 }
 
 .range {
-  grid-row: 2;
-  pointer-events: none;
+  grid-row: description-start;
+
+  &:where(:has(> :not(.rangeLabel))) {
+    grid-row: description-start / span 2;
+  }
+
+  & > :where(:not(.rangeLabel)) {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    place-self: center;
+  }
 }
 
 /* ::before/::after = rounded caps at arc ends */
@@ -138,10 +155,10 @@
 .gauge {
   position: relative;
   pointer-events: none;
-  grid-area: value;
+  grid-area: 1 / 1 / value-end / -1;
   align-self: end;
   aspect-ratio: 2;
-  width: 100%;
+  width: calc(100% - var(--_gauge-range-column-width));
   margin-bottom: calc(var(--gauge-thickness) / 2);
 
   &::before,
@@ -186,11 +203,6 @@
     bottom: -1px;
     background-clip: padding-box;
   }
-}
-
-/* Narrow the arc when range labels are present so its end caps sit just inside them. */
-.root:has(> .range) .gauge {
-  width: calc(100% - 2 * 9.3cqi);
 }
 
 /* Continuous, value 0 */
@@ -275,7 +287,6 @@
   }
 }
 
-/* Second row: description + optional min/max */
 .description {
   --_type-slot-size: var(--gauge-description-font-size, 1em);
   --_type-slot-color: var(--gauge-description-fg);
@@ -296,7 +307,6 @@
   --_type-slot-color: var(--gauge-range-label-fg);
 
   display: inline-flex;
-  pointer-events: auto;
   justify-content: center;
   width: 4ch;
   overflow: hidden;
@@ -305,6 +315,10 @@
   font-weight: var(--gauge-range-label-font-weight);
   line-height: var(--gauge-range-label-line-height);
   grid-row: 1;
+
+  :where(.range) > & {
+    width: 100%;
+  }
 }
 
 .rangeLabel:where(.min) {

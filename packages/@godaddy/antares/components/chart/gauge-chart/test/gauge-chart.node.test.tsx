@@ -5,6 +5,7 @@ import { ContextDescriptionExample } from '../examples/context-description.tsx';
 import { ContinuousExample } from '../examples/continuous.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { PlaygroundExample } from '../examples/gauge-chart-playground.tsx';
+import { ReservedPlacementExample } from '../examples/reserved-placement.tsx';
 import { SegmentedExample } from '../examples/segmented.tsx';
 import { VariantsExample } from '../examples/variants.tsx';
 import { WithRangeLabelsExample } from '../examples/with-range-labels.tsx';
@@ -29,6 +30,7 @@ const SSR_EXAMPLES: Array<[string, ReactElement]> = [
       width="118px"
     />
   ],
+  ['reserved placement', <ReservedPlacementExample key="reserved-placement" />],
   ['segmented', <SegmentedExample key="segmented" />],
   ['variants', <VariantsExample key="variants" />],
   ['with-range-labels', <WithRangeLabelsExample key="with-range-labels" />]
