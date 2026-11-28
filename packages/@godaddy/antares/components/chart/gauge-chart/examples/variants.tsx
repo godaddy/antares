@@ -1,4 +1,11 @@
-import { Grid, GaugeChart } from '@godaddy/antares';
+import { GaugeChart, GaugeChartCenter, Grid, Text, type GaugeChartProps } from '@godaddy/antares';
+
+const variants: Array<{ variant: NonNullable<GaugeChartProps['variant']>; name: string }> = [
+  { variant: 'default', name: 'Default' },
+  { variant: 'success', name: 'Success' },
+  { variant: 'warning', name: 'Warning' },
+  { variant: 'critical', name: 'Critical' }
+];
 
 /**
  * Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
@@ -7,10 +14,16 @@ import { Grid, GaugeChart } from '@godaddy/antares';
 export function VariantsExample() {
   return (
     <Grid columns="repeat(2, 1fr)" gap="lg" justifyContent="center">
-      <GaugeChart value={50} label="50%" subLabel="Default" variant="default" aria-label="Default variant gauge" />
-      <GaugeChart value={50} label="50%" subLabel="Success" variant="success" aria-label="Success variant gauge" />
-      <GaugeChart value={50} label="50%" subLabel="Warning" variant="warning" aria-label="Warning variant gauge" />
-      <GaugeChart value={50} label="50%" subLabel="Critical" variant="critical" aria-label="Critical variant gauge" />
+      {variants.map(function renderGauge({ variant, name }) {
+        return (
+          <GaugeChart key={variant} value={50} variant={variant} aria-label={`${name} variant gauge`}>
+            <GaugeChartCenter>
+              <Text slot="value">50%</Text>
+              <Text slot="description">{name}</Text>
+            </GaugeChartCenter>
+          </GaugeChart>
+        );
+      })}
     </Grid>
   );
 }

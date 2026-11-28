@@ -1,0 +1,30 @@
+---
+title: ChartRegion
+description: ChartRegion renders a composed chart region, such as a center or range, in the place its chart gives it.
+---
+
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './chart-region.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## For use with chart components (not exported)
+
+Each public region defines its name, its public context, and its text slots once, then renders `ChartRegion`. The chart provides placement for each region through `ChartRegionsContext`.
+
+```tsx
+const centerRegion: ChartRegionDefinition = { name: 'center', context: CenterContext, slots: { value: styles.value } };
+
+export function Center(props: CenterProps) {
+  return <ChartRegion {...props} region={centerRegion} />;
+}
+```
+
+Consumer props and context overrides apply over the region's defaults. The chart owns grid placement and alignment.
+
+Regions let pointer events pass through their empty space while keeping controls interactive.
+
+## Examples
+
+<Examples of={Stories.Examples} />

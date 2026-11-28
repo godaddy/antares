@@ -1,5 +1,5 @@
 'use client';
-import { GaugeChart } from '#components/chart/gauge-chart';
+import { GaugeChart, GaugeChartCenter, GaugeChartRange } from '#components/chart/gauge-chart';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { PlaygroundExample } from './examples/gauge-chart-playground.tsx';
 
@@ -8,13 +8,15 @@ export default getMeta({
 });
 
 export const Props = getComponentDocs(GaugeChart);
+export const GaugeChartCenterProps = getComponentDocs(GaugeChartCenter);
+export const GaugeChartRangeProps = getComponentDocs(GaugeChartRange);
 
 export const Examples = getExamples('./examples');
 
 export const Playground = getStory(PlaygroundExample, {
   args: {
     label: '50%',
-    subLabel: 'Sub Label',
+    description: 'Description',
     rangeMin: '0',
     rangeMax: '100',
     labelType: 'value',
@@ -25,11 +27,15 @@ export const Playground = getStory(PlaygroundExample, {
   argTypes: {
     label: {
       control: 'text',
-      description: 'Primary text label displayed inside the gauge'
+      description: 'Value shown inside the arc'
     },
-    subLabel: {
+    description: {
       control: 'text',
-      description: 'Descriptive label providing context'
+      description: 'Description below the value (leave empty to hide)'
+    },
+    valueLabel: {
+      control: 'text',
+      description: 'Accessible text for the value (defaults to the number)'
     },
     rangeMin: {
       control: 'text',
@@ -42,7 +48,7 @@ export const Playground = getStory(PlaygroundExample, {
     labelType: {
       control: 'radio',
       options: ['value', 'text'],
-      description: 'Controls the font size of the primary label'
+      description: 'Font size of the center value'
     },
     segments: {
       control: 'select',

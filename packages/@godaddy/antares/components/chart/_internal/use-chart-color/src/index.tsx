@@ -40,7 +40,7 @@ interface ChartColorContextValue {
   unregister: (index: number) => void;
 }
 
-const ChartColorContext = createContext<ChartColorContextValue | null>(null);
+const ChartColorContext = /* @__PURE__ */ createContext<ChartColorContextValue | null>(null);
 
 /**
  * Props for ChartColorProvider.

@@ -1,0 +1,7 @@
+.region {
+  pointer-events: none;
+}
+
+.region > * {
+  pointer-events: auto;
+}

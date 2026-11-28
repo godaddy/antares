@@ -1,6 +1,6 @@
 ---
-title: Gauge Chart
-description: A visual indicator for representing a single quantitative value within a known range, rendered as a semicircle arc in continuous or segmented mode.
+title: GaugeChart
+description: GaugeChart shows one value on a known scale as a semicircle arc, in continuous or segmented mode.
 ---
 
 import { Meta, ArgTypes } from '@storybook/addon-docs/blocks';
@@ -12,46 +12,42 @@ import * as Stories from './gauge-chart.stories.tsx';
 ## Installation
 
 ```bash
-npm install --save @godaddy/antares
+npm install @godaddy/antares
 ```
 
 ## Examples
 
 <Examples of={Stories.Examples} />
 
-## Troubleshooting
-
-### Gauge Not Sizing Correctly
-
-The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
-
-```tsx
-// ❌ No width constraint — gauge may stretch to full viewport
-<GaugeChart label="50%" value={50} aria-label="Progress" />
-
-// ✅ Parent provides width context
-<div style={{ width: 200 }}>
-  <GaugeChart label="50%" value={50} aria-label="Progress" />
-</div>
-
-// ✅ Or use className for max-width
-<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
-```
-
-### Value Out of Range
-
-Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
-
-```tsx
-// ✅ Continuous: 0–100
-<GaugeChart label="75%" value={75} aria-label="Score" />
-
-// ✅ Segmented: 0 to segments
-<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
-```
-
 ## Props
+
+```tsx
+<GaugeChart value={3} segments={5} valueLabel="3 of 5" aria-label="Site health">
+  <GaugeChartCenter>
+    <Text slot="value" size="2xl">3/5</Text>
+    <Text slot="description">Health score</Text>
+  </GaugeChartCenter>
+  <GaugeChartRange>
+    <Text slot="min">0</Text>
+    <Text slot="max">5</Text>
+  </GaugeChartRange>
+</GaugeChart>
+```
+
+Compose the optional center and range in either order. Use `Text` in the `value` and `description` slots. An explicit `Text size` overrides the responsive default. The chart links to the description using its existing ID or a generated one. Use `labelType="text"` for a smaller default and `valueLabel` for accessible value text.
+
+Unslotted elements sit inside the arc in `GaugeChartCenter`, above the value when present. In `GaugeChartRange`, they sit below the range labels. Wrap several controls in a `Flex` to arrange them together.
+
+Continuous values are clamped to 0–100. Segmented values are clamped to 0–`segments`.
 
 ### GaugeChart
 
 <ArgTypes of={Stories.Props} />
+
+### GaugeChartCenter
+
+<ArgTypes of={Stories.GaugeChartCenterProps} />
+
+### GaugeChartRange
+
+<ArgTypes of={Stories.GaugeChartRangeProps} />
