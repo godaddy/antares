@@ -11,7 +11,7 @@ import {
   useSyncExternalStore
 } from 'react';
 import { createFocusManager } from '@react-aria/focus';
-import { mergeRefs, UNSAFE_PortalProvider, useFocusVisible } from 'react-aria';
+import { mergeRefs, UNSAFE_PortalProvider, useFocusVisible, useUNSAFE_PortalContext } from 'react-aria';
 import { UNSTABLE_ToastRegion as RACToastRegion } from 'react-aria-components';
 import { composeClassName } from '#utils/render-props.ts';
 import { getToastHost } from './host.ts';
@@ -72,6 +72,7 @@ const ToastRegionElement = /* @__PURE__ */ forwardRef<
 export const ToastRegion = /* @__PURE__ */ forwardRef<HTMLDivElement, ToastRegionProps>(
   function ToastRegion(props, ref) {
     const { queue = defaultToastQueue, ariaLabels, className, ...rest } = props;
+    const { getContainer: getPortalContainer } = useUNSAFE_PortalContext();
     const internal = getInternalQueue(queue);
     const lastFocused = useRef<HTMLElement | SVGElement | null>(null);
     const regionRef = useMemo(
@@ -141,7 +142,15 @@ export const ToastRegion = /* @__PURE__ */ forwardRef<HTMLDivElement, ToastRegio
           render={(domProps) => <ToastRegionElement {...domProps} queue={internal} />}
         >
           {function renderToast({ toast }) {
-            return <Toast toast={toast} queue={internal} closeLabel={ariaLabels?.close} moveFocus={moveFocus} />;
+            return (
+              <Toast
+                toast={toast}
+                queue={internal}
+                closeLabel={ariaLabels?.close}
+                getPortalContainer={getPortalContainer ?? null}
+                moveFocus={moveFocus}
+              />
+            );
           }}
         </RACToastRegion>
       </UNSAFE_PortalProvider>

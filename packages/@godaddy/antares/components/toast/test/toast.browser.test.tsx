@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { createRef, useState } from 'react';
+import { UNSAFE_PortalProvider } from 'react-aria';
 import { flushSync } from 'react-dom';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
@@ -10,6 +11,7 @@ import { parse } from 'yaml';
 import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
 import curatedTokens from '../../../../design-tokens/src/tokens.yml?raw';
 import legacyTokens from '../../../../../../apps/docs/.storybook/legacy-tokens.css?raw';
+import { DefaultExample as PopoverExample } from '../../popover/examples/default.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { PlaygroundExample } from '../examples/toast-playground.tsx';
 import { EmphasesExample } from '../examples/emphases.tsx';
@@ -92,6 +94,35 @@ describe('@godaddy/antares', function antares() {
       assume(toast.element().querySelector('strong')?.textContent).equals('1 year');
       assume(toast.element().querySelector('time')?.getAttribute('datetime')).equals('2027-11-17');
     });
+
+    it.each(['app portal container', 'document body'])(
+      'renders a popover from toast content in the %s',
+      async function toastPopover(destination) {
+        const portalContainer = createRef<HTMLDivElement>();
+        const useAppContainer = destination === 'app portal container';
+        await render(
+          useAppContainer ? (
+            <UNSAFE_PortalProvider getContainer={() => portalContainer.current}>
+              <DefaultExample />
+              <div ref={portalContainer} />
+            </UNSAFE_PortalProvider>
+          ) : (
+            <DefaultExample />
+          )
+        );
+
+        toast.add({ title: 'Toast with details', message: <PopoverExample />, timeout: null });
+        const notification = page.getByRole('alertdialog', { name: 'Toast with details' });
+        await userEvent.click(notification.getByRole('button', { name: 'Open popover' }));
+
+        const dialog = page.getByRole('dialog', { name: 'Open popover' });
+        await expect.element(dialog).toBeVisible();
+        const container = useAppContainer ? portalContainer.current : document.body;
+        expect(container?.contains(dialog.element())).toBe(true);
+        expect(dialog.element().closest(HOST)).toBeNull();
+        await userEvent.keyboard('{Escape}');
+      }
+    );
 
     it('renders a title of 0', async function zeroTitle() {
       await render(<PlaygroundExample title={0} message="Items left" timeout={0} />);

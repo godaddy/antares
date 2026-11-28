@@ -30,6 +30,9 @@ interface ToastProps {
   /** Overrides RAC's localized close label. */
   closeLabel?: string;
 
+  /** The app's portal container getter. */
+  getPortalContainer: (() => HTMLElement | null) | null;
+
   /** Hands off focus from a closing toast within this region. */
   moveFocus: (element: HTMLDivElement) => void;
 }
@@ -39,7 +42,7 @@ interface ToastProps {
  *
  * @param props - {@link ToastProps}
  */
-export function Toast({ toast, queue, closeLabel, moveFocus }: ToastProps) {
+export function Toast({ toast, queue, closeLabel, getPortalContainer, moveFocus }: ToastProps) {
   const { key, content, timer, timeout } = toast;
   const { title, message, emphasis, dismissible } = content;
   const icon = emphasisIcons[emphasis];
@@ -97,8 +100,7 @@ export function Toast({ toast, queue, closeLabel, moveFocus }: ToastProps) {
     >
       <div className={styles.clip}>
         <div ref={surfaceRef} className={styles.surface}>
-          {/* Content inside a toast portals to the page as usual, not into the toast host. */}
-          <UNSAFE_PortalProvider getContainer={null}>
+          <UNSAFE_PortalProvider getContainer={getPortalContainer}>
             {icon ? <Icon icon={icon} aria-hidden="true" className={styles.icon} /> : null}
             <RACToastContent className={styles.content}>
               {hasTitle ? (
