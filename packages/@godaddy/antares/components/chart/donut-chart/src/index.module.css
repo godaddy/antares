@@ -71,6 +71,25 @@
   --_type-slot-color: currentColor;
 }
 
+.center > :where(.value, .description) {
+  pointer-events: none;
+}
+
+.center
+  :where(.value, .description, .value *, .description *):where(
+    a[href],
+    button,
+    input,
+    select,
+    textarea,
+    summary,
+    label,
+    [tabindex],
+    [contenteditable]:not([contenteditable="false"])
+  ) {
+  pointer-events: auto;
+}
+
 .value {
   --_type-slot-size: var(--donut-value-font-size, 1em);
 

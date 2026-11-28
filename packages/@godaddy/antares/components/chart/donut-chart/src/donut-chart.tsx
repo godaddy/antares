@@ -99,7 +99,7 @@ export function DonutChart(props: DonutChartProps) {
     className,
     ...gridProps
   } = props;
-  const { descriptionSlot, describedBy } = useChartDescription(children != null, externalDescription);
+  const { descriptionSlot, describedBy } = useChartDescription(externalDescription);
   const regions = useMemo(
     function createRegions(): ChartRegionPlacements {
       return { center: { className: styles.center, slots: { description: descriptionSlot } } };

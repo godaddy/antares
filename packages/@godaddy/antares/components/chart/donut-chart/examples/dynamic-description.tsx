@@ -1,7 +1,7 @@
 import { Button, DonutChart, DonutChartCenter, Text } from '@godaddy/antares';
 import { useState } from 'react';
 
-const descriptionIds = ['sales-description', 'renamed-description', undefined, null] as const;
+const descriptionIds = ['sales-description', 'renamed-description', null] as const;
 
 /** @ignore */
 export function DynamicDescriptionExample() {
@@ -15,7 +15,7 @@ export function DynamicDescriptionExample() {
   return (
     <>
       <Text id="external-description">Updated daily.</Text>
-      {step === 2 && <Text id="renamed-description">Previous ID reused elsewhere.</Text>}
+      {descriptionId === null && <Text id="renamed-description">Previous ID reused elsewhere.</Text>}
       <DonutChart
         data={[{ name: 'Sales', value: 100 }]}
         aria-label="Total sales"

@@ -7,6 +7,7 @@ import type React from 'react';
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { DefaultExample } from '../examples/default';
+import { DynamicDescriptionExample } from '../examples/dynamic-description';
 import { FormatValueExample } from '../examples/format-value';
 import { LegendLayoutExample } from '../examples/legend-layout';
 import { SingleSliceExample } from '../examples/single-slice';
@@ -14,6 +15,7 @@ import { SmallSlicesExample } from '../examples/small-slices';
 
 const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
   ['basic', DefaultExample],
+  ['dynamic-description', DynamicDescriptionExample],
   ['format-value', FormatValueExample],
   ['legend-layout', LegendLayoutExample],
   ['single-slice', SingleSliceExample],

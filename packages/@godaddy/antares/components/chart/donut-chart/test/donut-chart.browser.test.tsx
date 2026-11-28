@@ -82,24 +82,21 @@ describe('@godaddy/antares', function antares() {
         const changeDescription = locator.getByRole('button', { name: 'Change description' });
 
         const slot = locator.getByText('Online sales.');
-        const id = slot.element().id;
-        expect(id).toBeTruthy();
-        expect(id).not.toBe('sales-description');
-        const describedBy = 'external-description ' + id;
+        await expect.element(slot).toHaveAttribute('id', 'sales-description');
+        const describedBy = 'external-description sales-description';
         await expect.element(chart).toHaveAttribute('aria-describedby', describedBy);
         await expect.element(chart).toHaveAccessibleDescription('Updated daily. Online sales.');
         await userEvent.tab();
         await expect.element(changeDescription).toHaveFocus();
         await userEvent.keyboard('{Enter}');
-        await expect.element(slot).toHaveAttribute('id', id);
-        await changeDescription.click();
-        await expect.element(slot).toHaveAttribute('id', id);
-        await expect.element(chart).toHaveAttribute('aria-describedby', describedBy);
+        await expect.element(slot).toHaveAttribute('id', 'renamed-description');
+        await expect.element(chart).toHaveAttribute('aria-describedby', 'external-description renamed-description');
         await expect.element(chart).toHaveAccessibleDescription('Updated daily. Online sales.');
         await changeDescription.click();
         await expect.element(chart).toHaveAttribute('aria-describedby', 'external-description');
         await expect.element(chart).toHaveAccessibleDescription('Updated daily.');
         await changeDescription.click();
+        await expect.element(slot).toHaveAttribute('id', 'sales-description');
         await expect.element(chart).toHaveAttribute('aria-describedby', describedBy);
       });
 
@@ -204,6 +201,30 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#tooltip', function tooltipTests() {
+      it('opens a slice tooltip through empty space inside the center region', async function hoverThroughCenter() {
+        const centerRef = createRef<HTMLDivElement>();
+        const { locator } = await renderDonutExample(
+          <DonutChartCenterContext.Provider value={{ ref: centerRef }}>
+            <SingleSliceExample />
+          </DonutChartCenterContext.Provider>
+        );
+        const slice = locator.getByRole('img').element().querySelector('path')!;
+        const bounds = slice.getBoundingClientRect();
+        const center = centerRef.current!.getBoundingClientRect();
+        const position = { x: bounds.width / 2, y: 5 };
+        const x = bounds.left + position.x;
+        const y = bounds.top + position.y;
+
+        expect(x).toBeGreaterThan(center.left);
+        expect(x).toBeLessThan(center.right);
+        expect(y).toBeGreaterThan(center.top);
+        expect(y).toBeLessThan(center.bottom);
+        expect(y).toBeLessThan(locator.getByText('$1,000').element().getBoundingClientRect().top);
+        expect(document.elementFromPoint(x, y)).toBe(slice);
+        await page.elementLocator(slice).hover({ position });
+        await expect.element(page.getByRole('tooltip')).toHaveTextContent('Total100%100');
+      });
+
       it('keeps the ring hoverable when formatted center text overlaps a slice', async function overlappingCenter() {
         const { locator } = await renderDonutExample(
           <CenterOverrideExample value="WWWWWWWWWWWWWW" formatted />,
