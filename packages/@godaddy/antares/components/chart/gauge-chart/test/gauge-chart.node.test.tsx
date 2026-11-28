@@ -1,11 +1,11 @@
 import type { ReactElement } from 'react';
-import { GaugeChart, GaugeChartCenter, Text } from '@godaddy/antares';
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { ContextDescriptionExample } from '../examples/context-description.tsx';
 import { ContinuousExample } from '../examples/continuous.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { PlaygroundExample } from '../examples/gauge-chart-playground.tsx';
+import { ReservedPlacementExample } from '../examples/reserved-placement.tsx';
 import { SegmentedExample } from '../examples/segmented.tsx';
 import { VariantsExample } from '../examples/variants.tsx';
 import { WithRangeLabelsExample } from '../examples/with-range-labels.tsx';
@@ -30,6 +30,7 @@ const SSR_EXAMPLES: Array<[string, ReactElement]> = [
       width="118px"
     />
   ],
+  ['reserved placement', <ReservedPlacementExample key="reserved-placement" />],
   ['segmented', <SegmentedExample key="segmented" />],
   ['variants', <VariantsExample key="variants" />],
   ['with-range-labels', <WithRangeLabelsExample key="with-range-labels" />]
@@ -40,18 +41,6 @@ describe('@godaddy/antares', function antares() {
     it.each(SSR_EXAMPLES)('renders %s example', function ssrSnapshot(_name, element) {
       const result = renderToString(element);
       expect(result).toMatchSnapshot();
-    });
-
-    it('rejects chart-owned placement props on the center region', function centerPlacementProps() {
-      const result = renderToString(
-        <GaugeChart value={50} aria-label="Placement">
-          {/* @ts-expect-error - The chart owns how the center region aligns its items. */}
-          <GaugeChartCenter justifyItems="start">
-            <Text slot="value">50%</Text>
-          </GaugeChartCenter>
-        </GaugeChart>
-      );
-      expect(result).toContain('50%');
     });
   });
 });
