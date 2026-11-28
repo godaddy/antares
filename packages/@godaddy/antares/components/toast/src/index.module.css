@@ -1,0 +1,195 @@
+/* One copy's lane inside the shared toast host. */
+.region {
+  --_toast-region-gap: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+
+  display: flex;
+  flex-direction: column;
+  inline-size: 20rem;
+  max-inline-size: 100%;
+  /* The host lets clicks through to the page; the region takes them back. */
+  pointer-events: auto;
+  outline: none;
+
+  &:where([data-focus-visible]) {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}
+
+.toast {
+  /* Raised surface with the legacy high-contrast fallback. */
+  --_toast-bg: var(--color-surface-background-raised, var(--ux-7wu8i7, black));
+  --_toast-fg: var(--color-surface-text-raised, var(--ux-1o8cusa, white));
+  --_toast-border: var(--color-surface-border-overlay, var(--ux-17fhz5j, black));
+  --_toast-radius: var(--size-radius-sm, var(--ux-1x8ztma, 4px));
+  --_toast-padding: var(--size-space-060, calc(var(--ux-1sbfig8, 0.25rem) * 3));
+  --_toast-gap: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  --_toast-icon-color: currentColor;
+  --_toast-icon-size: 1.5rem;
+
+  /* Title: UXCore's textTitle two steps down its type scale (`--ux-7s4p3v` is the scale ratio). */
+  --_toast-title-font-family: var(--font-heading-family, var(--ux-p4wcd9, sans-serif));
+  --_toast-title-font-size: var(
+    --font-heading-size-sm,
+    calc(var(--ux-18ime9a, 1.375rem) / var(--ux-7s4p3v, 1.125) / var(--ux-7s4p3v, 1.125))
+  );
+  --_toast-title-font-weight: var(--font-heading-weight, var(--ux-1a9e4a3, 700));
+  --_toast-title-font-variation: var(--font-heading-variation, var(--ux-3x9eca, normal));
+  --_toast-title-line-height: var(--font-heading-line-height, var(--ux-1pw8hzd, 1.25));
+
+  --_toast-message-font-family: var(--font-body-family, var(--ux-117cu43, sans-serif));
+  --_toast-message-font-size: var(--font-body-size-md, var(--ux-1klxlj4, 1rem));
+  --_toast-message-font-weight: var(--font-body-weight, var(--ux-8n6y9x, 400));
+  --_toast-message-line-height: var(--font-body-line-height, var(--ux-mgbt9j, 1.5));
+
+  --_toast-motion: 250ms cubic-bezier(0.32, 0.72, 0, 1);
+  --_toast-slide: 100%;
+  --_toast-collapsed: 0fr;
+  --_toast-offset: 0;
+  --_toast-opacity: 1;
+  --_toast-outline: none;
+  --_toast-ring: 4px;
+
+  /* A grid row that grows from 0fr, so the toasts around it slide to make room. */
+  display: grid;
+  grid-template-rows: 1fr;
+  outline: none;
+  transition: grid-template-rows var(--_toast-motion);
+
+  /* The host follows the page direction even when a region uses a different locale. */
+  :where([data-antares-toast-host]:dir(rtl)) & {
+    --_toast-slide: -100%;
+  }
+
+  @starting-style {
+    grid-template-rows: var(--_toast-collapsed);
+  }
+
+  &:where([data-exiting]) {
+    --_toast-offset: var(--_toast-slide);
+    --_toast-opacity: 0;
+
+    grid-template-rows: var(--_toast-collapsed);
+  }
+
+  /* RAC wraps each toast in its own list item. */
+  :where(li:last-child) > & {
+    --_toast-region-gap: 0;
+  }
+
+  &:where([data-focus-visible]) {
+    --_toast-outline: 2px solid Highlight;
+  }
+
+  &:where([data-emphasis="success"]) {
+    --_toast-icon-color: var(--color-feedback-success-strong, var(--ux-em0gr, palegreen));
+  }
+
+  &:where([data-emphasis="critical"]) {
+    --_toast-icon-color: var(--color-feedback-critical-strong, var(--ux-1iiiqs3, mistyrose));
+  }
+
+  &:where([data-emphasis="warning"]) {
+    --_toast-icon-color: var(--color-feedback-warning-text, var(--ux-lv1r6m, #de7c00));
+  }
+}
+
+/*
+ * The row's only cell: clips the toast while the row collapses. Its padding leaves room for the focus
+ * ring, and the negative margin keeps the toast where it was.
+ */
+.clip {
+  min-block-size: 0;
+  overflow: hidden;
+  padding: var(--_toast-ring);
+  margin: calc(var(--_toast-ring) * -1);
+}
+
+.surface {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--_toast-gap);
+  margin-block-end: var(--_toast-region-gap);
+  padding: var(--_toast-padding);
+  background: var(--_toast-bg);
+  color: var(--_toast-fg);
+  border: 1px solid var(--_toast-border);
+  border-radius: var(--_toast-radius);
+  outline: var(--_toast-outline);
+  outline-offset: 2px;
+  translate: var(--_toast-offset) 0;
+  opacity: var(--_toast-opacity);
+  transition:
+    translate var(--_toast-motion),
+    opacity var(--_toast-motion);
+
+  @starting-style {
+    translate: var(--_toast-slide) 0;
+    opacity: 0;
+  }
+}
+
+.icon {
+  flex-shrink: 0;
+  inline-size: var(--_toast-icon-size);
+  block-size: var(--_toast-icon-size);
+  color: var(--_toast-icon-color);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.title {
+  font-family: var(--_toast-title-font-family);
+  font-size: var(--_toast-title-font-size);
+  font-weight: var(--_toast-title-font-weight);
+  font-variation-settings: var(--_toast-title-font-variation);
+  line-height: var(--_toast-title-line-height);
+}
+
+.message {
+  font-family: var(--_toast-message-font-family);
+  font-size: var(--_toast-message-font-size);
+  font-weight: var(--_toast-message-font-weight);
+  line-height: var(--_toast-message-line-height);
+  overflow-wrap: anywhere;
+}
+
+/*
+ * No action token targets the inverted surface, so the minimal button takes the toast's own text
+ * color and shows hover/press through opacity instead of a fill.
+ * The surface selector gives these overrides precedence when the Button stylesheet loads later.
+ */
+.surface > .close {
+  --_button-text: currentColor;
+  --_button-text-hovered: currentColor;
+  --_button-text-pressed: currentColor;
+  --_button-bg: transparent;
+  --_button-bg-hovered: transparent;
+  --_button-bg-pressed: transparent;
+  --_button-border: transparent;
+  --_button-border-hovered: transparent;
+  --_button-border-pressed: transparent;
+
+  flex-shrink: 0;
+
+  &:where([data-hovered]) {
+    opacity: 0.8;
+  }
+
+  &:where([data-pressed]) {
+    opacity: 0.6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Drop the slide and the stack movement, keep the fade. */
+  .toast {
+    --_toast-slide: 0;
+    --_toast-collapsed: 1fr;
+  }
+}

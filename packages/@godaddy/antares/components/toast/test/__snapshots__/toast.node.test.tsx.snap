@@ -1,0 +1,3 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@godaddy/antares > #Toast > renders the multiple regions example 1`] = `"<div class="box flex" style="flex-wrap:wrap;gap:var(--_box-space-sm)"><button class="button secondary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_7_">Header toast</button><button class="button secondary" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_b_">App toast</button></div>"`;

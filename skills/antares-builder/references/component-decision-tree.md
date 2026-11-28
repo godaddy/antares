@@ -47,6 +47,7 @@ For layered content, read [modal layers](composition-patterns.md#modal-layers):
 ## 4. Is this information, feedback or data?
 
 - In-page live message → `Alert`; field validation → `FieldError` inside its field.
+- Transient page-wide feedback → mount one `<ToastRegion />` per app and call `toast.add()`.
 - Static status/category → `Tag`; selection/removal belongs to Chip.
 - Operation progress → `ProgressBar` or compact `CircularProgress`; a numeric input belongs to RangeField.
 - Text-first KPI/trend → `MetricsLockup`.
@@ -70,4 +71,4 @@ Read [layout and styling](layout-and-styling.md) for composition and responsive 
 
 ## API gaps
 
-Do not infer Antares exports such as `Combobox`, `Table`, `Toast`, `EmptyState`, `NativeSelect`, `Link`, `Breadcrumb`, `Sidebar` or `FileUpload` from other libraries. Check the installed export map first. When a required component is unavailable, use semantic HTML or the application's established solution. A separate RAC dependency is an option when its API and styling fit the requirement; it does not create an Antares export. For empty states, Antares typography, media, actions and layout can form a suitable composition.
+Do not infer Antares exports such as `Combobox`, `Table`, `EmptyState`, `NativeSelect`, `Link`, `Breadcrumb`, `Sidebar` or `FileUpload` from other libraries. Check the installed export map first. When a required component is unavailable, use semantic HTML or the application's established solution. A separate RAC dependency is an option when its API and styling fit the requirement; it does not create an Antares export. For empty states, Antares typography, media, actions and layout can form a suitable composition.
