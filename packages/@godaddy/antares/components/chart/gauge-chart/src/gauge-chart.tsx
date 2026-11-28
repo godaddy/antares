@@ -96,7 +96,6 @@ export function GaugeChart(props: GaugeChartProps) {
       return {
         center: {
           className: styles.center,
-          contentClassName: styles.centerContent,
           slots: { description: descriptionSlot }
         },
         range: { className: styles.range }

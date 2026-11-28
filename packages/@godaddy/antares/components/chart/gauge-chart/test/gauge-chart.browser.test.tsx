@@ -231,7 +231,7 @@ describe('@godaddy/antares', function antares() {
       it.each([false, true])(
         'keeps region controls clickable and descriptions current (range first: %s)',
         async function dynamicDescription(rangeFirst) {
-          const { getByRole } = await render(<DynamicDescriptionExample rangeFirst={rangeFirst} />);
+          const { getByRole, getByText } = await render(<DynamicDescriptionExample rangeFirst={rangeFirst} />);
           const meter = getByRole('meter', { name: 'Site health' });
           const changeDescription = getByRole('button', { name: 'Change description' });
           const descriptionButton = getByRole('button', { name: 'Change from description' });
@@ -241,7 +241,13 @@ describe('@godaddy/antares', function antares() {
           const control = changeDescription.element().getBoundingClientRect();
           const sibling = changeAgain.element().getBoundingClientRect();
           const groupCenter = (control.top + sibling.bottom) / 2;
+          const description = descriptionButton.element().getBoundingClientRect();
+          const min = getByText('Low').element().getBoundingClientRect();
+          const max = getByText('High').element().getBoundingClientRect();
+          const rangeControl = changeFromRange.element().getBoundingClientRect();
 
+          expect(description.top).toBeGreaterThanOrEqual(arc.bottom);
+          expect(rangeControl.top).toBeGreaterThanOrEqual(Math.max(min.bottom, max.bottom, description.bottom));
           expect(control.left + control.width / 2).toBeCloseTo(arc.left + arc.width / 2, 0);
           expect(Math.abs(groupCenter - (arc.top + arc.height / 2))).toBeLessThan(arc.height / 10);
           expect(control.bottom).toBeLessThanOrEqual(sibling.top);

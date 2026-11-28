@@ -1,13 +1,4 @@
-import {
-  Children,
-  createContext,
-  forwardRef,
-  isValidElement,
-  useContext,
-  type Context,
-  type ReactNode,
-  type Ref
-} from 'react';
+import { createContext, forwardRef, useContext, type Context, type ReactNode, type Ref } from 'react';
 import {
   DEFAULT_SLOT,
   useContextProps,
@@ -15,7 +6,6 @@ import {
   type TextProps as RACTextProps
 } from 'react-aria-components';
 import { textTreatmentClassName } from '#components/_internal/typography';
-import { Flex } from '#components/layout/flex';
 import { Grid, type GridProps } from '#components/layout/grid';
 import { TextContext } from '#components/text';
 import { composeClassName } from '#utils/render-props.ts';
@@ -68,9 +58,6 @@ export interface ChartRegionPlacement {
   /** Places the region in the chart's layout. */
   className?: string;
 
-  /** Groups unslotted children in the chart's layout. */
-  contentClassName?: string;
-
   /** Extra props per slot name. */
   slots?: Record<string, ChartRegionSlotProps>;
 }
@@ -118,31 +105,9 @@ export const ChartRegion = /* @__PURE__ */ forwardRef<HTMLDivElement, ChartRegio
       className: composeClassName(undefined, slotClassName, textTreatmentClassName('inherit'))
     };
   }
-  let content = children;
-  if (placement?.contentClassName) {
-    const named: ReactNode[] = [];
-    const defaults: ReactNode[] = [];
-    for (const child of Children.toArray(children)) {
-      if (isValidElement<{ slot?: string }>(child) && child.props.slot && child.props.slot in region.slots) {
-        named.push(child);
-      } else {
-        defaults.push(child);
-      }
-    }
-    content = (
-      <>
-        {defaults.length > 0 && (
-          <Flex direction="column" alignItems="center" className={placement.contentClassName}>
-            {defaults}
-          </Flex>
-        )}
-        {named}
-      </>
-    );
-  }
   return (
     <Grid {...rest} ref={regionRef} className={composeClassName(className, placement?.className, styles.region)}>
-      <TextContext.Provider value={{ slots }}>{content}</TextContext.Provider>
+      <TextContext.Provider value={{ slots }}>{children}</TextContext.Provider>
     </Grid>
   );
 });
